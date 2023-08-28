@@ -31,3 +31,5 @@ No additional instructions required.
 Name | Mobile | Email | Development OS/Toolchain
 -:|:-:|:-|-|
 Ong Han Yang | xxxx2681 | e0543458@u.nus.edu.sg | Windows / Github Issues
+Ong Hong Kai | xxxx1012 | e0543864@u.nus.edu.sg | Windows / Github Issues
+Ryan Tian Jun | xxxx9254 | e0543846@u.nus.edu.sg | Windows / Github Issues
