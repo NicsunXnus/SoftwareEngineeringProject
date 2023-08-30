@@ -6,7 +6,7 @@
 
 class IfNode : public StmtNode {
 public:
-    IfNode(std::shared_ptr<CondExpr> conditionExpr,
+    IfNode(std::shared_ptr<CondExprNode> conditionExpr,
            std::vector<std::shared_ptr<StmtNode>> trueBranch,
            std::vector<std::shared_ptr<StmtNode>> falseBranch);
     

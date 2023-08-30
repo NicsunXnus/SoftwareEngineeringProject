@@ -6,8 +6,8 @@
 
 class WhileNode : public StmtNode {
 public:
-    IfNode(std::shared_ptr<CondExpr> conditionExpr,
-           std::vector<std::shared_ptr<StmtNode>> loop;
+    WhileNode(std::shared_ptr<CondExprNode> conditionExpr,
+           std::vector<std::shared_ptr<StmtNode>> loop);
     
     std::shared_ptr<CondExprNode> conditionExpr;
     std::vector<std::shared_ptr<StmtNode>> loop;
