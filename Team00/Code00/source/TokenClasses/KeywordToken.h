@@ -11,9 +11,6 @@
 */
 class KeywordToken : public Token {
 private:
-	// token represented in string form
-	std::string m_tokenName;
-
 public:
 	KeywordToken(std::string_view tokenName)
 		: m_tokenName{tokenName} {

@@ -1,3 +1,3 @@
 #include "KeywordToken.h"
 
-// Define token functions here
+// Define KeywordToken functions here
