@@ -13,7 +13,8 @@ using namespace std::string_view_literals;
 */
 class TokenizerFunctions {
 public:
-	TokenizerFunctions() {};
+	static std::vector<std::string> splitString(std::string input);
+	static std::vector<std::string> splitString(std::string input, std::string delimiter);
 };
 
 #endif
