@@ -11,12 +11,11 @@ using namespace std::string_view_literals;
 /**
 * This class represents the token for the "stmt" keyword, used in PQL declarations
 */
-namespace Tokens {
-	class StmtKeywordToken : public KeywordToken {
-	public:
-		StmtKeywordToken()
-			: KeywordToken{ "stmt"sv } {
-		};
+class StmtKeywordToken : public KeywordToken {
+public:
+	StmtKeywordToken()
+		: KeywordToken{ "stmt"sv } {
 	};
-}
+};
+
 #endif
