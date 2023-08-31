@@ -11,11 +11,12 @@ using namespace std::string_view_literals;
 /**
 * This class represents the token for the "procedure" keyword, used in PQL declarations and in SIMPLE
 */
-class ProcedureKeywordToken : public KeywordToken {
-public:
-	ProcedureKeywordToken()
-		: KeywordToken{ "procedure"sv } {
+namespace Tokens {
+	class ProcedureKeywordToken : public KeywordToken {
+	public:
+		ProcedureKeywordToken()
+			: KeywordToken{ "procedure"sv } {
+		};
 	};
-};
-
+}
 #endif

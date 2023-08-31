@@ -9,11 +9,12 @@
 /**
 * This class represents tokens objects that are relational operators between expressions
 */
-class RelationalOpToken : public OperatorToken {
-public:
-	RelationalOpToken(std::string_view tokenName)
-		: OperatorToken{ tokenName } {
+namespace Tokens {
+	class RelationalOpToken : public OperatorToken {
+	public:
+		RelationalOpToken(std::string_view tokenName)
+			: OperatorToken{ tokenName } {
+		};
 	};
-};
-
+}
 #endif

@@ -11,10 +11,11 @@ using namespace std::string_view_literals;
 /**
 * This class represents a "==" symbol.
 */
-class EqualityOpToken : public RelationalOpToken {
-public:
-	EqualityOpToken()
-		: RelationalOpToken{ "=="sv } {};
-};
-
+namespace Tokens {
+	class EqualityOpToken : public RelationalOpToken {
+	public:
+		EqualityOpToken()
+			: RelationalOpToken{ "=="sv } {};
+	};
+}
 #endif

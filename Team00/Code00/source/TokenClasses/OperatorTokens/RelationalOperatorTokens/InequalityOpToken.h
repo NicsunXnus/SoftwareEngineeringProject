@@ -11,10 +11,11 @@ using namespace std::string_view_literals;
 /**
 * This class represents a "!=" symbol.
 */
-class InequalityOpToken : public RelationalOpToken {
-public:
-	InequalityOpToken()
-		: RelationalOpToken{ "!="sv } {};
-};
-
+namespace Tokens {
+	class InequalityOpToken : public RelationalOpToken {
+	public:
+		InequalityOpToken()
+			: RelationalOpToken{ "!="sv } {};
+	};
+}
 #endif

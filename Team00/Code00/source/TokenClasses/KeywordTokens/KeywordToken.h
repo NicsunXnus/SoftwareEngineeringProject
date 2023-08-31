@@ -9,12 +9,13 @@
 /**
 * This class represents tokens objects that stem from reserved keywords 
 */
-class KeywordToken : public Token {
-private:
-public:
-	KeywordToken(std::string_view tokenName)
-		: Token{ tokenName } {
+namespace Tokens {
+	class KeywordToken : public Token {
+	private:
+	public:
+		KeywordToken(std::string_view tokenName)
+			: Token{ tokenName } {
+		};
 	};
-};
-
+}
 #endif

@@ -11,10 +11,11 @@ using namespace std::string_view_literals;
 /**
 * This class represents a "<" symbol.
 */
-class LessThanOpToken : public RelationalOpToken {
-public:
-	LessThanOpToken()
-		: RelationalOpToken{ "<"sv } {};
-};
-
+namespace Tokens {
+	class LessThanOpToken : public RelationalOpToken {
+	public:
+		LessThanOpToken()
+			: RelationalOpToken{ "<"sv } {};
+	};
+}
 #endif

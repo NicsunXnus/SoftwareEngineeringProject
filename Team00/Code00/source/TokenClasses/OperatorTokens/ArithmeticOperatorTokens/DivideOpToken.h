@@ -11,10 +11,11 @@ using namespace std::string_view_literals;
 /**
 * This class represents a "/" symbol.
 */
-class DivideOpToken : public ArithmeticOpToken {
-public:
-	DivideOpToken()
-		: ArithmeticOpToken{ "/"sv } {};
-};
-
+namespace Tokens {
+	class DivideOpToken : public ArithmeticOpToken {
+	public:
+		DivideOpToken()
+			: ArithmeticOpToken{ "/"sv } {};
+	};
+}
 #endif

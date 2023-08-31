@@ -11,11 +11,12 @@ using namespace std::string_view_literals;
 /**
 * This class represents the token for the "if" keyword, used in PQL declarations and in SIMPLE
 */
-class IfKeywordToken : public KeywordToken {
-public:
-	IfKeywordToken()
-		: KeywordToken{ "if"sv } {
+namespace Tokens {
+	class IfKeywordToken : public KeywordToken {
+	public:
+		IfKeywordToken()
+			: KeywordToken{ "if"sv } {
+		};
 	};
-};
-
+}
 #endif

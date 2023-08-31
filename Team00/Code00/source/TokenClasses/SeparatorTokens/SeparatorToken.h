@@ -9,12 +9,13 @@
 /**
 * This class represents tokens objects that stem from user-defined names.
 */
-class SeparatorToken : public Token {
-private:
-public:
-	SeparatorToken(std::string_view tokenName)
-		: Token{ tokenName } {
+namespace Tokens {
+	class SeparatorToken : public Token {
+	private:
+	public:
+		SeparatorToken(std::string_view tokenName)
+			: Token{ tokenName } {
+		};
 	};
-};
-
+}
 #endif

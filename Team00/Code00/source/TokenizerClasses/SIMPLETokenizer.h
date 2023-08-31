@@ -13,9 +13,9 @@ using namespace Tokens;
 /**
 * This class represents the tokenizer that tokenizes the pql
 */
-class PQLTokenizer {
+class SIMPLETokenizer {
 public:
-	PQLTokenizer() {};
+	SIMPLETokenizer() {};
 
 	std::vector<Token> tokenize(std::string_view pql);
 };

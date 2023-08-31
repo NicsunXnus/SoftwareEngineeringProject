@@ -11,11 +11,12 @@ using namespace std::string_view_literals;
 /**
 * This class represents the token for the "constant" keyword, used in PQL declarations
 */
-class ConstantKeywordToken : public KeywordToken {
-public:
-	ConstantKeywordToken()
-		: KeywordToken{ "constant"sv } {
+namespace Tokens {
+	class ConstantKeywordToken : public KeywordToken {
+	public:
+		ConstantKeywordToken()
+			: KeywordToken{ "constant"sv } {
+		};
 	};
-};
-
+}
 #endif

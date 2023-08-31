@@ -9,11 +9,12 @@
 /**
 * This class represents tokens objects that are arithmetic operators between expressions
 */
-class ArithmeticOpToken : public OperatorToken {
-public:
-	ArithmeticOpToken(std::string_view tokenName)
-		: OperatorToken{ tokenName } {
+namespace Tokens {
+	class ArithmeticOpToken : public OperatorToken {
+	public:
+		ArithmeticOpToken(std::string_view tokenName)
+			: OperatorToken{ tokenName } {
+		};
 	};
-};
-
+}
 #endif

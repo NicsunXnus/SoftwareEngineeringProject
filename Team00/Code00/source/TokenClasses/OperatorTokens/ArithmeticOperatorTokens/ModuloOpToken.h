@@ -11,10 +11,11 @@ using namespace std::string_view_literals;
 /**
 * This class represents a "%" symbol.
 */
-class ModuloOpToken : public ArithmeticOpToken {
-public:
-	ModuloOpToken()
-		: ArithmeticOpToken{ "%"sv } {};
-};
-
+namespace Tokens {
+	class ModuloOpToken : public ArithmeticOpToken {
+	public:
+		ModuloOpToken()
+			: ArithmeticOpToken{ "%"sv } {};
+	};
+}
 #endif
