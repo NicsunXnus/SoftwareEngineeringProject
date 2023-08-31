@@ -1,3 +1,4 @@
+#include <memory>
 #include "PQLTokenizer.h"
 
 /**
@@ -6,6 +7,9 @@
 * Returns a std::vector of tokens.
 */
 std::vector<Token> tokenize(std::string_view pql) {
+	std::vector<std::shared_ptr<Token>> tokens;
+
+
 
 }
 
