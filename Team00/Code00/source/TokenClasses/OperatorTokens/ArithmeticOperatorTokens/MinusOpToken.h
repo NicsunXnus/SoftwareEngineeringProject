@@ -11,10 +11,11 @@ using namespace std::string_view_literals;
 /**
 * This class represents a "-" symbol.
 */
-class MinusOpToken : public ArithmeticOpToken {
-public:
-	MinusOpToken()
-		: ArithmeticOpToken{ "-"sv } {};
-};
-
+namespace Tokens {
+	class MinusOpToken : public ArithmeticOpToken {
+	public:
+		MinusOpToken()
+			: ArithmeticOpToken{ "-"sv } {};
+	};
+}
 #endif

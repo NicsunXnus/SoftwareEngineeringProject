@@ -11,10 +11,11 @@ using namespace std::string_view_literals;
 /**
 * This class represents a "*" symbol.
 */
-class MultiplyOpToken : public ArithmeticOpToken {
-public:
-	MultiplyOpToken()
-		: ArithmeticOpToken{ "*"sv } {};
-};
-
+namespace Tokens {
+	class MultiplyOpToken : public ArithmeticOpToken {
+	public:
+		MultiplyOpToken()
+			: ArithmeticOpToken{ "*"sv } {};
+	};
+}
 #endif

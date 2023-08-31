@@ -15,23 +15,28 @@
     <ClCompile Include="..\source\Parser.cpp" />
     <ClCompile Include="..\source\PKB.cpp" />
     <ClCompile Include="..\source\TNode.cpp" />
-	<ClCompile Include="..\source\TokenizerClasses\PQLTokenizer.cpp" />  
+    <ClCompile Include="..\source\TokenizerClasses\PQLTokenizer.cpp" />
+    <ClCompile Include="..\source\TokenizerClasses\SIMPLETokenizer.cpp" />
+    <ClCompile Include="..\source\TokenizerClasses\TokenizerFunctions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\PKB.h" />
     <ClInclude Include="..\source\TNode.h" />
-	<ClInclude Include="..\source\TokenClasses\IdentifierToken.h" />
-    <ClInclude Include="..\source\TokenClasses\KeywordTokens\AssignToken.h" />
-    <ClInclude Include="..\source\TokenClasses\KeywordTokens\CallToken.h" />
-    <ClInclude Include="..\source\TokenClasses\KeywordTokens\ConstantToken.h" />
-    <ClInclude Include="..\source\TokenClasses\KeywordTokens\IfToken.h" />
+    <ClInclude Include="..\source\TokenClasses\IdentifierToken.h" />
+    <ClInclude Include="..\source\TokenClasses\KeywordTokens\AssignKeywordToken.h" />
+    <ClInclude Include="..\source\TokenClasses\KeywordTokens\CallKeywordToken.h" />
+    <ClInclude Include="..\source\TokenClasses\KeywordTokens\ConstantKeywordToken.h" />
+    <ClInclude Include="..\source\TokenClasses\KeywordTokens\ElseKeywordToken.h" />
+    <ClInclude Include="..\source\TokenClasses\KeywordTokens\IfKeywordToken.h" />
     <ClInclude Include="..\source\TokenClasses\KeywordTokens\KeywordToken.h" />
-    <ClInclude Include="..\source\TokenClasses\KeywordTokens\PrintToken.h" />
-    <ClInclude Include="..\source\TokenClasses\KeywordTokens\ProcedureToken.h" />
-    <ClInclude Include="..\source\TokenClasses\KeywordTokens\ReadToken.h" />
-    <ClInclude Include="..\source\TokenClasses\KeywordTokens\StmtToken.h" />
-    <ClInclude Include="..\source\TokenClasses\KeywordTokens\VariableToken.h" />
-    <ClInclude Include="..\source\TokenClasses\KeywordTokens\WhileToken.h" />
+    <ClInclude Include="..\source\TokenClasses\KeywordTokens\PrintKeywordToken.h" />
+    <ClInclude Include="..\source\TokenClasses\KeywordTokens\ProcedureKeywordToken.h" />
+    <ClInclude Include="..\source\TokenClasses\KeywordTokens\ReadKeywordToken.h" />
+    <ClInclude Include="..\source\TokenClasses\KeywordTokens\StmtKeywordToken.h" />
+    <ClInclude Include="..\source\TokenClasses\KeywordTokens\ThenKeywordToken.h" />
+    <ClInclude Include="..\source\TokenClasses\KeywordTokens\VariableKeywordToken.h" />
+    <ClInclude Include="..\source\TokenClasses\KeywordTokens\WhileKeywordToken.h" />
+    <ClInclude Include="..\source\TokenClasses\LiteralTokens\IntegerLiteralToken.h" />
     <ClInclude Include="..\source\TokenClasses\LiteralTokens\LiteralToken.h" />
     <ClInclude Include="..\source\TokenClasses\OperatorTokens\ArithmeticOperatorTokens\ArithmeticOpToken.h" />
     <ClInclude Include="..\source\TokenClasses\OperatorTokens\ArithmeticOperatorTokens\DivideOpToken.h" />
@@ -54,12 +59,16 @@
     <ClInclude Include="..\source\TokenClasses\OperatorTokens\RelationalOperatorTokens\RelationalOpToken.h" />
     <ClInclude Include="..\source\TokenClasses\SeparatorTokens\CurlyCloseSepToken.h" />
     <ClInclude Include="..\source\TokenClasses\SeparatorTokens\CurlyOpenSepToken.h" />
+    <ClInclude Include="..\source\TokenClasses\SeparatorTokens\DoubleQuoSepToken.h" />
     <ClInclude Include="..\source\TokenClasses\SeparatorTokens\ParenCloseSepToken.h" />
     <ClInclude Include="..\source\TokenClasses\SeparatorTokens\ParenOpenSepToken.h" />
     <ClInclude Include="..\source\TokenClasses\SeparatorTokens\SemicolonSepToken.h" />
     <ClInclude Include="..\source\TokenClasses\SeparatorTokens\SeparatorToken.h" />
     <ClInclude Include="..\source\TokenClasses\Token.h" />
-	<ClInclude Include="..\source\TokenizerClasses\PQLTokenizer.h" />
+    <ClInclude Include="..\source\TokenClasses\UnderscoreToken.h" />
+    <ClInclude Include="..\source\TokenizerClasses\PQLTokenizer.h" />
+    <ClInclude Include="..\source\TokenizerClasses\SIMPLETokenizer.h" />
+    <ClInclude Include="..\source\TokenizerClasses\TokenizerFunctions.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{DC21A1EA-D2C6-4D14-A2B4-E025B64BDE81}</ProjectGuid>

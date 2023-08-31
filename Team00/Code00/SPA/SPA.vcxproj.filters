@@ -13,8 +13,35 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\TokenClasses">
+    <Filter Include="Header Files\Token Files">
       <UniqueIdentifier>{48e804c7-aaf6-46a0-922c-01d726a67c0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Token Files\Keyword Tokens">
+      <UniqueIdentifier>{b3258293-9ba7-4977-8d7b-9ac9eb1c6776}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Token Files\Literal Tokens">
+      <UniqueIdentifier>{ebd9e682-db2e-49f6-a156-71921dc85d7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Token Files\Operator Tokens">
+      <UniqueIdentifier>{430c24dc-3c08-4d7e-ab42-7eb789dbb05c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Token Files\Separator Tokens">
+      <UniqueIdentifier>{3749cd51-5e86-41ed-a6be-1f85c77abe7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Token Files\Operator Tokens\Boolean Operator Tokens">
+      <UniqueIdentifier>{1508082e-b6bf-4f84-abe1-aa350ac0dea3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Token Files\Operator Tokens\Arithmetic Operator Tokens">
+      <UniqueIdentifier>{c16ad6f2-393c-4b1e-b545-985ae884999f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Token Files\Operator Tokens\Relational Operator Tokens">
+      <UniqueIdentifier>{06edd015-19d2-48cf-9c36-98513f7d21af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tokenizer Files">
+      <UniqueIdentifier>{e5a54dff-741b-4a40-b105-6f05b055f98a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tokenizer">
+      <UniqueIdentifier>{2e5d6711-4d3e-4020-bd8c-7891fe508155}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -31,7 +58,13 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\source\TokenizerClasses\PQLTokenizer.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Tokenizer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\TokenizerClasses\TokenizerFunctions.cpp">
+      <Filter>Source Files\Tokenizer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\TokenizerClasses\SIMPLETokenizer.cpp">
+      <Filter>Source Files\Tokenizer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -42,121 +75,145 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\source\TokenClasses\IdentifierToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
+      <Filter>Header Files\Token Files</Filter>
     </ClInclude>
     <ClInclude Include="..\source\TokenClasses\Token.h">
-      <Filter>Header Files\TokenClasses</Filter>
+      <Filter>Header Files\Token Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\KeywordTokens\AssignToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\KeywordTokens\CallToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\KeywordTokens\ConstantToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\KeywordTokens\IfToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\KeywordTokens\KeywordToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\KeywordTokens\PrintToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\KeywordTokens\ProcedureToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\KeywordTokens\ReadToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\KeywordTokens\StmtToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\KeywordTokens\VariableToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\KeywordTokens\WhileToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\LiteralTokens\LiteralToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\OperatorTokens\ArithmeticOperatorTokens\ArithmeticOpToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\OperatorTokens\ArithmeticOperatorTokens\DivideOpToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\OperatorTokens\ArithmeticOperatorTokens\MinusOpToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\OperatorTokens\ArithmeticOperatorTokens\ModuloOpToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\OperatorTokens\ArithmeticOperatorTokens\MultiplyOpToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\OperatorTokens\ArithmeticOperatorTokens\PlusOpToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\OperatorTokens\BooleanOperatorTokens\AndOpToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\OperatorTokens\BooleanOperatorTokens\BooleanOpToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\OperatorTokens\BooleanOperatorTokens\NotOpToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\OperatorTokens\BooleanOperatorTokens\OrOpToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\OperatorTokens\EqualsOpToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\OperatorTokens\OperatorToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\OperatorTokens\RelationalOperatorTokens\EqualityOpToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\OperatorTokens\RelationalOperatorTokens\InequalityOpToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\OperatorTokens\RelationalOperatorTokens\LessThanEqualOpToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\OperatorTokens\RelationalOperatorTokens\LessThanOpToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\OperatorTokens\RelationalOperatorTokens\MoreThanEqualOpToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\OperatorTokens\RelationalOperatorTokens\MoreThanOpToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\OperatorTokens\RelationalOperatorTokens\RelationalOpToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
+    <ClInclude Include="..\source\TokenClasses\UnderscoreToken.h">
+      <Filter>Header Files\Token Files</Filter>
     </ClInclude>
     <ClInclude Include="..\source\TokenClasses\SeparatorTokens\CurlyCloseSepToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
+      <Filter>Header Files\Token Files\Separator Tokens</Filter>
     </ClInclude>
     <ClInclude Include="..\source\TokenClasses\SeparatorTokens\CurlyOpenSepToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
+      <Filter>Header Files\Token Files\Separator Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\SeparatorTokens\DoubleQuoSepToken.h">
+      <Filter>Header Files\Token Files\Separator Tokens</Filter>
     </ClInclude>
     <ClInclude Include="..\source\TokenClasses\SeparatorTokens\ParenCloseSepToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
+      <Filter>Header Files\Token Files\Separator Tokens</Filter>
     </ClInclude>
     <ClInclude Include="..\source\TokenClasses\SeparatorTokens\ParenOpenSepToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
+      <Filter>Header Files\Token Files\Separator Tokens</Filter>
     </ClInclude>
     <ClInclude Include="..\source\TokenClasses\SeparatorTokens\SemicolonSepToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
+      <Filter>Header Files\Token Files\Separator Tokens</Filter>
     </ClInclude>
     <ClInclude Include="..\source\TokenClasses\SeparatorTokens\SeparatorToken.h">
-      <Filter>Header Files\TokenClasses</Filter>
+      <Filter>Header Files\Token Files\Separator Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\LiteralTokens\IntegerLiteralToken.h">
+      <Filter>Header Files\Token Files\Literal Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\LiteralTokens\LiteralToken.h">
+      <Filter>Header Files\Token Files\Literal Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\KeywordTokens\AssignKeywordToken.h">
+      <Filter>Header Files\Token Files\Keyword Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\KeywordTokens\CallKeywordToken.h">
+      <Filter>Header Files\Token Files\Keyword Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\KeywordTokens\ConstantKeywordToken.h">
+      <Filter>Header Files\Token Files\Keyword Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\KeywordTokens\ElseKeywordToken.h">
+      <Filter>Header Files\Token Files\Keyword Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\KeywordTokens\IfKeywordToken.h">
+      <Filter>Header Files\Token Files\Keyword Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\KeywordTokens\KeywordToken.h">
+      <Filter>Header Files\Token Files\Keyword Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\KeywordTokens\PrintKeywordToken.h">
+      <Filter>Header Files\Token Files\Keyword Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\KeywordTokens\ProcedureKeywordToken.h">
+      <Filter>Header Files\Token Files\Keyword Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\KeywordTokens\ReadKeywordToken.h">
+      <Filter>Header Files\Token Files\Keyword Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\KeywordTokens\StmtKeywordToken.h">
+      <Filter>Header Files\Token Files\Keyword Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\KeywordTokens\ThenKeywordToken.h">
+      <Filter>Header Files\Token Files\Keyword Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\KeywordTokens\VariableKeywordToken.h">
+      <Filter>Header Files\Token Files\Keyword Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\KeywordTokens\WhileKeywordToken.h">
+      <Filter>Header Files\Token Files\Keyword Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\OperatorTokens\ArithmeticOperatorTokens\ArithmeticOpToken.h">
+      <Filter>Header Files\Token Files\Operator Tokens\Arithmetic Operator Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\OperatorTokens\ArithmeticOperatorTokens\DivideOpToken.h">
+      <Filter>Header Files\Token Files\Operator Tokens\Arithmetic Operator Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\OperatorTokens\ArithmeticOperatorTokens\MinusOpToken.h">
+      <Filter>Header Files\Token Files\Operator Tokens\Arithmetic Operator Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\OperatorTokens\ArithmeticOperatorTokens\ModuloOpToken.h">
+      <Filter>Header Files\Token Files\Operator Tokens\Arithmetic Operator Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\OperatorTokens\ArithmeticOperatorTokens\MultiplyOpToken.h">
+      <Filter>Header Files\Token Files\Operator Tokens\Arithmetic Operator Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\OperatorTokens\ArithmeticOperatorTokens\PlusOpToken.h">
+      <Filter>Header Files\Token Files\Operator Tokens\Arithmetic Operator Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\OperatorTokens\RelationalOperatorTokens\EqualityOpToken.h">
+      <Filter>Header Files\Token Files\Operator Tokens\Relational Operator Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\OperatorTokens\RelationalOperatorTokens\InequalityOpToken.h">
+      <Filter>Header Files\Token Files\Operator Tokens\Relational Operator Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\OperatorTokens\RelationalOperatorTokens\LessThanEqualOpToken.h">
+      <Filter>Header Files\Token Files\Operator Tokens\Relational Operator Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\OperatorTokens\RelationalOperatorTokens\LessThanOpToken.h">
+      <Filter>Header Files\Token Files\Operator Tokens\Relational Operator Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\OperatorTokens\RelationalOperatorTokens\MoreThanEqualOpToken.h">
+      <Filter>Header Files\Token Files\Operator Tokens\Relational Operator Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\OperatorTokens\RelationalOperatorTokens\MoreThanOpToken.h">
+      <Filter>Header Files\Token Files\Operator Tokens\Relational Operator Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\OperatorTokens\RelationalOperatorTokens\RelationalOpToken.h">
+      <Filter>Header Files\Token Files\Operator Tokens\Relational Operator Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\OperatorTokens\EqualsOpToken.h">
+      <Filter>Header Files\Token Files\Operator Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\OperatorTokens\OperatorToken.h">
+      <Filter>Header Files\Token Files\Operator Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\OperatorTokens\BooleanOperatorTokens\AndOpToken.h">
+      <Filter>Header Files\Token Files\Operator Tokens\Boolean Operator Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\OperatorTokens\BooleanOperatorTokens\BooleanOpToken.h">
+      <Filter>Header Files\Token Files\Operator Tokens\Boolean Operator Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\OperatorTokens\BooleanOperatorTokens\NotOpToken.h">
+      <Filter>Header Files\Token Files\Operator Tokens\Boolean Operator Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\OperatorTokens\BooleanOperatorTokens\OrOpToken.h">
+      <Filter>Header Files\Token Files\Operator Tokens\Boolean Operator Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenizerClasses\PQLTokenizer.h">
+      <Filter>Header Files\Tokenizer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenizerClasses\TokenizerFunctions.h">
+      <Filter>Header Files\Tokenizer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenizerClasses\SIMPLETokenizer.h">
+      <Filter>Header Files\Tokenizer Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

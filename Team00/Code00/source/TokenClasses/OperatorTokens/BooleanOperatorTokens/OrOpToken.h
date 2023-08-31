@@ -11,10 +11,11 @@ using namespace std::string_view_literals;
 /**
 * This class represents a "||" symbol.
 */
-class OrOpToken : public BooleanOpToken {
-public:
-	OrOpToken()
-		: BooleanOpToken{ "||"sv } {};
-};
-
+namespace Tokens {
+	class OrOpToken : public BooleanOpToken {
+	public:
+		OrOpToken()
+			: BooleanOpToken{ "||"sv } {};
+	};
+}
 #endif

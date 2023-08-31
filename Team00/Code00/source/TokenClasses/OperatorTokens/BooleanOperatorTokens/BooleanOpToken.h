@@ -9,11 +9,12 @@
 /**
 * This class represents tokens objects that are boolean operators between expressions
 */
-class BooleanOpToken : public OperatorToken {
-public:
-	BooleanOpToken(std::string_view tokenName)
-		: OperatorToken{ tokenName } {
+namespace Tokens {
+	class BooleanOpToken : public OperatorToken {
+	public:
+		BooleanOpToken(std::string_view tokenName)
+			: OperatorToken{ tokenName } {
+		};
 	};
-};
-
+}
 #endif

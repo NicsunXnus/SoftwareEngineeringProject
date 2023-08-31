@@ -13,10 +13,11 @@ using namespace std::string_view_literals;
 * 
 * Not to be confused with the equality operator "==" or its token.
 */
-class EqualsOpToken : public OperatorToken {
-public:
-	EqualsOpToken()
-		: OperatorToken{ "="sv } {};
-};
-
+namespace Tokens {
+	class EqualsOpToken : public OperatorToken {
+	public:
+		EqualsOpToken()
+			: OperatorToken{ "="sv } {};
+	};
+}
 #endif

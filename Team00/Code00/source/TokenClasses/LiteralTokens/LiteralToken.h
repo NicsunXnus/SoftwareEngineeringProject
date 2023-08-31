@@ -9,12 +9,13 @@
 /**
 * This class represents tokens objects that are constants or literals
 */
-class LiteralToken : public Token {
-private:
-public:
-	LiteralToken(std::string_view tokenName)
-		: Token{ tokenName } {
+namespace Tokens {
+	class LiteralToken : public Token {
+	private:
+	public:
+		LiteralToken(std::string_view tokenName)
+			: Token{ tokenName } {
+		};
 	};
-};
-
+}
 #endif
