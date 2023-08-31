@@ -5,7 +5,7 @@
 #include <string_view>
 #include <vector>
 
-#include "../TokenClasses/Token.h"
+#include "TokenizerFactory.h"
 
 using namespace std::string_view_literals;
 
