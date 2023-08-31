@@ -11,11 +11,10 @@ using namespace std::string_view_literals;
 /**
 * This class represents a ")" symbol.
 */
-namespace Tokens {
-	class ParenCloseSepToken : public SeparatorToken {
-	public:
-		ParenCloseSepToken()
-			: SeparatorToken{ ")"sv } {};
-	};
-}
+class ParenCloseSepToken : public SeparatorToken {
+public:
+	ParenCloseSepToken()
+		: SeparatorToken{ ")"sv } {};
+};
+
 #endif

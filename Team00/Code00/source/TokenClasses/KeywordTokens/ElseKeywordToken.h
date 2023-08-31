@@ -11,12 +11,11 @@ using namespace std::string_view_literals;
 /**
 * This class represents the token for the "then" keyword, in SIMPLE
 */
-namespace Tokens {
-	class ElseKeywordToken : public KeywordToken {
-	public:
-		ElseKeywordToken()
-			: KeywordToken{ "else"sv } {
-		};
+class ElseKeywordToken : public KeywordToken {
+public:
+	ElseKeywordToken()
+		: KeywordToken{ "else"sv } {
 	};
-}
+};
+
 #endif

@@ -11,12 +11,11 @@ using namespace std::string_view_literals;
 /**
 * This class represents the token for the "while" keyword, used in PQL declarations and in SIMPLE
 */
-namespace Tokens {
-	class WhileKeywordToken : public KeywordToken {
-	public:
-		WhileKeywordToken()
-			: KeywordToken{ "while"sv } {
-		};
+class WhileKeywordToken : public KeywordToken {
+public:
+	WhileKeywordToken()
+		: KeywordToken{ "while"sv } {
 	};
-}
+};
+
 #endif
