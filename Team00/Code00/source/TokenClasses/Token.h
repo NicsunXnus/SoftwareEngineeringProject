@@ -7,16 +7,15 @@
 /**
 * This class represents all token objects
 */
-class Token
-{
+class Token {
 private:
 	// token represented in string form
 	std::string m_tokenName;
 
 public:
 	Token(std::string_view tokenName)
-		: m_tokenName{ tokenName } 
-	{};
+		: m_tokenName{ tokenName } {
+	};
 };
 
 #endif
