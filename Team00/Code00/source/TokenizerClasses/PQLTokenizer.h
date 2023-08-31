@@ -4,7 +4,7 @@
 #include <string>
 #include <string_view>
 #include <vector>
-#include "Token.h"
+#include "../TokenClasses/Token.h"
 
 using namespace std::string_view_literals;
 
