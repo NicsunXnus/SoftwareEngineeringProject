@@ -4,16 +4,15 @@
 #include <iostream>
 #include <string_view>
 
-#include "OperatorToken.h"
+#include "ArithmeticOpToken.h"
 
 /**
 * This class represents a "+" symbol.
 */
-class PlusOpToken : public OperatorToken {
-private:
+class PlusOpToken : public ArithmeticOpToken {
 public:
 	PlusOpToken()
-		: OperatorToken { "+"sv } {};
+		: ArithmeticOpToken{ "+"sv } {};
 };
 
 #endif
