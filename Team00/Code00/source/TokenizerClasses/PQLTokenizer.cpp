@@ -1,8 +1,6 @@
 #include <memory>
 #include <string.h>
 #include "PQLTokenizer.h"
-
-using namespace Tokens;
 /**
 * Splits a pql query into tokens.
 * 
