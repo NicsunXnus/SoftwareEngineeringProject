@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string_view>
 
-#include "../Token.h"
+#include "Token.h"
 
 using namespace std::string_view_literals;
 

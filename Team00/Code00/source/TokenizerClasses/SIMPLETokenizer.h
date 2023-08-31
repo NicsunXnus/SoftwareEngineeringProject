@@ -11,13 +11,12 @@ using namespace std::string_view_literals;
 using namespace Tokens;
 
 /**
-* This class represents the tokenizer that tokenizes the pql
+* This class represents the tokenizer that tokenizes the SIMPLE program
 */
 class SIMPLETokenizer {
 public:
-	SIMPLETokenizer() {};
-
-	std::vector<Token> tokenize(std::string_view pql);
+	static std::vector<Token> tokenize(std::string_view simple);
+	static Token generateToken(std::string input);
 };
 
 #endif

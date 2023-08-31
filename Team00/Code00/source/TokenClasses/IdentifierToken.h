@@ -9,13 +9,11 @@
 /**
 * This class represents tokens objects that stem from user-defined names.
 */
-namespace Tokens {
-	class IdentifierToken : public Token {
-	private:
-	public:
-		IdentifierToken(std::string_view tokenName)
-			: Token{ tokenName } {
-		};
+class IdentifierToken : public Token {
+private:
+public:
+	IdentifierToken(std::string_view tokenName)
+		: Token{ tokenName } {
 	};
-}
+};
 #endif

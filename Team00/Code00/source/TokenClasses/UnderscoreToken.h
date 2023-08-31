@@ -11,11 +11,9 @@ using namespace std::string_view_literals;
 /**
 * This class represents a "_" symbol.
 */
-namespace Tokens {
-	class UnderscoreToken : public Token {
-	public:
-		UnderscoreToken()
-			: Token{ "_"sv } {};
-	};
-}
+class UnderscoreToken : public Token {
+public:
+	UnderscoreToken()
+		: Token{ "_"sv } {};
+};
 #endif
