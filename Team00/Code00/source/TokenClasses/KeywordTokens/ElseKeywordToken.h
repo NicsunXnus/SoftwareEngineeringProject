@@ -14,7 +14,8 @@ using namespace std::string_view_literals;
 class ElseKeywordToken : public KeywordToken {
 public:
 	ElseKeywordToken()
-		: KeywordToken{ "else"sv } {};
+		: KeywordToken{ "else"sv } {
+	};
 };
 
 #endif

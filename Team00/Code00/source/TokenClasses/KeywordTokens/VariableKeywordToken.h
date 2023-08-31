@@ -14,7 +14,8 @@ using namespace std::string_view_literals;
 class VariableKeywordToken : public KeywordToken {
 public:
 	VariableKeywordToken()
-		: KeywordToken{ "variable"sv } {};
+		: KeywordToken{ "variable"sv } {
+	};
 };
 
 #endif

@@ -14,7 +14,8 @@ using namespace std::string_view_literals;
 class ThenKeywordToken : public KeywordToken {
 public:
 	ThenKeywordToken()
-		: KeywordToken{ "then"sv } {};
+		: KeywordToken{ "then"sv } {
+	};
 };
 
 #endif

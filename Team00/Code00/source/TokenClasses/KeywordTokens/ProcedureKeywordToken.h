@@ -14,7 +14,8 @@ using namespace std::string_view_literals;
 class ProcedureKeywordToken : public KeywordToken {
 public:
 	ProcedureKeywordToken()
-		: KeywordToken{ "procedure"sv } {};
+		: KeywordToken{ "procedure"sv } {
+	};
 };
 
 #endif

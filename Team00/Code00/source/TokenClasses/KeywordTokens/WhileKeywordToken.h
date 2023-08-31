@@ -14,7 +14,8 @@ using namespace std::string_view_literals;
 class WhileKeywordToken : public KeywordToken {
 public:
 	WhileKeywordToken()
-		: KeywordToken{ "while"sv } {};
+		: KeywordToken{ "while"sv } {
+	};
 };
 
 #endif

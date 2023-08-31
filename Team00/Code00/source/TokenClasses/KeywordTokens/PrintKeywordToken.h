@@ -14,7 +14,8 @@ using namespace std::string_view_literals;
 class PrintKeywordToken : public KeywordToken {
 public:
 	PrintKeywordToken()
-		: KeywordToken{ "print"sv } {};
+		: KeywordToken{ "print"sv } {
+	};
 };
 
 #endif

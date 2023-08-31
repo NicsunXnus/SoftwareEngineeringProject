@@ -14,7 +14,8 @@ using namespace std::string_view_literals;
 class ReadKeywordToken : public KeywordToken {
 public:
 	ReadKeywordToken()
-		: KeywordToken{ "read"sv } {};
+		: KeywordToken{ "read"sv } {
+	};
 };
 
 #endif

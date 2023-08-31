@@ -14,7 +14,8 @@ using namespace std::string_view_literals;
 class AssignKeywordToken : public KeywordToken {
 public:
 	AssignKeywordToken()
-		: KeywordToken{ "assign"sv } {};
+		: KeywordToken{ "assign"sv } {
+	};
 };
 
 #endif

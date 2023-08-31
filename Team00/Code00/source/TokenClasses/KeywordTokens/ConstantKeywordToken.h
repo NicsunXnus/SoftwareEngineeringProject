@@ -14,7 +14,8 @@ using namespace std::string_view_literals;
 class ConstantKeywordToken : public KeywordToken {
 public:
 	ConstantKeywordToken()
-		: KeywordToken{ "constant"sv } {};
+		: KeywordToken{ "constant"sv } {
+	};
 };
 
 #endif

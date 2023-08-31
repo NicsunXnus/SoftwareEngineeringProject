@@ -14,7 +14,8 @@ using namespace std::string_view_literals;
 class StmtKeywordToken : public KeywordToken {
 public:
 	StmtKeywordToken()
-		: KeywordToken{ "stmt"sv } {};
+		: KeywordToken{ "stmt"sv } {
+	};
 };
 
 #endif

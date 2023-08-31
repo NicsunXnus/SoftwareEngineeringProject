@@ -14,7 +14,8 @@ using namespace std::string_view_literals;
 class IfKeywordToken : public KeywordToken {
 public:
 	IfKeywordToken()
-		: KeywordToken{ "if"sv } {};
+		: KeywordToken{ "if"sv } {
+	};
 };
 
 #endif

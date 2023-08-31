@@ -14,7 +14,8 @@ using namespace std::string_view_literals;
 class CallKeywordToken : public KeywordToken {
 public:
 	CallKeywordToken()
-		: KeywordToken{ "call"sv } {};
+		: KeywordToken{ "call"sv } {
+	};
 };
 
 #endif
