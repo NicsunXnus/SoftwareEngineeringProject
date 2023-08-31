@@ -20,7 +20,7 @@
   <ItemGroup>
     <ClInclude Include="..\source\PKB.h" />
     <ClInclude Include="..\source\TNode.h" />
-    <ClInclude Include="..\source\TokenClasses\IdentifierToken.h" />
+	<ClInclude Include="..\source\TokenClasses\IdentifierToken.h" />
     <ClInclude Include="..\source\TokenClasses\KeywordTokens\AssignToken.h" />
     <ClInclude Include="..\source\TokenClasses\KeywordTokens\CallToken.h" />
     <ClInclude Include="..\source\TokenClasses\KeywordTokens\ConstantToken.h" />
@@ -59,6 +59,7 @@
     <ClInclude Include="..\source\TokenClasses\SeparatorTokens\SemicolonSepToken.h" />
     <ClInclude Include="..\source\TokenClasses\SeparatorTokens\SeparatorToken.h" />
     <ClInclude Include="..\source\TokenClasses\Token.h" />
+	<ClInclude Include="..\source\TokenizerClasses\PQLTokenizer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{DC21A1EA-D2C6-4D14-A2B4-E025B64BDE81}</ProjectGuid>
