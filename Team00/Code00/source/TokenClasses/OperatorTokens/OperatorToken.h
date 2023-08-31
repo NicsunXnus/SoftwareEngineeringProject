@@ -13,7 +13,7 @@ class OperatorToken : public Token {
 private:
 public:
 	OperatorToken(std::string_view tokenName)
-		: Token{tokenName} {
+		: Token{ tokenName } {
 	};
 };
 
