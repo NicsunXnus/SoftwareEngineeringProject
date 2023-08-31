@@ -1,5 +1,5 @@
-#ifndef STMTTOKENPQL_H
-#define STMTTOKENPQL_H
+#ifndef STMTTOKEN_H
+#define STMTTOKEN_H
 
 #include <string>
 #include <string_view>
@@ -8,11 +8,11 @@
 using namespace std::string_view_literals;
 
 /**
-* This class represents the stmt token used in a PQL declaration
+* This class represents the stmt token
 */
-class StmtTokenPQL : public KeywordToken {
+class StmtToken : public KeywordToken {
 public:
-	StmtTokenPQL()
+	StmtToken()
 		: KeywordToken{ "stmt"sv } {};
 };
 

@@ -1,5 +1,5 @@
-#ifndef WHILETOKENPQL_H
-#define WHILETOKENPQL_H
+#ifndef IFTOKEN_H
+#define IFTOKEN_H
 
 #include <string>
 #include <string_view>
@@ -10,10 +10,10 @@ using namespace std::string_view_literals;
 /**
 * This class represents the assign token used in a PQL declaration
 */
-class WhileTokenPQL : public KeywordToken {
+class IfToken : public KeywordToken {
 public:
-	WhileTokenPQL()
-		: KeywordToken{ "while"sv } {};
+	IfToken()
+		: KeywordToken{ "if"sv } {};
 };
 
 #endif

@@ -1,5 +1,5 @@
-#ifndef CALLTOKENPQL_H
-#define CALLTOKENPQL_H
+#ifndef CALLTOKEN_H
+#define CALLTOKEN_H
 
 #include <string>
 #include <string_view>
@@ -8,11 +8,11 @@
 using namespace std::string_view_literals;
 
 /**
-* This class represents the assign token used in a PQL declaration
+* This class represents the call token
 */
-class CallTokenPQL : public KeywordToken {
+class CallToken : public KeywordToken {
 public:
-	CallTokenPQL()
+	CallToken()
 		: KeywordToken{ "call"sv } {};
 };
 

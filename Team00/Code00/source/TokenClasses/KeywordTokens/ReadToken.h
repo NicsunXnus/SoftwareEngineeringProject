@@ -1,5 +1,5 @@
-#ifndef READTOKENPQL_H
-#define READTOKENPQL_H
+#ifndef READTOKEN_H
+#define READTOKEN_H
 
 #include <string>
 #include <string_view>
@@ -8,11 +8,11 @@
 using namespace std::string_view_literals;
 
 /**
-* This class represents the read token used in a PQL declaration
+* This class represents the read token
 */
-class ReadTokenPQL : public KeywordToken {
+class ReadToken : public KeywordToken {
 public:
-	ReadTokenPQL()
+	ReadToken()
 		: KeywordToken{ "read"sv } {};
 };
 

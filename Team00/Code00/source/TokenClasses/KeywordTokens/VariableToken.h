@@ -8,11 +8,11 @@
 using namespace std::string_view_literals;
 
 /**
-* This class represents the assign token used in a PQL declaration
+* This class represents the variable token
 */
-class VariableTokenPQL : public KeywordToken {
+class VariableToken : public KeywordToken {
 public:
-	VariableTokenPQL()
+	VariableToken()
 		: KeywordToken{ "variable"sv } {};
 };
 
