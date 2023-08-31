@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string_view>
 
-#include "Token.h"
+#include "../Token.h"
 
 /**
 * This class represents tokens objects that stem from user-defined names.

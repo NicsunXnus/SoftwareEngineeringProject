@@ -6,6 +6,8 @@
 
 #include "BooleanOpToken.h"
 
+using namespace std::string_view_literals;
+
 /**
 * This class represents a "!" symbol when used to invert boolean values
 */

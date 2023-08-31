@@ -3,6 +3,7 @@
 
 #include <string>
 #include <string_view>
+
 #include "KeywordToken.h"
 
 using namespace std::string_view_literals;
