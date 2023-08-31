@@ -8,7 +8,6 @@
 #include "../TokenClasses/Token.h"
 
 using namespace std::string_view_literals;
-using namespace Tokens;
 
 /**
 * This class represents the tokenizer that tokenizes the pql

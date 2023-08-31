@@ -1,8 +1,6 @@
 #include "SIMPLETokenizer.h"
 #include "TokenizerFunctions.h"
 
-using namespace Tokens;
-
 static Token generateToken(std::string input) {
 }
 
