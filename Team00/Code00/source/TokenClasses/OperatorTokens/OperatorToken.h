@@ -9,12 +9,22 @@
 /**
 * This class represents tokens objects that are operators between expressions
 */
-namespace Tokens {
-	class OperatorToken : public Token {
-	public:
-		OperatorToken(std::string_view tokenName)
-			: Token{ tokenName } {
-		};
+class OperatorToken : public Token {
+public:
+	OperatorToken(std::string_view tokenName)
+		: Token{ tokenName } {
 	};
-}
+};
+
+/**
+* This class represents a "=" symbol.
+*
+* Not to be confused with the equality operator "==" or its token.
+*/
+class EqualsOpToken : public OperatorToken {
+public:
+	EqualsOpToken()
+		: OperatorToken{ "="sv } {};
+};
+
 #endif
