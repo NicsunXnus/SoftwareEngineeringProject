@@ -13,7 +13,7 @@ class IdentifierToken : public Token {
 private:
 public:
 	IdentifierToken(std::string_view tokenName)
-		: Token{tokenName} {
+		: Token{ tokenName } {
 	};
 };
 

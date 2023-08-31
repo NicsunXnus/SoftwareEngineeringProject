@@ -13,7 +13,7 @@ class SeparatorToken : public Token {
 private:
 public:
 	SeparatorToken(std::string_view tokenName)
-		: Token{tokenName} {
+		: Token{ tokenName } {
 	};
 };
 

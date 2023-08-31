@@ -10,10 +10,9 @@
 * This class represents tokens objects that are operators between expressions
 */
 class OperatorToken : public Token {
-private:
 public:
 	OperatorToken(std::string_view tokenName)
-		: Token{tokenName} {
+		: Token{ tokenName } {
 	};
 };
 
