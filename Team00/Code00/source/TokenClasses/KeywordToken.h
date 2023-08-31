@@ -13,7 +13,7 @@ class KeywordToken : public Token {
 private:
 public:
 	KeywordToken(std::string_view tokenName)
-		: m_tokenName{tokenName} {
+		: Token{tokenName} {
 	};
 };
 

@@ -3,18 +3,17 @@
 
 #include <string>
 #include <string_view>
-#include "DeclarationToken.h"
+#include "KeywordToken.h"
 
 using namespace std::string_view_literals;
 
 /**
 * This class represents the assign token used in a PQL declaration
 */
-class AssignToken : public DeclarationToken {
+class AssignToken : public KeywordToken {
 public:
 	AssignToken()
-		: DeclarationToken{ "assign"sv }
-	{};
+		: KeywordToken{ "assign"sv } {};
 };
 
 #endif

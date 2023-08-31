@@ -13,7 +13,7 @@ class LiteralToken : public Token {
 private:
 public:
 	LiteralToken(std::string_view tokenName)
-		: m_tokenName{tokenName} {
+		: Token{tokenName} {
 	};
 };
 

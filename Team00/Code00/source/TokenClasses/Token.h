@@ -10,11 +10,11 @@
 class Token {
 private:
 	// token represented in string form
-	std::string m_tokenName;
+	std::string tokenName;
 
 public:
 	Token(std::string_view tokenName)
-		: m_tokenName{ tokenName } {
+		: tokenName{ tokenName } {
 	};
 };
 
