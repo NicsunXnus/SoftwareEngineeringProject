@@ -22,14 +22,13 @@ public:
 /**
 * This class represents the token for the "assign" keyword, used in PQL declarations
 */
-namespace Tokens {
-	class AssignKeywordToken : public KeywordToken {
-	public:
-		AssignKeywordToken()
-			: KeywordToken{ "assign"sv } {
-		};
+class AssignKeywordToken : public KeywordToken {
+public:
+	AssignKeywordToken()
+		: KeywordToken{ "assign"sv } {
 	};
-}
+};
+
 
 /**
 * This class represents the token for the "call" keyword, used in PQL declarations and in SIMPLE

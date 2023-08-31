@@ -71,4 +71,13 @@ public:
 		: SeparatorToken{ ";"sv } {};
 };
 
+/**
+* This class represents a "," symbol.
+*/
+class CommaSepToken : public SeparatorToken {
+public:
+	CommaSepToken()
+		: SeparatorToken{ ","sv } {};
+};
+
 #endif
