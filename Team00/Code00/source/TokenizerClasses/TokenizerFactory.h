@@ -5,18 +5,10 @@
 #include <string_view>
 #include <vector>
 
-#include "../TokenClasses/Token.h"
-#include "../TokenClasses/Token.h"
-#include "../TokenClasses/Token.h"
-#include "../TokenClasses/Token.h"
-#include "../TokenClasses/Token.h"
-#include "../TokenClasses/Token.h"
-#include "../TokenClasses/Token.h"
-#include "../TokenClasses/Token.h"
-#include "../TokenClasses/Token.h"
-#include "../TokenClasses/Token.h"
-#include "../TokenClasses/Token.h"
-#include "../TokenClasses/Token.h"
-#include "../TokenClasses/Token.h"
-#include "../TokenClasses/Token.h"
+#include "../TokenClasses/KeywordToken.h"
+#include "../TokenClasses/IdentifierToken.h"
+#include "../TokenClasses/UnderscoreToken.h"
+#include "../TokenClasses/IdentifierToken.h"
+
+
 
