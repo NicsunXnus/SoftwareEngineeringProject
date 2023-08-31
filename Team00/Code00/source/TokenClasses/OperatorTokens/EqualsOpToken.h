@@ -6,6 +6,8 @@
 
 #include "OperatorToken.h"
 
+using namespace std::string_view_literals;
+
 /**
 * This class represents a "=" symbol.
 * 
