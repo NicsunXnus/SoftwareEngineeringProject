@@ -1,5 +1,5 @@
-#ifndef ASSIGNTOKEN_H
-#define ASSIGNTOKEN_H
+#ifndef ASSIGNTOKENPQL_H
+#define ASSIGNTOKENPQL_H
 
 #include <string>
 #include <string_view>
@@ -10,9 +10,9 @@ using namespace std::string_view_literals;
 /**
 * This class represents the assign token used in a PQL declaration
 */
-class AssignToken : public KeywordToken {
+class AssignTokenPQL : public KeywordToken {
 public:
-	AssignToken()
+	AssignTokenPQL()
 		: KeywordToken{ "assign"sv } {};
 };
 
