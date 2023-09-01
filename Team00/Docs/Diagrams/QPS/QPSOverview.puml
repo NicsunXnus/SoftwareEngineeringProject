@@ -1,0 +1,26 @@
+@startuml
+!include ../style.puml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+
+title QPS Overview
+
+package QueryProcessingSubsystem <<Rectangle>> {
+    
+}
+package SourceProcessor <<Rectangle>> {
+
+}
+
+package QPS <<Rectangle>> {
+    Class Parser
+    Class Tokenizer
+    Class Evaluator
+    Class Clauses
+}
+
+SourceProcessor -right-> Tokenizer
+QueryProcessingSubsystem -down-> QPS
+Clauses -up-|> Evaluator
+
+@end
