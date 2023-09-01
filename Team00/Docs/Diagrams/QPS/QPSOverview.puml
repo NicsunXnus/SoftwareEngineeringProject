@@ -26,7 +26,7 @@ package QPS <<Rectangle>> {
     'Converts the Tokens into Query Object'
     Class QueryParser {
         vector<QueryObject> generateQueryObjects(String query)
-        parse()
+        
     }
 
     'AST representation of tokens'
@@ -34,7 +34,7 @@ package QPS <<Rectangle>> {
 
     'Holds the info needed to request the PKB'
     Class QueryObject {
-        
+        parse()
     }
     Class Uses
     Class Modifies
