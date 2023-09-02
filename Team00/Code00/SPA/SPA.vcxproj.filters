@@ -22,6 +22,9 @@
     <Filter Include="Source Files\Tokenizer">
       <UniqueIdentifier>{2e5d6711-4d3e-4020-bd8c-7891fe508155}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\QPS">
+      <UniqueIdentifier>{acccfbfd-ff70-43e2-be88-bcd8e5046ec8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\DesignExtractor.cpp">
@@ -36,14 +39,14 @@
     <ClCompile Include="..\source\TNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\TokenizerClasses\PQLTokenizer.cpp">
-      <Filter>Source Files\Tokenizer</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\TokenizerClasses\TokenizerFunctions.cpp">
       <Filter>Source Files\Tokenizer</Filter>
     </ClCompile>
     <ClCompile Include="..\source\TokenizerClasses\SIMPLETokenizer.cpp">
       <Filter>Source Files\Tokenizer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryParser.cpp">
+      <Filter>Source Files\QPS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -82,6 +85,9 @@
     </ClInclude>
     <ClInclude Include="..\source\TokenClasses\UnderscoreToken.h">
       <Filter>Header Files\Token Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryParser.h">
+      <Filter>Source Files\QPS</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
