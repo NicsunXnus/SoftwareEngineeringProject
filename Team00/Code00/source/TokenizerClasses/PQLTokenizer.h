@@ -46,7 +46,6 @@ std::vector<std::shared_ptr<Token>> tokenize(std::string_view pql) {
 				tokens.push_back(tokenizerGenerator(pql.substr(startIndex, i - startIndex)));
 				isWord = false;
 			}
-			isWord = false;
 			startIndex = i;
 			continue;
 		}
