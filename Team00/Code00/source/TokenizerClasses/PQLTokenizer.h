@@ -27,6 +27,7 @@ std::vector<std::shared_ptr<Token>> tokenize(std::string_view pql) {
 				isWord = false;
 			}
 			tokens.push_back(std::make_shared<SemicolonSepToken>());
+			startIndex = i;
 			continue;
 		}
 
@@ -36,11 +37,13 @@ std::vector<std::shared_ptr<Token>> tokenize(std::string_view pql) {
 				isWord = false;
 			}
 			tokens.push_back(std::make_shared<CommaSepToken>());
+			startIndex = i;
 			continue;
 		}
 
 		if (pql[i] == ' ') {
 			isWord = false;
+			tokens.push_back(tokenizerGenerator(pql.substr(startIndex, i)));
 			startIndex = i;
 			continue;
 		}
