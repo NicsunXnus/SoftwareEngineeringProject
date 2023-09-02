@@ -23,7 +23,7 @@ std::vector<std::shared_ptr<Token>> tokenize(std::string_view pql) {
 	for (int i = 0; i < pql.length(); ++i) {
 		if (pql[i] == ';') {
 			if (isWord) {
-				tokens.push_back(tokenizerGenerator(pql.substr(startIndex, i - startIndex)));
+				tokens.push_back(tokenizerGenerator(pql.substr(startIndex, i)));
 				isWord = false;
 			}
 			tokens.push_back(std::make_shared<SemicolonSepToken>());
@@ -33,7 +33,7 @@ std::vector<std::shared_ptr<Token>> tokenize(std::string_view pql) {
 
 		if (pql[i] == ',') {
 			if (isWord) {
-				tokens.push_back(tokenizerGenerator(pql.substr(startIndex, i - startIndex)));
+				tokens.push_back(tokenizerGenerator(pql.substr(startIndex, i)));
 				isWord = false;
 			}
 			tokens.push_back(std::make_shared<CommaSepToken>());
@@ -43,7 +43,7 @@ std::vector<std::shared_ptr<Token>> tokenize(std::string_view pql) {
 
 		if (pql[i] == ' ') {
 			if (isWord) {
-				tokens.push_back(tokenizerGenerator(pql.substr(startIndex, i - startIndex)));
+				tokens.push_back(tokenizerGenerator(pql.substr(startIndex, i)));
 				isWord = false;
 			}
 			isWord = false;
@@ -59,7 +59,7 @@ std::vector<std::shared_ptr<Token>> tokenize(std::string_view pql) {
 	}
 
 	if (isWord) {
-		tokens.push_back(tokenizerGenerator(pql.substr(startIndex, pql.length() - startIndex)));
+		tokens.push_back(tokenizerGenerator(pql.substr(startIndex, pql.length())));
 	}
 
 	return tokens;
