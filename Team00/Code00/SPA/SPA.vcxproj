@@ -15,6 +15,8 @@
     <ClCompile Include="..\source\Parser.cpp" />
     <ClCompile Include="..\source\PKB.cpp" />
     <ClCompile Include="..\source\TNode.cpp" />
+    <ClCompile Include="..\source\TokenizerClasses\SIMPLETokenizer.cpp" />
+    <ClCompile Include="..\source\TokenizerClasses\TokenizerFunctions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\PKB.h" />
