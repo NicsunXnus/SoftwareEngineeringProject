@@ -36,7 +36,7 @@ public:
 };
 
 /**
-* This class represents a " symbol.
+* This class represents a '"' symbol.
 */
 class DoubleQuoSepToken : public SeparatorToken {
 public:

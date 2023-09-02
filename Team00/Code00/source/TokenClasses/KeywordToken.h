@@ -29,7 +29,6 @@ public:
 	};
 };
 
-
 /**
 * This class represents the token for the "call" keyword, used in PQL declarations and in SIMPLE
 */
@@ -147,6 +146,26 @@ class SelectKeywordToken : public KeywordToken {
 public:
 	SelectKeywordToken()
 		: KeywordToken{ "select"sv } {
+	};
+};
+
+/**
+* This class represents the token for the "such" keyword, used in PQL
+*/
+class SuchKeywordToken : public KeywordToken {
+public:
+	SuchKeywordToken()
+		: KeywordToken{ "such"sv } {
+	};
+};
+
+/**
+* This class represents the token for the "that" keyword, used in PQL
+*/
+class ThatKeywordToken : public KeywordToken {
+public:
+	ThatKeywordToken()
+		: KeywordToken{ "that"sv } {
 	};
 };
 

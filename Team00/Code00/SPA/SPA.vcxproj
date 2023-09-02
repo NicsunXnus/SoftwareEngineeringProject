@@ -30,6 +30,7 @@
     <ClInclude Include="..\source\TokenClasses\UnderscoreToken.h" />
     <ClInclude Include="..\source\TokenizerClasses\PQLTokenizer.h" />
     <ClInclude Include="..\source\TokenizerClasses\SIMPLETokenizer.h" />
+    <ClInclude Include="..\source\TokenizerClasses\TokenizerFactory.h" />
     <ClInclude Include="..\source\TokenizerClasses\TokenizerFunctions.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -36,9 +36,6 @@
     <ClCompile Include="..\source\TNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\TokenizerClasses\PQLTokenizer.cpp">
-      <Filter>Source Files\Tokenizer</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\TokenizerClasses\TokenizerFunctions.cpp">
       <Filter>Source Files\Tokenizer</Filter>
     </ClCompile>
@@ -82,6 +79,9 @@
     </ClInclude>
     <ClInclude Include="..\source\TokenClasses\UnderscoreToken.h">
       <Filter>Header Files\Token Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenizerClasses\TokenizerFactory.h">
+      <Filter>Header Files\Tokenizer Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

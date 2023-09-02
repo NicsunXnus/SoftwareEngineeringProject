@@ -5,17 +5,17 @@
 #include <string_view>
 #include <vector>
 
-#include "../TokenClasses/Token.h"
+#include "TokenizerFactory.h"
 
 using namespace std::string_view_literals;
 
 /**
-* This class represents the tokenizer that tokenizes the SIMPLE program
+* Splits a SIMPLE source codeinto tokens.
+*
+* Returns a std::vector of tokens.
 */
-class SIMPLETokenizer {
-public:
-	static std::vector<Token> tokenize(std::string_view simple);
-	static Token generateToken(std::string input);
-};
+std::vector<std::shared_ptr<Token>> tokenize(std::string_view pql) {
+
+}
 
 #endif
