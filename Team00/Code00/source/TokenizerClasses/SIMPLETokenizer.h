@@ -66,8 +66,9 @@ private:
 	static std::vector<std::shared_ptr<Token>> tokenize_expression(std::string input) {
 		input = TrimWhitespaces(input);
 		std::vector<std::shared_ptr<Token>> output;
-		std::vector<std::string> split = TokenizerFunctions::splitString(input); // using default delimiter of whitespace
+		std::vector<std::string> split = TokenizerFunctions::splitString(input, "([()+\\-/*%\\s])", true);
 		for (std::string s : split) {
+			if (s == " ") continue;
 			s = TrimWhitespaces(s);
 			output.push_back(TokenFactory::generateToken(s, true, true));
 		}
@@ -106,7 +107,7 @@ public:
 	/// <summary>
 	/// Tokenizes a given SIMPLE source code.
 	/// 
-	/// CURRENTLY ONLY SUPPORTS STATEMENT LISTS WITHOUT CURLY BRACES.
+	/// CURRENTLY ONLY SUPPORTS STATEMENTS WITHOUT CURLY BRACES.
 	/// 
 	/// CURRENTLY DOES NOT SUPPORT:
 	/// - Procedure
