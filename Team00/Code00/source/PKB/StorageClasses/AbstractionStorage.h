@@ -15,6 +15,8 @@ using namespace std;
 class AbstractionStorage {
 public:
 	map<KeyValue, vector<int>>* getDatabase();
+
+    void print_rows() const;
     
     void insert_one(const KeyValue& key, const int& value);
 

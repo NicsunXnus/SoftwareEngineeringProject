@@ -3,6 +3,9 @@
 #include "StorageClasses/AbstractionStorage.h"
 #include "StorageClasses/EntityStorage.h"
 #include "StorageClasses/UsesAbstractionStorage.h"
+#include "StorageClasses/ModifiesAbstractionStorage.h"
+#include "StorageClasses/FollowsAbstractionStorage.h"
+#include "StorageClasses/ParentAbstractionStorage.h"
 
 using namespace std;
 
@@ -24,6 +27,9 @@ private:
 
 	// storages and AST pointer
 	static TNode* AST;
-	static UsesAbstractionStorage uses_abstractions;
 	static EntityStorage entities;
+	static UsesAbstractionStorage uses_abstractions;
+	static ModifiesAbstractionStorage modifies_abstractions;
+	static FollowsAbstractionStorage follows_abstractions;
+	static ParentAbstractionStorage parent_abstractions;
 };

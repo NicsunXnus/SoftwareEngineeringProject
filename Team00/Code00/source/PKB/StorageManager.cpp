@@ -13,6 +13,15 @@ AbstractionStorage* StorageManager::getAbstraction(const string abstraction)
 	if (abstraction == "uses") {
 		return &uses_abstractions;
 	}
+	else if (abstraction == "modifies") {
+		return &modifies_abstractions;
+	}
+	else if (abstraction == "follows") {
+		return &follows_abstractions;
+	}
+	else if (abstraction == "parent") {
+		return &parent_abstractions;
+	}
 	return nullptr;
 }
 
