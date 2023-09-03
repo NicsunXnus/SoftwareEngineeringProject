@@ -5,9 +5,9 @@
 #include <string>
 #include <vector>
 
-#include "Insertor.h"
-#include "StorageManager.h"
-#include "Responder.h"
+#include "PKB/Insertor.h"
+#include "PKB/StorageManager.h"
+#include "PKB/Responder.h"
 
 using namespace std;
 

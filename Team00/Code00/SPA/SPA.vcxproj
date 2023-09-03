@@ -14,12 +14,24 @@
     <ClCompile Include="..\source\DesignExtractor.cpp" />
     <ClCompile Include="..\source\Parser.cpp" />
     <ClCompile Include="..\source\PKB.cpp" />
+    <ClCompile Include="..\source\PKB\Insertor.cpp" />
+    <ClCompile Include="..\source\PKB\Responder.cpp" />
+    <ClCompile Include="..\source\PKB\StorageClasses\AbstractionStorage.cpp" />
+    <ClCompile Include="..\source\PKB\StorageClasses\EntityStorage.cpp" />
+    <ClCompile Include="..\source\PKB\StorageClasses\Storage.cpp" />
+    <ClCompile Include="..\source\PKB\StorageManager.cpp" />
     <ClCompile Include="..\source\TNode.cpp" />
     <ClCompile Include="..\source\TokenizerClasses\SIMPLETokenizer.cpp" />
     <ClCompile Include="..\source\TokenizerClasses\TokenizerFunctions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\PKB.h" />
+    <ClInclude Include="..\source\PKB\Insertor.h" />
+    <ClInclude Include="..\source\PKB\Responder.h" />
+    <ClInclude Include="..\source\PKB\StorageClasses\AbstractionStorage.h" />
+    <ClInclude Include="..\source\PKB\StorageClasses\EntityStorage.h" />
+    <ClInclude Include="..\source\PKB\StorageClasses\Storage.h" />
+    <ClInclude Include="..\source\PKB\StorageManager.h" />
     <ClInclude Include="..\source\TNode.h" />
     <ClInclude Include="..\source\TokenClasses\IdentifierToken.h" />
     <ClInclude Include="..\source\TokenClasses\KeywordToken.h" />
