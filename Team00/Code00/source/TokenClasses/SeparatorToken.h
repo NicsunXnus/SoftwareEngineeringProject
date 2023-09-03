@@ -36,15 +36,6 @@ public:
 };
 
 /**
-* This class represents a '"' symbol.
-*/
-class DoubleQuoSepToken : public SeparatorToken {
-public:
-	DoubleQuoSepToken()
-		: SeparatorToken{ "\""sv} {};
-};
-
-/**
 * This class represents a ")" symbol.
 */
 class ParenCloseSepToken : public SeparatorToken {
@@ -60,6 +51,15 @@ class ParenOpenSepToken : public SeparatorToken {
 public:
 	ParenOpenSepToken()
 		: SeparatorToken{ "("sv } {};
+};
+
+/**
+* This class represents a '"' symbol.
+*/
+class DoubleQuoSepToken : public SeparatorToken {
+public:
+	DoubleQuoSepToken()
+		: SeparatorToken{ "\""sv } {};
 };
 
 /**

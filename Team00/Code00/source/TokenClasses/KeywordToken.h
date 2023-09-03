@@ -50,6 +50,26 @@ public:
 };
 
 /**
+* This class represents the token for the "if" keyword, used in PQL declarations and in SIMPLE
+*/
+class IfKeywordToken : public KeywordToken {
+public:
+	IfKeywordToken()
+		: KeywordToken{ "if"sv } {
+	};
+};
+
+/**
+* This class represents the token for the "then" keyword, in SIMPLE
+*/
+class ThenKeywordToken : public KeywordToken {
+public:
+	ThenKeywordToken()
+		: KeywordToken{ "then"sv } {
+	};
+};
+
+/**
 * This class represents the token for the "else" keyword, in SIMPLE
 */
 class ElseKeywordToken : public KeywordToken {
@@ -60,12 +80,12 @@ public:
 };
 
 /**
-* This class represents the token for the "if" keyword, used in PQL declarations and in SIMPLE
+* This class represents the token for the "while" keyword, used in PQL declarations and in SIMPLE
 */
-class IfKeywordToken : public KeywordToken {
+class WhileKeywordToken : public KeywordToken {
 public:
-	IfKeywordToken()
-		: KeywordToken{ "if"sv } {
+	WhileKeywordToken()
+		: KeywordToken{ "while"sv } {
 	};
 };
 
@@ -110,32 +130,12 @@ public:
 };
 
 /**
-* This class represents the token for the "then" keyword, in SIMPLE
-*/
-class ThenKeywordToken : public KeywordToken {
-public:
-	ThenKeywordToken()
-		: KeywordToken{ "then"sv } {
-	};
-};
-
-/**
 * This class represents the token for the "variable" keyword, used in PQL declarations
 */
 class VariableKeywordToken : public KeywordToken {
 public:
 	VariableKeywordToken()
 		: KeywordToken{ "variable"sv } {
-	};
-};
-
-/**
-* This class represents the token for the "while" keyword, used in PQL declarations and in SIMPLE
-*/
-class WhileKeywordToken : public KeywordToken {
-public:
-	WhileKeywordToken()
-		: KeywordToken{ "while"sv } {
 	};
 };
 

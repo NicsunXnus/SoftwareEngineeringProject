@@ -75,6 +75,17 @@ public:
   static std::vector<std::string> splitString(std::string input) {
     return TokenizerFunctions::splitString(input, "\\s+", false);
   }
+
+  // Trims leading and trailing whitespaces.
+  // Original code from https://www.positioniseverything.net/cpp-string-trim/
+  static std::string trimWhitespaces(std::string str)
+  {
+    const char* typeOfWhitespaces = " tnrfv";
+    str.erase(str.find_last_not_of(typeOfWhitespaces) + 1);
+    str.erase(0, str.find_first_not_of(typeOfWhitespaces));
+    return str;
+  }
+
 };
 
 #endif
