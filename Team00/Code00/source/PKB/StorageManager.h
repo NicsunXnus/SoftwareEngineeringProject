@@ -1,3 +1,6 @@
+#ifndef STORAGEMANAGER_H
+#define STORAGEMANAGER_H
+
 #include <string>
 
 #include "StorageClasses/AbstractionStorage.h"
@@ -16,15 +19,11 @@ class TNode;  // change to AST Node
 */
 class StorageManager {
 public:
-	// Methods to insert into storages
-
-	// Methods to query storages
-
-private:
 	static TNode* getAST();
 	static AbstractionStorage* getAbstraction(string);
 	static EntityStorage* getEntities();
 
+private:
 	// storages and AST pointer
 	static TNode* AST;
 	static EntityStorage entities;
@@ -33,3 +32,4 @@ private:
 	static FollowsAbstractionStorage follows_abstractions;
 	static ParentAbstractionStorage parent_abstractions;
 };
+#endif

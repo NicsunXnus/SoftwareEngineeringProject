@@ -4,20 +4,17 @@
 
 #include "AbstractionStorage.h"
 
-
 using namespace std;
 
-void AbstractionStorage::insert_one(const KeyValue& key, const int& value)
-{
-	// to be implemented
-}
-
-map<KeyValue, vector<int>>* AbstractionStorage::getDatabase()
-{
+map<KeyValue, vector<int>>* AbstractionStorage::getDatabase() {
 	return database;
 }
 
-void AbstractionStorage::print_rows() const {
+void AbstractionStorage::insertAbstraction(const KeyValue& key, const vector<int>& lines) {
+    (*database)[key] = lines;
+}
+
+void AbstractionStorage::printDatabase() const {
     for (const auto& pair : *database) {
         string result;
         for (const int& num : pair.second) {

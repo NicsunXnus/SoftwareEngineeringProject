@@ -3,13 +3,11 @@
 
 using namespace std;
 
-TNode* StorageManager::getAST()
-{
+TNode* StorageManager::getAST() {
 	return nullptr;
 }
 
-AbstractionStorage* StorageManager::getAbstraction(const string abstraction)
-{
+AbstractionStorage* StorageManager::getAbstraction(const string abstraction) {
 	if (abstraction == "uses") {
 		return &uses_abstractions;
 	}
@@ -25,7 +23,6 @@ AbstractionStorage* StorageManager::getAbstraction(const string abstraction)
 	return nullptr;
 }
 
-EntityStorage* StorageManager::getEntities()
-{
+EntityStorage* StorageManager::getEntities() {
 	return &entities;
 }

@@ -16,9 +16,9 @@ class AbstractionStorage {
 public:
 	map<KeyValue, vector<int>>* getDatabase();
 
-    void print_rows() const;
+    void printDatabase() const;
     
-    void insert_one(const KeyValue& key, const int& value);
+    void insertAbstraction(const KeyValue& key, const vector<int>& lines);
 
 private:
     map<KeyValue, vector<int>>* database;

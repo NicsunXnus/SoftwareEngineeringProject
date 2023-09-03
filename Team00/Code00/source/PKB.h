@@ -18,14 +18,9 @@ using namespace std;
 */
 class PKB {
 public:
-	// methods that call Insertor
-	static int setAST(TNode* r);
-
-
-	// methods that call Responder
+	static Insertor insertor;
+	static Responder responder;
 
 private:
-	static Insertor insertor; 
 	static StorageManager storage_manager;
-	static Responder responder;
 };

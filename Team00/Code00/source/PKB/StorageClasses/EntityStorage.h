@@ -13,9 +13,9 @@ class EntityStorage {
 public:
     map<string, vector<int>>* getDatabase();
 
-    void insert_one(const string& key, const vector<int>& value);
+    void insertEntity(const string& key, const vector<int>& value);
 
-    void print_rows() const;
+    void printDatabase() const;
 
 private:
     map<string, vector<int>>* database;
