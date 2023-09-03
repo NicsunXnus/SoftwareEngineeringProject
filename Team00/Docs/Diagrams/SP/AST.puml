@@ -1,0 +1,20 @@
+@startuml
+!include ../style.puml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+
+title SP Overview
+
+package SourceProcessor <<Rectangle>> {
+    
+}
+
+package Internals <<Rectangle>> {
+    Class SimpleTokenizer
+    Class DesignExtractor
+    Class Parser
+}
+SourceProcessor -down-> Internals
+SimpleTokenizer -> Parser
+Parser -> DesignExtractor
+@end
