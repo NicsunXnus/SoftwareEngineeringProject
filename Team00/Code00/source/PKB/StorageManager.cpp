@@ -1,16 +1,22 @@
+#include <string>
 #include "StorageManager.h"
+
+using namespace std;
 
 TNode* StorageManager::getAST()
 {
 	return nullptr;
 }
 
-AbstractionStorage StorageManager::getAbstractions()
+AbstractionStorage* StorageManager::getAbstraction(const string abstraction)
 {
-	return abstractions;
+	if (abstraction == "uses") {
+		return &uses_abstractions;
+	}
+	return nullptr;
 }
 
-EntityStorage StorageManager::getEntities()
+EntityStorage* StorageManager::getEntities()
 {
-	return entities;
+	return &entities;
 }

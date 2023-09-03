@@ -63,9 +63,6 @@
     <ClCompile Include="..\source\PKB\StorageClasses\EntityStorage.cpp">
       <Filter>Source Files\PKB\StorageClasses</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\PKB\StorageClasses\Storage.cpp">
-      <Filter>Source Files\PKB\StorageClasses</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\PKB.h">
@@ -103,24 +100,6 @@
     </ClInclude>
     <ClInclude Include="..\source\TokenClasses\UnderscoreToken.h">
       <Filter>Header Files\Token Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\PKB\Insertor.h">
-      <Filter>Source Files\PKB</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\PKB\Responder.h">
-      <Filter>Source Files\PKB</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\PKB\StorageManager.h">
-      <Filter>Source Files\PKB</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\PKB\StorageClasses\AbstractionStorage.h">
-      <Filter>Source Files\PKB\StorageClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\PKB\StorageClasses\EntityStorage.h">
-      <Filter>Source Files\PKB\StorageClasses</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\PKB\StorageClasses\Storage.h">
-      <Filter>Source Files\PKB\StorageClasses</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
