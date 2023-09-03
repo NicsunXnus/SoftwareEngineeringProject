@@ -16,5 +16,11 @@ public:
 	Token(std::string_view tokenName)
 		: tokenName{ tokenName } {
 	};
+	/*
+	* Returns string form of token
+	*/
+	std::string getTokenName() {
+		return tokenName;
+	}
 };
 #endif

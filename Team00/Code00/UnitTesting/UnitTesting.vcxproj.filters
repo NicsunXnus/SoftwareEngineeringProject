@@ -32,7 +32,7 @@
     <ClCompile Include="TestAST.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TestPQLTokenizer.cpp">
+    <ClCompile Include="TestQPS.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
   </ItemGroup>
