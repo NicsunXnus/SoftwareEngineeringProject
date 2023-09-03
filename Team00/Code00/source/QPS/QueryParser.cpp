@@ -5,13 +5,12 @@
 #include "QueryParser.h"
 
 
-QueryParser:: QueryParser() {
+QueryParser::QueryParser() {};
 
-};
 /*
 	* This function splits the tokens into two groups: the declaration (variable v, assign a etc..) clause and the query (select...) clause
 */
-std::tuple<std::vector<std::shared_ptr<Token>>, std::vector<std::shared_ptr<Token>>> splitTokens(std::vector<std::shared_ptr<Token>> tokens) {
+std::tuple<std::vector<std::shared_ptr<Token>>, std::vector<std::shared_ptr<Token>>> QueryParser::splitTokens(std::vector<std::shared_ptr<Token>> tokens) {
 	std::vector<std::shared_ptr<Token>> declarations;
 	std::vector<std::shared_ptr<Token>> query;
 	int indexSemiColon = 0;

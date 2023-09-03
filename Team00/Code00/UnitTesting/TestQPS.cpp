@@ -15,7 +15,7 @@ namespace UnitTesting
 		{
 			std::vector<std::shared_ptr<Token>> test = tokenize("stmt v; Select v");
 			std::shared_ptr<QueryParser> p = std::make_shared<QueryParser>();
-			//std::tuple<std::vector<std::shared_ptr<Token>>, std::vector<std::shared_ptr<Token>>> testObj = p->splitTokens(test);
+			std::tuple<std::vector<std::shared_ptr<Token>>, std::vector<std::shared_ptr<Token>>> testObj = p->splitTokens(test);
 			int test1 = 1;
 		}
 
