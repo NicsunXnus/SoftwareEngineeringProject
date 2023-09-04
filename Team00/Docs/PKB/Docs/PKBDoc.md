@@ -1,6 +1,6 @@
 ## PKB
 
-![PKB Overview Diagram](PKBOverview.png)
+![PKB Overview Diagram](../Diagrams/PKBOverview.png)
 
 Our PKB will consist of 3 sub-components:
 Inserter: Includes API for receiving data from SP, storing it in Storage class

@@ -1,4 +1,6 @@
 
+![QPS Overview Diagram](../Diagrams/QPSOverview.png)
+![QPS Sequence Diagram](../Diagrams/QPSSequence.png)
 
 ## **SE Principles**
 
