@@ -1,0 +1,44 @@
+@startuml
+' !include ../style.puml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+
+title SP Overview
+
+Class Token {
+}
+Class TokenFactory {
+    {static} + Token generateToken(string input, bool forSimple, bool forceIdentifer)
+}
+Class TokenizerFunctions {
+    {static} + string trimWhitespaces(string)
+    {static} + vector<string> splitString(string input, string delimiter, bool includeDelimiter)
+}
+package SP <<Rectangle>> {
+    'Tokenizes the source code'
+    Class SimpleTokenizer {
+        {static} - vector<Token> tokenizeStatement(stmt)
+        {static} - vector<Token> tokenizeAssignment(stmt)
+        {static} - vector<Token> tokenizeExpression(stmt)
+        {static} - vector<Token> tokenizeRead(stmt)
+        {static} - vector<Token> tokenizePrint(stmt)
+        {static} + vector<Token> tokenize(string)
+    }
+    
+    Class ASTBuilder {
+        AST build(vector<Tokens>)
+    }
+
+    'Converts the Tokens into Query Object'
+    Class DesignExtractor {
+        vector<PKB_details> extract(AST)
+    }
+}
+SimpleTokenizer <-left.- Token
+SimpleTokenizer -down- TokenFactory
+SimpleTokenizer -down- TokenizerFunctions
+SimpleTokenizer -right- ASTBuilder
+DesignExtractor -left- ASTBuilder
+TokenFactory -up- Token
+
+@end

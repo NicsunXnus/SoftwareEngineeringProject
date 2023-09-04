@@ -1,0 +1,138 @@
+@startuml
+' !include ../style.puml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+
+title Token Overview
+
+Class TokenFactory {
+    {static} - unordered_set<string> commonKeywords
+    {static} - unordered_set<string> uniqueSimple
+    {static} - unordered_set<string> uniquePql
+    {static} - bool isNumber(string)
+    {static} - bool isValidName(string)
+    {static} - Token generateCommonToken(string)
+    {static} - Token generateSimpleToken(string)
+    {static} - Token generatePqlToken(string)
+    {static} - Token generateIdentifier(string)
+    {static} - Token generateIntLiteral(string)
+    {static} + generateToken(string input, bool forSimple, bool forceIdentifer)
+}
+package Tokens <<rectangle>> {
+    Class Token {
+        - string tokenName
+        + Token(tokenName)
+        + string getTokenName()
+    }
+    Class UnderscoreToken {}
+    Class IdentifierToken {}
+    Class LiteralToken {}
+    Class IntergerLiteralToken {}
+    package SeparatorTokens <<rectangle>> {
+        Class SeparatorToken {}
+            Class CurlyCloseSepToken {}
+            Class CurlyOpenSepToken {}
+            Class ParenOpenSepToken {}
+            Class ParenCloseSepToken {}
+            Class DoubleQuoSepToken {}
+            Class SemicolonSepToken {}
+            Class CommaSepToken {}
+    }
+    package OperatorTokens <<rectangle>> {
+        Class OperatorToken {}
+            Class EqualsOpToken {}
+            Class ArithmeticOpToken {}
+                Class DivideOpToken {}
+                Class MinusOpToken {}
+                Class PlusOpToken {}
+                Class MultiplyOpToken {}
+                Class ModuloOpToken {}
+            Class BooleanOpToken {}
+                Class AndOpToken{}
+                Class OrOpToken {}
+                Class NotOpToken {}
+            Class RelationalOpToken {}
+                Class MoreThanOpToken {}
+                Class MoreThanEqualOpToken {}
+                Class LessThanOpToken {}
+                Class LessThanEqualOpToken {}
+                Class EqualityOpToken {}
+                Class InequalityOpToken {}
+    }
+    package KeywordTokens <<rectangle>> {
+        Class KeywordToken {}
+            Class AssignKeywordToken {}
+            Class CallKeywordToken {}
+            Class ConstantKeywordToken {}
+            Class ElseKeywordToken {}
+            Class IfKeywordToken {}
+            Class PrintKeywordToken {}
+            Class ProcedureKeywordToken {}
+            Class ReadKeywordToken {}
+            Class StmtKeywordToken {}
+            Class ThenKeywordToken {}
+            Class VariableKeywordToken {}
+            Class WhileKeywordToken {}
+            Class SelectKeywordToken {}
+            Class SuchKeywordToken {}
+            Class ThatKeywordToken {}
+    }
+}
+
+TokenFactory -- Token
+
+skinparam groupInheritance 2
+UnderscoreToken --|> Token
+IdentifierToken --|> Token
+
+LiteralToken --|> Token
+IntergerLiteralToken --|> LiteralToken
+
+SeparatorToken --|> Token
+    CurlyCloseSepToken --|> SeparatorToken
+    CurlyOpenSepToken --|> SeparatorToken
+    ParenCloseSepToken --|> SeparatorToken
+    ParenOpenSepToken --|> SeparatorToken
+    SemicolonSepToken --|> SeparatorToken
+    CommaSepToken --|> SeparatorToken
+    DoubleQuoSepToken --|> SeparatorToken
+
+OperatorToken --|> Token
+    EqualsOpToken --|> OperatorToken
+    ArithmeticOpToken --|> OperatorToken
+        DivideOpToken --|> ArithmeticOpToken
+        MinusOpToken --|> ArithmeticOpToken
+        PlusOpToken --|> ArithmeticOpToken
+        MultiplyOpToken --|> ArithmeticOpToken
+        ModuloOpToken --|> ArithmeticOpToken
+    BooleanOpToken --|> OperatorToken
+        AndOpToken --|> BooleanOpToken
+        OrOpToken --|> BooleanOpToken
+        NotOpToken --|> BooleanOpToken
+    RelationalOpToken --|> OperatorToken
+        MoreThanOpToken --|> RelationalOpToken
+        MoreThanEqualOpToken --|> RelationalOpToken
+        LessThanOpToken --|> RelationalOpToken
+        LessThanEqualOpToken --|> RelationalOpToken
+        EqualityOpToken --|> RelationalOpToken
+        InequalityOpToken --|> RelationalOpToken
+
+KeywordToken -up-|> Token
+    AssignKeywordToken --|> KeywordToken
+    CallKeywordToken --|> KeywordToken
+    ConstantKeywordToken --|> KeywordToken
+    ElseKeywordToken --|> KeywordToken
+    IfKeywordToken --|> KeywordToken
+    PrintKeywordToken --|> KeywordToken
+    ProcedureKeywordToken --|> KeywordToken
+    ReadKeywordToken --|> KeywordToken
+    StmtKeywordToken --|> KeywordToken
+    ThenKeywordToken --|> KeywordToken
+    VariableKeywordToken --|> KeywordToken
+    WhileKeywordToken --|> KeywordToken
+    SelectKeywordToken --|> KeywordToken
+    SuchKeywordToken --|> KeywordToken
+    ThatKeywordToken --|> KeywordToken
+
+
+@end
