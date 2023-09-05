@@ -30,9 +30,6 @@
     <ClCompile Include="..\source\PKB.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\TNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\TokenizerClasses\PQLTokenizer.cpp">
       <Filter>Source Files\Tokenizer</Filter>
     </ClCompile>
@@ -47,7 +44,7 @@
     <ClInclude Include="..\source\PKB.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\TNode.h">
+    <ClInclude Include="..\source\ASTBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\source\TokenizerClasses\PQLTokenizer.h">

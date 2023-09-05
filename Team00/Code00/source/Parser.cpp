@@ -6,7 +6,7 @@
 using namespace std;
 
 #include "PKB.h"
-#include "AST/ASTNode.h"
+#include "ASTNode.h"
 
 int Parse () {
 	SimpleTokenizer::tokenize("");
