@@ -12,30 +12,20 @@ using namespace std::string_view_literals;
 
 class SimpleTokenizer {
 private:
-	// Trims leading and trailing whitespaces.
-	// Original code from https://www.positioniseverything.net/cpp-string-trim/
-	static std::string TrimWhitespaces(std::string str)
-	{
-		const char* typeOfWhitespaces = " tnrfv";
-		str.erase(str.find_last_not_of(typeOfWhitespaces) + 1);
-		str.erase(0, str.find_first_not_of(typeOfWhitespaces));
-		return str;
-	}
-
 	// Tokenizes a statement
-	static std::vector<std::shared_ptr<Token>> tokenize_statement(std::string stmt) {
+	static std::vector<std::shared_ptr<Token>> tokenizeStatement(std::string stmt) {
 		std::vector<std::shared_ptr<Token>> output;
 		bool validStatement = false;
 		if (stmt.find("=") != std::string::npos) { // Assignment Statement
-			output = tokenize_assignment(stmt);
+			output = tokenizeAssignment(stmt);
 			validStatement = true;
 		}	
 		if (stmt.substr(0, 5) == "read ") {
-			output = tokenize_read(stmt);
+			output = tokenizeRead(stmt);
 			validStatement = true;
 		}
 		if (stmt.substr(0, 6) == "print ") {
-			output = tokenize_print(stmt);
+			output = tokenizePrint(stmt);
 			validStatement = true;
 		}
 		if (!validStatement) {
@@ -46,15 +36,15 @@ private:
 	}
 
 	// Tokenizes an assignment statement
-	static std::vector<std::shared_ptr<Token>> tokenize_assignment(std::string ass_stmt) {
+	static std::vector<std::shared_ptr<Token>> tokenizeAssignment(std::string assStmt) {
 		std::vector<std::shared_ptr<Token>> output;
-		std::vector<std::string> splitMain = TokenizerFunctions::splitString(ass_stmt, "=");
+		std::vector<std::string> splitMain = TokenizerFunctions::splitString(assStmt, "=");
 		if (splitMain.size() != 2) {
 			// Invalid assignment statement
 			throw std::invalid_argument("Assignment Statement expected one equals sign. Got: " + std::to_string(splitMain.size()));
 		}
-		std::vector<std::shared_ptr<Token>> left = tokenize_expression(splitMain[0]);
-		std::vector<std::shared_ptr<Token>> right = tokenize_expression(splitMain[1]);
+		std::vector<std::shared_ptr<Token>> left = tokenizeExpression(splitMain[0]);
+		std::vector<std::shared_ptr<Token>> right = tokenizeExpression(splitMain[1]);
 		output.insert(output.end(), left.begin(), left.end());
 		output.push_back(TokenFactory::generateToken("="sv, true));
 		output.insert(output.end(), right.begin(), right.end());
@@ -63,42 +53,44 @@ private:
 	}
 
 	// Tokenizes an expression, split by whitespaces. Prioritises identifiers for valid names
-	static std::vector<std::shared_ptr<Token>> tokenize_expression(std::string input) {
-		input = TrimWhitespaces(input);
+	static std::vector<std::shared_ptr<Token>> tokenizeExpression(std::string input) {
+		input = TokenizerFunctions::trimWhitespaces(input);
 		std::vector<std::shared_ptr<Token>> output;
+		// The regex matches all separators and operations that can be found in expressions: 
+		// ( ) + - * / % and whitespace
 		std::vector<std::string> split = TokenizerFunctions::splitString(input, "([()+\\-/*%\\s])", true);
 		for (std::string s : split) {
 			if (s == " ") continue;
-			s = TrimWhitespaces(s);
+			s = TokenizerFunctions::trimWhitespaces(s);
 			output.push_back(TokenFactory::generateToken(s, true, true));
 		}
 		return output;
 	}
 
 	// Tokenizes a read statement
-	static std::vector<std::shared_ptr<Token>> tokenize_read(std::string read_stmt) {
+	static std::vector<std::shared_ptr<Token>> tokenizeRead(std::string readStmt) {
 		std::vector<std::shared_ptr<Token>> output;
-		std::vector<std::string> split = TokenizerFunctions::splitString(read_stmt);
+		std::vector<std::string> split = TokenizerFunctions::splitString(readStmt);
 		if (split.size() != 2) {
 			// Invalid read statement
 			throw std::invalid_argument("Read Statement expected two words. Got: " + std::to_string(split.size()));
 		}
 		output.push_back(TokenFactory::generateToken("read"sv, true));
-		std::string right = TrimWhitespaces(split[1]);
+		std::string right = TokenizerFunctions::trimWhitespaces(split[1]);
 		output.push_back(TokenFactory::generateToken(right, true, true));
 		return output;
 	}
 
 	// Tokenizes a print statement
-	static std::vector<std::shared_ptr<Token>> tokenize_print(std::string print_stmt) {
+	static std::vector<std::shared_ptr<Token>> tokenizePrint(std::string printStmt) {
 		std::vector<std::shared_ptr<Token>> output;
-		std::vector<std::string> split = TokenizerFunctions::splitString(print_stmt);
+		std::vector<std::string> split = TokenizerFunctions::splitString(printStmt);
 		if (split.size() != 2) {
 			// Invalid print statement
 			throw std::invalid_argument("Print Statement expected two words. Got: " + std::to_string(split.size()));
 		}
 		output.push_back(TokenFactory::generateToken("print"sv, true));
-		std::string right = TrimWhitespaces(split[1]);
+		std::string right = TokenizerFunctions::trimWhitespaces(split[1]);
 		output.push_back(TokenFactory::generateToken(right, true, true));
 		return output;
 	}
@@ -114,6 +106,10 @@ public:
 	/// - Call Statements
 	/// - If-Then-Else Statements
 	/// - While Statements
+	/// 
+	/// Throws std::invalid_argument exception if anything supplied in the stmt list is invalid.
+	/// This can arise due to invalid names for identifiers, or invalid formatting like two "=" in an assign statement
+	/// 
 	/// </summary>
 	/// <param name="src">input SIMPLE source code</param>
 	/// <returns>a 1D list of shared pointers to Tokens generated</returns>
@@ -121,8 +117,8 @@ public:
 		std::vector<std::string> statements = TokenizerFunctions::splitString(std::string(src), ";");
 		std::vector<std::shared_ptr<Token>> output;
 		for (std::string stmt : statements) {
-			stmt = TrimWhitespaces(stmt);
-			std::vector<std::shared_ptr<Token>> tokens = tokenize_statement(stmt);
+			stmt = TokenizerFunctions::trimWhitespaces(stmt);
+			std::vector<std::shared_ptr<Token>> tokens = tokenizeStatement(stmt);
 			output.insert(output.end(), tokens.begin(), tokens.end());
 		}
 		return output;

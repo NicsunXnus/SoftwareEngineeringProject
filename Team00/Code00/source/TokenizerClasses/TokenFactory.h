@@ -79,6 +79,7 @@ static bool isNumber(std::string input) {
 	}
 	return true;
 }
+
 // Checks if a given input string is a valid name: LETTER (LETTER | DIGIT)*
 static bool isValidName(std::string input) {
 	bool seenFirst = false;
@@ -103,7 +104,10 @@ static bool isValidName(std::string input) {
 */
 class TokenFactory {
 private:
-	static std::shared_ptr<Token> generateCommonTokens(std::string_view tokenName) {
+	// These generateXToken all assume that the argument supplied is valid.
+	
+	// Generates a Token with a name that is common between SIMPLE and PQL
+	static std::shared_ptr<Token> generateCommonToken(std::string_view tokenName) {
 		if (tokenName == "read"sv) {
 			return std::make_shared<ReadKeywordToken>();
 		}
@@ -146,10 +150,11 @@ private:
 		if (tokenName == "%"sv) {
 			return std::make_shared<ModuloOpToken>();
 		}
-		throw std::invalid_argument("Invalid token name supplied to generateCommonTokens function");
+		throw std::invalid_argument("Invalid token name supplied to generateCommonToken function: " + std::string(tokenName));
 	}
 
-	static std::shared_ptr<Token> generateSimpleTokens(std::string_view tokenName) {
+	// Generates a Token with a name that is unique to SIMPLE
+	static std::shared_ptr<Token> generateSimpleToken(std::string_view tokenName) {
 		if (tokenName == "then"sv) {
 			return std::make_shared<ThenKeywordToken>();
 		}
@@ -192,10 +197,11 @@ private:
 		if (tokenName == "!="sv) {
 			return std::make_shared<InequalityOpToken>();
 		}
-		throw std::invalid_argument("Invalid token name supplied to generateSimpleTokens function");
+		throw std::invalid_argument("Invalid token name supplied to generateSimpleToken function: " + std::string(tokenName));
 	}
 
-	static std::shared_ptr<Token> generatePqlTokens(std::string_view tokenName) {
+	// Generates a Token with a name that is unique to PQL
+	static std::shared_ptr<Token> generatePqlToken(std::string_view tokenName) {
 		if (tokenName == "stmt"sv) {
 			return std::make_shared<StmtKeywordToken>();
 		}
@@ -241,13 +247,15 @@ private:
 		if (tokenName == "\""sv) {
 			return std::make_shared<DoubleQuoSepToken>();
 		}
-		throw std::invalid_argument("Invalid token name supplied to generatePqlTokens function");
+		throw std::invalid_argument("Invalid token name supplied to generatePqlToken function: " + std::string(tokenName));
 	}
-	
+
+	// Generates a Identifier Token. REMINDER that this does not validate the argument to ensure that it is a valid name
 	static std::shared_ptr<Token> generateIdentifier(std::string_view tokenName) {
 		return std::make_shared<IdentifierToken>(tokenName);
 	}
 
+	// Generates an Integer Literal Token. REMINDER that this does not validate the argument to ensure that it is a valid number
 	static std::shared_ptr<Token> generateIntLiteral(std::string_view number) {
 		return std::make_shared<IntegerLiteralToken>(number);
 	}
@@ -255,6 +263,9 @@ public:
 	/// <summary>
 	/// Generates tokens based on a token name, whether it is for SIMPLE or not (and hence for PQL) and if the
 	/// token should be forced to be an identifier or not.
+	/// 
+	/// Throws std::invalid_argument exception if anything supplied in the token is invalid.
+	/// This can arise due to invalid names for identifiers, or other ways.
 	/// </summary>
 	/// 
 	/// <param name="tokenName">The string to be passed to be turned into a token</param>
@@ -267,21 +278,24 @@ public:
 			return generateIdentifier(tokenName);
 		}
 		if (common.count(tokenName) != 0) {
-			return generateCommonTokens(tokenName);
+			return generateCommonToken(tokenName);
 		}
 		if (forSimple && uniqueSimple.count(tokenName) != 0) {
-			return generateSimpleTokens(tokenName);
+			return generateSimpleToken(tokenName);
 		}
 		if (!forSimple && uniquePql.count(tokenName) != 0) {
-			return generatePqlTokens(tokenName);
+			return generatePqlToken(tokenName);
 		}
 		if (isValidName(tokenName)) {
 			return generateIdentifier(tokenName);
 		}
 		if (isNumber(tokenName)) {
+			if (tokenName[0] == char("0")) {
+				throw std::invalid_argument("Number supplied has a leading 0: " + tokenName);
+			}
 			return generateIntLiteral(tokenName);
 		}
-		throw std::invalid_argument("Invalid token name supplied: " + tokenName);
+		throw std::invalid_argument("Invalid string supplied: " + tokenName);
 	}
 
 	// Overloaded method to take in string views instead
