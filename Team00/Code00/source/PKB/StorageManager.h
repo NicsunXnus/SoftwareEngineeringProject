@@ -19,14 +19,21 @@ class TNode;  // change to AST Node
 */
 class StorageManager {
 public:
-	static TNode* getAST();
-	static AbstractionStorage* getAbstraction(string);
-	static EntityStorage* getEntities();
+	static TNode* getAST();  // to be removed
+	static AbstractionStorage* getAbstractionStorage(string);
+	static EntityStorage* getEntityStorage();
 
 private:
-	// storages and AST pointer
-	static TNode* AST;
-	static EntityStorage entities;
+	static TNode* AST;  // to be removed
+
+	// parse trees (for querying patterns)
+	
+	// variables, procedures, constants
+
+	// entities
+	static EntityStorage entity_storage;
+
+	// abstractions
 	static UsesAbstractionStorage uses_abstractions;
 	static ModifiesAbstractionStorage modifies_abstractions;
 	static FollowsAbstractionStorage follows_abstractions;

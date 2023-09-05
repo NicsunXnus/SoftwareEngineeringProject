@@ -7,7 +7,7 @@ TNode* StorageManager::getAST() {
 	return nullptr;
 }
 
-AbstractionStorage* StorageManager::getAbstraction(const string abstraction) {
+AbstractionStorage* StorageManager::getAbstractionStorage(const string abstraction) {
 	if (abstraction == "uses") {
 		return &uses_abstractions;
 	}
@@ -23,6 +23,6 @@ AbstractionStorage* StorageManager::getAbstraction(const string abstraction) {
 	return nullptr;
 }
 
-EntityStorage* StorageManager::getEntities() {
-	return &entities;
+EntityStorage* StorageManager::getEntityStorage() {
+	return &entity_storage;
 }

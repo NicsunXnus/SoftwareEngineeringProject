@@ -11,12 +11,28 @@ using namespace std;
 */
 class EntityStorage {
 public:
-    map<string, vector<int>>* getDatabase();
+    // entities categorised as statement types and non-statement types.
 
-    void insertEntity(const string& key, const vector<int>& value);
+    map<string, vector<int>>* getStatementDatabase();
+
+    map<string, vector<int>>* getProcedureDatabase();
+
+    map<string, vector<int>>* getVariableDatabase();
+
+    map<string, vector<int>>* getConstantDatabase();
+
+    void insertEntityStatement(const string& key, const vector<int>& value);
+
+    // insert proc/var/const
 
     void printDatabase() const;
 
 private:
-    map<string, vector<int>>* database;
+    map<string, vector<int>>* statement_database;
+
+    map<string, vector<int>>* procedure_database;
+
+    map<string, vector<int>>* variable_database;
+
+    map<string, vector<int>>* constant_database;
 };
