@@ -18,8 +18,8 @@
 
 Item | Version
 -|-
-OS |
-Toolchain |
+OS | Windows
+Toolchain | Github Issues
 C++ Standard | C++17
 
 ### Additional Build Instructions
@@ -30,4 +30,9 @@ No additional instructions required.
 
 Name | Mobile | Email | Development OS/Toolchain
 -:|:-:|:-|-|
-John Doe | 99887766 | john@doe.com | 
+Ong Han Yang | xxxx2681 | e0543458@u.nus.edu | Windows / Github Issues
+Ong Hong Kai | xxxx1012 | e0543864@u.nus.edu | Windows / Github Issues
+Ryan Tian Jun | xxxx9254 | e0543846@u.nus.edu | Windows / Github Issues
+Chua Hao Jie Marcus | xxxx6040 | e0543666@u.nus.edu | Windows / Github Issues
+Nicholas Sun Jun Yang | xxxx2050 | e05436456@u.nus.edu | Windows / Github Issues
+Jan Alfenson Tan | xxxx7640 | e0543952@u.nus.edu | Windows / Github Issues
