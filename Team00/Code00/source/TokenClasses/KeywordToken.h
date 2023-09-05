@@ -29,7 +29,6 @@ public:
 	};
 };
 
-
 /**
 * This class represents the token for the "call" keyword, used in PQL declarations and in SIMPLE
 */
@@ -51,7 +50,7 @@ public:
 };
 
 /**
-* This class represents the token for the "then" keyword, in SIMPLE
+* This class represents the token for the "else" keyword, in SIMPLE
 */
 class ElseKeywordToken : public KeywordToken {
 public:
@@ -137,6 +136,36 @@ class WhileKeywordToken : public KeywordToken {
 public:
 	WhileKeywordToken()
 		: KeywordToken{ "while"sv } {
+	};
+};
+
+/**
+* This class represents the token for the "select" keyword, used in PQL
+*/
+class SelectKeywordToken : public KeywordToken {
+public:
+	SelectKeywordToken()
+		: KeywordToken{ "select"sv } {
+	};
+};
+
+/**
+* This class represents the token for the "such" keyword, used in PQL
+*/
+class SuchKeywordToken : public KeywordToken {
+public:
+	SuchKeywordToken()
+		: KeywordToken{ "such"sv } {
+	};
+};
+
+/**
+* This class represents the token for the "that" keyword, used in PQL
+*/
+class ThatKeywordToken : public KeywordToken {
+public:
+	ThatKeywordToken()
+		: KeywordToken{ "that"sv } {
 	};
 };
 

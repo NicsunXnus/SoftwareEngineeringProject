@@ -19,9 +19,6 @@
     <Filter Include="Header Files\Tokenizer Files">
       <UniqueIdentifier>{e5a54dff-741b-4a40-b105-6f05b055f98a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Tokenizer">
-      <UniqueIdentifier>{2e5d6711-4d3e-4020-bd8c-7891fe508155}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\DesignExtractor.cpp">
@@ -82,6 +79,9 @@
     </ClInclude>
     <ClInclude Include="..\source\TokenClasses\UnderscoreToken.h">
       <Filter>Header Files\Token Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenizerClasses\TokenFactory.h">
+      <Filter>Header Files\Tokenizer Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

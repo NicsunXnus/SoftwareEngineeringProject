@@ -9,6 +9,6 @@ using namespace std;
 #include "AST/ASTNode.h"
 
 int Parse () {
-
+	SimpleTokenizer::tokenize("");
 	return 0;
 }
