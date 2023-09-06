@@ -18,6 +18,7 @@
   <ItemGroup>
     <ClInclude Include="..\source\PKB.h" />
     <ClCompile Include="..\source\AST\**\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
     <ClInclude Include="..\source\TokenizerClasses\TokenFactory.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -1,8 +1,10 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "ASTNode.h"
-#include "ExprNode.h"
+#include <map>
+#include "../AST/ASTNode.h"
+#include "../AST/ExprNode.h"
+#include "ProcedureEntity.h" 
 
 
 class Entity {
@@ -123,7 +125,7 @@ public:
             int lineNumber = astNode->getStatementNumber();
             
             // Store the constant value as the key and add the line number to the vector
-            insert(constantName, lineNumber);
+            insert(constantValue, lineNumber);
         }
     }
 };
