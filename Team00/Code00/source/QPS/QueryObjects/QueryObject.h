@@ -16,6 +16,10 @@ public:
 	QueryObject(string_view tokenName)
 		: tokenName{ tokenName } {
 	};
+
+	string_view getQueryObjectName() {
+		return tokenName;
+	}
 };
 
 
