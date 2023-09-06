@@ -4,6 +4,7 @@
 
 #include <string_view>
 #include "QueryObject.h"
+#include "../../Constants/QPSPKB.h"
 
 using namespace std;
 /*

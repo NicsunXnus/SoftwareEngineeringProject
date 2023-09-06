@@ -10,7 +10,7 @@ using namespace std;
 
 
 /*
-* This class represents a Query object, for design entities
+* This class represents a Query Object Factory, for design entities
 */
 class DesignObjectFactory : public QueryObjectFactory {
 public:
@@ -29,7 +29,7 @@ public:
 };
 
 /*
-* This class represents a Query object, for design entity stmt
+* This class represents a Query Object Factory, for design entity stmt
 */
 class StmtObjectFactory : public DesignObjectFactory {
 public:
@@ -44,7 +44,7 @@ public:
 };
 
 /*
-* This class represents a Query object, for design entity read
+* This class represents a Query Object Factory, for design entity read
 */
 class ReadObjectFactory : public DesignObjectFactory {
 public:
@@ -57,7 +57,7 @@ public:
 };
 
 /*
-* This class represents a Query object, for design entity print
+* This class represents a Query Object Factory, for design entity print
 */
 class PrintObjectFactory : public DesignObjectFactory {
 public:
@@ -70,7 +70,7 @@ public:
 };
 
 /*
-* This class represents a Query object, for design entity call
+* This class represents a Query Object Factory, for design entity call
 */
 class CallObjectFactory : public DesignObjectFactory {
 public:
@@ -83,7 +83,7 @@ public:
 };
 
 /*
-* This class represents a Query object, for design entity while
+* This class represents a Query Object Factory, for design entity while
 */
 class WhileObjectFactory : public DesignObjectFactory {
 public:
@@ -96,7 +96,7 @@ public:
 };
 
 /*
-* This class represents a Query object, for design entity if
+* This class represents a Query Object Factory, for design entity if
 */
 class IfObjectFactory : public DesignObjectFactory {
 public:
@@ -109,7 +109,7 @@ public:
 };
 
 /*
-* This class represents a Query object, for design entity assign
+* This class represents a Query Object Factory, for design entity assign
 */
 class AssignObjectFactory : public DesignObjectFactory {
 public:
@@ -122,7 +122,7 @@ public:
 };
 
 /*
-* This class represents a Query object, for design entity variable
+* This class represents a Query Object Factory, for design entity variable
 */
 class VariableObjectFactory : public DesignObjectFactory {
 public:
@@ -135,7 +135,7 @@ public:
 };
 
 /*
-* This class represents a Query object, for design entity constant
+* This class represents a Query Object Factory, for design entity constant
 */
 class ConstantObjectFactory : public DesignObjectFactory {
 public:
@@ -148,7 +148,7 @@ public:
 };
 
 /*
-* This class represents a Query object, for design entity procedure
+* This class represents a Query Object Factory, for design entity procedure
 */
 class ProcedureObjectFactory : public DesignObjectFactory {
 public:

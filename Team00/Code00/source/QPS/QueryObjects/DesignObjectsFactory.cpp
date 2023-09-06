@@ -1,7 +1,7 @@
 #include "DesignObjectsFactory.h"
 
 	/*
-	* This function takes in a string and returns the DesignObject related to the string. Throws exception otherwise
+	* This function takes in a string and returns the DesignObjectFactory related to the string. Throws exception otherwise
 	*/
 	shared_ptr<DesignObjectFactory> DesignObjectFactory::createDesignFactory(string_view type) {
 	if (type == "stmt"sv) {

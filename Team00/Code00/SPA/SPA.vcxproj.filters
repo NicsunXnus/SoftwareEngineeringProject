@@ -28,6 +28,9 @@
     <Filter Include="Header Files\QPS">
       <UniqueIdentifier>{a2717310-914b-4262-b69e-3513f353e57d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Constants">
+      <UniqueIdentifier>{8024c66f-f55f-4e63-911d-5ccb61b3c6f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\DesignExtractor.cpp">
@@ -115,6 +118,9 @@
     </ClInclude>
     <ClInclude Include="..\source\QPS\QueryObjects\QueryObjectFactory.h">
       <Filter>Header Files\QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\Constants\QPSPKB.h">
+      <Filter>Header Files\Constants</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
