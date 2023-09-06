@@ -21,9 +21,13 @@ public:
 
     map<string, vector<int>>* getConstantDatabase();
 
-    void insertEntityStatement(const string& key, const vector<int>& value);
+    void insertEntityStatement(const string& statement, const vector<int>& lines);
 
-    // insert proc/var/const
+    void insertProcedure(const string& procedure, const vector<int>& lines);
+
+    void insertVariable(const string& variable, const vector<int>& lines);
+
+    void insertConstant(const string& constant, const vector<int>& lines);
 
     void printDatabase() const;
 

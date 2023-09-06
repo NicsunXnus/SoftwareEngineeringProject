@@ -9,9 +9,13 @@ public:
 
 	// parse trees (for querying patterns)
 
-	static void addEntityStatement(string entity, vector<int>);
+	static void addEntityStatement(string statement, vector<int> lines);
 
-	// add proc/var/const
+	static void addProcedure(string procedure, vector<int> lines);
+
+	static void addVariable(string variable, vector<int> lines);
+
+	static void addConstant(string constant, vector<int> lines);
 
 	static void addAbstraction(string abstraction, KeyValue key, vector<int> lines);
 };

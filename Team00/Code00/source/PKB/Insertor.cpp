@@ -13,9 +13,24 @@ void Insertor::setAST(TNode* r) {
 	// set r as the root of AST by calling insertor to do work (set pointer in StorageManager)
 }
 
-void Insertor::addEntityStatement(string entity, vector<int> lines) {
+void Insertor::addEntityStatement(string statement, vector<int> lines) {
 	EntityStorage* entity_storage = StorageManager::getEntityStorage();
-	(*entity_storage).insertEntity(entity, lines);
+	(*entity_storage).insertEntityStatement(statement, lines);
+}
+
+void Insertor::addProcedure(string procedure, vector<int> lines) {
+	EntityStorage* entity_storage = StorageManager::getEntityStorage();
+	(*entity_storage).insertProcedure(procedure, lines);
+}
+
+void Insertor::addVariable(string variable, vector<int> lines) {
+	EntityStorage* entity_storage = StorageManager::getEntityStorage();
+	(*entity_storage).insertVariable(variable, lines);
+}
+
+void Insertor::addConstant(string constant, vector<int> lines) {
+	EntityStorage* entity_storage = StorageManager::getEntityStorage();
+	(*entity_storage).insertConstant(constant, lines);
 }
 
 void Insertor::addAbstraction(string abstraction, KeyValue key, vector<int> lines) {
