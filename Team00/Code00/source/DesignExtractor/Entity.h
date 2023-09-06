@@ -4,7 +4,6 @@
 #include <map>
 #include "../AST/ASTNode.h"
 #include "../AST/ExprNode.h"
-#include "ProcedureEntity.h" 
 
 class ProcedureEntity;
 class StatmentEntity;
