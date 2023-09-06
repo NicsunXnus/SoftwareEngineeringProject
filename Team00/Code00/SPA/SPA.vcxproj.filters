@@ -19,9 +19,6 @@
     <Filter Include="Header Files\Tokenizer Files">
       <UniqueIdentifier>{e5a54dff-741b-4a40-b105-6f05b055f98a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Tokenizer">
-      <UniqueIdentifier>{2e5d6711-4d3e-4020-bd8c-7891fe508155}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\DesignExtractor.cpp">
@@ -33,55 +30,20 @@
     <ClCompile Include="..\source\PKB.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\TNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\TokenizerClasses\PQLTokenizer.cpp">
-      <Filter>Source Files\Tokenizer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\TokenizerClasses\TokenizerFunctions.cpp">
-      <Filter>Source Files\Tokenizer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\TokenizerClasses\SIMPLETokenizer.cpp">
-      <Filter>Source Files\Tokenizer</Filter>
+
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\source\AST\ASTBuilder.h">
+      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\PKB.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\TNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenizerClasses\PQLTokenizer.h">
+    <ClInclude Include="..\source\TokenizerClasses\TokenFactory.h">
       <Filter>Header Files\Tokenizer Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\TokenizerClasses\TokenizerFunctions.h">
-      <Filter>Header Files\Tokenizer Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenizerClasses\SIMPLETokenizer.h">
-      <Filter>Header Files\Tokenizer Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\IdentifierToken.h">
-      <Filter>Header Files\Token Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\KeywordToken.h">
-      <Filter>Header Files\Token Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\LiteralToken.h">
-      <Filter>Header Files\Token Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\OperatorToken.h">
-      <Filter>Header Files\Token Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\SeparatorToken.h">
-      <Filter>Header Files\Token Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\Token.h">
-      <Filter>Header Files\Token Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\UnderscoreToken.h">
-      <Filter>Header Files\Token Files</Filter>
-    </ClInclude>
+
   </ItemGroup>
 </Project>
