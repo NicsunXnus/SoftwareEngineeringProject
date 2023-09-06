@@ -12,33 +12,12 @@ class ConstantEntity;
 
 class Entity {
 public:
-    static std::shared_ptr<Entity> createEntity(const std::string& entityType) {
-    if (entityType == "procedure") {
-        std::shared_ptr<ProcedureEntity> procedureEntity = std::make_shared<ProcedureEntity>();
-        return std::static_pointer_cast<Entity>(procedureEntity);
-    // TODO: For pattern matching
-    // } else if (entityType == "assign") {
-    //     return std::make_shared<AssignStatementEntity>();
-    } else if (entityType == "stmt") {
-        std::shared_ptr<StatementEntity> statementEntity = std::make_shared<StatementEntity>();
-        return std::static_pointer_cast<Entity>(statementEntity);
-    } else if (entityType == "variable") {
-        std::shared_ptr<VariableEntity> variableEntity = std::make_shared<VariableEntity>();
-        return std::static_pointer_cast<Entity>(variableEntity);
-    } else if (entityType == "constant") {
-        std::shared_ptr<ConstantEntity> constantEntity = std::make_shared<ConstantEntity>();
-        return std::static_pointer_cast<Entity>(constantEntity);
-    } else {
-        return nullptr;
-    }
-    }
+    Entity() = default;
+    
+    virtual ~Entity() = default;
 
     std::map<std::string, std::vector<int>>getMap() {
         return this->EntityStorageMap;
-    }
-
-    std::string getEntityType() {
-        return this->entityType;
     }
 
     void insert(std::string name, int lineNumber) {
@@ -48,12 +27,10 @@ public:
         this->EntityStorageMap[name].push_back(lineNumber);
     }
 
-    virtual ~Entity() = default;
     virtual void extractEntity(std::shared_ptr<ASTNode> astNode) = 0;
 
 private:
     std::map<std::string, std::vector<int>> EntityStorageMap;
-    std::string entityType;
 };
 
 class ProcedureEntity : public Entity {
