@@ -40,11 +40,6 @@ public:
 	*/
 	vector<shared_ptr<QueryObject>> validateQuery(vector<string_view> query);
 
-	/*
-	* This function generates the QueryObjects based on the tokens
-	*/
-	//virtual vector<QueryObject> generateQueryObjects(vector<Token> tokens);
-
 };
 
 #endif

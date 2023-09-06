@@ -1,4 +1,4 @@
-#include<stdio.h>
+#include <stdio.h>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -109,13 +109,51 @@ vector<shared_ptr<QueryObject>> QueryParser::validateDeclaration(vector<string_v
 
 vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> query) {
 	vector<shared_ptr<QueryObject>> result;
+	shared_ptr<ClauseFactory> clauseFactory = createClauseFactory();
+	int currentWordIndex = 0;
+
+	// check 'Select' keyword is present
+	if (query[currentWordIndex] != "Select"sv) {
+		throw runtime_error("'Select' keyword not present");
+	}
+
+	currentWordIndex++;
+
+	// check synonym is present in declaration
+	if (!isDeclared(query[currentWordIndex])) {
+		std::string exceptionMessage = std::string(query[currentWordIndex]);
+		exceptionMessage.append(" is not a valid synonym");
+		throw runtime_error(exceptionMessage);
+	}
+
+	currentWordIndex++;
+
+	// create select query object if query word length == 2
+	if (query.size() == 2) {
+		// call 
+	}
+
+	// check 'such' and 'that' keywords are present
+	if (query[currentWordIndex] != "such"sv) {
+		throw runtime_error("'such' keyword not present");
+	}
+	currentWordIndex++;
+	if (query[currentWordIndex] != "that"sv) {
+		throw runtime_error("'that' keyword not present");
+	}
+	
 	return result;
 }
 
+bool isDeclared(string_view synonym) {
+	return true;
+}
+
+
 // Need function to link declarations with query
 
-/*vector<QueryObject> QueryParser::generateQueryObjects(vector<Token> tokens) {
+vector<QueryObject> QueryParser::generateQueryObjects(vector<Token> tokens) {
 
-}*/
+}
 
 
