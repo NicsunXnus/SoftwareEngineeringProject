@@ -14,29 +14,12 @@ class ConstantEntity;
 
 class Entity {
 public:
-    static std::shared_ptr<Entity> createEntity(const std::string& entityType) {
-        if (entityType == "procedure") {
-            return std::make_shared<ProcedureEntity>();
-        // TODO: For pattern matching
-        // } else if (entityType == "assign") {
-        //     return std::make_shared<AssignStatementEntity>();
-        } else if (entityType == "stmt") {
-            return std::make_shared<StatementEntity>();
-        } else if (entityType == "variable") {
-            return std::make_shared<VariableEntity>();
-        } else if (entityType == "constant") {
-            return std::make_shared<ConstantEntity>();
-        } else {
-            return nullptr;
-        }
-    }
+    Entity() = default;
+    
+    virtual ~Entity() = default;
 
     std::map<std::string, std::vector<int>>getMap() {
         return this->EntityStorageMap;
-    }
-
-    std::string getEntityType() {
-        return this->entityType;
     }
 
     void insert(std::string name, int lineNumber) {
@@ -46,12 +29,10 @@ public:
         this->EntityStorageMap[name].push_back(lineNumber);
     }
 
-    virtual ~Entity() = default;
     virtual void extractEntity(std::shared_ptr<ASTNode> astNode) = 0;
 
 private:
     std::map<std::string, std::vector<int>> EntityStorageMap;
-    std::string entityType;
 };
 
 class ProcedureEntity : public Entity {
