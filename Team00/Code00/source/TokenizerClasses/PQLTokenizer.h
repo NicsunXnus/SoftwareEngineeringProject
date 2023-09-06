@@ -5,8 +5,6 @@
 #include <string_view>
 #include <vector>
 
-#include "TokenizerFactory.h"
-
 using namespace std::string_view_literals;
 
 /**
@@ -21,7 +19,7 @@ inline std::vector<std::string_view> tokenize(std::string_view pql) {
 	bool isWord{ false };
 
 	for (int i = 0; i < pql.length(); ++i) {
-		if (pql[i] == ';' || pql[i] == ',') {
+		if (pql[i] == ';' || pql[i] == ',' || pql[i] == '(' || pql[i] == ')') {
 			if (isWord) {
 				tokens.push_back(pql.substr(startIndex, i - startIndex));
 				isWord = false;
