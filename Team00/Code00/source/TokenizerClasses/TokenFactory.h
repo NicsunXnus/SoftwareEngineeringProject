@@ -72,9 +72,10 @@ static const std::unordered_set<std::string> uniquePql = {
 };
 
 // Checks if a given input string are all numbers
+// Does NOT check if it is a valid integer literal (ie leading 0)
 static bool isNumber(std::string input) {
 	for (char const& ch : input) {
-		if (std::isdigit(ch) == 0)
+		if (!std::isdigit(ch))
 			return false;
 	}
 	return true;
