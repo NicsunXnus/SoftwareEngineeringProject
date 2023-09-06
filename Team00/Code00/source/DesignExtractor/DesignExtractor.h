@@ -11,18 +11,15 @@ using namespace std;
 #include "../AST/CondExprNode.h"
 // #include "../PKB/Inserter.h"
 
-
-
-
 class DesignExtractor {
 public:
     // Constructor creates the entity objects
     DesignExtractor() {
-        procedureEntity = std::make_shared<ProcedureEntity>();
-        statementEntity = std::make_shared<StatementEntity>();
-        variableEntity = std::make_shared<VariableEntity>();
-        constantEntity = std::make_shared<ConstantEntity>();
-        patternStatementEntity = std::make_shared<PatternStatementEntity>();
+        this->procedureEntity = std::make_shared<ProcedureEntity>();
+        this->statementEntity = std::make_shared<StatementEntity>();
+        this->variableEntity = std::make_shared<VariableEntity>();
+        this->constantEntity = std::make_shared<ConstantEntity>();
+        this->patternStatementEntity = std::make_shared<PatternStatementEntity>();
     }
 
     void extractEntities(std::shared_ptr<ASTNode> astNode) {
@@ -37,7 +34,7 @@ public:
         } 
         else if (auto procedureNode = std::dynamic_pointer_cast<ProcedureNode>(astNode)) {
             // astNode is of type ProcedureNode
-            procedureEntity->extractEntity(procedureNode);
+            this->procedureEntity->extractEntity(procedureNode);
             std::vector<std::shared_ptr<StatementNode>> statements = procedureNode->getStatements();
             for (const auto& statement : statements) {
                 extractEntities(statement);
@@ -45,20 +42,20 @@ public:
         } 
         else if (auto assignNode = std::dynamic_pointer_cast<AssignNode>(astNode)) {
             // astNode is of type assignNode
-            patternStatementEntity->extractEntity(assignNode);     
+            this->patternStatementEntity->extractEntity(assignNode);     
         } 
         else if (auto statementNode = std::dynamic_pointer_cast<StatementNode>(astNode)) {
             // astNode is of type StatementNode
-            statementEntity->extractEntity(statementNode);
+            this->statementEntity->extractEntity(statementNode);
             handleStatement(statementNode);
         } 
         else if (auto variableNode = std::dynamic_pointer_cast<VariableNode>(astNode)) {
             // astNode is of type VariableNode
-            variableEntity->extractEntity(variableNode);
+            this->variableEntity->extractEntity(variableNode);
         } 
         else if (auto constantNode = std::dynamic_pointer_cast<ConstantNode>(astNode)) {
             // astNode is of type ConstantNode
-            constantEntity->extractEntity(constantNode);
+            this->constantEntity->extractEntity(constantNode);
         } 
         else {
             // Handle other cases or report an error
@@ -91,11 +88,11 @@ public:
 
     // void insertEntities() {
     //     // Get the entity maps
-    //     std::map<std::string, std::vector<int>> procedureMap = procedureEntity->getMap();
-    //     std::map<std::string, std::vector<int>> statementMap = statementEntity->getMap();
-    //     std::map<std::string, std::vector<int>> variableMap = variableEntity->getMap();
-    //     std::map<std::string, std::vector<int>> constantMap = constantEntity->getMap();
-    //     // std::map<std::string, std::vector<int>> assignStatementMap = assignStatementEntity->getMap();
+    //     std::map<std::string, std::vector<int>> procedureMap = this->procedureEntity->getMap();
+    //     std::map<std::string, std::vector<int>> statementMap = this->statementEntity->getMap();
+    //     std::map<std::string, std::vector<int>> variableMap = this->variableEntity->getMap();
+    //     std::map<std::string, std::vector<int>> constantMap = this->constantEntity->getMap();
+    //     // std::map<std::string, std::vector<int>> assignStatementMap = this->assignStatementEntity->getMap();
 
     //     // Insert the entities into the PKB
     //     Insertor::addProcedures(procedureMap);

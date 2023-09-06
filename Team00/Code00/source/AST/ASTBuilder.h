@@ -28,7 +28,7 @@ public:
             std::shared_ptr<Token> token = statements[i];
             if (token->getName() == "print") { //for PRINT NODE
                 i = i + 1; //To advance to the variable
-                std::shared_ptr<VariableNode> variableNode = std::make_shared<VariableNode>(statements[i]->getName());
+                std::shared_ptr<VariableNode> variableNode = std::make_shared<VariableNode>(statements[i]->getName(), statementNumber);
                 std::shared_ptr<PrintNode> printNode = std::make_shared<PrintNode>(statementNumber, variableNode);
                 statementNumber++;
                 statementListToReturn.emplace_back(printNode);
@@ -39,7 +39,7 @@ public:
             }
             else if (token->getName() == "read") {
                 i = i + 1; //To advance to the variable
-                std::shared_ptr<VariableNode> variableNode = std::make_shared<VariableNode>(statements[i]->getName());
+                std::shared_ptr<VariableNode> variableNode = std::make_shared<VariableNode>(statements[i]->getName(), statementNumber);
                 std::shared_ptr<ReadNode> readNode = std::make_shared<ReadNode>(statementNumber, variableNode);
                 statementNumber++;
                 statementListToReturn.emplace_back(readNode);
@@ -118,7 +118,7 @@ public:
             }
             else {
                 // Is assign statement
-                std::shared_ptr <ExprNode> varNode = std::make_shared < VariableNode>(token->getName());
+                std::shared_ptr <ExprNode> varNode = std::make_shared < VariableNode>(token->getName(), statementNumber);
                 i = i + 2; //advance past =
                 token = statements[i];
                 int startIndex = i;
@@ -196,7 +196,7 @@ public:
             else if (isAlphanumeric(token->getName())) {
                 std::shared_ptr<ExprNode> refNode;
                 if (isNumber(token->getName()))  refNode = std::make_shared<ConstantNode>(std::stoi(token->getName()));
-                else refNode = std::make_shared <VariableNode>(token->getName());
+                else refNode = std::make_shared <VariableNode>(token->getName(), statementNumber);
                 values.push(refNode);
             }
             else {

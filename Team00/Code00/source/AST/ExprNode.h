@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-class ExprNode {
+class ExprNode : public ASTNode  {
 public:
     virtual ~ExprNode() = default;
 
@@ -22,12 +22,14 @@ public:
     virtual std::shared_ptr<ExprNode> getRightExpr() const {
         return std::make_shared<ExprNode>();
     }
+    ExprNode(std::string name = "", int statementNumber = -1)
+    : ASTNode(std::move(name), statementNumber) {}
 };
 
 class DividesNode : public ExprNode {
 public:
     DividesNode(std::shared_ptr<ExprNode> leftExpr, std::shared_ptr<ExprNode> rightExpr)
-        : leftExpr(leftExpr), rightExpr(rightExpr) {}
+        : ExprNode("DividesNode"), leftExpr(leftExpr), rightExpr(rightExpr) {}
     std::string getValue() const override {
         return " / ";
     }
@@ -47,7 +49,7 @@ private:
 class MinusNode : public ExprNode {
 public:
     MinusNode(std::shared_ptr<ExprNode> leftExpr, std::shared_ptr<ExprNode> rightExpr)
-        : leftExpr(leftExpr), rightExpr(rightExpr) {}
+        : ExprNode("MinusNode"), leftExpr(leftExpr), rightExpr(rightExpr) {}
     std::string getValue() const override {
         return " - ";
     }
@@ -67,7 +69,7 @@ private:
 class ModNode : public ExprNode {
 public:
     ModNode(std::shared_ptr<ExprNode> leftExpr, std::shared_ptr<ExprNode> rightExpr)
-        : leftExpr(leftExpr), rightExpr(rightExpr) {}
+        : ExprNode("ModNode"), leftExpr(leftExpr), rightExpr(rightExpr) {}
     std::string getValue() const override {
         return " % ";
     }
@@ -87,7 +89,7 @@ private:
 class PlusNode : public ExprNode {
 public:
     PlusNode(std::shared_ptr<ExprNode> leftExpr, std::shared_ptr<ExprNode> rightExpr)
-        : leftExpr(leftExpr), rightExpr(rightExpr) {}
+        : ExprNode("PlusNode"), leftExpr(leftExpr), rightExpr(rightExpr) {}
     std::string getValue() const override {
         return " + ";
     }
@@ -109,7 +111,7 @@ private:
 class TimesNode : public ExprNode {
 public:
     TimesNode(std::shared_ptr<ExprNode> leftExpr, std::shared_ptr<ExprNode> rightExpr)
-        : leftExpr(leftExpr), rightExpr(rightExpr) {}
+        : ExprNode("TimesNode"), leftExpr(leftExpr), rightExpr(rightExpr) {}
     std::string getValue() const override {
         return " * ";
     }
@@ -129,7 +131,7 @@ private:
 class ConstantNode : public ExprNode {
 public:
     ConstantNode(int value)
-        : value(value) {}
+        : ExprNode("ConstantNode"), value(value) {}
 
     int getIntVal() const {
         return this->value;
@@ -149,8 +151,8 @@ private:
 
 class VariableNode : public ExprNode {
 public:
-    VariableNode(std::string name)
-        : name(std::move(name)) {}
+    VariableNode(std::string name, int statementNumber)
+        : ExprNode("VariableNode", statementNumber), name(std::move(name)) {}
 
     bool isTerminal() const override {
         return true;
