@@ -15,7 +15,7 @@
 
 using namespace std::string_view_literals;
 
-std::shared_ptr<Token> tokenizerGenerator(std::string_view tokenName) {
+inline std::shared_ptr<Token> tokenizerGenerator(std::string_view tokenName) {
 	if (tokenName == "assign"sv) {
 		return std::make_shared<AssignKeywordToken>();
 	}

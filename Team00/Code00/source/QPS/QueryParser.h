@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include "QueryObjects/QueryObject.h"
 
+
 using namespace std;
 /**
 * This class is responsible for the creation of QueryObjects. A concrete class for each Query
@@ -41,7 +42,26 @@ public:
 	* This function validates the query clause
 	*/
 	vector<shared_ptr<QueryObject>> validateQuery(vector<string_view> query);
+private:
+	/*
+	* Helper function to check if Select keyword is present
+	*/
+	bool hasSelect(std::vector<string_view> query, int index);
 
+	/*
+	* Helper function to check if a synonym is declared
+	*/
+	bool isDeclared(std::vector<string_view> query, int index);
+
+	/*
+	* Helper function to check if such that is present
+	*/
+	bool hasSuchThat(std::vector<string_view> query, int index);
+
+	/*
+	* Helper function to check if a such that clause is present
+	*/
+	bool hasRelationalReference(std::vector<string_view> query, int index);
 };
 
 #endif

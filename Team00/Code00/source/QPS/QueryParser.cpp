@@ -2,10 +2,13 @@
 #include <iostream>
 #include <string>
 #include <vector>
+
 #include "QueryParser.h"
 #include "QueryObjects/DesignObjects.h"
 #include "QueryObjects/DesignObjectsFactory.h"
 #include "QueryObjects/SynonymObjects.h"
+#include "QueryObjects/ClauseObjectFactory.h"
+
 
 using namespace std;
 
@@ -118,51 +121,78 @@ vector<shared_ptr<QueryObject>> QueryParser::validateDeclaration(vector<string_v
 
 vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> query) {
 	vector<shared_ptr<QueryObject>> result;
-	shared_ptr<ClauseFactory> clauseFactory = createClauseFactory();
+	
+	//shared_ptr<ClauseFactory> clauseFactory = ClauseObjectFactory::createClauseFactory();
+	shared_ptr<QueryObject> selectQuery;
+
 	int currentWordIndex = 0;
 
 	// check 'Select' keyword is present
-	if (query[currentWordIndex] != "Select"sv) {
+	if (!hasSelect(query, currentWordIndex)) {
 		throw runtime_error("'Select' keyword not present");
 	}
-
 	currentWordIndex++;
 
 	// check synonym is present in declaration
-	if (!isDeclared(query[currentWordIndex])) {
-		std::string exceptionMessage = std::string(query[currentWordIndex]);
-		exceptionMessage.append(" is not a valid synonym");
-		throw runtime_error(exceptionMessage);
+	if (!isDeclared(query, currentWordIndex)) {
+		throw runtime_error("Synonym not present in select clause, or synonym not declared");
 	}
-
+	selectQuery = synonyms.find(query[currentWordIndex])->second;
+	result.push_back(selectQuery);
 	currentWordIndex++;
 
-	// create select query object if query word length == 2
-	if (query.size() == 2) {
-		// call 
+	// return select query if query size == 2
+	if (query.size() == currentWordIndex) {
+		return result;
 	}
+
+	return result;
 
 	// check 'such' and 'that' keywords are present
-	if (query[currentWordIndex] != "such"sv) {
-		throw runtime_error("'such' keyword not present");
+	if (!hasSuchThat(query, currentWordIndex)) {
+		throw runtime_error("'such that' keywords not present");
 	}
-	currentWordIndex++;
-	if (query[currentWordIndex] != "that"sv) {
-		throw runtime_error("'that' keyword not present");
-	}
+	currentWordIndex += 2;
 	
-	return result;
+	// check for relational reference
+	if (!hasRelationalReference(query, currentWordIndex)) {
+		throw runtime_error("error parsing such that clause");
+	}
+	// substrings should look like Uses ( v , a ) 
+	
 }
 
-bool isDeclared(string_view synonym) {
-	return true;
+bool QueryParser::isDeclared(std::vector<string_view> query, int index) {
+	if (index >= static_cast<int>(query.size())) {
+		return false;
+	}
+	string_view synonym = query[index];
+	return this->synonyms.find(synonym) != this->synonyms.end();
+}
+
+bool QueryParser::hasSelect(std::vector<string_view> query, int index) {
+	return index < static_cast<int>(query.size()) && query[index] == "Select"sv;
+}
+
+bool QueryParser::hasSuchThat(std::vector<string_view> query, int index) {
+	return index < static_cast<int>(query.size() - 1) && query[index] == "such"sv && query[index+1] == "that"sv;
+}
+
+bool QueryParser::hasRelationalReference(std::vector<string_view> query, int index) {
+	if (index + 5 >= static_cast<int>(query.size())) {
+		return false;
+	}
+	bool hasRelationalKeyword{};
+	bool hasOpenBracket{};
+	bool hasArg1{};
+	bool hasComma{};
+	bool hasArg2{};
+	bool hasCloseBracket{};
+
+	return hasRelationalKeyword && hasOpenBracket && hasArg1 && hasComma && hasArg2 && hasCloseBracket;
 }
 
 
-// Need function to link declarations with query
 
-vector<QueryObject> QueryParser::generateQueryObjects(vector<Token> tokens) {
-
-}
 
 

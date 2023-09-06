@@ -1,5 +1,5 @@
-#ifndef TOKENIZER_H
-#define TOKENIZER_H
+#ifndef PQLTOKENIZER_H
+#define PQLTOKENIZER_H
 
 #include <string>
 #include <string_view>
@@ -14,7 +14,7 @@ using namespace std::string_view_literals;
 *
 * Returns a std::vector of tokens.
 */
-std::vector<std::string_view> tokenize(std::string_view pql) {
+inline std::vector<std::string_view> tokenize(std::string_view pql) {
 
 	std::vector<std::string_view> tokens;
 	int startIndex{ 0 };
