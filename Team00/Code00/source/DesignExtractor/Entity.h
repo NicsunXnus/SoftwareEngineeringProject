@@ -6,6 +6,11 @@
 #include "../AST/ExprNode.h"
 #include "ProcedureEntity.h" 
 
+class ProcedureEntity;
+class StatmentEntity;
+class VariableEntity;
+class ConstantEntity;
+// class AssignStatementEntity;
 
 class Entity {
 public:
@@ -22,8 +27,7 @@ public:
         } else if (entityType == "constant") {
             return std::make_shared<ConstantEntity>();
         } else {
-            // Handle unsupported entity types or return a default entity
-            return std::make_shared<Entity>();
+            return nullptr;
         }
     }
 
@@ -117,7 +121,7 @@ class ConstantEntity : public Entity {
 public:
     void extractEntity(std::shared_ptr<ASTNode> astNode) override {
         // Check if astNode is a ConstantNode
-        std::shared_ptr<ProgramNode> constantNode = std::dynamic_pointer_cast<ConstantNode>(astNode);
+        std::shared_ptr<ConstantNode> constantNode = std::dynamic_pointer_cast<ConstantNode>(astNode);
 
         if (constantNode) {
             // If astNode is indeed a ConstantNode, extract information
