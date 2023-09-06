@@ -32,6 +32,7 @@ public:
     //
     //  EDITS MADE:
     //  Included a "includeDelimiters" boolean flag to check if the delimiters should be in the vector output or not.
+    // ai-gen start (gpt3, 1)
     std::vector<std::string> result;
     std::regex regexPattern(delimiter);
 
@@ -49,7 +50,7 @@ public:
       }
 
       // Add the matched text
-      if (includeDelimiter) {
+      if (includeDelimiter) { // this conditional was added manually
         result.push_back(match.str());
       }
 
@@ -63,6 +64,7 @@ public:
     }
 
     return result;
+    // ai-gen end
   }
 
   /// <summary>

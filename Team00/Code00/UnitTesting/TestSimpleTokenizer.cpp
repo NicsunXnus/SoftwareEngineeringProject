@@ -10,9 +10,9 @@ namespace UnitTesting
 	{
 	public:
 
-		TEST_METHOD(TestBasic)
+		TEST_METHOD(TestSimpleTokenizer)
 		{
-			std::vector<std::shared_ptr<Token>> test = SimpleTokenizer::tokenize(
+			std::vector < std::vector<std::shared_ptr<Token>>> test = SimpleTokenizer::tokenize(
 				"read num1;"
 				"read num2;"
 				"read num3;"
@@ -23,9 +23,10 @@ namespace UnitTesting
 				"print ave;"
 			);
 			for (int i = 0; i < test.size(); i++) {
-				std::shared_ptr<Token> curr = test[i];
-				Token token = *curr;
-
+				std::vector<std::shared_ptr<Token>> curr = test[i];
+				for (int j = 0; j < curr.size(); j++) {
+					Token token = *curr[j];
+				}
 			}
 			
 		}
