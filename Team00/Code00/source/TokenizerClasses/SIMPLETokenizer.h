@@ -113,13 +113,13 @@ public:
 	/// </summary>
 	/// <param name="src">input SIMPLE source code</param>
 	/// <returns>a 1D list of shared pointers to Tokens generated</returns>
-	static std::vector<std::shared_ptr<Token>> tokenize(std::string_view src) {
+	static std::vector<std::vector<std::shared_ptr<Token>>> tokenize(std::string_view src) {
 		std::vector<std::string> statements = TokenizerFunctions::splitString(std::string(src), ";");
-		std::vector<std::shared_ptr<Token>> output;
+		std::vector<std::vector<std::shared_ptr<Token>>> output;
 		for (std::string stmt : statements) {
 			stmt = TokenizerFunctions::trimWhitespaces(stmt);
 			std::vector<std::shared_ptr<Token>> tokens = tokenizeStatement(stmt);
-			output.insert(output.end(), tokens.begin(), tokens.end());
+			output.push_back(tokens);
 		}
 		return output;
 	}
