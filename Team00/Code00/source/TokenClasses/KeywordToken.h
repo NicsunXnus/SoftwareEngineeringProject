@@ -29,7 +29,6 @@ public:
 	};
 };
 
-
 /**
 * This class represents the token for the "call" keyword, used in PQL declarations and in SIMPLE
 */
@@ -51,7 +50,27 @@ public:
 };
 
 /**
+* This class represents the token for the "if" keyword, used in PQL declarations and in SIMPLE
+*/
+class IfKeywordToken : public KeywordToken {
+public:
+	IfKeywordToken()
+		: KeywordToken{ "if"sv } {
+	};
+};
+
+/**
 * This class represents the token for the "then" keyword, in SIMPLE
+*/
+class ThenKeywordToken : public KeywordToken {
+public:
+	ThenKeywordToken()
+		: KeywordToken{ "then"sv } {
+	};
+};
+
+/**
+* This class represents the token for the "else" keyword, in SIMPLE
 */
 class ElseKeywordToken : public KeywordToken {
 public:
@@ -61,12 +80,12 @@ public:
 };
 
 /**
-* This class represents the token for the "if" keyword, used in PQL declarations and in SIMPLE
+* This class represents the token for the "while" keyword, used in PQL declarations and in SIMPLE
 */
-class IfKeywordToken : public KeywordToken {
+class WhileKeywordToken : public KeywordToken {
 public:
-	IfKeywordToken()
-		: KeywordToken{ "if"sv } {
+	WhileKeywordToken()
+		: KeywordToken{ "while"sv } {
 	};
 };
 
@@ -111,16 +130,6 @@ public:
 };
 
 /**
-* This class represents the token for the "then" keyword, in SIMPLE
-*/
-class ThenKeywordToken : public KeywordToken {
-public:
-	ThenKeywordToken()
-		: KeywordToken{ "then"sv } {
-	};
-};
-
-/**
 * This class represents the token for the "variable" keyword, used in PQL declarations
 */
 class VariableKeywordToken : public KeywordToken {
@@ -131,12 +140,32 @@ public:
 };
 
 /**
-* This class represents the token for the "while" keyword, used in PQL declarations and in SIMPLE
+* This class represents the token for the "select" keyword, used in PQL
 */
-class WhileKeywordToken : public KeywordToken {
+class SelectKeywordToken : public KeywordToken {
 public:
-	WhileKeywordToken()
-		: KeywordToken{ "while"sv } {
+	SelectKeywordToken()
+		: KeywordToken{ "select"sv } {
+	};
+};
+
+/**
+* This class represents the token for the "such" keyword, used in PQL
+*/
+class SuchKeywordToken : public KeywordToken {
+public:
+	SuchKeywordToken()
+		: KeywordToken{ "such"sv } {
+	};
+};
+
+/**
+* This class represents the token for the "that" keyword, used in PQL
+*/
+class ThatKeywordToken : public KeywordToken {
+public:
+	ThatKeywordToken()
+		: KeywordToken{ "that"sv } {
 	};
 };
 

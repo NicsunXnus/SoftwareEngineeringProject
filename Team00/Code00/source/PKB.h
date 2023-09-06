@@ -11,7 +11,6 @@
 
 using namespace std;
 
-
 /**
 * This class represents the PKB component.
 * Comprises 3 main sub-components: Insertor, StorageManager, Responder

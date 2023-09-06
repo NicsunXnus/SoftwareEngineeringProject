@@ -16,5 +16,9 @@ public:
 	Token(std::string_view tokenName)
 		: tokenName{ tokenName } {
 	};
+	// Getter for the token name since the field is private.
+	std::string getName() {
+		return this->tokenName;
+	}
 };
 #endif
