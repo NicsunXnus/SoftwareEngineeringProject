@@ -13,20 +13,24 @@ class ConstantEntity;
 class Entity {
 public:
     static std::shared_ptr<Entity> createEntity(const std::string& entityType) {
-        if (entityType == "procedure") {
-            return std::make_shared<ProcedureEntity>();
-        // TODO: For pattern matching
-        // } else if (entityType == "assign") {
-        //     return std::make_shared<AssignStatementEntity>();
-        } else if (entityType == "stmt") {
-            return std::make_shared<StatementEntity>();
-        } else if (entityType == "variable") {
-            return std::make_shared<VariableEntity>();
-        } else if (entityType == "constant") {
-            return std::make_shared<ConstantEntity>();
-        } else {
-            return nullptr;
-        }
+    if (entityType == "procedure") {
+        std::shared_ptr<ProcedureEntity> procedureEntity = std::make_shared<ProcedureEntity>();
+        return std::static_pointer_cast<Entity>(procedureEntity);
+    // TODO: For pattern matching
+    // } else if (entityType == "assign") {
+    //     return std::make_shared<AssignStatementEntity>();
+    } else if (entityType == "stmt") {
+        std::shared_ptr<StatementEntity> statementEntity = std::make_shared<StatementEntity>();
+        return std::static_pointer_cast<Entity>(statementEntity);
+    } else if (entityType == "variable") {
+        std::shared_ptr<VariableEntity> variableEntity = std::make_shared<VariableEntity>();
+        return std::static_pointer_cast<Entity>(variableEntity);
+    } else if (entityType == "constant") {
+        std::shared_ptr<ConstantEntity> constantEntity = std::make_shared<ConstantEntity>();
+        return std::static_pointer_cast<Entity>(constantEntity);
+    } else {
+        return nullptr;
+    }
     }
 
     std::map<std::string, std::vector<int>>getMap() {
