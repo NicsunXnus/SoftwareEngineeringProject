@@ -13,35 +13,35 @@ class EntityStorage {
 public:
     // entities categorised as statement types and non-statement types.
     map<string, vector<int>>* EntityStorage::getStatementDatabase() {
-        return statement_database;
+        return this->statement_database;
     }
 
     map<string, vector<int>>* EntityStorage::getProcedureDatabase() {
-        return procedure_database;
+        return this->procedure_database;
     }
 
     map<string, vector<int>>* EntityStorage::getVariableDatabase() {
-        return variable_database;
+        return this->variable_database;
     }
 
     map<string, vector<int>>* EntityStorage::getConstantDatabase() {
-        return constant_database;
+        return this->constant_database;
     }
 
-    void EntityStorage::insertEntityStatement(const string& statement, const vector<int>& lines) {
-        (*statement_database)[statement] = lines;
+    void EntityStorage::setStatementDatabase(map<string, vector<int>>* database) {
+        this->statement_database = database;
     }
 
-    void EntityStorage::insertProcedure(const string& procedure, const vector<int>& lines) {
-        (*procedure_database)[procedure] = lines;
+    void EntityStorage::setProcedureDatabase(map<string, vector<int>>* database) {
+        this->procedure_database = database;
     }
 
-    void EntityStorage::insertVariable(const string& variable, const vector<int>& lines) {
-        (*variable_database)[variable] = lines;
+    void EntityStorage::setVariableDatabase(map<string, vector<int>>* database) {
+        this->variable_database = database;
     }
 
-    void EntityStorage::insertConstant(const string& constant, const vector<int>& lines) {
-        (*constant_database)[constant] = lines;
+    void EntityStorage::setConstantDatabase(map<string, vector<int>>* database) {
+        this->constant_database = database;
     }
 
     void EntityStorage::printDatabase() const {

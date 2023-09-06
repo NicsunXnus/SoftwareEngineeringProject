@@ -36,7 +36,7 @@ public:
 		else if (abstraction == "parent") {
 			return &parent_abstractions;
 		}
-		return nullptr;
+		throw runtime_error("No such abstraction found");
 	}
 
 	static EntityStorage* StorageManager::getEntityStorage() {

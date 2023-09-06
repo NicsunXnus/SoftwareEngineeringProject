@@ -12,24 +12,24 @@ public:
 		// set r as the root of AST by calling insertor to do work (set pointer in StorageManager)
 	}
 
-	void Insertor::addEntityStatement(string statement, vector<int> lines) {
+	void Insertor::addEntityStatements(map<string, vector<int>>* statements) {
 		EntityStorage* entity_storage = StorageManager::getEntityStorage();
-		(*entity_storage).insertEntityStatement(statement, lines);
+		(*entity_storage).setStatementDatabase(statements);
 	}
 
-	void Insertor::addProcedure(string procedure, vector<int> lines) {
+	void Insertor::addProcedures(map<string, vector<int>>* procedures) {
 		EntityStorage* entity_storage = StorageManager::getEntityStorage();
-		(*entity_storage).insertProcedure(procedure, lines);
+		(*entity_storage).setProcedureDatabase(procedures);
 	}
 
-	void Insertor::addVariable(string variable, vector<int> lines) {
+	void Insertor::addVariables(map<string, vector<int>>* variables) {
 		EntityStorage* entity_storage = StorageManager::getEntityStorage();
-		(*entity_storage).insertVariable(variable, lines);
+		(*entity_storage).setVariableDatabase(variables);
 	}
 
-	void Insertor::addConstant(string constant, vector<int> lines) {
+	void Insertor::addConstants(map<string, vector<int>>* constants) {
 		EntityStorage* entity_storage = StorageManager::getEntityStorage();
-		(*entity_storage).insertConstant(constant, lines);
+		(*entity_storage).setConstantDatabase(constants);
 	}
 
 	// abstractions include "uses", "follows" etc.
