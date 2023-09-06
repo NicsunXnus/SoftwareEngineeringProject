@@ -12,7 +12,7 @@ class ProcedureEntity;
 class StatmentEntity;
 class VariableEntity;
 class ConstantEntity;
-// class AssignStatementEntity;
+class PatternStatementEntity;
 
 class Entity {
 public:
@@ -41,23 +41,21 @@ class ProcedureEntity : public Entity {
 public:
     void extractEntity(std::shared_ptr<ASTNode> astNode) override {
         // Check if astNode is a ProgramNode
-        std::shared_ptr<ProgramNode> programNode = std::dynamic_pointer_cast<ProgramNode>(astNode);
+        std::shared_ptr<ProcedureNode> procedureNode = std::dynamic_pointer_cast<ProcedureNode>(astNode);
 
-        if (programNode) {
-            // Extract the name of the procedure from the ProgramNode
-            std::vector<std::shared_ptr<ProcedureNode>> procedures = programNode->getProcedures();
+        if (procedureNode) {
+            // If astNode is indeed a ProgramNode, extract information
+            std::string procedureName = procedureNode->getName();
             
-            // Iterate through the procedures and store their names in EntityStorageMap
-            for (const auto& procedure : procedures) {
-                std::string procedureName = procedure->getName();
-                insert(procedureName, -1); 
-            }
+            // Store the procedure name as the key and add the line number to the vector
+            insert(procedureName, -1);
         }
     }
 };
 
 // Used for statements which do not have pattern matching
 class StatementEntity : public Entity {
+public:
     void extractEntity(std::shared_ptr<ASTNode> astNode) override {
         // Check if astNode is a StatementNode
         std::shared_ptr<StatementNode> statementNode = std::dynamic_pointer_cast<StatementNode>(astNode);
@@ -75,12 +73,12 @@ class StatementEntity : public Entity {
     }
 };
 
-// class AssignStatementEntity : public StatementEntity {
-// public:
-//     void extractEntity(ASTNode astNode) override {
-//         // TODO: For pattern matching
-//     }
-// };
+class PatternStatementEntity : public StatementEntity {
+public:
+    void extractEntity(std::shared_ptr<ASTNode> astNode) override {
+        // TODO: For pattern matching
+    }
+};
 
 class VariableEntity : public Entity {
 public:
@@ -116,4 +114,4 @@ public:
     }
 };
 
-
+#endif
