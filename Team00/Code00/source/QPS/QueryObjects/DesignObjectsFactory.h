@@ -3,21 +3,29 @@
 #define DESIGNOBJECTFACTORY_H
 
 #include <string_view>
-#include "QueryObject.h"
+#include "QueryObjectFactory.h"
+#include "DesignObjects.h"
 
 using namespace std;
+
+
 /*
 * This class represents a Query object, for design entities
 */
-class DesignObjectFactory : public QueryObject {
+class DesignObjectFactory : public QueryObjectFactory {
 public:
-	DesignObjectFactory(string_view tokenName)
-		: QueryObject{ tokenName } {
+	DesignObjectFactory() : QueryObjectFactory{} {
+
 	}
 
 	virtual shared_ptr<QueryObject> create(string_view str) {
 		return make_shared<QueryObject>(str);
 	}
+
+	/*
+	* This function takes in a string and returns the DesignObject related to the string. Throws exception otherwise
+	*/
+	static shared_ptr<DesignObjectFactory> createDesignFactory(string_view type);
 };
 
 /*
@@ -25,8 +33,8 @@ public:
 */
 class StmtObjectFactory : public DesignObjectFactory {
 public:
-	StmtObjectFactory(string_view tokenName)
-		: DesignObjectFactory{ tokenName } {
+	StmtObjectFactory() :DesignObjectFactory{} {
+
 	};
 
 	shared_ptr<QueryObject> create(string_view str) override {
@@ -40,8 +48,7 @@ public:
 */
 class ReadObjectFactory : public DesignObjectFactory {
 public:
-	ReadObjectFactory(string_view tokenName)
-		: DesignObjectFactory{ tokenName } {
+	ReadObjectFactory() {
 	};
 
 	shared_ptr<QueryObject> create(string_view str) override {
@@ -54,8 +61,7 @@ public:
 */
 class PrintObjectFactory : public DesignObjectFactory {
 public:
-	PrintObjectFactory(string_view tokenName)
-		: DesignObjectFactory{ tokenName } {
+	PrintObjectFactory() {
 	};
 
 	shared_ptr<QueryObject> create(string_view str) override {
@@ -68,8 +74,7 @@ public:
 */
 class CallObjectFactory : public DesignObjectFactory {
 public:
-	CallObjectFactory(string_view tokenName)
-		: DesignObjectFactory{ tokenName } {
+	CallObjectFactory() {
 	};
 
 	shared_ptr<QueryObject> create(string_view str) override {
@@ -82,8 +87,7 @@ public:
 */
 class WhileObjectFactory : public DesignObjectFactory {
 public:
-	WhileObjectFactory(string_view tokenName)
-		: DesignObjectFactory{ tokenName } {
+	WhileObjectFactory() {
 	};
 
 	shared_ptr<QueryObject> create(string_view str) override {
@@ -96,8 +100,7 @@ public:
 */
 class IfObjectFactory : public DesignObjectFactory {
 public:
-	IfObjectFactory(string_view tokenName)
-		: DesignObjectFactory{ tokenName } {
+	IfObjectFactory() {
 	};
 
 	shared_ptr<QueryObject> create(string_view str) override {
@@ -110,8 +113,7 @@ public:
 */
 class AssignObjectFactory : public DesignObjectFactory {
 public:
-	AssignObjectFactory(string_view tokenName)
-		: DesignObjectFactory{ tokenName } {
+	AssignObjectFactory() {
 	};
 
 	shared_ptr<QueryObject> create(string_view str) override {
@@ -124,8 +126,7 @@ public:
 */
 class VariableObjectFactory : public DesignObjectFactory {
 public:
-	VariableObjectFactory(string_view tokenName)
-		: DesignObjectFactory{ tokenName } {
+	VariableObjectFactory() {
 	};
 
 	shared_ptr<QueryObject> create(string_view str) override {
@@ -138,8 +139,7 @@ public:
 */
 class ConstantObjectFactory : public DesignObjectFactory {
 public:
-	ConstantObjectFactory(string_view tokenName)
-		: DesignObjectFactory{ tokenName } {
+	ConstantObjectFactory() {
 	};
 
 	shared_ptr<QueryObject> create(string_view str) override {
@@ -152,8 +152,7 @@ public:
 */
 class ProcedureObjectFactory : public DesignObjectFactory {
 public:
-	ProcedureObjectFactory(string_view tokenName)
-		: DesignObjectFactory{ tokenName } {
+	ProcedureObjectFactory() {
 	};
 
 	shared_ptr<QueryObject> create(string_view str) override {
@@ -161,42 +160,5 @@ public:
 	}
 };
 
-
-/*
-* This function takes in a string and returns the DesignObject related to the string. Throws exception otherwise
-*/
-shared_ptr<DesignObjectFactory> createDesignFactory(string_view type) {
-	if (type == "stmt"sv) {
-		return make_shared<StmtObjectFactory>(type);
-	}
-	else if (type == "read"sv) {
-		return make_shared<ReadObjectFactory>(type);
-	}
-	else if (type == "print"sv) {
-		return make_shared<PrintObjectFactory>(type);
-	}
-	else if (type == "call"sv) {
-		return make_shared<CallObjectFactory>(type);
-	}
-	else if (type == "while"sv) {
-		return make_shared<WhileObjectFactory>(type);
-	}
-	else if (type == "if"sv) {
-		return make_shared<IfObjectFactory>(type);
-	}
-	else if (type == "assign"sv) {
-		return make_shared<AssignObjectFactory>(type);
-	}
-	else if (type == "variable"sv) {
-		return make_shared<VariableObjectFactory>(type);
-	}
-	else if (type == "constant"sv) {
-		return make_shared<ConstantObjectFactory>(type);
-	}
-	else if (type == "procedure"sv) {
-		return make_shared<ProcedureObjectFactory>(type);
-	}
-	throw runtime_error("Invalid string token for design object");
-}
 
 #endif

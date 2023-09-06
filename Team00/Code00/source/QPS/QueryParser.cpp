@@ -8,7 +8,10 @@
 #include "QueryObjects/SynonymObjects.h"
 
 using namespace std;
-QueryParser::QueryParser() {};
+
+QueryParser::QueryParser() {
+
+};
 
 /*
 	* This function splits the string into two groups: the declaration (variable v, assign a etc..) clause and the query (select...) clause
@@ -66,7 +69,7 @@ vector<vector<string_view>> QueryParser::splitDeclarations(vector<string_view> d
 	}
 	return result;
 }
- // TODO: need to ensure declarations are unique, no repeats
+
 /*
 * This function validates and converts the string tokens to QueryObjects
 * declaration : design-entity synonym (',' synonym)* ';'
@@ -79,7 +82,7 @@ vector<shared_ptr<QueryObject>> QueryParser::validateDeclaration(vector<string_v
 	}
 	// first token must be a design entity, then a synonym, exception thrown by createDesignFactory otherwise
 	// get the respective factory required to create QueryObjects
-	shared_ptr<DesignObjectFactory> designFactory = createDesignFactory(declaration[0]);
+	shared_ptr<DesignObjectFactory> designFactory = DesignObjectFactory::createDesignFactory(declaration[0]);
 	vector<shared_ptr<QueryObject>> result;
 	// rest of declaration must be the synonyms themselves, convert them to Design query objects
 	bool wasDeclaration = false;
@@ -98,8 +101,14 @@ vector<shared_ptr<QueryObject>> QueryParser::validateDeclaration(vector<string_v
 		if (!SynonymObject::isValid(currentDeclaration)) { // check if valid synonym
 			throw runtime_error("Invalid synonym");
 		}
-
+		
 		shared_ptr<QueryObject> queryObject = designFactory->create(currentDeclaration);
+		if (synonyms.find(currentDeclaration) != synonyms.end()) { // synonym already declared
+			throw runtime_error("Repeated synonym declaration");
+		}
+		else {
+			synonyms[currentDeclaration] = queryObject;
+		}
 		wasDeclaration = true;
 		result.push_back(queryObject);
 	}

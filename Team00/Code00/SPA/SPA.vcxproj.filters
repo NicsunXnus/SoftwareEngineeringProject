@@ -54,6 +54,9 @@
     <ClCompile Include="..\source\QPS\QueryObjects\QueryObject.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryObjects\DesignObjectsFactory.cpp">
+      <Filter>Header Files\QPS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\PKB.h">
@@ -108,6 +111,9 @@
       <Filter>Header Files\QPS</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\QueryObjects\DesignObjectsFactory.h">
+      <Filter>Header Files\QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryObjects\QueryObjectFactory.h">
       <Filter>Header Files\QPS</Filter>
     </ClInclude>
   </ItemGroup>

@@ -14,6 +14,7 @@
     <ClCompile Include="..\source\DesignExtractor.cpp" />
     <ClCompile Include="..\source\Parser.cpp" />
     <ClCompile Include="..\source\PKB.cpp" />
+    <ClCompile Include="..\source\QPS\QueryObjects\DesignObjectsFactory.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\QueryObject.cpp" />
     <ClCompile Include="..\source\QPS\QueryParser.cpp" />
     <ClCompile Include="..\source\TNode.cpp" />
@@ -25,6 +26,7 @@
     <ClInclude Include="..\source\QPS\QueryObjects\DesignObjects.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\DesignObjectsFactory.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\QueryObject.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\QueryObjectFactory.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\SynonymObjects.h" />
     <ClInclude Include="..\source\QPS\QueryParser.h" />
     <ClInclude Include="..\source\TNode.h" />
