@@ -4,6 +4,4 @@
 
 
 class FollowsAbstractionStorage : public AbstractionStorage {
-private:
-    map<int, vector<int>>* database;
 };

@@ -22,12 +22,6 @@
     <Filter Include="Source Files\Tokenizer">
       <UniqueIdentifier>{2e5d6711-4d3e-4020-bd8c-7891fe508155}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\PKB">
-      <UniqueIdentifier>{ebc59a10-2c4c-45cf-a268-a6c66d72a4b4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\PKB\StorageClasses">
-      <UniqueIdentifier>{be7e1294-59a4-46ff-b33f-a233d71dba4c}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\DesignExtractor.cpp">
@@ -47,21 +41,6 @@
     </ClCompile>
     <ClCompile Include="..\source\TokenizerClasses\SIMPLETokenizer.cpp">
       <Filter>Source Files\Tokenizer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\PKB\Insertor.cpp">
-      <Filter>Source Files\PKB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\PKB\Responder.cpp">
-      <Filter>Source Files\PKB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\PKB\StorageManager.cpp">
-      <Filter>Source Files\PKB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\PKB\StorageClasses\AbstractionStorage.cpp">
-      <Filter>Source Files\PKB\StorageClasses</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\PKB\StorageClasses\EntityStorage.cpp">
-      <Filter>Source Files\PKB\StorageClasses</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

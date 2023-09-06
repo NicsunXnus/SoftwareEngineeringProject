@@ -19,16 +19,34 @@ class TNode;  // change to AST Node
 */
 class StorageManager {
 public:
-	static TNode* getAST();  // to be removed
-	static AbstractionStorage* getAbstractionStorage(string);
-	static EntityStorage* getEntityStorage();
+	TNode* StorageManager::getAST() {
+		return nullptr;
+	}
+
+	static AbstractionStorage* StorageManager::getAbstractionStorage(const string abstraction) {
+		if (abstraction == "uses") {
+			return &uses_abstractions;
+		}
+		else if (abstraction == "modifies") {
+			return &modifies_abstractions;
+		}
+		else if (abstraction == "follows") {
+			return &follows_abstractions;
+		}
+		else if (abstraction == "parent") {
+			return &parent_abstractions;
+		}
+		return nullptr;
+	}
+
+	static EntityStorage* StorageManager::getEntityStorage() {
+		return &entity_storage;
+	}
 
 private:
 	static TNode* AST;  // to be removed
 
 	// parse trees (for querying patterns)
-	
-	// variables, procedures, constants
 
 	// entities
 	static EntityStorage entity_storage;

@@ -14,22 +14,60 @@ public:
 	// methods to respond to queries. generally, call the storage manager to do work (static)
 	// storage manager will get entity storage/abstraction storage, perform the query on that class via polymorphism, then return line numbers
 	// responder returns line numbers to caller (QPS)
-
-	// can overload methods with other conditions (beyond Sprint 1)
 	
-	static vector<int> getEntity(string entity);
+	vector<int> Responder::getEntity(string entity)
+	{
+		// check which database... if "variable/procedure/constant"
+		// else use statement_database
+		EntityStorage* entity_storage = StorageManager::getEntityStorage();
+		return (*(entity_storage->getStatementDatabase())).at(entity);
+	}
 
-	map<string, vector<int>>* getProcedures();
-	vector<int> getProcedure(string procedure);
+	map<string, vector<int>>* Responder::getAllProcedures()
+	{
+		EntityStorage* entity_storage = StorageManager::getEntityStorage();
+		return entity_storage->getProcedureDatabase();
+	}
 
-	map<string, vector<int>>* getVariables();
-	vector<int> getVariable(string variable);
+	vector<int> Responder::getProcedure(string procedure)
+	{
+		EntityStorage* entity_storage = StorageManager::getEntityStorage();
+		return (*(entity_storage->getProcedureDatabase())).at(procedure);
+	}
 
-	map<string, vector<int>>* getConstants();
-	vector<int> getConstant(string constant);
+	map<string, vector<int>>* Responder::getAllVariables()
+	{
+		EntityStorage* entity_storage = StorageManager::getEntityStorage();
+		return entity_storage->getVariableDatabase();
+	}
 
-	// beyond Sprint 1: methods for getting abstractions
-	static map<KeyValue, vector<int>> getAbstraction(string abstraction);
-	static vector<int> getAbstraction(string abstraction, string variable);
-	
+	vector<int> Responder::getVariable(string variable)
+	{
+		EntityStorage* entity_storage = StorageManager::getEntityStorage();
+		return (*(entity_storage->getVariableDatabase())).at(variable);
+	}
+
+	map<string, vector<int>>* Responder::getAllConstants()
+	{
+		EntityStorage* entity_storage = StorageManager::getEntityStorage();
+		return entity_storage->getConstantDatabase();
+	}
+
+	vector<int> Responder::getConstant(string constant)
+	{
+		EntityStorage* entity_storage = StorageManager::getEntityStorage();
+		return (*(entity_storage->getConstantDatabase())).at(constant);
+	}
+
+	map<KeyValue, vector<int>> Responder::getAbstraction(string abstraction)
+	{
+		AbstractionStorage* abstraction_storage = StorageManager::getAbstractionStorage(abstraction);
+		return *(abstraction_storage->getDatabase());
+	}
+
+	vector<int> Responder::getAbstractionVariable(string abstraction, string variable)
+	{
+		AbstractionStorage* abstraction_storage = StorageManager::getAbstractionStorage(abstraction);
+		return (*(abstraction_storage->getDatabase())).at(variable);
+	}
 };

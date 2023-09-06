@@ -4,6 +4,5 @@
 
 
 class ParentAbstractionStorage : public AbstractionStorage {
-private:
-    map<int, vector<int>>* database;
+
 };
