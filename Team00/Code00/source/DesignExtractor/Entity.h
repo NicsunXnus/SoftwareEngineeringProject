@@ -1,3 +1,6 @@
+#ifndef ENTITY_H
+#define ENTITY_H
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -71,7 +74,6 @@ class StatementEntity : public Entity {
         }
     }
 };
-
 
 // class AssignStatementEntity : public StatementEntity {
 // public:
