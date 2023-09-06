@@ -35,5 +35,8 @@
     <ClCompile Include="TestQPS.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
+    <ClCompile Include="TestQPSDeclarationParser.cpp">
+      <Filter>Source Files\QPS</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

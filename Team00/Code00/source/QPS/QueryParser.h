@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <iostream>
+#include <unordered_map>
 #include "QueryObjects/QueryObject.h"
 
 using namespace std;
@@ -17,6 +18,7 @@ using namespace std;
 */
 class QueryParser  {
 public:
+	unordered_map<string_view, shared_ptr<QueryObject>> synonyms;
 	QueryParser();
 	
 	/*
