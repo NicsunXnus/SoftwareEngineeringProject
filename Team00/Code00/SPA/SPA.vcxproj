@@ -22,6 +22,7 @@
     <ClCompile Include="..\source\TokenizerClasses\TokenizerFunctions.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\source\Constants\QPSPKB.h" />
     <ClInclude Include="..\source\PKB.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\DesignObjects.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\DesignObjectsFactory.h" />
