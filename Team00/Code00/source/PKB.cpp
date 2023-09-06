@@ -6,7 +6,7 @@
 using namespace std;
 
 #include "PKB.h"
-#include "ASTNode.h"
+#include "../source/AST/ASTNode.h"
 
 int PKB::setProcToAST(PROC p, ASTNode* r) {
 	return 0;

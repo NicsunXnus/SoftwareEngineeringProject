@@ -2,8 +2,7 @@
 #include "CppUnitTest.h"
 #include "../source/TokenizerClasses/SimpleTokenizer.h"
 #include "../source/TokenizerClasses/TokenFactory.h"
-#include "../source/ASTNode.h"
-#include "../source/ASTBuilder.h"
+#include "../source/AST/ASTBuilder.h"
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace UnitTesting
@@ -103,15 +102,15 @@ namespace UnitTesting
 			procedureTest.emplace_back(std::make_shared<IdentifierToken>("x"sv));
 			procedureTest.emplace_back(std::make_shared<SemicolonSepToken>());
 
-			std::vector<std::shared_ptr<ASTNode>> statements = ASTBuilder::parseStatements(procedureTest);
+			std::vector<std::shared_ptr<StatementNode>> statements = ASTBuilder::parseStatements(procedureTest);
 			std::stringstream output;
 			std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
 
 			std::string res = "";
-			res += "read " + ASTBuilder::printExpr(statements[0]->getVar()) + "\n";
-			res += ASTBuilder::printExpr(statements[1]->getVar()) + " = " + ASTBuilder::printExpr(statements[1]->getExpr()) + "\n";
-			res += ASTBuilder::printExpr(statements[2]->getVar()) + " = " + ASTBuilder::printExpr(statements[2]->getExpr()) + "\n";
-			res += "print " + ASTBuilder::printExpr(statements[0]->getVar());
+			res += std::to_string(statements[0]->getStatementNumber()) + " read " + ASTBuilder::printExpr(statements[0]->getVar()) + "\n";
+			res += std::to_string(statements[1]->getStatementNumber()) + " " + ASTBuilder::printExpr(statements[1]->getVar()) + " = " + ASTBuilder::printExpr(statements[1]->getExpr()) + "\n";
+			res += std::to_string(statements[2]->getStatementNumber()) + " " + ASTBuilder::printExpr(statements[2]->getVar()) + " = " + ASTBuilder::printExpr(statements[2]->getExpr()) + "\n";
+			res += std::to_string(statements[3]->getStatementNumber()) + " print " + ASTBuilder::printExpr(statements[0]->getVar());
 			std::cout << res;
 
 			std::cout.rdbuf(oldCoutBuffer);

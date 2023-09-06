@@ -30,46 +30,20 @@
     <ClCompile Include="..\source\PKB.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\source\AST\ASTBuilder.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\PKB.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\ASTBuilder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenizerClasses\PQLTokenizer.h">
-      <Filter>Header Files\Tokenizer Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenizerClasses\TokenizerFunctions.h">
-      <Filter>Header Files\Tokenizer Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenizerClasses\SIMPLETokenizer.h">
-      <Filter>Header Files\Tokenizer Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\IdentifierToken.h">
-      <Filter>Header Files\Token Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\KeywordToken.h">
-      <Filter>Header Files\Token Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\LiteralToken.h">
-      <Filter>Header Files\Token Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\OperatorToken.h">
-      <Filter>Header Files\Token Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\SeparatorToken.h">
-      <Filter>Header Files\Token Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\Token.h">
-      <Filter>Header Files\Token Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenClasses\UnderscoreToken.h">
-      <Filter>Header Files\Token Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\source\TokenizerClasses\TokenFactory.h">
       <Filter>Header Files\Tokenizer Files</Filter>
     </ClInclude>
+
   </ItemGroup>
 </Project>
