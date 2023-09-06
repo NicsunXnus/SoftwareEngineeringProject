@@ -16,12 +16,6 @@ public:
 	Token(std::string_view tokenName)
 		: tokenName{ tokenName } {
 	};
-	/*
-	* Returns string form of token
-	*/
-	std::string getTokenName() {
-		return tokenName;
-	}
 
 	
 	// Overload == operator for token class comparisons for testing purposes
@@ -34,6 +28,5 @@ public:
 		}
 		return this->tokenName == t.tokenName;
 	}
-	
 };
 #endif

@@ -52,9 +52,6 @@ std::shared_ptr<Token> tokenizerGenerator(std::string_view tokenName) {
 	else if (tokenName == "while"sv) {
 		return std::make_shared<WhileKeywordToken>();
 	}
-	else if (tokenName == "Select"sv) {
-		return std::make_shared<SelectKeywordToken>();
-	}
 	else if (tokenName == "="sv) {
 		return std::make_shared<EqualsOpToken>();
 	}

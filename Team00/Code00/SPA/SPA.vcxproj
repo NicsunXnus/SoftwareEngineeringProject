@@ -14,7 +14,7 @@
     <ClCompile Include="..\source\DesignExtractor.cpp" />
     <ClCompile Include="..\source\Parser.cpp" />
     <ClCompile Include="..\source\PKB.cpp" />
-    <ClCompile Include="..\source\QPS\QueryObject.cpp" />
+    <ClCompile Include="..\source\QPS\QueryObjects\QueryObject.cpp" />
     <ClCompile Include="..\source\QPS\QueryParser.cpp" />
     <ClCompile Include="..\source\TNode.cpp" />
     <ClCompile Include="..\source\TokenizerClasses\SIMPLETokenizer.cpp" />
@@ -22,7 +22,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\PKB.h" />
-    <ClInclude Include="..\source\QPS\QueryObject.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\DesignObjects.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\DesignObjectsFactory.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\QueryObject.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\SynonymObjects.h" />
     <ClInclude Include="..\source\QPS\QueryParser.h" />
     <ClInclude Include="..\source\TNode.h" />
     <ClInclude Include="..\source\TokenClasses\IdentifierToken.h" />
@@ -34,6 +37,7 @@
     <ClInclude Include="..\source\TokenClasses\UnderscoreToken.h" />
     <ClInclude Include="..\source\TokenizerClasses\PQLTokenizer.h" />
     <ClInclude Include="..\source\TokenizerClasses\SIMPLETokenizer.h" />
+    <ClInclude Include="..\source\TokenizerClasses\TokenizerFactory.h" />
     <ClInclude Include="..\source\TokenizerClasses\TokenizerFunctions.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

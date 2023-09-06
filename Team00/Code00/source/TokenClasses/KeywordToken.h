@@ -5,7 +5,6 @@
 #include <string_view>
 
 #include "Token.h"
-#include "../QPS/QueryObject.h"
 
 using namespace std::string_view_literals;
 
@@ -18,9 +17,6 @@ public:
 	KeywordToken(std::string_view tokenName)
 		: Token{ tokenName } {
 	};
-	virtual std::shared_ptr<QueryObject> createQueryObject(std::shared_ptr<Token> token) {
-		return std::make_shared<QueryObject>();
-	}
 };
 
 /**
@@ -112,10 +108,6 @@ public:
 	StmtKeywordToken()
 		: KeywordToken{ "stmt"sv } {
 	};
-	std::shared_ptr<QueryObject> createQueryObject(std::shared_ptr<Token> token) override {
-		return std::make_shared<StmtObject>();
-	}
-
 };
 
 /**
@@ -145,16 +137,6 @@ class WhileKeywordToken : public KeywordToken {
 public:
 	WhileKeywordToken()
 		: KeywordToken{ "while"sv } {
-	};
-};
-
-/**
-* This class represents the token for the "select" keyword, used in PQL queries
-*/
-class SelectKeywordToken : public KeywordToken {
-public:
-	SelectKeywordToken()
-		: KeywordToken{ "Select"sv } {
 	};
 };
 

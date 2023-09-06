@@ -51,7 +51,7 @@
     <ClCompile Include="..\source\QPS\QueryParser.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\QPS\QueryObject.cpp">
+    <ClCompile Include="..\source\QPS\QueryObjects\QueryObject.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
   </ItemGroup>
@@ -92,10 +92,22 @@
     <ClInclude Include="..\source\TokenClasses\UnderscoreToken.h">
       <Filter>Header Files\Token Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\QPS\QueryObject.h">
+    <ClInclude Include="..\source\QPS\QueryParser.h">
       <Filter>Header Files\QPS</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\QPS\QueryParser.h">
+    <ClInclude Include="..\source\TokenizerClasses\TokenizerFactory.h">
+      <Filter>Header Files\Tokenizer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryObjects\DesignObjects.h">
+      <Filter>Header Files\QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryObjects\SynonymObjects.h">
+      <Filter>Header Files\QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryObjects\QueryObject.h">
+      <Filter>Header Files\QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryObjects\DesignObjectsFactory.h">
       <Filter>Header Files\QPS</Filter>
     </ClInclude>
   </ItemGroup>
