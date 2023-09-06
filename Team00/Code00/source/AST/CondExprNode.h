@@ -119,17 +119,17 @@ public:
     }
 };
 
-class EqualThanNode : public RelExprNode {
+class EqualsNode : public RelExprNode {
 public:
-    EqualThanNode(std::shared_ptr<ExprNode> leftRelFactor, std::shared_ptr<ExprNode> rightRelFactor) : RelExprNode(leftRelFactor, rightRelFactor) {}
+    EqualsNode(std::shared_ptr<ExprNode> leftRelFactor, std::shared_ptr<ExprNode> rightRelFactor) : RelExprNode(leftRelFactor, rightRelFactor) {}
     std::string getOp() override {
-        return " = ";
+        return " == ";
     }
 };
 
-class NotEqualThanNode : public RelExprNode {
+class NotEqualsNode : public RelExprNode {
 public:
-    NotEqualThanNode(std::shared_ptr<ExprNode> leftRelFactor, std::shared_ptr<ExprNode> rightRelFactor) : RelExprNode(leftRelFactor, rightRelFactor) {}
+    NotEqualsNode(std::shared_ptr<ExprNode> leftRelFactor, std::shared_ptr<ExprNode> rightRelFactor) : RelExprNode(leftRelFactor, rightRelFactor) {}
     std::string getOp() override {
         return " != ";
     }
