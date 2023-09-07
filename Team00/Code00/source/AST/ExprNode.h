@@ -2,7 +2,6 @@
 #define EXPRNODE_H
 #include <iostream>
 #include <string>
-#include "ASTNode.h"
 
 class ExprNode : public ASTNode  {
 public:

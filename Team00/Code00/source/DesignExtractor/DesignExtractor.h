@@ -7,10 +7,12 @@ using namespace std;
 
 #include "Entity.h"
 #include "../AST/ASTNode.h"
-#include "../AST/ExprNode.h"
-#include "../AST/CondExprNode.h"
+// #include "../AST/ExprNode.h"
 // #include "../PKB/Inserter.h"
 
+/**
+* This class represents the Design Extractor component of the SPA.
+*/
 class DesignExtractor {
 public:
     // Constructor creates the entity objects
@@ -22,6 +24,7 @@ public:
         this->patternStatementEntity = std::make_shared<PatternStatementEntity>();
     }
 
+    // Extracts the entities from the AST
     void extractEntities(std::shared_ptr<ASTNode> astNode) {
         // Extract the entities based on the type of astNode
         if (auto programNode = std::dynamic_pointer_cast<ProgramNode>(astNode)) {

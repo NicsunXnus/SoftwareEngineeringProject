@@ -1,7 +1,9 @@
 #ifndef CONDEXPRNODE_H
 #define CONDEXPRNODE_H
 #include <iostream>
-#include "ExprNode.h"
+// #include "ExprNode.h"
+#include "ASTNode.h"
+
 class CondExprNode {
 public:
     virtual ~CondExprNode() = default;

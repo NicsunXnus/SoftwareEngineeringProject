@@ -6,7 +6,7 @@
 #include <vector>
 #include <map>
 #include "../AST/ASTNode.h"
-#include "../AST/ExprNode.h"
+// #include "../AST/ExprNode.h"
 
 class ProcedureEntity;
 class StatmentEntity;
@@ -14,6 +14,10 @@ class VariableEntity;
 class ConstantEntity;
 class PatternStatementEntity;
 
+
+/**
+* This class represents the Entity component of the Design Extractor.
+*/
 class Entity {
 public:
     Entity() = default;
