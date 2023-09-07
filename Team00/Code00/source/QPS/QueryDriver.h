@@ -7,22 +7,24 @@
 
 #include "QueryParser.h"
 
+using namespace std;
+
 /**
  * This class represents a Query Driver. The Query Driver's responsibility is to 
  * take in a query and return the results of the query.
  */
 class QueryDriver {
 private:
-	std::string query;
-	shared_ptr<QueryParser> queryParser;
+	string query;
+	//shared_ptr<QueryParser> queryParser;
 
 public:
 	/**
 	 * Constructor of the QueryDriver object
 	 */
-	QueryDriver(std::string_view query)
+	QueryDriver(string_view query)
 		: query { query } {
-		queryParser = make_shared<QueryParser>();
+		//queryParser = make_shared<QueryParser>();
 	};
 	
 	/**
@@ -30,7 +32,7 @@ public:
 	 */
 	~QueryDriver() {};
 
-	
+	list<string> execute();
 
 
 };

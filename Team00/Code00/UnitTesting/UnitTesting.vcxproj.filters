@@ -44,5 +44,8 @@
     <ClCompile Include="TestPQLTokenizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TestQPSDriver.cpp">
+      <Filter>Source Files\QPS</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

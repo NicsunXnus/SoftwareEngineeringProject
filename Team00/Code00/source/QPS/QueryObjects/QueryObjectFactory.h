@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string_view>
+#include "QueryObject.h"
 
 /**
 * This class represents all Query Object factories
@@ -14,5 +15,7 @@ public:
 	QueryObjectFactory() {
 
 	};
+
+	virtual shared_ptr<QueryObject> create(string_view str) = 0;
 };
 #endif

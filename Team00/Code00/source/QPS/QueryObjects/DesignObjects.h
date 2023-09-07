@@ -4,7 +4,9 @@
 
 #include <string_view>
 #include "QueryObject.h"
+#include "../DataAccessLayer.h"
 #include "../../Constants/QPSPKB.h"
+
 
 using namespace std;
 /*
@@ -16,7 +18,6 @@ public:
 		: QueryObject{ tokenName } {
 
 	}
-	
 };
 
 /*
@@ -27,6 +28,10 @@ public:
 	StmtObject(string_view tokenName)
 		: DesignObject{ tokenName } {
 	};
+	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
+		setResult(dataAccessLayer->getEntities(STMT));
+	}
+
 };
 
 /*
@@ -37,6 +42,9 @@ public:
 	ReadObject(string_view tokenName)
 		: DesignObject{ tokenName } {
 	};
+	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
+		setResult(dataAccessLayer->getEntities(READ));
+	}
 };
 
 /*
@@ -47,6 +55,9 @@ public:
 	PrintObject(string_view tokenName)
 		: DesignObject{ tokenName } {
 	};
+	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
+		setResult(dataAccessLayer->getEntities(PRINT));
+	}
 };
 
 /*
@@ -57,6 +68,9 @@ public:
 	CallObject(string_view tokenName)
 		: DesignObject{ tokenName } {
 	};
+	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
+		setResult(dataAccessLayer->getEntities(CALL));
+	}
 };
 
 /*
@@ -67,6 +81,9 @@ public:
 	WhileObject(string_view tokenName)
 		: DesignObject{ tokenName } {
 	};
+	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
+		setResult(dataAccessLayer->getEntities(WHILE));
+	}
 };
 
 /*
@@ -77,6 +94,9 @@ public:
 	IfObject(string_view tokenName)
 		: DesignObject{ tokenName } {
 	};
+	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
+		setResult(dataAccessLayer->getEntities(IF));
+	}
 };
 
 /*
@@ -87,6 +107,9 @@ public:
 	AssignObject(string_view tokenName)
 		: DesignObject{ tokenName } {
 	};
+	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
+		setResult(dataAccessLayer->getEntities(ASSIGN));
+	}
 };
 
 /*
@@ -97,6 +120,9 @@ public:
 	VariableObject(string_view tokenName)
 		: DesignObject{ tokenName } {
 	};
+	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
+		setResult(dataAccessLayer->getEntities(VARIABLE));
+	}
 };
 
 /*
@@ -107,6 +133,9 @@ public:
 	ConstantObject(string_view tokenName)
 		: DesignObject{ tokenName } {
 	};
+	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
+		setResult(dataAccessLayer->getEntities(CONSTANT));
+	}
 };
 
 /*
@@ -117,6 +146,9 @@ public:
 	ProcedureObject(string_view tokenName)
 		: DesignObject{ tokenName } {
 	};
+	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
+		setResult(dataAccessLayer->getEntities(PROCEDURE));
+	}
 };
 
 #endif

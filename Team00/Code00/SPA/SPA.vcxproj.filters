@@ -134,5 +134,11 @@
     <ClInclude Include="..\source\QPS\QueryDriver.h">
       <Filter>Header Files\QPS</Filter>
     </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryObjects\ClauseObject.h">
+      <Filter>Header Files\QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryObjects\ClauseObjectFactory.h">
+      <Filter>Header Files\QPS</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

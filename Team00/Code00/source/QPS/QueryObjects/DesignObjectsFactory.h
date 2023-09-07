@@ -18,10 +18,6 @@ public:
 
 	}
 
-	virtual shared_ptr<QueryObject> create(string_view str) {
-		return make_shared<QueryObject>(str);
-	}
-
 	/*
 	* This function takes in a string and returns the DesignObject related to the string. Throws exception otherwise
 	*/
