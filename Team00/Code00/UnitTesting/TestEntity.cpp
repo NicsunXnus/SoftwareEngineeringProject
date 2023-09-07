@@ -34,11 +34,11 @@ namespace UnitTesting
             std::map<std::string, std::vector<int>> procedureMap = testProcedureEntity->getMap();
 
             //Check if procedure entity is extracted correctly
-            Assert::IsTrue(procedureMap["procedure1"] == 1);
-            Assert::IsTrue(procedureMap["procedure2"] == 2);
-            Assert::IsTrue(procedureMap["procedure3"] == 3);
-            Assert::IsTrue(procedureMap["procedure4"] == 4);
-            Assert::IsTrue(procedureMap["procedure5"] == 5);
+            Assert::AreEqual(procedureMap["procedure1"][0], -1);
+            Assert::AreEqual(procedureMap["procedure2"][0], -1);
+            Assert::AreEqual(procedureMap["procedure3"][0], -1);
+            Assert::AreEqual(procedureMap["procedure4"][0], -1);
+            Assert::AreEqual(procedureMap["procedure5"][0], -1);
             
             //Create a program node
             // std::shared_ptr<ProgramNode> testProgramNode = std::make_shared<ProgramNode>("test", testProcedureNodes)
