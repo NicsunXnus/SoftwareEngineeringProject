@@ -251,8 +251,8 @@ public:
     ConstantNode(int value)
         : ExprNode("ConstantNode"), value(value) {}
 
-    ConstantNode(std::string name, int statementNumber)
-        : ExprNode("ConstantNode", statementNumber), name(std::move(name)) {}
+    ConstantNode(int value, int statementNumber)
+        : ExprNode("ConstantNode", statementNumber), value(value) {}
 
     int getIntVal() const {
         return this->value;
