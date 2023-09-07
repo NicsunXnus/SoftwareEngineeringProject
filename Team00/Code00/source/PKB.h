@@ -5,17 +5,21 @@
 #include <string>
 #include <vector>
 
+#include "PKB/Insertor.h"
+#include "PKB/StorageManager.h"
+#include "PKB/Responder.h"
+
 using namespace std;
-typedef short PROC;
 
-class ASTNode;
-
-class VarTable;  // no need to #include "VarTable.h" as all I need is pointer
-
+/**
+* This class represents the PKB component.
+* Comprises 3 main sub-components: Insertor, StorageManager, Responder
+*/
 class PKB {
 public:
-	static VarTable* varTable; 
-	static int setProcToAST(PROC p, ASTNode* r);
-	static ASTNode* getRootAST (PROC p);
+	static Insertor insertor;
+	static Responder responder;
 
+private:
+	static StorageManager storage_manager;
 };

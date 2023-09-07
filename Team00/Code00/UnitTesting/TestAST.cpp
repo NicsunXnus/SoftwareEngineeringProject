@@ -1,8 +1,11 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
+#include <cassert>
+
 #include "../source/TokenizerClasses/SimpleTokenizer.h"
 #include "../source/TokenizerClasses/TokenFactory.h"
 #include "../source/AST/ASTBuilder.h"
+
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace UnitTesting
@@ -117,6 +120,13 @@ namespace UnitTesting
 
 			Logger::WriteMessage("Output of parseStatements:\n");
 			Logger::WriteMessage(output.str().c_str());
+		}
+
+		TEST_METHOD(TestMethod2)
+		{
+			int x = 10;
+			assert(x == 1);
+			// throw std::invalid_argument("str");
 		}
 
 	};
