@@ -114,11 +114,11 @@ namespace UnitTesting
         TEST_METHOD(TestConstantEntity)
 		{
             //Create constant nodes
-            std::shared_ptr<ConstantNode> testConstantNode1 = std::make_shared<ConstantNode>("constant1", 1);
-            std::shared_ptr<ConstantNode> testConstantNode2 = std::make_shared<ConstantNode>("constant1", 2);
-            std::shared_ptr<ConstantNode> testConstantNode3 = std::make_shared<ConstantNode>("constant2", 3);
-            std::shared_ptr<ConstantNode> testConstantNode4 = std::make_shared<ConstantNode>("constant2", 4);
-            std::shared_ptr<ConstantNode> testConstantNode5 = std::make_shared<ConstantNode>("constant3", 5);
+            std::shared_ptr<ConstantNode> testConstantNode1 = std::make_shared<ConstantNode>(1, 1);
+            std::shared_ptr<ConstantNode> testConstantNode2 = std::make_shared<ConstantNode>(1, 2);
+            std::shared_ptr<ConstantNode> testConstantNode3 = std::make_shared<ConstantNode>(2, 3);
+            std::shared_ptr<ConstantNode> testConstantNode4 = std::make_shared<ConstantNode>(2, 4);
+            std::shared_ptr<ConstantNode> testConstantNode5 = std::make_shared<ConstantNode>(3, 5);
 
             // Combine constant nodes into a vector
             std::vector<std::shared_ptr<ConstantNode>>
@@ -136,11 +136,11 @@ namespace UnitTesting
             std::map<std::string, std::vector<int>> constantMap = testConstantEntity->getMap();
 
             //Check if the statement entity is extracted correctly
-            Assert::AreEqual(constantMap["constant1"][0], 1);
-            Assert::AreEqual(constantMap["constant1"][1], 2);
-            Assert::AreEqual(constantMap["constant2"][0], 3);
-            Assert::AreEqual(constantMap["constant2"][1], 4);
-            Assert::AreEqual(constantMap["constant3"][0], 5);
+            Assert::AreEqual(constantMap["1"][0], 1);
+            Assert::AreEqual(constantMap["1"][1], 2);
+            Assert::AreEqual(constantMap["2"][0], 3);
+            Assert::AreEqual(constantMap["2"][1], 4);
+            Assert::AreEqual(constantMap["3"][0], 5);
         }
 
 	};
