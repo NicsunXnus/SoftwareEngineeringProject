@@ -2,8 +2,6 @@
 #define ASTBUILDER_H
 
 #include "ASTNode.h"
-#include "CondExprNode.h"
-#include "ExprNode.h"
 #include "../TokenizerClasses/TokenFactory.h"
 #include <stack>
 
@@ -28,7 +26,7 @@ public:
             std::shared_ptr<Token> token = statements[i];
             if (token->getName() == "print") { //for PRINT NODE
                 i = i + 1; //To advance to the variable
-                std::shared_ptr<VariableNode> variableNode = std::make_shared<VariableNode>(statements[i]->getName());
+                std::shared_ptr<VariableNode> variableNode = std::make_shared<VariableNode>(statements[i]->getName(), statementNumber);
                 std::shared_ptr<PrintNode> printNode = std::make_shared<PrintNode>(statementNumber, variableNode);
                 statementNumber++;
                 statementListToReturn.emplace_back(printNode);
@@ -39,7 +37,7 @@ public:
             }
             else if (token->getName() == "read") {
                 i = i + 1; //To advance to the variable
-                std::shared_ptr<VariableNode> variableNode = std::make_shared<VariableNode>(statements[i]->getName());
+                std::shared_ptr<VariableNode> variableNode = std::make_shared<VariableNode>(statements[i]->getName(), statementNumber);
                 std::shared_ptr<ReadNode> readNode = std::make_shared<ReadNode>(statementNumber, variableNode);
                 statementNumber++;
                 statementListToReturn.emplace_back(readNode);
@@ -118,7 +116,7 @@ public:
             }
             else {
                 // Is assign statement
-                std::shared_ptr <ExprNode> varNode = std::make_shared < VariableNode>(token->getName());
+                std::shared_ptr <ExprNode> varNode = std::make_shared < VariableNode>(token->getName(), statementNumber);
                 i = i + 2; //advance past =
                 token = statements[i];
                 int startIndex = i;

@@ -4,12 +4,15 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "ExprNode.h"
+// #include "ExprNode.h"
 
 //PROMPT: Pretend you are a harsh c++ critic who strongly advocates for code efficiency, robust code patterns and no code smells, critic this code fragment written in c++.
 //MEDIUM: PERPLEXITY AI PREMIUM
 class StatementNode;
 class ProcedureNode;
+class ExprNode;
+class CondExprNode;
+
 class ASTNode {
 public:
     virtual ~ASTNode() = default;
@@ -116,5 +119,308 @@ public:
 private:
     std::shared_ptr<ExprNode> variable;
 };
+
+
+class ExprNode : public ASTNode  {
+public:
+    virtual ~ExprNode() = default;
+
+    virtual bool isTerminal() const {
+        return false;
+    }
+
+    virtual std::string getValue() const {
+        return "";
+    }
+
+    virtual std::shared_ptr<ExprNode> getLeftExpr() const {
+        return std::make_shared<ExprNode>();
+    }
+
+    virtual std::shared_ptr<ExprNode> getRightExpr() const {
+        return std::make_shared<ExprNode>();
+    }
+    ExprNode(std::string name = "", int statementNumber = -1)
+    : ASTNode(std::move(name), statementNumber) {}
+};
+
+class DividesNode : public ExprNode {
+public:
+    DividesNode(std::shared_ptr<ExprNode> leftExpr, std::shared_ptr<ExprNode> rightExpr)
+        : ExprNode("DividesNode"), leftExpr(leftExpr), rightExpr(rightExpr) {}
+    std::string getValue() const override {
+        return " / ";
+    }
+
+    std::shared_ptr<ExprNode> getLeftExpr() const override {
+        return this->leftExpr;
+    }
+
+    std::shared_ptr<ExprNode> getRightExpr() const override {
+        return this->rightExpr;
+    }
+private:
+    std::shared_ptr<ExprNode> leftExpr;
+    std::shared_ptr<ExprNode> rightExpr;
+};
+
+class MinusNode : public ExprNode {
+public:
+    MinusNode(std::shared_ptr<ExprNode> leftExpr, std::shared_ptr<ExprNode> rightExpr)
+        : ExprNode("MinusNode"), leftExpr(leftExpr), rightExpr(rightExpr) {}
+    std::string getValue() const override {
+        return " - ";
+    }
+
+    std::shared_ptr<ExprNode> getLeftExpr() const override {
+        return this->leftExpr;
+    }
+
+    std::shared_ptr<ExprNode> getRightExpr() const override {
+        return this->rightExpr;
+    }
+private:
+    std::shared_ptr<ExprNode> leftExpr;
+    std::shared_ptr<ExprNode> rightExpr;
+};
+
+class ModNode : public ExprNode {
+public:
+    ModNode(std::shared_ptr<ExprNode> leftExpr, std::shared_ptr<ExprNode> rightExpr)
+        : ExprNode("ModNode"), leftExpr(leftExpr), rightExpr(rightExpr) {}
+    std::string getValue() const override {
+        return " % ";
+    }
+
+    std::shared_ptr<ExprNode> getLeftExpr() const override {
+        return this->leftExpr;
+    }
+
+    std::shared_ptr<ExprNode> getRightExpr() const override {
+        return this->rightExpr;
+    }
+private:
+    std::shared_ptr<ExprNode> leftExpr;
+    std::shared_ptr<ExprNode> rightExpr;
+};
+
+class PlusNode : public ExprNode {
+public:
+    PlusNode(std::shared_ptr<ExprNode> leftExpr, std::shared_ptr<ExprNode> rightExpr)
+        : ExprNode("PlusNode"), leftExpr(leftExpr), rightExpr(rightExpr) {}
+    std::string getValue() const override {
+        return " + ";
+    }
+
+
+    std::shared_ptr<ExprNode> getLeftExpr() const override {
+        return this->leftExpr;
+    }
+
+    std::shared_ptr<ExprNode> getRightExpr() const override {
+        return this->rightExpr;
+    }
+private:
+    std::shared_ptr<ExprNode> leftExpr;
+    std::shared_ptr<ExprNode> rightExpr;
+    std::string op;
+};
+
+class TimesNode : public ExprNode {
+public:
+    TimesNode(std::shared_ptr<ExprNode> leftExpr, std::shared_ptr<ExprNode> rightExpr)
+        : ExprNode("TimesNode"), leftExpr(leftExpr), rightExpr(rightExpr) {}
+    std::string getValue() const override {
+        return " * ";
+    }
+
+    std::shared_ptr<ExprNode> getLeftExpr() const override {
+        return this->leftExpr;
+    }
+
+    std::shared_ptr<ExprNode> getRightExpr() const override {
+        return this->rightExpr;
+    }
+private:
+    std::shared_ptr<ExprNode> leftExpr;
+    std::shared_ptr<ExprNode> rightExpr;
+};
+
+class ConstantNode : public ExprNode {
+public:
+    ConstantNode(int value)
+        : ExprNode("ConstantNode"), value(value) {}
+
+    ConstantNode(int value, int statementNumber)
+        : ExprNode("ConstantNode", statementNumber), value(value) {}
+
+    int getIntVal() const {
+        return this->value;
+    }
+
+    std::string getValue() const override {
+        return std::to_string(this->value);
+    }
+
+    bool isTerminal() const override {
+        return true;
+    }
+
+private:
+    int value;
+};
+
+class VariableNode : public ExprNode {
+public:
+    VariableNode(std::string name, int statementNumber)
+        : ExprNode("VariableNode", statementNumber), name(std::move(name)) {}
+
+    VariableNode(std::string name)
+        : ExprNode("VariableNode"), name(std::move(name)) {}
+
+    bool isTerminal() const override {
+        return true;
+    }
+    std::string getValue() const override {
+        return this->name;
+    }
+
+private:
+    std::string name;
+};
+
+class CondExprNode : public ASTNode {
+public:
+    virtual ~CondExprNode() = default;
+    virtual std::shared_ptr<CondExprNode> getLeftCondExpr() const {
+        return std::make_shared<CondExprNode>();
+    }
+    virtual std::shared_ptr<CondExprNode> getRightCondExpr() const {
+        return std::make_shared<CondExprNode>();
+    }
+    virtual std::shared_ptr<ExprNode> getLeftRelFactor() const {
+        return std::make_shared<ExprNode>();
+    }
+    virtual std::shared_ptr<ExprNode> getRightRelFactor() const {
+        return std::make_shared<ExprNode>();
+    }
+    virtual std::string getOp() {
+        return std::string("");
+    }
+};
+
+class AndNode : public CondExprNode {
+public:
+    AndNode(std::shared_ptr<CondExprNode> leftCondExpr, std::shared_ptr<CondExprNode> rightCondExpr) :
+        leftCondExpr(leftCondExpr), rightCondExpr(rightCondExpr) {}
+    std::shared_ptr<CondExprNode> getLeftCondExpr() const override {
+        return this->leftCondExpr;
+    }
+    std::shared_ptr<CondExprNode> getRightCondExpr() const override {
+        return this->rightCondExpr;
+    }
+    std::string getOp() override {
+        return " && ";
+    }
+private:
+    std::shared_ptr<CondExprNode> leftCondExpr;
+    std::shared_ptr<CondExprNode> rightCondExpr;
+};
+
+class OrNode : public CondExprNode {
+public:
+    OrNode(std::shared_ptr<CondExprNode> leftCondExpr, std::shared_ptr<CondExprNode> rightCondExpr) :
+        leftCondExpr(leftCondExpr), rightCondExpr(rightCondExpr) {}
+    std::shared_ptr<CondExprNode> getLeftCondExpr() const override {
+        return this->leftCondExpr;
+    }
+    std::shared_ptr<CondExprNode> getRightCondExpr() const override {
+        return this->rightCondExpr;
+    }
+    std::string getOp() override {
+        return " || ";
+    }
+private:
+    std::shared_ptr<CondExprNode> leftCondExpr;
+    std::shared_ptr<CondExprNode> rightCondExpr;
+};
+
+class NotNode : public CondExprNode {
+public:
+    NotNode(std::shared_ptr<CondExprNode> condExpr) :
+        condExpr(condExpr) {}
+    std::shared_ptr<CondExprNode> getLeftCondExpr() const override {
+        return this->condExpr;
+    }
+    std::string getOp() override {
+        return "!";
+    }
+private:
+    std::shared_ptr<CondExprNode> condExpr;
+};
+
+class RelExprNode : public CondExprNode {
+public:
+    RelExprNode(std::shared_ptr<ExprNode> leftRelFactor, std::shared_ptr<ExprNode> rightRelFactor)
+        : leftRelFactor(leftRelFactor), rightRelFactor(rightRelFactor) {}
+    std::shared_ptr<ExprNode> getLeftRelFactor() const override {
+        return this->leftRelFactor;
+    }
+    std::shared_ptr<ExprNode> getRightRelFactor() const override {
+        return this->rightRelFactor;
+    }
+private:
+    std::shared_ptr<ExprNode> leftRelFactor;
+    std::shared_ptr<ExprNode> rightRelFactor;
+};
+
+class GreaterThanNode : public RelExprNode {
+public:
+    GreaterThanNode(std::shared_ptr<ExprNode> leftRelFactor, std::shared_ptr<ExprNode> rightRelFactor) : RelExprNode(leftRelFactor, rightRelFactor) {}
+    std::string getOp() override {
+        return " > ";
+    }
+};
+
+class GreaterThanEqualNode : public RelExprNode {
+public:
+    GreaterThanEqualNode(std::shared_ptr<ExprNode> leftRelFactor, std::shared_ptr<ExprNode> rightRelFactor) : RelExprNode(leftRelFactor, rightRelFactor) {}
+    std::string getOp() override {
+        return " >= ";
+    }
+};
+
+class LesserThanNode : public RelExprNode {
+public:
+    LesserThanNode(std::shared_ptr<ExprNode> leftRelFactor, std::shared_ptr<ExprNode> rightRelFactor) : RelExprNode(leftRelFactor, rightRelFactor) {}
+    std::string getOp() override {
+        return " < ";
+    }
+};
+
+class LesserThanEqualNode : public RelExprNode {
+public:
+    LesserThanEqualNode(std::shared_ptr<ExprNode> leftRelFactor, std::shared_ptr<ExprNode> rightRelFactor) : RelExprNode(leftRelFactor, rightRelFactor) {}
+    std::string getOp() override {
+        return " <= ";
+    }
+};
+
+class EqualsNode : public RelExprNode {
+public:
+    EqualsNode(std::shared_ptr<ExprNode> leftRelFactor, std::shared_ptr<ExprNode> rightRelFactor) : RelExprNode(leftRelFactor, rightRelFactor) {}
+    std::string getOp() override {
+        return " == ";
+    }
+};
+
+class NotEqualsNode : public RelExprNode {
+public:
+    NotEqualsNode(std::shared_ptr<ExprNode> leftRelFactor, std::shared_ptr<ExprNode> rightRelFactor) : RelExprNode(leftRelFactor, rightRelFactor) {}
+    std::string getOp() override {
+        return " != ";
+    }
+};
+
 
 #endif
