@@ -77,45 +77,51 @@ vector<vector<string_view>> QueryParser::splitDeclarations(vector<string_view> d
 * This function validates and converts the string tokens to QueryObjects
 * declaration : design-entity synonym (',' synonym)* ';'
 */
-vector<shared_ptr<QueryObject>> QueryParser::validateDeclaration(vector<string_view> declaration) {
+vector<shared_ptr<QueryObject>> QueryParser::validateDeclaration(vector<string_view> declarations) {
+	vector<shared_ptr<QueryObject>> converted;
+	vector<vector<string_view>> splittedDeclarations = splitDeclarations(declarations);
+	int totalDeclarations = splittedDeclarations.size();
+	for (int j = 0; j < totalDeclarations; j++) {
+		vector<string_view> declaration = splittedDeclarations[j];
+		int size = declaration.size();
+		if (size < 2) {
+			throw runtime_error("Invalid declaration");
+		}
+		// first token must be a design entity, then a synonym, exception thrown by createDesignFactory otherwise
+		// get the respective factory required to create QueryObjects
+		shared_ptr<DesignObjectFactory> designFactory = DesignObjectFactory::createDesignFactory(declaration[0]);
+		// rest of declaration must be the synonyms themselves, convert them to Design query objects
+		bool wasDeclaration = false;
+		for (int i = 1; i < size; i++) {
+			string_view currentDeclaration = declaration[i];
+			if (wasDeclaration) {
+				wasDeclaration = false;
+				if (currentDeclaration != ",") {
+					throw runtime_error("Missing comma");
+				}
+				if (i == size - 1) {
+					throw runtime_error("Extra comma");
+				}
+				continue; // at a ",", continue parsing
+			}
+			if (!SynonymObject::isValid(currentDeclaration)) { // check if valid synonym
+				throw runtime_error("Invalid synonym");
+			}
+
+			shared_ptr<QueryObject> queryObject = designFactory->create(currentDeclaration);
+			if (synonyms.find(currentDeclaration) != synonyms.end()) { // synonym already declared
+				throw runtime_error("Repeated synonym declaration");
+			}
+			else {
+				synonyms[currentDeclaration] = queryObject;
+			}
+			wasDeclaration = true;
+			converted.push_back(queryObject);
+		}
+	}
 	
-	int size = declaration.size();
-	if (size < 2) {
-		throw runtime_error("Invalid declaration");
-	}
-	// first token must be a design entity, then a synonym, exception thrown by createDesignFactory otherwise
-	// get the respective factory required to create QueryObjects
-	shared_ptr<DesignObjectFactory> designFactory = DesignObjectFactory::createDesignFactory(declaration[0]);
-	vector<shared_ptr<QueryObject>> result;
-	// rest of declaration must be the synonyms themselves, convert them to Design query objects
-	bool wasDeclaration = false;
-	for (int i = 1; i < size; i++) {
-		string_view currentDeclaration = declaration[i];
-		if (wasDeclaration) {
-			wasDeclaration = false;
-			if (currentDeclaration != ",") {
-				throw runtime_error("Missing comma");
-			}
-			if (i == size - 1) {
-				throw runtime_error("Extra comma");
-			}
-			continue; // at a ",", continue parsing
-		}
-		if (!SynonymObject::isValid(currentDeclaration)) { // check if valid synonym
-			throw runtime_error("Invalid synonym");
-		}
-		
-		shared_ptr<QueryObject> queryObject = designFactory->create(currentDeclaration);
-		if (synonyms.find(currentDeclaration) != synonyms.end()) { // synonym already declared
-			throw runtime_error("Repeated synonym declaration");
-		}
-		else {
-			synonyms[currentDeclaration] = queryObject;
-		}
-		wasDeclaration = true;
-		result.push_back(queryObject);
-	}
-	return result;
+	
+	return converted;
 
 }
 

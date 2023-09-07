@@ -27,10 +27,6 @@ public:
 	*/
 	tuple<vector<string_view>, vector<string_view>> splitDeclarationQuery(vector<string_view> tokens);
 
-	/*
-	* This function splits the declarations into each individual declaration (up till ";")
-	*/
-	vector<vector<string_view>> splitDeclarations(vector<string_view> declarations);
 
 	/*
 	* This function validates the declaration clause
@@ -43,6 +39,10 @@ public:
 	*/
 	vector<shared_ptr<QueryObject>> validateQuery(vector<string_view> query);
 private:
+	/*
+	* Helper function splits the declarations into each individual declaration (up till ";")
+	*/
+	vector<vector<string_view>> splitDeclarations(vector<string_view> declarations);
 	/*
 	* Helper function to check if Select keyword is present
 	*/

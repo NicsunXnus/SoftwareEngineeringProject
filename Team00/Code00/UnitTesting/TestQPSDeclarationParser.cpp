@@ -20,6 +20,13 @@ namespace UnitTesting
 			vector<string_view> test = tokenize("stmt v; Select v");
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<string_view> declarations = get<0>(testObj);
+			vector<string_view> query = get<1>(testObj);
+			Assert::IsTrue("stmt" == declarations[0]);
+			Assert::IsTrue("v" == declarations[1]);
+			Assert::IsTrue("Select" == query[0]);
+			Assert::IsTrue("v" == query[1]);
+			
 		}
 
 		TEST_METHOD(TestSplitDeclarationQueryEmptyDeclaration)
@@ -53,41 +60,12 @@ namespace UnitTesting
 
 		}
 
-		TEST_METHOD(TestSplitDeclarations)
-		{
-			vector<string_view> test = tokenize("    stmt s, s2,     s3; variable  v  ; assign   a  ; Select v");
-			shared_ptr<QueryParser> p = make_shared<QueryParser>();
-			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<vector<string_view>> splittedDeclarations = p->splitDeclarations(get<0>(testObj));
-			Assert::IsTrue(splittedDeclarations.size() == 3);
-
-			Assert::IsTrue(splittedDeclarations[0][0] == "stmt");
-			Assert::IsTrue(splittedDeclarations[0][1] == "s");
-			Assert::IsTrue(splittedDeclarations[0][2] == ",");
-			Assert::IsTrue(splittedDeclarations[0][3] == "s2");
-			Assert::IsTrue(splittedDeclarations[0][4] == ",");
-			Assert::IsTrue(splittedDeclarations[0][5] == "s3");
-			Assert::IsTrue(splittedDeclarations[1][0] == "variable");
-			Assert::IsTrue(splittedDeclarations[1][1] == "v");
-			Assert::IsTrue(splittedDeclarations[2][0] == "assign");
-			Assert::IsTrue(splittedDeclarations[2][1] == "a");
-
-		}
-
-		TEST_METHOD(TestValidateDeclaration)
+		TEST_METHOD(TestValidateDeclarationWeirdSpacing)
 		{
 			vector<string_view> tokenizer = tokenize("  stmt s1,s2,   s3; variable  variable; assign a  ; Select v  ");
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(tokenizer);
-			vector<vector<string_view>> splittedDeclarations = p->splitDeclarations(get<0>(declarationQuery));
-			Assert::IsTrue(splittedDeclarations.size() == 3);
-			vector<vector<shared_ptr<QueryObject>>> res;
-			for (int i = 0; i < splittedDeclarations.size(); i++) {
-				vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(splittedDeclarations[i]);
-				res.push_back(curr);
-
-			}
-			int tes1t = 1;
+			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(declarationQuery));
 		}
 
 		TEST_METHOD(TestValidateDeclarationInvalidSynonym)
@@ -95,15 +73,8 @@ namespace UnitTesting
 			vector<string_view> tokenizer = tokenize("stmt dasd!; variable variable; assign a; Select v");
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(tokenizer);
-			vector<vector<string_view>> splittedDeclarations = p->splitDeclarations(get<0>(declarationQuery));
-			Assert::IsTrue(splittedDeclarations.size() == 3);
-			vector<vector<shared_ptr<QueryObject>>> res;
 			try {
-				for (int i = 0; i < splittedDeclarations.size(); i++) {
-					vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(splittedDeclarations[i]);
-					res.push_back(curr);
-
-				}
+				vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(declarationQuery));
 			}
 			catch (const exception& ex)
 			{
@@ -117,15 +88,9 @@ namespace UnitTesting
 			vector<string_view> tokenizer = tokenize("stmt; variable variable; assign a; Select v");
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(tokenizer);
-			vector<vector<string_view>> splittedDeclarations = p->splitDeclarations(get<0>(declarationQuery));
-			Assert::IsTrue(splittedDeclarations.size() == 3);
-			vector<vector<shared_ptr<QueryObject>>> res;
-			try {
-				for (int i = 0; i < splittedDeclarations.size(); i++) {
-					vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(splittedDeclarations[i]);
-					res.push_back(curr);
 
-				}
+			try {
+				vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(declarationQuery));
 			}
 			catch (const exception& ex)
 			{
@@ -139,15 +104,9 @@ namespace UnitTesting
 			vector<string_view> tokenizer = tokenize("stmt12 ab; variable variable; assign a; Select v");
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(tokenizer);
-			vector<vector<string_view>> splittedDeclarations = p->splitDeclarations(get<0>(declarationQuery));
-			Assert::IsTrue(splittedDeclarations.size() == 3);
-			vector<vector<shared_ptr<QueryObject>>> res;
-			try {
-				for (int i = 0; i < splittedDeclarations.size(); i++) {
-					vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(splittedDeclarations[i]);
-					res.push_back(curr);
 
-				}
+			try {
+				vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(declarationQuery));
 				Assert::Fail();
 			}
 			catch (const exception& ex)
@@ -162,14 +121,9 @@ namespace UnitTesting
 			vector<string_view> tokenizer = tokenize("stmt ab variable variable; assign a; Select v");
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(tokenizer);
-			vector<vector<string_view>> splittedDeclarations = p->splitDeclarations(get<0>(declarationQuery));
-			vector<vector<shared_ptr<QueryObject>>> res;
+		
 			try {
-				for (int i = 0; i < splittedDeclarations.size(); i++) {
-					vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(splittedDeclarations[i]);
-					res.push_back(curr);
-
-				}
+				vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(declarationQuery));
 				Assert::Fail();
 			}
 			catch (const exception& ex)
@@ -184,14 +138,9 @@ namespace UnitTesting
 			vector<string_view> tokenizer = tokenize("stmt ab, variable, v1,; assign a; Select v");
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(tokenizer);
-			vector<vector<string_view>> splittedDeclarations = p->splitDeclarations(get<0>(declarationQuery));
-			vector<vector<shared_ptr<QueryObject>>> res;
+			
 			try {
-				for (int i = 0; i < splittedDeclarations.size(); i++) {
-					vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(splittedDeclarations[i]);
-					res.push_back(curr);
-
-				}
+				vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(declarationQuery));
 				Assert::Fail();
 			}
 			catch (const exception& ex)
@@ -206,20 +155,135 @@ namespace UnitTesting
 			vector<string_view> tokenizer = tokenize("stmt a, variable, v1; assign a; Select v");
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(tokenizer);
-			vector<vector<string_view>> splittedDeclarations = p->splitDeclarations(get<0>(declarationQuery));
-			vector<vector<shared_ptr<QueryObject>>> res;
-			try {
-				for (int i = 0; i < splittedDeclarations.size(); i++) {
-					vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(splittedDeclarations[i]);
-					res.push_back(curr);
 
-				}
+			try {
+				vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(declarationQuery));
 				Assert::Fail();
 			}
 			catch (const exception& ex)
 			{
 				Assert::AreEqual("Repeated synonym declaration", ex.what());
 			}
+
+		}
+
+		TEST_METHOD(TestValidStmtDeclaration)
+		{
+			vector<string_view> tokenizer = tokenize("stmt a, a1; Select v");
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(tokenizer);
+
+			vector<shared_ptr<QueryObject>> declarations = p->validateDeclaration(get<0>(declarationQuery));
+			Assert::IsTrue(declarations[0]->getQueryObjectName() == "a");
+			Assert::IsTrue(declarations[1]->getQueryObjectName() == "a1");
+			
+		}
+
+		TEST_METHOD(TestValidReadDeclaration)
+		{
+			vector<string_view> tokenizer = tokenize("read a, a1; Select v");
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(tokenizer);
+
+			vector<shared_ptr<QueryObject>> declarations = p->validateDeclaration(get<0>(declarationQuery));
+			Assert::IsTrue(declarations[0]->getQueryObjectName() == "a");
+			Assert::IsTrue(declarations[1]->getQueryObjectName() == "a1");
+
+		}
+
+		TEST_METHOD(TestValidPrintDeclaration)
+		{
+			vector<string_view> tokenizer = tokenize("print a, a1; Select v");
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(tokenizer);
+
+			vector<shared_ptr<QueryObject>> declarations = p->validateDeclaration(get<0>(declarationQuery));
+			Assert::IsTrue(declarations[0]->getQueryObjectName() == "a");
+			Assert::IsTrue(declarations[1]->getQueryObjectName() == "a1");
+
+		}
+
+		TEST_METHOD(TestValidCallDeclaration)
+		{
+			vector<string_view> tokenizer = tokenize("call a, a1; Select v");
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(tokenizer);
+
+			vector<shared_ptr<QueryObject>> declarations = p->validateDeclaration(get<0>(declarationQuery));
+			Assert::IsTrue(declarations[0]->getQueryObjectName() == "a");
+			Assert::IsTrue(declarations[1]->getQueryObjectName() == "a1");
+
+		}
+
+		TEST_METHOD(TestValidWhileDeclaration)
+		{
+			vector<string_view> tokenizer = tokenize("while a, a1; Select v");
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(tokenizer);
+
+			vector<shared_ptr<QueryObject>> declarations = p->validateDeclaration(get<0>(declarationQuery));
+			Assert::IsTrue(declarations[0]->getQueryObjectName() == "a");
+			Assert::IsTrue(declarations[1]->getQueryObjectName() == "a1");
+
+		}
+
+		TEST_METHOD(TestValidIfDeclaration)
+		{
+			vector<string_view> tokenizer = tokenize("if a, a1; Select v");
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(tokenizer);
+
+			vector<shared_ptr<QueryObject>> declarations = p->validateDeclaration(get<0>(declarationQuery));
+			Assert::IsTrue(declarations[0]->getQueryObjectName() == "a");
+			Assert::IsTrue(declarations[1]->getQueryObjectName() == "a1");
+
+		}
+
+		TEST_METHOD(TestValidAssignDeclaration)
+		{
+			vector<string_view> tokenizer = tokenize("assign a, a1; Select v");
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(tokenizer);
+
+			vector<shared_ptr<QueryObject>> declarations = p->validateDeclaration(get<0>(declarationQuery));
+			Assert::IsTrue(declarations[0]->getQueryObjectName() == "a");
+			Assert::IsTrue(declarations[1]->getQueryObjectName() == "a1");
+
+		}
+
+		TEST_METHOD(TestValidVariableDeclaration)
+		{
+			vector<string_view> tokenizer = tokenize("variable a, a1; Select v");
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(tokenizer);
+
+			vector<shared_ptr<QueryObject>> declarations = p->validateDeclaration(get<0>(declarationQuery));
+			Assert::IsTrue(declarations[0]->getQueryObjectName() == "a");
+			Assert::IsTrue(declarations[1]->getQueryObjectName() == "a1");
+
+		}
+
+		TEST_METHOD(TestValidConstantDeclaration)
+		{
+			vector<string_view> tokenizer = tokenize("constant a, a1; Select v");
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(tokenizer);
+
+			vector<shared_ptr<QueryObject>> declarations = p->validateDeclaration(get<0>(declarationQuery));
+			Assert::IsTrue(declarations[0]->getQueryObjectName() == "a");
+			Assert::IsTrue(declarations[1]->getQueryObjectName() == "a1");
+
+		}
+
+		TEST_METHOD(TestValidProcedureDeclaration)
+		{
+			vector<string_view> tokenizer = tokenize("procedure a, a1; Select v");
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(tokenizer);
+
+			vector<shared_ptr<QueryObject>> declarations = p->validateDeclaration(get<0>(declarationQuery));
+			Assert::IsTrue(declarations[0]->getQueryObjectName() == "a");
+			Assert::IsTrue(declarations[1]->getQueryObjectName() == "a1");
 
 		}
 

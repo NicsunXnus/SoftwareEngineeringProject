@@ -14,7 +14,7 @@
 class QueryDriver {
 private:
 	std::string query;
-	QueryParser queryParser;
+	shared_ptr<QueryParser> queryParser;
 
 public:
 	/**
@@ -22,7 +22,7 @@ public:
 	 */
 	QueryDriver(std::string_view query)
 		: query { query } {
-		queryParser = new QueryParser();
+		queryParser = make_shared<QueryParser>();
 	};
 	
 	/**
@@ -30,10 +30,7 @@ public:
 	 */
 	~QueryDriver() {};
 
-	/**
-	 * Passes the query down the query parser for parsing
-	 */
-	generateQueryObjects(std::string_view query);
+	
 
 
 };
