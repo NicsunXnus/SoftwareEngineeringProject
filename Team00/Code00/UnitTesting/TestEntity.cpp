@@ -11,12 +11,15 @@ namespace UnitTesting
 	public:
 		TEST_METHOD(TestProcedureEntity)
 		{
+            
+            std::vector<std::shared_ptr<StatementNode>> emptyStatements;
+
             //Create procedure nodes
-            std::shared_ptr<ProcedureNode> testProcdeureNode1 = std::make_shared<ProcedureNode>("procedure1");
-            std::shared_ptr<ProcedureNode> testProcdeureNode2 = std::make_shared<ProcedureNode>("procedure2");
-            std::shared_ptr<ProcedureNode> testProcdeureNode3 = std::make_shared<ProcedureNode>("procedure3");
-            std::shared_ptr<ProcedureNode> testProcdeureNode4 = std::make_shared<ProcedureNode>("procedure4");
-            std::shared_ptr<ProcedureNode>testProcdeureNode5 = std::make_shared<ProcedureNode>("procedure5");
+            std::shared_ptr<ProcedureNode> testProcdeureNode1 = std::make_shared<ProcedureNode>("procedure1", emptyStatements);
+            std::shared_ptr<ProcedureNode> testProcdeureNode2 = std::make_shared<ProcedureNode>("procedure2", emptyStatements);
+            std::shared_ptr<ProcedureNode> testProcdeureNode3 = std::make_shared<ProcedureNode>("procedure3", emptyStatements);
+            std::shared_ptr<ProcedureNode> testProcdeureNode4 = std::make_shared<ProcedureNode>("procedure4", emptyStatements);
+            std::shared_ptr<ProcedureNode> testProcdeureNode5 = std::make_shared<ProcedureNode>("procedure5", emptyStatements);
 
             // Combine procedure nodes into a vector
             std::vector<std::shared_ptr<ProcedureNode>>
