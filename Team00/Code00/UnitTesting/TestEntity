@@ -1,0 +1,117 @@
+#include "stdafx.h"
+#include "CppUnitTest.h"
+#include "../source/DesignExtractor/Entity.h"
+#include "../source/AST/ASTNode.h"
+using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+
+namespace UnitTesting
+{
+	TEST_CLASS(TestSP)
+	{
+	public:
+		TEST_METHOD(TestProcedureEntity)
+		{
+            //Create procedure nodes
+            std::shared_ptr<ProcedureNode> testProcdeureNode1 = std::make_shared<ProcedureNode>("procedure1")
+			std::shared_ptr<ProcedureNode> testProcdeureNode2 = std::make_shared<ProcedureNode>("procedure2")
+            std::shared_ptr<ProcedureNode> testProcdeureNode3 = std::make_shared<ProcedureNode>("procedure3")
+            std::shared_ptr<ProcedureNode> testProcdeureNode4 = std::make_shared<ProcedureNode>("procedure4")
+            std::shared_ptr<ProcedureNode> testProcdeureNode5 = std::make_shared<ProcedureNode>("procedure5")
+            
+            //Combine procedure nodes into a vector
+            std::vector<std::shared_ptr<ProcedureNode>> testProcedureNodes = {testProcdeureNode1, testProcdeureNode2, testProcdeureNode3, testProcdeureNode4, testProcdeureNode5};
+            
+            //Create procedure entity
+            std::shared_ptr<ProcedureEntity> testProcedureEntity = std::make_shared<ProcedureEntity>();
+
+            //Extract procedure entity from each procedure node
+            for (const auto& procedure : testProcedureNodes) {
+                testProcedureEntity->extractEntity(procedure);
+            }
+
+            //Get procedure map from procedure entity
+            procedureMap = testProcedureEntity->getProcedureMap();
+
+            //Check if procedure entity is extracted correctly
+            Assert::IsTrue(procedureMap["procedure1"] == 1);
+            Assert::IsTrue(procedureMap["procedure2"] == 2);
+            Assert::IsTrue(procedureMap["procedure3"] == 3);
+            Assert::IsTrue(procedureMap["procedure4"] == 4);
+            Assert::IsTrue(procedureMap["procedure5"] == 5);
+            
+            //Create a program node
+            // std::shared_ptr<ProgramNode> testProgramNode = std::make_shared<ProgramNode>("test", testProcedureNodes)
+
+		}
+		TEST_METHOD(TestStatement)
+		{
+
+			std::string complicatedExpr = "(3 + ((6*3) % (8*(4 + 5))))";// > (3 + ((6 * 3) % (8 * (4 + 5))))";
+			std::vector<std::shared_ptr<Token>> procedureTest;
+			//start of procedure
+
+			//read x;
+			procedureTest.emplace_back(std::make_shared<ReadKeywordToken>());
+			procedureTest.emplace_back(std::make_shared<IdentifierToken>("x"sv));
+			procedureTest.emplace_back(std::make_shared<SemicolonSepToken>());
+
+			//a = (3 + ((6*3) % (8*(4 + 5))));
+			procedureTest.emplace_back(std::make_shared<IdentifierToken>("a"sv));
+			procedureTest.emplace_back(std::make_shared<EqualsOpToken>());
+			//expression part
+			procedureTest.emplace_back(std::make_shared<ParenOpenSepToken>());
+			procedureTest.emplace_back(std::make_shared<LiteralToken>("3"));
+			procedureTest.emplace_back(std::make_shared<PlusOpToken>());
+			procedureTest.emplace_back(std::make_shared<ParenOpenSepToken>());
+			procedureTest.emplace_back(std::make_shared<ParenOpenSepToken>());
+			procedureTest.emplace_back(std::make_shared<LiteralToken>("6"));
+			procedureTest.emplace_back(std::make_shared<MultiplyOpToken>());
+			procedureTest.emplace_back(std::make_shared<LiteralToken>("3"));
+			procedureTest.emplace_back(std::make_shared<ParenCloseSepToken>());
+			procedureTest.emplace_back(std::make_shared<ModuloOpToken>());
+			procedureTest.emplace_back(std::make_shared<ParenOpenSepToken>());
+			procedureTest.emplace_back(std::make_shared<LiteralToken>("8"));
+			procedureTest.emplace_back(std::make_shared<MultiplyOpToken>());
+			procedureTest.emplace_back(std::make_shared<ParenOpenSepToken>());
+			procedureTest.emplace_back(std::make_shared<LiteralToken>("4"));
+			procedureTest.emplace_back(std::make_shared<PlusOpToken>());
+			procedureTest.emplace_back(std::make_shared<LiteralToken>("5"));
+			procedureTest.emplace_back(std::make_shared<ParenCloseSepToken>());
+			procedureTest.emplace_back(std::make_shared<ParenCloseSepToken>());
+			procedureTest.emplace_back(std::make_shared<ParenCloseSepToken>());
+			procedureTest.emplace_back(std::make_shared<ParenCloseSepToken>());
+			//end of expression
+			procedureTest.emplace_back(std::make_shared<SemicolonSepToken>());
+
+			//a = a + 1;
+			procedureTest.emplace_back(std::make_shared<IdentifierToken>("a"sv));
+			procedureTest.emplace_back(std::make_shared<EqualsOpToken>());
+			procedureTest.emplace_back(std::make_shared<IdentifierToken>("a"sv));
+			procedureTest.emplace_back(std::make_shared<PlusOpToken>());
+			procedureTest.emplace_back(std::make_shared<LiteralToken>("1"));
+			procedureTest.emplace_back(std::make_shared<SemicolonSepToken>());
+
+			//print x
+			procedureTest.emplace_back(std::make_shared<PrintKeywordToken>());
+			procedureTest.emplace_back(std::make_shared<IdentifierToken>("x"sv));
+			procedureTest.emplace_back(std::make_shared<SemicolonSepToken>());
+
+			std::vector<std::shared_ptr<StatementNode>> statements = ASTBuilder::parseStatements(procedureTest);
+			std::stringstream output;
+			std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
+
+			std::string res = "";
+			res += std::to_string(statements[0]->getStatementNumber()) + " read " + ASTBuilder::printExpr(statements[0]->getVar()) + "\n";
+			res += std::to_string(statements[1]->getStatementNumber()) + " " + ASTBuilder::printExpr(statements[1]->getVar()) + " = " + ASTBuilder::printExpr(statements[1]->getExpr()) + "\n";
+			res += std::to_string(statements[2]->getStatementNumber()) + " " + ASTBuilder::printExpr(statements[2]->getVar()) + " = " + ASTBuilder::printExpr(statements[2]->getExpr()) + "\n";
+			res += std::to_string(statements[3]->getStatementNumber()) + " print " + ASTBuilder::printExpr(statements[0]->getVar());
+			std::cout << res;
+
+			std::cout.rdbuf(oldCoutBuffer);
+
+			Logger::WriteMessage("Output of parseStatements:\n");
+			Logger::WriteMessage(output.str().c_str());
+		}
+
+	};
+}
