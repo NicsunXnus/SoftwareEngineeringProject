@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "ExprNode.h"
+// #include "ExprNode.h"
 
 //PROMPT: Pretend you are a harsh c++ critic who strongly advocates for code efficiency, robust code patterns and no code smells, critic this code fragment written in c++.
 //MEDIUM: PERPLEXITY AI PREMIUM
@@ -268,6 +268,9 @@ class VariableNode : public ExprNode {
 public:
     VariableNode(std::string name, int statementNumber)
         : ExprNode("VariableNode", statementNumber), name(std::move(name)) {}
+
+    VariableNode(std::string name)
+        : ExprNode("VariableNode"), name(std::move(name)) {}
 
     bool isTerminal() const override {
         return true;

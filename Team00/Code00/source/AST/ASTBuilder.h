@@ -196,7 +196,7 @@ public:
             else if (isAlphanumeric(token->getName())) {
                 std::shared_ptr<ExprNode> refNode;
                 if (isNumber(token->getName()))  refNode = std::make_shared<ConstantNode>(std::stoi(token->getName()));
-                else refNode = std::make_shared <VariableNode>(token->getName(), statementNumber);
+                else refNode = std::make_shared <VariableNode>(token->getName());
                 values.push(refNode);
             }
             else {
