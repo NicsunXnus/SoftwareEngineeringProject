@@ -286,7 +286,7 @@ private:
     std::string name;
 };
 
-class CondExprNode : class ASTNode {
+class CondExprNode : public ASTNode {
 public:
     virtual ~CondExprNode() = default;
     virtual std::shared_ptr<CondExprNode> getLeftCondExpr() const {
