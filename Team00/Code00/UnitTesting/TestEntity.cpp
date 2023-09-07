@@ -31,7 +31,7 @@ namespace UnitTesting
             }
 
             //Get procedure map from procedure entity
-            procedureMap = testProcedureEntity->getProcedureMap();
+            std::map<std::string, std::vector<int>> procedureMap = testProcedureEntity->getMap();
 
             //Check if procedure entity is extracted correctly
             Assert::IsTrue(procedureMap["procedure1"] == 1);
