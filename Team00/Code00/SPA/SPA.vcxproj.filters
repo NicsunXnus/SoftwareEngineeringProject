@@ -22,6 +22,12 @@
     <Filter Include="Source Files\Tokenizer">
       <UniqueIdentifier>{2e5d6711-4d3e-4020-bd8c-7891fe508155}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\PKB Files">
+      <UniqueIdentifier>{08c9a2a2-cb23-440d-a48d-bd9249577d66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\PKB Files\Storage Manager Files">
+      <UniqueIdentifier>{4efbd911-6eb5-4245-a5ba-990463e82954}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\QPS">
       <UniqueIdentifier>{acccfbfd-ff70-43e2-be88-bcd8e5046ec8}</UniqueIdentifier>
     </Filter>
@@ -50,6 +56,10 @@
     </ClCompile>
     <ClCompile Include="..\source\TokenizerClasses\SIMPLETokenizer.cpp">
       <Filter>Source Files\Tokenizer</Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\source\AST\ASTBuilder.h">
+      <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="..\source\QPS\QueryParser.cpp">
       <Filter>Source Files\QPS</Filter>
@@ -71,10 +81,7 @@
     <ClInclude Include="..\source\PKB.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\TNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenizerClasses\PQLTokenizer.h">
+    <ClInclude Include="..\source\TokenizerClasses\TokenFactory.h">
       <Filter>Header Files\Tokenizer Files</Filter>
     </ClInclude>
     <ClInclude Include="..\source\TokenizerClasses\TokenizerFunctions.h">
@@ -103,6 +110,33 @@
     </ClInclude>
     <ClInclude Include="..\source\TokenClasses\UnderscoreToken.h">
       <Filter>Header Files\Token Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\Insertor.h">
+      <Filter>Header Files\PKB Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\Responder.h">
+      <Filter>Header Files\PKB Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\StorageManager.h">
+      <Filter>Header Files\PKB Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\StorageClasses\AbstractionStorage.h">
+      <Filter>Header Files\PKB Files\Storage Manager Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\StorageClasses\EntityStorage.h">
+      <Filter>Header Files\PKB Files\Storage Manager Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\StorageClasses\FollowsAbstractionStorage.h">
+      <Filter>Header Files\PKB Files\Storage Manager Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\StorageClasses\ModifiesAbstractionStorage.h">
+      <Filter>Header Files\PKB Files\Storage Manager Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\StorageClasses\ParentAbstractionStorage.h">
+      <Filter>Header Files\PKB Files\Storage Manager Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\StorageClasses\UsesAbstractionStorage.h">
+      <Filter>Header Files\PKB Files\Storage Manager Files</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\QueryParser.h">
       <Filter>Header Files\QPS</Filter>

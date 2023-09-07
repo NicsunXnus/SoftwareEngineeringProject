@@ -42,12 +42,12 @@ public:
 };
 
 /**
-* This class represents a "/" symbol.
+* This class represents a "+" symbol.
 */
-class DivideOpToken : public ArithmeticOpToken {
+class PlusOpToken : public ArithmeticOpToken {
 public:
-	DivideOpToken()
-		: ArithmeticOpToken{ "/"sv } {};
+	PlusOpToken()
+		: ArithmeticOpToken{ "+"sv } {};
 };
 
 /**
@@ -60,12 +60,12 @@ public:
 };
 
 /**
-* This class represents a "%" symbol.
+* This class represents a "/" symbol.
 */
-class ModuloOpToken : public ArithmeticOpToken {
+class DivideOpToken : public ArithmeticOpToken {
 public:
-	ModuloOpToken()
-		: ArithmeticOpToken{ "%"sv } {};
+	DivideOpToken()
+		: ArithmeticOpToken{ "/"sv } {};
 };
 
 /**
@@ -78,12 +78,12 @@ public:
 };
 
 /**
-* This class represents a "+" symbol.
+* This class represents a "%" symbol.
 */
-class PlusOpToken : public ArithmeticOpToken {
+class ModuloOpToken : public ArithmeticOpToken {
 public:
-	PlusOpToken()
-		: ArithmeticOpToken{ "+"sv } {};
+	ModuloOpToken()
+		: ArithmeticOpToken{ "%"sv } {};
 };
 
 // === BOOlEAN OPERATORS ===
@@ -108,21 +108,21 @@ public:
 };
 
 /**
-* This class represents a "!" symbol when used to invert boolean values
-*/
-class NotOpToken : public BooleanOpToken {
-public:
-	NotOpToken()
-		: BooleanOpToken{ "!"sv } {};
-};
-
-/**
 * This class represents a "||" symbol.
 */
 class OrOpToken : public BooleanOpToken {
 public:
 	OrOpToken()
 		: BooleanOpToken{ "||"sv } {};
+};
+
+/**
+* This class represents a "!" symbol when used to invert boolean values
+*/
+class NotOpToken : public BooleanOpToken {
+public:
+	NotOpToken()
+		: BooleanOpToken{ "!"sv } {};
 };
 
 // === RELATIONAL OPERATORS ===
@@ -174,21 +174,21 @@ public:
 };
 
 /**
-* This class represents a "!=" symbol.
-*/
-class InequalityOpToken : public RelationalOpToken {
-public:
-	InequalityOpToken()
-		: RelationalOpToken{ "!="sv } {};
-};
-
-/**
 * This class represents a "==" symbol.
 */
 class EqualityOpToken : public RelationalOpToken {
 public:
 	EqualityOpToken()
 		: RelationalOpToken{ "=="sv } {};
+};
+
+/**
+* This class represents a "!=" symbol.
+*/
+class InequalityOpToken : public RelationalOpToken {
+public:
+	InequalityOpToken()
+		: RelationalOpToken{ "!="sv } {};
 };
 
 #endif

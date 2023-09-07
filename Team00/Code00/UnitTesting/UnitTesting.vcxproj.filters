@@ -41,6 +41,12 @@
     <ClCompile Include="TestQPSSelectionParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TestSimpleTokenizer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestEntity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="TestPQLTokenizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

@@ -16,17 +16,9 @@ public:
 	Token(std::string_view tokenName)
 		: tokenName{ tokenName } {
 	};
-
-	
-	// Overload == operator for token class comparisons for testing purposes
-	bool operator==(Token& t) {
-		std::string tName{ typeid(t).name() };
-		std::string thisName{ typeid(t).name() };
-
-		if (tName.compare(thisName)) {
-			return false;
-		}
-		return this->tokenName == t.tokenName;
+	// Getter for the token name since the field is private.
+	std::string getName() {
+		return this->tokenName;
 	}
 };
 #endif
