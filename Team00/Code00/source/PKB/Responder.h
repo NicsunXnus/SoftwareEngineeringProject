@@ -15,16 +15,15 @@ public:
 	// storage manager will get entity storage/abstraction storage, perform the query on that class via polymorphism, then return line numbers
 	// responder returns line numbers to caller (QPS)
 	
-	vector<int> Responder::getEntity(string entity)	{
-		// check which database... if "variable/procedure/constant"
-		// else use statement_database
+	vector<int> Responder::getEntityStatement(string entity) {
 		EntityStorage* entity_storage = StorageManager::getEntityStorage();
 		return (*(entity_storage->getStatementDatabase())).at(entity);
 	}
 
-	map<string, vector<int>>* Responder::getAllProcedures()	{
+	vector<string> Responder::getAllProcedures() {
 		EntityStorage* entity_storage = StorageManager::getEntityStorage();
-		return entity_storage->getProcedureDatabase();
+		map<string, vector<int>>* proc_database = entity_storage->getProcedureDatabase();
+		return getKeys(proc_database);
 	}
 
 	vector<int> Responder::getProcedure(string procedure) {
@@ -32,9 +31,10 @@ public:
 		return (*(entity_storage->getProcedureDatabase())).at(procedure);
 	}
 
-	map<string, vector<int>>* Responder::getAllVariables() {
+	vector<string> Responder::getAllVariables() {
 		EntityStorage* entity_storage = StorageManager::getEntityStorage();
-		return entity_storage->getVariableDatabase();
+		map<string, vector<int>>* var_database = entity_storage->getVariableDatabase();
+		return getKeys(var_database);
 	}
 
 	vector<int> Responder::getVariable(string variable)	{
@@ -42,9 +42,10 @@ public:
 		return (*(entity_storage->getVariableDatabase())).at(variable);
 	}
 
-	map<string, vector<int>>* Responder::getAllConstants() {
+	vector<string> Responder::getAllConstants() {
 		EntityStorage* entity_storage = StorageManager::getEntityStorage();
-		return entity_storage->getConstantDatabase();
+		map<string, vector<int>>* const_database = entity_storage->getConstantDatabase();
+		return getKeys(const_database);
 	}
 
 	vector<int> Responder::getConstant(string constant)	{
@@ -60,5 +61,14 @@ public:
 	vector<int> Responder::getAbstractionVariable(string abstraction, string variable) {
 		AbstractionStorage* abstraction_storage = StorageManager::getAbstractionStorage(abstraction);
 		return (*(abstraction_storage->getDatabase())).at(variable);
+	}
+
+private:
+	vector<string> getKeys(map<string, vector<int>>* db) {
+		vector<string> keys;
+		for (const auto& [k, v] : *db) {
+			keys.push_back(k);
+		}
+		return keys;
 	}
 };
