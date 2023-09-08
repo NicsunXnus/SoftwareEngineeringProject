@@ -3,6 +3,7 @@
 
 #include "ASTNode.h"
 #include "../TokenizerClasses/TokenFactory.h"
+#include "../HelperFunctions.h"
 #include <stack>
 
 class ASTBuilder {
@@ -217,24 +218,6 @@ public:
         }
 
         return values.top();
-    }
-
-    static bool isAlphanumeric(std::string str) {
-        for (char c : str) {
-            if (!std::isalnum(c)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    static bool isNumber(std::string str) {
-        for (char c : str) {
-            if (!std::isdigit(c)) {
-                return false;
-            }
-        }
-        return true;
     }
 
     static std::string printExpr(std::shared_ptr<ExprNode> expr) {

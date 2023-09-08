@@ -3,9 +3,6 @@
   <ItemGroup>
     <ClCompile Include="..\source\Parser.cpp" />
     <ClCompile Include="..\source\AST\ASTNode.h" />
-    <ClCompile Include="..\source\AST\ASTNode.h" />
-    <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
     <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
     <ClCompile Include="..\source\DesignExtractor\Entity.h" />
     <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
@@ -31,6 +28,9 @@
     <ClCompile Include="..\source\PKB.cpp">
       <Filter>PKB</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\AST\**\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\TNode.h" />
@@ -56,9 +56,6 @@
       <Filter>SP</Filter>
     </ClInclude>
     <ClInclude Include="..\source\TokenClasses\UnderscoreToken.h">
-      <Filter>SP</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenizerClasses\TokenizerFunctions.h">
       <Filter>SP</Filter>
     </ClInclude>
     <ClInclude Include="..\source\PKB\StorageClasses\AbstractionStorage.h">
@@ -97,6 +94,7 @@
     <ClInclude Include="..\source\PKB\StorageManager.h">
       <Filter>PKB</Filter>
     </ClInclude>
+    <ClInclude Include="..\source\HelperFunctions.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SP">
