@@ -5,9 +5,45 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-namespace UnitTesting
+namespace HelperFunctions_Test
 {
-	TEST_CLASS(Test_isValidName) {
+	TEST_CLASS(isNumber_Test) {
+	public:
+		TEST_METHOD(numbers_success) {
+			bool result = isNumber("01234");
+			assert(result == true);
+		}
+
+		TEST_METHOD(nonNumbers_failure) {
+			assert(isNumber("0x1") == false);
+			assert(isNumber("0b1") == false);
+			assert(isNumber("0abc") == false);
+			assert(isNumber("abc0") == false);
+			assert(isNumber(" ") == false);
+			assert(isNumber("%") == false);
+			assert(isNumber("|") == false);
+			assert(isNumber("é") == false);
+		}
+	};
+
+	TEST_CLASS(isAlphanumeric_Test) {
+	public:
+		TEST_METHOD(alphanum_success) {
+			assert(isAlphanumeric("abc") == true);
+			assert(isAlphanumeric("123") == true);
+			assert(isAlphanumeric("x1y2z3") == true);
+			assert(isAlphanumeric("0x1") == true);
+			assert(isAlphanumeric("0b1") == true);
+		}
+
+		TEST_METHOD(nonAlphanum_failure) {
+			assert(isAlphanumeric(" ") == false);
+			assert(isAlphanumeric("|") == false);
+			assert(isAlphanumeric("é") == false);
+		}
+	};
+
+	TEST_CLASS(isValidName_Test) {
 	public:
 		TEST_METHOD(lettersOnly_success) {
 			bool result = isValidName("AbCd");
@@ -37,7 +73,6 @@ namespace UnitTesting
 
 		TEST_METHOD(leadingDigit_failure) {
 			bool result = isValidName("0read");
-			result = result || isValidName("9read");
 			result = result || isValidName("10read");
 			result = result || isValidName("0x1read");
 			result = result || isValidName("0b1read");
@@ -50,8 +85,100 @@ namespace UnitTesting
 			result = result || isValidName("one+two"); // invalid character: +
 			result = result || isValidName("wrong*format"); // invalid character: *
 			result = result || isValidName("true||false"); // invalid character: |
+			result = result || isValidName("one day"); // invalid character: " "
+			result = result || isValidName("éclaire"); // invalid character: é
 			assert(result == false); // failure
 		}
 
+	};
+
+	TEST_CLASS(splitString_defaultValues_Test) {
+	public:
+		TEST_METHOD(empty_success) {
+			std::string input = "";
+			std::vector<std::string> expected = {};
+			std::vector<std::string> output = splitString(input);
+			assert(output == expected);
+		}
+
+		TEST_METHOD(allWhitespaces_success) {
+			std::string input = " \n\t\r\v\f";
+			std::vector<std::string> expected = {};
+			std::vector<std::string> output = splitString(input);
+			assert(output == expected);
+		}
+
+		TEST_METHOD(sentence_success) {
+			std::string input = "The brown   \n fox\t  is \r quick  \v for \f   its size.";
+			std::vector<std::string> expected = { "The", "brown", "fox", "is", "quick", "for", "its", "size." };
+			std::vector<std::string> output = splitString(input);
+			assert(output == expected);
+		}
+	};
+
+	TEST_CLASS(splitString_customValues_Test) {
+	public:
+		TEST_METHOD(empty_success) {
+			std::string input = "";
+			std::vector<std::string> expected = {};
+			std::vector<std::string> output = splitString(input, "a", true);
+			assert(output == expected);
+			std::vector<std::string> output2 = splitString(input, "a", false);
+			assert(output2 == expected);
+		}
+
+		TEST_METHOD(allDelimiters_success) {
+			std::string input = "aaaa";
+			std::vector<std::string> expected = {};
+			std::vector<std::string> output = splitString(input, "a", false);
+			assert(output == expected);
+			std::vector<std::string> expected2 = {"a", "a", "a", "a"};
+			std::vector<std::string> output2 = splitString(input, "a", true);
+			assert(output2 == expected2);
+		}
+
+		TEST_METHOD(sentence_success) {
+			std::string input = "int x = 1;\nbool y = true;";
+			std::vector<std::string> expected = { "int x = 1", "\nbool y = true" };
+			std::vector<std::string> output = splitString(input, ";", false);
+			assert(output == expected);
+			std::vector<std::string> expected2 = { "int x = 1", ";", "\nbool y = true", ";" };
+			std::vector<std::string> output2 = splitString(input, ";", true);
+			assert(output2 == expected2);
+		}
+	};
+
+	TEST_CLASS(trimWhiteSpaces_Test) {
+	public:
+		TEST_METHOD(nothing_success) {
+			std::string input = "";
+			std::string expected = "";
+			std::string output = trimWhitespaces(input);
+			assert(output == expected);
+		}
+		TEST_METHOD(onlyWhitespaces_success) {
+			std::string input = " \n\t\r\v\f\b";
+			std::string expected = "";
+			std::string output = trimWhitespaces(input);
+			assert(output == expected);
+		}
+		TEST_METHOD(sandwichedLetters_success) {
+			std::string input = " \n\t\rabcd\v\f\b";
+			std::string expected = "abcd";
+			std::string output = trimWhitespaces(input);
+			assert(output == expected);
+		}
+		TEST_METHOD(sandwichedWhitespaces_success) {
+			std::string input = "xy \n\t\r\v\f\bzw";
+			std::string expected = "xy \n\t\r\v\f\bzw";
+			std::string output = trimWhitespaces(input);
+			assert(output == expected);
+		}
+		TEST_METHOD(stressTest_success) {
+			std::string input = " \n This:\f a\vtest* of\b(the capabilitiés\f)\t \n";
+			std::string expected = "This:\f a\vtest* of\b(the capabilitiés\f)";
+			std::string output = trimWhitespaces(input);
+			assert(output == expected);
+		}
 	};
 }

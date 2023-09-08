@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
+
 #include "../source/TokenizerClasses/SimpleTokenizer.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;

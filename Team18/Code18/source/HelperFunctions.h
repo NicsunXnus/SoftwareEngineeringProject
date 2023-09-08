@@ -2,9 +2,6 @@
 #define TOKENIZERFUNCTIONS_H
 
 #include <regex>
-#include <string>
-#include <string_view>
-#include <vector>
 #include "TokenClasses/Token.h"
 
 using namespace std::string_view_literals;
@@ -40,7 +37,7 @@ static bool isValidName(std::string input) {
       continue;
     }
     // looking at the first character
-    if (std::isdigit(ch)) {
+    if (!std::isalpha(ch)) {
       return false;
     }
     seenFirst = true;
@@ -114,10 +111,11 @@ static std::vector<std::string> splitString(std::string input) {
 
 // Trims leading and trailing whitespaces.
 // Original code from https://www.positioniseverything.net/cpp-string-trim/
-// Modified to use " " as the arguments instead
+// Modified to use " \t\f\v\n\r\b\0" as the arguments instead
 static std::string trimWhitespaces(std::string str) {
-  str.erase(str.find_last_not_of(" ") + 1);
-  str.erase(0, str.find_first_not_of(" " ));
+  std::string whitespaces = " \t\f\v\n\r\b";
+  str.erase(str.find_last_not_of(whitespaces) + 1);
+  str.erase(0, str.find_first_not_of(whitespaces));
   return str;
 }
 
