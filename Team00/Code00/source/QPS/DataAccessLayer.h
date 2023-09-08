@@ -24,7 +24,13 @@ public:
 	 */
 	~DataAccessLayer() {};
 
-	 vector<int> getEntities(EntitiesAPI type);
+	 vector<string> getEntityStatement(EntitiesAPI type);
+
+	 vector<string> getAllProcedures();
+
+	 vector<string> getAllVariables();
+
+	 vector<string> getAllConstants();
 
 
 

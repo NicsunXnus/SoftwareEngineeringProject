@@ -48,14 +48,6 @@
     <ClCompile Include="..\source\PKB.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\TNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\TokenizerClasses\TokenizerFunctions.cpp">
-      <Filter>Source Files\Tokenizer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\TokenizerClasses\SIMPLETokenizer.cpp">
-      <Filter>Source Files\Tokenizer</Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\AST\ASTBuilder.h">

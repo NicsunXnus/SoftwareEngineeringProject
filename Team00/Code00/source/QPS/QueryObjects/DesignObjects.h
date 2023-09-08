@@ -29,7 +29,7 @@ public:
 		: DesignObject{ tokenName } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getEntities(STMT));
+		setResult(dataAccessLayer->getEntityStatement(STMT));
 	}
 
 };
@@ -43,7 +43,7 @@ public:
 		: DesignObject{ tokenName } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getEntities(READ));
+		setResult(dataAccessLayer->getEntityStatement(READ));
 	}
 };
 
@@ -56,7 +56,7 @@ public:
 		: DesignObject{ tokenName } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getEntities(PRINT));
+		setResult(dataAccessLayer->getEntityStatement(PRINT));
 	}
 };
 
@@ -69,7 +69,7 @@ public:
 		: DesignObject{ tokenName } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getEntities(CALL));
+		setResult(dataAccessLayer->getEntityStatement(CALL));
 	}
 };
 
@@ -82,7 +82,7 @@ public:
 		: DesignObject{ tokenName } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getEntities(WHILE));
+		setResult(dataAccessLayer->getEntityStatement(WHILE));
 	}
 };
 
@@ -95,7 +95,7 @@ public:
 		: DesignObject{ tokenName } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getEntities(IF));
+		setResult(dataAccessLayer->getEntityStatement(IF));
 	}
 };
 
@@ -108,7 +108,7 @@ public:
 		: DesignObject{ tokenName } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getEntities(ASSIGN));
+		setResult(dataAccessLayer->getEntityStatement(ASSIGN));
 	}
 };
 
@@ -121,7 +121,7 @@ public:
 		: DesignObject{ tokenName } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getEntities(VARIABLE));
+		setResult(dataAccessLayer->getAllVariables());
 	}
 };
 
@@ -134,7 +134,7 @@ public:
 		: DesignObject{ tokenName } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getEntities(CONSTANT));
+		setResult(dataAccessLayer->getAllConstants());
 	}
 };
 
@@ -147,7 +147,7 @@ public:
 		: DesignObject{ tokenName } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getEntities(PROCEDURE));
+		setResult(dataAccessLayer->getAllProcedures());
 	}
 };
 

@@ -3,6 +3,7 @@
 #include <string>
 
 #include "StorageManager.h"
+#include "../Constants/QPSPKB.h"
 
 using namespace std;
 
