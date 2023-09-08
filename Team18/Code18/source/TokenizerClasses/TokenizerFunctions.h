@@ -81,8 +81,7 @@ public:
   // Trims leading and trailing whitespaces.
   // Original code from https://www.positioniseverything.net/cpp-string-trim/
   // Modified to use " " as the arguments instead
-  static std::string trimWhitespaces(std::string str)
-  {
+  static std::string trimWhitespaces(std::string str) {
     str.erase(str.find_last_not_of(" ") + 1);
     str.erase(0, str.find_first_not_of(" " ));
     return str;
