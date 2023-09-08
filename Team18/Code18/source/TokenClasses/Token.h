@@ -21,6 +21,7 @@ public:
 		return this->tokenName;
 	}
 
+	// Checks if the two tokens supplied are the same runtime type and same stored tokenName.
 	static bool checkEquality(Token* left, Token* right) {
 		std::string leftId = typeid(*left).name();
 		std::string rightId = typeid(*right).name();
@@ -33,6 +34,7 @@ public:
 		return leftName == rightName;
 	}
 
+	// Overloaded method to take in shared_ptr instead of regular pointers
 	static bool checkEquality(std::shared_ptr<Token> left, std::shared_ptr<Token> right) {
 		return checkEquality(left.get(), right.get());
 	}
