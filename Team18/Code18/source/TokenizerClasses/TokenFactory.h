@@ -13,6 +13,7 @@
 #include "../TokenClasses/OperatorToken.h"
 #include "../TokenClasses/SeparatorToken.h"
 #include "../TokenClasses/UnderscoreToken.h"
+#include "../HelperFunctions.h"
 
 using namespace std::string_view_literals;
 
@@ -70,35 +71,6 @@ static const std::unordered_set<std::string> uniquePql = {
 	"_",
 	"\""
 };
-
-// Checks if a given input string are all numbers
-// Does NOT check if it is a valid integer literal (ie leading 0)
-static bool isNumber(std::string input) {
-	for (char const& ch : input) {
-		if (!std::isdigit(ch))
-			return false;
-	}
-	return true;
-}
-
-// Checks if a given input string is a valid name: LETTER (LETTER | DIGIT)*
-static bool isValidName(std::string input) {
-	bool seenFirst = false;
-	for (char const& ch : input) {
-		if (seenFirst) {
-			if (!std::isalnum(ch)) {
-				return false;
-			}
-			continue;
-		}
-		// looking at the first character
-		if (std::isdigit(ch)) {
-			return false;
-		}
-		seenFirst = true;
-	}
-	return true;
-}
 
 /**
 * Factory class that produces tokens.

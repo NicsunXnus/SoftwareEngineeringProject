@@ -16,6 +16,7 @@
     <ClCompile Include="..\source\PKB.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\source\HelperFunctions.h" />
     <ClInclude Include="..\source\PKB.h" />
     <ClInclude Include="..\source\PKB\Insertor.h" />
     <ClInclude Include="..\source\PKB\Responder.h" />
@@ -36,7 +37,6 @@
     <ClInclude Include="..\source\TokenClasses\UnderscoreToken.h" />
     <ClInclude Include="..\source\TokenizerClasses\PQLTokenizer.h" />
     <ClInclude Include="..\source\TokenizerClasses\SIMPLETokenizer.h" />
-    <ClInclude Include="..\source\TokenizerClasses\TokenizerFunctions.h" />
     <ClCompile Include="..\source\AST\**\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
     <ClInclude Include="..\source\TokenizerClasses\TokenFactory.h" />

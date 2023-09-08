@@ -58,9 +58,6 @@
     <ClInclude Include="..\source\TokenClasses\UnderscoreToken.h">
       <Filter>SP</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\TokenizerClasses\TokenizerFunctions.h">
-      <Filter>SP</Filter>
-    </ClInclude>
     <ClInclude Include="..\source\PKB\StorageClasses\AbstractionStorage.h">
       <Filter>PKB</Filter>
     </ClInclude>
@@ -97,6 +94,7 @@
     <ClInclude Include="..\source\PKB\StorageManager.h">
       <Filter>PKB</Filter>
     </ClInclude>
+    <ClInclude Include="..\source\HelperFunctions.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SP">
