@@ -20,12 +20,12 @@ vector<string> DataAccessLayer::getAllProcedures() {
 	return stringVector;
 }
 
-vector<string> getAllVariables() {
+vector<string> DataAccessLayer::getAllVariables() {
 	vector<string> stringVector;
 	return stringVector;
 }
 
-vector<string> getAllConstants() {
+vector<string> DataAccessLayer::getAllConstants() {
 	vector<string> stringVector;
 	return stringVector;
 }
