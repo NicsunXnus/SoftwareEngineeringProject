@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
-#include <cassert>
 
 #include "../source/TokenizerClasses/SimpleTokenizer.h"
 #include "../source/TokenizerClasses/TokenFactory.h"

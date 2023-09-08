@@ -173,6 +173,7 @@
     </ClCompile>
     <ClCompile Include="TestAST.cpp" />
     <ClCompile Include="TestSimpleTokenizer.cpp" />
+    <ClCompile Include="TestTokenFactory.cpp" />
     <ClCompile Include="TestEntity.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
