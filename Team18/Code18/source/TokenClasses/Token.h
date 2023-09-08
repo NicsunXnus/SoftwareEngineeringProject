@@ -38,5 +38,15 @@ public:
 	static bool checkEquality(std::shared_ptr<Token> left, std::shared_ptr<Token> right) {
 		return checkEquality(left.get(), right.get());
 	}
+
+	// Overloaded method to take in shared_ptr on the left instead of regular pointers
+	static bool checkEquality(std::shared_ptr<Token> left, Token* right) {
+		return checkEquality(left.get(), right);
+	}
+
+	// Overloaded method to take in shared_ptr on the right instead of regular pointers
+	static bool checkEquality(Token* left, std::shared_ptr<Token> right) {
+		return checkEquality(left, right.get());
+	}
 };
 #endif
