@@ -5,7 +5,7 @@
 #include "../TokenizerClasses/TokenFactory.h"
 #include <stack>
 #include <cassert>
-
+//Note to self, lots of repeated codes here. Create methods to modularise  them
 class ASTBuilder {
 public:
 
@@ -19,7 +19,7 @@ public:
                 statementListToReturn.emplace_back(parseStatement(statements[i], statementNumber));
             }
             catch (std::string errMsg) {
-                std::cout << "Error parsing statement: " + errMsg;
+                std::cout << "Error parsing statement " + statementNumber + std::string(" : ") + errMsg;
             }
             statementNumber++;
         }
@@ -63,6 +63,7 @@ public:
             // Evaluate statements
             std::shared_ptr <AssignNode> assignNode = std::make_shared<AssignNode>(statementNumber, varNode, parseExpr(exprTokens));
             return assignNode;
+            
         }
         else {
             // Handle other cases or report an error
@@ -71,121 +72,122 @@ public:
     }
 
     /*COMMENTED OUT TO BE LEFT AS REFERENCE CODE, WILL DELETE ONCE NOT NEEDED*/
-    // static std::vector<std::shared_ptr<StatementNode>> parseStatements(std::vector<std::shared_ptr<Token>> statements) {
-    //     int statementNumber = 1;
-    //     std::vector<std::shared_ptr<StatementNode>> statementListToReturn;
-    //     for (int i = 0; i < statements.size(); ++i) {
-    //         std::shared_ptr<Token> token = statements[i];
-    //         if (token->getName() == "print") { //for PRINT NODE
-    //             i = i + 1; //To advance to the variable
-    //             std::shared_ptr<VariableNode> variableNode = std::make_shared<VariableNode>(statements[i]->getName());
-    //             std::shared_ptr<PrintNode> printNode = std::make_shared<PrintNode>(statementNumber, variableNode);
-    //             statementNumber++;
-    //             statementListToReturn.emplace_back(printNode);
-    //             i = i + 1; //to advance to ;
-    //         }
-    //         else if (token->getName() == "call") {
-    //             //TODO
-    //         }
-    //         else if (token->getName() == "read") {
-    //             i = i + 1; //To advance to the variable
-    //             std::shared_ptr<VariableNode> variableNode = std::make_shared<VariableNode>(statements[i]->getName());
-    //             std::shared_ptr<ReadNode> readNode = std::make_shared<ReadNode>(statementNumber, variableNode);
-    //             statementNumber++;
-    //             statementListToReturn.emplace_back(readNode);
-    //             i = i + 1; //to advance to ;
-    //         }
-    //         else if (token->getName() == "if") {
-    //             // i = i + 2;//advance past "if ("
-    //             // int numOfTokensCondExpr = 0;
-    //             // token = statements[i];
-    //             // int startIndex = i;
-    //             // while (token->getName() != "{") {
-    //             //     i = i + 1;
-    //             //     token = statements[i];
-    //             // }
-    //             // int endIndex = i - 1; //go back to position of ")"
-    //             // std::vector<std::shared_ptr<Token>> condExprTokens(statements.begin() + startIndex, statements.begin() + endIndex);
-    //             // // Evaluate Expression
-    //             // std::shared_ptr<CondExprNode> condExprNode = std::dynamic_pointer_cast<CondExprNode>(parseExpr(condExprTokens));
+    /*
+     static std::vector<std::shared_ptr<StatementNode>> parseStatements(std::vector<std::shared_ptr<Token>> statements) {
+         int statementNumber = 1;
+         std::vector<std::shared_ptr<StatementNode>> statementListToReturn;
+         for (int i = 0; i < statements.size(); ++i) {
+             std::shared_ptr<Token> token = statements[i];
+             if (token->getName() == "print") { //for PRINT NODE
+                 i = i + 1; //To advance to the variable
+                 std::shared_ptr<VariableNode> variableNode = std::make_shared<VariableNode>(statements[i]->getName());
+                 std::shared_ptr<PrintNode> printNode = std::make_shared<PrintNode>(statementNumber, variableNode);
+                 statementNumber++;
+                 statementListToReturn.emplace_back(printNode);
+                 i = i + 1; //to advance to ;
+             }
+             else if (token->getName() == "call") {
+                 //TODO
+             }
+             else if (token->getName() == "read") {
+                 i = i + 1; //To advance to the variable
+                 std::shared_ptr<VariableNode> variableNode = std::make_shared<VariableNode>(statements[i]->getName());
+                 std::shared_ptr<ReadNode> readNode = std::make_shared<ReadNode>(statementNumber, variableNode);
+                 statementNumber++;
+                 statementListToReturn.emplace_back(readNode);
+                 i = i + 1; //to advance to ;
+             }
+             else if (token->getName() == "if") {
+                 // i = i + 2;//advance past "if ("
+                 // int numOfTokensCondExpr = 0;
+                 // token = statements[i];
+                 // int startIndex = i;
+                 // while (token->getName() != "{") {
+                 //     i = i + 1;
+                 //     token = statements[i];
+                 // }
+                 // int endIndex = i - 1; //go back to position of ")"
+                 // std::vector<std::shared_ptr<Token>> condExprTokens(statements.begin() + startIndex, statements.begin() + endIndex);
+                 // // Evaluate Expression
+                 // std::shared_ptr<CondExprNode> condExprNode = std::dynamic_pointer_cast<CondExprNode>(parseExpr(condExprTokens));
 
-    //             // // Get Then Branch
-    //             // i = i + 1;//advance past "{"
-    //             // token = statements[i];
-    //             // startIndex = i;
-    //             // while (token->getName() != "}") {
-    //             //     i = i + 1;
-    //             //     token = statements[i];
-    //             // }
-    //             // endIndex = i;
-    //             // std::vector<std::shared_ptr<Token>> stmtsThenTokens(statements.begin() + startIndex, statements.begin() + endIndex);
-    //             // // Evaluate statements
-    //             // std::vector<std::shared_ptr<StatementNode>> thenStmts = parseStatements(stmtsThenTokens);
+                 // // Get Then Branch
+                 // i = i + 1;//advance past "{"
+                 // token = statements[i];
+                 // startIndex = i;
+                 // while (token->getName() != "}") {
+                 //     i = i + 1;
+                 //     token = statements[i];
+                 // }
+                 // endIndex = i;
+                 // std::vector<std::shared_ptr<Token>> stmtsThenTokens(statements.begin() + startIndex, statements.begin() + endIndex);
+                 // // Evaluate statements
+                 // std::vector<std::shared_ptr<StatementNode>> thenStmts = parseStatements(stmtsThenTokens);
 
-    //             // // Get Else Branch
-    //             // i = i + 3; //advance past {
-    //             // startIndex = i;
-    //             // token = statements[i];
-    //             // while (token->getName() != "}") {
-    //             //     i = i + 1;
-    //             //     token = statements[i];
-    //             // }
-    //             // endIndex = i;
-    //             // std::vector<std::shared_ptr<Token>> stmtsElseTokens(statements.begin() + startIndex, statements.begin() + endIndex);
-    //             // // Evaluate statements
-    //             // std::vector<std::shared_ptr<StatementNode>> elseStmts = parseStatements(stmtsElseTokens);
+                 // // Get Else Branch
+                 // i = i + 3; //advance past {
+                 // startIndex = i;
+                 // token = statements[i];
+                 // while (token->getName() != "}") {
+                 //     i = i + 1;
+                 //     token = statements[i];
+                 // }
+                 // endIndex = i;
+                 // std::vector<std::shared_ptr<Token>> stmtsElseTokens(statements.begin() + startIndex, statements.begin() + endIndex);
+                 // // Evaluate statements
+                 // std::vector<std::shared_ptr<StatementNode>> elseStmts = parseStatements(stmtsElseTokens);
 
-    //             // std::shared_ptr<IfNode> ifNode = std::make_shared<IfNode>(condExprNode, thenStmts, elseStmts);
-    //             // statementListToReturn.emplace_back(ifNode);
-    //         }
-    //         else if (token->getName() == "while") {
-    //             // i = i + 2;//advance past "while ("
-    //             // token = statements[i];
-    //             // int startIndex = i;
-    //             // while (token->getName() != "{") {
-    //             //     i = i + 1;
-    //             //     token = statements[i];
-    //             // }
-    //             // int endIndex = i - 1;
-    //             // std::vector<std::shared_ptr<Token>> condExprTokens(statements.begin() + startIndex, statements.begin() + endIndex);
-    //             // // Evaluate Expression
-    //             // std::shared_ptr<CondExprNode> condExprNode = std::dynamic_pointer_cast<CondExprNode>(parseExpr(condExprTokens));
+                 // std::shared_ptr<IfNode> ifNode = std::make_shared<IfNode>(condExprNode, thenStmts, elseStmts);
+                 // statementListToReturn.emplace_back(ifNode);
+             }
+             else if (token->getName() == "while") {
+                 // i = i + 2;//advance past "while ("
+                 // token = statements[i];
+                 // int startIndex = i;
+                 // while (token->getName() != "{") {
+                 //     i = i + 1;
+                 //     token = statements[i];
+                 // }
+                 // int endIndex = i - 1;
+                 // std::vector<std::shared_ptr<Token>> condExprTokens(statements.begin() + startIndex, statements.begin() + endIndex);
+                 // // Evaluate Expression
+                 // std::shared_ptr<CondExprNode> condExprNode = std::dynamic_pointer_cast<CondExprNode>(parseExpr(condExprTokens));
 
-    //             // // Get Loop Branch
-    //             // i = i + 1;//advance past "{"
-    //             // token = statements[i];
-    //             // startIndex = i;
-    //             // while (token->getName() != "}") {
-    //             //     i = i + 1;
-    //             //     token = statements[i];
-    //             // }
-    //             // endIndex = i;
-    //             // std::vector<std::shared_ptr<Token>> stmtsTokens(statements.begin() + startIndex, statements.begin() + endIndex);
-    //             // // Evaluate statements
-    //             // std::vector<std::shared_ptr<StatementNode>> loopStmts = parseStatements(stmtsTokens);
-    //             // std::shared_ptr<WhileNode> whileNode = std::make_shared<WhileNode>(condExprNode, loopStmts);
-    //             // statementListToReturn.emplace_back(whileNode);
-    //         }
-    //         else {
-    //             // Is assign statement
-    //             std::shared_ptr <ExprNode> varNode = std::make_shared < VariableNode>(token->getName());
-    //             i = i + 2; //advance past =
-    //             token = statements[i];
-    //             int startIndex = i;
-    //             while (token->getName() != ";") {
-    //                 i = i + 1;
-    //                 token = statements[i];
-    //             }
-    //             int endIndex = i;
-    //             std::vector<std::shared_ptr<Token>> exprTokens(statements.begin() + startIndex, statements.begin() + endIndex);
-    //             // Evaluate statements
-    //             std::shared_ptr <AssignNode> assignNode = std::make_shared<AssignNode>(statementNumber, varNode, parseExpr(exprTokens));
-    //             statementNumber++;
-    //             statementListToReturn.emplace_back(assignNode);
-    //         }
-    //     }
-    //     return statementListToReturn;
-    // }
+                 // // Get Loop Branch
+                 // i = i + 1;//advance past "{"
+                 // token = statements[i];
+                 // startIndex = i;
+                 // while (token->getName() != "}") {
+                 //     i = i + 1;
+                 //     token = statements[i];
+                 // }
+                 // endIndex = i;
+                 // std::vector<std::shared_ptr<Token>> stmtsTokens(statements.begin() + startIndex, statements.begin() + endIndex);
+                 // // Evaluate statements
+                 // std::vector<std::shared_ptr<StatementNode>> loopStmts = parseStatements(stmtsTokens);
+                 // std::shared_ptr<WhileNode> whileNode = std::make_shared<WhileNode>(condExprNode, loopStmts);
+                 // statementListToReturn.emplace_back(whileNode);
+             }
+             else {
+                 // Is assign statement
+                 std::shared_ptr <ExprNode> varNode = std::make_shared < VariableNode>(token->getName());
+                 i = i + 2; //advance past =
+                 token = statements[i];
+                 int startIndex = i;
+                 while (token->getName() != ";") {
+                     i = i + 1;
+                     token = statements[i];
+                 }
+                 int endIndex = i;
+                 std::vector<std::shared_ptr<Token>> exprTokens(statements.begin() + startIndex, statements.begin() + endIndex);
+                 // Evaluate statements
+                 std::shared_ptr <AssignNode> assignNode = std::make_shared<AssignNode>(statementNumber, varNode, parseExpr(exprTokens));
+                 statementNumber++;
+                 statementListToReturn.emplace_back(assignNode);
+             }
+         }
+         return statementListToReturn;
+     }*/
 
     //Establishes priority of operators
     //sources: https://learn.microsoft.com/en-us/office/vba/language/reference/user-interface-help/operator-precedence
@@ -206,11 +208,8 @@ public:
         else if (op == "+" || op == "-") {
             return 5;
         }
-        else if (op == "%") {
+        else if (op == "*" || op == "/" || op == "%") {
             return 6;
-        }
-        else if (op == "*" || op == "/") {
-            return 7;
         }
         return 0;
     }
@@ -222,6 +221,7 @@ public:
         else if (op == "-") return std::make_shared<MinusNode>(a, b);
         else if (op == "/") return std::make_shared<DividesNode>(a, b);
         else if (op == "%") return std::make_shared<ModNode>(a, b);
+        else throw "Unsupported mathematical operation.";
     }
 
     //Creates a tree of ExprNode which forms one big expression
@@ -314,12 +314,14 @@ public:
         else if (op == ">=") return std::make_shared<GreaterThanEqualNode>(a, b);
         else if (op == "==") return std::make_shared<EqualsNode>(a, b);
         else if (op == "!=") return std::make_shared<NotEqualsNode>(a, b);
+        else throw "Unsupported Comparison Operator.";
     }
 
     static std::shared_ptr<CondExprNode> applyBoolOperation(std::string op, std::shared_ptr<CondExprNode> a, std::shared_ptr<CondExprNode> b) {
         if (op == "&&") return std::make_shared<AndNode>(a, b);
         else if (op == "||") return std::make_shared<OrNode>(a, b);
         else if (op == "!") return std::make_shared<NotNode>(b);
+        else throw "Unsupported Boolean Operator.";
     }
 
     static bool isComparisonOpr(std::string op) {
@@ -328,7 +330,7 @@ public:
         return it != ops.end();
     }
 
-    static bool isBoolOpr(std::string op) { //exclude "!"?
+    static bool isBoolOpr(std::string op) {
         std::vector<std::string> ops = { "!", "&&", "||" };
         auto it = std::find(ops.begin(), ops.end(), op);
         return it != ops.end();
