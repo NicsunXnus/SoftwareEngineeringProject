@@ -19,6 +19,7 @@ static bool isNumber(std::string input) {
   }
   return true;
 }
+// Checks if a given input string is alphanumeric.
 static bool isAlphanumeric(std::string input) {
   for (char const& ch : input) {
     if (!std::isalnum(ch)) {
@@ -114,8 +115,7 @@ static std::vector<std::string> splitString(std::string input) {
 // Trims leading and trailing whitespaces.
 // Original code from https://www.positioniseverything.net/cpp-string-trim/
 // Modified to use " " as the arguments instead
-static std::string trimWhitespaces(std::string str)
-{
+static std::string trimWhitespaces(std::string str) {
   str.erase(str.find_last_not_of(" ") + 1);
   str.erase(0, str.find_first_not_of(" " ));
   return str;
