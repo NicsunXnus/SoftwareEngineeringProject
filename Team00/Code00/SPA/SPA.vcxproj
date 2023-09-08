@@ -19,9 +19,6 @@
     <ClCompile Include="..\source\QPS\QueryObjects\DesignObjectsFactory.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\QueryObject.cpp" />
     <ClCompile Include="..\source\QPS\QueryParser.cpp" />
-    <ClCompile Include="..\source\TNode.cpp" />
-    <ClCompile Include="..\source\TokenizerClasses\SIMPLETokenizer.cpp" />
-    <ClCompile Include="..\source\TokenizerClasses\TokenizerFunctions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\Constants\QPSPKB.h" />
