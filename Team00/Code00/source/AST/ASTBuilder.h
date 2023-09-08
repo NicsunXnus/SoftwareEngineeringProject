@@ -31,7 +31,7 @@ public:
         int secondIndex = 1;
         std::shared_ptr<Token> keywordToken = statement[firstIndex];
         if (keywordToken->getName() == "print") {
-            std::shared_ptr<VariableNode> variableNode = std::make_shared<VariableNode>(statement[secondIndex]->getName());
+            std::shared_ptr<VariableNode> variableNode = std::make_shared<VariableNode>(statement[secondIndex]->getName(), statementNumber);
             std::shared_ptr<PrintNode> printNode = std::make_shared<PrintNode>(statementNumber, variableNode);
             return printNode;
         }
@@ -39,7 +39,7 @@ public:
             //TODO FOR NEXT MILESTONE
         }
         else if (keywordToken->getName() == "read") {
-            std::shared_ptr<VariableNode> variableNode = std::make_shared<VariableNode>(statement[secondIndex]->getName());
+            std::shared_ptr<VariableNode> variableNode = std::make_shared<VariableNode>(statement[secondIndex]->getName(), statementNumber);
             std::shared_ptr<ReadNode> readNode = std::make_shared<ReadNode>(statementNumber, variableNode);
             return readNode;
         }
@@ -51,7 +51,7 @@ public:
         }
         else if (statement[secondIndex]->getName() == "=") {
             // Is assign statement
-            std::shared_ptr <ExprNode> varNode = std::make_shared < VariableNode>(statement[firstIndex]->getName());
+            std::shared_ptr <ExprNode> varNode = std::make_shared < VariableNode>(statement[firstIndex]->getName(), statementNumber);
             int startOfExpression = 2; //0 -> variable, 1 -> =, 2 -> ....
             std::shared_ptr<Token> currToken = statement[startOfExpression];
             int endOfExpression = 2;
