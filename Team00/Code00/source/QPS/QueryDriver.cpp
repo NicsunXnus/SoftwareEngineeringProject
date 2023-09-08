@@ -23,15 +23,10 @@ list<string> QueryDriver::execute() {
 
 		shared_ptr<QueryObject> obj = queryParser[0];
 		obj->call(dataAccessLayer);
-		vector<int> result = obj->getResult();
-		list<int> myList(result.begin(), result.end());
-		list<string> stringList;
-		for (const int& intValue : myList) {
-			// Convert each integer to a string and append it to the stringList
-			stringList.push_back(std::to_string(intValue));
-		}
+		vector<string> result = obj->getResult();
+		list<string> myList(result.begin(), result.end());
 
-		return stringList;
+		return myList;
 	}
 	catch (const exception& ex) {
 		list<string> empty;

@@ -15,7 +15,7 @@ using namespace std;
 class QueryObject {
 private:
 	string_view tokenName;
-	vector<int> res;
+	vector<string> res;
 public:
 	QueryObject(string_view tokenName)
 		: tokenName{ tokenName } {
@@ -28,11 +28,11 @@ public:
 		return tokenName;
 	}
 
-	void setResult(vector<int> result) {
+	void setResult(vector<string> result) {
 		res = result;
 	}
 
-	vector<int> getResult() {
+	vector<string> getResult() {
 		return res;
 	}
 
