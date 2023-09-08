@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\source\Parser.cpp" />
+    <ClCompile Include="..\source\AST\ASTNode.h" />
+    <ClCompile Include="..\source\AST\ASTNode.h" />
+    <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
+    <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
+    <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
+    <ClCompile Include="..\source\AST\**\*.h">
+      <Filter>SP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\AST\**\*.h">
+      <Filter>SP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\DesignExtractor\*.h">
+      <Filter>SP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\DesignExtractor.cpp">
+      <Filter>SP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\DesignExtractor\*.h">
+      <Filter>PKB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\DesignExtractor\*.h">
+      <Filter>PKB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\PKB.cpp">
+      <Filter>PKB</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\source\TNode.h" />
+    <ClInclude Include="..\source\TokenClasses\IdentifierToken.h">
+      <Filter>SP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\KeywordToken.h">
+      <Filter>SP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\OperatorToken.h">
+      <Filter>SP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\SeparatorToken.h">
+      <Filter>SP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenizerClasses\TokenFactory.h">
+      <Filter>SP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\Token.h">
+      <Filter>SP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenizerClasses\SIMPLETokenizer.h">
+      <Filter>SP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\UnderscoreToken.h">
+      <Filter>SP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenizerClasses\TokenizerFunctions.h">
+      <Filter>SP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\StorageClasses\AbstractionStorage.h">
+      <Filter>PKB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\StorageClasses\EntityStorage.h">
+      <Filter>PKB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\StorageClasses\FollowsAbstractionStorage.h">
+      <Filter>PKB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\StorageClasses\ModifiesAbstractionStorage.h">
+      <Filter>PKB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\StorageClasses\ParentAbstractionStorage.h">
+      <Filter>PKB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB.h">
+      <Filter>PKB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\LiteralToken.h">
+      <Filter>SP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\StorageClasses\UsesAbstractionStorage.h">
+      <Filter>PKB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenizerClasses\PQLTokenizer.h">
+      <Filter>QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\Responder.h">
+      <Filter>PKB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\Insertor.h">
+      <Filter>PKB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\StorageManager.h">
+      <Filter>PKB</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="SP">
+      <UniqueIdentifier>{35dcbfe9-1dda-4f04-b9c5-8afc78b1fc7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PKB">
+      <UniqueIdentifier>{42a26f93-bafb-4cc7-b72d-c9ce2fe3868f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="QPS">
+      <UniqueIdentifier>{72087bcc-2fde-427a-bc24-778714a3c4da}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
