@@ -19,12 +19,12 @@ QueryParser::QueryParser() {
 /*
 	* This function splits the string into two groups: the declaration (variable v, assign a etc..) clause and the query (select...) clause
 */
-tuple<vector<string_view>, vector<string_view>> QueryParser::splitDeclarationQuery(vector<string_view> str) {
+tuple<vector<string_view>, vector<string_view>> QueryParser::splitDeclarationQuery(vector<string_view> words) {
 	vector<string_view> declarations;
 	vector<string_view> query;
 	int indexSemiColon = 0;
-	for (int i = str.size() - 1; i >= 0; --i) { // get index of the split, first semicolon from the back
-		string_view current = str[i];
+	for (int i = words.size() - 1; i >= 0; --i) { // get index of the split, first semicolon from the back
+		string_view current = words[i];
 		if (current == ";") {
 			indexSemiColon = i;
 			break;
@@ -33,8 +33,8 @@ tuple<vector<string_view>, vector<string_view>> QueryParser::splitDeclarationQue
 	if (indexSemiColon == 0) {
 		throw runtime_error("No Declaration clause found");
 	}
-	for (int i = 0; i < str.size(); ++i) {
-		string_view current = str[i];
+	for (int i = 0; i < words.size(); ++i) {
+		string_view current = words[i];
 		if (i > indexSemiColon) {
 			query.push_back(current);
 		} else {
@@ -81,10 +81,9 @@ vector<shared_ptr<QueryObject>> QueryParser::validateDeclaration(vector<string_v
 	vector<shared_ptr<QueryObject>> converted;
 	vector<vector<string_view>> splittedDeclarations = splitDeclarations(declarations);
 	int totalDeclarations = splittedDeclarations.size();
-	for (int j = 0; j < totalDeclarations; j++) {
-		vector<string_view> declaration = splittedDeclarations[j];
+	for (const vector<string_view>declaration : splittedDeclarations) {
 		int size = declaration.size();
-		if (size < 2) {
+		if (size < 2) { // declarations must contain at least 2 items; design-entity synonym
 			throw runtime_error("Invalid declaration");
 		}
 		// first token must be a design entity, then a synonym, exception thrown by createDesignFactory otherwise
