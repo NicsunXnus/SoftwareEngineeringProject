@@ -193,6 +193,14 @@ namespace SimpleTokeniser_Test
 
 		TEST_METHOD(invalidStatements_failure) {
 			try {
+				// multiple equals in assignment statement
+				std::string input = "x = 1 = 2;";
+				std::vector < std::vector<std::shared_ptr<Token>>> output = SimpleTokenizer::tokenize(input);
+				assert(false);
+			}
+			catch (std::invalid_argument e) { assert(true); }
+
+			try {
 				// "123" used as the LHS of an assignment statement
 				std::string input = "123 = 456;";
 				std::vector < std::vector<std::shared_ptr<Token>>> output = SimpleTokenizer::tokenize(input);
