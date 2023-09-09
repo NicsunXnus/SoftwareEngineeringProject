@@ -44,7 +44,9 @@ namespace UnitTesting
 
 		TEST_METHOD(TestTokenizeSuchThatQueryWithWhiteSpace)
 		{
-			vector<string_view> test = tokenize("variable v;  Select  v  such  that   Uses    (  14   ,   v   )   ");
+			vector<string_view> test = tokenize("variable \t\f\v\n\r v \t\t \t\r \t\v \f\t \f\f \f\n \f\r;\
+				\v\t \v\f \v\v \v\r Select \n\t \n\f \n\v \n\n  v \r\t \r\f \r\v \r\n \r\r  such  that  Uses (14, v)   ");
+
 			Assert::IsTrue(test[0] == "variable"sv);
 			Assert::IsTrue(test[1] == "v"sv);
 			Assert::IsTrue(test[2] == ";"sv);
