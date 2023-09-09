@@ -15,31 +15,35 @@ namespace HelperFunctions_Test
 		}
 
 		TEST_METHOD(nonNumbers_failure) {
-			assert(isNumber("0x1") == false);
-			assert(isNumber("0b1") == false);
-			assert(isNumber("0abc") == false);
-			assert(isNumber("abc0") == false);
-			assert(isNumber(" ") == false);
-			assert(isNumber("%") == false);
-			assert(isNumber("|") == false);
-			assert(isNumber("é") == false);
+			bool result = isNumber("0x1");
+			result = result || isNumber("0b1");
+			result = result || isNumber("0b1");
+			result = result || isNumber("0abc");
+			result = result || isNumber("abc0");
+			result = result || isNumber(" ");
+			result = result || isNumber("%");
+			result = result || isNumber("|");
+			result = result || isNumber("é");
+			assert(result == false);
 		}
 	};
 
 	TEST_CLASS(isAlphanumeric_Test) {
 	public:
 		TEST_METHOD(alphanum_success) {
-			assert(isAlphanumeric("abc") == true);
-			assert(isAlphanumeric("123") == true);
-			assert(isAlphanumeric("x1y2z3") == true);
-			assert(isAlphanumeric("0x1") == true);
-			assert(isAlphanumeric("0b1") == true);
+			bool result = isAlphanumeric("abc");
+			result == result && isAlphanumeric("123");
+			result == result && isAlphanumeric("x4y5z6");
+			result == result && isAlphanumeric("0x1");
+			result == result && isAlphanumeric("0b1");
+			assert(result == true);
 		}
 
 		TEST_METHOD(nonAlphanum_failure) {
-			assert(isAlphanumeric(" ") == false);
-			assert(isAlphanumeric("|") == false);
-			assert(isAlphanumeric("é") == false);
+			bool result = isAlphanumeric(" ");
+			result = result || isAlphanumeric("|");
+			result = result || isAlphanumeric("é");
+			assert(result == false);
 		}
 	};
 

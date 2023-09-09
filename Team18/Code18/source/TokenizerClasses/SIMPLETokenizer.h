@@ -14,6 +14,9 @@ class SimpleTokenizer {
 private:
 	// Tokenizes a statement
 	static std::vector<std::shared_ptr<Token>> tokenizeStatement(std::string stmt) {
+		if (stmt.empty()) {
+			throw std::invalid_argument("Statement provided is empty.");
+		}
 		std::vector<std::shared_ptr<Token>> output;
 		bool validStatement = false;
 		std::string whitespaces = " \t\f\v\n\r\b";
@@ -22,12 +25,12 @@ private:
 			validStatement = true;
 		}	
 		// if the substring "read " exists and it is the first word occurence in the statement
-		if (stmt.find_first_not_of(whitespaces) == stmt.find("read ")) {
+		else if (stmt.find_first_not_of(whitespaces) == stmt.find("read ")) {
 			output = tokenizeRead(stmt);
 			validStatement = true;
 		}
 		// if the substring "print " exists and it is the first word occurence in the statement
-		if (stmt.find_first_not_of(whitespaces) == stmt.find("print ")) {
+		else if (stmt.find_first_not_of(whitespaces) == stmt.find("print ")) {
 			output = tokenizePrint(stmt);
 			validStatement = true;
 		}
@@ -46,9 +49,13 @@ private:
 			// Invalid assignment statement
 			throw std::invalid_argument("Assignment Statement expected one equals sign. Got: " + std::to_string(splitMain.size()));
 		}
-		std::vector<std::shared_ptr<Token>> left = tokenizeExpression(splitMain[0]);
+		std::string trimmed = trimWhitespaces(splitMain[0]);
+		if (!isValidName(trimmed)) {
+			throw std::invalid_argument("Identifier provided in assignment statement is invalid");
+		}
+		std::shared_ptr<Token> left = TokenFactory::generateToken(trimmed, true, true);
 		std::vector<std::shared_ptr<Token>> right = tokenizeExpression(splitMain[1]);
-		output.insert(output.end(), left.begin(), left.end());
+		output.push_back(left);
 		output.push_back(TokenFactory::generateToken("="sv, true));
 		output.insert(output.end(), right.begin(), right.end());
 
@@ -62,8 +69,10 @@ private:
 		// The regex matches all separators and operations that can be found in expressions: 
 		// ( ) + - * / % and whitespace
 		std::vector<std::string> split = splitString(input, "([()+\\-/*%\\s])", true);
+		std::string whitespaces = " \t\f\v\n\r\b";
 		for (std::string s : split) {
-			if (s == " ") continue;
+			// ignore whitespaces. equality check is basically saying: not cannot find so == can find
+			if (whitespaces.find(s) != std::string::npos) continue;
 			s = trimWhitespaces(s);
 			output.push_back(TokenFactory::generateToken(s, true, true));
 		}
@@ -117,7 +126,16 @@ public:
 	/// <param name="src">input SIMPLE source code</param>
 	/// <returns>a 1D list of shared pointers to Tokens generated</returns>
 	static std::vector<std::vector<std::shared_ptr<Token>>> tokenize(std::string_view src) {
-		std::vector<std::string> statements = splitString(std::string(src), ";", false);
+		std::string orig = std::string(src);
+		std::string trimmed = trimWhitespaces(orig);
+		// TODO: NEED TO REDO THIS WHEN INCORPORATING PROCEDURES AND IF WHILES
+		if (!trimmed.empty() && trimmed.back() != ';') {
+			throw std::invalid_argument("Last statement provided is invalid");
+		}
+		std::vector<std::string> statements = splitString(trimmed, ";", false);
+		if (statements.size() == 0 && !trimmed.empty()) {
+			throw std::invalid_argument("Empty statements are provided");
+		}
 		std::vector<std::vector<std::shared_ptr<Token>>> output;
 		for (std::string stmt : statements) {
 			stmt = trimWhitespaces(stmt);

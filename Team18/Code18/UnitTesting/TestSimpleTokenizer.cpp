@@ -182,13 +182,20 @@ namespace SimpleTokeniser_Test
 			assert(equalityWrapper(output, expected) == true);
 		}
 
-		TEST_METHOD(invalidInput_success) {
+		TEST_METHOD(semicolonsOnly_failure) {
+			try {
+				std::string input = ";;;";
+				std::vector < std::vector<std::shared_ptr<Token>>> output = SimpleTokenizer::tokenize(input);
+				assert(false);
+			}
+			catch (std::invalid_argument e) { assert(true); }
+		}
+
+		TEST_METHOD(invalidStatements_failure) {
 			try {
 				// "123" used as the LHS of an assignment statement
 				std::string input = "123 = 456;";
 				std::vector < std::vector<std::shared_ptr<Token>>> output = SimpleTokenizer::tokenize(input);
-				std::vector < std::vector<std::shared_ptr<Token>>> expected;
-				assert(equalityWrapper(output, expected) == true);
 				assert(false);
 			}
 			catch (std::invalid_argument e) { assert(true); }
@@ -197,8 +204,6 @@ namespace SimpleTokeniser_Test
 				// "0name" used as the LHS of an assignment statement
 				std::string input = "0name = 456;";
 				std::vector < std::vector<std::shared_ptr<Token>>> output = SimpleTokenizer::tokenize(input);
-				std::vector < std::vector<std::shared_ptr<Token>>> expected;
-				assert(equalityWrapper(output, expected) == true);
 				assert(false);
 			}
 			catch (std::invalid_argument e) { assert(true); }
@@ -207,8 +212,6 @@ namespace SimpleTokeniser_Test
 				// "@#" used 
 				std::string input = "@# = 456;";
 				std::vector < std::vector<std::shared_ptr<Token>>> output = SimpleTokenizer::tokenize(input);
-				std::vector < std::vector<std::shared_ptr<Token>>> expected;
-				assert(equalityWrapper(output, expected) == true);
 				assert(false);
 			}
 			catch (std::invalid_argument e) { assert(true); }
@@ -217,8 +220,15 @@ namespace SimpleTokeniser_Test
 				// invalid statement type detected
 				std::string input = "1 == 2;";
 				std::vector < std::vector<std::shared_ptr<Token>>> output = SimpleTokenizer::tokenize(input);
-				std::vector < std::vector<std::shared_ptr<Token>>> expected;
-				assert(equalityWrapper(output, expected) == true);
+				assert(false);
+			}
+			catch (std::invalid_argument e) { assert(true); }
+
+			// TODO: NEED TO REDO THIS WHEN DOING PROCEDURE AND IF WHILE
+			try {
+				// last character is not a semicolon. Invalid statement.
+				std::string input = "x = 1; read y";
+				std::vector < std::vector<std::shared_ptr<Token>>> output = SimpleTokenizer::tokenize(input);
 				assert(false);
 			}
 			catch (std::invalid_argument e) { assert(true); }
