@@ -16,15 +16,18 @@ private:
 	static std::vector<std::shared_ptr<Token>> tokenizeStatement(std::string stmt) {
 		std::vector<std::shared_ptr<Token>> output;
 		bool validStatement = false;
+		std::string whitespaces = " \t\f\v\n\r\b";
 		if (stmt.find("=") != std::string::npos) { // Assignment Statement
 			output = tokenizeAssignment(stmt);
 			validStatement = true;
 		}	
-		if (stmt.substr(0, 5) == "read ") {
+		// if the substring "read " exists and it is the first word occurence in the statement
+		if (stmt.find_first_not_of(whitespaces) == stmt.find("read ")) {
 			output = tokenizeRead(stmt);
 			validStatement = true;
 		}
-		if (stmt.substr(0, 6) == "print ") {
+		// if the substring "print " exists and it is the first word occurence in the statement
+		if (stmt.find_first_not_of(whitespaces) == stmt.find("print ")) {
 			output = tokenizePrint(stmt);
 			validStatement = true;
 		}
@@ -114,7 +117,7 @@ public:
 	/// <param name="src">input SIMPLE source code</param>
 	/// <returns>a 1D list of shared pointers to Tokens generated</returns>
 	static std::vector<std::vector<std::shared_ptr<Token>>> tokenize(std::string_view src) {
-		std::vector<std::string> statements = splitString(std::string(src), ";");
+		std::vector<std::string> statements = splitString(std::string(src), ";", false);
 		std::vector<std::vector<std::shared_ptr<Token>>> output;
 		for (std::string stmt : statements) {
 			stmt = trimWhitespaces(stmt);

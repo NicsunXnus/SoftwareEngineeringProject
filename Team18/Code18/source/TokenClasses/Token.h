@@ -20,8 +20,14 @@ public:
 	virtual std::string getName() {
 		return this->tokenName;
 	}
+	// Overriden
+	bool operator==(Token& other) {
+		Token* otherPtr = &other;
+		return checkEquality(this, otherPtr);
+	}
 
 	// Checks if the two tokens supplied are the same runtime type and same stored tokenName.
+	// The arguments supplied MUST be pointers.
 	static bool checkEquality(Token* left, Token* right) {
 		std::string leftId = typeid(*left).name();
 		std::string rightId = typeid(*right).name();
