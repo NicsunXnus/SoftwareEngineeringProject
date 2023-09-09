@@ -24,7 +24,7 @@ inline std::vector<std::string_view> tokenize(std::string_view pql) {
 				tokens.push_back(pql.substr(startIndex, i - startIndex));
 				isWord = false;
 			}
-			tokens.push_back(pql.substr(i, 1));
+			tokens.push_back(pql.substr(i, 1)); // appends the corresponding symbol starting at index i to the tokens vector
 			startIndex = i;
 			continue;
 		}
