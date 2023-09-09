@@ -29,7 +29,7 @@ inline std::vector<std::string_view> tokenize(std::string_view pql) {
 			continue;
 		}
 
-		if (isspace(pql[i])) {
+		if (isspace(pql[i]) || pql[i] == '\b') {
 			if (isWord) {
 				tokens.push_back(pql.substr(startIndex, i - startIndex));
 				isWord = false;
