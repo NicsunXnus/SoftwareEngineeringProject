@@ -128,17 +128,10 @@ public:
 		std::string orig = std::string(src);
 		std::string trimmed = trimWhitespaces(orig);
 		// TODO: NEED TO REDO THIS WHEN INCORPORATING PROCEDURES AND IF WHILES
-		std::cout << trimmed << std::endl;
 		if (!trimmed.empty() && trimmed.back() != ';') {
-			for (char c : whitespaces) {
-				std::cout << int(c) << std::endl;
-			}
-			std::cout << "left" << unsigned(uint8_t(trimmed.back())) << "right" << std::endl;
 			throw std::invalid_argument("Last statement provided is invalid");
 		}
-		std::cout << "2" << std::endl;
 		std::vector<std::string> statements = splitString(trimmed, ";", false);
-		std::cout << "3" << std::endl;
 		if (statements.size() == 0 && !trimmed.empty()) {
 			throw std::invalid_argument("Empty statements are provided");
 		}
