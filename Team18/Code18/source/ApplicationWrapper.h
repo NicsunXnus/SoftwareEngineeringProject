@@ -21,7 +21,7 @@ public:
   // directly parses source code without taking into account that it is a string
   void directParse(std::string srcCode);
 
-  // method for parsing the SIMPLE source. Do
+  // method for parsing the SIMPLE source.
   void parse(std::string filename) {
     // call your parser to do the parsing
     std::ifstream simpleStream(filename);
@@ -29,7 +29,11 @@ public:
     std::string src = "";
     if (simpleStream.is_open()) {
       while (simpleStream) {
-        src += simpleStream.get();
+        char c = simpleStream.get();
+        if (c == -1) { // special end of line character
+          break;
+        }
+        src += c;
       }
     }
     this->directParse(src);
