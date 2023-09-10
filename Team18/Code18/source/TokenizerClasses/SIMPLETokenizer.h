@@ -14,17 +14,22 @@ class SimpleTokenizer {
 private:
 	// Tokenizes a statement
 	static std::vector<std::shared_ptr<Token>> tokenizeStatement(std::string stmt) {
+		if (stmt.empty()) {
+			throw std::invalid_argument("Statement provided is empty.");
+		}
 		std::vector<std::shared_ptr<Token>> output;
 		bool validStatement = false;
 		if (stmt.find("=") != std::string::npos) { // Assignment Statement
 			output = tokenizeAssignment(stmt);
 			validStatement = true;
 		}	
-		if (stmt.substr(0, 5) == "read ") {
+		// if the substring "read " exists and it is the first word occurence in the statement
+		else if (stmt.find_first_not_of(whitespaces) == stmt.find("read ")) {
 			output = tokenizeRead(stmt);
 			validStatement = true;
 		}
-		if (stmt.substr(0, 6) == "print ") {
+		// if the substring "print " exists and it is the first word occurence in the statement
+		else if (stmt.find_first_not_of(whitespaces) == stmt.find("print ")) {
 			output = tokenizePrint(stmt);
 			validStatement = true;
 		}
@@ -38,14 +43,18 @@ private:
 	// Tokenizes an assignment statement
 	static std::vector<std::shared_ptr<Token>> tokenizeAssignment(std::string assStmt) {
 		std::vector<std::shared_ptr<Token>> output;
-		std::vector<std::string> splitMain = splitString(assStmt, "=");
-		if (splitMain.size() != 2) {
+		std::vector<std::string> splitByEquals = splitString(assStmt, "=");
+		if (splitByEquals.size() != 2) {
 			// Invalid assignment statement
-			throw std::invalid_argument("Assignment Statement expected one equals sign. Got: " + std::to_string(splitMain.size()));
+			throw std::invalid_argument("Assignment Statement expected one equals sign. Got: " + std::to_string(splitByEquals.size() - 1));
 		}
-		std::vector<std::shared_ptr<Token>> left = tokenizeExpression(splitMain[0]);
-		std::vector<std::shared_ptr<Token>> right = tokenizeExpression(splitMain[1]);
-		output.insert(output.end(), left.begin(), left.end());
+		std::string trimmedLeft = trimWhitespaces(splitByEquals[0]);
+		if (!isValidName(trimmedLeft)) {
+			throw std::invalid_argument("Identifier provided in assignment statement is invalid");
+		}
+		std::shared_ptr<Token> left = TokenFactory::generateToken(trimmedLeft, true, true);
+		std::vector<std::shared_ptr<Token>> right = tokenizeExpression(splitByEquals[1]);
+		output.push_back(left);
 		output.push_back(TokenFactory::generateToken("="sv, true));
 		output.insert(output.end(), right.begin(), right.end());
 
@@ -60,7 +69,9 @@ private:
 		// ( ) + - * / % and whitespace
 		std::vector<std::string> split = splitString(input, "([()+\\-/*%\\s])", true);
 		for (std::string s : split) {
-			if (s == " ") continue;
+			// ignore whitespaces. equality check is basically saying: not cannot find so == can find
+			// whitespaces are declared in HelperFunctions.h
+			if (whitespaces.find(s) != std::string::npos) continue;
 			s = trimWhitespaces(s);
 			output.push_back(TokenFactory::generateToken(s, true, true));
 		}
@@ -114,7 +125,16 @@ public:
 	/// <param name="src">input SIMPLE source code</param>
 	/// <returns>a 1D list of shared pointers to Tokens generated</returns>
 	static std::vector<std::vector<std::shared_ptr<Token>>> tokenize(std::string_view src) {
-		std::vector<std::string> statements = splitString(std::string(src), ";");
+		std::string orig = std::string(src);
+		std::string trimmed = trimWhitespaces(orig);
+		// TODO: NEED TO REDO THIS WHEN INCORPORATING PROCEDURES AND IF WHILES
+		if (!trimmed.empty() && trimmed.back() != ';') {
+			throw std::invalid_argument("Last statement provided is invalid");
+		}
+		std::vector<std::string> statements = splitString(trimmed, ";", false);
+		if (statements.size() == 0 && !trimmed.empty()) {
+			throw std::invalid_argument("Empty statements are provided");
+		}
 		std::vector<std::vector<std::shared_ptr<Token>>> output;
 		for (std::string stmt : statements) {
 			stmt = trimWhitespaces(stmt);

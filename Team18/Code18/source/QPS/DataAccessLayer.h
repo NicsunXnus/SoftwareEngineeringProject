@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include "../PKB.h"
 #include "../Constants/QPSPKB.h"
 
 using namespace std;

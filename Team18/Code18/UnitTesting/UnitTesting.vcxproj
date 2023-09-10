@@ -172,12 +172,15 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TestAST.cpp" />
+    <ClCompile Include="TestHelperFunctions.cpp" />
+    <ClCompile Include="TestQPSDriver.cpp" />
     <ClCompile Include="TestSimpleTokenizer.cpp" />
+    <ClCompile Include="TestToken.cpp" />
+    <ClCompile Include="TestTokenFactory.cpp" />
     <ClCompile Include="TestEntity.cpp" />
     <ClCompile Include="TestPQLTokenizer.cpp" />
     <ClCompile Include="TestQPS.cpp" />
     <ClCompile Include="TestQPSDeclarationParser.cpp" />
-    <ClCompile Include="TestQPSDriver.cpp" />
     <ClCompile Include="TestQPSSelectionParser.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

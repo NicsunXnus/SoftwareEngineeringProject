@@ -45,4 +45,9 @@ void TestWrapper::evaluate(std::string query, std::list<std::string>& results) {
 
     // store the answers to the query in the results list (it is initially empty)
     // each result must be a string.
+    shared_ptr<QueryDriver> driver = make_shared<QueryDriver>(query);
+    list<string>queryResults = driver->execute();
+    // chat-gpt code
+    std::copy(queryResults.begin(), queryResults.end(), std::back_inserter(results));
+
 }

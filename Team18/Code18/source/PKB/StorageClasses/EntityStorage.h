@@ -30,8 +30,12 @@ public:
         return this->constant_database;
     }
 
-    void EntityStorage::setStatementDatabase(map<ENTITY, vector<int>>* database) {
-        this->statement_database = database;
+    void EntityStorage::setStatementDatabase(map<string, vector<int>>* database) {
+        map<ENTITY, vector<int>>* entity_database = {};
+        for (auto const& [entity_string, value] : *database) {
+            (*entity_database)[EntityEnumToString(entity_string)] = value;
+        }
+        this->statement_database = entity_database;
     }
 
     void EntityStorage::setProcedureDatabase(map<string, vector<int>>* database) {
