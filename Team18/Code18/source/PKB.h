@@ -17,9 +17,10 @@ using namespace std;
 */
 class PKB {
 public:
-	static Insertor insertor;
-	static Responder responder;
+	inline static Insertor insertor;
+	inline static Responder responder;
 
 private:
-	static StorageManager storage_manager;
+	inline static StorageManager storage_manager;
 };
+

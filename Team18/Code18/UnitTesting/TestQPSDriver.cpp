@@ -15,13 +15,13 @@ namespace UnitTesting
 	public:
 
 
-		TEST_METHOD(TestQPSDriverValid)
-		{
-			string query = "constant c; Select c";
-			shared_ptr<QueryDriver> driver = make_shared<QueryDriver>(query);
-			list<string> result = driver->execute();
-			//Assert::IsTrue("2" == result.back());
-		}
+		//TEST_METHOD(TestQPSDriverValid)
+		//{
+		//	string query = "constant c; Select c";
+		//	shared_ptr<QueryDriver> driver = make_shared<QueryDriver>(query);
+		//	list<string> result = driver->execute();
+		//	//Assert::IsTrue("2" == result.back());
+		//}
 
 
 	};

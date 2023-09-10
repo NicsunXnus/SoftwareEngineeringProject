@@ -12,7 +12,7 @@ public:
 		// set r as the root of AST by calling insertor to do work (set pointer in StorageManager)
 	}
 
-	void Insertor::addEntityStatements(map<ENTITY, vector<int>>* statements) {
+	void Insertor::addEntityStatements(map<string, vector<int>>* statements) {
 		EntityStorage* entity_storage = StorageManager::getEntityStorage();
 		(*entity_storage).setStatementDatabase(statements);
 	}
