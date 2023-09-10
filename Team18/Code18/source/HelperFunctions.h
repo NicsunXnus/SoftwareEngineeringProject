@@ -2,6 +2,9 @@
 #define TOKENIZERFUNCTIONS_H
 
 #include <regex>
+#include <string>
+#include <string_view>
+#include <vector>
 #include "TokenClasses/Token.h"
 
 using namespace std::string_view_literals;
