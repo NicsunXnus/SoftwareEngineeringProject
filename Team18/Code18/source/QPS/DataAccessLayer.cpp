@@ -14,20 +14,17 @@ vector<string> DataAccessLayer::getEntityStatement(ENTITY type) {
 }
 
 vector<string> DataAccessLayer::getAllProcedures() {
-	vector<string> PKBResponse;
-		//= PKB::responder.getAllProcedures();
+	vector<string> PKBResponse = PKB::responder.getAllProcedures();
 	return PKBResponse;
 }
 
 vector<string> DataAccessLayer::getAllVariables() {
-	//vector<string> PKBResponse = PKB::responder.getAllVariables();
-	vector<string> PKBResponse;
+	vector<string> PKBResponse = PKB::responder.getAllVariables();
 	return PKBResponse;
 }
 
 vector<string> DataAccessLayer::getAllConstants() {
-	//vector<string> PKBResponse = PKB::responder.getAllConstants();
-	vector<string> PKBResponse;
+	vector<string> PKBResponse = PKB::responder.getAllConstants();
 	return PKBResponse;
 }
 
