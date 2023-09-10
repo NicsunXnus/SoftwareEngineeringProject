@@ -136,6 +136,7 @@ public:
 			throw std::invalid_argument("Empty statements are provided");
 		}
 		std::vector<std::vector<std::shared_ptr<Token>>> output;
+
 		for (std::string stmt : statements) {
 			stmt = trimWhitespaces(stmt);
 			std::vector<std::shared_ptr<Token>> tokens = tokenizeStatement(stmt);
