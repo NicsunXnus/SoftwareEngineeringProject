@@ -8,6 +8,7 @@
 
 #include "TokenizerClasses/SIMPLETokenizer.h"
 #include "AST/ASTBuilder.h"
+#include "QPS/QueryDriver.h"
 
 class ApplicationWrapper {
 public:
