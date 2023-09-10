@@ -493,6 +493,16 @@ namespace TokenFactory_Test
 		// There should never be an Identifier with "" as its tokenName so such a token is good for testing
 		std::shared_ptr<IdentifierToken> nonsense = std::make_shared<IdentifierToken>("");
 	public:
+
+		TEST_METHOD(integerLiterals_negativeNumbers) {
+			try {
+				std::string tokenName = "-1";
+				combineOr(allCombinations(tokenName, nonsense));
+				assert(false);
+			}
+			catch (std::invalid_argument e) { assert(true); }
+		}
+
 		TEST_METHOD(unrecognisedCharacter) {
 			try {
 				std::string tokenName = "^";

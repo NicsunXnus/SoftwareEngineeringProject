@@ -21,6 +21,7 @@
     <ClCompile Include="..\source\QPS\QueryParser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\source\ApplicationWrapper.h" />
     <ClInclude Include="..\source\Constants\QPSPKB.h" />
     <ClInclude Include="..\source\HelperFunctions.h" />
     <ClInclude Include="..\source\PKB.h" />

@@ -68,6 +68,19 @@ namespace SimpleTokeniser_Test
 			assert(equalityWrapper(output, expected) == true);
 		}
 
+		TEST_METHOD(oneStatementKeywordVariable_success) {
+			std::string input = "read read;";
+			std::vector < std::vector<std::shared_ptr<Token>>> output = SimpleTokenizer::tokenize(input);
+			std::vector < std::vector<std::shared_ptr<Token>>> expected = {
+				{
+					std::make_shared<ReadKeywordToken>(),
+					std::make_shared<IdentifierToken>("read"),
+					std::make_shared<SemicolonSepToken>()
+				}
+			};
+			assert(equalityWrapper(output, expected) == true);
+		}
+
 		TEST_METHOD(oneStatementBadStyle_success) {
 			std::string input = " \v \tx=1\n +\r 2 \f- 3 \b* 4 / \b5 % \v6 ; \n\t ";
 			std::vector < std::vector<std::shared_ptr<Token>>> output = SimpleTokenizer::tokenize(input);

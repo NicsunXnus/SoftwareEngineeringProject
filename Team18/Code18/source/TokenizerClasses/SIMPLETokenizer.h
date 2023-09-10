@@ -124,7 +124,7 @@ public:
 	/// </summary>
 	/// <param name="src">input SIMPLE source code</param>
 	/// <returns>a 1D list of shared pointers to Tokens generated</returns>
-	static std::vector<std::vector<std::shared_ptr<Token>>> tokenize(std::string_view src) 
+	static std::vector<std::vector<std::shared_ptr<Token>>> tokenize(std::string_view src) {
 		std::string orig = std::string(src);
 		std::string trimmed = trimWhitespaces(orig);
 		// TODO: NEED TO REDO THIS WHEN INCORPORATING PROCEDURES AND IF WHILES
