@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include "../PKB.h"
 #include "../Constants/QPSPKB.h"
 
 using namespace std;
@@ -24,7 +25,7 @@ public:
 	 */
 	~DataAccessLayer() {};
 
-	 vector<string> getEntityStatement(EntitiesAPI type);
+	 vector<string> getEntityStatement(ENTITY type);
 
 	 vector<string> getAllProcedures();
 
