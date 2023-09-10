@@ -62,7 +62,7 @@ namespace UnitTesting
             std::map<std::string, std::vector<int>> procedureMap = testProcedureEntity->getMap();
             std::map<std::string, std::vector<int>> statementMap = testStatementEntity->getMap();
             std::map<std::string, std::vector<int>> variableMap = testVariableEntity->getMap();
-            std::map<int, std::vector<int>> constantMap = testConstantEntity->getMap();
+            std::map<std::string, std::vector<int>> constantMap = testConstantEntity->getMap();
 
             //Check if the procedure entity is extracted correctly
             Assert::AreEqual(procedureMap["procedure1"].empty(), true);
@@ -79,11 +79,10 @@ namespace UnitTesting
             Assert::AreEqual(variableMap["x"][1], 3);
             Assert::AreEqual(variableMap["x"][2], 4);
             Assert::AreEqual(variableMap["x"][3], 5);
-
             //Check if the constant entity is extracted correctly
             // Assert::AreEqual(constantMap[10][0], 3);
             // Assert::AreEqual(constantMap[20][0], 3);
 
 		}
-    }
+    };
 }
