@@ -37,14 +37,14 @@ namespace UnitTesting
             std::map<std::string, std::vector<int>> procedureMap = testProcedureEntity->getMap();
 
             //Check if procedure entity is extracted correctly
-            Assert::AreEqual(procedureMap.find("procedure1"));
-            Assert::AreEqual(procedureMap.find("procedure2"));
-            Assert::AreEqual(procedureMap.find("procedure3"));
-            Assert::AreEqual(procedureMap.find("procedure4"));
-            Assert::AreEqual(procedureMap.find("procedure5"));
+            Assert::AreEqual(procedureMap["procedure1"].empty(), true);
+            Assert::AreEqual(procedureMap["procedure2"].empty(), true);
+            Assert::AreEqual(procedureMap["procedure3"].empty(), true);
+            Assert::AreEqual(procedureMap["procedure4"].empty(), true);
+            Assert::AreEqual(procedureMap["procedure5"].empty(), true);
 
 		}
-        
+
 		TEST_METHOD(TestStatementEntity)
 		{
             //Create statement nodes
