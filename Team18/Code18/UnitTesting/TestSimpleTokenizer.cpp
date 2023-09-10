@@ -217,7 +217,7 @@ namespace SimpleTokeniser_Test
 			catch (std::invalid_argument e) { assert(true); }
 
 			try {
-				// "@#" used 
+				// "@#" used, which are invalid characters in SIMPLE
 				std::string input = "@# = 456;";
 				std::vector < std::vector<std::shared_ptr<Token>>> output = SimpleTokenizer::tokenize(input);
 				assert(false);

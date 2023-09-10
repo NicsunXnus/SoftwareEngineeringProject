@@ -19,7 +19,6 @@ private:
 		}
 		std::vector<std::shared_ptr<Token>> output;
 		bool validStatement = false;
-		std::string whitespaces = " \t\f\v\n\r\b";
 		if (stmt.find("=") != std::string::npos) { // Assignment Statement
 			output = tokenizeAssignment(stmt);
 			validStatement = true;
@@ -44,17 +43,17 @@ private:
 	// Tokenizes an assignment statement
 	static std::vector<std::shared_ptr<Token>> tokenizeAssignment(std::string assStmt) {
 		std::vector<std::shared_ptr<Token>> output;
-		std::vector<std::string> splitMain = splitString(assStmt, "=");
-		if (splitMain.size() != 2) {
+		std::vector<std::string> splitByEquals = splitString(assStmt, "=");
+		if (splitByEquals.size() != 2) {
 			// Invalid assignment statement
-			throw std::invalid_argument("Assignment Statement expected one equals sign. Got: " + std::to_string(splitMain.size()));
+			throw std::invalid_argument("Assignment Statement expected one equals sign. Got: " + std::to_string(splitByEquals.size() - 1));
 		}
-		std::string trimmed = trimWhitespaces(splitMain[0]);
-		if (!isValidName(trimmed)) {
+		std::string trimmedLeft = trimWhitespaces(splitByEquals[0]);
+		if (!isValidName(trimmedLeft)) {
 			throw std::invalid_argument("Identifier provided in assignment statement is invalid");
 		}
-		std::shared_ptr<Token> left = TokenFactory::generateToken(trimmed, true, true);
-		std::vector<std::shared_ptr<Token>> right = tokenizeExpression(splitMain[1]);
+		std::shared_ptr<Token> left = TokenFactory::generateToken(trimmedLeft, true, true);
+		std::vector<std::shared_ptr<Token>> right = tokenizeExpression(splitByEquals[1]);
 		output.push_back(left);
 		output.push_back(TokenFactory::generateToken("="sv, true));
 		output.insert(output.end(), right.begin(), right.end());
@@ -69,9 +68,9 @@ private:
 		// The regex matches all separators and operations that can be found in expressions: 
 		// ( ) + - * / % and whitespace
 		std::vector<std::string> split = splitString(input, "([()+\\-/*%\\s])", true);
-		std::string whitespaces = " \t\f\v\n\r\b";
 		for (std::string s : split) {
 			// ignore whitespaces. equality check is basically saying: not cannot find so == can find
+			// whitespaces are declared in HelperFunctions.h
 			if (whitespaces.find(s) != std::string::npos) continue;
 			s = trimWhitespaces(s);
 			output.push_back(TokenFactory::generateToken(s, true, true));

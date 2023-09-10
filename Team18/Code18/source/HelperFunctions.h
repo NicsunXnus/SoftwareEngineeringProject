@@ -6,6 +6,8 @@
 
 using namespace std::string_view_literals;
 
+const std::string whitespaces = " \t\f\v\n\r\b";
+
 // Checks if a given input string are all numbers
 // Does NOT check if it is a valid integer literal (ie leading 0)
 static bool isNumber(std::string input) {
@@ -113,7 +115,6 @@ static std::vector<std::string> splitString(std::string input) {
 // Original code from https://www.positioniseverything.net/cpp-string-trim/
 // Modified to use " \t\f\v\n\r\b\0" as the arguments instead
 static std::string trimWhitespaces(std::string str) {
-  std::string whitespaces = " \t\f\v\n\r\b";
   str.erase(str.find_last_not_of(whitespaces) + 1);
   str.erase(0, str.find_first_not_of(whitespaces));
   return str;
