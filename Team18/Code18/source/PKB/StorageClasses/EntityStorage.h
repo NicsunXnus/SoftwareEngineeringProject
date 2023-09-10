@@ -3,6 +3,8 @@
 #include <vector>
 #include <iostream>
 
+#include "../../Constants/QPSPKB.h"
+
 using namespace std;
 
 /**
@@ -12,7 +14,7 @@ using namespace std;
 class EntityStorage {
 public:
     // entities categorised as statement types and non-statement types.
-    map<string, vector<int>>* EntityStorage::getStatementDatabase() {
+    map<ENTITY, vector<int>>* EntityStorage::getStatementDatabase() {
         return this->statement_database;
     }
 
@@ -28,7 +30,7 @@ public:
         return this->constant_database;
     }
 
-    void EntityStorage::setStatementDatabase(map<string, vector<int>>* database) {
+    void EntityStorage::setStatementDatabase(map<ENTITY, vector<int>>* database) {
         this->statement_database = database;
     }
 
@@ -55,7 +57,7 @@ public:
     }
 
 private:
-    map<string, vector<int>>* statement_database;
+    map<ENTITY, vector<int>>* statement_database;
 
     map<string, vector<int>>* procedure_database;
 

@@ -1,7 +1,7 @@
 #ifndef QPSPKB_H
 #define QPSPKB_H
 
-enum EntitiesAPI {
+enum ENTITY {
     STMT,
     READ,
     PRINT,

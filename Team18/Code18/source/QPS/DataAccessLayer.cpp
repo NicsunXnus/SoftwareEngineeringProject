@@ -4,7 +4,7 @@
 #include <string>
 
 
-vector<string> DataAccessLayer::getEntityStatement(EntitiesAPI type) {
+vector<string> DataAccessLayer::getEntityStatement(ENTITY type) {
 	vector<int> result; // TODO: Implement PBK call here
 	vector<string> stringVector;
 	// PKB::responder.getEntityStatement(type);
