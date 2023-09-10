@@ -27,11 +27,19 @@ public:
         return this->EntityStorageMap;
     }
 
-    void insert(std::string name, int lineNumber) {
+    // Overloaded function for inserting to map with line number
+    void insertToMap(std::string name, int lineNumber) {
         if (this->EntityStorageMap.find(name) == this->EntityStorageMap.end()) {
             this->EntityStorageMap[name] = std::vector<int>();
         }
         this->EntityStorageMap[name].push_back(lineNumber);
+    }
+
+    // Overloaded function for inserting to map without line number
+    void insertToMap(std::string name) {
+        if (this->EntityStorageMap.find(name) == this->EntityStorageMap.end()) {
+            this->EntityStorageMap[name] = std::vector<int>();
+        }
     }
 
     virtual void extractEntity(std::shared_ptr<ASTNode> astNode) = 0;
@@ -51,7 +59,11 @@ public:
             std::string procedureName = procedureNode->getName();
             
             // Store the procedure name as the key and add the line number to the vector
-            insert(procedureName, -1);
+            insertToMap(procedureName);
+        }
+        else {
+            // Handle other cases or report an error
+            std::cerr << "Unsupported ASTNode type." << std::endl;
         }
     }
 };
@@ -71,7 +83,10 @@ public:
             int lineNumber = astNode->getStatementNumber();
             
             // Store the statement name as the key and add the line number to the vector
-            insert(statementName, lineNumber);
+            insertToMap(statementName, lineNumber);
+        }
+        else {
+            std::cerr << "Unsupported ASTNode type." << std::endl;
         }
     }
 };
@@ -95,7 +110,10 @@ public:
             int lineNumber = astNode->getStatementNumber();
             
             // Store the variable name as the key and add the line number to the vector
-            insert(variableName, lineNumber);
+            insertToMap(variableName, lineNumber);
+        }
+        else {
+            std::cerr << "Unsupported ASTNode type." << std::endl;
         }
     }
 };
@@ -112,7 +130,10 @@ public:
             int lineNumber = astNode->getStatementNumber();
             
             // Store the constant value as the key and add the line number to the vector
-            insert(constantValue, lineNumber);
+            insertToMap(constantValue, lineNumber);
+        }
+        else {
+            std::cerr << "Unsupported ASTNode type." << std::endl;
         }
     }
 };

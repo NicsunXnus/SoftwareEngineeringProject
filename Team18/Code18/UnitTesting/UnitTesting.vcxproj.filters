@@ -65,5 +65,8 @@
     <ClCompile Include="TestQPSDriver.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
+      <ClCompile Include="TestDesignExtractor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
