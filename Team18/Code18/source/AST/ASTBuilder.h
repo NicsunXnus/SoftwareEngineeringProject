@@ -19,7 +19,7 @@ public:
                 statementListToReturn.emplace_back(parseStatement(statements[i], statementNumber));
             }
             catch (std::string errMsg) {
-                std::cout << "Error parsing statement " + statementNumber + std::string(" : ") + errMsg;
+                throw std::runtime_error("Error parsing statement " + statementNumber + std::string(" : ") + errMsg);
             }
             statementNumber++;
         }
@@ -67,7 +67,7 @@ public:
         }
         else {
             // Handle other cases or report an error
-            throw "Unsupported Statement Type.";
+            throw std::runtime_error("Unsupported Statement Type for statement number " + statementNumber);
         }
     }
 
@@ -193,6 +193,9 @@ public:
     //sources: https://learn.microsoft.com/en-us/office/vba/language/reference/user-interface-help/operator-precedence
     //, https://discuss.codecademy.com/t/what-is-the-order-of-operations-for-logical-operators/452126
     static int precedence(std::string op) {
+        if (op == "(") {
+            return 0;
+        }
         if (op == "||") {
             return 1;
         }
@@ -211,6 +214,9 @@ public:
         else if (op == "*" || op == "/" || op == "%") {
             return 6;
         }
+        else {
+            throw std::invalid_argument("Unsupported operation for precedence check: " + op);
+        }
         return 0;
     }
 
@@ -221,9 +227,9 @@ public:
         else if (op == "-") return std::make_shared<MinusNode>(a, b);
         else if (op == "/") return std::make_shared<DividesNode>(a, b);
         else if (op == "%") return std::make_shared<ModNode>(a, b);
-        else throw "Unsupported mathematical operation.";
+        else throw std::invalid_argument("Unsupported mathematical operation: " + op);
     }
-
+    //TODO: Refactor this to handle error situations and remove duplicate codes
     //Creates a tree of ExprNode which forms one big expression
     //Uses 2 stacks - One to store the operators and paranthesis, one to store the expressions/ExprNode
     //Once a ")" is reached, the top operator is popped and the top 2 expressions are also popped,then the applyoperation
@@ -239,13 +245,19 @@ public:
             }
             else if (currToken->getName() == ")") {
                 while (!ops.empty() && ops.top() != "(") {
+                    if (values.size() < 2) { //at least 2 items in values to apply mathematical operation
+                        throw std::runtime_error("Need 2 operatees to operate on.");
+                    }
                     std::shared_ptr<ExprNode> b = values.top(); values.pop();
                     std::shared_ptr<ExprNode> a = values.top();
                     values.pop();
                     values.push(applyOperation(ops.top(), a, b));
                     ops.pop();
                 }
-                ops.pop(); // Remove the '('
+                if (ops.empty()) {
+                    throw std::runtime_error("Missing left bracket.");
+                }
+                ops.pop();// Remove the '('
             }
             else if (isAlphanumeric(currToken->getName())) {
                 std::shared_ptr<ExprNode> refNode;
@@ -255,6 +267,9 @@ public:
             }
             else {
                 while (!ops.empty() && precedence(ops.top()) >= precedence(currToken->getName())) {
+                    if (values.size() < 2) { //at least 2 items in values to apply mathematical operation
+                        throw std::runtime_error("Need 2 operatees to operate on.");
+                    }
                     std::shared_ptr<ExprNode> b = values.top(); values.pop();
                     std::shared_ptr<ExprNode> a = values.top();
                     values.pop();
@@ -265,6 +280,9 @@ public:
             }
         }
         while (!ops.empty()) {
+            if (values.size() < 2) { //at least 2 items in values to apply mathematical operation
+                throw std::runtime_error("Need 2 operatees to operate on.");
+            }
             std::shared_ptr<ExprNode> b = values.top(); values.pop();
             std::shared_ptr<ExprNode> a = values.top();
             values.pop();
@@ -314,14 +332,14 @@ public:
         else if (op == ">=") return std::make_shared<GreaterThanEqualNode>(a, b);
         else if (op == "==") return std::make_shared<EqualsNode>(a, b);
         else if (op == "!=") return std::make_shared<NotEqualsNode>(a, b);
-        else throw "Unsupported Comparison Operator.";
+        else throw std::invalid_argument("Unsupported Comparison Operator: " + op);
     }
 
     static std::shared_ptr<CondExprNode> applyBoolOperation(std::string op, std::shared_ptr<CondExprNode> a, std::shared_ptr<CondExprNode> b) {
         if (op == "&&") return std::make_shared<AndNode>(a, b);
         else if (op == "||") return std::make_shared<OrNode>(a, b);
         else if (op == "!") return std::make_shared<NotNode>(b);
-        else throw "Unsupported Boolean Operator.";
+        else throw std::invalid_argument("Unsupported Boolean Operator: " + op);
     }
 
     static bool isComparisonOpr(std::string op) {
@@ -336,6 +354,7 @@ public:
         return it != ops.end();
     }
 
+    //Refactor this to remove duplicate codes and handle error situations
     static std::shared_ptr<CondExprNode> parseCondExpr(std::vector<std::shared_ptr<Token>> listOfTokens) {
         std::stack<std::shared_ptr<CondExprNode>> condValues;
         std::stack<std::shared_ptr<ExprNode>> relValues;
@@ -349,7 +368,10 @@ public:
             else if (currToken->getName() == ")") {
                 while (!ops.empty() && ops.top() != "(") {
                     if (ASTBuilder::isComparisonOpr(ops.top())) {
-                        assert(!relValues.empty());
+                        //assert(!relValues.empty());
+                        if (relValues.size() < 2) {
+                            throw std::runtime_error("Need 2 comparison operatees to operate on.");
+                        }
                         std::shared_ptr<ExprNode> b = relValues.top(); relValues.pop();
                         std::shared_ptr<ExprNode> a = relValues.top();
                         relValues.pop();
@@ -357,19 +379,28 @@ public:
                         ops.pop();
                     }
                     else if (ASTBuilder::isBoolOpr(ops.top())) {
-                        assert(!condValues.empty());
+                        //assert(!condValues.empty());
+                        if (condValues.empty()) {
+                            throw std::runtime_error("Missing conditional operatee.");
+                        }
                         std::shared_ptr<CondExprNode> b = condValues.top(); condValues.pop();
                         if (ops.top() == "!") {
                             condValues.push(applyBoolOperation(ops.top(), std::shared_ptr<CondExprNode>(), b));
                         }
                         else {
+                            if (condValues.empty()) {
+                                throw std::runtime_error("Missing conditional operatee.");
+                            }
                             std::shared_ptr<CondExprNode> a = condValues.top(); condValues.pop();
                             condValues.push(applyBoolOperation(ops.top(), a, b));
                         }
                         ops.pop();
                     }
                     else {
-                        assert(!relValues.empty());
+                        //assert(!relValues.empty());
+                        if (relValues.size() < 2) {
+                            throw std::runtime_error("Need 2 operatees to operate on.");
+                        }
                         std::shared_ptr<ExprNode> b = relValues.top(); relValues.pop();
                         std::shared_ptr<ExprNode> a = relValues.top();
                         relValues.pop();
