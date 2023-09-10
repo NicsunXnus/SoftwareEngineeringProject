@@ -7,7 +7,7 @@ using namespace std;
 
 #include "Entity.h"
 #include "../AST/ASTNode.h"
-// #include "../PKB/Inserter.h"
+#include "../PKB/Insertor.h"
 
 /**
 * This class represents the Design Extractor component of the SPA.
@@ -113,20 +113,22 @@ public:
     //     return this->patternStatementEntity;
     // }
 
-    // void insertEntities() {
-    //     // Get the entity maps
-    //     std::map<std::string, std::vector<int>> procedureMap = this->procedureEntity->getMap();
-    //     std::map<std::string, std::vector<int>> statementMap = this->statementEntity->getMap();
-    //     std::map<std::string, std::vector<int>> variableMap = this->variableEntity->getMap();
-    //     std::map<std::string, std::vector<int>> constantMap = this->constantEntity->getMap();
-    //     // std::map<std::string, std::vector<int>> assignStatementMap = this->assignStatementEntity->getMap();
+    void insertEntities() {
+        // Get the entity maps
+        std::map<std::string, std::vector<int>> procedureMap = this->procedureEntity->getMap();
+        std::map<std::string, std::vector<int>> statementMap = this->statementEntity->getMap();
+        std::map<std::string, std::vector<int>> variableMap = this->variableEntity->getMap();
+        std::map<std::string, std::vector<int>> constantMap = this->constantEntity->getMap();
+        // std::map<std::string, std::vector<int>> assignStatementMap = this->assignStatementEntity->getMap();
 
-    //     // Insert the entities into the PKB
-    //     Insertor::addProcedures(procedureMap);
-    //     Insertor::addStatements(statementMap);
-    //     Insertor::addVariables(variableMap);
-    //     Insertor::addConstants(constantMap);
-    // }
+        // Insert the entities into the PKB
+        Insertor insertor = Insertor();
+        insertor.addProcedures(&procedureMap);
+        insertor.addEntityStatements(&statementMap);
+        insertor.addVariables(&variableMap);
+        insertor.addConstants(&constantMap);
+        
+    }
 
 private:
     std::shared_ptr<ProcedureEntity> procedureEntity;
