@@ -63,7 +63,6 @@ public:
         (*(this->variable_database))[varName] = lines;
       }
       //cout << "EntityStorage::setVariableDatabase addr:" << variable_database << endl;
-
     }
 
     void EntityStorage::setConstantDatabase(map<string, vector<int>>* database) {
@@ -81,11 +80,11 @@ public:
     }
 
 private:
-    map<ENTITY, vector<int>>* statement_database;
+    static inline map<ENTITY, vector<int>>* statement_database;
 
-    map<string, vector<int>>* procedure_database;
+    static inline map<string, vector<int>>* procedure_database;
 
-    map<string, vector<int>>* variable_database;
+    static inline map<string, vector<int>>* variable_database;
 
-    map<string, vector<int>>* constant_database;
+    static inline map<string, vector<int>>* constant_database;
 };

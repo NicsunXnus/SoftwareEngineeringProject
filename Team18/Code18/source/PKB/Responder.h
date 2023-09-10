@@ -79,7 +79,11 @@ public:
 private:
 	vector<string> getKeys(map<string, vector<int>>* db) const {
 		vector<string> keys;
+
+		std::cout << "In Responder getKeys, db size: " << db->size() << '\n';
+
 		for (const auto& [k, v] : *db) {
+
 			keys.push_back(k);
 		}
 		return keys;
