@@ -28,12 +28,16 @@
     <ClCompile Include="..\source\PKB.cpp">
       <Filter>PKB</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\QPS\DataAccessLayer.cpp" />
+    <ClCompile Include="..\source\QPS\QueryDriver.cpp" />
+    <ClCompile Include="..\source\QPS\QueryObjects\DesignObjectsFactory.cpp" />
+    <ClCompile Include="..\source\QPS\QueryObjects\QueryObject.cpp" />
+    <ClCompile Include="..\source\QPS\QueryParser.cpp" />
     <ClCompile Include="..\source\AST\**\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\source\TNode.h" />
     <ClInclude Include="..\source\TokenClasses\IdentifierToken.h">
       <Filter>SP</Filter>
     </ClInclude>
@@ -58,6 +62,8 @@
     <ClInclude Include="..\source\TokenClasses\UnderscoreToken.h">
       <Filter>SP</Filter>
     </ClInclude>
+    <ClInclude Include="..\source\TokenizerClasses\TokenizerFunctions.h">
+      <Filter>SP</Filter>
     <ClInclude Include="..\source\PKB\StorageClasses\AbstractionStorage.h">
       <Filter>PKB</Filter>
     </ClInclude>
@@ -79,12 +85,20 @@
     <ClInclude Include="..\source\TokenClasses\LiteralToken.h">
       <Filter>SP</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\PKB\StorageClasses\UsesAbstractionStorage.h">
-      <Filter>PKB</Filter>
-    </ClInclude>
     <ClInclude Include="..\source\TokenizerClasses\PQLTokenizer.h">
       <Filter>QPS</Filter>
     </ClInclude>
+    <ClInclude Include="..\source\Constants\QPSPKB.h" />
+    <ClInclude Include="..\source\QPS\DataAccessLayer.h" />
+    <ClInclude Include="..\source\QPS\QueryDriver.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\ClauseObject.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\ClauseObjectFactory.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\DesignObjects.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\DesignObjectsFactory.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\QueryObject.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\QueryObjectFactory.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\SynonymObjects.h" />
+    <ClInclude Include="..\source\QPS\QueryParser.h" />
     <ClInclude Include="..\source\PKB\Responder.h">
       <Filter>PKB</Filter>
     </ClInclude>

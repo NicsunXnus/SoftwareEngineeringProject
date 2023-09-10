@@ -177,6 +177,11 @@
     <ClCompile Include="TestToken.cpp" />
     <ClCompile Include="TestTokenFactory.cpp" />
     <ClCompile Include="TestEntity.cpp" />
+    <ClCompile Include="TestPQLTokenizer.cpp" />
+    <ClCompile Include="TestQPS.cpp" />
+    <ClCompile Include="TestQPSDeclarationParser.cpp" />
+    <ClCompile Include="TestQPSDriver.cpp" />
+    <ClCompile Include="TestQPSSelectionParser.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\QPS">
+      <UniqueIdentifier>{f5441878-4cd1-4232-8ed2-30fd3f44f2d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -32,6 +35,18 @@
     <ClCompile Include="TestTokenFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TestQPS.cpp">
+      <Filter>Source Files\QPS</Filter>
+    </ClCompile>
+    <ClCompile Include="TestQPSDeclarationParser.cpp">
+      <Filter>Source Files\QPS</Filter>
+    </ClCompile>
+    <ClCompile Include="TestQPSSelectionParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestSimpleTokenizer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="TestEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -43,6 +58,12 @@
     </ClCompile>
     <ClCompile Include="TestToken.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestPQLTokenizer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestQPSDriver.cpp">
+      <Filter>Source Files\QPS</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
