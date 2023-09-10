@@ -64,6 +64,20 @@
     </ClInclude>
     <ClInclude Include="..\source\TokenizerClasses\TokenizerFunctions.h">
       <Filter>SP</Filter>
+    <ClInclude Include="..\source\PKB\StorageClasses\AbstractionStorage.h">
+      <Filter>PKB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\StorageClasses\EntityStorage.h">
+      <Filter>PKB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\StorageClasses\FollowsAbstractionStorage.h">
+      <Filter>PKB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\StorageClasses\ModifiesAbstractionStorage.h">
+      <Filter>PKB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\StorageClasses\ParentAbstractionStorage.h">
+      <Filter>PKB</Filter>
     </ClInclude>
     <ClInclude Include="..\source\PKB.h">
       <Filter>PKB</Filter>
@@ -85,6 +99,16 @@
     <ClInclude Include="..\source\QPS\QueryObjects\QueryObjectFactory.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\SynonymObjects.h" />
     <ClInclude Include="..\source\QPS\QueryParser.h" />
+    <ClInclude Include="..\source\PKB\Responder.h">
+      <Filter>PKB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\Insertor.h">
+      <Filter>PKB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\StorageManager.h">
+      <Filter>PKB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\HelperFunctions.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="SP">
