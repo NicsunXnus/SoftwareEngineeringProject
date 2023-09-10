@@ -18,10 +18,10 @@ public:
   // destructor
   ~ApplicationWrapper();
 
-  // directly parses source code without taking into account that it is a string
+  // directly parses source code assuming the input is the actual code
   void directParse(std::string srcCode);
 
-  // method for parsing the SIMPLE source.
+  // method for parsing the SIMPLE source, assuming the input is the filename
   void parse(std::string filename) {
     // call your parser to do the parsing
     std::ifstream simpleStream(filename);
