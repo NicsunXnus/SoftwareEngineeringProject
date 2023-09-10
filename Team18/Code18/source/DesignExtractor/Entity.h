@@ -23,8 +23,8 @@ public:
     
     virtual ~Entity() = default;
 
-    std::map<std::string, std::vector<int>>getMap() {
-        return this->EntityStorageMap;
+    std::map<std::string, std::vector<int>>* getMap() {
+      return &(this->EntityStorageMap);
     }
 
     // Overloaded function for inserting to map with line number

@@ -3,6 +3,7 @@
 #include <map>
 #include <vector>
 #include <variant>
+#include <iostream>
 
 using namespace std;
 
@@ -31,7 +32,7 @@ public:
             else {
                 key = get<std::string>(pair.first);
             }
-            cout << "Key: " << key << ", Value: " << result << endl;
+            //std::cout << "Key: " << key << ", Value: " << result << std::endl;
         }
     }
     

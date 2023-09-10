@@ -13,11 +13,9 @@
   <ItemGroup>
     <ClCompile Include="..\source\ApplicationWrapper.cpp" />
     <ClCompile Include="..\source\DesignExtractor.cpp" />
-    <ClCompile Include="..\source\PKB.cpp" />
     <ClCompile Include="..\source\QPS\DataAccessLayer.cpp" />
     <ClCompile Include="..\source\QPS\QueryDriver.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\DesignObjectsFactory.cpp" />
-    <ClCompile Include="..\source\QPS\QueryObjects\QueryObject.cpp" />
     <ClCompile Include="..\source\QPS\QueryParser.cpp" />
   </ItemGroup>
   <ItemGroup>

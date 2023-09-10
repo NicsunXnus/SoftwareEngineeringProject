@@ -59,10 +59,10 @@ namespace UnitTesting
             std::shared_ptr<ConstantEntity> testConstantEntity = testDesignExtractor.getConstantEntity();
             
             //Get maps from entities
-            std::map<std::string, std::vector<int>> procedureMap = testProcedureEntity->getMap();
-            std::map<std::string, std::vector<int>> statementMap = testStatementEntity->getMap();
-            std::map<std::string, std::vector<int>> variableMap = testVariableEntity->getMap();
-            std::map<std::string, std::vector<int>> constantMap = testConstantEntity->getMap();
+            std::map<std::string, std::vector<int>> procedureMap = *(testProcedureEntity->getMap());
+            std::map<std::string, std::vector<int>> statementMap = *(testStatementEntity->getMap());
+            std::map<std::string, std::vector<int>> variableMap = *(testVariableEntity->getMap());
+            std::map<std::string, std::vector<int>> constantMap = *(testConstantEntity->getMap());
 
             //Check if the procedure entity is extracted correctly
             Assert::AreEqual(procedureMap["procedure1"].empty(), true);

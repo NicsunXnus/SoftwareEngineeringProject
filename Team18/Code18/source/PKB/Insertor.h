@@ -9,10 +9,6 @@ public:
 
 	// parse trees (for querying patterns)
 
-	void Insertor::setAST(TNode* r) {
-		// set r as the root of AST by calling insertor to do work (set pointer in StorageManager)
-	}
-
 	void Insertor::addEntityStatements(map<string, vector<int>>* statements) {
 		EntityStorage* entity_storage = StorageManager::getEntityStorage();
 		(*entity_storage).setStatementDatabase(statements);
@@ -24,8 +20,11 @@ public:
 	}
 
 	void Insertor::addVariables(map<string, vector<int>>* variables) {
+		//cout << "Insertor::addVariables 1" << endl;
 		EntityStorage* entity_storage = StorageManager::getEntityStorage();
+		//cout << "Insertor::addVariables 2" << endl;
 		(*entity_storage).setVariableDatabase(variables);
+		//cout << "Insertor::addVariables 3" << endl;
 	}
 
 	void Insertor::addConstants(map<string, vector<int>>* constants) {

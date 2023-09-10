@@ -12,7 +12,7 @@ using namespace std::string_view_literals;
 *
 * Returns a std::vector of tokens.
 */
-inline std::vector<std::string_view> tokenize(std::string_view pql) {
+static std::vector<std::string_view> tokenize(std::string_view pql) {
 
 	std::vector<std::string_view> tokens;
 	int startIndex{ 0 };

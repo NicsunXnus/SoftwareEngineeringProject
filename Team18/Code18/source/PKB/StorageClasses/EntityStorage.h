@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 #include <map>
 #include <vector>
@@ -13,6 +14,15 @@ using namespace std;
 */
 class EntityStorage {
 public:
+  EntityStorage() {
+    statement_database = new map<ENTITY, vector<int>>();
+
+    procedure_database = new map<string, vector<int>>();
+
+    variable_database = new map<string, vector<int>>();
+
+    constant_database = new map<string, vector<int>>();
+    }
     // entities categorised as statement types and non-statement types.
     map<ENTITY, vector<int>>* EntityStorage::getStatementDatabase() {
         return this->statement_database;
@@ -23,6 +33,14 @@ public:
     }
 
     map<string, vector<int>>* EntityStorage::getVariableDatabase() {
+      //cout << "EntityStorage::getVariableDatabase addr:" << variable_database << endl << std::flush;
+      //for (auto [a, b] : *variable_database) {
+      //  cout << a << endl;
+      //  for (auto c : b) {
+      //    cout << c << endl;
+      //  }
+      //}
+      //std::cout.flush();
         return this->variable_database;
     }
 
@@ -31,12 +49,9 @@ public:
     }
 
     void EntityStorage::setStatementDatabase(map<string, vector<int>>* database) {
-        map<ENTITY, vector<int>> actual_database = {};
-        map<ENTITY, vector<int>>* entity_database = &actual_database;
         for (auto const& [entity_string, value] : *database) {
-            (*entity_database)[EntityEnumToString(entity_string)] = value;
+            (*statement_database)[EntityEnumToString(entity_string)] = value;
         }
-        this->statement_database = entity_database;
     }
 
     void EntityStorage::setProcedureDatabase(map<string, vector<int>>* database) {
@@ -44,7 +59,11 @@ public:
     }
 
     void EntityStorage::setVariableDatabase(map<string, vector<int>>* database) {
-        this->variable_database = database;
+      for (auto const& [varName, lines] : *database) {
+        (*(this->variable_database))[varName] = lines;
+      }
+      //cout << "EntityStorage::setVariableDatabase addr:" << variable_database << endl;
+
     }
 
     void EntityStorage::setConstantDatabase(map<string, vector<int>>* database) {

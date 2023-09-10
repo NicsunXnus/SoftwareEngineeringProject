@@ -1,56 +1,165 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\source\DesignExtractor.cpp" />
-    <ClCompile Include="..\source\PKB.cpp" />
-    <ClCompile Include="..\source\QPS\DataAccessLayer.cpp" />
-    <ClCompile Include="..\source\QPS\QueryDriver.cpp" />
-    <ClCompile Include="..\source\QPS\QueryObjects\DesignObjectsFactory.cpp" />
-    <ClCompile Include="..\source\QPS\QueryObjects\QueryObject.cpp" />
-    <ClCompile Include="..\source\QPS\QueryParser.cpp" />
+    <ClCompile Include="..\source\AST\ASTNode.h" />
     <ClCompile Include="..\source\AST\**\*.h" />
-    <ClCompile Include="..\source\AST\**\*.h" />
-    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
     <ClCompile Include="..\source\ApplicationWrapper.cpp" />
     <ClCompile Include="..\source\AST\**\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\AST\ASTNode.h" />
+    <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
+    <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
+    <ClCompile Include="..\source\QPS\QueryDriver.cpp">
+      <Filter>QPS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryParser.cpp">
+      <Filter>QPS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryObjects\DesignObjectsFactory.cpp">
+      <Filter>QPS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\DesignExtractor\*.h">
+      <Filter>DesignExtractor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\DesignExtractor.cpp">
+      <Filter>DesignExtractor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\QPS\DataAccessLayer.cpp">
+      <Filter>QPS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\AST\**\*.h">
+      <Filter>AST</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\AST\**\*.h">
+      <Filter>AST</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\DesignExtractor\*.h">
+      <Filter>PKB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\DesignExtractor\*.h">
+      <Filter>PKB</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\Constants\QPSPKB.h" />
     <ClInclude Include="..\source\HelperFunctions.h" />
-    <ClInclude Include="..\source\PKB.h" />
-    <ClInclude Include="..\source\QPS\DataAccessLayer.h" />
-    <ClInclude Include="..\source\QPS\QueryDriver.h" />
-    <ClInclude Include="..\source\QPS\QueryObjects\ClauseObject.h" />
-    <ClInclude Include="..\source\QPS\QueryObjects\ClauseObjectFactory.h" />
-    <ClInclude Include="..\source\QPS\QueryObjects\DesignObjects.h" />
-    <ClInclude Include="..\source\QPS\QueryObjects\DesignObjectsFactory.h" />
-    <ClInclude Include="..\source\QPS\QueryObjects\QueryObject.h" />
-    <ClInclude Include="..\source\QPS\QueryObjects\QueryObjectFactory.h" />
-    <ClInclude Include="..\source\QPS\QueryObjects\SynonymObjects.h" />
-    <ClInclude Include="..\source\QPS\QueryParser.h" />
-    <ClInclude Include="..\source\TokenClasses\IdentifierToken.h" />
-    <ClInclude Include="..\source\TokenClasses\KeywordToken.h" />
-    <ClInclude Include="..\source\TokenClasses\LiteralToken.h" />
-    <ClInclude Include="..\source\TokenClasses\OperatorToken.h" />
-    <ClInclude Include="..\source\TokenClasses\SeparatorToken.h" />
-    <ClInclude Include="..\source\TokenClasses\Token.h" />
-    <ClInclude Include="..\source\TokenClasses\UnderscoreToken.h" />
-    <ClInclude Include="..\source\TokenizerClasses\PQLTokenizer.h" />
-    <ClInclude Include="..\source\TokenizerClasses\SIMPLETokenizer.h" />
-    <ClInclude Include="..\source\TokenizerClasses\TokenFactory.h" />
-    <ClInclude Include="..\source\PKB\Insertor.h" />
-    <ClInclude Include="..\source\PKB\Responder.h" />
     <ClInclude Include="..\source\ApplicationWrapper.h" />
-    <ClInclude Include="..\source\PKB\StorageClasses\AbstractionStorage.h" />
-    <ClInclude Include="..\source\PKB\StorageClasses\EntityStorage.h" />
-    <ClInclude Include="..\source\PKB\StorageClasses\FollowsAbstractionStorage.h" />
-    <ClInclude Include="..\source\PKB\StorageClasses\ModifiesAbstractionStorage.h" />
-    <ClInclude Include="..\source\PKB\StorageClasses\ParentAbstractionStorage.h" />
-    <ClInclude Include="..\source\PKB\StorageClasses\UsesAbstractionStorage.h" />
-    <ClInclude Include="..\source\PKB\StorageManager.h" />
+    <ClInclude Include="..\source\QPS\QueryDriver.h">
+      <Filter>QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryObjects\QueryObject.h">
+      <Filter>QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryObjects\QueryObjectFactory.h">
+      <Filter>QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryParser.h">
+      <Filter>QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryObjects\DesignObjectsFactory.h">
+      <Filter>QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryObjects\DesignObjects.h">
+      <Filter>QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\DataAccessLayer.h">
+      <Filter>QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryObjects\ClauseObject.h">
+      <Filter>QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\StorageClasses\EntityStorage.h">
+      <Filter>PKB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\StorageClasses\FollowsAbstractionStorage.h">
+      <Filter>PKB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\LiteralToken.h">
+      <Filter>Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\KeywordToken.h">
+      <Filter>Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\IdentifierToken.h">
+      <Filter>Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\StorageClasses\ModifiesAbstractionStorage.h">
+      <Filter>PKB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\StorageClasses\ParentAbstractionStorage.h">
+      <Filter>PKB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\Insertor.h">
+      <Filter>PKB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\Responder.h">
+      <Filter>PKB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\UnderscoreToken.h">
+      <Filter>Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenizerClasses\TokenFactory.h">
+      <Filter>Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\SeparatorToken.h">
+      <Filter>Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\OperatorToken.h">
+      <Filter>Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenizerClasses\SIMPLETokenizer.h">
+      <Filter>Tokeniser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenizerClasses\PQLTokenizer.h">
+      <Filter>Tokeniser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\StorageClasses\AbstractionStorage.h">
+      <Filter>PKB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\StorageManager.h">
+      <Filter>PKB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryObjects\SynonymObjects.h">
+      <Filter>QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenClasses\Token.h">
+      <Filter>Tokens</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB.h">
+      <Filter>PKB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB\StorageClasses\UsesAbstractionStorage.h">
+      <Filter>PKB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryObjects\ClauseObjectFactory.h">
+      <Filter>QPS</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Tokens">
+      <UniqueIdentifier>{886d1472-a647-4687-b0a2-d81ebc5374a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tokeniser">
+      <UniqueIdentifier>{022da6b9-2544-4465-8868-f415a21ce18f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DesignExtractor">
+      <UniqueIdentifier>{1d584919-ccba-4ea9-96b7-791660f1b4ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PKB">
+      <UniqueIdentifier>{6201956b-e128-4998-b6ea-a98e16d1cd1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="QPS">
+      <UniqueIdentifier>{fee32231-bb97-4451-8a7b-975a2f243705}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AST">
+      <UniqueIdentifier>{7fcbf307-5574-4833-a65d-daabea427266}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

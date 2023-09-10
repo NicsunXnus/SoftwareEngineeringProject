@@ -1,3 +1,4 @@
+#pragma once
 #ifndef APPLICATIONWRAPPER_H
 #define APPLICATIONWRAPPER_H
 

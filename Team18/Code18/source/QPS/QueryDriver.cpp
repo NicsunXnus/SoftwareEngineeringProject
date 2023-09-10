@@ -1,3 +1,4 @@
+#pragma once
 #include "QueryDriver.h"
 
 #include <list>
@@ -20,7 +21,10 @@ list<string> QueryDriver::execute() {
 
 
 		shared_ptr<QueryObject> obj = queryParser[0];
+		//std::cout << "QueryDriver::execute 4.5" << std::endl;
+		//std::cout << typeid(*(obj.get())).name() << std::endl;
 		obj->call(dataAccessLayer);
+		//std::cout << "QueryDriver::execute 5" << std::endl;
 		vector<string> result = obj->getResult();
 		// chat-gpt code
 		list<string> myList(result.begin(), result.end());

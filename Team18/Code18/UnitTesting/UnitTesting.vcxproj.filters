@@ -16,6 +16,12 @@
     <Filter Include="Source Files\QPS">
       <UniqueIdentifier>{f5441878-4cd1-4232-8ed2-30fd3f44f2d1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\SP">
+      <UniqueIdentifier>{e537f4ab-cfb0-45d0-af5e-557aec1cd901}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PKB">
+      <UniqueIdentifier>{c062f30e-e103-48c5-9612-89ae52708296}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -29,23 +35,11 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TestAST.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TestTokenFactory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TestQPS.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
     <ClCompile Include="TestQPSDeclarationParser.cpp">
       <Filter>Source Files\QPS</Filter>
-    </ClCompile>
-    <ClCompile Include="TestQPSSelectionParser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TestSimpleTokenizer.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TestEntity.cpp">
       <Filter>Source Files</Filter>
@@ -56,17 +50,29 @@
     <ClCompile Include="TestHelperFunctions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TestToken.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TestPQLTokenizer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TestQPSDriver.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
-      <ClCompile Include="TestDesignExtractor.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="TestSimpleTokenizer.cpp">
+      <Filter>Source Files\SP</Filter>
+    </ClCompile>
+    <ClCompile Include="TestToken.cpp">
+      <Filter>Source Files\SP</Filter>
+    </ClCompile>
+    <ClCompile Include="TestTokenFactory.cpp">
+      <Filter>Source Files\SP</Filter>
+    </ClCompile>
+    <ClCompile Include="TestDesignExtractor.cpp">
+      <Filter>Source Files\SP</Filter>
+    </ClCompile>
+    <ClCompile Include="TestAST.cpp">
+      <Filter>Source Files\SP</Filter>
+    </ClCompile>
+    <ClCompile Include="TestPQLTokenizer.cpp">
+      <Filter>Source Files\QPS</Filter>
+    </ClCompile>
+    <ClCompile Include="TestQPSSelectionParser.cpp">
+      <Filter>Source Files\QPS</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

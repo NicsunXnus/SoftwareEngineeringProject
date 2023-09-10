@@ -6,7 +6,6 @@
 #include <vector>
 
 #include "QueryParser.h"
-#include "QueryParser.h"
 #include "../TokenizerClasses/PQLTokenizer.h"
 #include "DataAccessLayer.h"
 

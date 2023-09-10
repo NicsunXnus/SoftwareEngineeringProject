@@ -1,3 +1,4 @@
+#pragma once
 #include<stdio.h>
 #include <iostream>
 #include <string>
@@ -120,18 +121,25 @@ public:
 
     void insertEntities() {
         // Get the entity maps
-        std::map<std::string, std::vector<int>> procedureMap = this->procedureEntity->getMap();
-        std::map<std::string, std::vector<int>> statementMap = this->statementEntity->getMap();
-        std::map<std::string, std::vector<int>> variableMap = this->variableEntity->getMap();
-        std::map<std::string, std::vector<int>> constantMap = this->constantEntity->getMap();
+        std::map<std::string, std::vector<int>>* procedureMap = this->procedureEntity->getMap();
+        std::map<std::string, std::vector<int>>* statementMap = this->statementEntity->getMap();
+        std::map<std::string, std::vector<int>>* variableMap = this->variableEntity->getMap();
+        std::map<std::string, std::vector<int>>* constantMap = this->constantEntity->getMap();
         // std::map<std::string, std::vector<int>> assignStatementMap = this->assignStatementEntity->getMap();
 
+        cout << "DesignExtractor::insertEntities 1" << endl;
+        //for (auto [a, b] : *variableMap) {
+        //  cout << a << endl;
+        //  for (auto c : b) {
+        //    cout << c << endl;
+        //  }
+        //}
         // Insert the entities into the PKB
         Insertor insertor = Insertor();
-        insertor.addProcedures(&procedureMap);
-        insertor.addEntityStatements(&statementMap);
-        insertor.addVariables(&variableMap);
-        insertor.addConstants(&constantMap);
+        insertor.addProcedures(procedureMap);
+        insertor.addEntityStatements(statementMap);
+        insertor.addVariables(variableMap);
+        insertor.addConstants(constantMap);
         
     }
 
