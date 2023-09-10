@@ -18,6 +18,10 @@ TestWrapper::TestWrapper() {
   // as well as any initialization required for your spa program
 }
 
+void TestWrapper::directParse(std::string srcCode) {
+  // shift everything from line 35 onwards to here, and make parse() call this code.
+}
+
 // method for parsing the SIMPLE source
 void TestWrapper::parse(std::string filename) {
   // call your parser to do the parsing

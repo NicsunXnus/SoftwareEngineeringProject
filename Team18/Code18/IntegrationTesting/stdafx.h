@@ -11,8 +11,7 @@
 #include "CppUnitTest.h"
 
 // TODO: reference additional headers your program requires here
-/*
+#include <cassert>
 #include "../source/QPS/QueryParser.h"
 #include "../source/TokenClasses/Token.h"
 #include "../source/TokenizerClasses/PQLTokenizer.h"
-*/
