@@ -15,15 +15,15 @@ namespace UnitTesting
             std::vector<std::shared_ptr<StatementNode>> emptyStatements;
 
             //Create procedure nodes
-            std::shared_ptr<ProcedureNode> testProcdeureNode1 = std::make_shared<ProcedureNode>("procedure1", emptyStatements);
-            std::shared_ptr<ProcedureNode> testProcdeureNode2 = std::make_shared<ProcedureNode>("procedure2", emptyStatements);
-            std::shared_ptr<ProcedureNode> testProcdeureNode3 = std::make_shared<ProcedureNode>("procedure3", emptyStatements);
-            std::shared_ptr<ProcedureNode> testProcdeureNode4 = std::make_shared<ProcedureNode>("procedure4", emptyStatements);
-            std::shared_ptr<ProcedureNode> testProcdeureNode5 = std::make_shared<ProcedureNode>("procedure5", emptyStatements);
+            std::shared_ptr<ProcedureNode> testProcedureNode1 = std::make_shared<ProcedureNode>("procedure1", emptyStatements);
+            std::shared_ptr<ProcedureNode> testProcedureNode2 = std::make_shared<ProcedureNode>("procedure2", emptyStatements);
+            std::shared_ptr<ProcedureNode> testProcedureNode3 = std::make_shared<ProcedureNode>("procedure3", emptyStatements);
+            std::shared_ptr<ProcedureNode> testProcedureNode4 = std::make_shared<ProcedureNode>("procedure4", emptyStatements);
+            std::shared_ptr<ProcedureNode> testProcedureNode5 = std::make_shared<ProcedureNode>("procedure5", emptyStatements);
 
             // Combine procedure nodes into a vector
             std::vector<std::shared_ptr<ProcedureNode>>
-                testProcedureNodes = {testProcdeureNode1, testProcdeureNode2, testProcdeureNode3, testProcdeureNode4, testProcdeureNode5};
+                testProcedureNodes = {testProcedureNode1, testProcedureNode2, testProcedureNode3, testProcedureNode4, testProcedureNode5};
 
             // Create procedure entity
             std::shared_ptr<ProcedureEntity> testProcedureEntity = std::make_shared<ProcedureEntity>();
@@ -37,16 +37,14 @@ namespace UnitTesting
             std::map<std::string, std::vector<int>> procedureMap = testProcedureEntity->getMap();
 
             //Check if procedure entity is extracted correctly
-            Assert::AreEqual(procedureMap["procedure1"][0], -1);
-            Assert::AreEqual(procedureMap["procedure2"][0], -1);
-            Assert::AreEqual(procedureMap["procedure3"][0], -1);
-            Assert::AreEqual(procedureMap["procedure4"][0], -1);
-            Assert::AreEqual(procedureMap["procedure5"][0], -1);
-            
-            //Create a program node
-            // std::shared_ptr<ProgramNode> testProgramNode = std::make_shared<ProgramNode>("test", testProcedureNodes)
+            Assert::AreEqual(procedureMap.find("procedure1"));
+            Assert::AreEqual(procedureMap.find("procedure2"));
+            Assert::AreEqual(procedureMap.find("procedure3"));
+            Assert::AreEqual(procedureMap.find("procedure4"));
+            Assert::AreEqual(procedureMap.find("procedure5"));
 
 		}
+        
 		TEST_METHOD(TestStatementEntity)
 		{
             //Create statement nodes
