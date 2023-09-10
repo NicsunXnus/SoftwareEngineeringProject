@@ -27,7 +27,7 @@ const map<string, ENTITY> entityMap = {
     {"procedure", PROCEDURE}
 };
 
-ENTITY EntityEnumToString(string entity) {
+inline ENTITY EntityEnumToString(string entity) {
     if (entityMap.count(entity)) {
         return entityMap.at(entity);
     }
