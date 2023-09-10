@@ -88,6 +88,31 @@ public:
         }
     }
 
+    // Method to get procedure entity
+    std::shared_ptr<ProcedureEntity> getProcedureEntity() {
+        return this->procedureEntity;
+    }
+
+    // Method to get statement entity
+    std::shared_ptr<StatementEntity> getStatementEntity() {
+        return this->statementEntity;
+    }
+
+    // Method to get variable entity
+    std::shared_ptr<VariableEntity> getVariableEntity() {
+        return this->variableEntity;
+    }
+
+    // Method to get constant entity
+    std::shared_ptr<ConstantEntity> getConstantEntity() {
+        return this->constantEntity;
+    }
+
+    // // Method to get pattern statement entity
+    // std::shared_ptr<PatternStatementEntity> getPatternStatementEntity() {
+    //     return this->patternStatementEntity;
+    // }
+
     // void insertEntities() {
     //     // Get the entity maps
     //     std::map<std::string, std::vector<int>> procedureMap = this->procedureEntity->getMap();
