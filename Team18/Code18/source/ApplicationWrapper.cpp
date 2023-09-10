@@ -15,6 +15,13 @@ ApplicationWrapper::~ApplicationWrapper() {
 void ApplicationWrapper::directParse(std::string sourceCode) {
   std::vector<std::vector<std::shared_ptr<Token>>> tokens = SimpleTokenizer::tokenize(sourceCode);
   std::vector<std::shared_ptr<StatementNode>> statements = ASTBuilder::parseProgram(tokens);
+  
+  DesignExtractor designExtractor = DesignExtractor();
+  for (const auto& statement : statements) {
+    designExtractor.extractEntities(statement);
+  }
+  designExtractor.insertEntities();
+  
 }
 
 // method to evaluating a query
