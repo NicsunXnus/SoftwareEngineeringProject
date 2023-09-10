@@ -15,17 +15,19 @@ namespace HelperFunctions_Test
 		}
 
 		TEST_METHOD(nonNumbers_failure) {
-			bool result = isNumber("0x1");
-			result = result || isNumber("0b1");
-			result = result || isNumber("0b1");
-			result = result || isNumber("0abc");
-			result = result || isNumber("abc0");
-			result = result || isNumber("-1");
-			result = result || isNumber("--1");
-			result = result || isNumber(" ");
-			result = result || isNumber("%");
-			result = result || isNumber("|");
-			result = result || isNumber("é");
+			std::vector<std::string> tests = {
+				"0x1",
+				"0b1",
+				"0abc",
+				"abc0",
+				"-1",
+				"--1",
+				" ",
+				"%",
+				"|",
+				"é"
+			};
+			bool result = std::any_of(tests.begin(), tests.end(), isNumber);
 			assert(result == false);
 		}
 	};
@@ -33,18 +35,25 @@ namespace HelperFunctions_Test
 	TEST_CLASS(isAlphanumeric_Test) {
 	public:
 		TEST_METHOD(alphanum_success) {
-			bool result = isAlphanumeric("abc");
-			result == result && isAlphanumeric("123");
-			result == result && isAlphanumeric("x4y5z6");
-			result == result && isAlphanumeric("0x1");
-			result == result && isAlphanumeric("0b1");
+			std::vector<std::string> tests = {
+				"abc",
+				"123",
+				"x4y5z6",
+				"abc0",
+				"0x1",
+				"0b1"
+			};
+			bool result = std::all_of(tests.begin(), tests.end(), isAlphanumeric);
 			assert(result == true);
 		}
 
 		TEST_METHOD(nonAlphanum_failure) {
-			bool result = isAlphanumeric(" ");
-			result = result || isAlphanumeric("|");
-			result = result || isAlphanumeric("é");
+			std::vector<std::string> tests = {
+				" ",
+				"|",
+				"é"
+			};
+			bool result = std::any_of(tests.begin(), tests.end(), isNumber);
 			assert(result == false);
 		}
 	};
@@ -69,31 +78,40 @@ namespace HelperFunctions_Test
 		}
 
 		TEST_METHOD(allDigits_failure) {
-			bool result = isValidName("0123");
-			result = result || isValidName("9");
-			result = result || isValidName("10");
-			result = result || isValidName("0x1");
-			result = result || isValidName("0b1");
-			assert(result == false); // failure
+			std::vector<std::string> tests = {
+				"0123",
+				"9",
+				"10",
+				"0x1",
+				"0b1"
+			};
+			bool result = std::any_of(tests.begin(), tests.end(), isValidName);
+			assert(result == false);
 		}
 
 		TEST_METHOD(leadingDigit_failure) {
-			bool result = isValidName("0read");
-			result = result || isValidName("10read");
-			result = result || isValidName("0x1read");
-			result = result || isValidName("0b1read");
-			assert(result == false); // failure
+			std::vector<std::string> tests = {
+				"0read",
+				"10read",
+				"0x1read",
+				"0b1read"
+			};
+			bool result = std::any_of(tests.begin(), tests.end(), isValidName);
+			assert(result == false);
 		}
 
 		TEST_METHOD(invalidCharacter_failure) {
-			bool result = isValidName("b_read"); // invalid character: _
-			result = result || isValidName("em@il"); // invalid character: @
-			result = result || isValidName("one+two"); // invalid character: +
-			result = result || isValidName("wrong*format"); // invalid character: *
-			result = result || isValidName("true||false"); // invalid character: |
-			result = result || isValidName("one day"); // invalid character: " "
-			result = result || isValidName("éclaire"); // invalid character: é
-			assert(result == false); // failure
+			std::vector<std::string> tests = {
+				"b_read", // invalid character: _
+				"em@il", // invalid character: @
+				"one+two", // invalid character: +
+				"wrong*format", // invalid character: *
+				"true||false", // invalid character: |
+				"one day", // invalid character: " "
+				"éclaire" // invalid character: é
+			};
+			bool result = std::any_of(tests.begin(), tests.end(), isValidName);
+			assert(result == false);
 		}
 
 	};
