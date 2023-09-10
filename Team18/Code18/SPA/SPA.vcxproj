@@ -33,6 +33,7 @@
     <ClInclude Include="..\source\PKB\StorageClasses\ModifiesAbstractionStorage.h" />
     <ClInclude Include="..\source\PKB\StorageClasses\ParentAbstractionStorage.h" />
     <ClInclude Include="..\source\PKB\StorageClasses\UsesAbstractionStorage.h" />
+    <ClInclude Include="..\source\PKB\StorageManager.h" />
     <ClInclude Include="..\source\QPS\DataAccessLayer.h" />
     <ClInclude Include="..\source\QPS\QueryDriver.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\ClauseObject.h" />

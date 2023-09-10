@@ -2,7 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="..\source\DesignExtractor.cpp" />
-    <ClCompile Include="..\source\Parser.cpp" />
     <ClCompile Include="..\source\PKB.cpp" />
     <ClCompile Include="..\source\QPS\DataAccessLayer.cpp" />
     <ClCompile Include="..\source\QPS\QueryDriver.cpp" />
@@ -12,6 +11,10 @@
     <ClCompile Include="..\source\AST\**\*.h" />
     <ClCompile Include="..\source\AST\**\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\ApplicationWrapper.cpp" />
+    <ClCompile Include="..\source\AST\**\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
   </ItemGroup>
@@ -41,5 +44,13 @@
     <ClInclude Include="..\source\TokenizerClasses\TokenFactory.h" />
     <ClInclude Include="..\source\PKB\Insertor.h" />
     <ClInclude Include="..\source\PKB\Responder.h" />
+    <ClInclude Include="..\source\ApplicationWrapper.h" />
+    <ClInclude Include="..\source\PKB\StorageClasses\AbstractionStorage.h" />
+    <ClInclude Include="..\source\PKB\StorageClasses\EntityStorage.h" />
+    <ClInclude Include="..\source\PKB\StorageClasses\FollowsAbstractionStorage.h" />
+    <ClInclude Include="..\source\PKB\StorageClasses\ModifiesAbstractionStorage.h" />
+    <ClInclude Include="..\source\PKB\StorageClasses\ParentAbstractionStorage.h" />
+    <ClInclude Include="..\source\PKB\StorageClasses\UsesAbstractionStorage.h" />
+    <ClInclude Include="..\source\PKB\StorageManager.h" />
   </ItemGroup>
 </Project>

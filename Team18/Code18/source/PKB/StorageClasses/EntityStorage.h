@@ -31,7 +31,8 @@ public:
     }
 
     void EntityStorage::setStatementDatabase(map<string, vector<int>>* database) {
-        map<ENTITY, vector<int>>* entity_database = {};
+        map<ENTITY, vector<int>> actual_database = {};
+        map<ENTITY, vector<int>>* entity_database = &actual_database;
         for (auto const& [entity_string, value] : *database) {
             (*entity_database)[EntityEnumToString(entity_string)] = value;
         }

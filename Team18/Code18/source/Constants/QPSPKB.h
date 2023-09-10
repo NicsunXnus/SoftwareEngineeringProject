@@ -27,7 +27,8 @@ const map<string, ENTITY> entityMap = {
     {"procedure", PROCEDURE}
 };
 
-inline ENTITY EntityEnumToString(string entity) {
+static ENTITY EntityEnumToString(string entity) {
+    std::cout << "converting enum";
     if (entityMap.count(entity)) {
         return entityMap.at(entity);
     }
