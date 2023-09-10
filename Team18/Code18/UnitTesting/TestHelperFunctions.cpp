@@ -20,6 +20,8 @@ namespace HelperFunctions_Test
 			result = result || isNumber("0b1");
 			result = result || isNumber("0abc");
 			result = result || isNumber("abc0");
+			result = result || isNumber("-1");
+			result = result || isNumber("--1");
 			result = result || isNumber(" ");
 			result = result || isNumber("%");
 			result = result || isNumber("|");
