@@ -3,6 +3,7 @@
 #include <string>
 
 #include "StorageManager.h"
+#include "../Constants/QPSPKB.h"
 
 using namespace std;
 
@@ -15,7 +16,7 @@ public:
 	// storage manager will get entity storage/abstraction storage, perform the query on that class via polymorphism, then return line numbers
 	// responder returns line numbers to caller (QPS)
 	
-	vector<int> Responder::getEntityStatement(string entity) {
+	vector<int> Responder::getEntityStatement(ENTITY entity) {
 		EntityStorage* entity_storage = StorageManager::getEntityStorage();
 		return (*(entity_storage->getStatementDatabase())).at(entity);
 	}
