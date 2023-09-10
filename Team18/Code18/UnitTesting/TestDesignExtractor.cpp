@@ -22,11 +22,11 @@ namespace UnitTesting
             std::shared_ptr<PrintNode> testPrintNode = std::make_shared<PrintNode>(2, testVariableNode2);
 
             // //Create AssignNode
-            // std::shared_ptr<VariableNode> testVariableNode3 = std::make_shared<VariableNode>("z", 3);
-            // std::shared_ptr<ConstantNode> testConstantNode1 = std::make_shared<ConstantNode>(10);
-            // std::shared_ptr<ConstantNode> testConstantNode2 = std::make_shared<ConstantNode>(20);
-            // std::shared_ptr<PlusNode> testPlusNode = std::make_shared<PlusNode>(testConstantNode1, testConstantNode2);
-            // std::shared_ptr<AssignNode> testAssignNode = std::make_shared<AssignNode>(3, testVariableNode3, testPlusNode);
+            std::shared_ptr<VariableNode> testVariableNode3 = std::make_shared<VariableNode>("z", 3);
+            std::shared_ptr<ConstantNode> testConstantNode1 = std::make_shared<ConstantNode>(10);
+            std::shared_ptr<ConstantNode> testConstantNode2 = std::make_shared<ConstantNode>(20);
+            std::shared_ptr<PlusNode> testPlusNode = std::make_shared<PlusNode>(testConstantNode1, testConstantNode2);
+            std::shared_ptr<AssignNode> testAssignNode = std::make_shared<AssignNode>(3, testVariableNode3, testPlusNode);
 
             //Create PrintNode with VariableNode
             std::shared_ptr<VariableNode> testVariableNode4 = std::make_shared<VariableNode>("x", 4);
@@ -37,7 +37,7 @@ namespace UnitTesting
             std::shared_ptr<ReadNode> testReadNode2 = std::make_shared<ReadNode>(5, testVariableNode5);            
 
             //Combine the above statement nodes
-            std::vector<std::shared_ptr<StatementNode>> testStatementNodes = {testReadNode, testPrintNode, testPrintNode2, testReadNode2};
+            std::vector<std::shared_ptr<StatementNode>> testStatementNodes = {testReadNode, testPrintNode, testPrintNode2, testReadNode2, testAssignNode};
 
             //CREATE PROCEDURE NODE TO TEST
             std::shared_ptr<ProcedureNode> testProcedureNode1 = std::make_shared<ProcedureNode>("procedure1", testStatementNodes);
@@ -72,15 +72,17 @@ namespace UnitTesting
             Assert::AreEqual(statementMap["read"][1], 5);
             Assert::AreEqual(statementMap["print"][0], 2);
             Assert::AreEqual(statementMap["print"][1], 4);    
+            Assert::AreEqual(statementMap["assign"][0], 3);
             
             //Check if the variable entity is extracted correctly
             Assert::AreEqual(variableMap["x"][0], 1);
             Assert::AreEqual(variableMap["y"][0], 2);
             Assert::AreEqual(variableMap["x"][1], 4);
             Assert::AreEqual(variableMap["x"][2], 5);
+            Assert::AreEqual(variableMap["z"][0], 3);
             //Check if the constant entity is extracted correctly
-            // Assert::AreEqual(constantMap[10][0], 3);
-            // Assert::AreEqual(constantMap[20][0], 3);
+            // Assert::AreEqual(constantMap["10"][0], 3);
+            // Assert::AreEqual(constantMap["20"][0], 3);
 
 		}
     };

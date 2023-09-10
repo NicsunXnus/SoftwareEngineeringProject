@@ -84,7 +84,7 @@ private:
 class AssignNode : public StatementNode {
 public:
     AssignNode(int statementNumber, std::shared_ptr<ExprNode> variable, std::shared_ptr<ExprNode> expr)
-        : StatementNode(std::move(std::string("")), statementNumber), variable(variable), expr(expr) {}
+        : StatementNode(std::move(std::string("assign")), statementNumber), variable(variable), expr(expr) {}
 
     std::shared_ptr<ExprNode> getVar() const override {
         return this->variable;
