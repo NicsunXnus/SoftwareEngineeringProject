@@ -121,6 +121,9 @@ public:
 		: DesignObject{ tokenName } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
+
+		std::cout << "Calling data access layer from variable object\n";
+
 		setResult(dataAccessLayer->getAllVariables());
 	}
 };

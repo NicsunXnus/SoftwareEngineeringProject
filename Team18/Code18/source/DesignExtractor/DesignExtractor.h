@@ -120,12 +120,14 @@ public:
 
     void insertEntities() {
         // Get the entity maps
-        std::map<std::string, std::vector<int>> procedureMap = this->procedureEntity->getMap();
-        std::map<std::string, std::vector<int>> statementMap = this->statementEntity->getMap();
-        std::map<std::string, std::vector<int>> variableMap = this->variableEntity->getMap();
-        std::map<std::string, std::vector<int>> constantMap = this->constantEntity->getMap();
+        static std::map<std::string, std::vector<int>> procedureMap = this->procedureEntity->getMap();
+        static std::map<std::string, std::vector<int>> statementMap = this->statementEntity->getMap();
+        static std::map<std::string, std::vector<int>> variableMap = this->variableEntity->getMap();
+        static std::map<std::string, std::vector<int>> constantMap = this->constantEntity->getMap();
         // std::map<std::string, std::vector<int>> assignStatementMap = this->assignStatementEntity->getMap();
 
+        std::cout << "Design extractor inserting into insertor\n";
+        std::cout << "Size of variableMap: " << variableMap.size() << '\n';
         // Insert the entities into the PKB
         Insertor insertor = Insertor();
         insertor.addProcedures(&procedureMap);

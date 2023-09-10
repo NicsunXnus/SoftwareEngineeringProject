@@ -35,6 +35,9 @@ public:
 
 	vector<string> Responder::getAllVariables() {
 		EntityStorage* entity_storage = StorageManager::getEntityStorage();
+
+		std::cout << "In Responder, entity_storage address: " << entity_storage << '\n';
+
 		map<string, vector<int>>* var_database = entity_storage->getVariableDatabase();
 		return getKeys(var_database);
 	}
@@ -68,7 +71,11 @@ public:
 private:
 	vector<string> getKeys(map<string, vector<int>>* db) {
 		vector<string> keys;
+
+		std::cout << "In Responder getKeys, db size: " << db->size() << '\n';
+
 		for (const auto& [k, v] : *db) {
+
 			keys.push_back(k);
 		}
 		return keys;

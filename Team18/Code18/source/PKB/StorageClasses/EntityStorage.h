@@ -45,6 +45,8 @@ public:
 
     void EntityStorage::setVariableDatabase(map<string, vector<int>>* database) {
         this->variable_database = database;
+
+        std::cout << "In EntityStorage, size of variable_database: " << this->variable_database->size() << '\n';
     }
 
     void EntityStorage::setConstantDatabase(map<string, vector<int>>* database) {
@@ -62,11 +64,11 @@ public:
     }
 
 private:
-    map<ENTITY, vector<int>>* statement_database;
+    static inline map<ENTITY, vector<int>>* statement_database;
 
-    map<string, vector<int>>* procedure_database;
+    static inline map<string, vector<int>>* procedure_database;
 
-    map<string, vector<int>>* variable_database;
+    static inline map<string, vector<int>>* variable_database;
 
-    map<string, vector<int>>* constant_database;
+    static inline map<string, vector<int>>* constant_database;
 };

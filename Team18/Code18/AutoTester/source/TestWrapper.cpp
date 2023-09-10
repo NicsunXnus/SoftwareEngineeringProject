@@ -21,12 +21,10 @@ TestWrapper::TestWrapper() {
 
 // method for parsing the SIMPLE source
 void TestWrapper::parse(std::string filename) {
-  std::cout << "parsing";
   this->appWrap.parse(filename);
-  std::cout << "parsed";
 }
 
 // method to evaluating a query
 void TestWrapper::evaluate(std::string query, std::list<std::string>& results) {
-  //this->appWrap.evaluate(query, results);
+  this->appWrap.evaluate(query, results);
 }

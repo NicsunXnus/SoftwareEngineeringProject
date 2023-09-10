@@ -25,6 +25,9 @@ public:
 
 	void Insertor::addVariables(map<string, vector<int>>* variables) {
 		EntityStorage* entity_storage = StorageManager::getEntityStorage();
+
+		std::cout << "Pointer to entity_storage: " << entity_storage << '\n';
+
 		(*entity_storage).setVariableDatabase(variables);
 	}
 
