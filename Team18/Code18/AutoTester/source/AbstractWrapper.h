@@ -5,8 +5,6 @@
 #include <iostream>
 #include <list>
 
-#include "../source/ApplicationWrapper.h"
-
 class AbstractWrapper {
 public:
   static volatile bool GlobalStop;
