@@ -25,7 +25,7 @@ namespace HelperFunctions_Test
 				" ",
 				"%",
 				"|",
-				"é"
+				"Ã©"
 			};
 			bool result = std::any_of(tests.begin(), tests.end(), isNumber);
 			assert(result == false);
@@ -51,7 +51,7 @@ namespace HelperFunctions_Test
 			std::vector<std::string> tests = {
 				" ",
 				"|",
-				"é"
+				"Ã©"
 			};
 			bool result = std::any_of(tests.begin(), tests.end(), isNumber);
 			assert(result == false);
@@ -108,7 +108,7 @@ namespace HelperFunctions_Test
 				"wrong*format", // invalid character: *
 				"true||false", // invalid character: |
 				"one day", // invalid character: " "
-				"éclaire" // invalid character: é
+				"Ã©claire" // invalid character: Ã©
 			};
 			bool result = std::any_of(tests.begin(), tests.end(), isValidName);
 			assert(result == false);
@@ -199,8 +199,8 @@ namespace HelperFunctions_Test
 			assert(output == expected);
 		}
 		TEST_METHOD(stressTest_success) {
-			std::string input = " \n This:\f a\vtest* of\b(the capabilitiés\f)\t \n";
-			std::string expected = "This:\f a\vtest* of\b(the capabilitiés\f)";
+			std::string input = " \n This:\f a\vtest* of\b(the capabilitiÃ©s\f)\t \n";
+			std::string expected = "This:\f a\vtest* of\b(the capabilitiÃ©s\f)";
 			std::string output = trimWhitespaces(input);
 			assert(output == expected);
 		}
