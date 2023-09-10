@@ -42,10 +42,10 @@ public:
                 extractEntities(statement);
             }
         } 
-        else if (auto assignNode = std::dynamic_pointer_cast<AssignNode>(astNode)) {
-            // astNode is of type assignNode
-            this->patternStatementEntity->extractEntity(assignNode);     
-        } 
+        // else if (auto assignNode = std::dynamic_pointer_cast<AssignNode>(astNode)) {
+        //     // astNode is of type assignNode
+        //     this->patternStatementEntity->extractEntity(assignNode);     
+        // } 
         else if (auto statementNode = std::dynamic_pointer_cast<StatementNode>(astNode)) {
             // astNode is of type StatementNode
             this->statementEntity->extractEntity(statementNode);
@@ -72,7 +72,12 @@ public:
         } 
         else if (auto printNode = std::dynamic_pointer_cast<PrintNode>(statementNode)) {
             extractEntities(printNode->getVar());
-        } 
+        }
+        else if (auto assignNode = std::dynamic_pointer_cast<AssignNode>(statementNode)) {
+            extractEntities(assignNode->getVar());
+            extractEntities(assignNode->getExpr());
+        }
+
         // else if (auto callNode = std::dynamic_pointer_cast<CallNode>(statementNode)) {
         //     //TODO: Handle callNode
         // } 
