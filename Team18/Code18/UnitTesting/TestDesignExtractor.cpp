@@ -37,7 +37,7 @@ namespace UnitTesting
             std::shared_ptr<ReadNode> testReadNode2 = std::make_shared<ReadNode>(5, testVariableNode5);            
 
             //Combine the above statement nodes
-            std::vector<std::shared_ptr<StatementNode>> testStatementNodes = {testReadNode, testPrintNode, testPrintNode2, testReadNode2};
+            std::vector<std::shared_ptr<StatementNode>> testStatementNodes = {testReadNode, testPrintNode, testPrintNode2, testReadNode2, testAssignNode};
 
             //CREATE PROCEDURE NODE TO TEST
             std::shared_ptr<ProcedureNode> testProcedureNode1 = std::make_shared<ProcedureNode>("procedure1", testStatementNodes);
