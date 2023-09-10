@@ -81,8 +81,8 @@ namespace UnitTesting
             Assert::AreEqual(variableMap["x"][2], 5);
             Assert::AreEqual(variableMap["z"][0], 3);
             //Check if the constant entity is extracted correctly
-            Assert::AreEqual(constantMap[10][0], 3);
-            Assert::AreEqual(constantMap[20][0], 3);
+            Assert::AreEqual(constantMap["10"][0], 3);
+            Assert::AreEqual(constantMap["20"][0], 3);
 
 		}
     };
