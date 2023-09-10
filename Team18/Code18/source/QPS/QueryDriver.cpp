@@ -1,7 +1,5 @@
 #include "QueryDriver.h"
-#include "QueryParser.h"
-#include "../TokenizerClasses/PQLTokenizer.h"
-#include "DataAccessLayer.h"
+
 #include <list>
 #include <string>
 
@@ -24,6 +22,7 @@ list<string> QueryDriver::execute() {
 		shared_ptr<QueryObject> obj = queryParser[0];
 		obj->call(dataAccessLayer);
 		vector<string> result = obj->getResult();
+		// chat-gpt code
 		list<string> myList(result.begin(), result.end());
 
 		return myList;

@@ -7,6 +7,7 @@
 
 // include your other headers here
 #include "AbstractWrapper.h"
+#include "QPS/QueryDriver.h"
 
 class TestWrapper : public AbstractWrapper {
  public:
@@ -18,6 +19,10 @@ class TestWrapper : public AbstractWrapper {
   
   // method for parsing the SIMPLE source
   virtual void parse(std::string filename);
+
+  // method for parsing the SIMPLE source, by passing in the actual code in strings
+  // This is to allow for Integration testing to occur from the IntegrationTesting solution file
+  virtual void directParse(std::string srcCode);
   
   // method for evaluating a query
   virtual void evaluate(std::string query, std::list<std::string>& results);

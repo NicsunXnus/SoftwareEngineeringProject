@@ -49,7 +49,7 @@ private:
 	// parse trees (for querying patterns)
 
 	// entities
-	static EntityStorage entity_storage;
+	inline static EntityStorage entity_storage;
 
 	// abstractions
 	static UsesAbstractionStorage uses_abstractions;
