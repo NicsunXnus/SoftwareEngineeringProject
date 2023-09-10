@@ -179,6 +179,7 @@
     <ClCompile Include="TestQPSDeclarationParser.cpp" />
     <ClCompile Include="TestQPSDriver.cpp" />
     <ClCompile Include="TestQPSSelectionParser.cpp" />
+    <ClCompile Include="TestDesignExtractor.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
