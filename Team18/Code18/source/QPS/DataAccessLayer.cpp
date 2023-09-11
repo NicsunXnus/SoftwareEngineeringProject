@@ -5,10 +5,10 @@
 
 vector<string> DataAccessLayer::getEntityStatement(ENTITY type) {
 	vector<string> stringVector;
-	vector<int> PKBResponse = responder.getEntityStatement(type);
-	for (const int& intValue : PKBResponse) {
+	vector<string> PKBResponse = responder.getEntityStatement(type);
+	for (const string& intValue : PKBResponse) {
 		// Convert each integer to a string and append it to the stringVector
-		stringVector.push_back(to_string(intValue));
+		stringVector.push_back(intValue);
 	}
 	return stringVector;
 }

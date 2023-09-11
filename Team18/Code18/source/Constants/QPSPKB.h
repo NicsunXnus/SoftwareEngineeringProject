@@ -28,7 +28,6 @@ const map<string, ENTITY> entityMap = {
 };
 
 static ENTITY EntityEnumToString(string entity) {
-    //std::cout << "converting enum";
     if (entityMap.count(entity)) {
         return entityMap.at(entity);
     }

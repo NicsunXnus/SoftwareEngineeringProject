@@ -121,10 +121,10 @@ public:
 
     void insertEntities() {
         // Get the entity maps
-        std::map<std::string, std::vector<int>>* procedureMap = this->procedureEntity->getMap();
-        std::map<std::string, std::vector<int>>* statementMap = this->statementEntity->getMap();
-        std::map<std::string, std::vector<int>>* variableMap = this->variableEntity->getMap();
-        std::map<std::string, std::vector<int>>* constantMap = this->constantEntity->getMap();
+        EntityMapArg procedureMap = this->procedureEntity->getMap();
+        EntityMapArg statementMap = this->statementEntity->getMap();
+        EntityMapArg variableMap = this->variableEntity->getMap();
+        EntityMapArg constantMap = this->constantEntity->getMap();
 
         // Insert the entities into the PKB
         Insertor insertor = Insertor();
