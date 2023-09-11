@@ -7,41 +7,33 @@
 
 using namespace std;
 
-typedef variant<int, string> KeyValue;
-
 /**
 * This class is the base class for storage.
 * Map has vector<int> as values, but keys can be any type.
 */
 class AbstractionStorage {
 public:
-    map<KeyValue, vector<int>>* AbstractionStorage::getDatabase() {
+    map<string, vector<string>>* AbstractionStorage::getDatabase() {
         return database;
     }
 
     void AbstractionStorage::printDatabase() const {
+        cout << "printing abstraction database";
         for (const auto& pair : *database) {
             string result;
-            for (const int& num : pair.second) {
-                result += to_string(num);
+            for (const string& num : pair.second) {
+                result += num;
             }
-            string key;
-            if (holds_alternative<int>(pair.first)) {
-                key = to_string(get<int>(pair.first));
-            }
-            else {
-                key = get<std::string>(pair.first);
-            }
-            //std::cout << "Key: " << key << ", Value: " << result << std::endl;
+            cout << "Key: " << pair.first << ", Value: " << result << endl;
         }
     }
     
-    void AbstractionStorage::insertAbstraction(const KeyValue& key, const vector<int>& lines) {
+    void AbstractionStorage::insertAbstraction(const string& key, const vector<string>& lines) {
         (*database)[key] = lines;
     }
 
 private:
-    map<KeyValue, vector<int>>* database;
+    map<string, vector<string>>* database;
 };
 
 #endif

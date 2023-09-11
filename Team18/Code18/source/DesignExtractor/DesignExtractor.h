@@ -8,7 +8,7 @@ using namespace std;
 
 #include "Entity.h"
 #include "../AST/ASTNode.h"
-#include "../PKB/Insertor.h"
+#include "../PKB.h"
 
 /**
 * This class represents the Design Extractor component of the SPA.
@@ -121,19 +121,11 @@ public:
 
     void insertEntities() {
         // Get the entity maps
-        std::map<std::string, std::vector<int>>* procedureMap = this->procedureEntity->getMap();
-        std::map<std::string, std::vector<int>>* statementMap = this->statementEntity->getMap();
-        std::map<std::string, std::vector<int>>* variableMap = this->variableEntity->getMap();
-        std::map<std::string, std::vector<int>>* constantMap = this->constantEntity->getMap();
-        // std::map<std::string, std::vector<int>> assignStatementMap = this->assignStatementEntity->getMap();
+        EntityMapArg procedureMap = this->procedureEntity->getMap();
+        EntityMapArg statementMap = this->statementEntity->getMap();
+        EntityMapArg variableMap = this->variableEntity->getMap();
+        EntityMapArg constantMap = this->constantEntity->getMap();
 
-        cout << "DesignExtractor::insertEntities 1" << endl;
-        //for (auto [a, b] : *variableMap) {
-        //  cout << a << endl;
-        //  for (auto c : b) {
-        //    cout << c << endl;
-        //  }
-        //}
         // Insert the entities into the PKB
         Insertor insertor = Insertor();
         insertor.addProcedures(procedureMap);

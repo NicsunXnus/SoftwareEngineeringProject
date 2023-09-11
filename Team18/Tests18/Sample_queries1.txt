@@ -3,3 +3,13 @@ variable x;
 Select x
 x, y
 5000
+2 - comment
+read r;
+Select r
+1
+5000
+3 - comment
+print r;
+Select r
+4
+5000
