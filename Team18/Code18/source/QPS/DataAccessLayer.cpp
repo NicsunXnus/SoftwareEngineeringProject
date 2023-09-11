@@ -19,7 +19,6 @@ vector<string> DataAccessLayer::getAllProcedures() {
 }
 
 vector<string> DataAccessLayer::getAllVariables() {
-	//std::cout << "DataAccessLayer.cpp:getAllVariables 1" << std::endl;
 	vector<string> PKBResponse = responder.getAllVariables();
 	return PKBResponse;
 }

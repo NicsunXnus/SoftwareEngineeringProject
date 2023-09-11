@@ -33,14 +33,6 @@ public:
     }
 
     map<string, vector<int>>* EntityStorage::getVariableDatabase() {
-      //cout << "EntityStorage::getVariableDatabase addr:" << variable_database << endl << std::flush;
-      //for (auto [a, b] : *variable_database) {
-      //  cout << a << endl;
-      //  for (auto c : b) {
-      //    cout << c << endl;
-      //  }
-      //}
-      //std::cout.flush();
         return this->variable_database;
     }
 
@@ -55,18 +47,21 @@ public:
     }
 
     void EntityStorage::setProcedureDatabase(map<string, vector<int>>* database) {
-        this->procedure_database = database;
+        for (auto const& [varName, lines] : *database) {
+            (*(this->procedure_database))[varName] = lines;
+        }
     }
 
     void EntityStorage::setVariableDatabase(map<string, vector<int>>* database) {
-      for (auto const& [varName, lines] : *database) {
-        (*(this->variable_database))[varName] = lines;
-      }
-      //cout << "EntityStorage::setVariableDatabase addr:" << variable_database << endl;
+        for (auto const& [varName, lines] : *database) {
+            (*(this->variable_database))[varName] = lines;
+        }
     }
 
     void EntityStorage::setConstantDatabase(map<string, vector<int>>* database) {
-        this->constant_database = database;
+        for (auto const& [varName, lines] : *database) {
+            (*(this->constant_database))[varName] = lines;
+        }
     }
 
     void EntityStorage::printDatabase() const {

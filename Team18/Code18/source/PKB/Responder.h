@@ -34,19 +34,8 @@ public:
 	}
 
 	vector<string> Responder::getAllVariables() const {
-		//std::cout << "Responder.h:getAllVariables 1" << std::endl;
 		EntityStorage* entity_storage = StorageManager::getEntityStorage();
-		//std::cout << "Responder.h:getAllVariables 2" << std::endl;
 		map<string, vector<int>>* var_database = entity_storage->getVariableDatabase();
-		//cout << "Responder.::getAllVariables addr:" << var_database << endl;
-		//std::cout << "Responder.h:getAllVariables 3" << std::endl;
-		//for (auto [a, b] : *var_database) {
-		//	std::cout << a << endl;
-		//	for (auto c : b) {
-		//		std::cout << c << endl;
-		//	}
-		//}
-		//std::cout << "Responder.cpp:getAllVariables 4" << std::endl;
 		return getKeys(var_database);
 	}
 
@@ -79,11 +68,7 @@ public:
 private:
 	vector<string> getKeys(map<string, vector<int>>* db) const {
 		vector<string> keys;
-
-		std::cout << "In Responder getKeys, db size: " << db->size() << '\n';
-
 		for (const auto& [k, v] : *db) {
-
 			keys.push_back(k);
 		}
 		return keys;

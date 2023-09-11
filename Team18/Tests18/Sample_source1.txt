@@ -1,1 +1,4 @@
-print x;
+read x;
+x = 2;
+y = 3;
+print y;
