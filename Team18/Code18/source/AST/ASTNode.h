@@ -51,6 +51,11 @@ public:
         return statements;
     }
 
+    virtual std::shared_ptr<ProcedureNode> getProc() const {
+        std::vector<std::shared_ptr<StatementNode>> statements;
+        return std::make_shared<ProcedureNode>("", statements);
+    }
+
 protected:
     ASTNode(std::string name = "", int statementNumber = -1)
         : name(std::move(name)), statementNumber(statementNumber) {}
@@ -110,6 +115,17 @@ public:
 private:
     std::shared_ptr<ExprNode> variable;
     std::shared_ptr<ExprNode> expr;
+};
+
+class CallNode : public StatementNode {
+public:
+    CallNode(int statementNumber, std::shared_ptr<ProcedureNode> proc)
+        : StatementNode(std::move(std::string("call")), statementNumber), proc(proc) {}
+    std::shared_ptr<ProcedureNode> getProc() const override {
+        return this->proc;
+    }
+private:
+    std::shared_ptr<ProcedureNode> proc;
 };
 
 class ReadNode : public StatementNode {
