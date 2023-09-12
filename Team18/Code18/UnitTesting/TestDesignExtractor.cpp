@@ -24,8 +24,8 @@ namespace UnitTesting
 
             // //Create AssignNode
             std::shared_ptr<VariableNode> testVariableNode3 = std::make_shared<VariableNode>("z", 3);
-            std::shared_ptr<ConstantNode> testConstantNode1 = std::make_shared<ConstantNode>(10);
-            std::shared_ptr<ConstantNode> testConstantNode2 = std::make_shared<ConstantNode>(20);
+            std::shared_ptr<ConstantNode> testConstantNode1 = std::make_shared<ConstantNode>(10, 3);
+            std::shared_ptr<ConstantNode> testConstantNode2 = std::make_shared<ConstantNode>(20, 3);
             std::shared_ptr<PlusNode> testPlusNode = std::make_shared<PlusNode>(testConstantNode1, testConstantNode2);
             std::shared_ptr<AssignNode> testAssignNode = std::make_shared<AssignNode>(3, testVariableNode3, testPlusNode);
 
