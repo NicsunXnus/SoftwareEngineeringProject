@@ -4,9 +4,9 @@
 #include "PKB/StorageManager.h"
 #include "PKB/Responder.h"
 
-const Insertor insertor = Insertor();
-const Responder responder = Responder();
-const StorageManager storageManager = StorageManager();
+//Insertor insertor = Insertor();
+//const Responder responder = Responder();
+//const StorageManager storageManager = StorageManager();
 
 /**
 * This class represents the PKB component.
@@ -14,9 +14,9 @@ const StorageManager storageManager = StorageManager();
 */
 class PKB {
   public:
-	//static inline Insertor insertor;
-	//static inline Responder responder;
+	static inline Insertor insertor;
+	static inline Responder responder;
 
   private:
-    //static inline StorageManager storage_manager;
+    static inline StorageManager storage_manager;
 };
