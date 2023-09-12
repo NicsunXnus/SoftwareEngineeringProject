@@ -255,7 +255,7 @@ namespace UnitTesting
 				std::vector<std::shared_ptr<StatementNode>> statements = ASTBuilder::parseProgram(test);
 			}
 			catch (const std::exception& ex) {
-				Assert::AreEqual(ex.what(), "Unsupported mathematical operation: @");
+				Assert::AreEqual(ex.what(), "Invalid string supplied: @");
 			}
 
 			try {
