@@ -27,8 +27,8 @@ public:
     
     virtual ~Entity() = default;
 
-    map<string, vector<string>> getMap() {
-      return this->EntityStorageMap;
+    shared_ptr<EntityMapArg> getMap() {
+      return make_shared<EntityMapArg>(this->EntityStorageMap);
     }
 
     // Overloaded function for inserting to map with line number

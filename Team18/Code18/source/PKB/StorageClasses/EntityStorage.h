@@ -35,7 +35,6 @@ public:
     void EntityStorage::setStatementDatabase(shared_ptr<EntityMapArg> database) {
         static map<ENTITY, vector<string>> statement_db;
         this->statement_database = make_shared<map<ENTITY, vector<string>>>(statement_db);
-
         for (auto const& [entity_string, value] : *database) {
             (*statement_database)[EntityEnumToString(entity_string)] = value;
         }
