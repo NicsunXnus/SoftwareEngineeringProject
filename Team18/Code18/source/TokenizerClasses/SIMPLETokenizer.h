@@ -6,19 +6,22 @@
 #include <vector>
 
 #include "TokenFactory.h"
+#include "TokenizerResults.h"
 #include "../HelperFunctions.h"
 
 using namespace std::string_view_literals;
 
 class SimpleTokenizer {
 private:
-	// Tokenizes a statement
-	static std::vector<std::shared_ptr<Token>> tokenizeStatement(std::string stmt) {
+	// Tokenizes a statement that ends with a semicolon.
+	static std::vector<std::shared_ptr<Token>> tokenizeSemicolonStatement(std::string stmt) {
 		if (stmt.empty()) {
 			throw std::invalid_argument("Statement provided is empty.");
 		}
+
 		std::vector<std::shared_ptr<Token>> output;
 		bool validStatement = false;
+
 		if (stmt.find("=") != std::string::npos) { // Assignment Statement
 			output = tokenizeAssignment(stmt);
 			validStatement = true;
@@ -33,13 +36,22 @@ private:
 			output = tokenizePrint(stmt);
 			validStatement = true;
 		}
+
+		// if the substring "call " exists and it is the first word occurence in the statement
+		else if (stmt.find_first_not_of(whitespaces) == stmt.find("call ")) {
+			output = tokenizeCall(stmt);
+			validStatement = true;
+		}
+
 		if (!validStatement) {
 			throw std::invalid_argument("Statement provided is invalid. Statement supplied: " + stmt);
 		}
-		output.push_back(TokenFactory::generateToken(";"sv, true));
 		return output;
 	}
 
+	static ParsedStmtList tokenizeParentStatement(std::string stmt) {
+
+	}
 	// Tokenizes an assignment statement
 	static std::vector<std::shared_ptr<Token>> tokenizeAssignment(std::string assStmt) {
 		std::vector<std::shared_ptr<Token>> output;
@@ -139,7 +151,7 @@ public:
 
 		for (std::string stmt : statements) {
 			stmt = trimWhitespaces(stmt);
-			std::vector<std::shared_ptr<Token>> tokens = tokenizeStatement(stmt);
+			std::vector<std::shared_ptr<Token>> tokens = tokenizeSemicolonStatement(stmt);
 			output.push_back(tokens);
 		}
 		return output;

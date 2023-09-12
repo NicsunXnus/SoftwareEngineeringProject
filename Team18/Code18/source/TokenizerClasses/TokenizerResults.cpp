@@ -1,10 +1,10 @@
 #include "TokenizerResults.h"
 
-bool ParsedProgram::containsProcedure(std::string prodName) {
+bool TokenizedProgram::containsProcedure(std::string prodName) {
   return this->procedures.count(prodName) == 1;
 }
 
-bool ParsedProgram::addProcedure(std::string prodName, ParsedProcedure prod) {
+bool TokenizedProgram::addProcedure(std::string prodName, TokenizedProcedure prod) {
   if (this->containsProcedure(prodName)) {
     return false;
   }
@@ -12,15 +12,15 @@ bool ParsedProgram::addProcedure(std::string prodName, ParsedProcedure prod) {
   return true;
 }
 
-ParsedProcedure ParsedProgram::getProcedure(std::string prodName) {
+TokenizedProcedure TokenizedProgram::getProcedure(std::string prodName) {
   return this->procedures[prodName];
 }
 
-ParsedProcedure::ParsedProcedure(std::vector<ParsedStmt> stmtVector) {
-  ParsedStmtList stmtList = ParsedStmtList(stmtVector);
+TokenizedProcedure::TokenizedProcedure(std::vector<TokenizedStmt> stmtVector) {
+  TokenizedStmtList stmtList = TokenizedStmtList(stmtVector);
   this->statementList = stmtList;
 }
 
-bool ParsedStmt::addContent(std::variant<std::shared_ptr<Token>, ParsedStmtList> content) {
+bool TokenizedRegularStmt::addContent(std::shared_ptr<Token> content) {
   this->contents.push_back(content);
 }
