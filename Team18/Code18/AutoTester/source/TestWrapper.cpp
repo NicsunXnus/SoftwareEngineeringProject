@@ -16,29 +16,19 @@ volatile bool TestWrapper::GlobalStop = false;
 TestWrapper::TestWrapper() {
   // create any objects here as instance variables of this class
   // as well as any initialization required for your spa program
+  this->appWrap = ApplicationWrapper();
 }
 
 // method for parsing the SIMPLE source
 void TestWrapper::parse(std::string filename) {
-  // call your parser to do the parsing
-  std::ifstream simpleStream(filename);
-
-  std::string src = "";
-  if (simpleStream.is_open()) {
-    while (simpleStream) {
-      src += simpleStream.get();
-    }
-  }
-  std::vector<std::vector<std::shared_ptr<Token>>> tokens = SimpleTokenizer::tokenize(src);
-  // ...rest of your code...
-
+  //std::cout << "parsing" << std::endl;
+  this->appWrap.parse(filename);
+  //std::cout << "parsed" << std::endl;
 }
 
 // method to evaluating a query
 void TestWrapper::evaluate(std::string query, std::list<std::string>& results) {
-  // call your evaluator to evaluate the query here
-    // ...code to evaluate query...
-
-    // store the answers to the query in the results list (it is initially empty)
-    // each result must be a string.
+  //std::cout << "start" << std::endl;
+  this->appWrap.evaluate(query, results);
+  //std::cout << "end" << std::endl << std::flush;
 }

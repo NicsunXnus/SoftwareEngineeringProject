@@ -1,3 +1,4 @@
+#pragma once
 #include<stdio.h>
 #include <iostream>
 #include <string>
@@ -7,7 +8,7 @@ using namespace std;
 
 #include "Entity.h"
 #include "../AST/ASTNode.h"
-// #include "../PKB/Inserter.h"
+#include "../PKB.h"
 
 /**
 * This class represents the Design Extractor component of the SPA.
@@ -42,10 +43,10 @@ public:
                 extractEntities(statement);
             }
         } 
-        else if (auto assignNode = std::dynamic_pointer_cast<AssignNode>(astNode)) {
-            // astNode is of type assignNode
-            this->patternStatementEntity->extractEntity(assignNode);     
-        } 
+        // else if (auto assignNode = std::dynamic_pointer_cast<AssignNode>(astNode)) {
+        //     // astNode is of type assignNode
+        //     this->patternStatementEntity->extractEntity(assignNode);     
+        // } 
         else if (auto statementNode = std::dynamic_pointer_cast<StatementNode>(astNode)) {
             // astNode is of type StatementNode
             this->statementEntity->extractEntity(statementNode);
@@ -72,7 +73,12 @@ public:
         } 
         else if (auto printNode = std::dynamic_pointer_cast<PrintNode>(statementNode)) {
             extractEntities(printNode->getVar());
-        } 
+        }
+        else if (auto assignNode = std::dynamic_pointer_cast<AssignNode>(statementNode)) {
+            extractEntities(assignNode->getVar());
+            extractEntities(assignNode->getExpr());
+        }
+
         // else if (auto callNode = std::dynamic_pointer_cast<CallNode>(statementNode)) {
         //     //TODO: Handle callNode
         // } 
@@ -88,20 +94,46 @@ public:
         }
     }
 
-    // void insertEntities() {
-    //     // Get the entity maps
-    //     std::map<std::string, std::vector<int>> procedureMap = this->procedureEntity->getMap();
-    //     std::map<std::string, std::vector<int>> statementMap = this->statementEntity->getMap();
-    //     std::map<std::string, std::vector<int>> variableMap = this->variableEntity->getMap();
-    //     std::map<std::string, std::vector<int>> constantMap = this->constantEntity->getMap();
-    //     // std::map<std::string, std::vector<int>> assignStatementMap = this->assignStatementEntity->getMap();
+    // Method to get procedure entity
+    std::shared_ptr<ProcedureEntity> getProcedureEntity() {
+        return this->procedureEntity;
+    }
 
-    //     // Insert the entities into the PKB
-    //     Insertor::addProcedures(procedureMap);
-    //     Insertor::addStatements(statementMap);
-    //     Insertor::addVariables(variableMap);
-    //     Insertor::addConstants(constantMap);
+    // Method to get statement entity
+    std::shared_ptr<StatementEntity> getStatementEntity() {
+        return this->statementEntity;
+    }
+
+    // Method to get variable entity
+    std::shared_ptr<VariableEntity> getVariableEntity() {
+        return this->variableEntity;
+    }
+
+    // Method to get constant entity
+    std::shared_ptr<ConstantEntity> getConstantEntity() {
+        return this->constantEntity;
+    }
+
+    // // Method to get pattern statement entity
+    // std::shared_ptr<PatternStatementEntity> getPatternStatementEntity() {
+    //     return this->patternStatementEntity;
     // }
+
+    void insertEntities() {
+        // Get the entity maps
+        EntityMapArg procedureMap = this->procedureEntity->getMap();
+        EntityMapArg statementMap = this->statementEntity->getMap();
+        EntityMapArg variableMap = this->variableEntity->getMap();
+        EntityMapArg constantMap = this->constantEntity->getMap();
+
+        // Insert the entities into the PKB
+        Insertor insertor = Insertor();
+        insertor.addProcedures(procedureMap);
+        insertor.addEntityStatements(statementMap);
+        insertor.addVariables(variableMap);
+        insertor.addConstants(constantMap);
+        
+    }
 
 private:
     std::shared_ptr<ProcedureEntity> procedureEntity;

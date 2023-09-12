@@ -1,3 +1,4 @@
+#pragma once
 #ifndef STORAGEMANAGER_H
 #define STORAGEMANAGER_H
 
@@ -12,16 +13,23 @@
 
 using namespace std;
 
-class TNode;  // change to AST Node
+// parse trees (for querying patterns)
+
+// entities
+static EntityStorage entity_storage;// = new EntityStorage();
+
+// abstractions
+static UsesAbstractionStorage uses_abstractions;
+static ModifiesAbstractionStorage modifies_abstractions;
+static FollowsAbstractionStorage follows_abstractions;
+static ParentAbstractionStorage parent_abstractions;
+
 
 /**
 * This class represents Storage for the PKB. Consists of the storages and AST
 */
 class StorageManager {
 public:
-	TNode* StorageManager::getAST() {
-		return nullptr;
-	}
 
 	static AbstractionStorage* StorageManager::getAbstractionStorage(const string abstraction) {
 		if (abstraction == "uses") {
@@ -44,17 +52,5 @@ public:
 	}
 
 private:
-	static TNode* AST;  // to be removed
-
-	// parse trees (for querying patterns)
-
-	// entities
-	static EntityStorage entity_storage;
-
-	// abstractions
-	static UsesAbstractionStorage uses_abstractions;
-	static ModifiesAbstractionStorage modifies_abstractions;
-	static FollowsAbstractionStorage follows_abstractions;
-	static ParentAbstractionStorage parent_abstractions;
 };
 #endif

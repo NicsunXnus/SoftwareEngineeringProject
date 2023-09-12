@@ -11,11 +11,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\source\ApplicationWrapper.cpp" />
     <ClCompile Include="..\source\DesignExtractor.cpp" />
-    <ClCompile Include="..\source\Parser.cpp" />
-    <ClCompile Include="..\source\PKB.cpp" />
+    <ClCompile Include="..\source\QPS\DataAccessLayer.cpp" />
+    <ClCompile Include="..\source\QPS\QueryDriver.cpp" />
+    <ClCompile Include="..\source\QPS\QueryObjects\DesignObjectsFactory.cpp" />
+    <ClCompile Include="..\source\QPS\QueryParser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\source\ApplicationWrapper.h" />
+    <ClInclude Include="..\source\Constants\QPSPKB.h" />
+    <ClInclude Include="..\source\HelperFunctions.h" />
     <ClInclude Include="..\source\PKB.h" />
     <ClInclude Include="..\source\PKB\Insertor.h" />
     <ClInclude Include="..\source\PKB\Responder.h" />
@@ -26,7 +32,16 @@
     <ClInclude Include="..\source\PKB\StorageClasses\ParentAbstractionStorage.h" />
     <ClInclude Include="..\source\PKB\StorageClasses\UsesAbstractionStorage.h" />
     <ClInclude Include="..\source\PKB\StorageManager.h" />
-    <ClInclude Include="..\source\TNode.h" />
+    <ClInclude Include="..\source\QPS\DataAccessLayer.h" />
+    <ClInclude Include="..\source\QPS\QueryDriver.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\ClauseObject.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\ClauseObjectFactory.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\DesignObjects.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\DesignObjectsFactory.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\QueryObject.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\QueryObjectFactory.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\SynonymObjects.h" />
+    <ClInclude Include="..\source\QPS\QueryParser.h" />
     <ClInclude Include="..\source\TokenClasses\IdentifierToken.h" />
     <ClInclude Include="..\source\TokenClasses\KeywordToken.h" />
     <ClInclude Include="..\source\TokenClasses\LiteralToken.h" />
@@ -36,7 +51,6 @@
     <ClInclude Include="..\source\TokenClasses\UnderscoreToken.h" />
     <ClInclude Include="..\source\TokenizerClasses\PQLTokenizer.h" />
     <ClInclude Include="..\source\TokenizerClasses\SIMPLETokenizer.h" />
-    <ClInclude Include="..\source\TokenizerClasses\TokenizerFunctions.h" />
     <ClCompile Include="..\source\AST\**\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
     <ClInclude Include="..\source\TokenizerClasses\TokenFactory.h" />

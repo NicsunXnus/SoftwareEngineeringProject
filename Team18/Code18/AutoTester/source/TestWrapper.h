@@ -7,9 +7,12 @@
 
 // include your other headers here
 #include "AbstractWrapper.h"
+#include "../source/ApplicationWrapper.h"
 
 class TestWrapper : public AbstractWrapper {
- public:
+private:
+  ApplicationWrapper appWrap;
+public:
   // default constructor
   TestWrapper();
   

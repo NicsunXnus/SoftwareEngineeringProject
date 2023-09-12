@@ -13,6 +13,7 @@
 #include "../TokenClasses/OperatorToken.h"
 #include "../TokenClasses/SeparatorToken.h"
 #include "../TokenClasses/UnderscoreToken.h"
+#include "../HelperFunctions.h"
 
 using namespace std::string_view_literals;
 
@@ -54,6 +55,7 @@ static const std::unordered_set<std::string> uniqueSimple = {
 
 // Certain keywords or operators that will only be found in PQL
 static const std::unordered_set<std::string> uniquePql = {
+	"select",
 	"stmt",
 	"assign",
 	"variable",
@@ -65,40 +67,12 @@ static const std::unordered_set<std::string> uniquePql = {
 	//"Modifies",
 	//"Uses",
 	//"pattern",
-	//"such",
-	//"that",
+	"such",
+	"that",
 	"_",
-	"\""
+	"\"",
+	",",
 };
-
-// Checks if a given input string are all numbers
-// Does NOT check if it is a valid integer literal (ie leading 0)
-static bool isNumber(std::string input) {
-	for (char const& ch : input) {
-		if (!std::isdigit(ch))
-			return false;
-	}
-	return true;
-}
-
-// Checks if a given input string is a valid name: LETTER (LETTER | DIGIT)*
-static bool isValidName(std::string input) {
-	bool seenFirst = false;
-	for (char const& ch : input) {
-		if (seenFirst) {
-			if (!std::isalnum(ch)) {
-				return false;
-			}
-			continue;
-		}
-		// looking at the first character
-		if (std::isdigit(ch)) {
-			return false;
-		}
-		seenFirst = true;
-	}
-	return true;
-}
 
 /**
 * Factory class that produces tokens.
@@ -203,6 +177,9 @@ private:
 
 	// Generates a Token with a name that is unique to PQL
 	static std::shared_ptr<Token> generatePqlToken(std::string_view tokenName) {
+		if (tokenName == "select"sv) {
+			return std::make_shared<SelectKeywordToken>();
+		}
 		if (tokenName == "stmt"sv) {
 			return std::make_shared<StmtKeywordToken>();
 		}
@@ -236,17 +213,20 @@ private:
 		//if (tokenName == "pattern"sv) {
 		//	return NULL;// std::make_shared<>();
 		//}
-		//if (tokenName == "such"sv) {
-		//	return std::make_shared<SuchKeywordToken>();
-		//}
-		//if (tokenName == "that"sv) {
-		//	return std::make_shared<ThatKeywordToken>();
-		//}
+		if (tokenName == "such"sv) {
+			return std::make_shared<SuchKeywordToken>();
+		}
+		if (tokenName == "that"sv) {
+			return std::make_shared<ThatKeywordToken>();
+		}
 		if (tokenName == "_"sv) {
 			return std::make_shared<UnderscoreToken>();
 		}
 		if (tokenName == "\""sv) {
 			return std::make_shared<DoubleQuoSepToken>();
+		}
+		if (tokenName == ","sv) {
+			return std::make_shared<CommaSepToken>();
 		}
 		throw std::invalid_argument("Invalid token name supplied to generatePqlToken function: " + std::string(tokenName));
 	}

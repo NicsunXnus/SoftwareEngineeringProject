@@ -20,13 +20,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IntegrationTesting", "Integ
 		{DC21A1EA-D2C6-4D14-A2B4-E025B64BDE81} = {DC21A1EA-D2C6-4D14-A2B4-E025B64BDE81}
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8D0F9EF7-260A-425B-A578-D53EDBF1C5C3}"
-	ProjectSection(SolutionItems) = preProject
-		source\TokenClasses\IdentifierToken.h = source\TokenClasses\IdentifierToken.h
-		source\TokenClasses\LiteralTokens\LiteralToken.h = source\TokenClasses\LiteralTokens\LiteralToken.h
-		source\TokenClasses\Token.h = source\TokenClasses\Token.h
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32

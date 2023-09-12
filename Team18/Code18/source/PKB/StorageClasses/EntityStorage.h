@@ -1,7 +1,11 @@
+#pragma once
 #include <string>
 #include <map>
 #include <vector>
 #include <iostream>
+
+#include "../../Constants/QPSPKB.h"
+#include "../../DesignExtractor/Entity.h"
 
 using namespace std;
 
@@ -11,37 +15,55 @@ using namespace std;
 */
 class EntityStorage {
 public:
+  EntityStorage() {
+    statement_database = new map<ENTITY, vector<string>>();
+
+    procedure_database = new map<string, vector<string>>();
+
+    variable_database = new map<string, vector<string>>();
+
+    constant_database = new map<string, vector<string>>();
+    }
+
     // entities categorised as statement types and non-statement types.
-    map<string, vector<int>>* EntityStorage::getStatementDatabase() {
+    map<ENTITY, vector<string>>* EntityStorage::getStatementDatabase() {
         return this->statement_database;
     }
 
-    map<string, vector<int>>* EntityStorage::getProcedureDatabase() {
+    EntityMapArg EntityStorage::getProcedureDatabase() {
         return this->procedure_database;
     }
 
-    map<string, vector<int>>* EntityStorage::getVariableDatabase() {
+    EntityMapArg EntityStorage::getVariableDatabase() {
         return this->variable_database;
     }
 
-    map<string, vector<int>>* EntityStorage::getConstantDatabase() {
+    EntityMapArg EntityStorage::getConstantDatabase() {
         return this->constant_database;
     }
 
-    void EntityStorage::setStatementDatabase(map<string, vector<int>>* database) {
-        this->statement_database = database;
+    void EntityStorage::setStatementDatabase(EntityMapArg database) {
+        for (auto const& [entity_string, value] : *database) {
+            (*statement_database)[EntityEnumToString(entity_string)] = value;
+        }
     }
 
-    void EntityStorage::setProcedureDatabase(map<string, vector<int>>* database) {
-        this->procedure_database = database;
+    void EntityStorage::setProcedureDatabase(EntityMapArg database) {
+        for (auto const& [varName, lines] : *database) {
+            (*(this->procedure_database))[varName] = lines;
+        }
     }
 
-    void EntityStorage::setVariableDatabase(map<string, vector<int>>* database) {
-        this->variable_database = database;
+    void EntityStorage::setVariableDatabase(EntityMapArg database) {
+        for (auto const& [varName, lines] : *database) {
+            (*(this->variable_database))[varName] = lines;
+        }
     }
 
-    void EntityStorage::setConstantDatabase(map<string, vector<int>>* database) {
-        this->constant_database = database;
+    void EntityStorage::setConstantDatabase(EntityMapArg database) {
+        for (auto const& [varName, lines] : *database) {
+            (*(this->constant_database))[varName] = lines;
+        }
     }
 
     void EntityStorage::printDatabase() const {
@@ -55,11 +77,11 @@ public:
     }
 
 private:
-    map<string, vector<int>>* statement_database;
+    static inline map<ENTITY, vector<string>>* statement_database;
 
-    map<string, vector<int>>* procedure_database;
+    static inline map<string, vector<string>>* procedure_database;
 
-    map<string, vector<int>>* variable_database;
+    static inline map<string, vector<string>>* variable_database;
 
-    map<string, vector<int>>* constant_database;
+    static inline map<string, vector<string>>* constant_database;
 };

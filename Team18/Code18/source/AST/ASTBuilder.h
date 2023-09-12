@@ -3,6 +3,7 @@
 
 #include "ASTNode.h"
 #include "../TokenizerClasses/TokenFactory.h"
+#include "../HelperFunctions.h"
 #include <stack>
 #include <cassert>
 //Note to self, lots of repeated codes here. Create methods to modularise  them
@@ -292,25 +293,7 @@ public:
 
         return values.top();
     }
-
-    static bool isAlphanumeric(std::string str) {
-        for (char c : str) {
-            if (!std::isalnum(c)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    static bool isNumber(std::string str) {
-        for (char c : str) {
-            if (!std::isdigit(c)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
+  
     //Helper function to visualise output of parseExpr
     static std::string printExpr(std::shared_ptr<ExprNode> expr) {
         std::string result = "";
