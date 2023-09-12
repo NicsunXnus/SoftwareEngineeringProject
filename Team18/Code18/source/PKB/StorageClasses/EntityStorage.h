@@ -16,51 +16,55 @@ using namespace std;
 class EntityStorage {
 public:
   EntityStorage() {
-    statement_database = new map<ENTITY, vector<string>>();
+    map<ENTITY, vector<string>> statement_db;
+    this->statement_database = make_shared<map<ENTITY, vector<string>>>(statement_db);
 
-    procedure_database = new map<string, vector<string>>();
+    EntityMapArg procedure_db;
+    this->procedure_database = make_shared<EntityMapArg>(procedure_db);
 
-    variable_database = new map<string, vector<string>>();
+    EntityMapArg variable_db;
+    this->variable_database = make_shared<EntityMapArg>(variable_db);
 
-    constant_database = new map<string, vector<string>>();
-    }
+    EntityMapArg constant_db;
+    this->constant_database = make_shared<EntityMapArg>(constant_db);
+  }
 
     // entities categorised as statement types and non-statement types.
-    map<ENTITY, vector<string>>* EntityStorage::getStatementDatabase() {
+    shared_ptr<map<ENTITY, vector<string>>> EntityStorage::getStatementDatabase() {
         return this->statement_database;
     }
 
-    EntityMapArg EntityStorage::getProcedureDatabase() {
+    shared_ptr<EntityMapArg> EntityStorage::getProcedureDatabase() {
         return this->procedure_database;
     }
 
-    EntityMapArg EntityStorage::getVariableDatabase() {
+    shared_ptr<EntityMapArg> EntityStorage::getVariableDatabase() {
         return this->variable_database;
     }
 
-    EntityMapArg EntityStorage::getConstantDatabase() {
+    shared_ptr<EntityMapArg> EntityStorage::getConstantDatabase() {
         return this->constant_database;
     }
 
-    void EntityStorage::setStatementDatabase(EntityMapArg database) {
+    void EntityStorage::setStatementDatabase(shared_ptr<EntityMapArg> database) {
         for (auto const& [entity_string, value] : *database) {
             (*statement_database)[EntityEnumToString(entity_string)] = value;
         }
     }
 
-    void EntityStorage::setProcedureDatabase(EntityMapArg database) {
+    void EntityStorage::setProcedureDatabase(shared_ptr<EntityMapArg> database) {
         for (auto const& [varName, lines] : *database) {
             (*(this->procedure_database))[varName] = lines;
         }
     }
 
-    void EntityStorage::setVariableDatabase(EntityMapArg database) {
+    void EntityStorage::setVariableDatabase(shared_ptr<EntityMapArg> database) {
         for (auto const& [varName, lines] : *database) {
             (*(this->variable_database))[varName] = lines;
         }
     }
 
-    void EntityStorage::setConstantDatabase(EntityMapArg database) {
+    void EntityStorage::setConstantDatabase(shared_ptr<EntityMapArg> database) {
         for (auto const& [varName, lines] : *database) {
             (*(this->constant_database))[varName] = lines;
         }
@@ -77,11 +81,11 @@ public:
     }
 
 private:
-    static inline map<ENTITY, vector<string>>* statement_database;
+    static shared_ptr<map<ENTITY, vector<string>>> statement_database;
 
-    static inline map<string, vector<string>>* procedure_database;
+    static shared_ptr<EntityMapArg> procedure_database;
+  
+    static shared_ptr<EntityMapArg> variable_database;
 
-    static inline map<string, vector<string>>* variable_database;
-
-    static inline map<string, vector<string>>* constant_database;
+    static shared_ptr<EntityMapArg> constant_database;
 };
