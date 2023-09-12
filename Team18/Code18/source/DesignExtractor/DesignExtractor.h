@@ -125,11 +125,11 @@ public:
         static EntityMapArg statementMap = this->statementEntity->getMap();
         static EntityMapArg variableMap = this->variableEntity->getMap();
         static EntityMapArg constantMap = this->constantEntity->getMap();
-
+        
         // Insert the entities into the PKB
         Insertor insertor = Insertor();
-        insertor.addProcedures(make_shared<EntityMapArg>(procedureMap));
         insertor.addEntityStatements(make_shared<EntityMapArg>(statementMap));
+        insertor.addProcedures(make_shared<EntityMapArg>(procedureMap));
         insertor.addVariables(make_shared<EntityMapArg>(variableMap));
         insertor.addConstants(make_shared<EntityMapArg>(constantMap));
         
