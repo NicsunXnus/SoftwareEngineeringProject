@@ -37,6 +37,20 @@ public:
         return std::make_shared<ExprNode>();
     }
 
+    virtual std::shared_ptr<CondExprNode> getCondExpr() const {
+        return std::make_shared<CondExprNode>();
+    }
+
+    virtual std::vector<std::shared_ptr<StatementNode>> getStatements() const {
+        std::vector<std::shared_ptr<StatementNode>> statements;
+        return statements;
+    }
+
+    virtual std::vector<std::shared_ptr<StatementNode>> getElseStatements() const {
+        std::vector<std::shared_ptr<StatementNode>> statements;
+        return statements;
+    }
+
 protected:
     ASTNode(std::string name = "", int statementNumber = -1)
         : name(std::move(name)), statementNumber(statementNumber) {}
@@ -120,6 +134,44 @@ private:
     std::shared_ptr<ExprNode> variable;
 };
 
+class IfNode : public StatementNode {
+public:
+    IfNode(int statementNumber, std::shared_ptr<CondExprNode> condExpr,std::vector<std::shared_ptr<StatementNode>> thenStmts, std::vector<std::shared_ptr<StatementNode>> elseStmts) :
+        StatementNode(std::move(std::string("if")), statementNumber), condExpr(condExpr), thenStmts(thenStmts), elseStmts(elseStmts) {}
+    std::shared_ptr<CondExprNode> getCondExpr() const override {
+        return this->condExpr;
+    }
+
+    std::vector<std::shared_ptr<StatementNode>> getStatements() const override {
+        return this->thenStmts;
+    }
+
+    std::vector<std::shared_ptr<StatementNode>> getElseStatements() const override {
+        return this->elseStmts;
+    }
+
+private:
+    std::shared_ptr<CondExprNode> condExpr;
+    std::vector<std::shared_ptr<StatementNode>> thenStmts;
+    std::vector<std::shared_ptr<StatementNode>> elseStmts;
+};
+
+class WhileNode : public StatementNode {
+public:
+    WhileNode(int statementNumber, std::shared_ptr<CondExprNode> condExpr, std::vector<std::shared_ptr<StatementNode>> loopStmts) :
+        StatementNode(std::move(std::string("while")), statementNumber), condExpr(condExpr), loopStmts(loopStmts) {}
+    std::shared_ptr<CondExprNode> getCondExpr() const override {
+        return this->condExpr;
+    }
+
+    std::vector<std::shared_ptr<StatementNode>> getStatements() const override {
+        return this->loopStmts;
+    }
+
+private:
+    std::shared_ptr<CondExprNode> condExpr;
+    std::vector<std::shared_ptr<StatementNode>> loopStmts;
+};
 
 class ExprNode : public ASTNode  {
 public:
