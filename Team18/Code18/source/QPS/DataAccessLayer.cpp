@@ -5,7 +5,7 @@
 
 vector<string> DataAccessLayer::getEntityStatement(ENTITY type) {
 	vector<string> stringVector;
-	vector<string> PKBResponse = responder.getEntityStatement(type);
+	vector<string> PKBResponse = PKB::responder.getEntityStatement(type);
 	for (const string& intValue : PKBResponse) {
 		// Convert each integer to a string and append it to the stringVector
 		stringVector.push_back(intValue);
@@ -14,17 +14,17 @@ vector<string> DataAccessLayer::getEntityStatement(ENTITY type) {
 }
 
 vector<string> DataAccessLayer::getAllProcedures() {
-	vector<string> PKBResponse = responder.getAllProcedures();
+	vector<string> PKBResponse = PKB::responder.getAllProcedures();
 	return PKBResponse;
 }
 
 vector<string> DataAccessLayer::getAllVariables() {
-	vector<string> PKBResponse = responder.getAllVariables();
+	vector<string> PKBResponse = PKB::responder.getAllVariables();
 	return PKBResponse;
 }
 
 vector<string> DataAccessLayer::getAllConstants() {
-	vector<string> PKBResponse = responder.getAllConstants();
+	vector<string> PKBResponse = PKB::responder.getAllConstants();
 	return PKBResponse;
 }
 
