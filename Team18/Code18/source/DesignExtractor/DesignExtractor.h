@@ -59,7 +59,14 @@ public:
         else if (auto constantNode = std::dynamic_pointer_cast<ConstantNode>(astNode)) {
             // astNode is of type ConstantNode
             this->constantEntity->extractEntity(constantNode);
-        } 
+        }
+        else if (auto exprNode = std::dynamic_pointer_cast<ExprNode>(astNode)) {
+            // astNode is of type ExprNode
+            std::shared_ptr<ExprNode> leftExpr = exprNode->getLeftExpr();
+            std::shared_ptr<ExprNode> rightExpr = exprNode->getRightExpr();
+            extractEntities(leftExpr);
+            extractEntities(rightExpr);
+        }
         else {
             // Handle other cases or report an error
             std::cerr << "Unsupported ASTNode type." << std::endl;
