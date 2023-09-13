@@ -199,4 +199,3 @@ private:
     std::shared_ptr<ConstantEntity> constantEntity;
     std::shared_ptr<PatternStatementEntity> patternStatementEntity;
 };
-}
