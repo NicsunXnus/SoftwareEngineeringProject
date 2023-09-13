@@ -58,7 +58,7 @@ namespace UnitTesting
                   // Create ifNode
                   std::shared_ptr<VariableNode> testVariableNode6 = std::make_shared<VariableNode>("z", 6);
                   std::shared_ptr<ConstantNode> testConstantNode3 = std::make_shared<ConstantNode>(10, 6);
-                  std::shared_ptr<EqualNode> testEqualNode = std::make_shared<EqualNode>(testVariableNode6, testConstantNode3);
+                  std::shared_ptr<EqualsNode> testEqualNode = std::make_shared<EqualsNode>(testVariableNode6, testConstantNode3);
                   std::shared_ptr<VariableNode> testVariableNode7 = std::make_shared<VariableNode>("z", 7);
                   std::shared_ptr<ConstantNode> testConstantNode4 = std::make_shared<ConstantNode>(10, 7);
                   std::shared_ptr<ConstantNode> testConstantNode5 = std::make_shared<ConstantNode>(20, 7);
@@ -85,7 +85,7 @@ namespace UnitTesting
                   // Create WhileNode
                   std::shared_ptr<VariableNode> testVariableNode9 = std::make_shared<VariableNode>("a", 12);
                   std::shared_ptr<ConstantNode> testConstantNode8 = std::make_shared<ConstantNode>(10, 12);
-                  std::shared_ptr<EqualNode> testEqualNode2 = std::make_shared<EqualNode>(testVariableNode9, testConstantNode8);
+                  std::shared_ptr<EqualsNode> testEqualNode2 = std::make_shared<EqualsNode>(testVariableNode9, testConstantNode8);
                   std::shared_ptr<VariableNode> testVariableNode12 = std::make_shared<VariableNode>("a", 13);
                   std::shared_ptr<PrintNode> testPrintNode4 = std::make_shared<PrintNode>(13, testVariableNode12);
                   std::shared_ptr<ProcedureNode> testProcedureNode2 = std::make_shared<ProcedureNode>("procedure2", std::vector<std::shared_ptr<StatementNode>>());
