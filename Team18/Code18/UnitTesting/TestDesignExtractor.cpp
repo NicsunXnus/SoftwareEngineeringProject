@@ -11,10 +11,10 @@ namespace UnitTesting
       TEST_CLASS(TestDesignExtractor)
       {
       private:
-            std::map<std::string, std::vector<std::string>> procedureMap;
-            std::map<std::string, std::vector<std::string>> statementMap;
-            std::map<std::string, std::vector<std::string>> variableMap;
-            std::map<std::string, std::vector<std::string>> constantMap;
+            static std::map<std::string, std::vector<std::string>> procedureMap;
+            static std::map<std::string, std::vector<std::string>> statementMap;
+            static std::map<std::string, std::vector<std::string>> variableMap;
+            static std::map<std::string, std::vector<std::string>> constantMap;
       public :
             TEST_CLASS_INITIALIZE(ClassInitialize)
             {
