@@ -16,7 +16,8 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectStmtQuery)
 		{
-			vector<string_view> test = tokenize("stmt v; Select v");
+			vector<string> testS = tokenize("stmt v; Select v");
+			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
 			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
@@ -29,7 +30,8 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectReadQuery)
 		{
-			vector<string_view> test = tokenize("variable c; read v; Select v");
+			vector<string> testS = tokenize("variable c; read v; Select v");
+			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
 			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
@@ -40,7 +42,8 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectPrintQuery)
 		{
-			vector<string_view> test = tokenize("print p, v; Select v");
+			vector<string> testS = tokenize("print p, v; Select v");
+			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
 			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
@@ -51,7 +54,8 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectCallQuery)
 		{
-			vector<string_view> test = tokenize("call v; Select v");
+			vector<string> testS = tokenize("call v; Select v");
+			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
 			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
@@ -62,7 +66,8 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectWhileQuery)
 		{
-			vector<string_view> test = tokenize("while v; Select v");
+			vector<string> testS = tokenize("while v; Select v");
+			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
 			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
@@ -73,7 +78,8 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectIfQuery)
 		{
-			vector<string_view> test = tokenize("if v; Select v");
+			vector<string> testS = tokenize("if v; Select v");
+			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
 			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
@@ -84,7 +90,8 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectAssignQuery)
 		{
-			vector<string_view> test = tokenize("assign v; Select v");
+			vector<string> testS = tokenize("assign v; Select v");
+			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
 			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
@@ -95,7 +102,8 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectVariableQuery)
 		{
-			vector<string_view> test = tokenize("variable v; Select v");
+			vector<string> testS = tokenize("variable v; Select v");
+			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
 			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
@@ -106,7 +114,8 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectConstantQuery)
 		{
-			vector<string_view> test = tokenize("constant v; Select v");
+			vector<string> testS = tokenize("constant v; Select v");
+			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
 			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
@@ -117,7 +126,8 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectProcedureQuery)
 		{
-			vector<string_view> test = tokenize("procedure v; Select v");
+			vector<string> testS = tokenize("procedure v; Select v");
+			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
 			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));

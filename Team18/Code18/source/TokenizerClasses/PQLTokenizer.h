@@ -14,9 +14,9 @@ using namespace std::string_view_literals;
 *
 * Returns a std::vector of tokens.
 */
-static std::vector<std::string_view> tokenize(std::string_view pql) {
+static std::vector<std::string> tokenize(std::string pql) {
 
-	std::vector<std::string_view> tokens;
+	std::vector<std::string> tokens;
 	int startIndex{ 0 };
 	bool isWord{ false };
 	bool isWithinQuotes{ false };
@@ -29,17 +29,18 @@ static std::vector<std::string_view> tokenize(std::string_view pql) {
 				tokens.push_back(pql.substr(startIndex, i - startIndex));
 				isWord = false;
 			}
-			ss.clear();
+			ss.str(std::string()); // empties the stream
 			ss << pql[i];
 			isWithinQuotes = true;
 			continue;
 		} else if (isWithinQuotes) {
-			if (!isspace(pql[i]) && pql[i] != '\b') {
+			if (pql[i] == '"') { // closing quotes
 				ss << pql[i];
-			} else if (pql[i] == '"') { // closing quotes
-				ss << pql[i];
-				tokens.push_back(ss.str());
+				std::string s = ss.str();
+				tokens.push_back(s);
 				isWithinQuotes = false;
+			} else if (!isspace(pql[i]) && pql[i] != '\b') {
+				ss << pql[i];
 			}
 			startIndex = i;
 			continue;
@@ -78,4 +79,12 @@ static std::vector<std::string_view> tokenize(std::string_view pql) {
 	return tokens;
 }
 
+static std::vector<std::string_view> sToSvVector(std::vector<std::string>& svVector ) {
+	std::vector<std::string_view> v;
+	for (size_t i = 0; i < svVector.size(); ++i) {
+		std::string_view sv{ svVector[i] };
+		v.push_back(sv);
+	}
+	return v;
+}
 #endif
