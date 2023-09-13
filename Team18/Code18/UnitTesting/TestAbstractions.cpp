@@ -12,7 +12,6 @@ namespace UnitTesting
 	public:
 		TEST_METHOD(TestSimpleParentsFollowsAbstraction)
 		{
-                  // Set up common resources or build the necessary structure here
                   /* The code in mind
                         procedure procedure1 {
                               read x;
