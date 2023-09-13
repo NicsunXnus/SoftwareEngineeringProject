@@ -22,8 +22,6 @@ static const std::unordered_set<std::string> common = {
 	"read",
 	"print",
 	"call",
-	"while",
-	"if",
 	"(",
 	")",
 	";",
@@ -36,8 +34,6 @@ static const std::unordered_set<std::string> common = {
 
 // Certain keywords or operators that will only be found in SIMPLE
 static const std::unordered_set<std::string> uniqueSimple = {
-	"then",
-	"else",
 	"=",
 	"!",
 	"||",
@@ -58,6 +54,8 @@ static const std::unordered_set<std::string> uniquePql = {
 	"variable",
 	"constant",
 	"procedure",
+	"while",
+	"if",
 	//"Follows",
 	//"Follows*",
 	//"Parent",
@@ -90,12 +88,6 @@ private:
 		if (tokenName == "call"sv) {
 			return std::make_shared<CallKeywordToken>();
 		}
-		if (tokenName == "while"sv) {
-			return std::make_shared<WhileKeywordToken>();
-		}
-		if (tokenName == "if"sv) {
-			return std::make_shared<IfKeywordToken>();
-		}
 		if (tokenName == "("sv) {
 			return std::make_shared<ParenOpenSepToken>();
 		}
@@ -125,12 +117,6 @@ private:
 
 	// Generates a Token with a name that is unique to SIMPLE
 	static std::shared_ptr<Token> generateSimpleToken(std::string_view tokenName) {
-		if (tokenName == "then"sv) {
-			return std::make_shared<ThenKeywordToken>();
-		}
-		if (tokenName == "else"sv) {
-			return std::make_shared<ElseKeywordToken>();
-		}
 		if (tokenName == "="sv) {
 			return std::make_shared<EqualsOpToken>();
 		}
@@ -183,6 +169,12 @@ private:
 		}
 		if (tokenName == "procedure"sv) {
 			return std::make_shared<ProcedureKeywordToken>();
+		}
+		if (tokenName == "while"sv) {
+			return std::make_shared<WhileKeywordToken>();
+		}
+		if (tokenName == "if"sv) {
+			return std::make_shared<IfKeywordToken>();
 		}
 		//if (tokenName == "Follows"sv) {
 		//	return NULL;// std::make_shared<>();
