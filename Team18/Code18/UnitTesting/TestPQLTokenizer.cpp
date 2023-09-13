@@ -62,5 +62,45 @@ namespace UnitTesting
 			Assert::IsTrue(test[12] == ")"sv);
 		}
 
+		TEST_METHOD(TestTokenizeStarQuery)
+		{
+			vector<string_view> test = tokenize("; Select Parent*(14, v) and Uses* (a, 5)");
+			Assert::IsTrue(test[0] == ";"sv);
+			Assert::IsTrue(test[1] == "Select"sv);
+			Assert::IsTrue(test[2] == "Parent*"sv);
+			Assert::IsTrue(test[3] == "("sv);
+			Assert::IsTrue(test[4] == "14"sv);
+			Assert::IsTrue(test[5] == ","sv);
+			Assert::IsTrue(test[6] == "v"sv);
+			Assert::IsTrue(test[7] == ")"sv);
+			Assert::IsTrue(test[8] == "and"sv);
+			Assert::IsTrue(test[9] == "Uses*"sv);
+			Assert::IsTrue(test[10] == "("sv);
+			Assert::IsTrue(test[11] == "a"sv);
+			Assert::IsTrue(test[12] == ","sv);
+			Assert::IsTrue(test[13] == "5"sv);
+			Assert::IsTrue(test[14] == ")"sv);
+		}
+
+		TEST_METHOD(TestTokenizeWildcardQuery)
+		{
+			vector<string_view> test = tokenize(" ; Select Parent*(_, _ ) such that Modifies* (_ , _)");
+			Assert::IsTrue(test[0] == ";"sv);
+			Assert::IsTrue(test[1] == "Select"sv);
+			Assert::IsTrue(test[2] == "Parent*"sv);
+			Assert::IsTrue(test[3] == "("sv);
+			Assert::IsTrue(test[4] == "_"sv);
+			Assert::IsTrue(test[5] == ","sv);
+			Assert::IsTrue(test[6] == "_"sv);
+			Assert::IsTrue(test[7] == ")"sv);
+			Assert::IsTrue(test[8] == "such"sv);
+			Assert::IsTrue(test[9] == "that"sv);
+			Assert::IsTrue(test[10] == "Modifies*"sv);
+			Assert::IsTrue(test[11] == "("sv);
+			Assert::IsTrue(test[12] == "_"sv);
+			Assert::IsTrue(test[13] == ","sv);
+			Assert::IsTrue(test[14] == "_"sv);
+			Assert::IsTrue(test[15] == ")"sv);
+		}
 	};
 }
