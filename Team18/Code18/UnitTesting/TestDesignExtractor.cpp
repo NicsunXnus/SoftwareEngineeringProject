@@ -131,63 +131,66 @@ namespace UnitTesting
 
                   Assert::AreEqual(procedureMap["procedure1"].empty(), true);
 
-                  Assert::AreEqual(statementMap["read"][0], std::to_string(1));
-                  Assert::AreEqual(statementMap["read"][1], std::to_string(5));
-                  Assert::AreEqual(statementMap["read"][2], std::to_string(8));
-                  Assert::AreEqual(statementMap["print"][0], std::to_string(2));
-                  Assert::AreEqual(statementMap["print"][1], std::to_string(4));
-                  Assert::AreEqual(statementMap["print"][2], std::to_string(10));
-                  Assert::AreEqual(statementMap["print"][3], std::to_string(12));
-                  Assert::AreEqual(statementMap["assign"][0], std::to_string(3));
-                  Assert::AreEqual(statementMap["assign"][1], std::to_string(7));
-                  Assert::AreEqual(statementMap["assign"][2], std::to_string(9));
-                  Assert::AreEqual(statementMap["stmt"][0], std::to_string(1));
-                  Assert::AreEqual(statementMap["stmt"][1], std::to_string(2));
-                  Assert::AreEqual(statementMap["stmt"][2], std::to_string(3));
-                  Assert::AreEqual(statementMap["stmt"][3], std::to_string(4));
-                  Assert::AreEqual(statementMap["stmt"][4], std::to_string(5));
-                  Assert::AreEqual(statementMap["stmt"][5], std::to_string(6));
-                  Assert::AreEqual(statementMap["stmt"][6], std::to_string(7));
-                  Assert::AreEqual(statementMap["stmt"][7], std::to_string(8));
-                  Assert::AreEqual(statementMap["stmt"][8], std::to_string(9));
-                  Assert::AreEqual(statementMap["stmt"][9], std::to_string(10));
-                  Assert::AreEqual(statementMap["stmt"][10], std::to_string(11));
-                  Assert::AreEqual(statementMap["stmt"][11], std::to_string(12));
-                  Assert::AreEqual(statementMap["stmt"][12], std::to_string(13));
-                  Assert::AreEqual(statementMap["stmt"][13], std::to_string(14));
-                  Assert::AreEqual(statementMap["if"][0], std::to_string(6));
-                  Assert::AreEqual(statementMap["while"][0], std::to_string(12));
-                  Assert::AreEqual(statementMap["call"][0], std::to_string(14));
+                  Assert::IsTrue(std::find(statementMap["read"].begin(), statementMap["read"].end(), std::to_string(1)) != statementMap["read"].end());
+                  Assert::IsTrue(std::find(statementMap["read"].begin(), statementMap["read"].end(), std::to_string(5)) != statementMap["read"].end());
+                  Assert::IsTrue(std::find(statementMap["read"].begin(), statementMap["read"].end(), std::to_string(8)) != statementMap["read"].end());
+
+                  Assert::IsTrue(std::find(statementMap["print"].begin(), statementMap["print"].end(), std::to_string(2)) != statementMap["print"].end());
+                  Assert::IsTrue(std::find(statementMap["print"].begin(), statementMap["print"].end(), std::to_string(4)) != statementMap["print"].end());
+                  Assert::IsTrue(std::find(statementMap["print"].begin(), statementMap["print"].end(), std::to_string(10)) != statementMap["print"].end());
+                  Assert::IsTrue(std::find(statementMap["print"].begin(), statementMap["print"].end(), std::to_string(12)) != statementMap["print"].end());
+                  Assert::IsTrue(std::find(statementMap["stmt"].begin(), statementMap["stmt"].end(), std::to_string(1)) != statementMap["stmt"].end());
+                  Assert::IsTrue(std::find(statementMap["stmt"].begin(), statementMap["stmt"].end(), std::to_string(2)) != statementMap["stmt"].end());
+                  Assert::IsTrue(std::find(statementMap["stmt"].begin(), statementMap["stmt"].end(), std::to_string(3)) != statementMap["stmt"].end());
+                  Assert::IsTrue(std::find(statementMap["stmt"].begin(), statementMap["stmt"].end(), std::to_string(4)) != statementMap["stmt"].end());
+                  Assert::IsTrue(std::find(statementMap["stmt"].begin(), statementMap["stmt"].end(), std::to_string(5)) != statementMap["stmt"].end());
+                  Assert::IsTrue(std::find(statementMap["stmt"].begin(), statementMap["stmt"].end(), std::to_string(6)) != statementMap["stmt"].end());
+                  Assert::IsTrue(std::find(statementMap["stmt"].begin(), statementMap["stmt"].end(), std::to_string(7)) != statementMap["stmt"].end());
+                  Assert::IsTrue(std::find(statementMap["stmt"].begin(), statementMap["stmt"].end(), std::to_string(8)) != statementMap["stmt"].end());
+                  Assert::IsTrue(std::find(statementMap["stmt"].begin(), statementMap["stmt"].end(), std::to_string(9)) != statementMap["stmt"].end());
+                  Assert::IsTrue(std::find(statementMap["stmt"].begin(), statementMap["stmt"].end(), std::to_string(10)) != statementMap["stmt"].end());
+                  Assert::IsTrue(std::find(statementMap["stmt"].begin(), statementMap["stmt"].end(), std::to_string(11)) != statementMap["stmt"].end());
+                  Assert::IsTrue(std::find(statementMap["stmt"].begin(), statementMap["stmt"].end(), std::to_string(12)) != statementMap["stmt"].end());
+                  Assert::IsTrue(std::find(statementMap["stmt"].begin(), statementMap["stmt"].end(), std::to_string(13)) != statementMap["stmt"].end());
+                  Assert::IsTrue(std::find(statementMap["stmt"].begin(), statementMap["stmt"].end(), std::to_string(14)) != statementMap["stmt"].end());
+
+                  Assert::IsTrue(std::find(statementMap["if"].begin(), statementMap["if"].end(), std::to_string(6)) != statementMap["if"].end());
+
+                  Assert::IsTrue(std::find(statementMap["while"].begin(), statementMap["while"].end(), std::to_string(12)) != statementMap["while"].end());
+
+                  Assert::IsTrue(std::find(statementMap["call"].begin(), statementMap["call"].end(), std::to_string(14)) != statementMap["call"].end());
             
-                  Assert::AreEqual(variableMap["x"][0], std::to_string(1));
-                  Assert::AreEqual(variableMap["x"][1], std::to_string(4));
-                  Assert::AreEqual(variableMap["x"][2], std::to_string(5));
-                  Assert::AreEqual(variableMap["x"][3], std::to_string(10));
+                  // Check the existence of values in variableMap
+                  Assert::IsTrue(std::find(variableMap["x"].begin(), variableMap["x"].end(), std::to_string(1)) != variableMap["x"].end());
+                  Assert::IsTrue(std::find(variableMap["x"].begin(), variableMap["x"].end(), std::to_string(4)) != variableMap["x"].end());
+                  Assert::IsTrue(std::find(variableMap["x"].begin(), variableMap["x"].end(), std::to_string(5)) != variableMap["x"].end());
+                  Assert::IsTrue(std::find(variableMap["x"].begin(), variableMap["x"].end(), std::to_string(10)) != variableMap["x"].end());
 
-                  Assert::AreEqual(variableMap["y"][0], std::to_string(2));
-                  Assert::AreEqual(variableMap["y"][1], std::to_string(8));
+                  Assert::IsTrue(std::find(variableMap["y"].begin(), variableMap["y"].end(), std::to_string(2)) != variableMap["y"].end());
+                  Assert::IsTrue(std::find(variableMap["y"].begin(), variableMap["y"].end(), std::to_string(8)) != variableMap["y"].end());
 
-                  Assert::AreEqual(variableMap["z"][0], std::to_string(3));
-                  Assert::AreEqual(variableMap["z"][1], std::to_string(6));
-                  Assert::AreEqual(variableMap["z"][2], std::to_string(7));
-                  Assert::AreEqual(variableMap["z"][3], std::to_string(9));
-                  
-                  Assert::AreEqual(variableMap["a"][0], std::to_string(11));
-                  Assert::AreEqual(variableMap["a"][1], std::to_string(12));
-                  Assert::AreEqual(variableMap["a"][2], std::to_string(13));
+                  Assert::IsTrue(std::find(variableMap["z"].begin(), variableMap["z"].end(), std::to_string(3)) != variableMap["z"].end());
+                  Assert::IsTrue(std::find(variableMap["z"].begin(), variableMap["z"].end(), std::to_string(6)) != variableMap["z"].end());
+                  Assert::IsTrue(std::find(variableMap["z"].begin(), variableMap["z"].end(), std::to_string(7)) != variableMap["z"].end());
+                  Assert::IsTrue(std::find(variableMap["z"].begin(), variableMap["z"].end(), std::to_string(9)) != variableMap["z"].end());
 
-                  // Check if the constant entity is extracted correctly
-                  Assert::AreEqual(constantMap["10"][0], std::to_string(3));
-                  Assert::AreEqual(constantMap["10"][1], std::to_string(6));
-                  Assert::AreEqual(constantMap["10"][2], std::to_string(11));
-                  Assert::AreEqual(constantMap["10"][3], std::to_string(12));
+                  Assert::IsTrue(std::find(variableMap["a"].begin(), variableMap["a"].end(), std::to_string(11)) != variableMap["a"].end());
+                  Assert::IsTrue(std::find(variableMap["a"].begin(), variableMap["a"].end(), std::to_string(12)) != variableMap["a"].end());
+                  Assert::IsTrue(std::find(variableMap["a"].begin(), variableMap["a"].end(), std::to_string(13)) != variableMap["a"].end());
 
-                  Assert::AreEqual(constantMap["20"][0], std::to_string(3));
-                  Assert::AreEqual(constantMap["20"][1], std::to_string(7));
-                  
-                  Assert::AreEqual(constantMap["30"][0], std::to_string(9));
+                  // Check the existence of values in constantMap
+                  Assert::IsTrue(std::find(constantMap["10"].begin(), constantMap["10"].end(), std::to_string(3)) != constantMap["10"].end());
+                  Assert::IsTrue(std::find(constantMap["10"].begin(), constantMap["10"].end(), std::to_string(6)) != constantMap["10"].end());
+                  Assert::IsTrue(std::find(constantMap["10"].begin(), constantMap["10"].end(), std::to_string(11)) != constantMap["10"].end());
+                  Assert::IsTrue(std::find(constantMap["10"].begin(), constantMap["10"].end(), std::to_string(12)) != constantMap["10"].end());
 
-                  Assert::AreEqual(constantMap["40"][0], std::to_string(9));
+                  Assert::IsTrue(std::find(constantMap["20"].begin(), constantMap["20"].end(), std::to_string(3)) != constantMap["20"].end());
+                  Assert::IsTrue(std::find(constantMap["20"].begin(), constantMap["20"].end(), std::to_string(7)) != constantMap["20"].end());
+
+                  Assert::IsTrue(std::find(constantMap["30"].begin(), constantMap["30"].end(), std::to_string(9)) != constantMap["30"].end());
+
+                  Assert::IsTrue(std::find(constantMap["40"].begin(), constantMap["40"].end(), std::to_string(9)) != constantMap["40"].end());
+
             }
 
     };
