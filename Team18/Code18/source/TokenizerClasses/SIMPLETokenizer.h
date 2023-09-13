@@ -21,7 +21,7 @@ private:
 	// Throws an exception if there are any mismatching "{" and "}", including within inner scopes.
 	// Returns a vector of pair<int, int> pointers. Each pair represents the indexes of a matching "{" and "}" respectively.
 	static std::vector<std::shared_ptr<std::pair<int, int>>> outermostScopeDetector(std::string input) {
-		// int version of a stack, since the stack does not need to keep track of any object.
+		// stack keeps track of the indexes of the open curly
 		std::stack<int> scopeTracker;
 		std::vector<std::shared_ptr<std::pair<int, int>>> output;
 		for (int i = 0; i < input.size(); i++) {
@@ -147,12 +147,6 @@ private:
 	}
 
 	static std::shared_ptr<TokenizedStmtList> tokenizeStmtList(std::string stmtList) {
-		// TODO
-		// IDEA: 
-		// Keep track of scope via a stack by pushing and popping dummy values
-		// if stack empty, means in the outermost scope, can check for semicolons
-		// if stack is JUST emptied, means finished looking at a {}, can check if the {} exitted was a while or an if, and then split accordingly
-		// int version of a stack, since the stack does not need to keep track of any object.
 		std::string trimmed = trimWhitespaces(std::string(stmtList));
 		if (trimmed.empty()) {
 			throw std::invalid_argument(ExceptionMessages::emptyStatementListGiven);
