@@ -133,7 +133,7 @@ namespace UnitTesting
                   Assert::IsTrue(std::find(statementMap["print"].begin(), statementMap["print"].end(), std::to_string(2)) != statementMap["print"].end());
                   Assert::IsTrue(std::find(statementMap["print"].begin(), statementMap["print"].end(), std::to_string(4)) != statementMap["print"].end());
                   Assert::IsTrue(std::find(statementMap["print"].begin(), statementMap["print"].end(), std::to_string(10)) != statementMap["print"].end());
-                  Assert::IsTrue(std::find(statementMap["print"].begin(), statementMap["print"].end(), std::to_string(12)) != statementMap["print"].end());
+                  Assert::IsTrue(std::find(statementMap["print"].begin(), statementMap["print"].end(), std::to_string(13)) != statementMap["print"].end());
 
                   Assert::IsTrue(std::find(statementMap["stmt"].begin(), statementMap["stmt"].end(), std::to_string(1)) != statementMap["stmt"].end());
                   Assert::IsTrue(std::find(statementMap["stmt"].begin(), statementMap["stmt"].end(), std::to_string(2)) != statementMap["stmt"].end());
