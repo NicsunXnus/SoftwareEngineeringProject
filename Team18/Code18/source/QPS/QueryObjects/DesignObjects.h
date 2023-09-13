@@ -4,8 +4,7 @@
 
 #include <string_view>
 #include "QueryObject.h"
-#include "../DataAccessLayer.h"
-#include "../../Constants/QPSPKB.h"
+
 
 
 using namespace std;
@@ -13,10 +12,19 @@ using namespace std;
 * This class represents a Query object, for design entities
 */
 class DesignObject : public QueryObject {
+private:
+	vector<string> res;
 public:
-	DesignObject(string_view tokenName)
-		: QueryObject{ tokenName } {
+	DesignObject(vector<string_view> data)
+		: QueryObject{ data } {
 
+	}
+	void setResult(variant<vector<string>, map<string, vector<string>>> result) override {
+		res = get<vector<string>>(result);
+	}
+
+	variant<vector<string>, map<string, vector<string>>> getResult() override {
+		return res;
 	}
 };
 
@@ -25,11 +33,11 @@ public:
 */
 class StmtObject : public DesignObject {
 public:
-	StmtObject(string_view tokenName)
-		: DesignObject{ tokenName } {
+	StmtObject(vector<string_view> data)
+		: DesignObject{ data } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getEntityStatement(STMT));
+		setResult(dataAccessLayer->getEntity(STMT));
 	}
 
 };
@@ -39,11 +47,11 @@ public:
 */
 class ReadObject : public DesignObject {
 public:
-	ReadObject(string_view tokenName)
-		: DesignObject{ tokenName } {
+	ReadObject(vector<string_view> data)
+		: DesignObject{ data } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getEntityStatement(READ));
+		setResult(dataAccessLayer->getEntity(READ));
 	}
 };
 
@@ -52,11 +60,11 @@ public:
 */
 class PrintObject : public DesignObject {
 public:
-	PrintObject(string_view tokenName)
-		: DesignObject{ tokenName } {
+	PrintObject(vector<string_view> data)
+		: DesignObject{ data } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getEntityStatement(PRINT));
+		setResult(dataAccessLayer->getEntity(PRINT));
 	}
 };
 
@@ -65,11 +73,11 @@ public:
 */
 class CallObject : public DesignObject {
 public:
-	CallObject(string_view tokenName)
-		: DesignObject{ tokenName } {
+	CallObject(vector<string_view> data)
+		: DesignObject{ data } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getEntityStatement(CALL));
+		setResult(dataAccessLayer->getEntity(CALL));
 	}
 };
 
@@ -78,11 +86,11 @@ public:
 */
 class WhileObject : public DesignObject {
 public:
-	WhileObject(string_view tokenName)
-		: DesignObject{ tokenName } {
+	WhileObject(vector<string_view> data)
+		: DesignObject{ data } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getEntityStatement(WHILE));
+		setResult(dataAccessLayer->getEntity(WHILE));
 	}
 };
 
@@ -91,11 +99,11 @@ public:
 */
 class IfObject : public DesignObject {
 public:
-	IfObject(string_view tokenName)
-		: DesignObject{ tokenName } {
+	IfObject(vector<string_view> data)
+		: DesignObject{ data } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getEntityStatement(IF));
+		setResult(dataAccessLayer->getEntity(IF));
 	}
 };
 
@@ -104,11 +112,11 @@ public:
 */
 class AssignObject : public DesignObject {
 public:
-	AssignObject(string_view tokenName)
-		: DesignObject{ tokenName } {
+	AssignObject(vector<string_view> data)
+		: DesignObject{ data } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getEntityStatement(ASSIGN));
+		setResult(dataAccessLayer->getEntity(ASSIGN));
 	}
 };
 
@@ -117,14 +125,14 @@ public:
 */
 class VariableObject : public DesignObject {
 public:
-	VariableObject(string_view tokenName)
-		: DesignObject{ tokenName } {
+	VariableObject(vector<string_view> data)
+		: DesignObject{ data } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
 
 		std::cout << "Calling data access layer from variable object\n";
 
-		setResult(dataAccessLayer->getAllVariables());
+		setResult(dataAccessLayer->getEntity(VARIABLE));
 	}
 };
 
@@ -133,11 +141,11 @@ public:
 */
 class ConstantObject : public DesignObject {
 public:
-	ConstantObject(string_view tokenName)
-		: DesignObject{ tokenName } {
+	ConstantObject(vector<string_view> data)
+		: DesignObject{ data } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getAllConstants());
+		setResult(dataAccessLayer->getEntity(CONSTANT));
 	}
 };
 
@@ -146,11 +154,11 @@ public:
 */
 class ProcedureObject : public DesignObject {
 public:
-	ProcedureObject(string_view tokenName)
-		: DesignObject{ tokenName } {
+	ProcedureObject(vector<string_view> data)
+		: DesignObject{ data } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getAllProcedures());
+		setResult(dataAccessLayer->getEntity(PROCEDURE));
 	}
 };
 

@@ -1,28 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\source\AST\ASTNode.h" />
     <ClCompile Include="..\source\AST\**\*.h" />
-    <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
     <ClCompile Include="..\source\ApplicationWrapper.cpp" />
     <ClCompile Include="..\source\AST\**\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
-    <ClCompile Include="..\source\AST\ASTNode.h" />
-    <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
-    <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
     <ClCompile Include="..\source\QPS\QueryDriver.cpp">
       <Filter>QPS</Filter>
     </ClCompile>
     <ClCompile Include="..\source\QPS\QueryParser.cpp">
-      <Filter>QPS</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\QPS\QueryObjects\DesignObjectsFactory.cpp">
       <Filter>QPS</Filter>
     </ClCompile>
     <ClCompile Include="..\source\DesignExtractor\*.h">
@@ -46,6 +35,18 @@
     <ClCompile Include="..\source\DesignExtractor\*.h">
       <Filter>PKB</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\AST\**\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\AST\**\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\QPS\QueryObjects\QueryObjectFactory.cpp">
+      <Filter>QPS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\AST\**\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\Constants\QPSPKB.h" />
@@ -139,6 +140,9 @@
       <Filter>PKB</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\QueryObjects\ClauseObjectFactory.h">
+      <Filter>QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryObjects\PatternClauseObject.h">
       <Filter>QPS</Filter>
     </ClInclude>
   </ItemGroup>

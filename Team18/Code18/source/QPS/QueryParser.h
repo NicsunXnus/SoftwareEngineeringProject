@@ -6,6 +6,9 @@
 #include <iostream>
 #include <unordered_map>
 #include "QueryObjects/QueryObject.h"
+#include "QueryObjects/DesignObjects.h"
+#include "QueryObjects/QueryObjectFactory.h"
+#include "QueryObjects/SynonymObjects.h"
 
 
 using namespace std;

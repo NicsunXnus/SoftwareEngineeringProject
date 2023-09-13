@@ -15,7 +15,7 @@
     <ClCompile Include="..\source\DesignExtractor.cpp" />
     <ClCompile Include="..\source\QPS\DataAccessLayer.cpp" />
     <ClCompile Include="..\source\QPS\QueryDriver.cpp" />
-    <ClCompile Include="..\source\QPS\QueryObjects\DesignObjectsFactory.cpp" />
+    <ClCompile Include="..\source\QPS\QueryObjects\QueryObjectFactory.cpp" />
     <ClCompile Include="..\source\QPS\QueryParser.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -38,6 +38,7 @@
     <ClInclude Include="..\source\QPS\QueryObjects\ClauseObjectFactory.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\DesignObjects.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\DesignObjectsFactory.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\PatternClauseObject.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\QueryObject.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\QueryObjectFactory.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\SynonymObjects.h" />

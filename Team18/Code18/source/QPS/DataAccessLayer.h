@@ -25,15 +25,11 @@ public:
 	 */
 	~DataAccessLayer() {};
 
-	 vector<string> getEntityStatement(ENTITY type);
-
-	 vector<string> getAllProcedures();
-
-	 vector<string> getAllVariables();
-
-	 vector<string> getAllConstants();
+	 vector<string> getEntity(ENTITY type);
 
 
+	 // TODO: UPDATE AFTER ENUMS PR IS MERGED, update all calls in clauseobject.h
+	 map<string, vector<string>> getClause();
 
 
 };

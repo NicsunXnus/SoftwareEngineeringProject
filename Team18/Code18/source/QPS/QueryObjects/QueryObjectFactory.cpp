@@ -1,10 +1,9 @@
-#pragma once
+#include "QueryObjectFactory.h"
 #include "DesignObjectsFactory.h"
+#include "ClauseObjectFactory.h"
 
-	/*
-	* This function takes in a string and returns the DesignObjectFactory related to the string. Throws exception otherwise
-	*/
-	shared_ptr<DesignObjectFactory> DesignObjectFactory::createDesignFactory(string_view type) {
+shared_ptr<QueryObjectFactory> QueryObjectFactory::createFactory(string_view type) {
+	/* Design entity types */
 	if (type == "stmt"sv) {
 		return make_shared<StmtObjectFactory>();
 	}
@@ -34,6 +33,26 @@
 	}
 	else if (type == "procedure"sv) {
 		return make_shared<ProcedureObjectFactory>();
+	} 
+
+	 /* Clause types */
+	else if (type == "Uses"sv) {
+		return make_shared<UsesObjectFactory>();
+	}
+	else if (type == "Modifies"sv) {
+		return make_shared<ModifiesObjectFactory>();
+	}
+	else if (type == "Follows"sv) {
+		return make_shared<FollowsObjectFactory>();
+	}
+	else if (type == "Follows*"sv) {
+		return make_shared<FollowsStarObjectFactory>();
+	}
+	else if (type == "Parent"sv) {
+		return make_shared<ParentObjectFactory>();
+	}
+	else if (type == "Parent*"sv) {
+		return make_shared<ParentStarObjectFactory>();
 	}
 	throw runtime_error("Invalid string token for design object");
 }
