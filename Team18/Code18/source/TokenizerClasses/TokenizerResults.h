@@ -31,6 +31,20 @@ public:
   std::vector<std::shared_ptr<TokenizedProcedure>>  getAllProcedures() {
     return this->procedures;
   }
+
+  bool operator==(TokenizedProgram& rhs) {
+    if (this->procedures.size() != rhs.procedures.size()) {
+      return false;
+    }
+    for (int i = 0; i < this->procedures.size(); i++) {
+      if (*(this->procedures[i]) != *(rhs.procedures[i])) return false;
+    }
+    return true;
+  }
+
+  bool operator!=(TokenizedProgram& rhs) {
+    return !(*this == rhs);
+  }
 };
 
 /// <summary>
@@ -55,6 +69,17 @@ public:
   std::shared_ptr<TokenizedStmtList> getStmts() {
     return this->statementList;
   }
+
+  bool operator==(TokenizedProcedure& rhs) {
+    if (this->procedureName != rhs.procedureName) {
+      return false;
+    }
+    return *(this->statementList) == *(rhs.statementList);
+  }
+
+  bool operator!=(TokenizedProcedure& rhs) {
+    return !(*this == rhs);
+  }
 };
 
 /// <summary>
@@ -71,6 +96,20 @@ public:
 
   std::vector<std::shared_ptr<TokenizedStmt>> getStmts() {
     return this->statements;
+  }
+
+  bool operator==(TokenizedStmtList& rhs) {
+    if (this->statements.size() != rhs.statements.size()) {
+      return false;
+    }
+    for (int i = 0; i < this->statements.size(); i++) {
+      if (*(this->statements[i]) != *(rhs.statements[i])) return false;
+    }
+    return true;
+  }
+
+  bool operator!=(TokenizedStmtList& rhs) {
+    return !(*this == rhs);
   }
 };
 
@@ -94,6 +133,17 @@ public:
   int getStatementNumber() {
     return this->statementNumber;
   }
+
+  bool operator==(TokenizedStmt& rhs) {
+    if (this->statementNumber != rhs.statementNumber) {
+      return false;
+    }
+    return true;
+  }
+
+  bool operator!=(TokenizedStmt& rhs) {
+    return !(*this == rhs);
+  }
 };
 
 /// <summary>
@@ -109,6 +159,20 @@ public:
 
   std::vector<std::shared_ptr<Token>> getContents() {
     return this->contents;
+  }
+
+  bool operator==(TokenizedSemicolonStmt& rhs) {
+    if (this->contents.size() != rhs.contents.size()) {
+      return false;
+    }
+    for (int i = 0; i < this->contents.size(); i++) {
+      if (!Token::checkEquality(this->contents[i], rhs.contents[i])) return false;
+    }
+    return static_cast<TokenizedStmt&>(*this) == rhs;
+  }
+
+  bool operator!=(TokenizedSemicolonStmt& rhs) {
+    return !(*this == rhs);
   }
 };
 
@@ -138,6 +202,27 @@ public:
     return this->relationalOp;
   }
 
+  bool operator==(TokenizedConditionalExp& rhs) {
+    if (this->leftHandSide.size() != rhs.leftHandSide.size()) {
+      return false;
+    }
+    if (this->rightHandSide.size() != rhs.rightHandSide.size()) {
+      return false;
+    }
+    for (int i = 0; i < this->leftHandSide.size(); i++) {
+      if (!Token::checkEquality(this->leftHandSide[i], rhs.leftHandSide[i])) return false;
+    }
+    for (int i = 0; i < this->rightHandSide.size(); i++) {
+      if (!Token::checkEquality(this->rightHandSide[i], rhs.rightHandSide[i])) return false;
+    }
+    if (!Token::checkEquality(this->relationalOp, rhs.relationalOp)) return false;
+    return true;
+  }
+
+  bool operator!=(TokenizedConditionalExp& rhs) {
+    return !(*this == rhs);
+  }
+
 };
 /// <summary>
 /// Conditional Statement containing a relational/Conditional expression
@@ -152,6 +237,17 @@ public:
   std::shared_ptr<TokenizedConditionalExp> getConditionalExp() {
     return this->conditionalExp;
   };
+
+  bool operator==(TokenizedConditionalStmt& rhs) {
+    if (*(this->conditionalExp) != *(rhs.conditionalExp)) {
+      return false;
+    }
+    return static_cast<TokenizedStmt&>(*this) == rhs;
+  }
+
+  bool operator!=(TokenizedConditionalStmt& rhs) {
+    return !(*this == rhs);
+  }
 };
 
 /// <summary>
@@ -175,6 +271,20 @@ public:
   std::shared_ptr<TokenizedStmtList> getElseBlock() {
     return this->elseBlock;
   }
+
+  bool operator==(TokenizedIfStmt& rhs) {
+    if (*(this->thenBlock) != *(rhs.thenBlock)) {
+      return false;
+    }
+    if (*(this->elseBlock) != *(rhs.elseBlock)) {
+      return false;
+    }
+    return static_cast<TokenizedConditionalStmt&>(*this) == rhs;
+  }
+
+  bool operator!=(TokenizedIfStmt& rhs) {
+    return !(*this == rhs);
+  }
 };
 
 /// <summary>
@@ -191,6 +301,17 @@ public:
 
   std::shared_ptr<TokenizedStmtList> getWhileBlock() {
     return this->whileBlock;
+  }
+
+  bool operator==(TokenizedWhileStmt& rhs) {
+    if (*(this->whileBlock) != *(rhs.whileBlock)) {
+      return false;
+    }
+    return static_cast<TokenizedConditionalStmt&>(*this) == rhs;
+  }
+
+  bool operator!=(TokenizedWhileStmt& rhs) {
+    return !(*this == rhs);
   }
 };
 
