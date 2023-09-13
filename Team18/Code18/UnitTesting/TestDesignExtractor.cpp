@@ -8,24 +8,16 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace UnitTesting
 {
-      std::map<std::string, std::vector<std::string>> TestDesignExtractor::procedureMap;
-      std::map<std::string, std::vector<std::string>> TestDesignExtractor::statementMap;
-      std::map<std::string, std::vector<std::string>> TestDesignExtractor::variableMap;
-      std::map<std::string, std::vector<std::string>> TestDesignExtractor::constantMap;
       TEST_CLASS(TestDesignExtractor)
       {
       private:
-            static std::map<std::string, std::vector<std::string>> procedureMap;
-            static std::map<std::string, std::vector<std::string>> statementMap;
-            static std::map<std::string, std::vector<std::string>> variableMap;
-            static std::map<std::string, std::vector<std::string>> constantMap;
+            std::map<std::string, ProcedureEntity> procedureMap;
+            std::map<std::string, StatementEntity> statementMap;
+            std::map<std::string, VariableEntity> variableMap;
+            std::map<std::string, ConstantEntity> constantMap;
       public :
             TEST_CLASS_INITIALIZE(ClassInitialize)
             {
-                  procedureMap.clear();
-                  statementMap.clear();
-                  variableMap.clear();
-                  constantMap.clear();
                   // Set up common resources or build the necessary structure here
                   /* The code in mind
                         procedure procedure1 {
