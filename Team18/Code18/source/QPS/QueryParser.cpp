@@ -152,20 +152,22 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 		return result;
 	}
 
-	return result;
+	// loop to check for such that clauses and pattern clauses
+	while (currentWordIndex < static_cast<int>(query.size())) {
+		bool isSuchThat{ hasSuchThat(query, currentWordIndex) };
+		
+		if (isSuchThat) {
+			currentWordIndex += 2;
 
-	// check 'such' and 'that' keywords are present
-	if (!hasSuchThat(query, currentWordIndex)) {
-		throw runtime_error("'such that' keywords not present");
+			if (!hasRelationalReference(query, currentWordIndex)) {
+				throw runtime_error("such that clause has invalid syntax");
+			}
+
+			// Construct query object
+		}
 	}
-	currentWordIndex += 2;
-	
-	// check for relational reference
-	if (!hasRelationalReference(query, currentWordIndex)) {
-		throw runtime_error("error parsing such that clause");
-	}
-	// substrings should look like Uses ( v , a ) 
-	
+
+	return result;
 }
 
 bool QueryParser::isDeclared(std::vector<string_view> query, int index) {
@@ -185,20 +187,32 @@ bool QueryParser::hasSuchThat(std::vector<string_view> query, int index) {
 }
 
 bool QueryParser::hasRelationalReference(std::vector<string_view> query, int index) {
-	if (index + 5 >= static_cast<int>(query.size())) {
+	if (index > static_cast<int>(query.size() - 6)) {
 		return false;
 	}
-	bool hasRelationalKeyword{};
-	bool hasOpenBracket{};
-	bool hasArg1{};
-	bool hasComma{};
-	bool hasArg2{};
-	bool hasCloseBracket{};
 
-	return hasRelationalKeyword && hasOpenBracket && hasArg1 && hasComma && hasArg2 && hasCloseBracket;
+	bool hasRelationalKeyword{ this->relationalReferences.find(query[index]) != this->relationalReferences.end()};
+	bool hasOpenBracket{ query[index + 1] == "("sv };
+	bool hasArg1{ isSyntacticallyValidClauseArg(query[index + 2]) };
+	bool hasComma{ query[index + 3] == ","sv };
+	bool hasArg2{ isSyntacticallyValidClauseArg(query[index + 4]) };
+	bool hasCloseBracket{ query[index + 5] == ")"sv };
+
+	bool hasRR{ hasRelationalKeyword && hasOpenBracket && hasArg1 && hasComma && hasArg2 && hasCloseBracket };
+	return hasRR;
 }
 
+bool QueryParser::isSyntacticallyValidClauseArg(string_view arg) {
+	bool isNum{ true };
+	bool isWildcard{ arg == "_"sv };
+	bool isSynonym{ SynonymObject::isValid(arg) };
 
+	for (int i = 0; i < static_cast<int>(arg.size()); ++i) {
+		isNum = isNum && isdigit(arg[i]);
+	}
+
+	return isNum || isWildcard || isSynonym;
+}
 
 
 

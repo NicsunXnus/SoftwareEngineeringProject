@@ -5,6 +5,7 @@
 #include <vector>
 #include <iostream>
 #include <unordered_map>
+#include <unordered_set>
 #include "QueryObjects/QueryObject.h"
 
 
@@ -19,7 +20,6 @@ using namespace std;
 */
 class QueryParser  {
 public:
-	unordered_map<string_view, shared_ptr<QueryObject>> synonyms;
 	QueryParser();
 	
 	/*
@@ -39,6 +39,13 @@ public:
 	*/
 	vector<shared_ptr<QueryObject>> validateQuery(vector<string_view> query);
 private:
+	// Synonyms declared in the query's declaration statements
+	unordered_map<string_view, shared_ptr<QueryObject>> synonyms;
+
+	// Valid relational references
+	std::unordered_set<string_view> relationalReferences
+		{"Follows"sv, "Follows*"sv, "Parent"sv, "Parent*"sv, "Uses"sv, "Modifies"sv};
+
 	/*
 	* Helper function splits the declarations into each individual declaration (up till ";")
 	*/
@@ -62,6 +69,11 @@ private:
 	* Helper function to check if a such that clause is present
 	*/
 	bool hasRelationalReference(std::vector<string_view> query, int index);
+
+	/*
+	* Helper function to check if a clause is syntactically valid
+	*/
+	bool isSyntacticallyValidClauseArg(string_view arg);
 };
 
 #endif
