@@ -18,10 +18,6 @@ namespace UnitTesting
       public :
             TEST_CLASS_INITIALIZE(ClassInitialize)
             {
-                  procedureMap.clear();
-                  statementMap.clear();
-                  variableMap.clear();
-                  constantMap.clear();
                   // Set up common resources or build the necessary structure here
                   /* The code in mind
                         procedure procedure1 {
@@ -209,5 +205,8 @@ namespace UnitTesting
             }
 
     };
-      
+      std::map<std::string, std::vector<std::string>> UnitTesting::TestDesignExtractor::procedureMap;
+      std::map<std::string, std::vector<std::string>> UnitTesting::TestDesignExtractor::statementMap;
+      std::map<std::string, std::vector<std::string>> UnitTesting::TestDesignExtractor::variableMap;
+      std::map<std::string, std::vector<std::string>> UnitTesting::TestDesignExtractor::constantMap;
 }
