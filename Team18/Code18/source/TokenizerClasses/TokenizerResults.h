@@ -177,64 +177,16 @@ public:
 };
 
 /// <summary>
-/// Conditional Expression
-/// </summary>
-class TokenizedConditionalExp {
-private:
-  std::vector<std::shared_ptr<Token>> leftHandSide;
-  std::vector<std::shared_ptr<Token>> rightHandSide;
-  std::shared_ptr<RelationalOpToken> relationalOp;
-public:
-  TokenizedConditionalExp(std::vector<std::shared_ptr<Token>> leftHandSide,
-    std::vector<std::shared_ptr<Token>> rightHandSide,
-    std::shared_ptr<RelationalOpToken> relationalOp)
-    : leftHandSide{ leftHandSide },
-      rightHandSide{ rightHandSide },
-      relationalOp{ relationalOp } {};
-
-  std::vector<std::shared_ptr<Token>> getLeftHandSide() {
-    return this->leftHandSide;
-  }
-  std::vector<std::shared_ptr<Token>> getRightHandSide() {
-    return this->rightHandSide;
-  }
-  std::shared_ptr<RelationalOpToken> getRelationalOp() {
-    return this->relationalOp;
-  }
-
-  bool operator==(TokenizedConditionalExp& rhs) {
-    if (this->leftHandSide.size() != rhs.leftHandSide.size()) {
-      return false;
-    }
-    if (this->rightHandSide.size() != rhs.rightHandSide.size()) {
-      return false;
-    }
-    for (int i = 0; i < this->leftHandSide.size(); i++) {
-      if (!Token::checkEquality(this->leftHandSide[i], rhs.leftHandSide[i])) return false;
-    }
-    for (int i = 0; i < this->rightHandSide.size(); i++) {
-      if (!Token::checkEquality(this->rightHandSide[i], rhs.rightHandSide[i])) return false;
-    }
-    if (!Token::checkEquality(this->relationalOp, rhs.relationalOp)) return false;
-    return true;
-  }
-
-  bool operator!=(TokenizedConditionalExp& rhs) {
-    return !(*this == rhs);
-  }
-
-};
-/// <summary>
 /// Conditional Statement containing a relational/Conditional expression
 /// </summary>
 class TokenizedConditionalStmt : public TokenizedStmt {
 private:
-  std::shared_ptr<TokenizedConditionalExp> conditionalExp;
+  std::vector<std::shared_ptr<Token>> conditionalExp;
 public:
-  TokenizedConditionalStmt(int statementNumber, std::shared_ptr<TokenizedConditionalExp> conditionalExp)
+  TokenizedConditionalStmt(int statementNumber, std::vector<std::shared_ptr<Token>> conditionalExp)
     : TokenizedStmt{ statementNumber },
       conditionalExp{ conditionalExp } {};
-  std::shared_ptr<TokenizedConditionalExp> getConditionalExp() {
+  std::vector<std::shared_ptr<Token>> getConditionalExp() {
     return this->conditionalExp;
   };
 
@@ -258,7 +210,7 @@ private:
   std::shared_ptr<TokenizedStmtList> thenBlock;
   std::shared_ptr<TokenizedStmtList> elseBlock;
 public:
-  TokenizedIfStmt(int statementNumber, std::shared_ptr<TokenizedConditionalExp> conditionalExp,
+  TokenizedIfStmt(int statementNumber, std::vector<std::shared_ptr<Token>> conditionalExp,
     std::shared_ptr<TokenizedStmtList> thenBlock,
     std::shared_ptr<TokenizedStmtList> elseBlock)
     : TokenizedConditionalStmt{ statementNumber, conditionalExp },
@@ -294,7 +246,7 @@ class TokenizedWhileStmt : public TokenizedConditionalStmt {
 private:
   std::shared_ptr<TokenizedStmtList> whileBlock;
 public:
-  TokenizedWhileStmt(int statementNumber, std::shared_ptr<TokenizedConditionalExp> conditionalExp,
+  TokenizedWhileStmt(int statementNumber, std::vector<std::shared_ptr<Token>> conditionalExp,
     std::shared_ptr<TokenizedStmtList> whileBlock)
     : TokenizedConditionalStmt{ statementNumber, conditionalExp },
       whileBlock{ whileBlock } {};

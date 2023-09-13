@@ -51,14 +51,11 @@ private:
 
 	}
 
-	// Tokenizes an expression, split by whitespaces. Prioritises identifiers for valid names
-	static std::vector<std::shared_ptr<Token>> tokenizeArithmeticExp(std::string arithmeticExpression) {
-		std::string trimmed = trimWhitespaces(arithmeticExpression);
+	// Tokenizes an expression, split by certain delimiters. Prioritises identifiers for valid names
+	static std::vector<std::shared_ptr<Token>> tokenizeExpression(std::string expression, std::string delimiter) {
+		std::string trimmed = trimWhitespaces(expression);
 		std::vector<std::shared_ptr<Token>> output;
-		// The regex matches all separators and operations that can be found in expressions: 
-		// ( ) + - * / % and whitespace
-		// arithmeticOpsWithWhitespace is declared in HelperFunctions.h
-		std::vector<std::string> split = splitString(trimmed, arithmeticOpsWithWhitespace, true);
+		std::vector<std::string> split = splitString(trimmed, delimiter, true);
 		for (std::string s : split) {
 			// ignore whitespaces. equality check is basically saying: not cannot find so == can find
 			// whitespaces are declared in HelperFunctions.h
@@ -75,7 +72,7 @@ private:
 	};
 
 	// Processes and validates the conditional statement declaration of a conditional statement
-	static std::pair<ConditionalDeclaration, std::shared_ptr<TokenizedConditionalExp>> processConditionalDeclaration(std::string declaration) {
+	static std::pair<ConditionalDeclaration, std::vector<std::shared_ptr<Token>>> processConditionalDeclaration(std::string declaration) {
 		std::string trimmed = trimWhitespaces(declaration);
 		if (trimmed.empty()) {
 			throw std::invalid_argument(ExceptionMessages::emptyStatementGiven);
@@ -123,33 +120,10 @@ private:
 			throw std::invalid_argument(ExceptionMessages::invalidConditionalDeclaration);
 		}
 
-		std::shared_ptr<TokenizedConditionalExp> condExp = tokenizeConditionalExp(substring(inBetween, 1, inBetween.size() - 1));
+		std::string delimiter = arithmeticOpsWithWhitespace + "|" + relationalOps;
+		std::vector<std::shared_ptr<Token>> condExp = tokenizeExpression(substring(inBetween, 1, inBetween.size() - 1), delimiter);
 
 		return std::pair(dec, condExp);
-	}
-
-	// Tokenizes the conditional expression of conditional statements
-	static std::shared_ptr<TokenizedConditionalExp> tokenizeConditionalExp(std::string conditionalExpression) {
-		std::string trimmed = trimWhitespaces(conditionalExpression);
-		std::vector<std::shared_ptr<Token>> output;
-		// The regex matches all separators and operations that can be found in conditional expressions: 
-		// < <= > >= == !=
-		// relationalOps is declared in HelperFunctions.h
-		std::vector<std::string> split = splitString(trimmed, relationalOps, true);
-		if (split.size() != 3) {
-			throw std::invalid_argument(ExceptionMessages::invalidConditionalExp);
-		}
-		std::vector<std::shared_ptr<Token>> left = tokenizeArithmeticExp(split[0]);
-		std::vector<std::shared_ptr<Token>> right = tokenizeArithmeticExp(split[2]);
-		std::shared_ptr<Token> op = TokenFactory::generateToken(trimWhitespaces(split[1]), true, false);
-		std::shared_ptr<RelationalOpToken> relOp = std::static_pointer_cast<RelationalOpToken>(op);
-
-		return std::make_shared<TokenizedConditionalExp>(left, right, relOp);
-	}
-
-	// Tokenizes a procedure. Mostly a wrapper
-	static std::shared_ptr<TokenizedProcedure> tokenizeProcedure(std::string procedureName, std::string procedureBody) {
-		return std::make_shared<TokenizedProcedure>(procedureName, tokenizeStmtList(procedureBody));
 	}
 
 	// Tokenizes a Statement List, which can be found in either IF/WHILE or Procedures
@@ -180,7 +154,7 @@ private:
 
 			/// Process the part that is within the conditional statement <IF|WHILE> <conditional> { }
 			std::string lastPreCurly = preCurlySplit.back();
-			std::pair<ConditionalDeclaration, std::shared_ptr<TokenizedConditionalExp>> processed = processConditionalDeclaration(lastPreCurly);
+			std::pair<ConditionalDeclaration, std::vector<std::shared_ptr<Token>>> processed = processConditionalDeclaration(lastPreCurly);
 			ConditionalDeclaration dec = processed.first;
 
 			// Increment and save it here first. Will be used once the IF/WHILE statements' body stmtLists are completely defined.
@@ -276,7 +250,8 @@ private:
 			throw std::invalid_argument(ExceptionMessages::invalidIdentifier);
 		}
 		std::shared_ptr<Token> left = TokenFactory::generateToken(trimmedLeft, true, true);
-		std::vector<std::shared_ptr<Token>> right = tokenizeArithmeticExp(splitByEquals[1]);
+		// arithmeticOpsWithWhitespace is defined in HelperFunctions.h
+		std::vector<std::shared_ptr<Token>> right = tokenizeExpression(splitByEquals[1], arithmeticOpsWithWhitespace);
 		output.push_back(left);
 		output.push_back(TokenFactory::generateToken("="sv, true));
 		output.insert(output.end(), right.begin(), right.end());
