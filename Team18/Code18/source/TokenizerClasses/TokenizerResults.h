@@ -13,6 +13,7 @@ class TokenizedProcedure;
 class TokenizedStmtList;
 class TokenizedStmt;
 class TokenizedSemicolonStmt;
+class TokenizedConditionalExp;
 class TokenizedConditionalStmt;
 class TokenizedIfStmt;
 class TokenizedWhileStmt;
