@@ -6,6 +6,7 @@
 #include <string_view>
 #include <vector>
 #include "TokenClasses/Token.h"
+#include "ExceptionMessages.h"
 
 using namespace std::string_view_literals;
 
@@ -126,6 +127,13 @@ static std::string trimWhitespaces(std::string str) {
 }
 
 static std::string substring(std::string str, int startIndex, int endIndex) {
+  if (endIndex < startIndex) {
+    throw std::invalid_argument(ExceptionMessages::endIndexLarger);
+  }
+  if (startIndex < 0) {
+    throw std::invalid_argument(ExceptionMessages::negativeStartIndex);
+  }
+  endIndex = endIndex > str.size() - 1 ? str.size() - 1 : endIndex; // basically min(endIndex, str.size() - 1);
   int len = endIndex - startIndex + 1;
   return str.substr(startIndex, len);
 }

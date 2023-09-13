@@ -25,5 +25,8 @@ public:
   inline static const std::string missingConditionalDeclaration = "No conditional declaration before curly braces {} detected";
   inline static const std::string missingElseBlock = "Else Block not found after an if-then block";
   inline static const std::string missingElseKeyword = "Else keyword not found between the blocks";
+
+  inline static const std::string endIndexLarger = "End index is larger than start index";
+  inline static const std::string negativeStartIndex = "Start index cannot be negative";
 };
 #endif

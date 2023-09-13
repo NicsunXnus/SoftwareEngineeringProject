@@ -215,4 +215,33 @@ namespace HelperFunctions_Test
 			assert(output == expected);
 		}
 	};
+
+	TEST_CLASS(substring_Test) {
+		TEST_METHOD(validIndexes_success) {
+			std::string input = "0123456";
+			std::string output = substring(input, 3, 5);
+			std::string expected = "345";
+			assert(output == expected);
+		}
+		TEST_METHOD(negativeStartIndex_failure) {
+			try {
+				std::string input = "0123456";
+				std::string output = substring(input, -1, 5);
+				assert(false);
+			}
+			catch (std::invalid_argument e) {
+				assert(true);
+			}
+		}
+		TEST_METHOD(endIndexLarger_failure) {
+			try {
+				std::string input = "0123456";
+				std::string output = substring(input, 3, 2);
+				assert(false);
+			}
+			catch (std::invalid_argument e) {
+				assert(true);
+			}
+		}
+	};
 }

@@ -65,9 +65,6 @@
     <ClCompile Include="TestDesignExtractor.cpp">
       <Filter>Source Files\SP</Filter>
     </ClCompile>
-    <ClCompile Include="TestAST.cpp">
-      <Filter>Source Files\SP</Filter>
-    </ClCompile>
     <ClCompile Include="TestPQLTokenizer.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>

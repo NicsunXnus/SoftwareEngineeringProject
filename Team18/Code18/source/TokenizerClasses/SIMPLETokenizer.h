@@ -8,9 +8,9 @@
 #include <stack>
 #include <utility>
 
-#include "ExceptionMessages.h"
 #include "TokenFactory.h"
 #include "TokenizerResults.h"
+#include "../ExceptionMessages.h"
 #include "../HelperFunctions.h"
 
 using namespace std::string_view_literals;
