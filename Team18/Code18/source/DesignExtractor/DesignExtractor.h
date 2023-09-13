@@ -119,8 +119,8 @@ public:
     void handleCondExpr(std::shared_ptr<CondExprNode> condExprNode) {
         if (auto relExprNode = std::dynamic_pointer_cast<RelExprNode>(condExprNode)) {
             // Get the left and right expressions
-            std::shared_ptr<ExprNode> leftExpr = relExprNode->getLeftExpr();
-            std::shared_ptr<ExprNode> rightExpr = relExprNode->getRightExpr();
+            std::shared_ptr<ExprNode> leftExpr = relExprNode->getLeftRelFactor();
+            std::shared_ptr<ExprNode> rightExpr = relExprNode->getRightRelFactor();
 
             // Extract the entities from the left and right expressions
             extractEntities(leftExpr);
@@ -131,21 +131,19 @@ public:
             std::shared_ptr<CondExprNode> condExpr = notNode->getLeftCondExpr();
             extractEntities(condExpr);
         }
-        else if (auto orNode = std::dynamic_pointer_cast<OrNode>(condExprNode) ||
-            auto andNode = std::dynamic_pointer_cast<AndNode>(condExprNode)) {
-            std::shared_ptr<CondExprNode> leftCondExpr;
-            std::shared_ptr<CondExprNode> rightCondExpr;
-            if (orNode) {
-                leftCondExpr = orNode.getLeftCondExpr();
-                rightCondExpr = orNode.getRightCondExpr();
-            }
-            else {
-                leftCondExpr = andNode.getLeftCondExpr();
-                rightCondExpr = andNode.getRightCondExpr();
-            }
+        else if (auto orNode = std::dynamic_pointer_cast<OrNode>(condExprNode)) {
+            // Cast succeeded, it's an OrNode
+            std::shared_ptr<CondExprNode> leftCondExpr = orNode->getLeftCondExpr();
+            std::shared_ptr<CondExprNode> rightCondExpr = orNode->getRightCondExpr();
             extractEntities(leftCondExpr);
             extractEntities(rightCondExpr);
-
+        }
+        else if (auto andNode = std::dynamic_pointer_cast<AndNode>(condExprNode)) {
+            // Cast succeeded, it's an AndNode
+            std::shared_ptr<CondExprNode> leftCondExpr = andNode->getLeftCondExpr();
+            std::shared_ptr<CondExprNode> rightCondExpr = andNode->getRightCondExpr();
+            extractEntities(leftCondExpr);
+            extractEntities(rightCondExpr);
         }
         else {
             std::cerr << "Unsupported ASTNode type in handleCondExpr." << std::endl;
