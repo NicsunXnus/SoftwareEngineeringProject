@@ -84,6 +84,8 @@ public:
                 statements = procedureNode->getStatements();
             }
             else if (ifNode) {
+                std::vector<std::shared_ptr<StatementNode>> ifStatements = ifNode->getStatements();
+                std::vector<std::shared_ptr<StatementNode>> elseStatements = ifNode->getElseStatements();
                 statements.insert(statements.end(), ifStatements.begin(), ifStatements.end());
                 statements.insert(statements.end(), elseStatements.begin(), elseStatements.end());
                 parentStatementNumber = ifNode->getStatementNumber();
