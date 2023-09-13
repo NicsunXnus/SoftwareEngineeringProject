@@ -105,6 +105,7 @@ public:
             std::vector<std::shared_ptr<StatementNode>> elseStatements = ifNode->getElseStatements();
             std::vector<std::shared_ptr<StatementNode>> statements;
             statements.insert(statements.end(), ifStatements.begin(), ifStatements.end());
+            statements.insert(statements.end(), elseStatements.begin(), elseStatements.end());
             for (const auto& statement : statements) {
                 extractEntities(statement);
             }
