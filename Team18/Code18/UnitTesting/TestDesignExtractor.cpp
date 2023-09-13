@@ -148,7 +148,10 @@ namespace UnitTesting
                         const std::vector<std::string>& actual = statementMap[statementType];
 
                         for (const auto& value : expected) {
-                              Assert::AreEqual(value.c_str(), actual[std::distance(actual.begin(), std::find(actual.begin(), actual.end(), value))].c_str());
+                              std::string expectedStr = value;
+                              std::string actualStr = actual[std::distance(actual.begin(), std::find(actual.begin(), actual.end(), value))];
+
+                              Assert::AreEqual(expectedStr, actualStr);
                         }
                   }
             
@@ -158,15 +161,16 @@ namespace UnitTesting
                   {"z", {"3", "6", "7", "9"}},
                   {"a", {"11", "12", "13"}}
                   };
-
-                  // Loop through each statement type and check if the expected values are present
                   for (const auto& entry : expectedVariableValues) {
                         const std::string& variableName = entry.first;
                         const std::vector<std::string>& expected = entry.second;
                         const std::vector<std::string>& actual = variableMap[variableName];
 
                         for (const auto& value : expected) {
-                              Assert::AreEqual(value.c_str(), actual[std::distance(actual.begin(), std::find(actual.begin(), actual.end(), value))].c_str());
+                              std::string expectedStr = value;
+                              std::string actualStr = actual[std::distance(actual.begin(), std::find(actual.begin(), actual.end(), value))];
+
+                              Assert::AreEqual(expectedStr, actualStr);
                         }
                   }
             
@@ -176,8 +180,6 @@ namespace UnitTesting
                   {"30", {"9"}},
                   {"40", {"9"}}
                   };
-
-                  // Loop through each variable and check if the expected values are present
                   
 
                   // Loop through each constant and check if the expected values are present
@@ -187,7 +189,10 @@ namespace UnitTesting
                         const std::vector<std::string>& actual = constantMap[constantValue];
 
                         for (const auto& value : expected) {
-                              Assert::AreEqual(value.c_str(), actual[std::distance(actual.begin(), std::find(actual.begin(), actual.end(), value))].c_str());
+                              std::string expectedStr = value;
+                              std::string actualStr = actual[std::distance(actual.begin(), std::find(actual.begin(), actual.end(), value))];
+
+                              Assert::AreEqual(expectedStr, actualStr);
                         }
                   }
             }
