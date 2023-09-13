@@ -106,8 +106,8 @@ namespace UnitTesting
                   std::shared_ptr<ProgramNode> testProgramNode = std::make_shared<ProgramNode>(testProcedureNodes);
 
                   // Create ParentsFollowsAbstraction
-                  std::shared_ptr<ParentsFollowsAbstraction> testParentsFollowsAbstraction = std::make_shared<ParentsFollowsAbstraction>();
-
+                  ParentsFollowsAbstraction testParentsFollowsAbstraction = ParentsFollowsAbstraction();
+                  
                   // Extract abstraction from program node
                   testParentsFollowsAbstraction->extractAbstraction(testProgramNode);
 
