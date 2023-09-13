@@ -16,7 +16,7 @@ namespace UnitTesting
             std::map<std::string, VariableEntity> variableMap;
             std::map<std::string, ConstantEntity> constantMap;
       public :
-            TEST_CLASS_INITIALIZE(ClassInitialize)
+            TEST_METHOD(TestSimpleASTExtraction)
             {
                   // Set up common resources or build the necessary structure here
                   /* The code in mind
@@ -124,19 +124,13 @@ namespace UnitTesting
                   std::shared_ptr<ConstantEntity> testConstantEntity = testDesignExtractor.getConstantEntity();
 
                   // Get maps from entities
-                  procedureMap = *(testProcedureEntity->getMap());
-                  statementMap = *(testStatementEntity->getMap());
-                  variableMap = *(testVariableEntity->getMap());
-                  constantMap = *(testConstantEntity->getMap());
-            }
+                  std::map<std::string, std::vector<std::string>> procedureMap = *(testProcedureEntity->getMap());
+                  std::map<std::string, std::vector<std::string>> statementMap = *(testStatementEntity->getMap());
+                  std::map<std::string, std::vector<std::string>> variableMap = *(testVariableEntity->getMap());
+                  std::map<std::string, std::vector<std::string>> constantMap = *(testConstantEntity->getMap());
 
-            TEST_METHOD(ProcedureExtraction)
-            {
                   Assert::AreEqual(procedureMap["procedure1"].empty(), true);
-            }
 
-            TEST_METHOD(StatementExtraction)
-            {
                   std::map<std::string, std::vector<std::string>> expectedValues = {
                   {"read", {"1", "5", "8"}},
                   {"print", {"2", "4", "10", "12"}},
@@ -157,10 +151,7 @@ namespace UnitTesting
                               Assert::AreEqual(value.c_str(), actual[std::distance(actual.begin(), std::find(actual.begin(), actual.end(), value))].c_str());
                         }
                   }
-            }
-
-            TEST_METHOD(VariableExtraction)
-            {
+            
                   std::map<std::string, std::vector<std::string>> expectedVariableValues = {
                   {"x", {"1", "4", "5", "10"}},
                   {"y", {"2", "8"}},
@@ -178,10 +169,7 @@ namespace UnitTesting
                               Assert::AreEqual(value.c_str(), actual[std::distance(actual.begin(), std::find(actual.begin(), actual.end(), value))].c_str());
                         }
                   }
-            }
-
-            TEST_METHOD(ConstantExtraction)
-            {
+            
                   std::map<std::string, std::vector<std::string>> expectedConstantValues = {
                   {"10", {"3", "6", "11", "12"}},
                   {"20", {"3", "7"}},
