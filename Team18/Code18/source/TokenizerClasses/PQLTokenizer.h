@@ -19,7 +19,7 @@ static std::vector<std::string_view> tokenize(std::string_view pql) {
 	bool isWord{ false };
 
 	for (int i = 0; i < pql.length(); ++i) {
-		if (pql[i] == ';' || pql[i] == ',' || pql[i] == '(' || pql[i] == ')') {
+		if (pql[i] == ';' || pql[i] == ',' || pql[i] == '(' || pql[i] == ')' || pql[i] == '_') {
 			if (isWord) {
 				tokens.push_back(pql.substr(startIndex, i - startIndex));
 				isWord = false;

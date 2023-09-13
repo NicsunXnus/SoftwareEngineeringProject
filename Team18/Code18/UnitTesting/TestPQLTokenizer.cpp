@@ -102,5 +102,28 @@ namespace UnitTesting
 			Assert::IsTrue(test[14] == "_"sv);
 			Assert::IsTrue(test[15] == ")"sv);
 		}
+
+		TEST_METHOD(TestTokenizePatternQuery)
+		{
+			vector<string_view> test = tokenize("Select pattern a (_, _ ) and pattern b (__ , _)");
+			Assert::IsTrue(test[0] == "Select"sv);
+			Assert::IsTrue(test[1] == "pattern"sv);
+			Assert::IsTrue(test[2] == "a"sv);
+			Assert::IsTrue(test[3] == "("sv);
+			Assert::IsTrue(test[4] == "_"sv);
+			Assert::IsTrue(test[5] == ","sv);
+			Assert::IsTrue(test[6] == "_"sv);
+			Assert::IsTrue(test[7] == ")"sv);
+			Assert::IsTrue(test[8] == "and"sv);
+			Assert::IsTrue(test[9] == "pattern"sv);
+			Assert::IsTrue(test[10] == "b"sv);
+			Assert::IsTrue(test[11] == "("sv);
+			Assert::IsTrue(test[12] == "_"sv);
+			Assert::IsTrue(test[13] == "_"sv);
+			Assert::IsTrue(test[14] == ","sv);
+			Assert::IsTrue(test[15] == "_"sv);
+			Assert::IsTrue(test[16] == ")"sv);
+
+		}
 	};
 }
