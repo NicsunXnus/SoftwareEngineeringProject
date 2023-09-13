@@ -155,6 +155,7 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 	// loop to check for such that clauses and pattern clauses
 	while (currentWordIndex < static_cast<int>(query.size())) {
 		bool isSuchThat{ hasSuchThat(query, currentWordIndex) };
+		bool isPattern{ hasPattern(query, currentWordIndex) };
 		
 		if (isSuchThat) {
 			currentWordIndex += 2;
@@ -162,8 +163,15 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 			if (!hasRelationalReference(query, currentWordIndex)) {
 				throw runtime_error("such that clause has invalid syntax");
 			}
+			currentWordIndex += 6;
 
+			// TODO
 			// Construct query object
+
+		} else if (isPattern) {
+			currentWordIndex += 1;
+
+			
 		}
 	}
 
@@ -180,6 +188,10 @@ bool QueryParser::isDeclared(std::vector<string_view> query, int index) {
 
 bool QueryParser::hasSelect(std::vector<string_view> query, int index) {
 	return index < static_cast<int>(query.size()) && query[index] == "Select"sv;
+}
+
+bool QueryParser::hasPattern(std::vector<string_view> query, int index) {
+	return index < static_cast<int>(query.size()) && query[index] == "pattern"sv;
 }
 
 bool QueryParser::hasSuchThat(std::vector<string_view> query, int index) {
