@@ -84,7 +84,8 @@ public:
                 statements = procedureNode->getStatements();
             }
             else if (ifNode) {
-                statements = ifNode->getStatements();
+                statements.insert(statements.end(), ifStatements.begin(), ifStatements.end());
+                statements.insert(statements.end(), elseStatements.begin(), elseStatements.end());
                 parentStatementNumber = ifNode->getStatementNumber();
             }
             else if (whileNode) {
