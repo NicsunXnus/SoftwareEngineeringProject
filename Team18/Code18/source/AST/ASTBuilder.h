@@ -402,7 +402,10 @@ public:
             else {
                 while (!ops.empty() && precedence(ops.top()) >= precedence(currToken->getName())) {
                     if (ASTBuilder::isComparisonOpr(ops.top())) {
-                        assert(!relValues.empty());
+                        //assert(!relValues.empty());
+                        if (relValues.size() < 2) {
+                            throw std::runtime_error("Need 2 comparison operatees to operate on.");
+                        }
                         std::shared_ptr<ExprNode> b = relValues.top(); relValues.pop();
                         std::shared_ptr<ExprNode> a = relValues.top();
                         relValues.pop();
@@ -410,19 +413,29 @@ public:
                         ops.pop();
                     }
                     else if (ASTBuilder::isBoolOpr(ops.top())) {
-                        assert(!condValues.empty());
+                        //assert(!condValues.empty());
+                        if (condValues.empty()) {
+                            throw std::runtime_error("Missing conditional operatee.");
+                        }
                         std::shared_ptr<CondExprNode> b = condValues.top(); condValues.pop();
                         if (ops.top() == "!") {
                             condValues.push(applyBoolOperation(ops.top(), std::shared_ptr<CondExprNode>(), b));
                         }
                         else {
+                            //assert(!condValues.empty());
+                            if (condValues.empty()) {
+                                throw std::runtime_error("Missing conditional operatee.");
+                            }
                             std::shared_ptr<CondExprNode> a = condValues.top(); condValues.pop();
                             condValues.push(applyBoolOperation(ops.top(), a, b));
                         }
                         ops.pop();
                     }
                     else {
-                        assert(!relValues.empty());
+                        //assert(!relValues.empty());
+                        if (relValues.size() < 2) {
+                            throw std::runtime_error("Need 2 operatees to operate on.");
+                        }
                         std::shared_ptr<ExprNode> b = relValues.top(); relValues.pop();
                         std::shared_ptr<ExprNode> a = relValues.top();
                         relValues.pop();
@@ -435,7 +448,10 @@ public:
         }
         while (!ops.empty()) {
             if (ASTBuilder::isComparisonOpr(ops.top())) {
-                assert(!relValues.empty());
+                //assert(!relValues.empty());
+                if (relValues.size() < 2) {
+                    throw std::runtime_error("Need 2 operatees to operate on.");
+                }
                 std::shared_ptr<ExprNode> b = relValues.top(); relValues.pop();
                 std::shared_ptr<ExprNode> a = relValues.top();
                 relValues.pop();
@@ -443,19 +459,29 @@ public:
                 ops.pop();
             }
             else if (ASTBuilder::isBoolOpr(ops.top())) {
-                assert(!condValues.empty());
+                //assert(!condValues.empty());
+                if (condValues.empty()) {
+                    throw std::runtime_error("Missing conditional operatee.");
+                }
                 std::shared_ptr<CondExprNode> b = condValues.top(); condValues.pop();
                 if (ops.top() == "!") {
                     condValues.push(applyBoolOperation(ops.top(), std::shared_ptr<CondExprNode>(), b));
                 }
                 else {
+                    //assert(!condValues.empty());
+                    if (condValues.empty()) {
+                        throw std::runtime_error("Missing conditional operatee.");
+                    }
                     std::shared_ptr<CondExprNode> a = condValues.top(); condValues.pop();
                     condValues.push(applyBoolOperation(ops.top(), a, b));
                 }
                 ops.pop();
             }
             else {
-                assert(!relValues.empty());
+                //assert(!relValues.empty());
+                if (relValues.size() < 2) {
+                    throw std::runtime_error("Need 2 operatees to operate on.");
+                }
                 std::shared_ptr<ExprNode> b = relValues.top(); relValues.pop();
                 std::shared_ptr<ExprNode> a = relValues.top();
                 relValues.pop();
