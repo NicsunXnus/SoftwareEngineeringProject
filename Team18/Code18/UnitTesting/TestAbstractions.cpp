@@ -125,60 +125,60 @@ namespace UnitTesting
                   Assert::AreEqual(parentsMap["11"].empty(), true);
                   Assert::AreEqual(parentsMap["12"].empty(), true);
 
-                  Assert::AreEqual(parentsMap["7"][0], "6");
-                  Assert::AreEqual(parentsMap["8"][0], "6");
-                  Assert::AreEqual(parentsMap["9"][0], "6");
-                  Assert::AreEqual(parentsMap["10"][0], "6");
+                  Assert::AreEqual(parentsMap["7"][0], std::string("6"));
+                  Assert::AreEqual(parentsMap["8"][0], std::string("6"));
+                  Assert::AreEqual(parentsMap["9"][0], std::string("6"));
+                  Assert::AreEqual(parentsMap["10"][0], std::string("6"));
 
-                  Assert::AreEqual(parentsMap["13"][0], "12");
-                  Assert::AreEqual(parentsMap["14"][0], "12");
+                  Assert::AreEqual(parentsMap["13"][0], std::string("12"));
+                  Assert::AreEqual(parentsMap["14"][0], std::string("12"));
                   
                   // Check if the followsMap is extracted correctly
-                  Assert::AreEqual(followsMap["1"][0], "2");
-                  Assert::AreEqual(followsMap["1"][1], "3");
-                  Assert::AreEqual(followsMap["1"][2], "4");
-                  Assert::AreEqual(followsMap["1"][3], "5");
-                  Assert::AreEqual(followsMap["1"][4], "6");
-                  Assert::AreEqual(followsMap["1"][5], "11");
-                  Assert::AreEqual(followsMap["1"][6], "12");
+                  Assert::AreEqual(followsMap["1"][0], std::string("2"));
+                  Assert::AreEqual(followsMap["1"][1], std::string("3"));
+                  Assert::AreEqual(followsMap["1"][2], std::string("4"));
+                  Assert::AreEqual(followsMap["1"][3], std::string("5"));
+                  Assert::AreEqual(followsMap["1"][4], std::string("6"));
+                  Assert::AreEqual(followsMap["1"][5], std::string("11"));
+                  Assert::AreEqual(followsMap["1"][6], std::string("12"));
 
-                  Assert::AreEqual(followsMap["2"][0], "3");
-                  Assert::AreEqual(followsMap["2"][1], "4");
-                  Assert::AreEqual(followsMap["2"][2], "5");
-                  Assert::AreEqual(followsMap["2"][3], "6");
-                  Assert::AreEqual(followsMap["2"][4], "11");
-                  Assert::AreEqual(followsMap["2"][5], "12");
+                  Assert::AreEqual(followsMap["2"][0], std::string("3"));
+                  Assert::AreEqual(followsMap["2"][1], std::string("4"));
+                  Assert::AreEqual(followsMap["2"][2], std::string("5"));
+                  Assert::AreEqual(followsMap["2"][3], std::string("6"));
+                  Assert::AreEqual(followsMap["2"][4], std::string("11"));
+                  Assert::AreEqual(followsMap["2"][5], std::string("12"));
 
-                  Assert::AreEqual(followsMap["3"][0], "4");
-                  Assert::AreEqual(followsMap["3"][1], "5");
-                  Assert::AreEqual(followsMap["3"][2], "6");
-                  Assert::AreEqual(followsMap["3"][3], "11");
-                  Assert::AreEqual(followsMap["3"][4], "12");
+                  Assert::AreEqual(followsMap["3"][0], std::string("4"));
+                  Assert::AreEqual(followsMap["3"][1], std::string("5"));
+                  Assert::AreEqual(followsMap["3"][2], std::string("6"));
+                  Assert::AreEqual(followsMap["3"][3], std::string("11"));
+                  Assert::AreEqual(followsMap["3"][4], std::string("12"));
 
-                  Assert::AreEqual(followsMap["4"][0], "5");
-                  Assert::AreEqual(followsMap["4"][1], "6");
-                  Assert::AreEqual(followsMap["4"][2], "11");
-                  Assert::AreEqual(followsMap["4"][3], "12");
+                  Assert::AreEqual(followsMap["4"][0], std::string("5"));
+                  Assert::AreEqual(followsMap["4"][1], std::string("6"));
+                  Assert::AreEqual(followsMap["4"][2], std::string("11"));
+                  Assert::AreEqual(followsMap["4"][3], std::string("12"));
 
-                  Assert::AreEqual(followsMap["5"][0], "6");
-                  Assert::AreEqual(followsMap["5"][1], "11");
-                  Assert::AreEqual(followsMap["5"][2], "12");
+                  Assert::AreEqual(followsMap["5"][0], std::string("6"));
+                  Assert::AreEqual(followsMap["5"][1], std::string("11"));
+                  Assert::AreEqual(followsMap["5"][2], std::string("12"));
 
-                  Assert::AreEqual(followsMap["6"][0], "11");
-                  Assert::AreEqual(followsMap["6"][1], "12");
+                  Assert::AreEqual(followsMap["6"][0], std::string("11"));
+                  Assert::AreEqual(followsMap["6"][1], std::string("12"));
 
-                  Assert::AreEqual(followsMap["11"][0], "12");
+                  Assert::AreEqual(followsMap["11"][0], std::string("12"));
 
                   Assert::AreEqual(followsMap["12"].empty(), true);
 
-                  Assert::AreEqual(followsMap["7"][0], "8");
-                  Assert::AreEqual(followsMap["7"][1], "9");
-                  Assert::AreEqual(followsMap["7"][2], "10");
+                  Assert::AreEqual(followsMap["7"][0], std::string("8"));
+                  Assert::AreEqual(followsMap["7"][1], std::string("9"));
+                  Assert::AreEqual(followsMap["7"][2], std::string("10"));
 
-                  Assert::AreEqual(followsMap["8"][0], "9");
-                  Assert::AreEqual(followsMap["8"][1], "10");
+                  Assert::AreEqual(followsMap["8"][0], std::string("9"));
+                  Assert::AreEqual(followsMap["8"][1], std::string("10"));
 
-                  Assert::AreEqual(followsMap["9"][0], "10");
+                  Assert::AreEqual(followsMap["9"][0], std::string("10"));
 
                   Assert::AreEqual(followsMap["10"].empty(), true);
 
