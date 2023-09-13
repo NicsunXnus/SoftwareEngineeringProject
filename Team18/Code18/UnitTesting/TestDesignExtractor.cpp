@@ -131,70 +131,63 @@ namespace UnitTesting
 
                   Assert::AreEqual(procedureMap["procedure1"].empty(), true);
 
-                  std::map<std::string, std::vector<std::string>> expectedValues = {
-                  {"read", {"1", "5", "8"}},
-                  {"print", {"2", "4", "10", "12"}},
-                  {"assign", {"3", "7", "9"}},
-                  {"stmt", {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14"}},
-                  {"if", {"6"}},
-                  {"while", {"12"}},
-                  {"call", {"14"}}
-                  };
-
-                  // Loop through each statement type and check if the expected values are present
-                  for (const auto& entry : expectedValues) {
-                        const std::string& statementType = entry.first;
-                        const std::vector<std::string>& expected = entry.second;
-                        const std::vector<std::string>& actual = statementMap[statementType];
-
-                        for (const auto& value : expected) {
-                              std::string expectedStr = value;
-                              std::string actualStr = actual[std::distance(actual.begin(), std::find(actual.begin(), actual.end(), value))];
-
-                              Assert::AreEqual(expectedStr, actualStr);
-                        }
-                  }
+                  Assert::AreEqual(statementMap["read"][0], std::to_string(1));
+                  Assert::AreEqual(statementMap["read"][1], std::to_string(5));
+                  Assert::AreEqual(statementMap["read"][2], std::to_string(8));
+                  Assert::AreEqual(statementMap["print"][0], std::to_string(2));
+                  Assert::AreEqual(statementMap["print"][1], std::to_string(4));
+                  Assert::AreEqual(statementMap["print"][2], std::to_string(10));
+                  Assert::AreEqual(statementMap["print"][3], std::to_string(12));
+                  Assert::AreEqual(statementMap["assign"][0], std::to_string(3));
+                  Assert::AreEqual(statementMap["assign"][1], std::to_string(7));
+                  Assert::AreEqual(statementMap["assign"][2], std::to_string(9));
+                  Assert::AreEqual(statementMap["stmt"][0], std::to_string(1));
+                  Assert::AreEqual(statementMap["stmt"][1], std::to_string(2));
+                  Assert::AreEqual(statementMap["stmt"][2], std::to_string(3));
+                  Assert::AreEqual(statementMap["stmt"][3], std::to_string(4));
+                  Assert::AreEqual(statementMap["stmt"][4], std::to_string(5));
+                  Assert::AreEqual(statementMap["stmt"][5], std::to_string(6));
+                  Assert::AreEqual(statementMap["stmt"][6], std::to_string(7));
+                  Assert::AreEqual(statementMap["stmt"][7], std::to_string(8));
+                  Assert::AreEqual(statementMap["stmt"][8], std::to_string(9));
+                  Assert::AreEqual(statementMap["stmt"][9], std::to_string(10));
+                  Assert::AreEqual(statementMap["stmt"][10], std::to_string(11));
+                  Assert::AreEqual(statementMap["stmt"][11], std::to_string(12));
+                  Assert::AreEqual(statementMap["stmt"][12], std::to_string(13));
+                  Assert::AreEqual(statementMap["stmt"][13], std::to_string(14));
+                  Assert::AreEqual(statementMap["if"][0], std::to_string(6));
+                  Assert::AreEqual(statementMap["while"][0], std::to_string(12));
+                  Assert::AreEqual(statementMap["call"][0], std::to_string(14));
             
-                  std::map<std::string, std::vector<std::string>> expectedVariableValues = {
-                  {"x", {"1", "4", "5", "10"}},
-                  {"y", {"2", "8"}},
-                  {"z", {"3", "6", "7", "9"}},
-                  {"a", {"11", "12", "13"}}
-                  };
-                  for (const auto& entry : expectedVariableValues) {
-                        const std::string& variableName = entry.first;
-                        const std::vector<std::string>& expected = entry.second;
-                        const std::vector<std::string>& actual = variableMap[variableName];
+                  Assert::AreEqual(variableMap["x"][0], std::to_string(1));
+                  Assert::AreEqual(variableMap["x"][1], std::to_string(4));
+                  Assert::AreEqual(variableMap["x"][2], std::to_string(5));
+                  Assert::AreEqual(variableMap["x"][3], std::to_string(10));
 
-                        for (const auto& value : expected) {
-                              std::string expectedStr = value;
-                              std::string actualStr = actual[std::distance(actual.begin(), std::find(actual.begin(), actual.end(), value))];
+                  Assert::AreEqual(variableMap["y"][0], std::to_string(2));
+                  Assert::AreEqual(variableMap["y"][1], std::to_string(8));
 
-                              Assert::AreEqual(expectedStr, actualStr);
-                        }
-                  }
-            
-                  std::map<std::string, std::vector<std::string>> expectedConstantValues = {
-                  {"10", {"3", "6", "11", "12"}},
-                  {"20", {"3", "7"}},
-                  {"30", {"9"}},
-                  {"40", {"9"}}
-                  };
+                  Assert::AreEqual(variableMap["z"][0], std::to_string(3));
+                  Assert::AreEqual(variableMap["z"][1], std::to_string(6));
+                  Assert::AreEqual(variableMap["z"][2], std::to_string(7));
+                  Assert::AreEqual(variableMap["z"][3], std::to_string(9));
                   
+                  Assert::AreEqual(variableMap["a"][0], std::to_string(11));
+                  Assert::AreEqual(variableMap["a"][1], std::to_string(12));
+                  Assert::AreEqual(variableMap["a"][2], std::to_string(13));
 
-                  // Loop through each constant and check if the expected values are present
-                  for (const auto& entry : expectedConstantValues) {
-                        const std::string& constantValue = entry.first;
-                        const std::vector<std::string>& expected = entry.second;
-                        const std::vector<std::string>& actual = constantMap[constantValue];
+                  // Check if the constant entity is extracted correctly
+                  Assert::AreEqual(constantMap["10"][0], std::to_string(3));
+                  Assert::AreEqual(constantMap["10"][1], std::to_string(6));
+                  Assert::AreEqual(constantMap["10"][2], std::to_string(11));
+                  Assert::AreEqual(constantMap["10"][3], std::to_string(12));
 
-                        for (const auto& value : expected) {
-                              std::string expectedStr = value;
-                              std::string actualStr = actual[std::distance(actual.begin(), std::find(actual.begin(), actual.end(), value))];
+                  Assert::AreEqual(constantMap["20"][0], std::to_string(3));
+                  Assert::AreEqual(constantMap["20"][1], std::to_string(7));
+                  
+                  Assert::AreEqual(constantMap["30"][0], std::to_string(9));
 
-                              Assert::AreEqual(expectedStr, actualStr);
-                        }
-                  }
+                  Assert::AreEqual(constantMap["40"][0], std::to_string(9));
             }
 
     };
