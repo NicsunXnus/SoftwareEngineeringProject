@@ -112,8 +112,8 @@ namespace UnitTesting
                   testParentsFollowsAbstraction->extractAbstraction(testProgramNode);
 
                   // Get abstraction map from abstraction entity
-                  std::map<std::string, std::vector<string>> parentsMap = *(testParentsFollowsAbstraction->getParentsMap());
-                  std::map<std::string, std::vector<string>> followsMap = *(testParentsFollowsAbstraction->getFollowsMap());
+                  std::map<std::string, std::vector<string>> parentsMap = *(testParentsFollowsAbstraction->getParentsStorageMap());
+                  std::map<std::string, std::vector<string>> followsMap = *(testParentsFollowsAbstraction->getFollowsStorageMap());
                   
                   // Check if the parentsMap is extracted correctly
                   Assert::AreEqual(parentsMap["1"].empty(), true);
