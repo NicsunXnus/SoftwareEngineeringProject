@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string_view>
+#include <vector>
 #include "QueryObject.h"
 
 /**
@@ -16,9 +17,9 @@ public:
 
 	};
 	/*
-	* This function creates the QueryObject, overriden in the subclasses for each type (design entities, clauses etc.)
+	* This function creates the QueryObject, overriden in the subclasses for design entities
 	*/
-	virtual shared_ptr<QueryObject> create(string_view type) = 0;
+	virtual inline shared_ptr<QueryObject> create(vector<string_view> data) = 0;
 
 	/*
 	* This function creates the factory for each type (design entities, clauses etc.)

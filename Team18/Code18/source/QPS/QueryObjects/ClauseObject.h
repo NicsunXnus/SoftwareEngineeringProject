@@ -1,10 +1,9 @@
+#pragma once
 #ifndef CLAUSEOBJECT_H
 #define CLAUSEOBJECT_H
 
 #include <string_view>
 #include "QueryObject.h"
-#include "../DataAccessLayer.h"
-#include "../../Constants/QPSPKB.h"
 
 /*
 * This class represents a Query object, for clause entities
@@ -13,8 +12,8 @@ class ClauseObject : public QueryObject {
 private:
 	map<string, vector<string>> res;
 public:
-	ClauseObject(string_view tokenName)
-		: QueryObject{ tokenName } {
+	ClauseObject(vector<string_view> data)
+		: QueryObject{ data } {
 
 	}
 
@@ -32,8 +31,8 @@ public:
 */
 class UsesObject : public ClauseObject {
 public:
-	UsesObject(string_view tokenName)
-		: ClauseObject{ tokenName } {
+	UsesObject(vector<string_view> data)
+		: ClauseObject{ data } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
 		setResult(dataAccessLayer->getClause());
@@ -46,8 +45,8 @@ public:
 */
 class ModifiesObject : public ClauseObject {
 public:
-	ModifiesObject(string_view tokenName)
-		: ClauseObject{ tokenName } {
+	ModifiesObject(vector<string_view> data)
+		: ClauseObject{ data } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
 		setResult(dataAccessLayer->getClause());
@@ -60,8 +59,8 @@ public:
 */
 class FollowsObject : public ClauseObject {
 public:
-	FollowsObject(string_view tokenName)
-		: ClauseObject{ tokenName } {
+	FollowsObject(vector<string_view> data)
+		: ClauseObject{ data } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
 		setResult(dataAccessLayer->getClause());
@@ -74,8 +73,8 @@ public:
 */
 class FollowsStarObject : public ClauseObject {
 public:
-	FollowsStarObject(string_view tokenName)
-		: ClauseObject{ tokenName } {
+	FollowsStarObject(vector<string_view> data)
+		: ClauseObject{ data } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
 		setResult(dataAccessLayer->getClause());
@@ -88,8 +87,8 @@ public:
 */
 class ParentObject : public ClauseObject {
 public:
-	ParentObject(string_view tokenName)
-		: ClauseObject{ tokenName } {
+	ParentObject(vector<string_view> data)
+		: ClauseObject{ data } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
 		setResult(dataAccessLayer->getClause());
@@ -102,8 +101,8 @@ public:
 */
 class ParentStarObject : public ClauseObject {
 public:
-	ParentStarObject(string_view tokenName)
-		: ClauseObject{ tokenName } {
+	ParentStarObject(vector<string_view> data)
+		: ClauseObject{ data } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
 		setResult(dataAccessLayer->getClause());

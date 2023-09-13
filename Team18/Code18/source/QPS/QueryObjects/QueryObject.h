@@ -3,6 +3,7 @@
 #define QUERYOBJECT_H
 
 #include "../DataAccessLayer.h"
+#include "../../Constants/QPSPKB.h"
 #include <variant>
 
 
@@ -15,17 +16,21 @@ using namespace std;
 
 class QueryObject {
 private:
-	string_view tokenName;
+	vector<string_view> data; // stores information about the queryObject, such as its name, or arguments for clauses
 public:
-	QueryObject(string_view tokenName)
-		: tokenName{ tokenName } {
+	QueryObject(vector<string_view> dataVector)
+		: data{ dataVector } {
 	};
 
 	// pure virtual function, for calling PKB
 	virtual void call(shared_ptr<DataAccessLayer> dataAccessLayer) = 0;
 
 	string_view getQueryObjectName() {
-		return tokenName;
+		return data[0];
+	}
+
+	vector<string_view> getQueryObjectData() {
+		return data;
 	}
 
 	// variant: design entities, clauses

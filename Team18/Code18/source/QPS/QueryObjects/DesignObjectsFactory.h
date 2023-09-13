@@ -29,10 +29,10 @@ public:
 
 	};
 
-	shared_ptr<QueryObject> create(string_view str) override {
-		return make_shared<StmtObject>(str);
+	shared_ptr<QueryObject> create(vector<string_view> data) override {
+		return make_shared<StmtObject>(data);
 	}
-	
+
 };
 
 /*
@@ -43,8 +43,8 @@ public:
 	ReadObjectFactory() {
 	};
 
-	shared_ptr<QueryObject> create(string_view str) override {
-		return make_shared<ReadObject>(str);
+	shared_ptr<QueryObject> create(vector<string_view> data) override {
+		return make_shared<ReadObject>(data);
 	}
 };
 
@@ -56,8 +56,8 @@ public:
 	PrintObjectFactory() {
 	};
 
-	shared_ptr<QueryObject> create(string_view str) override {
-		return make_shared<PrintObject>(str);
+	shared_ptr<QueryObject> create(vector<string_view> data) override {
+		return make_shared<PrintObject>(data);
 	}
 };
 
@@ -69,8 +69,8 @@ public:
 	CallObjectFactory() {
 	};
 
-	shared_ptr<QueryObject> create(string_view str) override {
-		return make_shared<CallObject>(str);
+	shared_ptr<QueryObject> create(vector<string_view> data) override {
+		return make_shared<CallObject>(data);
 	}
 };
 
@@ -82,8 +82,8 @@ public:
 	WhileObjectFactory() {
 	};
 
-	shared_ptr<QueryObject> create(string_view str) override {
-		return make_shared<WhileObject>(str);
+	shared_ptr<QueryObject> create(vector<string_view> data) override {
+		return make_shared<WhileObject>(data);
 	}
 };
 
@@ -95,8 +95,8 @@ public:
 	IfObjectFactory() {
 	};
 
-	shared_ptr<QueryObject> create(string_view str) override {
-		return make_shared<IfObject>(str);
+	shared_ptr<QueryObject> create(vector<string_view> data) override {
+		return make_shared<IfObject>(data);
 	}
 };
 
@@ -108,8 +108,8 @@ public:
 	AssignObjectFactory() {
 	};
 
-	shared_ptr<QueryObject> create(string_view str) override {
-		return make_shared<AssignObject>(str);
+	shared_ptr<QueryObject> create(vector<string_view> data) override {
+		return make_shared<AssignObject>(data);
 	}
 };
 
@@ -121,8 +121,8 @@ public:
 	VariableObjectFactory() {
 	};
 
-	shared_ptr<QueryObject> create(string_view str) override {
-		return make_shared<VariableObject>(str);
+	shared_ptr<QueryObject> create(vector<string_view> data) override {
+		return make_shared<VariableObject>(data);
 	}
 };
 
@@ -134,8 +134,8 @@ public:
 	ConstantObjectFactory() {
 	};
 
-	shared_ptr<QueryObject> create(string_view str) override {
-		return make_shared<ConstantObject>(str);
+	shared_ptr<QueryObject> create(vector<string_view> data) override {
+		return make_shared<ConstantObject>(data);
 	}
 };
 
@@ -147,8 +147,8 @@ public:
 	ProcedureObjectFactory() {
 	};
 
-	shared_ptr<QueryObject> create(string_view str) override {
-		return make_shared<ProcedureObject>(str);
+	shared_ptr<QueryObject> create(vector<string_view> data) override {
+		return make_shared<ProcedureObject>(data);
 	}
 };
 

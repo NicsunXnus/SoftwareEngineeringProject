@@ -1,3 +1,4 @@
+#pragma once
 #ifndef CLAUSEOBJECTFACTORY_H
 #define CLAUSEOBJECTFACTORY_H
 
@@ -22,8 +23,8 @@ public:
 
 	};
 
-	shared_ptr<QueryObject> create(string_view str) override {
-		return make_shared<UsesObject>(str);
+	shared_ptr<QueryObject> create(vector<string_view> data) override {
+		return make_shared<UsesObject>(data);
 	}
 
 };
@@ -35,10 +36,10 @@ class ModifiesObjectFactory : public ClauseObjectFactory {
 public:
 	ModifiesObjectFactory() {
 
-	};
+	}; 
 
-	shared_ptr<QueryObject> create(string_view str) override {
-		return make_shared<ModifiesObject>(str);
+	shared_ptr<QueryObject> create(vector<string_view> data) override {
+		return make_shared<ModifiesObject>(data);
 	}
 
 };
@@ -52,8 +53,8 @@ public:
 
 	};
 
-	shared_ptr<QueryObject> create(string_view str) override {
-		return make_shared<FollowsObject>(str);
+	shared_ptr<QueryObject> create(vector<string_view> data) override {
+		return make_shared<FollowsObject>(data);
 	}
 
 };
@@ -67,8 +68,8 @@ public:
 
 	};
 
-	shared_ptr<QueryObject> create(string_view str) override {
-		return make_shared<FollowsStarObject>(str);
+	shared_ptr<QueryObject> create(vector<string_view> data) override {
+		return make_shared<FollowsStarObject>(data);
 	}
 
 };
@@ -82,8 +83,8 @@ public:
 
 	};
 
-	shared_ptr<QueryObject> create(string_view str) override {
-		return make_shared<ParentObject>(str);
+	shared_ptr<QueryObject> create(vector<string_view> data) override {
+		return make_shared<ParentObject>(data);
 	}
 
 };
@@ -97,8 +98,8 @@ public:
 
 	};
 
-	shared_ptr<QueryObject> create(string_view str) override {
-		return make_shared<ParentStarObject>(str);
+	shared_ptr<QueryObject> create(vector<string_view> data) override {
+		return make_shared<ParentStarObject>(data);
 	}
 
 };

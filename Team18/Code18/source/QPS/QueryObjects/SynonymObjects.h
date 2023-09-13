@@ -4,17 +4,15 @@
 
 #include <string_view>
 #include <ctype.h>
-#include "QueryObject.h"
 
 using namespace std;
 
 /*
 * This class represents a Query object, for synonyms: LETTER ( LETTER | DIGIT )*
 */
-class SynonymObject : public QueryObject {
+class SynonymObject {
 public:
-	SynonymObject(string_view tokenName)
-		: QueryObject{ tokenName } {
+	SynonymObject(string_view tokenName) {
 
 	}
 

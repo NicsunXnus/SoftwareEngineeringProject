@@ -5,9 +5,7 @@
 #include <vector>
 
 #include "QueryParser.h"
-#include "QueryObjects/DesignObjects.h"
-#include "QueryObjects/QueryObjectFactory.h"
-#include "QueryObjects/SynonymObjects.h"
+
 
 
 using namespace std;
@@ -106,8 +104,9 @@ vector<shared_ptr<QueryObject>> QueryParser::validateDeclaration(vector<string_v
 			if (!SynonymObject::isValid(currentDeclaration)) { // check if valid synonym
 				throw runtime_error("Invalid synonym");
 			}
-
-			shared_ptr<QueryObject> queryObject = designFactory->create(currentDeclaration);
+			vector<string_view> data;
+			data.push_back(currentDeclaration);
+			shared_ptr<QueryObject> queryObject = designFactory->create(data);
 			if (synonyms.find(currentDeclaration) != synonyms.end()) { // synonym already declared
 				throw runtime_error("Repeated synonym declaration");
 			}
