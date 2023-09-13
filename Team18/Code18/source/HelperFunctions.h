@@ -123,4 +123,12 @@ static std::string trimWhitespaces(std::string str) {
   return str;
 }
 
+// prints to console, toggle here to turn on / off for development / production
+static void debug(std::string debugMessage) {
+    bool DEBUG_MODE = true; // toggle this
+    if (DEBUG_MODE) {
+        std::cout << debugMessage  + "\n" << std::endl;
+    }
+}
+
 #endif
