@@ -179,10 +179,10 @@ public:
 
     void insertEntities() {
         // Get the entity maps
-        static shared_ptr<EntityMapArg> statementMap = this->statementEntity->getMap(); 
-        static shared_ptr<EntityMapArg> procedureMap = this->procedureEntity->getMap();
-        static shared_ptr<EntityMapArg> variableMap = this->variableEntity->getMap();
-        static shared_ptr<EntityMapArg> constantMap = this->constantEntity->getMap();
+        shared_ptr<EntityMapArg> statementMap = this->statementEntity->getMap(); 
+        shared_ptr<EntityMapArg> procedureMap = this->procedureEntity->getMap();
+        shared_ptr<EntityMapArg> variableMap = this->variableEntity->getMap();
+        shared_ptr<EntityMapArg> constantMap = this->constantEntity->getMap();
         
         // Insert the entities into the PKB
         PKB::insertor.addEntityStatements(statementMap);
