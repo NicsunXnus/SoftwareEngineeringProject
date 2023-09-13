@@ -16,6 +16,7 @@ public:
   inline static const std::string invalidAssignmentStmt = "Invalid assignment statement detected.";
   inline static const std::string invalidIdentifier = "Invalid identifier detected.";
   inline static const std::string invalidTwoWordStmt = "Invalid two-word statement detected.";
+  inline static const std::string invalidToken = "Invalid string detected while trying to tokenize.";
 
   inline static const std::string emptyProgramGiven = "Program provided is empty";
   inline static const std::string emptyProcedureGiven = "Procedure provided is empty";

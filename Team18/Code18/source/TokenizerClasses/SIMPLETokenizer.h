@@ -186,14 +186,18 @@ private:
 			}
 			pairIndex += 1;
 		}
-
-		// process any leftover code after all curly braces
-		std::string afterAllCurly = substring(trimmed, prevEnd, trimmed.size() - 1);
-		// this should contain no semicolons and no { }
-		std::vector<std::string> afterCurlySplit = splitString(afterAllCurly, ";", false);
-		// tokenize each semicolon statement.
-		for (std::string stmt : afterCurlySplit) {
-			out.push_back(tokenizeSemicolonStatement(stmt));
+		if (prevEnd < trimmed.size()) {
+			// process any leftover code after all curly braces
+			std::string afterAllCurly = substring(trimmed, prevEnd, trimmed.size() - 1);
+			// this should contain no semicolons and no { }
+			std::vector<std::string> afterCurlySplit = splitString(afterAllCurly, ";", false);
+			// tokenize each semicolon statement.
+			for (std::string stmt : afterCurlySplit) {
+				out.push_back(tokenizeSemicolonStatement(stmt));
+			}
+		}
+		if (out.empty()) {
+			throw std::invalid_argument(ExceptionMessages::emptyStatementListGiven);
 		}
 
 		return std::make_shared<TokenizedStmtList>(out);
@@ -211,8 +215,13 @@ private:
 
 		if (trimmed.find("=") != std::string::npos) { // Assignment Statement
 			output = tokenizeAssignment(trimmed);
-			validStatement = true;
+
+			SimpleTokenizer::statementNumber += 1;
+			return std::make_shared<TokenizedSemicolonStmt>(SimpleTokenizer::statementNumber, output);
 		}	
+		if (splitString(trimmed).size() != 2) {
+			throw std::invalid_argument(ExceptionMessages::invalidSemicolonStmt);
+		}
 		// if the substring "read " exists and it is the first word occurence in the statement
 		else if (trimmed.find_first_not_of(whitespaces) == trimmed.find("read ")) {
 			output = tokenizeTwoWordStmt(trimmed, "read");
@@ -270,6 +279,9 @@ private:
 		}
 		output.push_back(TokenFactory::generateToken(expectedWord1, true));
 		std::string right = trimWhitespaces(split[1]);
+		if (!isValidName(right)) {
+			throw std::invalid_argument(ExceptionMessages::invalidIdentifier);
+		}
 		output.push_back(TokenFactory::generateToken(right, true, true));
 		return output;
 	}
@@ -278,7 +290,8 @@ private:
 	// Throws exceptions if the procedure declaration is invalid.
 	// Returns the procedure name
 	static std::string processPreProcedureDetails(std::string input) {
-		std::vector<std::string> beforeOpenSplit = splitString(input);
+		std::string trimmed = trimWhitespaces(input);
+		std::vector<std::string> beforeOpenSplit = splitString(trimmed);
 		if (beforeOpenSplit.size() != 2) {
 			throw std::invalid_argument(ExceptionMessages::invalidProcedureDefinition);
 		}
@@ -313,6 +326,9 @@ public:
 		int previousEnd = 0;
 		for (std::shared_ptr<std::pair<int, int>> shared_ptr_p : curlyPairs) {
 			std::pair<int, int> p = *shared_ptr_p;
+			if (p.second == p.first + 1) {
+				throw std::invalid_argument(ExceptionMessages::emptyStatementListGiven);
+			}
 
 			// Process Procedure Name using string indexes
 			std::string beforeOpen = substring(trimmed, previousEnd, p.first - 1); // -1 because we do not want the open curly to be included

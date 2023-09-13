@@ -114,7 +114,7 @@ static std::vector<std::string> splitString(std::string input, std::string delim
 /// <param name="input">The string to split.</param>
 /// <returns>A vector of strings, containing the original input after being split by the delimiters.</returns>
 static std::vector<std::string> splitString(std::string input) {
-  return splitString(input, "\\s+", false);
+  return splitString(input, "[\\s\b]+", false);
 }
 
 // Trims leading and trailing whitespaces.

@@ -13,7 +13,6 @@ class TokenizedProcedure;
 class TokenizedStmtList;
 class TokenizedStmt;
 class TokenizedSemicolonStmt;
-class TokenizedConditionalExp;
 class TokenizedConditionalStmt;
 class TokenizedIfStmt;
 class TokenizedWhileStmt;
@@ -32,19 +31,7 @@ public:
     return this->procedures;
   }
 
-  bool operator==(TokenizedProgram& rhs) {
-    if (this->procedures.size() != rhs.procedures.size()) {
-      return false;
-    }
-    for (int i = 0; i < this->procedures.size(); i++) {
-      if (*(this->procedures[i]) != *(rhs.procedures[i])) return false;
-    }
-    return true;
-  }
-
-  bool operator!=(TokenizedProgram& rhs) {
-    return !(*this == rhs);
-  }
+  bool equalsTo(TokenizedProgram& rhs);
 };
 
 /// <summary>
@@ -70,16 +57,7 @@ public:
     return this->statementList;
   }
 
-  bool operator==(TokenizedProcedure& rhs) {
-    if (this->procedureName != rhs.procedureName) {
-      return false;
-    }
-    return *(this->statementList) == *(rhs.statementList);
-  }
-
-  bool operator!=(TokenizedProcedure& rhs) {
-    return !(*this == rhs);
-  }
+  bool equalsTo(TokenizedProcedure& rhs);
 };
 
 /// <summary>
@@ -98,19 +76,7 @@ public:
     return this->statements;
   }
 
-  bool operator==(TokenizedStmtList& rhs) {
-    if (this->statements.size() != rhs.statements.size()) {
-      return false;
-    }
-    for (int i = 0; i < this->statements.size(); i++) {
-      if (*(this->statements[i]) != *(rhs.statements[i])) return false;
-    }
-    return true;
-  }
-
-  bool operator!=(TokenizedStmtList& rhs) {
-    return !(*this == rhs);
-  }
+  bool equalsTo(TokenizedStmtList& rhs);
 };
 
 // Wrapper for a vector of tokens. Note that semicolons will NO LONGER be stored, since some statements will not end in semicolons
@@ -134,16 +100,7 @@ public:
     return this->statementNumber;
   }
 
-  bool operator==(TokenizedStmt& rhs) {
-    if (this->statementNumber != rhs.statementNumber) {
-      return false;
-    }
-    return true;
-  }
-
-  bool operator!=(TokenizedStmt& rhs) {
-    return !(*this == rhs);
-  }
+  bool equalsTo(TokenizedStmt& rhs);
 };
 
 /// <summary>
@@ -161,19 +118,7 @@ public:
     return this->contents;
   }
 
-  bool operator==(TokenizedSemicolonStmt& rhs) {
-    if (this->contents.size() != rhs.contents.size()) {
-      return false;
-    }
-    for (int i = 0; i < this->contents.size(); i++) {
-      if (!Token::checkEquality(this->contents[i], rhs.contents[i])) return false;
-    }
-    return static_cast<TokenizedStmt&>(*this) == rhs;
-  }
-
-  bool operator!=(TokenizedSemicolonStmt& rhs) {
-    return !(*this == rhs);
-  }
+  bool equalsTo(TokenizedSemicolonStmt& rhs);
 };
 
 /// <summary>
@@ -190,16 +135,7 @@ public:
     return this->conditionalExp;
   };
 
-  bool operator==(TokenizedConditionalStmt& rhs) {
-    if (*(this->conditionalExp) != *(rhs.conditionalExp)) {
-      return false;
-    }
-    return static_cast<TokenizedStmt&>(*this) == rhs;
-  }
-
-  bool operator!=(TokenizedConditionalStmt& rhs) {
-    return !(*this == rhs);
-  }
+  bool equalsTo(TokenizedConditionalStmt& rhs);
 };
 
 /// <summary>
@@ -224,19 +160,7 @@ public:
     return this->elseBlock;
   }
 
-  bool operator==(TokenizedIfStmt& rhs) {
-    if (*(this->thenBlock) != *(rhs.thenBlock)) {
-      return false;
-    }
-    if (*(this->elseBlock) != *(rhs.elseBlock)) {
-      return false;
-    }
-    return static_cast<TokenizedConditionalStmt&>(*this) == rhs;
-  }
-
-  bool operator!=(TokenizedIfStmt& rhs) {
-    return !(*this == rhs);
-  }
+  bool equalsTo(TokenizedIfStmt& rhs);
 };
 
 /// <summary>
@@ -255,16 +179,7 @@ public:
     return this->whileBlock;
   }
 
-  bool operator==(TokenizedWhileStmt& rhs) {
-    if (*(this->whileBlock) != *(rhs.whileBlock)) {
-      return false;
-    }
-    return static_cast<TokenizedConditionalStmt&>(*this) == rhs;
-  }
-
-  bool operator!=(TokenizedWhileStmt& rhs) {
-    return !(*this == rhs);
-  }
+  bool equalsTo(TokenizedWhileStmt& rhs);
 };
 
 #endif
