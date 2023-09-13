@@ -144,6 +144,7 @@ public:
             }
             extractEntities(leftCondExpr);
             extractEntities(rightCondExpr);
+
         }
         else {
             std::cerr << "Unsupported ASTNode type in handleCondExpr." << std::endl;
@@ -198,3 +199,4 @@ private:
     std::shared_ptr<ConstantEntity> constantEntity;
     std::shared_ptr<PatternStatementEntity> patternStatementEntity;
 };
+}
