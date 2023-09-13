@@ -9,10 +9,10 @@
 
 using namespace std;
 
-typedef map<string, vector<string>>* EntityMapArg;
+typedef map<string, vector<string>> EntityMapArg;
 
 class ProcedureEntity;
-class StatmentEntity;
+class StatementEntity;
 class VariableEntity;
 class ConstantEntity;
 class PatternStatementEntity;
@@ -27,8 +27,8 @@ public:
     
     virtual ~Entity() = default;
 
-    map<string, vector<string>>* getMap() {
-      return &(this->EntityStorageMap);
+    shared_ptr<EntityMapArg> getMap() {
+      return make_shared<EntityMapArg>(this->EntityStorageMap);
     }
 
     // Overloaded function for inserting to map with line number

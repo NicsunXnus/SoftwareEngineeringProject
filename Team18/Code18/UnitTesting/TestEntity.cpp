@@ -35,7 +35,7 @@ namespace UnitTesting
             }
 
             //Get procedure map from procedure entity
-            std::map<std::string, std::vector<std::string>> procedureMap = *(testProcedureEntity->getMap());
+            std::map<std::string, std::vector<string>> procedureMap = *(testProcedureEntity->getMap());
 
             //Check if procedure entity is extracted correctly
             Assert::AreEqual(procedureMap["procedure1"].empty(), true);
@@ -68,14 +68,14 @@ namespace UnitTesting
             }
 
             //Get statement map from statement entity
-             std::map<std::string, std::vector<std::string>> statementMap = *(testStatementEntity->getMap());
+            std::map<std::string, std::vector<string>> statementMap = *(testStatementEntity->getMap());
 
             //Check if the statement entity is extracted correctly
-            Assert::AreEqual(statementMap["statement1"][0], std::to_string(1));
-            Assert::AreEqual(statementMap["statement1"][1], std::to_string(2));
-            Assert::AreEqual(statementMap["statement2"][0], std::to_string(3));
-            Assert::AreEqual(statementMap["statement3"][0], std::to_string(4));
-            Assert::AreEqual(statementMap["statement3"][1], std::to_string(5));
+            Assert::AreEqual(statementMap["statement1"][0], std::string("1"));
+            Assert::AreEqual(statementMap["statement1"][1], std::string("2"));
+            Assert::AreEqual(statementMap["statement2"][0], std::string("3"));
+            Assert::AreEqual(statementMap["statement3"][0], std::string("4"));
+            Assert::AreEqual(statementMap["statement3"][1], std::string("5"));
 		}
 
         TEST_METHOD(TestVariableEntity)
