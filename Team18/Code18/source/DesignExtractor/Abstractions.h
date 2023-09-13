@@ -39,6 +39,13 @@ private:
 
 };
 
+/*
+The parents abstraction is a map of statement numbers to a vector of statement numbers that are its parents
+whereby every subsequent statement is a parent of the previous statement
+
+The follows abstraction is a map of statement numbers to a vector of statement numbers that follows right after the statement
+*/
+
 class ParentFollowsAbstraction : public Abstractions {
 public:
     void extractAbstraction(shared_ptr<ASTNode> astNode) override {
