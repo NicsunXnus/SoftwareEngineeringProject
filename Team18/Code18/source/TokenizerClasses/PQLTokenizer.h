@@ -30,16 +30,18 @@ static std::vector<std::string_view> tokenize(std::string_view pql) {
 				isWord = false;
 			}
 			ss.clear();
+			ss << pql[i];
 			isWithinQuotes = true;
-			startIndex = i;
 			continue;
 		} else if (isWithinQuotes) {
 			if (!isspace(pql[i]) && pql[i] != '\b') {
 				ss << pql[i];
 			} else if (pql[i] == '"') { // closing quotes
+				ss << pql[i];
 				tokens.push_back(ss.str());
 				isWithinQuotes = false;
 			}
+			startIndex = i;
 			continue;
 		}
 
