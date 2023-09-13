@@ -67,6 +67,9 @@ public:
             extractEntities(leftExpr);
             extractEntities(rightExpr);
         }
+        else if (auto condExprNode = std::dynamic_pointer_cast<CondExprNode>(astNode)) {
+            // astNode is of type CondExprNode
+            handleCondExpr(condExprNode);
         else {
             // Handle other cases or report an error
             std::cerr << "Unsupported ASTNode type." << std::endl;
@@ -85,20 +88,67 @@ public:
             extractEntities(assignNode->getVar());
             extractEntities(assignNode->getExpr());
         }
-
         // else if (auto callNode = std::dynamic_pointer_cast<CallNode>(statementNode)) {
         //     //TODO: Handle callNode
         // } 
-        // else if (auto whileNode = std::dynamic_pointer_cast<WhileNode>(statementNode)) {
-        //     //TODO: Handle whileNode
-        // } 
-        // else if (auto ifNode = std::dynamic_pointer_cast<IfNode>(statementNode)) {
-        //     //TODO: Handle IfNode
-        // } 
+        else if (auto whileNode = std::dynamic_pointer_cast<WhileNode>(statementNode)) {
+            extractEntities(whileNode->getCondExpr());
+            std::vector<std::shared_ptr<StatementNode>> statements = whileNode->getStatements();
+            for (const auto& statement : statements) {
+                extractEntities(statement);
+            }
+        } 
+        else if (auto ifNode = std::dynamic_pointer_cast<IfNode>(statementNode)) {
+            extractEntities(ifNode->getCondExpr());
+            std::vector<std::shared_ptr<StatementNode>> ifStatements = ifNode->getStatements();
+            std::vector<std::shared_ptr<StatementNode>> elseStatements = ifNode->getElseStatements();
+            std::vector<std::shared_ptr<StatementNode>> statements;
+            statements.insert(statements.end(), ifStatements.begin(), ifStatements.end());
+            for (const auto& statement : statements) {
+                extractEntities(statement);
+            }
+        } 
         else {
             // Handle other cases or report an error
             std::cerr << "Unsupported ASTNode type." << std::endl;
         }
+    }
+
+    // Method to handle conditional expressions
+    void handleCondExpr(std::shared_ptr<CondExprNode> condExprNode) {
+        if (auto relExprNode = std::dynamic_pointer_cast<RelExprNode>(condExprNode)) {
+            // Get the left and right expressions
+            std::shared_ptr<ExprNode> leftExpr = relExprNode->getLeftExpr();
+            std::shared_ptr<ExprNode> rightExpr = relExprNode->getRightExpr();
+
+            // Extract the entities from the left and right expressions
+            extractEntities(leftExpr);
+            extractEntities(rightExpr);
+        }
+        else if (auto notNode = std::dynamic_pointer_cast<NotNode>(condExprNode)) {
+            // Get the expression
+            std::shared_ptr<CondExprNode> condExpr = notNode->getLeftCondExpr();
+            extractEntities(condExpr);
+        }
+        else if (auto orNode = std::dynamic_pointer_cast<OrNode>(condExprNode) ||
+            auto andNode = std::dynamic_pointer_cast<AndNode>(condExprNode)) {
+            std::shared_ptr<CondExprNode> leftCondExpr;
+            std::shared_ptr<CondExprNode> rightCondExpr;
+            if (orNode) {
+                leftCondExpr = orNode.getLeftCondExpr();
+                rightCondExpr = orNode.getRightCondExpr();
+            }
+            else {
+                leftCondExpr = andNode.getLeftCondExpr();
+                rightCondExpr = andNode.getRightCondExpr();
+            }
+            extractEntities(leftCondExpr);
+            extractEntities(rightCondExpr);
+        }
+        else {
+            std::cerr << "Unsupported ASTNode type in handleCondExpr." << std::endl;
+        }
+
     }
 
     // Method to get procedure entity
