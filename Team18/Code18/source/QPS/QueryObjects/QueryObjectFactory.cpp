@@ -1,5 +1,6 @@
 #include "QueryObjectFactory.h"
 #include "DesignObjectsFactory.h"
+#include "ClauseObjectFactory.h"
 
 shared_ptr<QueryObjectFactory> QueryObjectFactory::createFactory(string_view type) {
 	/* Design entity types */
@@ -36,22 +37,22 @@ shared_ptr<QueryObjectFactory> QueryObjectFactory::createFactory(string_view typ
 
 	 /* Clause types */
 	else if (type == "Uses"sv) {
-		return make_shared<StmtObjectFactory>();
+		return make_shared<UsesObjectFactory>();
 	}
 	else if (type == "Modifies"sv) {
-		return make_shared<ReadObjectFactory>();
+		return make_shared<ModifiesObjectFactory>();
 	}
 	else if (type == "Follows"sv) {
-		return make_shared<ReadObjectFactory>();
+		return make_shared<FollowsObjectFactory>();
 	}
 	else if (type == "Follows*"sv) {
-		return make_shared<ReadObjectFactory>();
+		return make_shared<FollowsStarObjectFactory>();
 	}
 	else if (type == "Parent"sv) {
-		return make_shared<ReadObjectFactory>();
+		return make_shared<ParentObjectFactory>();
 	}
 	else if (type == "Parent*"sv) {
-		return make_shared<ReadObjectFactory>();
+		return make_shared<ParentStarObjectFactory>();
 	}
 	throw runtime_error("Invalid string token for design object");
 }
