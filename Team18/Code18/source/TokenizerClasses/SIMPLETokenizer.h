@@ -17,7 +17,9 @@ using namespace std::string_view_literals;
 
 class SimpleTokenizer {
 private:
+	// Keeps track of the statement number as the tokenizer results are being generated
 
+	inline static int statementNumber = 0;
 	// Detects "{" and "}" in the outermost scope. 
 	// Throws an exception if there are any mismatching "{" and "}", including within inner scopes.
 	// Returns a vector of pair<int, int> pointers. Each pair represents the indexes of a matching "{" and "}" respectively.
@@ -181,11 +183,14 @@ private:
 			std::pair<ConditionalDeclaration, std::shared_ptr<TokenizedConditionalExp>> processed = processConditionalDeclaration(lastPreCurly);
 			ConditionalDeclaration dec = processed.first;
 
+			// Increment and save it here first. Will be used once the IF/WHILE statements' body stmtLists are completely defined.
+			SimpleTokenizer::statementNumber += 1;
+			const int conditionalStmtNumber = SimpleTokenizer::statementNumber;
 			// Tokenized StmtList for either the THEN-BLOCK or WHILE-BLOCK
 			std::shared_ptr<TokenizedStmtList> firstBody = tokenizeStmtList(substring(trimmed, currPair.first + 1, currPair.second - 1));
 			if (dec == ConditionalDeclaration::WHILE) {
 				// process statementList within while body
-				out.push_back(std::make_shared<TokenizedWhileStmt>(processed.second, firstBody));
+				out.push_back(std::make_shared<TokenizedWhileStmt>(conditionalStmtNumber, processed.second, firstBody));
 				prevEnd = currPair.second + 1;
 			}
 
@@ -202,7 +207,7 @@ private:
 					throw std::invalid_argument(ExceptionMessages::missingElseKeyword);
 				}
 				std::shared_ptr<TokenizedStmtList> elseBody = tokenizeStmtList(substring(trimmed, nextPair.first + 1, nextPair.second - 1));
-				out.push_back(std::make_shared<TokenizedIfStmt>(processed.second, firstBody, elseBody));
+				out.push_back(std::make_shared<TokenizedIfStmt>(conditionalStmtNumber, processed.second, firstBody, elseBody));
 				prevEnd = nextPair.second + 1;
 			}
 			pairIndex += 1;
@@ -254,7 +259,8 @@ private:
 		if (!validStatement) {
 			throw std::invalid_argument(ExceptionMessages::invalidSemicolonStmt);
 		}
-		return std::make_shared<TokenizedSemicolonStmt>(output);
+		SimpleTokenizer::statementNumber += 1;
+		return std::make_shared<TokenizedSemicolonStmt>(SimpleTokenizer::statementNumber, output);
 	}
 
 	// Tokenizes an assignment statement
@@ -321,6 +327,7 @@ public:
 	/// <param name="srcCode">The source code in string view form</param>
 	/// <returns>A shared pointer to the TokenizedProgram</returns>
 	static std::shared_ptr<TokenizedProgram> tokenizeProgram(std::string_view srcCode) {
+		SimpleTokenizer::statementNumber = 0;
 		std::string trimmed = trimWhitespaces(std::string(srcCode));
 		if (trimmed.empty()) {
 			throw std::invalid_argument(ExceptionMessages::emptyProgramGiven);

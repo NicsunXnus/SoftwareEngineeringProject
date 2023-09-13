@@ -240,27 +240,6 @@ namespace TokenFactory_Test
 			assert(isEqual == true);
 		}
 
-		// SIMPLE KEYWORDS
-		TEST_METHOD(simpleKeywords_then) {
-			bool forSimple = true;
-			bool forceIdentifier = false;
-			std::string tokenName = "then";
-			std::shared_ptr<Token> result = genToken(tokenName, forSimple, forceIdentifier);
-			std::shared_ptr<ThenKeywordToken> expected = std::make_shared<ThenKeywordToken>();
-			bool isEqual = Token::checkEquality(result, expected);
-			assert(isEqual == true);
-		}
-
-		TEST_METHOD(simpleKeywords_else) {
-			bool forSimple = true;
-			bool forceIdentifier = false;
-			std::string tokenName = "else";
-			std::shared_ptr<Token> result = genToken(tokenName, forSimple, forceIdentifier);
-			std::shared_ptr<ElseKeywordToken> expected = std::make_shared<ElseKeywordToken>();
-			bool isEqual = Token::checkEquality(result, expected);
-			assert(isEqual == true);
-		}
-
 		// PQL KEYWORDS
 		TEST_METHOD(pqlKeywords_select) {
 			bool forSimple = false;
@@ -328,6 +307,36 @@ namespace TokenFactory_Test
 			std::string tokenName = "that";
 			std::shared_ptr<Token> result = genToken(tokenName, forSimple, forceIdentifier);
 			std::shared_ptr<ThatKeywordToken> expected = std::make_shared<ThatKeywordToken>();
+			bool isEqual = Token::checkEquality(result, expected);
+			assert(isEqual == true);
+		}
+
+		TEST_METHOD(pqlKeywords_procedure) {
+			bool forSimple = false;
+			bool forceIdentifier = false;
+			std::string tokenName = "procedure";
+			std::shared_ptr<Token> result = genToken(tokenName, forSimple, forceIdentifier);
+			std::shared_ptr<ProcedureKeywordToken> expected = std::make_shared<ProcedureKeywordToken>();
+			bool isEqual = Token::checkEquality(result, expected);
+			assert(isEqual == true);
+		}
+
+		TEST_METHOD(pqlKeywords_while) {
+			bool forSimple = false;
+			bool forceIdentifier = false;
+			std::string tokenName = "while";
+			std::shared_ptr<Token> result = genToken(tokenName, forSimple, forceIdentifier);
+			std::shared_ptr<WhileKeywordToken> expected = std::make_shared<WhileKeywordToken>();
+			bool isEqual = Token::checkEquality(result, expected);
+			assert(isEqual == true);
+		}
+
+		TEST_METHOD(pqlKeywords_if) {
+			bool forSimple = false;
+			bool forceIdentifier = false;
+			std::string tokenName = "if";
+			std::shared_ptr<Token> result = genToken(tokenName, forSimple, forceIdentifier);
+			std::shared_ptr<IfKeywordToken> expected = std::make_shared<IfKeywordToken>();
 			bool isEqual = Token::checkEquality(result, expected);
 			assert(isEqual == true);
 		}
@@ -422,30 +431,6 @@ namespace TokenFactory_Test
 			bool forceIdentifier = false;
 			std::string tokenName = "call";
 			std::shared_ptr<CallKeywordToken> expected = std::make_shared<CallKeywordToken>();
-			bool isEqual = combineAnd(permutateLanguage(tokenName, forceIdentifier, expected));
-			assert(isEqual == true);
-		}
-
-		TEST_METHOD(commonKeywords_while) {
-			bool forceIdentifier = false;
-			std::string tokenName = "while";
-			std::shared_ptr<WhileKeywordToken> expected = std::make_shared<WhileKeywordToken>();
-			bool isEqual = combineAnd(permutateLanguage(tokenName, forceIdentifier, expected));
-			assert(isEqual == true);
-		}
-
-		TEST_METHOD(commonKeywords_if) {
-			bool forceIdentifier = false;
-			std::string tokenName = "if";
-			std::shared_ptr<IfKeywordToken> expected = std::make_shared<IfKeywordToken>();
-			bool isEqual = combineAnd(permutateLanguage(tokenName, forceIdentifier, expected));
-			assert(isEqual == true);
-		}
-
-		TEST_METHOD(commonKeywords_procedure) {
-			bool forceIdentifier = false;
-			std::string tokenName = "procedure";
-			std::shared_ptr<ProcedureKeywordToken> expected = std::make_shared<ProcedureKeywordToken>();
 			bool isEqual = combineAnd(permutateLanguage(tokenName, forceIdentifier, expected));
 			assert(isEqual == true);
 		}

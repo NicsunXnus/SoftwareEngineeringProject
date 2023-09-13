@@ -86,7 +86,13 @@ public:
 /// - Conditional Statement (while)
 /// </summary>
 class TokenizedStmt {
-
+private:
+  const int statementNumber;
+public:
+  TokenizedStmt(int statementNumber) : statementNumber(statementNumber) {};
+  int getStatementNumber() {
+    return this->statementNumber;
+  }
 };
 
 /// <summary>
@@ -96,7 +102,9 @@ class TokenizedSemicolonStmt : public TokenizedStmt {
 private:
   std::vector<std::shared_ptr<Token>> contents;
 public:
-  TokenizedSemicolonStmt(std::vector<std::shared_ptr<Token>> contents) : contents{ contents } {};
+  TokenizedSemicolonStmt(int statementNumber, std::vector<std::shared_ptr<Token>> contents) 
+    : TokenizedStmt{ statementNumber }, 
+      contents{ contents } {};
 
   std::vector<std::shared_ptr<Token>> getContents() {
     return this->contents;
@@ -137,8 +145,9 @@ class TokenizedConditionalStmt : public TokenizedStmt {
 private:
   std::shared_ptr<TokenizedConditionalExp> conditionalExp;
 public:
-  TokenizedConditionalStmt(std::shared_ptr<TokenizedConditionalExp> conditionalExp)
-    : conditionalExp{ conditionalExp } {};
+  TokenizedConditionalStmt(int statementNumber, std::shared_ptr<TokenizedConditionalExp> conditionalExp)
+    : TokenizedStmt{ statementNumber },
+      conditionalExp{ conditionalExp } {};
   std::shared_ptr<TokenizedConditionalExp> getConditionalExp() {
     return this->conditionalExp;
   };
@@ -152,10 +161,10 @@ private:
   std::shared_ptr<TokenizedStmtList> thenBlock;
   std::shared_ptr<TokenizedStmtList> elseBlock;
 public:
-  TokenizedIfStmt(std::shared_ptr<TokenizedConditionalExp> conditionalExp,
+  TokenizedIfStmt(int statementNumber, std::shared_ptr<TokenizedConditionalExp> conditionalExp,
     std::shared_ptr<TokenizedStmtList> thenBlock,
     std::shared_ptr<TokenizedStmtList> elseBlock)
-    : TokenizedConditionalStmt{ conditionalExp },
+    : TokenizedConditionalStmt{ statementNumber, conditionalExp },
       thenBlock{ thenBlock },
       elseBlock{ elseBlock } {};
 
@@ -174,9 +183,9 @@ class TokenizedWhileStmt : public TokenizedConditionalStmt {
 private:
   std::shared_ptr<TokenizedStmtList> whileBlock;
 public:
-  TokenizedWhileStmt(std::shared_ptr<TokenizedConditionalExp> conditionalExp,
+  TokenizedWhileStmt(int statementNumber, std::shared_ptr<TokenizedConditionalExp> conditionalExp,
     std::shared_ptr<TokenizedStmtList> whileBlock)
-    : TokenizedConditionalStmt{ conditionalExp },
+    : TokenizedConditionalStmt{ statementNumber, conditionalExp },
       whileBlock{ whileBlock } {};
 
   std::shared_ptr<TokenizedStmtList> getWhileBlock() {
