@@ -3,6 +3,8 @@
 #include "../source/TokenizerClasses/SimpleTokenizer.h"
 #include "../source/TokenizerClasses/TokenFactory.h"
 #include "../source/AST/ASTBuilder.h"
+#include <cassert>
+
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace UnitTesting
@@ -10,7 +12,7 @@ namespace UnitTesting
 	TEST_CLASS(TestSP)
 	{
 	public:
-		TEST_METHOD(TestExpression)
+		TEST_METHOD(TestValidExpression)
 		{
 			std::string complicatedExpr = "(3 + ((6*3) % (8*(4 + 5))))";// > (3 + ((6*3) % (8*(4 + 5))))";
 			std::vector<std::shared_ptr<Token>> exprTest;
@@ -49,8 +51,8 @@ namespace UnitTesting
 				std::make_shared<Token>("4"),
 				std::make_shared<Token>(")")
 			};
+			
 			std::shared_ptr<ExprNode> e = ASTBuilder::parseExpr(exprTest2);
-
 			std::stringstream output;
 			std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
 
@@ -132,7 +134,7 @@ namespace UnitTesting
 			Logger::WriteMessage(output.str().c_str());
 		}*/
 
-		TEST_METHOD(TestStatements) {
+		TEST_METHOD(TestValidStatements) {
 			std::vector < std::vector<std::shared_ptr<Token>>> test = SimpleTokenizer::tokenize(
 				"read num1;"
 				"read num2;"
@@ -164,9 +166,8 @@ namespace UnitTesting
 			Logger::WriteMessage(output.str().c_str());
 		}
 
-		TEST_METHOD(TestCondition)
+		TEST_METHOD(TestValidCondition)
 		{
-
 			std::string complicatedExpr = "(3 + ((6 * 3) % (8 * (4 + 5))))";// > (3 + ((6 * 3) % (8 * (4 + 5))))";
 			std::string complicatedConditionExpr = "!(" + complicatedExpr + " > b) && (c <= d || e != 3) && (g < 5 || i >= j) && a == 5";
 			std::vector<std::shared_ptr<Token>> procedureTest;
@@ -199,8 +200,6 @@ namespace UnitTesting
 			procedureTest.emplace_back(std::make_shared<ParenCloseSepToken>());
 			procedureTest.emplace_back(std::make_shared<ParenCloseSepToken>());
 			procedureTest.emplace_back(std::make_shared<ParenCloseSepToken>());
-			//a
-			//procedureTest.emplace_back(std::make_shared<IdentifierToken>("a"sv));
 			//end of expression
 
 			// > b) && (c <= d || e != 3) && (g < 5 || i >= j) && a == 5
@@ -231,8 +230,9 @@ namespace UnitTesting
 			procedureTest.emplace_back(std::make_shared<IdentifierToken>("a"sv));
 			procedureTest.emplace_back(std::make_shared<EqualityOpToken>());
 			procedureTest.emplace_back(std::make_shared<LiteralToken>("5"));
-
+			
 			std::shared_ptr<CondExprNode> condExpr = ASTBuilder::parseCondExpr(procedureTest);
+			
 			std::stringstream output;
 			std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
 
@@ -243,6 +243,45 @@ namespace UnitTesting
 
 			Logger::WriteMessage("Output of parseCondExpr:\n");
 			Logger::WriteMessage(output.str().c_str());
+		}
+
+		TEST_METHOD(Invalids) {
+			try {
+				std::vector < std::vector<std::shared_ptr<Token>>> test = SimpleTokenizer::tokenize(
+					"read num2;"
+					"sum = num2 @ num3;"
+					"print ave;"
+				);
+				std::vector<std::shared_ptr<StatementNode>> statements = ASTBuilder::parseProgram(test);
+			}
+			catch (const std::exception& ex) {
+				Assert::AreEqual(ex.what(), "Invalid string supplied: @");
+			}
+
+			try {
+				std::vector < std::vector<std::shared_ptr<Token>>> test = SimpleTokenizer::tokenize(
+					"read num2;"
+					"sum = num2 + num3);"
+					"print ave;"
+				);
+				std::vector<std::shared_ptr<StatementNode>> statements = ASTBuilder::parseProgram(test);
+			}
+			catch (const std::exception& ex) {
+				Assert::AreEqual(ex.what(), "Missing left bracket.");
+			}
+
+			try {
+				std::vector < std::vector<std::shared_ptr<Token>>> test = SimpleTokenizer::tokenize(
+					"read num2;"
+					"sum = (num2 + num3 * 5;"
+					"print ave;"
+				);
+				std::vector<std::shared_ptr<StatementNode>> statements = ASTBuilder::parseProgram(test);
+			}
+			catch (const std::exception& ex) {
+				Assert::AreEqual(ex.what(), "Need 2 operatees to operate on.");
+			}
+
 		}
 	};
 }

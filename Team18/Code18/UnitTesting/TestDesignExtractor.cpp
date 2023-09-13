@@ -59,27 +59,27 @@ namespace UnitTesting
             std::shared_ptr<ConstantEntity> testConstantEntity = testDesignExtractor.getConstantEntity();
             
             //Get maps from entities
-            std::map<std::string, std::vector<int>> procedureMap = *(testProcedureEntity->getMap());
-            std::map<std::string, std::vector<int>> statementMap = *(testStatementEntity->getMap());
-            std::map<std::string, std::vector<int>> variableMap = *(testVariableEntity->getMap());
-            std::map<std::string, std::vector<int>> constantMap = *(testConstantEntity->getMap());
+            std::map<std::string, std::vector<string>> procedureMap = *(testProcedureEntity->getMap());
+            std::map<std::string, std::vector<string>> statementMap = *(testStatementEntity->getMap());
+            std::map<std::string, std::vector<string>> variableMap = *(testVariableEntity->getMap());
+            std::map<std::string, std::vector<string>> constantMap = *(testConstantEntity->getMap());
 
             //Check if the procedure entity is extracted correctly
             Assert::AreEqual(procedureMap["procedure1"].empty(), true);
 
             //Check if the statement entity is extracted correctly
-            Assert::AreEqual(statementMap["read"][0], 1);
-            Assert::AreEqual(statementMap["read"][1], 5);
-            Assert::AreEqual(statementMap["print"][0], 2);
-            Assert::AreEqual(statementMap["print"][1], 4);    
-            Assert::AreEqual(statementMap["assign"][0], 3);
+            Assert::AreEqual(statementMap["read"][0], std::string("1"));
+            Assert::AreEqual(statementMap["read"][1], std::string("5"));
+            Assert::AreEqual(statementMap["print"][0], std::string("2"));
+            Assert::AreEqual(statementMap["print"][1], std::string("4"));
+            Assert::AreEqual(statementMap["assign"][0], std::string("3"));
             
             //Check if the variable entity is extracted correctly
-            Assert::AreEqual(variableMap["x"][0], 1);
-            Assert::AreEqual(variableMap["y"][0], 2);
-            Assert::AreEqual(variableMap["x"][1], 4);
-            Assert::AreEqual(variableMap["x"][2], 5);
-            Assert::AreEqual(variableMap["z"][0], 3);
+            Assert::AreEqual(variableMap["x"][0], std::string("1"));
+            Assert::AreEqual(variableMap["y"][0], std::string("2"));
+            Assert::AreEqual(variableMap["x"][1], std::string("4"));
+            Assert::AreEqual(variableMap["x"][2], std::string("5"));
+            Assert::AreEqual(variableMap["z"][0], std::string("3"));
             //Check if the constant entity is extracted correctly
             // Assert::AreEqual(constantMap["10"][0], 3);
             // Assert::AreEqual(constantMap["20"][0], 3);
