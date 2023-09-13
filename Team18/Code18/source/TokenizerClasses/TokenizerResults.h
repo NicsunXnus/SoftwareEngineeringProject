@@ -1,10 +1,10 @@
 #ifndef TOKENIZERRESULTS_H
 #define TOKENIZERRESULTS_H
 
-#include <map>
-#include <variant>
+#include <memory>
 #include <vector>
 #include "../TokenClasses/Token.h"
+#include "../TokenClasses/OperatorToken.h"
 
 using namespace std::string_view_literals;
 
@@ -13,7 +13,7 @@ class TokenizedProcedure;
 class TokenizedStmtList;
 class TokenizedStmt;
 class TokenizedSemicolonStmt;
-class TokenizedConditionStmt;
+class TokenizedConditionalStmt;
 class TokenizedIfStmt;
 class TokenizedWhileStmt;
 
@@ -22,58 +22,53 @@ class TokenizedWhileStmt;
 /// </summary>
 class TokenizedProgram {
 private:
-  // procedure name, Procedure class. Ordered.
-  std::map<std::string, TokenizedProcedure> procedures;
+  // no need shared_ptr of vector because copying over pointers is not memory intensive.
+  std::vector<std::shared_ptr<TokenizedProcedure>> procedures;
 public:
-  // Default constructor
-  TokenizedProgram() {}
-  TokenizedProgram(std::map<std::string, TokenizedProcedure> procedures) : procedures{ procedures } {};
+  TokenizedProgram(std::vector<std::shared_ptr<TokenizedProcedure>>  procedures) : procedures{ procedures } {};
 
-  std::map<std::string, TokenizedProcedure> getAllProcedures() {
+  std::vector<std::shared_ptr<TokenizedProcedure>>  getAllProcedures() {
     return this->procedures;
   }
-
-  bool containsProcedure(std::string prodName);
-
-  bool addProcedure(std::string prodName, TokenizedProcedure prod);
-
-  TokenizedProcedure getProcedure(std::string prodName);
 };
 
 /// <summary>
-/// Abstraction for a statement list inside a procedure
+/// Abstraction for a procedure
 /// </summary>
 class TokenizedProcedure {
 private:
-  TokenizedStmtList statementList;
+  std::string procedureName; // to make sure the string is always on the heap
+  std::shared_ptr<TokenizedStmtList> statementList;
 public:
-  TokenizedProcedure(TokenizedStmtList stmtList) : statementList{ stmtList } {};
+  TokenizedProcedure(std::string procedureName, std::shared_ptr<TokenizedStmtList> stmtList)
+    : procedureName{ procedureName },
+      statementList{ stmtList } {};
 
   // if provided with a vector of statements instead, create stmtList automatically and assign to field
-  TokenizedProcedure(std::vector<TokenizedStmt> stmtVector);
+  TokenizedProcedure(std::string procedureName, std::vector<std::shared_ptr<TokenizedStmt>> stmtVector);
 
-  // No point for procedures to return a ParsedStmtList object since the goal is to get the statements anyways
-  std::vector<TokenizedStmt> getStmts() {
-    return this->statementList.getStmts();
+  std::string_view getName() {
+    return std::string_view(this->procedureName);
+  }
+
+  std::shared_ptr<TokenizedStmtList> getStmts() {
+    return this->statementList;
   }
 };
-
 
 /// <summary>
 /// Abstraction for a vector of statements.
 /// 
-/// This intermediary abstraction  is needed to allow to aid in tokenising statement lists that are in if-else and while loops.
+/// This intermediary abstraction is needed to allow to aid in tokenising statement lists that are in if-else and while loops.
 /// </summary>
 class TokenizedStmtList {
 private:
-  std::vector<TokenizedStmt> statements;
+  std::vector<std::shared_ptr<TokenizedStmt>> statements;
 public:
-  // Default Constructor
-  TokenizedStmtList() {}
   // Constructor to fill all existing statements
-  TokenizedStmtList(std::vector<TokenizedStmt> statements) : statements{ statements } {};
-  
-  std::vector<TokenizedStmt> getStmts() {
+  TokenizedStmtList(std::vector<std::shared_ptr<TokenizedStmt>> statements) : statements{ statements } {};
+
+  std::vector<std::shared_ptr<TokenizedStmt>> getStmts() {
     return this->statements;
   }
 };
@@ -109,37 +104,65 @@ public:
 };
 
 /// <summary>
-/// Conditional Statement containing a relational expression
+/// Conditional Expression
 /// </summary>
-class TokenizedConditionStatement : public TokenizedStmt {
+class TokenizedConditionalExp {
 private:
-  std::vector<std::shared_ptr<Token>> conditionStatement;
+  std::vector<std::shared_ptr<Token>> leftHandSide;
+  std::vector<std::shared_ptr<Token>> rightHandSide;
+  std::shared_ptr<RelationalOpToken> relationalOp;
 public:
-  TokenizedConditionStatement(std::vector<std::shared_ptr<Token>> conditionStatement)
-    : conditionStatement{ conditionStatement } {};
+  TokenizedConditionalExp(std::vector<std::shared_ptr<Token>> leftHandSide,
+    std::vector<std::shared_ptr<Token>> rightHandSide,
+    std::shared_ptr<RelationalOpToken> relationalOp)
+    : leftHandSide{ leftHandSide },
+      rightHandSide{ rightHandSide },
+      relationalOp{ relationalOp } {};
 
-  std::vector<std::shared_ptr<Token>> getCondition() {
-    return this->conditionStatement;
+  std::vector<std::shared_ptr<Token>> getLeftHandSide() {
+    return this->leftHandSide;
   }
+  std::vector<std::shared_ptr<Token>> getRightHandSide() {
+    return this->rightHandSide;
+  }
+  std::shared_ptr<RelationalOpToken> getRelationalOp() {
+    return this->relationalOp;
+  }
+
+};
+/// <summary>
+/// Conditional Statement containing a relational/Conditional expression
+/// </summary>
+class TokenizedConditionalStmt : public TokenizedStmt {
+private:
+  std::shared_ptr<TokenizedConditionalExp> conditionalExp;
+public:
+  TokenizedConditionalStmt(std::shared_ptr<TokenizedConditionalExp> conditionalExp)
+    : conditionalExp{ conditionalExp } {};
+  std::shared_ptr<TokenizedConditionalExp> getConditionalExp() {
+    return this->conditionalExp;
+  };
 };
 
 /// <summary>
 /// If statement with 2 "children" statement lists
 /// </summary>
-class TokenizedIfStmt : public TokenizedConditionStatement {
+class TokenizedIfStmt : public TokenizedConditionalStmt {
 private:
-  TokenizedStmtList ifBlock;
-  TokenizedStmtList elseBlock;
+  std::shared_ptr<TokenizedStmtList> thenBlock;
+  std::shared_ptr<TokenizedStmtList> elseBlock;
 public:
-  TokenizedIfStmt(std::vector<std::shared_ptr<Token>> conditionBlock, TokenizedStmtList ifBlock, TokenizedStmtList elseBlock)
-    : TokenizedConditionStatement{ conditionBlock } {
-    this->ifBlock = ifBlock;
-    this->elseBlock = elseBlock;
+  TokenizedIfStmt(std::shared_ptr<TokenizedConditionalExp> conditionalExp,
+    std::shared_ptr<TokenizedStmtList> thenBlock,
+    std::shared_ptr<TokenizedStmtList> elseBlock)
+    : TokenizedConditionalStmt{ conditionalExp },
+      thenBlock{ thenBlock },
+      elseBlock{ elseBlock } {};
+
+  std::shared_ptr<TokenizedStmtList> getThenBlock() {
+    return this->thenBlock;
   }
-  TokenizedStmtList getIfBlock() {
-    return this->ifBlock;
-  }
-  TokenizedStmtList getElseBlock() {
+  std::shared_ptr<TokenizedStmtList> getElseBlock() {
     return this->elseBlock;
   }
 };
@@ -147,15 +170,16 @@ public:
 /// <summary>
 /// While statement with 1 "child" statement list
 /// </summary>
-class TokenizedWhileStmt : public TokenizedConditionStatement {
+class TokenizedWhileStmt : public TokenizedConditionalStmt {
 private:
-  TokenizedStmtList whileBlock;
+  std::shared_ptr<TokenizedStmtList> whileBlock;
 public:
-  TokenizedWhileStmt(std::vector<std::shared_ptr<Token>> conditionBlock, TokenizedStmtList whileBlock)
-    : TokenizedConditionStatement{ conditionBlock } {
-    this->whileBlock = whileBlock;
-  }
-  TokenizedStmtList getWhileBlock() {
+  TokenizedWhileStmt(std::shared_ptr<TokenizedConditionalExp> conditionalExp,
+    std::shared_ptr<TokenizedStmtList> whileBlock)
+    : TokenizedConditionalStmt{ conditionalExp },
+      whileBlock{ whileBlock } {};
+
+  std::shared_ptr<TokenizedStmtList> getWhileBlock() {
     return this->whileBlock;
   }
 };

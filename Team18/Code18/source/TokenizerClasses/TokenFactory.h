@@ -24,7 +24,6 @@ static const std::unordered_set<std::string> common = {
 	"call",
 	"while",
 	"if",
-	"procedure",
 	"(",
 	")",
 	";",
@@ -40,8 +39,6 @@ static const std::unordered_set<std::string> uniqueSimple = {
 	"then",
 	"else",
 	"=",
-	"{",
-	"}",
 	"!",
 	"||",
 	"&&",
@@ -60,6 +57,7 @@ static const std::unordered_set<std::string> uniquePql = {
 	"assign",
 	"variable",
 	"constant",
+	"procedure",
 	//"Follows",
 	//"Follows*",
 	//"Parent",
@@ -98,9 +96,6 @@ private:
 		if (tokenName == "if"sv) {
 			return std::make_shared<IfKeywordToken>();
 		}
-		if (tokenName == "procedure"sv) {
-			return std::make_shared<ProcedureKeywordToken>();
-		}
 		if (tokenName == "("sv) {
 			return std::make_shared<ParenOpenSepToken>();
 		}
@@ -138,12 +133,6 @@ private:
 		}
 		if (tokenName == "="sv) {
 			return std::make_shared<EqualsOpToken>();
-		}
-		if (tokenName == "{"sv) {
-			return std::make_shared<CurlyOpenSepToken>();
-		}
-		if (tokenName == "}"sv) {
-			return std::make_shared<CurlyCloseSepToken>();
 		}
 		if (tokenName == "!"sv) {
 			return std::make_shared<NotOpToken>();
@@ -191,6 +180,9 @@ private:
 		}
 		if (tokenName == "constant"sv) {
 			return std::make_shared<ConstantKeywordToken>();
+		}
+		if (tokenName == "procedure"sv) {
+			return std::make_shared<ProcedureKeywordToken>();
 		}
 		//if (tokenName == "Follows"sv) {
 		//	return NULL;// std::make_shared<>();
@@ -271,7 +263,7 @@ public:
 			return generateIdentifier(tokenName);
 		}
 		if (isNumber(tokenName)) {
-			if (tokenName[0] == char("0")) {
+			if (tokenName[0] == '0') {
 				throw std::invalid_argument("Number supplied has a leading 0: " + tokenName);
 			}
 			return generateIntLiteral(tokenName);

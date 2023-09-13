@@ -10,6 +10,8 @@
 using namespace std::string_view_literals;
 
 const std::string whitespaces = " \t\f\v\n\r\b";
+const std::string arithmeticOpsWithWhitespace = "([()+\\-/*%\\s])";
+const std::string relationalOps = "([><]=?|==|!=)";
 
 // Checks if a given input string are all numbers
 // Does NOT check if it is a valid integer literal (ie leading 0)
@@ -55,7 +57,7 @@ static bool isValidName(std::string input) {
 /// </summary>
 /// 
 /// <param name="input">The string to split.</param>
-/// <param name="delimiter">The delimiter to split the string with.</param>
+/// <param name="delimiter">The delimiter to split the string with. Input can be a single-character string or a regex as a string</param>
 /// <param name="includeDelimiter">Whether the delimiters should appear in the output as well or not.</param>
 /// <returns>A vector of strings, containing the original input after being split by the delimiters.</returns>
 static std::vector<std::string> splitString(std::string input, std::string delimiter, bool includeDelimiter = false) {
@@ -121,6 +123,11 @@ static std::string trimWhitespaces(std::string str) {
   str.erase(str.find_last_not_of(whitespaces) + 1);
   str.erase(0, str.find_first_not_of(whitespaces));
   return str;
+}
+
+static std::string substring(std::string str, int startIndex, int endIndex) {
+  int len = endIndex - startIndex + 1;
+  return str.substr(startIndex, len);
 }
 
 #endif

@@ -219,20 +219,6 @@ namespace TokenFactory_Test
 			assert(isEqual == true);
 		}
 
-		TEST_METHOD(separators_curlyOpen) {
-			std::string tokenName = "{";
-			std::shared_ptr<CurlyOpenSepToken> expected = std::make_shared<CurlyOpenSepToken>();
-			bool isEqual = combineAnd(permutateForceIdentifier(tokenName, true, expected));
-			assert(isEqual == true);
-		}
-
-		TEST_METHOD(separators_curlyClose) {
-			std::string tokenName = "}";
-			std::shared_ptr<CurlyCloseSepToken> expected = std::make_shared<CurlyCloseSepToken>();
-			bool isEqual = combineAnd(permutateForceIdentifier(tokenName, true, expected));
-			assert(isEqual == true);
-		}
-
 		TEST_METHOD(separators_semicolon) {
 			std::string tokenName = ";";
 			std::shared_ptr<SemicolonSepToken> expected = std::make_shared<SemicolonSepToken>();
