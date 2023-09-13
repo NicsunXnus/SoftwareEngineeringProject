@@ -8,6 +8,10 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace UnitTesting
 {
+      std::map<std::string, std::vector<std::string>> TestDesignExtractor::procedureMap;
+      std::map<std::string, std::vector<std::string>> TestDesignExtractor::statementMap;
+      std::map<std::string, std::vector<std::string>> TestDesignExtractor::variableMap;
+      std::map<std::string, std::vector<std::string>> TestDesignExtractor::constantMap;
       TEST_CLASS(TestDesignExtractor)
       {
       private:
