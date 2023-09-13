@@ -70,6 +70,7 @@ public:
         else if (auto condExprNode = std::dynamic_pointer_cast<CondExprNode>(astNode)) {
             // astNode is of type CondExprNode
             handleCondExpr(condExprNode);
+        }
         else {
             // Handle other cases or report an error
             std::cerr << "Unsupported ASTNode type." << std::endl;
@@ -179,10 +180,10 @@ public:
 
     void insertEntities() {
         // Get the entity maps
-        shared_ptr<EntityMapArg> statementMap = this->statementEntity->getMap(); 
-        shared_ptr<EntityMapArg> procedureMap = this->procedureEntity->getMap();
-        shared_ptr<EntityMapArg> variableMap = this->variableEntity->getMap();
-        shared_ptr<EntityMapArg> constantMap = this->constantEntity->getMap();
+        static shared_ptr<EntityMapArg> statementMap = this->statementEntity->getMap(); 
+        static shared_ptr<EntityMapArg> procedureMap = this->procedureEntity->getMap();
+        static shared_ptr<EntityMapArg> variableMap = this->variableEntity->getMap();
+        static shared_ptr<EntityMapArg> constantMap = this->constantEntity->getMap();
         
         // Insert the entities into the PKB
         PKB::insertor.addEntityStatements(statementMap);
