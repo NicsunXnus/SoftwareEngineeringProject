@@ -205,4 +205,8 @@ namespace UnitTesting
             }
 
     };
+      std::map<std::string, std::vector<std::string>> UnitTesting::TestDesignExtractor::procedureMap;
+      std::map<std::string, std::vector<std::string>> UnitTesting::TestDesignExtractor::statementMap;
+      std::map<std::string, std::vector<std::string>> UnitTesting::TestDesignExtractor::variableMap;
+      std::map<std::string, std::vector<std::string>> UnitTesting::TestDesignExtractor::constantMap;
 }
