@@ -17,6 +17,7 @@ using namespace std::string_view_literals;
 
 class SimpleTokenizer {
 private:
+
 	// Detects "{" and "}" in the outermost scope. 
 	// Throws an exception if there are any mismatching "{" and "}", including within inner scopes.
 	// Returns a vector of pair<int, int> pointers. Each pair represents the indexes of a matching "{" and "}" respectively.
@@ -71,6 +72,7 @@ private:
 		WHILE
 	};
 
+	// Processes and validates the conditional statement declaration of a conditional statement
 	static std::pair<ConditionalDeclaration, std::shared_ptr<TokenizedConditionalExp>> processConditionalDeclaration(std::string declaration) {
 		std::string trimmed = trimWhitespaces(declaration);
 		if (trimmed.empty()) {
@@ -82,6 +84,7 @@ private:
 		// if "while", do nothing
 		// finally process condtional exp
 
+		// Determine first word and type of conditional statement
 		bool firstWordWhile = trimmed.find_first_not_of(whitespaces) == trimmed.find("while");
 		bool firstWordIf = trimmed.find_first_not_of(whitespaces) == trimmed.find("if");
 		bool isIf = false;
@@ -97,18 +100,20 @@ private:
 		if (!firstWordIf && !firstWordWhile) {
 			throw std::invalid_argument(ExceptionMessages::invalidConditionalDeclaration);
 		}
+
+		// process conditional expression
 		ConditionalDeclaration dec;
 		int afterKeyword;
 		int beforeLast;
 		if (isIf) {
 			dec = ConditionalDeclaration::IF;
-			afterKeyword = trimmed.find("if") + 2;
-			beforeLast = trimmed.rfind("then") - 1;
+			afterKeyword = trimmed.find("if") + 2; // because if is 2 characters long
+			beforeLast = trimmed.rfind("then") - 1; // to get to the character before "then"
 		}
 		else {
 			dec = ConditionalDeclaration::WHILE;
-			afterKeyword = trimmed.find("while") + 2;
-			beforeLast = trimmed.size() - 1;
+			afterKeyword = trimmed.find("while") + 5; // because while is 5 characters long
+			beforeLast = trimmed.size() - 1; // last character 
 		}
 		std::string inBetween = trimWhitespaces(substring(trimmed, afterKeyword, beforeLast));
 		bool parenFormatting = inBetween[0] == '(' && inBetween.back() == ')';
@@ -123,11 +128,9 @@ private:
 
 	// Tokenizes the conditional expression of conditional statements
 	static std::shared_ptr<TokenizedConditionalExp> tokenizeConditionalExp(std::string conditionalExpression) {
-		// First checks for > < <= >= == !=
-		// Then split into LHS and RHS, then tokenizeArithmeticExp for each of them.
 		std::string trimmed = trimWhitespaces(conditionalExpression);
 		std::vector<std::shared_ptr<Token>> output;
-		// The regex matches all separators and operations that can be found in expressions: 
+		// The regex matches all separators and operations that can be found in conditional expressions: 
 		// < <= > >= == !=
 		// relationalOps is declared in HelperFunctions.h
 		std::vector<std::string> split = splitString(trimmed, relationalOps, true);
@@ -142,10 +145,12 @@ private:
 		return std::make_shared<TokenizedConditionalExp>(left, right, relOp);
 	}
 
+	// Tokenizes a procedure. Mostly a wrapper
 	static std::shared_ptr<TokenizedProcedure> tokenizeProcedure(std::string procedureName, std::string procedureBody) {
 		return std::make_shared<TokenizedProcedure>(procedureName, tokenizeStmtList(procedureBody));
 	}
 
+	// Tokenizes a Statement List, which can be found in either IF/WHILE or Procedures
 	static std::shared_ptr<TokenizedStmtList> tokenizeStmtList(std::string stmtList) {
 		std::string trimmed = trimWhitespaces(std::string(stmtList));
 		if (trimmed.empty()) {
@@ -183,6 +188,8 @@ private:
 				out.push_back(std::make_shared<TokenizedWhileStmt>(processed.second, firstBody));
 				prevEnd = currPair.second + 1;
 			}
+
+			// Look ahead to the next pair to process the ELSE-BLOCK
 			if (dec == ConditionalDeclaration::IF) {
 				pairIndex += 1;
 				if (pairIndex >= curlyPairs.size()) {
@@ -213,7 +220,7 @@ private:
 		return std::make_shared<TokenizedStmtList>(out);
 	}
 
-	// Tokenizes statement that end with a semicolon.
+	// Tokenizes statements that end with a semicolon.
 	static std::shared_ptr<TokenizedSemicolonStmt> tokenizeSemicolonStatement(std::string stmt) {
 		std::string trimmed = trimWhitespaces(stmt);
 		if (trimmed.empty()) {
@@ -288,7 +295,7 @@ private:
 
 	// Validates the details that are found before the {} of a procedure.
 	// Throws exceptions if the procedure declaration is invalid.
-	// returns the procedure name
+	// Returns the procedure name
 	static std::string processPreProcedureDetails(std::string input) {
 		std::vector<std::string> beforeOpenSplit = splitString(input);
 		if (beforeOpenSplit.size() != 2) {
