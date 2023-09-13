@@ -18,10 +18,6 @@ public:
 
 	}
 
-	/*
-	* This function takes in a string and returns the DesignObject related to the string. Throws exception otherwise
-	*/
-	static shared_ptr<DesignObjectFactory> createDesignFactory(string_view type);
 };
 
 /*
@@ -29,7 +25,7 @@ public:
 */
 class StmtObjectFactory : public DesignObjectFactory {
 public:
-	StmtObjectFactory() :DesignObjectFactory{} {
+	StmtObjectFactory() {
 
 	};
 

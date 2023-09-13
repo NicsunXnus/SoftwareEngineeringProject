@@ -30,9 +30,13 @@ list<string> QueryDriver::execute() {
 		//std::cout << "QueryDriver::execute 4.5" << std::endl;
 		//std::cout << typeid(*(obj.get())).name() << std::endl;
 		obj->call(dataAccessLayer);
-		vector<string> result = obj->getResult();
+		variant<vector<string>, map<string, vector<string>>> resultVariant = obj->getResult();
+		vector<string> result = get<vector<string>>(resultVariant);
+
 		// chat-gpt code
 		list<string> myList(result.begin(), result.end());
+		/*variant<vector<string>, vector<string, vector<string>>> test;
+		vector<string> ta = get<vector<string>>(test);*/
 
 		return myList;
 	}

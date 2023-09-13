@@ -6,9 +6,8 @@
 
 #include "QueryParser.h"
 #include "QueryObjects/DesignObjects.h"
-#include "QueryObjects/DesignObjectsFactory.h"
+#include "QueryObjects/QueryObjectFactory.h"
 #include "QueryObjects/SynonymObjects.h"
-#include "QueryObjects/ClauseObjectFactory.h"
 
 
 using namespace std;
@@ -89,7 +88,7 @@ vector<shared_ptr<QueryObject>> QueryParser::validateDeclaration(vector<string_v
 		}
 		// first token must be a design entity, then a synonym, exception thrown by createDesignFactory otherwise
 		// get the respective factory required to create QueryObjects
-		shared_ptr<DesignObjectFactory> designFactory = DesignObjectFactory::createDesignFactory(declaration[0]);
+		shared_ptr<QueryObjectFactory> designFactory = QueryObjectFactory::createFactory(declaration[0]);
 		// rest of declaration must be the synonyms themselves, convert them to Design query objects
 		bool wasDeclaration = false;
 		for (int i = 1; i < size; i++) {

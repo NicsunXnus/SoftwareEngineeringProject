@@ -13,10 +13,19 @@ using namespace std;
 * This class represents a Query object, for design entities
 */
 class DesignObject : public QueryObject {
+private:
+	vector<string> res;
 public:
 	DesignObject(string_view tokenName)
 		: QueryObject{ tokenName } {
 
+	}
+	void setResult(variant<vector<string>, map<string, vector<string>>> result) override {
+		res = get<vector<string>>(result);
+	}
+
+	variant<vector<string>, map<string, vector<string>>> getResult() override {
+		return res;
 	}
 };
 
@@ -29,7 +38,7 @@ public:
 		: DesignObject{ tokenName } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getEntityStatement(STMT));
+		setResult(dataAccessLayer->getEntity(STMT));
 	}
 
 };
@@ -43,7 +52,7 @@ public:
 		: DesignObject{ tokenName } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getEntityStatement(READ));
+		setResult(dataAccessLayer->getEntity(READ));
 	}
 };
 
@@ -56,7 +65,7 @@ public:
 		: DesignObject{ tokenName } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getEntityStatement(PRINT));
+		setResult(dataAccessLayer->getEntity(PRINT));
 	}
 };
 
@@ -69,7 +78,7 @@ public:
 		: DesignObject{ tokenName } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getEntityStatement(CALL));
+		setResult(dataAccessLayer->getEntity(CALL));
 	}
 };
 
@@ -82,7 +91,7 @@ public:
 		: DesignObject{ tokenName } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getEntityStatement(WHILE));
+		setResult(dataAccessLayer->getEntity(WHILE));
 	}
 };
 
@@ -95,7 +104,7 @@ public:
 		: DesignObject{ tokenName } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getEntityStatement(IF));
+		setResult(dataAccessLayer->getEntity(IF));
 	}
 };
 
@@ -108,7 +117,7 @@ public:
 		: DesignObject{ tokenName } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getEntityStatement(ASSIGN));
+		setResult(dataAccessLayer->getEntity(ASSIGN));
 	}
 };
 
@@ -124,7 +133,7 @@ public:
 
 		std::cout << "Calling data access layer from variable object\n";
 
-		setResult(dataAccessLayer->getAllVariables());
+		setResult(dataAccessLayer->getEntity(VARIABLE));
 	}
 };
 
@@ -137,7 +146,7 @@ public:
 		: DesignObject{ tokenName } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getAllConstants());
+		setResult(dataAccessLayer->getEntity(CONSTANT));
 	}
 };
 
@@ -150,7 +159,7 @@ public:
 		: DesignObject{ tokenName } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getAllProcedures());
+		setResult(dataAccessLayer->getEntity(PROCEDURE));
 	}
 };
 

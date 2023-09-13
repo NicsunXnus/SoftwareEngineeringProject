@@ -3,6 +3,7 @@
 #define QUERYOBJECT_H
 
 #include "../DataAccessLayer.h"
+#include <variant>
 
 
 using namespace std;
@@ -15,7 +16,6 @@ using namespace std;
 class QueryObject {
 private:
 	string_view tokenName;
-	vector<string> res;
 public:
 	QueryObject(string_view tokenName)
 		: tokenName{ tokenName } {
@@ -28,13 +28,11 @@ public:
 		return tokenName;
 	}
 
-	void setResult(vector<string> result) {
-		res = result;
-	}
+	// variant: design entities, clauses
+	// Setting the results of the PKB call
+	virtual void setResult(variant<vector<string>, map<string, vector<string>>> result) = 0;
 
-	vector<string> getResult() {
-		return res;
-	}
+	virtual variant<vector<string>, map<string, vector<string>>> getResult() = 0;
 
 
 };
