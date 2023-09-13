@@ -10,11 +10,6 @@ namespace UnitTesting
 {
       TEST_CLASS(TestDesignExtractor)
       {
-      private:
-            std::map<std::string, ProcedureEntity> procedureMap;
-            std::map<std::string, StatementEntity> statementMap;
-            std::map<std::string, VariableEntity> variableMap;
-            std::map<std::string, ConstantEntity> constantMap;
       public :
             TEST_METHOD(TestSimpleASTExtraction)
             {
@@ -102,7 +97,7 @@ namespace UnitTesting
                   std::shared_ptr<WhileNode> testWhileNode = std::make_shared<WhileNode>(12, testEqualNode2, whileStatements);
 
                   // Combine the above statement nodes
-                  std::vector<std::shared_ptr<StatementNode>> testStatementNodes = {testReadNode, testPrintNode, testAssignNode, testPrintNode2, testReadNode2, testIfNode, testWhileNode};
+                  std::vector<std::shared_ptr<StatementNode>> testStatementNodes = {testReadNode, testPrintNode, testAssignNode, testPrintNode2, testReadNode2, testIfNode, testAssignNode4, testWhileNode};
 
                   // CREATE PROCEDURE NODE TO TEST
                   std::shared_ptr<ProcedureNode> testProcedureNode1 = std::make_shared<ProcedureNode>("procedure1", testStatementNodes);
@@ -139,6 +134,7 @@ namespace UnitTesting
                   Assert::IsTrue(std::find(statementMap["print"].begin(), statementMap["print"].end(), std::to_string(4)) != statementMap["print"].end());
                   Assert::IsTrue(std::find(statementMap["print"].begin(), statementMap["print"].end(), std::to_string(10)) != statementMap["print"].end());
                   Assert::IsTrue(std::find(statementMap["print"].begin(), statementMap["print"].end(), std::to_string(12)) != statementMap["print"].end());
+
                   Assert::IsTrue(std::find(statementMap["stmt"].begin(), statementMap["stmt"].end(), std::to_string(1)) != statementMap["stmt"].end());
                   Assert::IsTrue(std::find(statementMap["stmt"].begin(), statementMap["stmt"].end(), std::to_string(2)) != statementMap["stmt"].end());
                   Assert::IsTrue(std::find(statementMap["stmt"].begin(), statementMap["stmt"].end(), std::to_string(3)) != statementMap["stmt"].end());
