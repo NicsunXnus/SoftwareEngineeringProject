@@ -223,7 +223,7 @@ private:
 	static std::shared_ptr<TokenizedSemicolonStmt> tokenizeSemicolonStatement(std::string stmt) {
 		std::string trimmed = trimWhitespaces(stmt);
 		if (trimmed.empty()) {
-			throw std::invalid_argument("Statement provided is empty.");
+			throw std::invalid_argument(ExceptionMessages::emptyStatementGiven);
 		}
 
 		std::vector<std::shared_ptr<Token>> output;
@@ -251,7 +251,7 @@ private:
 		}
 
 		if (!validStatement) {
-			throw std::invalid_argument("Semicolon statement provided is invalid. Statement supplied: " + trimmed);
+			throw std::invalid_argument(ExceptionMessages::invalidSemicolonStmt);
 		}
 		return std::make_shared<TokenizedSemicolonStmt>(output);
 	}
@@ -262,11 +262,11 @@ private:
 		std::vector<std::string> splitByEquals = splitString(assStmt, "=");
 		if (splitByEquals.size() != 2) {
 			// Invalid assignment statement
-			throw std::invalid_argument("Assignment Statement expected one equals sign. Got: " + std::to_string(splitByEquals.size() - 1));
+			throw std::invalid_argument(ExceptionMessages::invalidAssignmentStmt);
 		}
 		std::string trimmedLeft = trimWhitespaces(splitByEquals[0]);
 		if (!isValidName(trimmedLeft)) {
-			throw std::invalid_argument("Identifier provided in assignment statement is invalid. Got: " + trimmedLeft);
+			throw std::invalid_argument(ExceptionMessages::invalidIdentifier);
 		}
 		std::shared_ptr<Token> left = TokenFactory::generateToken(trimmedLeft, true, true);
 		std::vector<std::shared_ptr<Token>> right = tokenizeArithmeticExp(splitByEquals[1]);
@@ -284,7 +284,7 @@ private:
 		std::vector<std::string> split = splitString(stmt);
 		if (split.size() != 2) {
 			// Invalid two-word statement
-			throw std::invalid_argument(expectedWord1 + " statement expected two words. Got: " + std::to_string(split.size()));
+			throw std::invalid_argument(ExceptionMessages::invalidTwoWordStmt);
 		}
 		output.push_back(TokenFactory::generateToken(expectedWord1, true));
 		std::string right = trimWhitespaces(split[1]);

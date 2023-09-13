@@ -12,6 +12,10 @@ public:
   inline static const std::string invalidConditionalDeclaration = "Invalid conditional declaration detected. Expected: <if|while> (<conditionalExp>) ...";
   inline static const std::string invalidConditionalExp = "Invalid relational expression detected. Expected: <arithmetic> <relationalOp> <arithmetic>";
   inline static const std::string invalidIfDeclaration = "Invalid if statement declaration detected. Expected: if (<conditionalExp>) then ...";
+  inline static const std::string invalidSemicolonStmt = "Invalid semicolon statement detected.";
+  inline static const std::string invalidAssignmentStmt = "Invalid assignment statement detected.";
+  inline static const std::string invalidIdentifier = "Invalid identifier detected.";
+  inline static const std::string invalidTwoWordStmt = "Invalid two-word statement detected.";
 
   inline static const std::string emptyProgramGiven = "Program provided is empty";
   inline static const std::string emptyProcedureGiven = "Procedure provided is empty";
