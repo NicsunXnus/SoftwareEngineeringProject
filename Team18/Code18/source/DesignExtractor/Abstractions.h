@@ -48,6 +48,20 @@ The follows abstraction is a map of statement numbers to a vector of statement n
 
 class ParentFollowsAbstraction : public Abstractions {
 public:
+
+    ParentFollowsAbstraction() {
+        this->ParentsStorageMap = std::make_shared<map<string, vector<string>>>();
+        this->FollowsStorageMap = std::make_shared<map<string, vector<string>>>();
+    }
+
+    std::shared_ptr<map<string, vector<string>>> getParentsStorageMap() {
+        return this->ParentsStorageMap;
+    }
+
+    std::shared_ptr<map<string, vector<string>>> getFollowsStorageMap() {
+        return this->FollowsStorageMap;
+    }
+
     void extractAbstraction(shared_ptr<ASTNode> astNode) override {
         auto programNode = std::dynamic_pointer_cast<ProgramNode>(astNode);
         auto procedureNode = std::dynamic_pointer_cast<ProcedureNode>(astNode);
