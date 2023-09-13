@@ -114,8 +114,18 @@ public:
             string variableName = variableNode->getValue(); 
             int lineNumber = astNode->getStatementNumber();
             
-            // Store the variable name as the key and add the line number to the vector
-            insertToMap(variableName, lineNumber);
+
+            if (this->EntityStorageMap.find(variableName) != this->EntityStorageMap.end()) {
+                // If the statement number is already in the vector, do not add it again
+                if (find(this->EntityStorageMap[variableName].begin(), this->EntityStorageMap[variableName].end(), to_string(lineNumber)) == this->EntityStorageMap[variableName].end()) {
+                    // If the statement number is not in the vector, add it
+                    insertToMap(variableName, lineNumber);    
+                }
+            } else {
+                // Store the variable name as the key and add the line number to the vector
+                insertToMap(variableName, lineNumber);
+            }
+            
         }
         else {
             cerr << "Unsupported ASTNode type." << endl;
@@ -133,9 +143,19 @@ public:
             // If astNode is indeed a ConstantNode, extract information
             string constantValue = constantNode->getValue();
             int lineNumber = astNode->getStatementNumber();
+
+            // Check the constant value is already in the vector and  add its statement number only if its not already there
+            if (this->EntityStorageMap.find(constantValue) != this->EntityStorageMap.end()) {
+                // If the statement number is already in the vector, do not add it again
+                if (find(this->EntityStorageMap[constantValue].begin(), this->EntityStorageMap[constantValue].end(), to_string(lineNumber)) == this->EntityStorageMap[constantValue].end()) {
+                    // If the statement number is not in the vector, add it
+                    insertToMap(constantValue, lineNumber);    
+                }
+            } else {
+                // Store the constant value as the key and add the line number to the vector
+                insertToMap(constantValue, lineNumber);
+            }
             
-            // Store the constant value as the key and add the line number to the vector
-            insertToMap(constantValue, lineNumber);
         }
         else {
             cerr << "Unsupported ASTNode type." << endl;
