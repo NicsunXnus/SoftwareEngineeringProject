@@ -16,7 +16,6 @@ namespace UnitTesting
             std::map<std::string, std::vector<std::string>> variableMap;
             std::map<std::string, std::vector<std::string>> constantMap;
       public :
-            // This method is executed once before all test methods in the class
             TEST_CLASS_INITIALIZE(ClassInitialize)
             {
                   // Set up common resources or build the necessary structure here
@@ -125,15 +124,15 @@ namespace UnitTesting
                   std::shared_ptr<ConstantEntity> testConstantEntity = testDesignExtractor.getConstantEntity();
 
                   // Get maps from entities
-                  this.procedureMap = *(testProcedureEntity->getMap());
-                  this.statementMap = *(testStatementEntity->getMap());
-                  this.variableMap = *(testVariableEntity->getMap());
-                  this.constantMap = *(testConstantEntity->getMap());
+                  procedureMap = *(testProcedureEntity->getMap());
+                  statementMap = *(testStatementEntity->getMap());
+                  variableMap = *(testVariableEntity->getMap());
+                  constantMap = *(testConstantEntity->getMap());
             }
 
             TEST_METHOD(ProcedureExtraction)
             {
-                  Assert::AreEqual(this.procedureMap["procedure1"].empty(), true);
+                  Assert::AreEqual(procedureMap["procedure1"].empty(), true);
             }
 
             TEST_METHOD(StatementExtraction)
