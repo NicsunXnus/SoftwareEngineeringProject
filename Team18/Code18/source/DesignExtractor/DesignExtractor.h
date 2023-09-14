@@ -92,9 +92,9 @@ public:
             extractEntities(assignNode->getVar());
             extractEntities(assignNode->getExpr());
         }
-        // else if (auto callNode = std::dynamic_pointer_cast<CallNode>(statementNode)) {
-        //     //TODO: Handle callNode
-        // } 
+        else if (auto callNode = std::dynamic_pointer_cast<CallNode>(statementNode)) {
+            //TODO: Handle callNode
+        } 
         else if (auto whileNode = std::dynamic_pointer_cast<WhileNode>(statementNode)) {
             extractEntities(whileNode->getCondExpr());
             std::vector<std::shared_ptr<StatementNode>> statements = whileNode->getStatements();

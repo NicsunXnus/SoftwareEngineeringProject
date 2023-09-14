@@ -302,16 +302,16 @@ namespace UnitTesting
 
                   // Extract Uses and Modifies from procedure1
                   testUsesAbstraction.extractUsesAbstraction(testProgramNode);
-                  testModifiesAbstraction->extractModifiesAbstraction(testProgramNode);
+                  // testModifiesAbstraction->extractModifiesAbstraction(testProgramNode);
                   
                   // Get UsesMap and ModifiesMap from UsesAbstraction and ModifiesAbstraction by using getUsesStorageMap and getModifiesStorageMap
-                  // std::shared_ptr<map<string, vector<string>>> usesMap = testUsesAbstraction.getUsesStorageMap();
+                  std::shared_ptr<map<string, vector<string>>> usesMap = testUsesAbstraction.getUsesStorageMap();
                   // std::shared_ptr<map<string, vector<string>>> modifiesMap = testModifiesAbstraction->getModifiesStorageMap();
 
-                  // usesMap = testDesignExtractor.addProcedureNames(procedureMap, usesMap);
+                  usesMap = testDesignExtractor.addProcedureNames(procedureMap, usesMap);
                   // modifiesMap = testDesignExtractor.addProcedureNames(procedureMap, modifiesMap);
 
-                  // std::map<std::string, std::vector<std::string>>& usesMapRef = *usesMap;
+                  std::map<std::string, std::vector<std::string>>& usesMapRef = *usesMap;
                   // std::map<std::string, std::vector<std::string>>& modifiesMapRef = *modifiesMap;
 
                   // // Check the existence of values in usesMap
