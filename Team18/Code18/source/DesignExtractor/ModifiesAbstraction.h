@@ -12,6 +12,10 @@ using namespace std;
 
 class ModifiesAbstraction {
 public:
+    // Constructor
+    ModifiesAbstraction() {
+        this->ModifiesStorageMap = std::make_shared<map<string, vector<string>>>();
+    }
 
     void extractModifiesAbstraction(shared_ptr<ASTNode> astNode) {
         // Extract the entities based on the type of astNode

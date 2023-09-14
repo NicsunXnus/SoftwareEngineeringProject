@@ -12,6 +12,10 @@ using namespace std;
 
 class UsesAbstraction {
 public:
+    UsesAbstraction() {
+        this->UsesStorageMap = std::make_shared<map<string, vector<string>>>();
+    }
+
 
     void extractUsesAbstraction(shared_ptr<ASTNode> astNode) {
         // Extract the entities based on the type of astNode
@@ -34,7 +38,9 @@ public:
         } 
         else if (auto variableNode = std::dynamic_pointer_cast<VariableNode>(astNode)) {
             // astNode is of type VariableNode
-            insertToUsesStorageMap(variableNode->getName(), to_string(variableNode->getStatementNumber()));
+            string variableName = variableNode->getName();
+            string statementNumber = to_string(variableNode->getStatementNumber());
+            insertToUsesStorageMap(variableName, statementNumber);
         } 
         else if (auto exprNode = std::dynamic_pointer_cast<ExprNode>(astNode)) {
             // astNode is of type ExprNode
