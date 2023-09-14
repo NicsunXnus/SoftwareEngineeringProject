@@ -21,8 +21,12 @@ public:
 			case PROCEDURE:
 				(*entity_storage).setProcedureDatabase(entity_map);
 				break;
-			default:  // other entities are statement types
+			case STMT:  // other entities are statement types
 				(*entity_storage).setStatementDatabase(entity_map);
+				break;
+			default:
+				cerr << "Insertor::addEntity: Invalid entity type" << endl;
+				break;
 		}
 	}
 
