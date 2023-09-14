@@ -195,7 +195,7 @@ public:
         
     }
 
-    std::shared_ptr<std::map<std::string, std::vector<std::string>>> DesignExtractor::addProcedureNames(
+    std::shared_ptr<std::map<std::string, std::vector<std::string>>> addProcedureNames(
     std::shared_ptr<std::map<std::string, std::vector<std::string>>> procedureMap,
     std::shared_ptr<std::map<std::string, std::vector<std::string>>> UsesModifiesStorageMap) {
         // For all keys in UsesStorageMap, check the values in the string vector, if any of them matches a procedure name, add the procedure name to the ModifiesStorageMap
