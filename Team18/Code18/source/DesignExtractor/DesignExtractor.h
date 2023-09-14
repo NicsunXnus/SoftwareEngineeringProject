@@ -195,6 +195,21 @@ public:
         
     }
 
+    std::shared_ptr<map<string, vector<string>> addProcedureNames(std::shared_ptr<map<string, vector<string>>> procedureMap, std::shared_ptr<map<string, vector<string>>> UsesModifiesStorageMap) {
+        // For all keys in UsesStorageMap, check the values in the string vector, if any of them matches a procedure name, add the procedure name to the ModifiesStorageMap
+        for (const auto& [variable, values] : *this->UsesModifiesStorageMap) {
+            for (const auto& [procedureName, procedureValues] : *procedureMap) {
+                if (std::find(values.begin(), values.end(), procedureName) != values.end()) {
+                    if (this->UsesModifiesStorageMap->find(variable) == this->UsesModifiesStorageMap->end()) {
+                        (*this->UsesModifiesStorageMap)[variable] = std::vector<std::string>();
+                    }
+                    (*this->UsesModifiesStorageMap)[variable].push_back(value);
+                }
+            }
+        } 
+        return UsesModifiesStorageMap;
+    }
+
 private:
     std::shared_ptr<ProcedureEntity> procedureEntity;
     std::shared_ptr<StatementEntity> statementEntity;
