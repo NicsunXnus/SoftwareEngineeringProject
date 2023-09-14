@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include <string>
-#include "../source/DesignExtractor/ParentFollowsAbstractions.h"
+#include "../source/DesignExtractor/ParentFollowsAbstraction.h"
 #include "../source/AST/ASTNode.h"
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
