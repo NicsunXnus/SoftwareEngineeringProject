@@ -308,7 +308,7 @@ namespace UnitTesting
                   std::shared_ptr<map<string, vector<string>>> usesMap = testUsesAbstraction.getUsesStorageMap();
                   // std::shared_ptr<map<string, vector<string>>> modifiesMap = testModifiesAbstraction->getModifiesStorageMap();
 
-                  usesMap = testDesignExtractor.addProcedureNames(procedureMap, usesMap);
+                  // usesMap = testDesignExtractor.addProcedureNames(procedureMap, usesMap);
                   // modifiesMap = testDesignExtractor.addProcedureNames(procedureMap, modifiesMap);
 
                   // std::map<std::string, std::vector<std::string>>& usesMapRef = *usesMap;
