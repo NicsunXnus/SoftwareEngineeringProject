@@ -198,19 +198,37 @@ public:
     std::shared_ptr<std::map<std::string, std::vector<std::string>>> addProcedureNames(
     std::shared_ptr<std::map<std::string, std::vector<std::string>>> procedureMap,
     std::shared_ptr<std::map<std::string, std::vector<std::string>>> UsesModifiesStorageMap) {
-        // For all keys in UsesStorageMap, check the values in the string vector, if any of them matches a procedure name, add the procedure name to the ModifiesStorageMap
-        for (const auto& [variable, values] : *this->UsesModifiesStorageMap) {
-            for (const auto& [procedureName, procedureValues] : *procedureMap) {
-                if (std::find(values.begin(), values.end(), procedureName) != values.end()) {
-                    if (this->UsesModifiesStorageMap->find(variable) == this->UsesModifiesStorageMap->end()) {
-                        (*this->UsesModifiesStorageMap)[variable] = std::vector<std::string>();
-                    }
-                    (*this->UsesModifiesStorageMap)[variable].push_back(value);
+    
+    // Iterate over the elements of UsesModifiesStorageMap
+    for (const auto& pair : *UsesModifiesStorageMap) {
+        const std::string& variable = pair.first;
+        const std::vector<std::string>& values = pair.second;
+        
+        // Iterate over the procedureMap
+        for (const auto& procedurePair : *procedureMap) {
+            const std::string& procedureName = procedurePair.first;
+            const std::vector<std::string>& procedureValues = procedurePair.second;
+            
+            // Check if procedureName is in values
+            if (std::find(values.begin(), values.end(), procedureName) != values.end()) {
+                // Add procedureName to UsesModifiesStorageMap
+                if (UsesModifiesStorageMap->find(variable) == UsesModifiesStorageMap->end()) {
+                    (*UsesModifiesStorageMap)[variable] = std::vector<std::string>();
                 }
+                (*UsesModifiesStorageMap)[variable].push_back(procedureName);
             }
-        } 
-        return UsesModifiesStorageMap;
+        }
     }
+    
+    return UsesModifiesStorageMap;
+}
+In this corrected code, I've used the pair variable to iterate over the elements of UsesModifiesStorageMap and procedurePair to iterate over the elements of procedureMap. This should resolve the syntax error you were encountering.
+
+
+
+
+
+
 
 private:
     std::shared_ptr<ProcedureEntity> procedureEntity;
