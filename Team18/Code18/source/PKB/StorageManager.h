@@ -26,14 +26,12 @@ public:
 				return modifies_abstractions;
 			case PARENT:
 				return parent_abstractions;
+			case PARENTSTAR:
+				return parent_abstractions; 
 			case FOLLOWS:
 				return follows_abstractions;
-			case PARENTSTAR:  // not for insertion
-				cerr << "No storage for this abstraction" << endl;
-				return nullptr;
-			case FOLLOWSSTAR:  // not for insertion
-				cerr << "No storage for this abstraction" << endl;
-				return nullptr;
+			case FOLLOWSSTAR:
+				return follows_abstractions;
 			default:
 				cerr << "No such abstraction found" << endl;
 		}
