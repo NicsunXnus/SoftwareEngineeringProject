@@ -14,8 +14,16 @@ using namespace std;
 */
 class AbstractionStorage {
 public:
-    shared_ptr<EntityMapArg> AbstractionStorage::getDatabase() {
+    shared_ptr<StringMap> AbstractionStorage::getDatabase() {
         return this->database;
+    }
+    
+    shared_ptr<StringMap> AbstractionStorage::getTruncatedDatabase() {
+        static StringMap truncated_database;
+        for (auto const& [key, lines] : *database) {
+            truncated_database[key] = vector<string>({ lines.front() });
+        }
+        return make_shared<StringMap>(truncated_database);
     }
 
     void AbstractionStorage::printDatabase() const {
@@ -29,16 +37,16 @@ public:
         }
     }
     
-    void AbstractionStorage::setAbstraction(shared_ptr<EntityMapArg> database_to_insert) {
-        static EntityMapArg new_database;
-        this->database = make_shared<EntityMapArg>(new_database);
+    void AbstractionStorage::setAbstraction(shared_ptr<StringMap> database_to_insert) {
+        static StringMap new_database;
+        this->database = make_shared<StringMap>(new_database);
         for (auto const& [key, lines] : *database_to_insert) {
             (*(this->database))[key] = lines;
         }
     }
 
 private:
-    static inline shared_ptr<EntityMapArg> database;
+    static inline shared_ptr<StringMap> database;
 };
 
 #endif

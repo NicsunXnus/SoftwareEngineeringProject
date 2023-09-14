@@ -13,9 +13,8 @@ using namespace std;
 */
 class Responder {
 public:
-	// methods to respond to queries. generally, call the storage manager to do work (static)
+	// methods to respond to queries. generally, call the storage manager to do work.
 	// storage manager will get entity storage/abstraction storage, perform the query on that class via polymorphism, then return line numbers.
-	// responder returns line numbers to caller (QPS)
 	
 	vector<string> Responder::getEntityStatement(ENTITY entity) const {
 		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
@@ -24,10 +23,11 @@ public:
 
 	vector<string> Responder::getAllProcedures() const {
 		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		EntityMapArg proc_database = *(entity_storage)->getProcedureDatabase();
+		StringMap proc_database = *(entity_storage)->getProcedureDatabase();
 		return getKeys(proc_database);
 	}
 
+	// unused now
 	vector<string> Responder::getProcedure(string procedure) const {
 		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
 		return (*(entity_storage)->getProcedureDatabase()).at(procedure);
@@ -35,10 +35,11 @@ public:
 
 	vector<string> Responder::getAllVariables() const {
 		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		EntityMapArg var_database = *(entity_storage)->getVariableDatabase();
+		StringMap var_database = *(entity_storage)->getVariableDatabase();
 		return getKeys(var_database);
 	}
 
+	// unused now
 	vector<string> Responder::getVariable(string variable) const {
 		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
 		return (*(entity_storage)->getVariableDatabase()).at(variable);
@@ -46,27 +47,35 @@ public:
 
 	vector<string> Responder::getAllConstants() const {
 		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		EntityMapArg const_database = *(entity_storage)->getConstantDatabase();
+		StringMap const_database = *(entity_storage)->getConstantDatabase();
 		return getKeys(const_database);
 	}
 
+	// unused now
 	vector<string> Responder::getConstant(string constant) const {
 		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
 		return (*(entity_storage)->getConstantDatabase()).at(constant);
 	}
 
-	//map<string, vector<string>> Responder::getAbstraction(string abstraction) const {
-//		shared_ptr<AbstractionStorage> abstraction_storage = StorageManager::getAbstractionStorage(abstraction);
-		//return *(abstraction_storage->getDatabase());
-	//}
+	StringMap Responder::getAbstraction(ABSTRACTION abstraction) const {
+		shared_ptr<AbstractionStorage> abstraction_storage = StorageManager::getAbstractionStorage(abstraction);
+		// note: for Follows* and Parent*, we return the whole database.
+		// for Follows and Parent, we return a truncated database with the value just the direct follower/parent.
 
-	//vector<string> Responder::getAbstractionVariable(string abstraction, string variable) const {
-//		shared_ptr<AbstractionStorage> abstraction_storage = StorageManager::getAbstractionStorage(abstraction);
-		//return (*(abstraction_storage->getDatabase())).at(variable);
-//	}
+		if (abstraction == FOLLOWS || abstraction == PARENT) {
+			return *(abstraction_storage->getTruncatedDatabase());
+		}
+		return *(abstraction_storage->getDatabase());
+	}
+
+	// unused now
+	vector<string> Responder::getAbstractionVariable(ABSTRACTION abstraction, string key) const {
+		shared_ptr<AbstractionStorage> abstraction_storage = StorageManager::getAbstractionStorage(abstraction);
+		return (*(abstraction_storage->getDatabase())).at(key);
+	}
 
 private:
-	vector<string> getKeys(EntityMapArg db) const {
+	vector<string> getKeys(StringMap db) const {
 		vector<string> keys;
 		for (const auto& [k, v] : db) {
 			keys.push_back(k);

@@ -18,7 +18,6 @@ using namespace std;
 */
 class StorageManager {
 public:
-
 	static shared_ptr<AbstractionStorage> StorageManager::getAbstractionStorage(const ABSTRACTION abstraction_type) {
 		switch (abstraction_type) {
 			case USES:
