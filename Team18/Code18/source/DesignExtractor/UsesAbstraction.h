@@ -71,9 +71,9 @@ public:
         else if (auto assignNode = std::dynamic_pointer_cast<AssignNode>(statementNode)) {
             extractUsesAbstraction(assignNode->getExpr());
         }
-        // else if (auto callNode = std::dynamic_pointer_cast<CallNode>(statementNode)) {
-        //     //TODO: Handle callNode
-        // } 
+        else if (auto callNode = std::dynamic_pointer_cast<CallNode>(statementNode)) {
+            //TODO: Handle callNode
+        } 
         else if (auto whileNode = std::dynamic_pointer_cast<WhileNode>(statementNode)) {
             extractUsesAbstraction(whileNode->getCondExpr());
             
