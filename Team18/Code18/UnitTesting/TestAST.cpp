@@ -3,6 +3,7 @@
 #include "../source/TokenizerClasses/SimpleTokenizer.h"
 #include "../source/TokenizerClasses/TokenFactory.h"
 #include "../source/AST/ASTBuilder.h"
+#include "../source/AST/ASTBuilderHelperFunctions.h"
 #include <cassert>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -56,7 +57,7 @@ namespace UnitTesting
 			std::stringstream output;
 			std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
 
-			std::cout << ASTBuilder::printExpr(e);
+			std::cout << printExpr(e);
 
 			std::cout.rdbuf(oldCoutBuffer);
 
@@ -151,19 +152,78 @@ namespace UnitTesting
 			std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
 
 			std::string res = "";
-			res += std::to_string(statements[0]->getStatementNumber()) + " read " + ASTBuilder::printExpr(statements[0]->getVar()) + "\n";
-			res += std::to_string(statements[1]->getStatementNumber()) + " read " + ASTBuilder::printExpr(statements[1]->getVar()) + "\n";
-			res += std::to_string(statements[2]->getStatementNumber()) + " read " + ASTBuilder::printExpr(statements[2]->getVar()) + "\n";
+			res += std::to_string(statements[0]->getStatementNumber()) + " read " + printExpr(statements[0]->getVar()) + "\n";
+			res += std::to_string(statements[1]->getStatementNumber()) + " read " + printExpr(statements[1]->getVar()) + "\n";
+			res += std::to_string(statements[2]->getStatementNumber()) + " read " + printExpr(statements[2]->getVar()) + "\n";
 
-			res += std::to_string(statements[3]->getStatementNumber()) + " " + ASTBuilder::printExpr(statements[3]->getVar()) + " = " + ASTBuilder::printExpr(statements[3]->getExpr()) + "\n";
-			res += std::to_string(statements[4]->getStatementNumber()) + " " + ASTBuilder::printExpr(statements[4]->getVar()) + " = " + ASTBuilder::printExpr(statements[4]->getExpr()) + "\n";
-			res += std::to_string(statements[5]->getStatementNumber()) + " print " + ASTBuilder::printExpr(statements[5]->getVar());
+			res += std::to_string(statements[3]->getStatementNumber()) + " " + printExpr(statements[3]->getVar()) + " = " + printExpr(statements[3]->getExpr()) + "\n";
+			res += std::to_string(statements[4]->getStatementNumber()) + " " + printExpr(statements[4]->getVar()) + " = " + printExpr(statements[4]->getExpr()) + "\n";
+			res += std::to_string(statements[5]->getStatementNumber()) + " print " + printExpr(statements[5]->getVar());
 			std::cout << res;
 
 			std::cout.rdbuf(oldCoutBuffer);
 
 			Logger::WriteMessage("Output of parseStatements:\n");
 			Logger::WriteMessage(output.str().c_str());
+		}
+
+		TEST_METHOD(TestIfStatement) {
+			std::vector<std::shared_ptr<Token>> simpleIfTest = {
+				std::make_shared<Token>("if"),
+				std::make_shared<Token>("("),
+				std::make_shared<Token>("x"),
+				std::make_shared<Token>(">"),
+				std::make_shared<Token>("2"),
+				std::make_shared<Token>(")"),
+				std::make_shared<Token>("{"),
+				std::make_shared<Token>("x"),
+				std::make_shared<Token>("="),
+				std::make_shared<Token>("1"),
+				std::make_shared<Token>(";"),
+				std::make_shared<Token>("}"),
+				std::make_shared<Token>("else"),
+				std::make_shared<Token>("{"),
+				std::make_shared<Token>("read"),
+				std::make_shared<Token>("x"),
+				std::make_shared<Token>(";"),
+				std::make_shared<Token>("print"),
+				std::make_shared<Token>("x"),
+				std::make_shared<Token>(";"),
+				std::make_shared<Token>("}"),
+			};
+
+			std::shared_ptr<StatementNode> ifNode = ASTBuilder::parseStatement(simpleIfTest,1);
+
+			std::stringstream output;
+			std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
+
+			std::cout << ifNode->getStatementNumber() << " if (" << printCondExpr(ifNode->getCondExpr()) << ") {\n";
+			std::vector<std::shared_ptr<StatementNode>> thenStmts = ifNode->getStatements();
+			for (std::shared_ptr<StatementNode> stmtNode : thenStmts) {
+				if (stmtNode->getName() == "read" || stmtNode->getName() == "print") {
+					std::cout << stmtNode->getStatementNumber() << " " << stmtNode->getName() << " " << stmtNode->getVar()->getValue() << std::endl;
+				}
+				else if (stmtNode->getName() == "assign") {
+					std::cout << stmtNode->getStatementNumber() << " " << stmtNode->getVar()->getValue() << " = " << printExpr(stmtNode->getExpr()) << std::endl;
+				}
+			}
+			std::cout << "} else {\n";
+			std::vector<std::shared_ptr<StatementNode>> elseStmts = ifNode->getElseStatements();
+			for (std::shared_ptr<StatementNode> stmtNode : elseStmts) {
+				if (stmtNode->getName() == "read" || stmtNode->getName() == "print") {
+					std::cout << stmtNode->getStatementNumber() << " "  << stmtNode->getName() << " " << stmtNode->getVar()->getValue() << std::endl;
+				}
+				else if (stmtNode->getName() == "assign") {
+					std::cout << stmtNode->getStatementNumber() << " " << stmtNode->getVar()->getValue() << " = " << printExpr(stmtNode->getExpr()) << std::endl;
+				}
+			}
+
+			std::cout.rdbuf(oldCoutBuffer);
+
+			Logger::WriteMessage("Output of ifNode:\n");
+			Logger::WriteMessage(output.str().c_str());
+
+
 		}
 
 		TEST_METHOD(TestValidCondition)
@@ -236,7 +296,7 @@ namespace UnitTesting
 			std::stringstream output;
 			std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
 
-			std::string res = ASTBuilder::printCondExpr(condExpr);
+			std::string res = printCondExpr(condExpr);
 			std::cout << res;
 
 			std::cout.rdbuf(oldCoutBuffer);
