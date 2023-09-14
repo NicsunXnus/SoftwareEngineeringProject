@@ -305,9 +305,12 @@ namespace UnitTesting
                   // Get UsesMap and ModifiesMap from UsesAbstraction and ModifiesAbstraction
                   std::map<std::string, std::vector<std::string>> usesMap = testUsesAbstraction->getUsesStorageMap();
                   std::map<std::string, std::vector<std::string>> modifiesMap = testModifiesAbstraction->getModifiesStorageMap();
+                  
+                  std::shared_ptr<std::map<std::string, std::vector<std::string>>> usesMapPtr = std::make_shared<std::map<std::string, std::vector<std::string>>>(usesMap);
+                  std::shared_ptr<std::map<std::string, std::vector<std::string>>> modifiesMapPtr = std::make_shared<std::map<std::string, std::vector<std::string>>>(modifiesMap);
 
-                  usesMap = testDesignExtractor.addProcedureNames(procedureMap, usesMap);
-                  modifiesMap = testDesignExtractor.addProcedureNames(procedureMap, modifiesMap);
+                  usesMapPtr = testDesignExtractor.addProcedureNames(procedureMap, usesMap);
+                  modifiesMapPtr = testDesignExtractor.addProcedureNames(procedureMap, modifiesMap);
 
                   // Check the existence of values in usesMap
                   Assert::IsTrue(std::find(usesMap["x"].begin(), usesMap["x"].end(), std::to_string(1)) != usesMap["x"].end());
