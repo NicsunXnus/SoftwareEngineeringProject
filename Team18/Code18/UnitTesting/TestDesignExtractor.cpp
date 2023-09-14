@@ -303,8 +303,8 @@ namespace UnitTesting
                   testModifiesAbstraction->getModifiesExtraction(testProgramNode, procedureMap);
                   
                   // Get UsesMap and ModifiesMap from UsesAbstraction and ModifiesAbstraction
-                  std::shared_ptr<std::map<std::string, std::vector<std::string>>> usesMap = testUsesAbstraction->getUsesMap();
-                  std::shared_ptr<std::map<std::string, std::vector<std::string>>> modifiesMap = testModifiesAbstraction->getModifiesMap();
+                  std::map<std::string, std::vector<std::string>> usesMap = testUsesAbstraction->getUsesMap();
+                  std::map<std::string, std::vector<std::string>> modifiesMap = testModifiesAbstraction->getModifiesMap();
 
                   // Check the existence of values in usesMap
                   Assert::IsTrue(std::find(usesMap["x"].begin(), usesMap["x"].end(), std::to_string(1)) != usesMap["x"].end());
