@@ -151,6 +151,9 @@ public:
             extractModifiesAbstraction(leftCondExpr);
             extractModifiesAbstraction(rightCondExpr);
         }
+        else if (auto constantNode = std::dynamic_pointer_cast<ConstantNode>(astNode)) {
+            // astNode is of type ConstantNode
+        }
         else {
             std::cerr << "Unsupported ASTNode type in handleCondExpr." << std::endl;
         }
