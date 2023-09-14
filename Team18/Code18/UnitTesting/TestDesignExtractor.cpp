@@ -4,6 +4,8 @@
 #include "../source/DesignExtractor/Entity.h"
 #include "../source/DesignExtractor/DesignExtractor.h"
 #include "../source/AST/ASTNode.h"
+#include "../source/DesignExtractor/ModifiesAbstraction.h"
+#include "../source/DesignExtractor/UsesAbstraction.h"
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace UnitTesting
