@@ -10,7 +10,6 @@ namespace SimpleTokeniser_Test
 {
 	TEST_CLASS(tokeniseMethod_Test) {
 	public:
-<<<<<<< HEAD
 		TEST_METHOD(emptyProgram_failure) {
 			try {
 				std::string input = "";
@@ -431,7 +430,5 @@ namespace SimpleTokeniser_Test
 			TokenizedProgram program = TokenizedProgram(proceduresVec);
 			assert((*output).equalsTo(program));
 		}
-=======
->>>>>>> master
 	};
 }

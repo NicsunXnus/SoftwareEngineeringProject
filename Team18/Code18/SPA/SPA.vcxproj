@@ -50,7 +50,6 @@
     <ClInclude Include="..\source\TokenClasses\SeparatorToken.h" />
     <ClInclude Include="..\source\TokenClasses\Token.h" />
     <ClInclude Include="..\source\TokenClasses\UnderscoreToken.h" />
-    <ClInclude Include="..\source\TokenizerClasses\ExceptionMessages.h" />
     <ClInclude Include="..\source\TokenizerClasses\PQLTokenizer.h" />
     <ClInclude Include="..\source\TokenizerClasses\SIMPLETokenizer.h" />
     <ClCompile Include="..\source\AST\**\*.h" />

@@ -71,37 +71,9 @@ private:
 		IF,
 		WHILE
 	};
-
-	// Processes and validates the conditional statement declaration of a conditional statement
-	static std::pair<ConditionalDeclaration, std::vector<std::shared_ptr<Token>>> processConditionalDeclaration(std::string declaration) {
-		std::string trimmed = trimWhitespaces(declaration);
-		if (trimmed.empty()) {
-			throw std::invalid_argument(ExceptionMessages::emptyStatementGiven);
-		}
-
-		// find first word
-		// if "if", find last word
-		// if "while", do nothing
-		// finally process condtional exp
-
-		// Determine first word and type of conditional statement
-		bool firstWordWhile = trimmed.find_first_not_of(whitespaces) == trimmed.find("while");
-		bool firstWordIf = trimmed.find_first_not_of(whitespaces) == trimmed.find("if");
-		bool isIf = false;
-		if (firstWordIf) {
-			// minus 3 because rfind will find the position of the "t" in "then", but find_last_not_of will find position of "n".
-			// minus exactly 3 because "then" is 4 letters, so 3 letter diff between "t" and "n"
-			bool lastWordThen = (trimmed.find_last_not_of(whitespaces) - 3)== trimmed.rfind("then");
-			if (!lastWordThen) {
-				throw std::invalid_argument(ExceptionMessages::invalidIfDeclaration);
-			}
-			isIf = true;
-		}
-		if (!firstWordIf && !firstWordWhile) {
-			throw std::invalid_argument(ExceptionMessages::invalidConditionalDeclaration);
-		}
-
-		// process conditional expression
+	
+	// just evaluates the conditonal expression and what type of conditional statement it is.
+	static std::pair<ConditionalDeclaration, std::vector<std::shared_ptr<Token>>> processConditionalExpression(std::string trimmed, bool isIf) {
 		ConditionalDeclaration dec;
 		int afterKeyword;
 		int beforeLast;
@@ -127,6 +99,38 @@ private:
 		return std::pair(dec, condExp);
 	}
 
+	// Processes and validates the conditional statement declaration of a conditional statement
+	static std::pair<ConditionalDeclaration, std::vector<std::shared_ptr<Token>>> processConditionalDeclaration(std::string declaration) {
+		std::string trimmed = trimWhitespaces(declaration);
+		if (trimmed.empty()) {
+			throw std::invalid_argument(ExceptionMessages::emptyStatementGiven);
+		}
+
+		// find first word
+		// if "if", find last word, it should be "then"
+		// if "while", do nothing
+		// finally process condtional exp
+
+		// Determine first word and type of conditional statement
+		bool firstWordWhile = trimmed.find_first_not_of(whitespaces) == trimmed.find("while");
+		bool firstWordIf = trimmed.find_first_not_of(whitespaces) == trimmed.find("if");
+		bool isIf = false;
+		if (firstWordIf) {
+			// minus 3 because rfind will find the position of the "t" in "then", but find_last_not_of will find position of "n".
+			// minus exactly 3 because "then" is 4 letters, so 3 letter diff between "t" and "n"
+			bool lastWordThen = (trimmed.find_last_not_of(whitespaces) - 3)== trimmed.rfind("then");
+			if (!lastWordThen) {
+				throw std::invalid_argument(ExceptionMessages::invalidIfDeclaration);
+			}
+			isIf = true;
+		}
+		if (!firstWordIf && !firstWordWhile) {
+			throw std::invalid_argument(ExceptionMessages::invalidConditionalDeclaration);
+		}
+
+		return processConditionalExpression(trimmed, isIf);
+	}
+	
 	// Tokenizes a Statement List, which can be found in either IF/WHILE or Procedures
 	static std::shared_ptr<TokenizedStmtList> tokenizeStmtList(std::string stmtList) {
 		std::string trimmed = trimWhitespaces(std::string(stmtList));
