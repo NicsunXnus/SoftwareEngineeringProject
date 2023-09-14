@@ -41,10 +41,10 @@ public:
             string variableName = variableNode->getName();
             string statementNumber = to_string(variableNode->getStatementNumber());
             // Check if the UsesStorageMap is a null pointer
-            if (this->UsesStorageMap == nullptr) {
-                // Throw an error
-                throw std::runtime_error("help la");
-            }
+            // if (this->UsesStorageMap == nullptr) {
+            //     // Throw an error
+            //     throw std::runtime_error("help la");
+            // }
 
             insertToUsesStorageMap(variableName, statementNumber);
         } 
