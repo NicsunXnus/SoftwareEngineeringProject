@@ -8,6 +8,7 @@ public:
   inline static const std::string extraOpenCurly = "{ found without matching }";
   inline static const std::string extraCloseCurly = "} found without matching {";
 
+  inline static const std::string invalidProgramDefinition = "Invalid program definition detected. Extra code found outside of procedures.";
   inline static const std::string invalidProcedureDefinition = "Invalid Procedure defintion detected. Expected: 'procedure <name> {} ...";
   inline static const std::string invalidConditionalDeclaration = "Invalid conditional declaration detected. Expected: <if|while> (<conditionalExp>) ...";
   inline static const std::string invalidConditionalExp = "Invalid relational expression detected. Expected: <arithmetic> <relationalOp> <arithmetic>";

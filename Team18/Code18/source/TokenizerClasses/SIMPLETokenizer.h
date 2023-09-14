@@ -341,6 +341,11 @@ public:
 
 			previousEnd = p.second + 1; // + 1 to not include the close curly in the next iteration
 		}
+		// There are leftover chracters. Which should not be the case since the program was trimmed of whitespaces
+		// already.
+		if (previousEnd != trimmed.size()) {
+			throw std::invalid_argument(ExceptionMessages::invalidProgramDefinition);
+		}
 		return std::make_shared<TokenizedProgram>(out);
 	}
 };

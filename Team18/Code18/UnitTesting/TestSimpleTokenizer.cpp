@@ -21,6 +21,17 @@ namespace SimpleTokeniser_Test
 			}
 		}
 
+		TEST_METHOD(codeOutsideOfProcedure_failure) {
+			try {
+				std::string input = "read x";
+				SimpleTokenizer::tokenizeProgram(input);
+				assert(false);
+			}
+			catch (std::invalid_argument e) {
+				assert(e.what() == ExceptionMessages::invalidProgramDefinition);
+			}
+		}
+
 		TEST_METHOD(emptyProcedure_failure) {
 			try {
 				std::string input = "procedure x {}";
@@ -395,6 +406,27 @@ namespace SimpleTokeniser_Test
 			};
 			std::shared_ptr<TokenizedStmtList> stmtList = std::make_shared<TokenizedStmtList>(stmtlistVec);
 			std::vector< std::shared_ptr<TokenizedProcedure>> proceduresVec = { std::make_shared<TokenizedProcedure>("x", stmtList) };
+			TokenizedProgram program = TokenizedProgram(proceduresVec);
+			assert((*output).equalsTo(program));
+		}
+
+		TEST_METHOD(multipleDeclaration_success) {
+			std::string input = "procedure x {read z;} procedure a {print b;}";
+			std::shared_ptr<TokenizedProgram> output = SimpleTokenizer::tokenizeProgram(input);
+
+			// Expected
+			std::vector<std::shared_ptr<Token>> line1vec = { std::make_shared<ReadKeywordToken>(), std::make_shared<IdentifierToken>("z") };
+			std::vector<std::shared_ptr<TokenizedStmt>> stmtlistVec1 = { std::make_shared<TokenizedSemicolonStmt>(1, line1vec) };
+			std::shared_ptr<TokenizedStmtList> stmtList1 = std::make_shared<TokenizedStmtList>(stmtlistVec1);
+
+			std::vector<std::shared_ptr<Token>> line2vec = { std::make_shared<PrintKeywordToken>(), std::make_shared<IdentifierToken>("b") };
+			std::vector<std::shared_ptr<TokenizedStmt>> stmtlistVec2 = { std::make_shared<TokenizedSemicolonStmt>(2, line2vec) };
+			std::shared_ptr<TokenizedStmtList> stmtList2 = std::make_shared<TokenizedStmtList>(stmtlistVec2);
+
+			std::vector< std::shared_ptr<TokenizedProcedure>> proceduresVec = { 
+				std::make_shared<TokenizedProcedure>("x", stmtList1),
+				std::make_shared<TokenizedProcedure>("a", stmtList2)
+			};
 			TokenizedProgram program = TokenizedProgram(proceduresVec);
 			assert((*output).equalsTo(program));
 		}
