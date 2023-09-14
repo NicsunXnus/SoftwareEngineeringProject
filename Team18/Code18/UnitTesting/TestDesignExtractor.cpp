@@ -284,24 +284,13 @@ namespace UnitTesting
                   // Create program node
                   std::shared_ptr<ProgramNode> testProgramNode = std::make_shared<ProgramNode>(testProcedureNodes);
 
-                  // Create Design Extractor
-                  DesignExtractor testDesignExtractor = DesignExtractor();
-
-                  // Extract the entities from the root node of the AST
-                  testDesignExtractor.extractEntities(testProgramNode);
-
-                  // Get entities from design extractor
-                  std::shared_ptr<ProcedureEntity> testProcedureEntity = testDesignExtractor.getProcedureEntity();
-
                   // Create UsesAbstraction and ModifiesAbstraction
                   std::shared_ptr<UsesAbstraction> testUsesAbstraction = std::make_shared<UsesAbstraction>();
                   std::shared_ptr<ModifiesAbstraction> testModifiesAbstraction = std::make_shared<ModifiesAbstraction>();
 
-                  // Get shared pointer to procedure map
-                  std::shared_ptr<std::map<std::string, std::vector<std::string>>> procedureMap = testProcedureEntity->getMap();
 
                   // Extract Uses and Modifies from procedure1
-                  // testUsesAbstraction->extractUsesAbstraction(testProgramNode);
+                  testUsesAbstraction->extractUsesAbstraction(testProgramNode);
                   // testModifiesAbstraction->extractModifiesAbstraction(testProgramNode);
                   
                   // Get UsesMap and ModifiesMap from UsesAbstraction and ModifiesAbstraction by using getUsesStorageMap and getModifiesStorageMap
