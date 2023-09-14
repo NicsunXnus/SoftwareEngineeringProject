@@ -84,7 +84,7 @@ public:
             for (const auto& nestedStatement : nestedStatements) {
                 for (const auto& [variable, values] : *this->ModifiesStorageMap) {
                     if (std::find(values.begin(), values.end(), to_string(nestedStatement)) != values.end()) {
-                        insertToUsesStorageMap(variable, to_string(whileNode->getStatementNumber()));
+                        insertToModifiesStorageMap(variable, to_string(whileNode->getStatementNumber()));
                     }
                 }
             }
@@ -108,7 +108,7 @@ public:
             for (const auto& nestedStatement : nestedStatements) {
                 for (const auto& [variable, values] : *this->ModifiesStorageMap) {
                     if (std::find(values.begin(), values.end(), to_string(nestedStatement)) != values.end()) {
-                        insertToUsesStorageMap(variable, to_string(ifNode->getStatementNumber()));
+                        insertToModifiesStorageMap(variable, to_string(ifNode->getStatementNumber()));
                     }
                 }
             }
