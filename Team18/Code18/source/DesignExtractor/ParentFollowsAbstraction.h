@@ -9,36 +9,6 @@ using namespace std;
 
 #include "../AST/ASTNode.h"
 
-/**
-* This class represents the Abstractions component of the Design Extractor.
-*/
-class Abstractions {
-public:
-    virtual ~Abstractions() = default;
-
-    virtual void extractAbstraction(shared_ptr<ASTNode> astNode) = 0;
-
-    // Inserts a key and value into the map
-    void insertToAbstractionMap(string key, string value, std::shared_ptr<map<string, vector<string>>> AbstractionStorageMap) {
-        if (AbstractionStorageMap->find(key) == AbstractionStorageMap->end()) {
-            (*AbstractionStorageMap)[key] = vector<string>();
-        }
-        (*AbstractionStorageMap)[key].push_back(value);
-    }
-
-    // Inserts a key and value into the map with the value being at the front of the vector
-    void insertToAbstractionMapAddToFront(string key, string value, std::shared_ptr<map<string, vector<string>>> AbstractionStorageMap) {
-        if (AbstractionStorageMap->find(key) == AbstractionStorageMap->end()) {
-            (*AbstractionStorageMap)[key] = vector<string>();
-        }
-        (*AbstractionStorageMap)[key].insert((*AbstractionStorageMap)[key].begin(), value);
-    }
-
-private:
-
-
-};
-
 /*
 The parents abstraction is a map of statement numbers to a vector of statement numbers that are its parents
 whereby every subsequent statement is a parent of the previous statement
@@ -46,7 +16,7 @@ whereby every subsequent statement is a parent of the previous statement
 The follows abstraction is a map of statement numbers to a vector of statement numbers that follows right after the statement
 */
 
-class ParentFollowsAbstraction : public Abstractions {
+class ParentFollowsAbstraction {
 public:
 
     ParentFollowsAbstraction() {
@@ -131,6 +101,24 @@ private:
                 insertToAbstractionMap(to_string(equallyNestedStatements[i]), to_string(equallyNestedStatements[j]), FollowsStorageMap);
             }
         }
+    }
+
+    virtual void extractAbstraction(shared_ptr<ASTNode> astNode) = 0;
+
+    // Inserts a key and value into the map
+    void insertToAbstractionMap(string key, string value, std::shared_ptr<map<string, vector<string>>> AbstractionStorageMap) {
+        if (AbstractionStorageMap->find(key) == AbstractionStorageMap->end()) {
+            (*AbstractionStorageMap)[key] = vector<string>();
+        }
+        (*AbstractionStorageMap)[key].push_back(value);
+    }
+
+    // Inserts a key and value into the map with the value being at the front of the vector
+    void insertToAbstractionMapAddToFront(string key, string value, std::shared_ptr<map<string, vector<string>>> AbstractionStorageMap) {
+        if (AbstractionStorageMap->find(key) == AbstractionStorageMap->end()) {
+            (*AbstractionStorageMap)[key] = vector<string>();
+        }
+        (*AbstractionStorageMap)[key].insert((*AbstractionStorageMap)[key].begin(), value);
     }
 
 };
