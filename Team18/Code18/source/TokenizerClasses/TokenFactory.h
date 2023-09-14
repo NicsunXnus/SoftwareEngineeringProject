@@ -22,9 +22,6 @@ static const std::unordered_set<std::string> common = {
 	"read",
 	"print",
 	"call",
-	"while",
-	"if",
-	"procedure",
 	"(",
 	")",
 	";",
@@ -37,11 +34,7 @@ static const std::unordered_set<std::string> common = {
 
 // Certain keywords or operators that will only be found in SIMPLE
 static const std::unordered_set<std::string> uniqueSimple = {
-	"then",
-	"else",
 	"=",
-	"{",
-	"}",
 	"!",
 	"||",
 	"&&",
@@ -60,6 +53,9 @@ static const std::unordered_set<std::string> uniquePql = {
 	"assign",
 	"variable",
 	"constant",
+	"procedure",
+	"while",
+	"if",
 	//"Follows",
 	//"Follows*",
 	//"Parent",
@@ -92,15 +88,6 @@ private:
 		if (tokenName == "call"sv) {
 			return std::make_shared<CallKeywordToken>();
 		}
-		if (tokenName == "while"sv) {
-			return std::make_shared<WhileKeywordToken>();
-		}
-		if (tokenName == "if"sv) {
-			return std::make_shared<IfKeywordToken>();
-		}
-		if (tokenName == "procedure"sv) {
-			return std::make_shared<ProcedureKeywordToken>();
-		}
 		if (tokenName == "("sv) {
 			return std::make_shared<ParenOpenSepToken>();
 		}
@@ -130,20 +117,8 @@ private:
 
 	// Generates a Token with a name that is unique to SIMPLE
 	static std::shared_ptr<Token> generateSimpleToken(std::string_view tokenName) {
-		if (tokenName == "then"sv) {
-			return std::make_shared<ThenKeywordToken>();
-		}
-		if (tokenName == "else"sv) {
-			return std::make_shared<ElseKeywordToken>();
-		}
 		if (tokenName == "="sv) {
 			return std::make_shared<EqualsOpToken>();
-		}
-		if (tokenName == "{"sv) {
-			return std::make_shared<CurlyOpenSepToken>();
-		}
-		if (tokenName == "}"sv) {
-			return std::make_shared<CurlyCloseSepToken>();
 		}
 		if (tokenName == "!"sv) {
 			return std::make_shared<NotOpToken>();
@@ -191,6 +166,15 @@ private:
 		}
 		if (tokenName == "constant"sv) {
 			return std::make_shared<ConstantKeywordToken>();
+		}
+		if (tokenName == "procedure"sv) {
+			return std::make_shared<ProcedureKeywordToken>();
+		}
+		if (tokenName == "while"sv) {
+			return std::make_shared<WhileKeywordToken>();
+		}
+		if (tokenName == "if"sv) {
+			return std::make_shared<IfKeywordToken>();
 		}
 		//if (tokenName == "Follows"sv) {
 		//	return NULL;// std::make_shared<>();
@@ -271,7 +255,7 @@ public:
 			return generateIdentifier(tokenName);
 		}
 		if (isNumber(tokenName)) {
-			if (tokenName[0] == char("0")) {
+			if (tokenName[0] == '0') {
 				throw std::invalid_argument("Number supplied has a leading 0: " + tokenName);
 			}
 			return generateIntLiteral(tokenName);

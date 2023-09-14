@@ -170,6 +170,16 @@ namespace HelperFunctions_Test
 			std::vector<std::string> output2 = splitString(input, ";", true);
 			assert(output2 == expected2);
 		}
+
+		TEST_METHOD(regex_success) {
+			std::string input = "(( 1+2)-3)*4/5%6";
+			std::vector<std::string> expected = {"1", "2", "3", "4", "5", "6"};
+			std::vector<std::string> output = splitString(input, "([()+\\-/*%\\s])", false);
+			std::vector<std::string> expected2 = {"(", "(", " ", "1", "+", "2", ")", "-", "3", ")", "*", "4", "/", "5", "%", "6"};
+			std::vector<std::string> output2 = splitString(input, "([()+\\-/*%\\s])", true);
+			assert(output == expected);
+			assert(output2 == expected2);
+		}
 	};
 
 	TEST_CLASS(trimWhiteSpaces_Test) {
