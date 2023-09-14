@@ -171,6 +171,10 @@ public:
         addProcedureNames(procedureMap);
     }
 
+    std::shared_ptr<map<string, vector<string>>> getUsesStorageMap() {
+        return this->UsesStorageMap;
+    }
+
 private:
     std::shared_ptr<map<string, vector<string>>> UsesStorageMap;
 

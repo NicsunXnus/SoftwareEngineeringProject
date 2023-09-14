@@ -168,6 +168,11 @@ public:
         addProcedureNames(procedureMap);
     }
 
+    // Method to get ModifiesStorageMap
+    std::shared_ptr<map<string, vector<string>>> getModifiesStorageMap() {
+        return this->ModifiesStorageMap;
+    }
+
 private:
     std::shared_ptr<map<string, vector<string>>> ModifiesStorageMap;
 
