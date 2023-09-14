@@ -18,7 +18,6 @@ public:
 
 
     void extractUsesAbstraction(shared_ptr<ASTNode> astNode) {
-        std::cerr << "HELP" << std::endl;
         // Extract the entities based on the type of astNode
         if (auto programNode = std::dynamic_pointer_cast<ProgramNode>(astNode)) {
             // astNode is of type ProgramNode
@@ -44,8 +43,9 @@ public:
             // Check if the UsesStorageMap is a null pointer
             if (this->UsesStorageMap == nullptr) {
                 // Throw an error
-                std::cerr << "HELP" << std::endl;
+                throw std::runtime_error("help la");
             }
+            throw std::runtime_error("help la");
 
             insertToUsesStorageMap(variableName, statementNumber);
         } 
