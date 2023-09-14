@@ -221,13 +221,7 @@ public:
     }
     
     return UsesModifiesStorageMap;
-}
-In this corrected code, I've used the pair variable to iterate over the elements of UsesModifiesStorageMap and procedurePair to iterate over the elements of procedureMap. This should resolve the syntax error you were encountering.
-
-
-
-
-
+    }
 
 
 private:
