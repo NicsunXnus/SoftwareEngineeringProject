@@ -18,6 +18,7 @@ public:
 
 
     void extractUsesAbstraction(shared_ptr<ASTNode> astNode) {
+        std::cerr << "HELP" << std::endl;
         // Extract the entities based on the type of astNode
         if (auto programNode = std::dynamic_pointer_cast<ProgramNode>(astNode)) {
             // astNode is of type ProgramNode
