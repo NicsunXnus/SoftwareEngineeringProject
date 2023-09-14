@@ -291,16 +291,19 @@ namespace UnitTesting
                   // Get entities from design extractor
                   std::shared_ptr<ProcedureEntity> testProcedureEntity = testDesignExtractor.getProcedureEntity();
 
-                  // Get shared pointer to procedure map
-                  std::shared_ptr<std::map<std::string, std::vector<std::string>>> procedureMap = testProcedureEntity->getMap();
-
                   // Create UsesAbstraction and ModifiesAbstraction
                   std::shared_ptr<UsesAbstraction> testUsesAbstraction = std::make_shared<UsesAbstraction>();
                   std::shared_ptr<ModifiesAbstraction> testModifiesAbstraction = std::make_shared<ModifiesAbstraction>();
 
-                  // From the UsesAbstraction, run getUsesExtraction
-                  testUsesAbstraction->runUsesExtraction(testProgramNode, procedureMap);
-                  testModifiesAbstraction->runModifiesExtraction(testProgramNode, procedureMap);
+                  // Get shared pointer to procedure map
+                  std::shared_ptr<std::map<std::string, std::vector<std::string>>> procedureMap = testProcedureEntity->getMap();
+
+                  // Extract Uses and Modifies from procedure1
+                  testUsesAbstraction->extractUsesAbstraction(testProgramNode);
+                  testUsesAbstraction->addProcedureNames(procedureMap);
+                  testModifiesAbstraction->extractModifiesAbstraction(testProgramNode);
+                  testModifiesAbstraction->addProcedureNames(procedureMap);
+
                   
                   // Get UsesMap and ModifiesMap from UsesAbstraction and ModifiesAbstraction
                   std::map<std::string, std::vector<std::string>> usesMap = *(testUsesAbstraction->getUsesStorageMap());
