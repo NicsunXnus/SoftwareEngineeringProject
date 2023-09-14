@@ -40,6 +40,12 @@ public:
             // astNode is of type VariableNode
             string variableName = variableNode->getName();
             string statementNumber = to_string(variableNode->getStatementNumber());
+            // Check if the UsesStorageMap is a null pointer
+            if (this->UsesStorageMap == nullptr) {
+                // Throw an error
+                std::cerr << "HELP" << std::endl;
+            }
+
             insertToUsesStorageMap(variableName, statementNumber);
         } 
         else if (auto exprNode = std::dynamic_pointer_cast<ExprNode>(astNode)) {
