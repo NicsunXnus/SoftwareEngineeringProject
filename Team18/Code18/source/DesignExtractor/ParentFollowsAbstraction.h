@@ -103,8 +103,6 @@ private:
         }
     }
 
-    virtual void extractAbstraction(shared_ptr<ASTNode> astNode) = 0;
-
     // Inserts a key and value into the map
     void insertToAbstractionMap(string key, string value, std::shared_ptr<map<string, vector<string>>> AbstractionStorageMap) {
         if (AbstractionStorageMap->find(key) == AbstractionStorageMap->end()) {
