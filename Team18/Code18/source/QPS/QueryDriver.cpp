@@ -12,11 +12,13 @@ list<string> QueryDriver::execute() {
 	try {
 		std::cout << "In Query Driver, starting tokenizer\n";
 
-		vector<string_view> tokens = tokenize(query);
+		vector<std::string> tokens = tokenize(query);
 
 		shared_ptr<QueryParser> parser = make_shared<QueryParser>();
 
-		tuple<vector<string_view>, vector<string_view>> declarationQuery = parser->splitDeclarationQuery(tokens);
+		vector<std::string_view> tokensView{ sToSvVector(tokens) };
+
+		tuple<vector<string_view>, vector<string_view>> declarationQuery = parser->splitDeclarationQuery(tokensView);
 
 		vector<shared_ptr<QueryObject>> declarationParser = parser->validateDeclaration(get<0>(declarationQuery));
 
