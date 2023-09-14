@@ -290,7 +290,7 @@ namespace UnitTesting
 
 
                   // Extract Uses and Modifies from procedure1
-                  testUsesAbstraction->extractUsesAbstraction(testProgramNode);
+                  // testUsesAbstraction->extractUsesAbstraction(testProgramNode);
                   // testModifiesAbstraction->extractModifiesAbstraction(testProgramNode);
                   
                   // Get UsesMap and ModifiesMap from UsesAbstraction and ModifiesAbstraction by using getUsesStorageMap and getModifiesStorageMap
