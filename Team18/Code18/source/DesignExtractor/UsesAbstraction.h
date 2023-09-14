@@ -45,7 +45,7 @@ public:
                 // Throw an error
                 throw std::runtime_error("help la");
             }
-            throw std::runtime_error("help la");
+            throw std::runtime_error("help l2a");
 
             insertToUsesStorageMap(variableName, statementNumber);
         } 
