@@ -38,10 +38,10 @@ public:
         } 
         else if (auto variableNode = std::dynamic_pointer_cast<VariableNode>(astNode)) {
             // astNode is of type VariableNode
-            string variableName = variableNode->getName();
-            string statementNumber = to_string(variableNode->getStatementNumber());
+            // string variableName = variableNode->getName();
+            // string statementNumber = to_string(variableNode->getStatementNumber());
 
-            insertToUsesStorageMap(variableName, statementNumber);
+            insertToUsesStorageMap(variableNode->getName(), to_string(variableNode->getStatementNumber()));
         } 
         else if (auto exprNode = std::dynamic_pointer_cast<ExprNode>(astNode)) {
             // astNode is of type ExprNode
