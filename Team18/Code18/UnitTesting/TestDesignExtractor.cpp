@@ -311,7 +311,7 @@ namespace UnitTesting
                   usesMap = testDesignExtractor.addProcedureNames(procedureMap, usesMap);
                   // modifiesMap = testDesignExtractor.addProcedureNames(procedureMap, modifiesMap);
 
-                  std::map<std::string, std::vector<std::string>>& usesMapRef = *usesMap;
+                  // std::map<std::string, std::vector<std::string>>& usesMapRef = *usesMap;
                   // std::map<std::string, std::vector<std::string>>& modifiesMapRef = *modifiesMap;
 
                   // // Check the existence of values in usesMap
