@@ -32,7 +32,7 @@ public:
         return this->FollowsStorageMap;
     }
 
-    void extractAbstraction(shared_ptr<ASTNode> astNode) override {
+    void extractAbstraction(shared_ptr<ASTNode> astNode) {
         auto programNode = std::dynamic_pointer_cast<ProgramNode>(astNode);
         auto procedureNode = std::dynamic_pointer_cast<ProcedureNode>(astNode);
         auto ifNode = std::dynamic_pointer_cast<IfNode>(astNode);
@@ -120,14 +120,5 @@ private:
         }
         (*AbstractionStorageMap)[key].insert((*AbstractionStorageMap)[key].begin(), value);
     }
-
-};
-
-
-class UsesAbstraction : public Abstractions {
-
-};
-
-class ModifiesAbstraction : public Abstractions {
 
 };
