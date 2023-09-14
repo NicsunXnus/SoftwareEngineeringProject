@@ -1,6 +1,7 @@
 #ifndef PQLTOKENIZER_H
 #define PQLTOKENIZER_H
 
+#include <algorithm>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -80,11 +81,10 @@ static std::vector<std::string> tokenize(std::string pql) {
 }
 
 static std::vector<std::string_view> sToSvVector(std::vector<std::string>& svVector ) {
-	std::vector<std::string_view> v;
-	for (size_t i = 0; i < svVector.size(); ++i) {
-		std::string_view sv{ svVector[i] };
-		v.push_back(sv);
-	}
+	std::vector<std::string_view> v(svVector.size());
+	std::transform(svVector.begin(), svVector.end(), v.begin(), [](const std::string& str) {
+		return std::string_view(str);
+		});
 	return v;
 }
 #endif

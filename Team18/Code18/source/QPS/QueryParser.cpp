@@ -199,6 +199,8 @@ bool QueryParser::hasSuchThat(std::vector<string_view> query, int index) {
 }
 
 bool QueryParser::hasRelationalReference(std::vector<string_view> query, int index) {
+	// 6 here is the expected number of tokens we generate from tokenizing a relational reference clause
+	// Eg., "Uses" "(" "a" "," "b" ")"
 	if (index > static_cast<int>(query.size() - 6)) {
 		return false;
 	}
