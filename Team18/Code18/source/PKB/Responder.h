@@ -55,15 +55,15 @@ public:
 		return (*(entity_storage)->getConstantDatabase()).at(constant);
 	}
 
-	map<string, vector<string>> Responder::getAbstraction(string abstraction) const {
-		shared_ptr<AbstractionStorage> abstraction_storage = StorageManager::getAbstractionStorage(abstraction);
-		return *(abstraction_storage->getDatabase());
-	}
+	//map<string, vector<string>> Responder::getAbstraction(string abstraction) const {
+//		shared_ptr<AbstractionStorage> abstraction_storage = StorageManager::getAbstractionStorage(abstraction);
+		//return *(abstraction_storage->getDatabase());
+	//}
 
-	vector<string> Responder::getAbstractionVariable(string abstraction, string variable) const {
-		shared_ptr<AbstractionStorage> abstraction_storage = StorageManager::getAbstractionStorage(abstraction);
-		return (*(abstraction_storage->getDatabase())).at(variable);
-	}
+	//vector<string> Responder::getAbstractionVariable(string abstraction, string variable) const {
+//		shared_ptr<AbstractionStorage> abstraction_storage = StorageManager::getAbstractionStorage(abstraction);
+		//return (*(abstraction_storage->getDatabase())).at(variable);
+//	}
 
 private:
 	vector<string> getKeys(EntityMapArg db) const {

@@ -5,16 +5,17 @@
 #include <variant>
 #include <iostream>
 
+#include "../../DesignExtractor/Entity.h"
+
 using namespace std;
 
 /**
-* This class is the base class for storage.
-* Map has vector<int> as values, but keys can be any type.
+* This class is the base class for abstraction storage.
 */
 class AbstractionStorage {
 public:
-    shared_ptr<map<string, vector<string>>> AbstractionStorage::getDatabase() {
-        return database;
+    shared_ptr<EntityMapArg> AbstractionStorage::getDatabase() {
+        return this->database;
     }
 
     void AbstractionStorage::printDatabase() const {
@@ -28,12 +29,16 @@ public:
         }
     }
     
-    void AbstractionStorage::insertAbstraction(const string& key, const vector<string>& lines) {
-        (*database)[key] = lines;
+    void AbstractionStorage::setAbstraction(shared_ptr<EntityMapArg> database_to_insert) {
+        static EntityMapArg new_database;
+        this->database = make_shared<EntityMapArg>(new_database);
+        for (auto const& [key, lines] : *database_to_insert) {
+            (*(this->database))[key] = lines;
+        }
     }
 
 private:
-    static shared_ptr<map<string, vector<string>>> database;
+    static inline shared_ptr<EntityMapArg> database;
 };
 
 #endif

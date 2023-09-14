@@ -9,33 +9,46 @@ public:
 
 	// parse trees (for querying patterns)
 
-	void Insertor::addEntityStatements(shared_ptr<EntityMapArg> statements) {
+	void Insertor::addEntity(shared_ptr<EntityMapArg> entity_map, ENTITY entity_type = STMT) {
 		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		(*entity_storage).setStatementDatabase(statements);
+		switch (entity_type) {
+			case VARIABLE:
+				(*entity_storage).setVariableDatabase(entity_map);
+				break;
+			case CONSTANT:
+				(*entity_storage).setConstantDatabase(entity_map);
+				break;
+			case PROCEDURE:
+				(*entity_storage).setProcedureDatabase(entity_map);
+				break;
+			default:  // other entities are statement types
+				(*entity_storage).setStatementDatabase(entity_map);
+		}
 	}
+	
+//	void Insertor::addEntityStatements(shared_ptr<EntityMapArg> statements) {
+//		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
+//		(*entity_storage).setStatementDatabase(statements);
+//	}
 
-	void Insertor::addProcedures(shared_ptr<EntityMapArg> procedures) {
-		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		(*entity_storage).setProcedureDatabase(procedures);
-	}
+//	void Insertor::addProcedures(shared_ptr<EntityMapArg> procedures) {
+//		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
+//		(*entity_storage).setProcedureDatabase(procedures);
+//	}
 
-	void Insertor::addVariables(shared_ptr<EntityMapArg> variables) {
-		//cout << "Insertor::addVariables 1" << endl;
-		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		//cout << "Insertor::addVariables 2" << endl;
-		(*entity_storage).setVariableDatabase(variables);
-		//cout << "Insertor::addVariables 3" << endl;
-	}
+//	void Insertor::addVariables(shared_ptr<EntityMapArg> variables) {
+//		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
+//		(*entity_storage).setVariableDatabase(variables);
+//	}
 
-	void Insertor::addConstants(shared_ptr<EntityMapArg> constants) {
-		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		(*entity_storage).setConstantDatabase(constants);
-	}
+//	void Insertor::addConstants(shared_ptr<EntityMapArg> constants) {
+//		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
+//		(*entity_storage).setConstantDatabase(constants);
+//	}
 
-	// abstractions include "uses", "follows" etc.
 	// keys are the first argument for abstractions. include variable names or line numbers.
-	void Insertor::addAbstraction(string abstraction, string key, vector<string> lines) {
-		shared_ptr<AbstractionStorage> abstraction_storage = StorageManager::getAbstractionStorage(abstraction);
-		(*abstraction_storage).insertAbstraction(key, lines);
+	void Insertor::addAbstraction(shared_ptr<EntityMapArg> abstraction_map, ABSTRACTION abstraction_type) {
+		shared_ptr<AbstractionStorage> abstraction_storage = StorageManager::getAbstractionStorage(abstraction_type);
+		(*abstraction_storage).setAbstraction(abstraction_map);
 	}
 };

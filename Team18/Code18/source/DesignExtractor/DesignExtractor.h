@@ -127,11 +127,10 @@ public:
         static shared_ptr<EntityMapArg> constantMap = this->constantEntity->getMap();
         
         // Insert the entities into the PKB
-        PKB::insertor.addEntityStatements(statementMap);
-        PKB::insertor.addProcedures(procedureMap);
-        PKB::insertor.addVariables(variableMap);
-        PKB::insertor.addConstants(constantMap);
-        
+        PKB::insertor.addEntity(statementMap);
+        PKB::insertor.addEntity(procedureMap, PROCEDURE);
+        PKB::insertor.addEntity(variableMap, VARIABLE);
+        PKB::insertor.addEntity(constantMap, CONSTANT);  
     }
 
 private:

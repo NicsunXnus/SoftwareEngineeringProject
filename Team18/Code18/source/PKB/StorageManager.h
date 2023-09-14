@@ -25,20 +25,25 @@ static shared_ptr<ParentAbstractionStorage> parent_abstractions;
 class StorageManager {
 public:
 
-	static shared_ptr<AbstractionStorage> StorageManager::getAbstractionStorage(const string abstraction) {
-		if (abstraction == "uses") {
-			return uses_abstractions;
+	static shared_ptr<AbstractionStorage> StorageManager::getAbstractionStorage(const ABSTRACTION abstraction_type) {
+		switch (abstraction_type) {
+			case USES:
+				return uses_abstractions;
+			case MODIFIES:
+				return modifies_abstractions;
+			case PARENT:
+				return parent_abstractions;
+			case FOLLOWS:
+				return follows_abstractions;
+			case PARENTSTAR:  // not for insertion
+				cerr << "No storage for this abstraction" << endl;
+				return nullptr;
+			case FOLLOWSSTAR:  // not for insertion
+				cerr << "No storage for this abstraction" << endl;
+				return nullptr;
+			default:
+				cerr << "No such abstraction found" << endl;
 		}
-		else if (abstraction == "modifies") {
-			return modifies_abstractions;
-		}
-		else if (abstraction == "follows") {
-			return follows_abstractions;
-		}
-		else if (abstraction == "parent") {
-			return parent_abstractions;
-		}
-		throw runtime_error("No such abstraction found");
 	}
 
 	static shared_ptr<EntityStorage> StorageManager::getEntityStorage() {
