@@ -13,6 +13,10 @@ class TokenizedProcedure;
 class TokenizedStmtList;
 class TokenizedStmt;
 class TokenizedSemicolonStmt;
+<<<<<<< HEAD
+=======
+class TokenizedConditionalExp;
+>>>>>>> master
 class TokenizedConditionalStmt;
 class TokenizedIfStmt;
 class TokenizedWhileStmt;
@@ -30,8 +34,11 @@ public:
   std::vector<std::shared_ptr<TokenizedProcedure>>  getAllProcedures() {
     return this->procedures;
   }
+<<<<<<< HEAD
 
   bool equalsTo(TokenizedProgram& rhs);
+=======
+>>>>>>> master
 };
 
 /// <summary>
@@ -56,8 +63,11 @@ public:
   std::shared_ptr<TokenizedStmtList> getStmts() {
     return this->statementList;
   }
+<<<<<<< HEAD
 
   bool equalsTo(TokenizedProcedure& rhs);
+=======
+>>>>>>> master
 };
 
 /// <summary>
@@ -75,8 +85,11 @@ public:
   std::vector<std::shared_ptr<TokenizedStmt>> getStmts() {
     return this->statements;
   }
+<<<<<<< HEAD
 
   bool equalsTo(TokenizedStmtList& rhs);
+=======
+>>>>>>> master
 };
 
 // Wrapper for a vector of tokens. Note that semicolons will NO LONGER be stored, since some statements will not end in semicolons
@@ -99,8 +112,11 @@ public:
   int getStatementNumber() {
     return this->statementNumber;
   }
+<<<<<<< HEAD
 
   bool equalsTo(TokenizedStmt& rhs);
+=======
+>>>>>>> master
 };
 
 /// <summary>
@@ -117,8 +133,11 @@ public:
   std::vector<std::shared_ptr<Token>> getContents() {
     return this->contents;
   }
+<<<<<<< HEAD
 
   bool equalsTo(TokenizedSemicolonStmt& rhs);
+=======
+>>>>>>> master
 };
 
 /// <summary>
@@ -134,8 +153,11 @@ public:
   std::vector<std::shared_ptr<Token>> getConditionalExp() {
     return this->conditionalExp;
   };
+<<<<<<< HEAD
 
   bool equalsTo(TokenizedConditionalStmt& rhs);
+=======
+>>>>>>> master
 };
 
 /// <summary>
@@ -159,8 +181,11 @@ public:
   std::shared_ptr<TokenizedStmtList> getElseBlock() {
     return this->elseBlock;
   }
+<<<<<<< HEAD
 
   bool equalsTo(TokenizedIfStmt& rhs);
+=======
+>>>>>>> master
 };
 
 /// <summary>
@@ -178,8 +203,11 @@ public:
   std::shared_ptr<TokenizedStmtList> getWhileBlock() {
     return this->whileBlock;
   }
+<<<<<<< HEAD
 
   bool equalsTo(TokenizedWhileStmt& rhs);
+=======
+>>>>>>> master
 };
 
 #endif

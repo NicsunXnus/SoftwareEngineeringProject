@@ -46,9 +46,6 @@
     <ClCompile Include="..\source\TokenizerClasses\TokenizerResults.cpp">
       <Filter>Tokeniser</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\AST\**\*.h" />
-    <ClCompile Include="..\source\DesignExtractor\*.h" />
-    <ClCompile Include="..\source\DesignExtractor\*.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\Constants\QPSPKB.h" />
@@ -144,10 +141,6 @@
     <ClInclude Include="..\source\QPS\QueryObjects\ClauseObjectFactory.h">
       <Filter>QPS</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\TokenizerClasses\TokenizerResults.h">
-      <Filter>Tokeniser</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\ExceptionMessages.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Tokens">

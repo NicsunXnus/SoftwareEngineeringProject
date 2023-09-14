@@ -3,6 +3,7 @@
 TokenizedProcedure::TokenizedProcedure(std::string procedureName, std::vector<std::shared_ptr<TokenizedStmt>> stmtVector) {
   this->procedureName = procedureName;
   this->statementList = std::make_shared<TokenizedStmtList>(stmtVector);
+<<<<<<< HEAD
 }
 
 bool TokenizedProgram::equalsTo(TokenizedProgram& rhs) {
@@ -82,4 +83,6 @@ bool TokenizedWhileStmt::equalsTo(TokenizedWhileStmt& rhs) {
   auto castedThis = static_cast<TokenizedConditionalStmt&>(*this);
   auto castedThat = static_cast<TokenizedConditionalStmt&>(rhs);
   return castedThis.equalsTo(castedThat);
+=======
+>>>>>>> master
 }

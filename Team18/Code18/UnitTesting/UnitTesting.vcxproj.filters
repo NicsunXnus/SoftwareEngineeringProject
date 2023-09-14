@@ -71,5 +71,8 @@
     <ClCompile Include="TestQPSSelectionParser.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
+    <ClCompile Include="TestAbstractions.cpp">
+      <Filter>Source Files\QPS</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

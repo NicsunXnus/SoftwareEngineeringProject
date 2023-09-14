@@ -125,7 +125,6 @@ static std::string trimWhitespaces(std::string str) {
   str.erase(0, str.find_first_not_of(whitespaces));
   return str;
 }
-
 static std::string substring(std::string str, int startIndex, int endIndex) {
   if (endIndex < startIndex) {
     throw std::invalid_argument(ExceptionMessages::endIndexLarger);
@@ -138,4 +137,11 @@ static std::string substring(std::string str, int startIndex, int endIndex) {
   return str.substr(startIndex, len);
 }
 
+// prints to console, toggle here to turn on / off for development / production
+static void debug(std::string debugMessage) {
+  bool DEBUG_MODE = true; // toggle this
+  if (DEBUG_MODE) {
+    std::cout << debugMessage + "\n" << std::endl;
+  }
+}
 #endif

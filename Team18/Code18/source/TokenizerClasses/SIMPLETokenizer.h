@@ -8,6 +8,7 @@
 #include <stack>
 #include <utility>
 
+#include "ExceptionMessages.h"
 #include "TokenFactory.h"
 #include "TokenizerResults.h"
 #include "../ExceptionMessages.h"
