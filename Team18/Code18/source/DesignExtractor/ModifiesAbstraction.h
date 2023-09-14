@@ -152,6 +152,22 @@ public:
         }
     }
 
+    void addProcedureNames(std::shared_ptr<map<string, vector<string>>> procedureMap) {
+        // For all keys in ModifiesStorageMap, check the values in the string vector, if any of them matches a procedure name, add the procedure name to the ModifiesStorageMap
+        for (const auto& [variable, values] : *this->ModifiesStorageMap) {
+            for (const auto& [procedureName, procedureValues] : *procedureMap) {
+                if (std::find(values.begin(), values.end(), procedureName) != values.end()) {
+                    insertToUsesStorageMap(variable, procedureName);
+                }
+            }
+        }       
+    }
+
+    void runModifiesExtraction(shared_ptr<ASTNode> astNode, std::shared_ptr<map<string, vector<string>>> procedureMap) {
+        extractUsesAbstraction(astNode);
+        addProcedureNames(procedureMap);
+    }
+
 private:
     std::shared_ptr<map<string, vector<string>>> ModifiesStorageMap;
 
