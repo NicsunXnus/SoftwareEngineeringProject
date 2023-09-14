@@ -165,10 +165,10 @@ private:
     std::shared_ptr<map<string, vector<string>>> ModifiesStorageMap;
 
     // insert to ModifiesStorageMap
-    void insertToUsesStorageMap(string variable, string value) {
-        if (this->ModifiesStorageMap->find(variable) == this->ModifiesStorageMap->end()) {
-            (*this->ModifiesStorageMap)[variable] = std::vector<std::string>();
+    void insertToUsesStorageMap(string variableName, string statementNumber) {
+        if (this->ModifiesStorageMap->find(variableName) == this->ModifiesStorageMap->end()) {
+            this->ModifiesStorageMap->insert({variableName, vector<string>()});
         }
-        (*this->ModifiesStorageMap)[variable].push_back(value);
+        this->ModifiesStorageMap->at(variableName).push_back(statementNumber);
     }
 };
