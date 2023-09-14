@@ -164,7 +164,7 @@ public:
     }
 
     void runModifiesExtraction(shared_ptr<ASTNode> astNode, std::shared_ptr<map<string, vector<string>>> procedureMap) {
-        extractUsesAbstraction(astNode);
+        extractModifiesAbstraction(astNode);
         addProcedureNames(procedureMap);
     }
 
