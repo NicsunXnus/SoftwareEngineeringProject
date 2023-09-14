@@ -88,6 +88,7 @@ public:
             
             // Store the statement name as the key and add the line number to the vector
             insertToMap(statementName, lineNumber);
+            insertToMap("stmt", lineNumber);
         }
         else {
             cerr << "Unsupported ASTNode type." << endl;
@@ -115,6 +116,7 @@ public:
             
             // Store the variable name as the key and add the line number to the vector
             insertToMap(variableName, lineNumber);
+            
         }
         else {
             cerr << "Unsupported ASTNode type." << endl;
