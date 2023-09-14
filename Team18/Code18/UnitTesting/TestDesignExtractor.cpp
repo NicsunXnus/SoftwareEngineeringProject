@@ -305,8 +305,8 @@ namespace UnitTesting
                   testModifiesAbstraction->extractModifiesAbstraction(testProgramNode);
                   
                   // Get UsesMap and ModifiesMap from UsesAbstraction and ModifiesAbstraction by using getUsesStorageMap and getModifiesStorageMap
-                  std::shared_ptr<map<string, vector<string>>> usesMap = testUsesAbstraction.getUsesStorageMap();
-                  std::shared_ptr<map<string, vector<string>>> modifiesMap = testModifiesAbstraction->getModifiesStorageMap();
+                  // std::shared_ptr<map<string, vector<string>>> usesMap = testUsesAbstraction.getUsesStorageMap();
+                  // std::shared_ptr<map<string, vector<string>>> modifiesMap = testModifiesAbstraction->getModifiesStorageMap();
 
                   // usesMap = testDesignExtractor.addProcedureNames(procedureMap, usesMap);
                   // modifiesMap = testDesignExtractor.addProcedureNames(procedureMap, modifiesMap);
