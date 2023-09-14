@@ -291,8 +291,8 @@ namespace UnitTesting
                   // Get entities from design extractor
                   std::shared_ptr<ProcedureEntity> testProcedureEntity = testDesignExtractor.getProcedureEntity();
 
-                  // Create UsesAbstraction and ModifiesAbstraction
-                  testUsesAbstraction = UsesAbstraction();
+                  // Create UsesAbstraction  without shared_ptr
+                  UsesAbstraction testUsesAbstraction;
                   std::shared_ptr<ModifiesAbstraction> testModifiesAbstraction = std::make_shared<ModifiesAbstraction>();
 
                   // Get shared pointer to procedure map
