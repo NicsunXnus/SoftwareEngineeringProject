@@ -309,51 +309,54 @@ namespace UnitTesting
                   usesMap = testDesignExtractor.addProcedureNames(procedureMap, usesMap);
                   modifiesMap = testDesignExtractor.addProcedureNames(procedureMap, modifiesMap);
 
+                  std::map<std::string, std::vector<std::string>>& usesMapRef = *usesMap;
+                  std::map<std::string, std::vector<std::string>>& modifiesMapRef = *modifiesMap;
+
                   // Check the existence of values in usesMap
-                  Assert::IsTrue(std::find(usesMap["x"].begin(), usesMap["x"].end(), std::to_string(1)) != usesMap["x"].end());
-                  Assert::IsTrue(std::find(usesMap["x"].begin(), usesMap["x"].end(), std::to_string(4)) == usesMap["x"].end());
-                  Assert::IsTrue(std::find(usesMap["x"].begin(), usesMap["x"].end(), std::to_string(5)) != usesMap["x"].end());
-                  Assert::IsTrue(std::find(usesMap["x"].begin(), usesMap["x"].end(), std::to_string(6)) != usesMap["x"].end());
-                  Assert::IsTrue(std::find(usesMap["x"].begin(), usesMap["x"].end(), std::to_string(10)) != usesMap["x"].end());
-                  Assert::IsTrue(std::find(usesMap["x"].begin(), usesMap["x"].end(), "procedure1") != usesMap["x"].end());
+                  Assert::IsTrue(std::find(usesMapRef["x"].begin(), usesMapRef["x"].end(), std::to_string(1)) != usesMapRef["x"].end());
+                  Assert::IsTrue(std::find(usesMapRef["x"].begin(), usesMapRef["x"].end(), std::to_string(4)) == usesMapRef["x"].end());
+                  Assert::IsTrue(std::find(usesMapRef["x"].begin(), usesMapRef["x"].end(), std::to_string(5)) != usesMapRef["x"].end());
+                  Assert::IsTrue(std::find(usesMapRef["x"].begin(), usesMapRef["x"].end(), std::to_string(6)) != usesMapRef["x"].end());
+                  Assert::IsTrue(std::find(usesMapRef["x"].begin(), usesMapRef["x"].end(), std::to_string(10)) != usesMapRef["x"].end());
+                  Assert::IsTrue(std::find(usesMapRef["x"].begin(), usesMapRef["x"].end(), "procedure1") != usesMapRef["x"].end());
 
-                  Assert::IsTrue(std::find(usesMap["y"].begin(), usesMap["y"].end(), std::to_string(2)) != usesMap["y"].end());
-                  Assert::IsTrue(std::find(usesMap["y"].begin(), usesMap["y"].end(), std::to_string(8)) == usesMap["y"].end());
-                  Assert::IsTrue(std::find(usesMap["y"].begin(), usesMap["y"].end(), "procedure1") != usesMap["y"].end());
+                  Assert::IsTrue(std::find(usesMapRef["y"].begin(), usesMapRef["y"].end(), std::to_string(2)) != usesMapRef["y"].end());
+                  Assert::IsTrue(std::find(usesMapRef["y"].begin(), usesMapRef["y"].end(), std::to_string(8)) == usesMapRef["y"].end());
+                  Assert::IsTrue(std::find(usesMapRef["y"].begin(), usesMapRef["y"].end(), "procedure1") != usesMapRef["y"].end());
 
-                  Assert::IsTrue(std::find(usesMap["z"].begin(), usesMap["z"].end(), std::to_string(3)) != usesMap["z"].end());
-                  Assert::IsTrue(std::find(usesMap["z"].begin(), usesMap["z"].end(), std::to_string(6)) != usesMap["z"].end());
-                  Assert::IsTrue(std::find(usesMap["z"].begin(), usesMap["z"].end(), std::to_string(7)) != usesMap["z"].end());
-                  Assert::IsTrue(std::find(usesMap["z"].begin(), usesMap["z"].end(), std::to_string(9)) != usesMap["z"].end());
-                  Assert::IsTrue(std::find(usesMap["z"].begin(), usesMap["z"].end(), "procedure1") != usesMap["z"].end());
+                  Assert::IsTrue(std::find(usesMapRef["z"].begin(), usesMapRef["z"].end(), std::to_string(3)) != usesMapRef["z"].end());
+                  Assert::IsTrue(std::find(usesMapRef["z"].begin(), usesMapRef["z"].end(), std::to_string(6)) != usesMapRef["z"].end());
+                  Assert::IsTrue(std::find(usesMapRef["z"].begin(), usesMapRef["z"].end(), std::to_string(7)) != usesMapRef["z"].end());
+                  Assert::IsTrue(std::find(usesMapRef["z"].begin(), usesMapRef["z"].end(), std::to_string(9)) != usesMapRef["z"].end());
+                  Assert::IsTrue(std::find(usesMapRef["z"].begin(), usesMapRef["z"].end(), "procedure1") != usesMapRef["z"].end());
 
-                  Assert::IsTrue(std::find(usesMap["a"].begin(), usesMap["a"].end(), std::to_string(11)) != usesMap["a"].end());
-                  Assert::IsTrue(std::find(usesMap["a"].begin(), usesMap["a"].end(), std::to_string(12)) != usesMap["a"].end());
-                  Assert::IsTrue(std::find(usesMap["a"].begin(), usesMap["a"].end(), std::to_string(13)) != usesMap["a"].end());
-                  Assert::IsTrue(std::find(usesMap["a"].begin(), usesMap["a"].end(), "procedure1") != usesMap["a"].end());
+                  Assert::IsTrue(std::find(usesMapRef["a"].begin(), usesMapRef["a"].end(), std::to_string(11)) != usesMapRef["a"].end());
+                  Assert::IsTrue(std::find(usesMapRef["a"].begin(), usesMapRef["a"].end(), std::to_string(12)) != usesMapRef["a"].end());
+                  Assert::IsTrue(std::find(usesMapRef["a"].begin(), usesMapRef["a"].end(), std::to_string(13)) != usesMapRef["a"].end());
+                  Assert::IsTrue(std::find(usesMapRef["a"].begin(), usesMapRef["a"].end(), "procedure1") != usesMapRef["a"].end());
 
                   // Check the existence of values in modifiesMap
-                  Assert::IsTrue(std::find(modifiesMap["x"].begin(), modifiesMap["x"].end(), std::to_string(1)) == modifiesMap["x"].end());
-                  Assert::IsTrue(std::find(modifiesMap["x"].begin(), modifiesMap["x"].end(), std::to_string(4)) != modifiesMap["x"].end());
-                  Assert::IsTrue(std::find(modifiesMap["x"].begin(), modifiesMap["x"].end(), std::to_string(5)) == modifiesMap["x"].end());
-                  Assert::IsTrue(std::find(modifiesMap["x"].begin(), modifiesMap["x"].end(), std::to_string(6)) != modifiesMap["x"].end());
-                  Assert::IsTrue(std::find(modifiesMap["x"].begin(), modifiesMap["x"].end(), std::to_string(10)) != modifiesMap["x"].end());
-                  Assert::IsTrue(std::find(modifiesMap["x"].begin(), modifiesMap["x"].end(), "procedure1") != modifiesMap["x"].end());
+                  Assert::IsTrue(std::find(modifiesMapRef["x"].begin(), modifiesMapRef["x"].end(), std::to_string(1)) == modifiesMapRef["x"].end());
+                  Assert::IsTrue(std::find(modifiesMapRef["x"].begin(), modifiesMapRef["x"].end(), std::to_string(4)) != modifiesMapRef["x"].end());
+                  Assert::IsTrue(std::find(modifiesMapRef["x"].begin(), modifiesMapRef["x"].end(), std::to_string(5)) == modifiesMapRef["x"].end());
+                  Assert::IsTrue(std::find(modifiesMapRef["x"].begin(), modifiesMapRef["x"].end(), std::to_string(6)) != modifiesMapRef["x"].end());
+                  Assert::IsTrue(std::find(modifiesMapRef["x"].begin(), modifiesMapRef["x"].end(), std::to_string(10)) != modifiesMapRef["x"].end());
+                  Assert::IsTrue(std::find(modifiesMapRef["x"].begin(), modifiesMapRef["x"].end(), "procedure1") != modifiesMapRef["x"].end());
 
-                  Assert::IsTrue(std::find(modifiesMap["y"].begin(), modifiesMap["y"].end(), std::to_string(2)) == modifiesMap["y"].end());
-                  Assert::IsTrue(std::find(modifiesMap["y"].begin(), modifiesMap["y"].end(), std::to_string(8)) != modifiesMap["y"].end());
-                  Assert::IsTrue(std::find(modifiesMap["y"].begin(), modifiesMap["y"].end(), "procedure1") != modifiesMap["y"].end());
+                  Assert::IsTrue(std::find(modifiesMapRef["y"].begin(), modifiesMapRef["y"].end(), std::to_string(2)) == modifiesMapRef["y"].end());
+                  Assert::IsTrue(std::find(modifiesMapRef["y"].begin(), modifiesMapRef["y"].end(), std::to_string(8)) != modifiesMapRef["y"].end());
+                  Assert::IsTrue(std::find(modifiesMapRef["y"].begin(), modifiesMapRef["y"].end(), "procedure1") != modifiesMapRef["y"].end());
 
-                  Assert::IsTrue(std::find(modifiesMap["z"].begin(), modifiesMap["z"].end(), std::to_string(3)) != modifiesMap["z"].end());
-                  Assert::IsTrue(std::find(modifiesMap["z"].begin(), modifiesMap["z"].end(), std::to_string(6)) != modifiesMap["z"].end());
-                  Assert::IsTrue(std::find(modifiesMap["z"].begin(), modifiesMap["z"].end(), std::to_string(7)) != modifiesMap["z"].end());
-                  Assert::IsTrue(std::find(modifiesMap["z"].begin(), modifiesMap["z"].end(), std::to_string(9)) != modifiesMap["z"].end());
-                  Assert::IsTrue(std::find(modifiesMap["z"].begin(), modifiesMap["z"].end(), "procedure1") != modifiesMap["z"].end());
+                  Assert::IsTrue(std::find(modifiesMapRef["z"].begin(), modifiesMapRef["z"].end(), std::to_string(3)) != modifiesMapRef["z"].end());
+                  Assert::IsTrue(std::find(modifiesMapRef["z"].begin(), modifiesMapRef["z"].end(), std::to_string(6)) != modifiesMapRef["z"].end());
+                  Assert::IsTrue(std::find(modifiesMapRef["z"].begin(), modifiesMapRef["z"].end(), std::to_string(7)) != modifiesMapRef["z"].end());
+                  Assert::IsTrue(std::find(modifiesMapRef["z"].begin(), modifiesMapRef["z"].end(), std::to_string(9)) != modifiesMapRef["z"].end());
+                  Assert::IsTrue(std::find(modifiesMapRef["z"].begin(), modifiesMapRef["z"].end(), "procedure1") != modifiesMapRef["z"].end());
 
-                  Assert::IsTrue(std::find(modifiesMap["a"].begin(), modifiesMap["a"].end(), std::to_string(11)) != modifiesMap["a"].end());
-                  Assert::IsTrue(std::find(modifiesMap["a"].begin(), modifiesMap["a"].end(), std::to_string(12)) != modifiesMap["a"].end());
-                  Assert::IsTrue(std::find(modifiesMap["a"].begin(), modifiesMap["a"].end(), std::to_string(13)) != modifiesMap["a"].end());
-                  Assert::IsTrue(std::find(modifiesMap["a"].begin(), modifiesMap["a"].end(), "procedure1") != modifiesMap["a"].end());
+                  Assert::IsTrue(std::find(modifiesMapRef["a"].begin(), modifiesMapRef["a"].end(), std::to_string(11)) != modifiesMapRef["a"].end());
+                  Assert::IsTrue(std::find(modifiesMapRef["a"].begin(), modifiesMapRef["a"].end(), std::to_string(12)) != modifiesMapRef["a"].end());
+                  Assert::IsTrue(std::find(modifiesMapRef["a"].begin(), modifiesMapRef["a"].end(), std::to_string(13)) != modifiesMapRef["a"].end());
+                  Assert::IsTrue(std::find(modifiesMapRef["a"].begin(), modifiesMapRef["a"].end(), "procedure1") != modifiesMapRef["a"].end());
 
 
 
