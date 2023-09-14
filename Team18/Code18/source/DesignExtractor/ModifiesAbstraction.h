@@ -71,9 +71,9 @@ public:
         else if (auto assignNode = std::dynamic_pointer_cast<AssignNode>(statementNode)) {
             extractModifiesAbstraction(assignNode->getVar());
         }
-        // else if (auto callNode = std::dynamic_pointer_cast<CallNode>(statementNode)) {
-        //     //TODO: Handle callNode
-        // } 
+        else if (auto callNode = std::dynamic_pointer_cast<CallNode>(statementNode)) {
+            //TODO: Handle callNode
+        } 
         else if (auto whileNode = std::dynamic_pointer_cast<WhileNode>(statementNode)) {
             std::vector<std::shared_ptr<StatementNode>> statements = whileNode->getStatements();
             std::vector<int> nestedStatements = vector<int>();
