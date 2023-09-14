@@ -59,7 +59,7 @@ public:
         }
         else {
             // Handle other cases or report an error
-            std::cerr << "Unsupported ASTNode type." << std::endl;
+            std::cerr << "Unsupported ASTNode type in extractUsesAbstraction." << std::endl;
         }
     }
 
@@ -125,7 +125,7 @@ public:
         } 
         else {
             // Handle other cases or report an error
-            std::cerr << "Unsupported ASTNode type." << std::endl;
+            std::cerr << "Unsupported ASTNode type in UsesAbstraction handleStatement." << std::endl;
         }
         
     }
