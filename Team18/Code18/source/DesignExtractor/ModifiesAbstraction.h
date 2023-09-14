@@ -51,6 +51,9 @@ public:
             // astNode is of type CondExprNode
             handleCondExpr(condExprNode);
         }
+        else if (auto constantNode = std::dynamic_pointer_cast<ConstantNode>(astNode)) {
+            // astNode is of type ConstantNode
+        }
         else {
             // Handle other cases or report an error
             std::cerr << "Unsupported ASTNode type." << std::endl;
@@ -151,9 +154,7 @@ public:
             extractModifiesAbstraction(leftCondExpr);
             extractModifiesAbstraction(rightCondExpr);
         }
-        else if (auto constantNode = std::dynamic_pointer_cast<ConstantNode>(astNode)) {
-            // astNode is of type ConstantNode
-        }
+        
         else {
             std::cerr << "Unsupported ASTNode type in handleCondExpr." << std::endl;
         }
