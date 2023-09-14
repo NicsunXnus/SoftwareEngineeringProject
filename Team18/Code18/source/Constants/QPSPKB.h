@@ -14,6 +14,7 @@ enum ENTITY {
     PROCEDURE
 };
 
+
 const map<string, ENTITY> entityMap = {
     {"stmt", STMT},
     {"read", READ},
@@ -32,6 +33,31 @@ static ENTITY EntityEnumToString(string entity) {
         return entityMap.at(entity);
     }
     throw runtime_error("entity is invalid!");
+}
+
+enum ABSTRACTIONS {
+    USES,
+    MODIFIES,
+    PARENT,
+    PARENTSTAR,
+    FOLLOWS,
+    FOLLOWSSTAR
+};
+
+const map<string, ABSTRACTIONS> abstractionMap = {
+    {"uses", USES},
+    {"modifies", MODIFIES},
+    {"parent", PARENT},
+    {"parentstar", PARENTSTAR},
+    {"follows", FOLLOWS},
+    {"followsstar", FOLLOWSSTAR},
+};
+
+static ABSTRACTIONS AbstractionEnumToString(string abstraction) {
+    if (abstractionMap.count(abstraction)) {
+        return abstractionMap.at(abstraction);
+    }
+    throw runtime_error("abstraction is invalid!");
 }
 
 #endif
