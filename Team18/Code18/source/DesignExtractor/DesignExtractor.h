@@ -7,6 +7,9 @@
 using namespace std;
 
 #include "Entity.h"
+#include "ParentFollowsAbstraction.h"
+#include "ModifiesAbstraction.h"
+#include "UsesAbstraction.h"
 #include "../AST/ASTNode.h"
 #include "../PKB.h"
 
