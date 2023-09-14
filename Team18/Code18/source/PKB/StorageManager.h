@@ -13,12 +13,6 @@
 
 using namespace std;
 
-static shared_ptr<EntityStorage> entity_storage;
-static shared_ptr<UsesAbstractionStorage> uses_abstractions;
-static shared_ptr<ModifiesAbstractionStorage> modifies_abstractions;
-static shared_ptr<FollowsAbstractionStorage> follows_abstractions;
-static shared_ptr<ParentAbstractionStorage> parent_abstractions;
-
 /**
 * This class represents Storage for the PKB. Consists of the storages and AST
 */
@@ -54,12 +48,12 @@ private:
 	// parse trees (for querying patterns)
 
 	// entities
-	//static inline shared_ptr<EntityStorage> entity_storage;
+	static inline shared_ptr<EntityStorage> entity_storage;
 
 	// abstractions
-	//static inline shared_ptr<UsesAbstractionStorage> uses_abstractions;
-	//static inline shared_ptr<ModifiesAbstractionStorage> modifies_abstractions;
-	//static inline shared_ptr<FollowsAbstractionStorage> follows_abstractions;
-	//static inline shared_ptr<ParentAbstractionStorage> parent_abstractions;
+	static inline shared_ptr<UsesAbstractionStorage> uses_abstractions;
+	static inline shared_ptr<ModifiesAbstractionStorage> modifies_abstractions;
+	static inline shared_ptr<FollowsAbstractionStorage> follows_abstractions;
+	static inline shared_ptr<ParentAbstractionStorage> parent_abstractions;
 };
 #endif
