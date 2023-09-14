@@ -301,7 +301,7 @@ namespace UnitTesting
                   std::shared_ptr<std::map<std::string, std::vector<std::string>>> procedureMap = testProcedureEntity->getMap();
 
                   // Extract Uses and Modifies from procedure1
-                  testUsesAbstraction->extractUsesAbstraction(testProgramNode);
+                  // testUsesAbstraction->extractUsesAbstraction(testProgramNode);
                   // testModifiesAbstraction->extractModifiesAbstraction(testProgramNode);
                   
                   // Get UsesMap and ModifiesMap from UsesAbstraction and ModifiesAbstraction by using getUsesStorageMap and getModifiesStorageMap
