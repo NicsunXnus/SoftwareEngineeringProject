@@ -18,24 +18,6 @@ public:
 };
 
 /**
-* This class represents a "}" symbol.
-*/
-class CurlyCloseSepToken : public SeparatorToken {
-public:
-	CurlyCloseSepToken()
-		: SeparatorToken{ "}"sv } {};
-};
-
-/**
-* This class represents a "{" symbol.
-*/
-class CurlyOpenSepToken : public SeparatorToken {
-public:
-	CurlyOpenSepToken()
-		: SeparatorToken{ "{"sv } {};
-};
-
-/**
 * This class represents a ")" symbol.
 */
 class ParenCloseSepToken : public SeparatorToken {

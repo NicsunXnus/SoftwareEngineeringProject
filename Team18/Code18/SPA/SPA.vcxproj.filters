@@ -8,9 +8,6 @@
     <ClCompile Include="..\source\AST\**\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
-    <ClCompile Include="..\source\AST\ASTNode.h" />
-    <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
     <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
     <ClCompile Include="..\source\DesignExtractor\Entity.h" />
     <ClCompile Include="..\source\QPS\QueryDriver.cpp">
@@ -46,6 +43,9 @@
     <ClCompile Include="..\source\AST\**\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\TokenizerClasses\TokenizerResults.cpp">
+      <Filter>Tokeniser</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\Constants\QPSPKB.h" />

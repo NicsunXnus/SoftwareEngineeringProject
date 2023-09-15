@@ -14,6 +14,7 @@
 #include "../TokenClasses/SeparatorToken.h"
 #include "../TokenClasses/UnderscoreToken.h"
 #include "../HelperFunctions.h"
+#include "../ExceptionMessages.h"
 
 using namespace std::string_view_literals;
 
@@ -22,9 +23,6 @@ static const std::unordered_set<std::string> common = {
 	"read",
 	"print",
 	"call",
-	"while",
-	"if",
-	"procedure",
 	"(",
 	")",
 	";",
@@ -37,11 +35,7 @@ static const std::unordered_set<std::string> common = {
 
 // Certain keywords or operators that will only be found in SIMPLE
 static const std::unordered_set<std::string> uniqueSimple = {
-	"then",
-	"else",
 	"=",
-	"{",
-	"}",
 	"!",
 	"||",
 	"&&",
@@ -60,6 +54,9 @@ static const std::unordered_set<std::string> uniquePql = {
 	"assign",
 	"variable",
 	"constant",
+	"procedure",
+	"while",
+	"if",
 	//"Follows",
 	//"Follows*",
 	//"Parent",
@@ -92,15 +89,6 @@ private:
 		if (tokenName == "call"sv) {
 			return std::make_shared<CallKeywordToken>();
 		}
-		if (tokenName == "while"sv) {
-			return std::make_shared<WhileKeywordToken>();
-		}
-		if (tokenName == "if"sv) {
-			return std::make_shared<IfKeywordToken>();
-		}
-		if (tokenName == "procedure"sv) {
-			return std::make_shared<ProcedureKeywordToken>();
-		}
 		if (tokenName == "("sv) {
 			return std::make_shared<ParenOpenSepToken>();
 		}
@@ -125,25 +113,13 @@ private:
 		if (tokenName == "%"sv) {
 			return std::make_shared<ModuloOpToken>();
 		}
-		throw std::invalid_argument("Invalid token name supplied to generateCommonToken function: " + std::string(tokenName));
+		throw std::invalid_argument(ExceptionMessages::invalidToken);
 	}
 
 	// Generates a Token with a name that is unique to SIMPLE
 	static std::shared_ptr<Token> generateSimpleToken(std::string_view tokenName) {
-		if (tokenName == "then"sv) {
-			return std::make_shared<ThenKeywordToken>();
-		}
-		if (tokenName == "else"sv) {
-			return std::make_shared<ElseKeywordToken>();
-		}
 		if (tokenName == "="sv) {
 			return std::make_shared<EqualsOpToken>();
-		}
-		if (tokenName == "{"sv) {
-			return std::make_shared<CurlyOpenSepToken>();
-		}
-		if (tokenName == "}"sv) {
-			return std::make_shared<CurlyCloseSepToken>();
 		}
 		if (tokenName == "!"sv) {
 			return std::make_shared<NotOpToken>();
@@ -172,7 +148,7 @@ private:
 		if (tokenName == "!="sv) {
 			return std::make_shared<InequalityOpToken>();
 		}
-		throw std::invalid_argument("Invalid token name supplied to generateSimpleToken function: " + std::string(tokenName));
+		throw std::invalid_argument(ExceptionMessages::invalidToken);
 	}
 
 	// Generates a Token with a name that is unique to PQL
@@ -191,6 +167,15 @@ private:
 		}
 		if (tokenName == "constant"sv) {
 			return std::make_shared<ConstantKeywordToken>();
+		}
+		if (tokenName == "procedure"sv) {
+			return std::make_shared<ProcedureKeywordToken>();
+		}
+		if (tokenName == "while"sv) {
+			return std::make_shared<WhileKeywordToken>();
+		}
+		if (tokenName == "if"sv) {
+			return std::make_shared<IfKeywordToken>();
 		}
 		//if (tokenName == "Follows"sv) {
 		//	return NULL;// std::make_shared<>();
@@ -228,7 +213,7 @@ private:
 		if (tokenName == ","sv) {
 			return std::make_shared<CommaSepToken>();
 		}
-		throw std::invalid_argument("Invalid token name supplied to generatePqlToken function: " + std::string(tokenName));
+		throw std::invalid_argument(ExceptionMessages::invalidToken);
 	}
 
 	// Generates a Identifier Token. REMINDER that this does not validate the argument to ensure that it is a valid name
@@ -254,6 +239,9 @@ public:
 	/// <param name="forceIdentifier">Whether to force the token to be an IdentifierToken</param>
 	/// <returns>a shared pointer to the generated token</returns>
 	static std::shared_ptr<Token> generateToken(std::string tokenName, bool forSimple, bool forceIdentifier = false) {
+		if (tokenName.empty()) {
+			throw std::invalid_argument(ExceptionMessages::invalidToken);
+		}
 		// Prioritises creating an identifier if given tokenName is a valid name
 		if (forceIdentifier && isValidName(tokenName)) {
 			return generateIdentifier(tokenName);
@@ -271,12 +259,12 @@ public:
 			return generateIdentifier(tokenName);
 		}
 		if (isNumber(tokenName)) {
-			if (tokenName[0] == char("0")) {
-				throw std::invalid_argument("Number supplied has a leading 0: " + tokenName);
+			if (tokenName.size() > 1 && tokenName[0] == '0') {
+				throw std::invalid_argument(ExceptionMessages::invalidToken);
 			}
 			return generateIntLiteral(tokenName);
 		}
-		throw std::invalid_argument("Invalid string supplied: " + tokenName);
+		throw std::invalid_argument(ExceptionMessages::invalidToken);
 	}
 
 	// Overloaded method to take in string views instead
