@@ -69,7 +69,7 @@ public:
             extractUsesAbstraction(printNode->getVar());
         }
         else if (auto assignNode = std::dynamic_pointer_cast<AssignNode>(statementNode)) {
-            extractUsesAbstraction(assignNode->getExpr());
+            // extractUsesAbstraction(assignNode->getExpr());
         }
         else if (auto callNode = std::dynamic_pointer_cast<CallNode>(statementNode)) {
             //TODO: Handle callNode
