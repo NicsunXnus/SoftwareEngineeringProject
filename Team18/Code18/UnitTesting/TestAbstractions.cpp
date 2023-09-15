@@ -408,7 +408,7 @@ namespace UnitTesting
                   std::shared_ptr<VariableNode> testVariableNode12 = std::make_shared<VariableNode>("a", 13);
                   std::shared_ptr<PrintNode> testPrintNode4 = std::make_shared<PrintNode>(13, testVariableNode12);
                   std::shared_ptr<ProcedureNode> testProcedureNode3 = std::make_shared<ProcedureNode>("procedure3", std::vector<std::shared_ptr<StatementNode>>());
-                  std::shared_ptr<CallNode> testCallNode = std::make_shared<CallNode>(14, testProcedureNode2);
+                  std::shared_ptr<CallNode> testCallNode = std::make_shared<CallNode>(14, testProcedureNode3);
                   std::vector<std::shared_ptr<StatementNode>> whileStatements = {testPrintNode4, testCallNode};
                   std::shared_ptr<WhileNode> testWhileNode = std::make_shared<WhileNode>(12, testEqualNode2, whileStatements);
 
