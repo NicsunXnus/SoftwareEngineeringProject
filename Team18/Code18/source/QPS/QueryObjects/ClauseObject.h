@@ -4,6 +4,7 @@
 
 #include <string_view>
 #include "QueryObject.h"
+#include "ClauseArg.h"
 
 /*
 * This class represents a Query object, for clause entities
@@ -11,9 +12,12 @@
 class ClauseObject : public QueryObject {
 private:
 	map<string, vector<string>> res;
+	shared_ptr<ClauseArg> argument0;
+	shared_ptr<ClauseArg> argument1;
+
 public:
-	ClauseObject(vector<string_view> data)
-		: QueryObject{ data } {
+	ClauseObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
+		: QueryObject{ clauseName }, argument0{ argument0 }, argument1{ argument1 } {
 
 	}
 
@@ -27,12 +31,40 @@ public:
 };
 
 /*
-* This class represents a Query object, for clause Uses
+* This class represents a Query object, for clause Uses with a statement ref as the first argument
 */
 class UsesObject : public ClauseObject {
 public:
-	UsesObject(vector<string_view> data)
-		: ClauseObject{ data } {
+	UsesObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
+		: ClauseObject{ clauseName, argument0, argument1 } {
+	};
+
+	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
+		setResult(dataAccessLayer->getClause());
+	}
+};
+
+/*
+* This class represents a Query object, for clause Uses with an entity ref as the first argument
+*/
+class UsesEntityObject : public ClauseObject {
+public:
+	UsesEntityObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
+		: ClauseObject{ clauseName, argument0, argument1 } {
+	};
+
+	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
+		setResult(dataAccessLayer->getClause());
+	}
+};
+
+/*
+* This class represents a Query object, for clause Modifies with a statement ref as the first argument
+*/
+class ModifiesObject : public ClauseObject {
+public:
+	ModifiesObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1))
+		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
 		setResult(dataAccessLayer->getClause());
@@ -41,12 +73,12 @@ public:
 };
 
 /*
-* This class represents a Query object, for clause Modifies
+* This class represents a Query object, for clause Modifies with an entity ref as the second argument
 */
-class ModifiesObject : public ClauseObject {
+class ModifiesEntityObject : public ClauseObject {
 public:
-	ModifiesObject(vector<string_view> data)
-		: ClauseObject{ data } {
+	ModifiesEntityObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1))
+		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
 		setResult(dataAccessLayer->getClause());
@@ -59,8 +91,8 @@ public:
 */
 class FollowsObject : public ClauseObject {
 public:
-	FollowsObject(vector<string_view> data)
-		: ClauseObject{ data } {
+	FollowsObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1))
+		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
 		setResult(dataAccessLayer->getClause());
@@ -73,8 +105,8 @@ public:
 */
 class FollowsStarObject : public ClauseObject {
 public:
-	FollowsStarObject(vector<string_view> data)
-		: ClauseObject{ data } {
+	FollowsStarObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1))
+		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
 		setResult(dataAccessLayer->getClause());
@@ -87,8 +119,8 @@ public:
 */
 class ParentObject : public ClauseObject {
 public:
-	ParentObject(vector<string_view> data)
-		: ClauseObject{ data } {
+	ParentObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1))
+		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
 		setResult(dataAccessLayer->getClause());
@@ -101,8 +133,8 @@ public:
 */
 class ParentStarObject : public ClauseObject {
 public:
-	ParentStarObject(vector<string_view> data)
-		: ClauseObject{ data } {
+	ParentStarObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1))
+		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
 		setResult(dataAccessLayer->getClause());

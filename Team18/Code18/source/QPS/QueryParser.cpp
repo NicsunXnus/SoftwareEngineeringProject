@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "QueryParser.h"
+#include "QueryObjects/ClauseArg.h"
 
 
 
@@ -104,14 +105,14 @@ vector<shared_ptr<QueryObject>> QueryParser::validateDeclaration(vector<string_v
 			if (!SynonymObject::isValid(currentDeclaration)) { // check if valid synonym
 				throw runtime_error("Invalid synonym");
 			}
-			vector<string_view> data;
-			data.push_back(currentDeclaration);
-			shared_ptr<QueryObject> queryObject = designFactory->create(data);
+			shared_ptr<QueryObject> queryObject = designFactory->create(currentDeclaration);
 			if (synonyms.find(currentDeclaration) != synonyms.end()) { // synonym already declared
 				throw runtime_error("Repeated synonym declaration");
 			}
 			else {
 				synonyms[currentDeclaration] = queryObject;
+				std::string entityType(declaration[0].begin(), declaration[0].end());
+				synonymToEntity[currentDeclaration] = EntityEnumToString(entityType);
 			}
 			wasDeclaration = true;
 			converted.push_back(queryObject);
@@ -211,29 +212,42 @@ bool QueryParser::hasRelationalReference(std::vector<string_view>& query, int in
 	return hasRR;
 }
 
-bool QueryParser::isSyntacticallyValidClauseArg(string_view arg) {
-	bool isNum{ true };
-	bool isWildcard{ arg == "_"sv };
-	bool isIdent{ arg[0] == '"' && arg.back() == '"' && arg.substr(1, arg.size() - 2};
-
-	for (int i = 0; i < static_cast<int>(arg.size()); ++i) {
-		isNum = isNum && isdigit(arg[i]);
-	}
-
-	return isNum || isWildcard || isIdent;
-}
-
 shared_ptr<QueryObject> QueryParser::createClauseObj(std::vector<string_view>& query, int index) {
 	string_view relationalReference{ query[index] };
 
 	shared_ptr<QueryObjectFactory> clauseFactory{ QueryObjectFactory::createFactory(relationalReference) };
 
 	// create a vector of args for the clause objects
-	std::vector<string_view> argVector;
-	argVector.push_back(query[index] + 2); // index of the token representing the first argument
-	argVector.push_back(query[index] + 4); // index of the token representing the second argument
+	std::vector<shared_ptr<ClauseArg>> argVector;
+	
+	// create clauseArg object for first argument
+	string_view arg1Name{ query[index + 2] };
+	shared_ptr<SynonymObject> synonym1;
+	if (SynonymObject::isValid(arg1Name)) {
+		if (synonyms.find(arg1Name) == synonyms.end()) { // argument is an undeclared synonym
+			throw std::runtime_error("Semantic error: Synonym in clause is undeclared");
+		}
+		shared_ptr<SynonymObject> synonym1 = make_shared<SynonymObject>(arg1Name, synonymToEntity.find(arg1Name));
+	}
+	argVector.push_back(make_shared<ClauseArg>(arg1Name, synonym1));
 
-	shared_ptr<QueryObject> clauseObj{ clauseFactory->create(argVector) };
+	// create clauseArg object for second argument
+	string_view arg2Name{ query[index + 4] };
+	shared_ptr<SynonymObject> synonym2;
+	if (SynonymObject::isValid(arg2Name)) {
+		if (synonyms.find(arg2Name) == synonyms.end()) { // argument is an undeclared synonym
+			throw std::runtime_error("Semantic error: Synonym in clause is undeclared");
+		}
+		shared_ptr<SynonymObject> synonym2 = make_shared<SynonymObject>(arg2Name, synonymToEntity.find(arg2Name));
+	}
+	argVector.push_back(make_shared<ClauseArg>(arg2Name, synonym2));
+
+	try {
+		shared_ptr<QueryObject> clauseObj{ clauseFactory->create(relationalReference, argVector) };
+	} catch (const std::exception& e) {
+		std::cout << e.what() << '\n';
+	}
 }
+
 
 

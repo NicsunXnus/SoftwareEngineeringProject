@@ -15,7 +15,7 @@ class DesignObject : public QueryObject {
 private:
 	vector<string> res;
 public:
-	DesignObject(vector<string_view> data)
+	DesignObject(string_view data)
 		: QueryObject{ data } {
 
 	}
@@ -33,7 +33,7 @@ public:
 */
 class StmtObject : public DesignObject {
 public:
-	StmtObject(vector<string_view> data)
+	StmtObject(string_view data)
 		: DesignObject{ data } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
@@ -47,7 +47,7 @@ public:
 */
 class ReadObject : public DesignObject {
 public:
-	ReadObject(vector<string_view> data)
+	ReadObject(string_view data)
 		: DesignObject{ data } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
@@ -60,7 +60,7 @@ public:
 */
 class PrintObject : public DesignObject {
 public:
-	PrintObject(vector<string_view> data)
+	PrintObject(string_view data)
 		: DesignObject{ data } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
@@ -73,7 +73,7 @@ public:
 */
 class CallObject : public DesignObject {
 public:
-	CallObject(vector<string_view> data)
+	CallObject(string_view data)
 		: DesignObject{ data } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
@@ -86,7 +86,7 @@ public:
 */
 class WhileObject : public DesignObject {
 public:
-	WhileObject(vector<string_view> data)
+	WhileObject(string_view data)
 		: DesignObject{ data } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
@@ -99,7 +99,7 @@ public:
 */
 class IfObject : public DesignObject {
 public:
-	IfObject(vector<string_view> data)
+	IfObject(string_view data)
 		: DesignObject{ data } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
@@ -112,7 +112,7 @@ public:
 */
 class AssignObject : public DesignObject {
 public:
-	AssignObject(vector<string_view> data)
+	AssignObject(string_view data)
 		: DesignObject{ data } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
@@ -125,7 +125,7 @@ public:
 */
 class VariableObject : public DesignObject {
 public:
-	VariableObject(vector<string_view> data)
+	VariableObject(string_view data)
 		: DesignObject{ data } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
@@ -141,7 +141,7 @@ public:
 */
 class ConstantObject : public DesignObject {
 public:
-	ConstantObject(vector<string_view> data)
+	ConstantObject(string_view data)
 		: DesignObject{ data } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
@@ -154,7 +154,7 @@ public:
 */
 class ProcedureObject : public DesignObject {
 public:
-	ProcedureObject(vector<string_view> data)
+	ProcedureObject(string_view data)
 		: DesignObject{ data } {
 	};
 	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {

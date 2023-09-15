@@ -16,20 +16,16 @@ using namespace std;
 
 class QueryObject {
 private:
-	vector<string_view> data; // stores information about the queryObject, such as its name, or arguments for clauses
+	string_view data; // stores information about the queryObject, such as its name, or arguments for clauses
 public:
-	QueryObject(vector<string_view> dataVector)
-		: data{ dataVector } {
+	QueryObject(string_view data)
+		: data{ data } {
 	};
 
 	// pure virtual function, for calling PKB
 	virtual void call(shared_ptr<DataAccessLayer> dataAccessLayer) = 0;
 
 	string_view getQueryObjectName() {
-		return data[0];
-	}
-
-	vector<string_view> getQueryObjectData() {
 		return data;
 	}
 

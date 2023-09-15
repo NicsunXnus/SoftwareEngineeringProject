@@ -29,7 +29,7 @@ public:
 
 	};
 
-	shared_ptr<QueryObject> create(vector<string_view> data) override {
+	shared_ptr<QueryObject> create(string_view data, vector<std::shared_ptr<ClauseArg>> arguments) override {
 		return make_shared<StmtObject>(data);
 	}
 
@@ -43,7 +43,7 @@ public:
 	ReadObjectFactory() {
 	};
 
-	shared_ptr<QueryObject> create(vector<string_view> data) override {
+	shared_ptr<QueryObject> create(string_view data, vector<std::shared_ptr<ClauseArg>> arguments) override {
 		return make_shared<ReadObject>(data);
 	}
 };
@@ -56,7 +56,7 @@ public:
 	PrintObjectFactory() {
 	};
 
-	shared_ptr<QueryObject> create(vector<string_view> data) override {
+	shared_ptr<QueryObject> create(string_view data, vector<std::shared_ptr<ClauseArg>> arguments) override {
 		return make_shared<PrintObject>(data);
 	}
 };
@@ -69,7 +69,7 @@ public:
 	CallObjectFactory() {
 	};
 
-	shared_ptr<QueryObject> create(vector<string_view> data) override {
+	shared_ptr<QueryObject> create(string_view data, vector<std::shared_ptr<ClauseArg>> arguments) override {
 		return make_shared<CallObject>(data);
 	}
 };
@@ -82,7 +82,7 @@ public:
 	WhileObjectFactory() {
 	};
 
-	shared_ptr<QueryObject> create(vector<string_view> data) override {
+	shared_ptr<QueryObject> create(string_view data, vector<std::shared_ptr<ClauseArg>> arguments) override {
 		return make_shared<WhileObject>(data);
 	}
 };
@@ -95,7 +95,7 @@ public:
 	IfObjectFactory() {
 	};
 
-	shared_ptr<QueryObject> create(vector<string_view> data) override {
+	shared_ptr<QueryObject> create(string_view data, vector<std::shared_ptr<ClauseArg>> arguments) override {
 		return make_shared<IfObject>(data);
 	}
 };
@@ -108,7 +108,7 @@ public:
 	AssignObjectFactory() {
 	};
 
-	shared_ptr<QueryObject> create(vector<string_view> data) override {
+	shared_ptr<QueryObject> create(string_view data, vector<std::shared_ptr<ClauseArg>> arguments) override {
 		return make_shared<AssignObject>(data);
 	}
 };
@@ -121,7 +121,7 @@ public:
 	VariableObjectFactory() {
 	};
 
-	shared_ptr<QueryObject> create(vector<string_view> data) override {
+	shared_ptr<QueryObject> create(string_view data, vector<std::shared_ptr<ClauseArg>> arguments) override {
 		return make_shared<VariableObject>(data);
 	}
 };
@@ -134,7 +134,7 @@ public:
 	ConstantObjectFactory() {
 	};
 
-	shared_ptr<QueryObject> create(vector<string_view> data) override {
+	shared_ptr<QueryObject> create(string_view data, vector<std::shared_ptr<ClauseArg>> arguments) override {
 		return make_shared<ConstantObject>(data);
 	}
 };
@@ -147,7 +147,7 @@ public:
 	ProcedureObjectFactory() {
 	};
 
-	shared_ptr<QueryObject> create(vector<string_view> data) override {
+	shared_ptr<QueryObject> create(string_view data, vector<std::shared_ptr<ClauseArg>> arguments) override {
 		return make_shared<ProcedureObject>(data);
 	}
 };

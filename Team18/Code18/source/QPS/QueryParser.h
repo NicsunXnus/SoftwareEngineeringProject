@@ -45,6 +45,9 @@ private:
 	// Synonyms declared in the query's declaration statements
 	unordered_map<string_view, shared_ptr<QueryObject>> synonyms;
 
+	// A mapping between the synonyms declared in the declarations statements to its design-entity
+	unordered_map <string_view, ENTITY> synonymToEntity;
+
 	// Valid relational references
 	std::unordered_set<string_view> relationalReferences
 		{"Follows"sv, "Follows*"sv, "Parent"sv, "Parent*"sv, "Uses"sv, "Modifies"sv};

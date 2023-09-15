@@ -5,13 +5,14 @@
 #include <string_view>
 #include <vector>
 #include "QueryObject.h"
+#include "ClauseArg.h"
 
 /**
 * This abstract class represents all Query Object factories
 */
 class QueryObjectFactory {
 private: 
-	// string_view factoryType;
+
 public:
 	QueryObjectFactory() {
 
@@ -19,10 +20,7 @@ public:
 	/*
 	* This function creates the QueryObject, overriden in the subclasses for design entities
 	*/
-	virtual inline shared_ptr<QueryObject> create(vector<string_view> data) = 0;
-
-	/*
-	* This function checks if a given /
+	virtual inline shared_ptr<QueryObject> create(string_view name, vector<std::shared_ptr<ClauseArg>> arguments = {}) = 0;
 
 	/*
 	* This function creates the factory for each type (design entities, clauses etc.)

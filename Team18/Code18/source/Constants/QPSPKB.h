@@ -1,6 +1,8 @@
 #ifndef QPSPKB_H
 #define QPSPKB_H
 
+#include<unordered_set>
+
 enum ENTITY {
     STMT,
     READ,
@@ -59,5 +61,8 @@ static ABSTRACTIONS AbstractionEnumToString(string abstraction) {
     }
     throw runtime_error("abstraction is invalid!");
 }
+
+
+const unordered_set<ENTITY> stmtEntities
 
 #endif
