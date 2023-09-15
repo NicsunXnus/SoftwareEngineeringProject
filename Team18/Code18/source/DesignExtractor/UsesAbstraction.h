@@ -15,7 +15,23 @@ public:
     // Constructor
     UsesAbstraction() {
         this->UsesStorageMap = std::make_shared<map<string, vector<string>>>();
+        this->procedureStatementStorageMap = std::make_shared<map<string, vector<string>>>();
     }
+
+    // Method to get UsesStorageMap
+    std::shared_ptr<map<string, vector<string>>> getUsesStorageMap() {
+        return this->UsesStorageMap;
+    }
+
+    // Method to extract the uses abstraction
+    void extractUses(shared_ptr<ASTNode> astNode) {
+        extractUsesAbstraction(astNode);
+        addProcedureNames();
+    }
+
+private:
+    std::shared_ptr<map<string, vector<string>>> UsesStorageMap;
+    std::shared_ptr<map<string, vector<string>>> procedureStatementStorageMap;
 
     void extractUsesAbstraction(shared_ptr<ASTNode> astNode) {
         // Extract the entities based on the type of astNode
@@ -122,7 +138,7 @@ public:
         } 
         else {
             // Handle other cases or report an error
-            std::cerr << "Unsupported ASTNode type in ModifiesAbstraction handleStatement." << std::endl;
+            std::cerr << "Unsupported ASTNode type in UsesAbstraction handleStatement." << std::endl;
         }
         
     }
@@ -163,19 +179,48 @@ public:
         }
     }
 
-    // Method to get UsesStorageMap
-    std::shared_ptr<map<string, vector<string>>> getUsesStorageMap() {
-        return this->UsesStorageMap;
-    }
-
-private:
-    std::shared_ptr<map<string, vector<string>>> UsesStorageMap;
-
     // insert to UsesStorageMap
     void insertToUsesStorageMap(string variableName, string statementNumber) {
         if (this->UsesStorageMap->find(variableName) == this->UsesStorageMap->end()) {
             this->UsesStorageMap->insert({variableName, vector<string>()});
         }
         this->UsesStorageMap->at(variableName).push_back(statementNumber);
+    }
+
+    // insert to procedureStatementStorageMap
+    void insertToProcedureStatementStorageMap(string procedureName, string statementNumber) {
+        if (this->procedureStatementStorageMap->find(procedureName) == this->procedureStatementStorageMap->end()) {
+            this->procedureStatementStorageMap->insert({procedureName, vector<string>()});
+        }
+        this->procedureStatementStorageMap->at(procedureName).push_back(statementNumber);
+    }
+
+    // Method to reduce the procedureStatementStorageMap to two values (min and max)
+    void reduceProcedureStatementStorageMap() {
+        for (const auto& [procedureName, statementNumbers] : *this->procedureStatementStorageMap) {
+            int min = stoi(statementNumbers[0]);
+            int max = stoi(statementNumbers[0]);
+            for (const auto& statementNumber : statementNumbers) {
+                if (stoi(statementNumber) < min) {
+                    min = stoi(statementNumber);
+                }
+                if (stoi(statementNumber) > max) {
+                    max = stoi(statementNumber);
+                }
+            }
+            this->procedureStatementStorageMap->at(procedureName).clear();
+            this->procedureStatementStorageMap->at(procedureName).push_back(to_string(min));
+            this->procedureStatementStorageMap->at(procedureName).push_back(to_string(max));
+        }
+    }
+
+    void addProcedureNames() {
+        for (const auto& [variable, values] : *this->ModifiesStorageMap) {
+            for (const auto& [procedureName, statementNumbers] : *this->procedureStatementStorageMap) {
+                if (stoi(values[0]) >= stoi(statementNumbers[0]) && stoi(values[0]) <= stoi(statementNumbers[1])) {
+                    this->ModifiesStorageMap->at(variable).push_back(procedureName);
+                }
+            }
+        }        
     }
 };
