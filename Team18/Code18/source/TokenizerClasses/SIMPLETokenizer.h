@@ -94,7 +94,8 @@ private:
 		}
 
 		std::string delimiter = arithmeticOpsWithWhitespace + "|" + relationalOps;
-		std::vector<std::shared_ptr<Token>> condExp = tokenizeExpression(substring(inBetween, 1, inBetween.size() - 1), delimiter);
+		// 1 and -2 to remove the parentheses
+		std::vector<std::shared_ptr<Token>> condExp = tokenizeExpression(substring(inBetween, 1, inBetween.size() - 2), delimiter);
 
 		return std::pair(dec, condExp);
 	}

@@ -430,5 +430,84 @@ namespace SimpleTokeniser_Test
 			TokenizedProgram program = TokenizedProgram(proceduresVec);
 			assert((*output).equalsTo(program));
 		}
+
+		TEST_METHOD(test_success) {
+			std::string input = 
+				"procedure p {"
+				"if (x == 3) then {"
+				"read num1;"
+				"print num3;"
+				"sum = num1 + num2 + num3;}"
+				"else{read num2;}"
+				"while (y == 4){"
+				"print num3;"
+				"read num1;"
+				"sum = num1 + num2 + num3;"
+				"}}";
+			std::shared_ptr<TokenizedProgram> output = SimpleTokenizer::tokenizeProgram(input);
+
+			// Expected
+			// Expected
+			std::vector<std::shared_ptr<Token>> readNum1Vec = {
+				std::make_shared<ReadKeywordToken>(),
+				std::make_shared<IdentifierToken>("num1")
+			};
+			std::vector<std::shared_ptr<Token>> readNum2Vec = {
+				std::make_shared<ReadKeywordToken>(),
+				std::make_shared<IdentifierToken>("num2")
+			};
+			std::vector<std::shared_ptr<Token>> printNum3Vec = {
+				std::make_shared<PrintKeywordToken>(),
+				std::make_shared<IdentifierToken>("num3")
+			};
+			std::vector<std::shared_ptr<Token>> sumVec = {
+				std::make_shared<IdentifierToken>("sum"),
+				std::make_shared<EqualsOpToken>(),
+				std::make_shared<IdentifierToken>("num1"),
+				std::make_shared<PlusOpToken>(),
+				std::make_shared<IdentifierToken>("num2"),
+				std::make_shared<PlusOpToken>(),
+				std::make_shared<IdentifierToken>("num3")
+			};
+
+			std::vector<std::shared_ptr<Token>> ifCondition = {
+				std::make_shared<IdentifierToken>("x"),
+				std::make_shared<EqualityOpToken>(),
+				std::make_shared<IntegerLiteralToken>("3")
+			};
+			std::vector<std::shared_ptr<TokenizedStmt>> thenBlockVec = {
+				std::make_shared<TokenizedSemicolonStmt>(2, readNum1Vec),
+				std::make_shared<TokenizedSemicolonStmt>(3, printNum3Vec),
+				std::make_shared<TokenizedSemicolonStmt>(4, sumVec)
+			};
+			std::shared_ptr<TokenizedStmtList> thenBlock = std::make_shared<TokenizedStmtList>(thenBlockVec);
+
+			std::vector<std::shared_ptr<TokenizedStmt>> elseBlockVec = {
+				std::make_shared<TokenizedSemicolonStmt>(5, readNum2Vec)
+
+			};
+			std::shared_ptr<TokenizedStmtList> elseBlock = std::make_shared<TokenizedStmtList>(elseBlockVec);
+
+			std::vector<std::shared_ptr<Token>> whileCondition = {
+				std::make_shared<IdentifierToken>("y"),
+				std::make_shared<LessThanOpToken>(),
+				std::make_shared<IntegerLiteralToken>("4")
+			};
+			std::vector<std::shared_ptr<TokenizedStmt>> whileBlockVec = {
+				std::make_shared<TokenizedSemicolonStmt>(7, printNum3Vec),
+				std::make_shared<TokenizedSemicolonStmt>(8, readNum1Vec),
+				std::make_shared<TokenizedSemicolonStmt>(9, sumVec)
+			};
+			std::shared_ptr<TokenizedStmtList> whileBlock = std::make_shared<TokenizedStmtList>(whileBlockVec);
+
+			std::vector<std::shared_ptr<TokenizedStmt>> stmtlistVec = {
+				std::make_shared<TokenizedIfStmt>(1, ifCondition, thenBlock, elseBlock),
+				std::make_shared<TokenizedWhileStmt>(6, whileCondition, whileBlock)
+			};
+			std::shared_ptr<TokenizedStmtList> stmtList = std::make_shared<TokenizedStmtList>(stmtlistVec);
+			std::vector< std::shared_ptr<TokenizedProcedure>> proceduresVec = { std::make_shared<TokenizedProcedure>("p", stmtList) };
+			TokenizedProgram program = TokenizedProgram(proceduresVec);
+			assert((*output).equalsTo(program));
+		}
 	};
 }
