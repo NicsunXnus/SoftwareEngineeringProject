@@ -31,6 +31,8 @@ public:
   std::vector<std::shared_ptr<TokenizedProcedure>>  getAllProcedures() {
     return this->procedures;
   }
+
+  bool equalsTo(TokenizedProgram& rhs);
 };
 
 /// <summary>
@@ -55,6 +57,8 @@ public:
   std::shared_ptr<TokenizedStmtList> getStmts() {
     return this->statementList;
   }
+
+  bool equalsTo(TokenizedProcedure& rhs);
 };
 
 /// <summary>
@@ -72,6 +76,8 @@ public:
   std::vector<std::shared_ptr<TokenizedStmt>> getStmts() {
     return this->statements;
   }
+
+  bool equalsTo(TokenizedStmtList& rhs);
 };
 
 // Wrapper for a vector of tokens. Note that semicolons will NO LONGER be stored, since some statements will not end in semicolons
@@ -94,8 +100,8 @@ public:
   int getStatementNumber() {
     return this->statementNumber;
   }
-  virtual ~TokenizedStmt() {
-  }
+
+  bool equalsTo(TokenizedStmt& rhs);
 };
 
 /// <summary>
@@ -112,6 +118,8 @@ public:
   std::vector<std::shared_ptr<Token>> getContents() {
     return this->contents;
   }
+
+  bool equalsTo(TokenizedSemicolonStmt& rhs);
 };
 
 /// <summary>
@@ -127,6 +135,8 @@ public:
   std::vector<std::shared_ptr<Token>> getConditionalExp() {
     return this->conditionalExp;
   };
+
+  bool equalsTo(TokenizedConditionalStmt& rhs);
 };
 
 /// <summary>
@@ -150,6 +160,8 @@ public:
   std::shared_ptr<TokenizedStmtList> getElseBlock() {
     return this->elseBlock;
   }
+
+  bool equalsTo(TokenizedIfStmt& rhs);
 };
 
 /// <summary>
@@ -167,6 +179,8 @@ public:
   std::shared_ptr<TokenizedStmtList> getWhileBlock() {
     return this->whileBlock;
   }
+
+  bool equalsTo(TokenizedWhileStmt& rhs);
 };
 
 #endif

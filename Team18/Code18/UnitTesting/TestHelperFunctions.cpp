@@ -138,6 +138,14 @@ namespace HelperFunctions_Test
 			std::vector<std::string> output = splitString(input);
 			assert(output == expected);
 		}
+
+		TEST_METHOD(excessiveWhitespaces_success) {
+			std::string input = " \t\f\v\n\r\b \t\f\v\n\r\bThe \t\f\v\n\r\b \t\f\v\n\r\bbrown \t\f\v\n\r\b \t\f\v\n\r\bfox"
+				" \t\f\v\n\r\bis \t\f\v\n\r\bquick \t\f\v\n\r\bfor \t\f\v\n\r\bits \t\f\v\n\r\bsize.";
+			std::vector<std::string> expected = { "The", "brown", "fox", "is", "quick", "for", "its", "size." };
+			std::vector<std::string> output = splitString(input);
+			assert(output == expected);
+		}
 	};
 
 	TEST_CLASS(splitString_customValues_Test) {
@@ -213,6 +221,41 @@ namespace HelperFunctions_Test
 			std::string expected = "This:\f a\vtest* of\b(the capabilitiés\f)";
 			std::string output = trimWhitespaces(input);
 			assert(output == expected);
+		}
+	};
+
+	TEST_CLASS(substring_Test) {
+		TEST_METHOD(validIndexes_success) {
+			std::string input = "0123456";
+			std::string output = substring(input, 3, 5);
+			std::string expected = "345";
+			assert(output == expected);
+		}
+		TEST_METHOD(endIndexMoreThanLastIndex_success) {
+			std::string input = "0123456";
+			std::string output = substring(input, 3, 100);
+			std::string expected = "3456";
+			assert(output == expected);
+		}
+		TEST_METHOD(negativeStartIndex_failure) {
+			try {
+				std::string input = "0123456";
+				std::string output = substring(input, -1, 5);
+				assert(false);
+			}
+			catch (std::invalid_argument e) {
+				assert(true);
+			}
+		}
+		TEST_METHOD(endIndexLarger_failure) {
+			try {
+				std::string input = "0123456";
+				std::string output = substring(input, 3, 2);
+				assert(false);
+			}
+			catch (std::invalid_argument e) {
+				assert(true);
+			}
 		}
 	};
 }

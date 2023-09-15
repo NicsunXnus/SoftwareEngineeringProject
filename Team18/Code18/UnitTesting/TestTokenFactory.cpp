@@ -442,6 +442,13 @@ namespace TokenFactory_Test
 			assert(isEqual == true);
 		}
 
+		TEST_METHOD(identifiers_longName) {
+			std::string tokenName = "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz";
+			std::shared_ptr<IdentifierToken> expected = std::make_shared<IdentifierToken>(tokenName);
+			bool isEqual = combineAnd(allCombinations(tokenName, expected));
+			assert(isEqual == true);
+		}
+
 		TEST_METHOD(identifiers_alphanumericName) {
 			std::string tokenName = "a1b2c3d4";
 			std::shared_ptr<IdentifierToken> expected = std::make_shared<IdentifierToken>(tokenName);
@@ -514,6 +521,15 @@ namespace TokenFactory_Test
 
 			try {
 				std::string tokenName = ";invalidCharacter";
+				combineOr(allCombinations(tokenName, nonsense));
+				assert(false);
+			}
+			catch (std::invalid_argument e) { assert(true); }
+		}
+
+		TEST_METHOD(emptyToken) {
+			try {
+				std::string tokenName = "";
 				combineOr(allCombinations(tokenName, nonsense));
 				assert(false);
 			}
