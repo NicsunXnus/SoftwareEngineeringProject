@@ -15,6 +15,7 @@ public:
     // Constructor
     ModifiesAbstraction() {
         this->ModifiesStorageMap = std::make_shared<map<string, vector<string>>>();
+        this->procedureStatementStorageMap = std::make_shared<map<string, vector<string>>>();
     }
 
     // Method to get ModifiesStorageMap
