@@ -100,7 +100,7 @@ public:
   int getStatementNumber() {
     return this->statementNumber;
   }
-
+  virtual ~TokenizedStmt() {};
   bool equalsTo(TokenizedStmt& rhs);
 };
 
