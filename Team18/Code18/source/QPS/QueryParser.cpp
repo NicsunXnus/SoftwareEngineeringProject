@@ -152,8 +152,8 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 
 	// loop to check for such that clauses and pattern clauses
 	while (currentWordIndex < static_cast<int>(query.size())) {
-		bool isSuchThat{ hasSuchThat(query, currentWordIndex) };
-		bool isPattern{ hasPattern(query, currentWordIndex) };
+		bool isSuchThat{ hasSuchThat(query, currentWordIndex) }; // checks the current clause is a such that clause
+		bool isPattern{ hasPattern(query, currentWordIndex) }; // checks the current clause is a patter clause
 		
 		if (isSuchThat) {
 			currentWordIndex += 2;
@@ -161,10 +161,9 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 			if (!hasRelationalReference(query, currentWordIndex)) {
 				throw runtime_error("such that clause has invalid syntax");
 			}
-			currentWordIndex += 6;
 
-			// TODO
 			// Construct query object
+			shared_ptr<QueryObject> suchThatClauseObj {}
 
 		} else if (isPattern) {
 			currentWordIndex += 1;
@@ -176,7 +175,7 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 	return result;
 }
 
-bool QueryParser::isDeclared(std::vector<string_view> query, int index) {
+bool QueryParser::isDeclared(std::vector<string_view>& query, int index) {
 	if (index >= static_cast<int>(query.size())) {
 		return false;
 	}
@@ -184,47 +183,57 @@ bool QueryParser::isDeclared(std::vector<string_view> query, int index) {
 	return this->synonyms.find(synonym) != this->synonyms.end();
 }
 
-bool QueryParser::hasSelect(std::vector<string_view> query, int index) {
+bool QueryParser::hasSelect(std::vector<string_view>& query, int index) {
 	return index < static_cast<int>(query.size()) && query[index] == "Select"sv;
 }
 
-bool QueryParser::hasPattern(std::vector<string_view> query, int index) {
+bool QueryParser::hasPattern(std::vector<string_view>& query, int index) {
 	return index < static_cast<int>(query.size()) && query[index] == "pattern"sv;
 }
 
-bool QueryParser::hasSuchThat(std::vector<string_view> query, int index) {
+bool QueryParser::hasSuchThat(std::vector<string_view>& query, int index) {
 	return index < static_cast<int>(query.size() - 1) && query[index] == "such"sv && query[index+1] == "that"sv;
 }
 
-bool QueryParser::hasRelationalReference(std::vector<string_view> query, int index) {
+bool QueryParser::hasRelationalReference(std::vector<string_view>& query, int index) {
 	// 6 here is the expected number of tokens we generate from tokenizing a relational reference clause
 	// Eg., "Uses" "(" "a" "," "b" ")"
-	if (index > static_cast<int>(query.size() - 6)) {
+	if (index > static_cast<int>(query.size()) - SUCH_THAT_CLAUSE_TOKEN_COUNT) {
 		return false;
 	}
 
 	bool hasRelationalKeyword{ this->relationalReferences.find(query[index]) != this->relationalReferences.end()};
 	bool hasOpenBracket{ query[index + 1] == "("sv };
-	bool hasArg1{ isSyntacticallyValidClauseArg(query[index + 2]) };
 	bool hasComma{ query[index + 3] == ","sv };
-	bool hasArg2{ isSyntacticallyValidClauseArg(query[index + 4]) };
 	bool hasCloseBracket{ query[index + 5] == ")"sv };
 
-	bool hasRR{ hasRelationalKeyword && hasOpenBracket && hasArg1 && hasComma && hasArg2 && hasCloseBracket };
+	bool hasRR{ hasRelationalKeyword && hasOpenBracket && hasComma && hasCloseBracket };
 	return hasRR;
 }
 
 bool QueryParser::isSyntacticallyValidClauseArg(string_view arg) {
 	bool isNum{ true };
 	bool isWildcard{ arg == "_"sv };
-	bool isSynonym{ SynonymObject::isValid(arg) };
+	bool isIdent{ arg[0] == '"' && arg.back() == '"' && arg.substr(1, arg.size() - 2};
 
 	for (int i = 0; i < static_cast<int>(arg.size()); ++i) {
 		isNum = isNum && isdigit(arg[i]);
 	}
 
-	return isNum || isWildcard || isSynonym;
+	return isNum || isWildcard || isIdent;
 }
 
+shared_ptr<QueryObject> QueryParser::createClauseObj(std::vector<string_view>& query, int index) {
+	string_view relationalReference{ query[index] };
+
+	shared_ptr<QueryObjectFactory> clauseFactory{ QueryObjectFactory::createFactory(relationalReference) };
+
+	// create a vector of args for the clause objects
+	std::vector<string_view> argVector;
+	argVector.push_back(query[index] + 2); // index of the token representing the first argument
+	argVector.push_back(query[index] + 4); // index of the token representing the second argument
+
+	shared_ptr<QueryObject> clauseObj{ clauseFactory->create(argVector) };
+}
 
 

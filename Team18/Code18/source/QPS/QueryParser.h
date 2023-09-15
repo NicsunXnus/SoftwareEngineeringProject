@@ -49,28 +49,35 @@ private:
 	std::unordered_set<string_view> relationalReferences
 		{"Follows"sv, "Follows*"sv, "Parent"sv, "Parent*"sv, "Uses"sv, "Modifies"sv};
 
+	int SUCH_THAT_CLAUSE_TOKEN_COUNT{ 6 };
+
+
 	/*
 	* Helper function splits the declarations into each individual declaration (up till ";")
 	*/
 	vector<vector<string_view>> splitDeclarations(vector<string_view> declarations);
 
 	// Helper function to check if Select keyword is present
-	bool hasSelect(std::vector<string_view> query, int index);
+	bool hasSelect(std::vector<string_view>& query, int index);
 
 	// Helper function to check if patter keyword is present
-	bool hasPattern(std::vector<string_view> query, int index);
+	bool hasPattern(std::vector<string_view>& query, int index);
 
 	// Helper function to check if a synonym is declared
-	bool isDeclared(std::vector<string_view> query, int index);
+	bool isDeclared(std::vector<string_view>& query, int index);
 
 	// Helper function to check if such that is present
-	bool hasSuchThat(std::vector<string_view> query, int index);
+	bool hasSuchThat(std::vector<string_view>& query, int index);
 
 	// Helper function to check if a such that clause is present
-	bool hasRelationalReference(std::vector<string_view> query, int index);
+	bool hasRelationalReference(std::vector<string_view>& query, int index);
 
 	// Helper function to check if a clause is syntactically valid
 	bool isSyntacticallyValidClauseArg(string_view arg);
+
+	// Creates a clause query object
+	shared_ptr<QueryObject> createClauseObj(std::vector<string_view>& query, int index);
+
 };
 
 #endif
