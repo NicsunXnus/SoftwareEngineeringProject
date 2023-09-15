@@ -40,6 +40,9 @@ public:
             // astNode is of type VariableNode
             insertToModifiesStorageMap(variableNode->getValue(), to_string(variableNode->getStatementNumber()));
         } 
+        else if (auto constantNode = std::dynamic_pointer_cast<ConstantNode>(astNode)) {
+            // astNode is of type ConstantNode
+        }
         else if (auto exprNode = std::dynamic_pointer_cast<ExprNode>(astNode)) {
             // astNode is of type ExprNode
             std::shared_ptr<ExprNode> leftExpr = exprNode->getLeftExpr();
@@ -50,9 +53,6 @@ public:
         else if (auto condExprNode = std::dynamic_pointer_cast<CondExprNode>(astNode)) {
             // astNode is of type CondExprNode
             handleCondExpr(condExprNode);
-        }
-        else if (auto constantNode = std::dynamic_pointer_cast<ConstantNode>(astNode)) {
-            // astNode is of type ConstantNode
         }
         else {
             // Handle other cases or report an error
