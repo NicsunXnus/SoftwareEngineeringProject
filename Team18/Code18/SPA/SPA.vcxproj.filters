@@ -78,9 +78,6 @@
     <ClInclude Include="..\source\PKB\StorageClasses\EntityStorage.h">
       <Filter>PKB</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\PKB\StorageClasses\FollowsAbstractionStorage.h">
-      <Filter>PKB</Filter>
-    </ClInclude>
     <ClInclude Include="..\source\TokenClasses\LiteralToken.h">
       <Filter>Tokens</Filter>
     </ClInclude>
@@ -89,12 +86,6 @@
     </ClInclude>
     <ClInclude Include="..\source\TokenClasses\IdentifierToken.h">
       <Filter>Tokens</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\PKB\StorageClasses\ModifiesAbstractionStorage.h">
-      <Filter>PKB</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\PKB\StorageClasses\ParentAbstractionStorage.h">
-      <Filter>PKB</Filter>
     </ClInclude>
     <ClInclude Include="..\source\PKB\Insertor.h">
       <Filter>PKB</Filter>
@@ -133,9 +124,6 @@
       <Filter>Tokens</Filter>
     </ClInclude>
     <ClInclude Include="..\source\PKB.h">
-      <Filter>PKB</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\PKB\StorageClasses\UsesAbstractionStorage.h">
       <Filter>PKB</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\QueryObjects\ClauseObjectFactory.h">
