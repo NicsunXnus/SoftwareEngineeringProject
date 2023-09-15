@@ -49,8 +49,8 @@ private:
 
                 extractUsesAbstraction(statement);
             }
-            reduceProcedureStatementStorageMap()
-        } 
+            reduceProcedureStatementStorageMap();
+        }
         else if (auto statementNode = std::dynamic_pointer_cast<StatementNode>(astNode)) {
             // astNode is of type StatementNode
             handleStatement(statementNode);
