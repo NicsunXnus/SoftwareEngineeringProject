@@ -38,7 +38,7 @@ public:
         } 
         else if (auto variableNode = std::dynamic_pointer_cast<VariableNode>(astNode)) {
             // astNode is of type VariableNode
-            insertToModifiesStorageMap(variableNode->getName(), to_string(variableNode->getStatementNumber()));
+            insertToModifiesStorageMap(variableNode->getValue(), to_string(variableNode->getStatementNumber()));
         } 
         else if (auto exprNode = std::dynamic_pointer_cast<ExprNode>(astNode)) {
             // astNode is of type ExprNode
