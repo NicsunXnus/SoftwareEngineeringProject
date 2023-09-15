@@ -12,11 +12,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\ApplicationWrapper.cpp" />
-    <ClCompile Include="..\source\DesignExtractor.cpp" />
     <ClCompile Include="..\source\QPS\DataAccessLayer.cpp" />
     <ClCompile Include="..\source\QPS\QueryDriver.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\DesignObjectsFactory.cpp" />
     <ClCompile Include="..\source\QPS\QueryParser.cpp" />
+    <ClCompile Include="..\source\TokenizerClasses\TokenizerResults.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\ApplicationWrapper.h" />
@@ -49,11 +49,13 @@
     <ClInclude Include="..\source\TokenClasses\SeparatorToken.h" />
     <ClInclude Include="..\source\TokenClasses\Token.h" />
     <ClInclude Include="..\source\TokenClasses\UnderscoreToken.h" />
+    <ClInclude Include="..\source\TokenizerClasses\ExceptionMessages.h" />
     <ClInclude Include="..\source\TokenizerClasses\PQLTokenizer.h" />
     <ClInclude Include="..\source\TokenizerClasses\SIMPLETokenizer.h" />
     <ClCompile Include="..\source\AST\**\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
     <ClInclude Include="..\source\TokenizerClasses\TokenFactory.h" />
+    <ClInclude Include="..\source\TokenizerClasses\TokenizerResults.h" />
     <ClInclude Include="ASTBuilderHelperFunctions.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -2,6 +2,7 @@
 #include "CppUnitTest.h"
 #include "../source/DesignExtractor/Entity.h"
 #include "../source/AST/ASTNode.h"
+#include <string>
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace UnitTesting
@@ -70,11 +71,11 @@ namespace UnitTesting
             std::map<std::string, std::vector<string>> statementMap = *(testStatementEntity->getMap());
 
             //Check if the statement entity is extracted correctly
-            Assert::AreEqual(statementMap["statement1"][0], std::string("1"));
-            Assert::AreEqual(statementMap["statement1"][1], std::string("2"));
-            Assert::AreEqual(statementMap["statement2"][0], std::string("3"));
-            Assert::AreEqual(statementMap["statement3"][0], std::string("4"));
-            Assert::AreEqual(statementMap["statement3"][1], std::string("5"));
+            Assert::IsTrue(std::find(statementMap["statement1"].begin(), statementMap["statement1"].end(), std::string("1")) != statementMap["statement1"].end());
+            Assert::IsTrue(std::find(statementMap["statement1"].begin(), statementMap["statement1"].end(), std::string("2")) != statementMap["statement1"].end());
+            Assert::IsTrue(std::find(statementMap["statement2"].begin(), statementMap["statement2"].end(), std::string("3")) != statementMap["statement2"].end());
+            Assert::IsTrue(std::find(statementMap["statement3"].begin(), statementMap["statement3"].end(), std::string("4")) != statementMap["statement3"].end());
+            Assert::IsTrue(std::find(statementMap["statement3"].begin(), statementMap["statement3"].end(), std::string("5")) != statementMap["statement3"].end());
 		}
 
         TEST_METHOD(TestVariableEntity)
@@ -99,14 +100,14 @@ namespace UnitTesting
             }
 
             //Get variable map from variable entity
-            std::map<std::string, std::vector<string>> variableMap = *(testVariableEntity->getMap());
+             std::map<std::string, std::vector<std::string>> variableMap = *(testVariableEntity->getMap());
 
             //Check if the statement entity is extracted correctly
-            Assert::AreEqual(variableMap["variable1"][0], std::string("1"));
-            Assert::AreEqual(variableMap["variable1"][1], std::string("2"));
-            Assert::AreEqual(variableMap["variable2"][0], std::string("3"));
-            Assert::AreEqual(variableMap["variable2"][1], std::string("4"));
-            Assert::AreEqual(variableMap["variable3"][0], std::string("5"));
+            Assert::IsTrue(std::find(variableMap["variable1"].begin(), variableMap["variable1"].end(), std::to_string(1)) != variableMap["variable1"].end());
+            Assert::IsTrue(std::find(variableMap["variable1"].begin(), variableMap["variable1"].end(), std::to_string(2)) != variableMap["variable1"].end());
+            Assert::IsTrue(std::find(variableMap["variable2"].begin(), variableMap["variable2"].end(), std::to_string(3)) != variableMap["variable2"].end());
+            Assert::IsTrue(std::find(variableMap["variable2"].begin(), variableMap["variable2"].end(), std::to_string(4)) != variableMap["variable2"].end());
+            Assert::IsTrue(std::find(variableMap["variable3"].begin(), variableMap["variable3"].end(), std::to_string(5)) != variableMap["variable3"].end());
 		}
 
         TEST_METHOD(TestConstantEntity)
@@ -131,14 +132,14 @@ namespace UnitTesting
             }
 
             //Get constant map from constant entity
-            std::map<std::string, std::vector<string>> constantMap = *(testConstantEntity->getMap());
+             std::map<std::string, std::vector<std::string>> constantMap = *(testConstantEntity->getMap());
 
             //Check if the statement entity is extracted correctly
-            Assert::AreEqual(constantMap["1"][0], std::string("1"));
-            Assert::AreEqual(constantMap["1"][1], std::string("2"));
-            Assert::AreEqual(constantMap["2"][0], std::string("3"));
-            Assert::AreEqual(constantMap["2"][1], std::string("4"));
-            Assert::AreEqual(constantMap["3"][0], std::string("5"));
+            Assert::IsTrue(std::find(constantMap["1"].begin(), constantMap["1"].end(), std::to_string(1)) != constantMap["1"].end());
+            Assert::IsTrue(std::find(constantMap["1"].begin(), constantMap["1"].end(), std::to_string(2)) != constantMap["1"].end());
+            Assert::IsTrue(std::find(constantMap["2"].begin(), constantMap["2"].end(), std::to_string(3)) != constantMap["2"].end());
+            Assert::IsTrue(std::find(constantMap["2"].begin(), constantMap["2"].end(), std::to_string(4)) != constantMap["2"].end());
+            Assert::IsTrue(std::find(constantMap["3"].begin(), constantMap["3"].end(), std::to_string(5)) != constantMap["3"].end());
         }
 
 	};

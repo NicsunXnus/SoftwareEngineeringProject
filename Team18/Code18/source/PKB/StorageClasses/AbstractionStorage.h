@@ -13,12 +13,12 @@ using namespace std;
 */
 class AbstractionStorage {
 public:
-    map<string, vector<string>>* AbstractionStorage::getDatabase() {
+    shared_ptr<map<string, vector<string>>> AbstractionStorage::getDatabase() {
         return database;
     }
 
     void AbstractionStorage::printDatabase() const {
-        cout << "printing abstraction database";
+        cout << "printing abstraction database" << endl;
         for (const auto& pair : *database) {
             string result;
             for (const string& num : pair.second) {
@@ -33,7 +33,7 @@ public:
     }
 
 private:
-    map<string, vector<string>>* database;
+    static shared_ptr<map<string, vector<string>>> database;
 };
 
 #endif
