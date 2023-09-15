@@ -121,7 +121,7 @@ private:
 		}
 
 		std::string delimiter = arithmeticOpsWithWhitespace + "|" + relationalOps;
-		std::vector<std::shared_ptr<Token>> condExp = tokenizeExpression(substring(inBetween, 1, inBetween.size() - 1), delimiter);
+		std::vector<std::shared_ptr<Token>> condExp = tokenizeExpression(substring(inBetween, 1, inBetween.size() - 2), delimiter); //temporary change from -1 to -2
 
 		return std::pair(dec, condExp);
 	}

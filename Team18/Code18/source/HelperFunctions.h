@@ -126,9 +126,10 @@ static std::string trimWhitespaces(std::string str) {
 }
 
 static std::string substring(std::string str, int startIndex, int endIndex) {
-  int len = endIndex - startIndex + 1;
-  return str.substr(startIndex, len);
-  
+    int len = endIndex - startIndex + 1;
+    return str.substr(startIndex, len);
+}
+
 // prints to console, toggle here to turn on / off for development / production
 static void debug(std::string debugMessage) {
     bool DEBUG_MODE = true; // toggle this

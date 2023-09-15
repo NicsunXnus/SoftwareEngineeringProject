@@ -94,6 +94,8 @@ public:
   int getStatementNumber() {
     return this->statementNumber;
   }
+  virtual ~TokenizedStmt() {
+  }
 };
 
 /// <summary>

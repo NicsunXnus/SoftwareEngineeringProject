@@ -114,4 +114,74 @@ static string printCondExpr(shared_ptr<CondExprNode> condExpr) {
         return result;
     }
 }
+
+static string printStatement(shared_ptr<StatementNode> statement, int nesting) {
+    auto assignStmt = dynamic_pointer_cast<AssignNode>(statement);
+    auto ifStmt = dynamic_pointer_cast<IfNode>(statement);
+    auto callStmt = dynamic_pointer_cast<CallNode>(statement);
+    auto readStmt = dynamic_pointer_cast<ReadNode>(statement);
+    auto printStmt = dynamic_pointer_cast<PrintNode>(statement);
+    auto whileStmt = dynamic_pointer_cast<WhileNode>(statement);
+    string indent = "";
+    int count = nesting;
+    while (count > 0) {
+        indent.append("\t");
+        count -= 1;
+    }
+    if (assignStmt) {
+        return to_string(assignStmt->getStatementNumber()) + indent + assignStmt->getVar()->getValue() + " = " + printExpr(assignStmt->getExpr()) + "\n";
+    }
+    else if (ifStmt) {
+        string res = "";
+        res += to_string(ifStmt->getStatementNumber()) + indent + "if (" + printCondExpr(ifStmt->getCondExpr()) + ") {\n";
+        std::vector<std::shared_ptr<StatementNode>> thenStmts = ifStmt->getStatements();
+        for (std::shared_ptr<StatementNode> thenStmtNode : thenStmts) {
+            res += printStatement(thenStmtNode, nesting + 1);
+        }
+        res += indent + "} else {\n";
+        std::vector<std::shared_ptr<StatementNode>> elseStmts = ifStmt->getElseStatements();
+        for (std::shared_ptr<StatementNode> elseStmtNode : elseStmts) {
+            res += printStatement(elseStmtNode, nesting + 1);
+        }
+        res += indent + "}\n";
+        return res;
+    }
+    else if (callStmt) {
+        return to_string(callStmt->getStatementNumber()) + indent + callStmt->getProc()->getName() + "\n";
+    }
+    else if (readStmt) {
+        return to_string(readStmt->getStatementNumber()) + indent + readStmt->getName() + " " + readStmt->getVar()->getValue() + "\n";
+    }
+    else if (printStmt) {
+        return to_string(printStmt->getStatementNumber()) + indent + printStmt->getName() + " " + printStmt->getVar()->getValue() + "\n";
+    }
+    else if (whileStmt) {
+        string res = "";
+        res += to_string(whileStmt->getStatementNumber()) + indent + "while (" + printCondExpr(whileStmt->getCondExpr()) + ") {\n";
+        std::vector<std::shared_ptr<StatementNode>> loopStmts = whileStmt->getStatements();
+        for (std::shared_ptr<StatementNode> stmtNode : loopStmts) {
+            res += printStatement(stmtNode, nesting + 1);
+        }
+        res += indent + "}\n";
+        return res;
+    }
+    else {
+        return "Unknown node";
+    }
+}
+
+static string printProcedure(shared_ptr<ProcedureNode> procNode) {
+    string res = "procedure ";
+    res += procNode->getName();
+    res += " {\n";
+
+    //Body
+    vector<shared_ptr<StatementNode>> statements = procNode->getStatements();
+    for (shared_ptr<StatementNode> statement : statements) {
+        res += printStatement(statement, 1);
+    }
+
+    res += "}\n";
+    return res;
+}
 #endif

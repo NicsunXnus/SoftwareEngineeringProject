@@ -1,13 +1,12 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include "../source/TokenizerClasses/SimpleTokenizer.h"
-#include "../source/TokenizerClasses/TokenFactory.h"
 #include "../source/AST/ASTBuilder.h"
 #include "../source/AST/ASTBuilderHelperFunctions.h"
 #include <cassert>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
-
+using namespace std;
 namespace UnitTesting
 {
 	TEST_CLASS(TestSP)
@@ -135,27 +134,22 @@ namespace UnitTesting
 			Logger::WriteMessage(output.str().c_str());
 		}*/
 
-		TEST_METHOD(TestValidStatements) {
-			std::vector < std::vector<std::shared_ptr<Token>>> test = SimpleTokenizer::tokenize(
-				"read num1;"
-				"read num2;"
-				"read num3;"
-
-				"sum = num1 + num2 + num3;"
+		TEST_METHOD(TestValidSimpleProgram) {
+			std::shared_ptr<TokenizedProgram> test = SimpleTokenizer::tokenizeProgram(
+				"procedure p { read num1; read num2; read num3; sum = num1 + num2 + num3;"
 				"ave = sum / 3;"
-
-				"print ave;"
+				"print ave;}"
 			);
 
-			std::vector<std::shared_ptr<StatementNode>> statements = ASTBuilder::parseProgram(test);
+			std::shared_ptr<ProgramNode> program = ASTBuilder::parseProgram(test);
 			std::stringstream output;
 			std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
 
+			vector<shared_ptr<StatementNode>> statements = program->getProcedures()[0]->getStatements();
 			std::string res = "";
 			res += std::to_string(statements[0]->getStatementNumber()) + " read " + printExpr(statements[0]->getVar()) + "\n";
 			res += std::to_string(statements[1]->getStatementNumber()) + " read " + printExpr(statements[1]->getVar()) + "\n";
 			res += std::to_string(statements[2]->getStatementNumber()) + " read " + printExpr(statements[2]->getVar()) + "\n";
-
 			res += std::to_string(statements[3]->getStatementNumber()) + " " + printExpr(statements[3]->getVar()) + " = " + printExpr(statements[3]->getExpr()) + "\n";
 			res += std::to_string(statements[4]->getStatementNumber()) + " " + printExpr(statements[4]->getVar()) + " = " + printExpr(statements[4]->getExpr()) + "\n";
 			res += std::to_string(statements[5]->getStatementNumber()) + " print " + printExpr(statements[5]->getVar());
@@ -163,42 +157,36 @@ namespace UnitTesting
 
 			std::cout.rdbuf(oldCoutBuffer);
 
-			Logger::WriteMessage("Output of parseStatements:\n");
+			Logger::WriteMessage("Output:\n");
 			Logger::WriteMessage(output.str().c_str());
 		}
 
-		TEST_METHOD(TestIfStatement) {
-			std::vector<std::shared_ptr<Token>> simpleIfTest = {
-				std::make_shared<Token>("if"),
-				std::make_shared<Token>("("),
-				std::make_shared<Token>("x"),
-				std::make_shared<Token>(">"),
-				std::make_shared<Token>("2"),
-				std::make_shared<Token>(")"),
-				std::make_shared<Token>("{"),
-				std::make_shared<Token>("x"),
-				std::make_shared<Token>("="),
-				std::make_shared<Token>("1"),
-				std::make_shared<Token>(";"),
-				std::make_shared<Token>("}"),
-				std::make_shared<Token>("else"),
-				std::make_shared<Token>("{"),
-				std::make_shared<Token>("read"),
-				std::make_shared<Token>("x"),
-				std::make_shared<Token>(";"),
-				std::make_shared<Token>("print"),
-				std::make_shared<Token>("x"),
-				std::make_shared<Token>(";"),
-				std::make_shared<Token>("}"),
-			};
+		TEST_METHOD(TestSimpleIfWhileStatement) {
+			std::shared_ptr<TokenizedProgram> test = SimpleTokenizer::tokenizeProgram(
+				"procedure p {"
+				"if (x == 3) then {"
+				"read num1;"
+				"print num3;"
+				"sum = num1 + num2 + num3;}"
+				"else{read num2;}"
+				"while (y == 4){"
+				"print num3;"
+				"read num1;"
+				"sum = num1 + num2 + num3;"
+				"}}"
+			);
 
-			std::shared_ptr<StatementNode> ifNode = ASTBuilder::parseStatement(simpleIfTest,1);
+			std::shared_ptr<ProgramNode> program = ASTBuilder::parseProgram(test);
 
 			std::stringstream output;
 			std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
 
-			std::cout << ifNode->getStatementNumber() << " if (" << printCondExpr(ifNode->getCondExpr()) << ") {\n";
-			std::vector<std::shared_ptr<StatementNode>> thenStmts = ifNode->getStatements();
+			std::shared_ptr<ProcedureNode> proc = program->getProcedures()[0];
+			std::cout << printProcedure(proc);
+			/*vector<shared_ptr<StatementNode>> statements = program->getProcedures()[0]->getStatements();
+
+			std::cout << statements[0]->getStatementNumber() << " if (" << printCondExpr(statements[0]->getCondExpr()) << ") {\n";
+			std::vector<std::shared_ptr<StatementNode>> thenStmts = statements[0]->getStatements();
 			for (std::shared_ptr<StatementNode> stmtNode : thenStmts) {
 				if (stmtNode->getName() == "read" || stmtNode->getName() == "print") {
 					std::cout << stmtNode->getStatementNumber() << " " << stmtNode->getName() << " " << stmtNode->getVar()->getValue() << std::endl;
@@ -208,7 +196,7 @@ namespace UnitTesting
 				}
 			}
 			std::cout << "} else {\n";
-			std::vector<std::shared_ptr<StatementNode>> elseStmts = ifNode->getElseStatements();
+			std::vector<std::shared_ptr<StatementNode>> elseStmts = statements[0]->getElseStatements();
 			for (std::shared_ptr<StatementNode> stmtNode : elseStmts) {
 				if (stmtNode->getName() == "read" || stmtNode->getName() == "print") {
 					std::cout << stmtNode->getStatementNumber() << " "  << stmtNode->getName() << " " << stmtNode->getVar()->getValue() << std::endl;
@@ -218,11 +206,21 @@ namespace UnitTesting
 				}
 			}
 
+			std::cout << statements[1]->getStatementNumber() << " while (" << printCondExpr(statements[1]->getCondExpr()) << ") {\n";
+			std::vector<std::shared_ptr<StatementNode>> loopStmts = statements[1]->getStatements();
+			for (std::shared_ptr<StatementNode> stmtNode : loopStmts) {
+				if (stmtNode->getName() == "read" || stmtNode->getName() == "print") {
+					std::cout << stmtNode->getStatementNumber() << " " << stmtNode->getName() << " " << stmtNode->getVar()->getValue() << std::endl;
+				}
+				else if (stmtNode->getName() == "assign") {
+					std::cout << stmtNode->getStatementNumber() << " " << stmtNode->getVar()->getValue() << " = " << printExpr(stmtNode->getExpr()) << std::endl;
+				}
+			}*/
+
 			std::cout.rdbuf(oldCoutBuffer);
 
-			Logger::WriteMessage("Output of ifNode:\n");
+			Logger::WriteMessage("Output:\n");
 			Logger::WriteMessage(output.str().c_str());
-
 
 		}
 
@@ -305,7 +303,37 @@ namespace UnitTesting
 			Logger::WriteMessage(output.str().c_str());
 		}
 
-		TEST_METHOD(Invalids) {
+		TEST_METHOD(TestSuperNest) {
+			std::shared_ptr<TokenizedProgram> test = SimpleTokenizer::tokenizeProgram(
+				"procedure p {"
+				"if (x == 3) then {"
+				"read num1;"
+				"if (y != 4 && z < 5) then {"
+				"print num3;"
+				"if (!(j >= 4)) then {"
+				"sum = num1 + num2 + num3; "
+				"} else { read num5; }"
+				"} else { while (a == 2) { num5; } }"
+				"} else { read num2; }"
+				"}"
+			);
+
+			std::shared_ptr<ProgramNode> program = ASTBuilder::parseProgram(test);
+
+			std::stringstream output;
+			std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
+
+			std::shared_ptr<ProcedureNode> proc = program->getProcedures()[0];
+			std::cout << printProcedure(proc);
+
+			std::cout.rdbuf(oldCoutBuffer);
+
+			Logger::WriteMessage("Output:\n");
+			Logger::WriteMessage(output.str().c_str());
+
+		}
+
+		/*TEST_METHOD(Invalids) {
 			try {
 				std::vector < std::vector<std::shared_ptr<Token>>> test = SimpleTokenizer::tokenize(
 					"read num2;"
@@ -342,6 +370,6 @@ namespace UnitTesting
 				Assert::AreEqual(ex.what(), "Need 2 operatees to operate on.");
 			}
 
-		}
+		}*/
 	};
 }

@@ -56,7 +56,6 @@
     <ClCompile Include="..\source\DesignExtractor\*.h" />
     <ClInclude Include="..\source\TokenizerClasses\TokenFactory.h" />
     <ClInclude Include="..\source\TokenizerClasses\TokenizerResults.h" />
-    <ClInclude Include="ASTBuilderHelperFunctions.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{DC21A1EA-D2C6-4D14-A2B4-E025B64BDE81}</ProjectGuid>
