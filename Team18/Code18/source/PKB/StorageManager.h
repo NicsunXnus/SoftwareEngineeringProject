@@ -6,10 +6,6 @@
 
 #include "StorageClasses/AbstractionStorage.h"
 #include "StorageClasses/EntityStorage.h"
-#include "StorageClasses/UsesAbstractionStorage.h"
-#include "StorageClasses/ModifiesAbstractionStorage.h"
-#include "StorageClasses/FollowsAbstractionStorage.h"
-#include "StorageClasses/ParentAbstractionStorage.h"
 
 using namespace std;
 

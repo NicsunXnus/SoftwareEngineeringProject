@@ -1,10 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\source\AST\ASTNode.h" />
     <ClCompile Include="..\source\AST\**\*.h" />
-    <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
     <ClCompile Include="..\source\ApplicationWrapper.cpp" />
@@ -46,6 +43,9 @@
     <ClCompile Include="..\source\DesignExtractor\*.h">
       <Filter>PKB</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\AST\**\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\Constants\QPSPKB.h" />
@@ -78,9 +78,6 @@
     <ClInclude Include="..\source\PKB\StorageClasses\EntityStorage.h">
       <Filter>PKB</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\PKB\StorageClasses\FollowsAbstractionStorage.h">
-      <Filter>PKB</Filter>
-    </ClInclude>
     <ClInclude Include="..\source\TokenClasses\LiteralToken.h">
       <Filter>Tokens</Filter>
     </ClInclude>
@@ -89,12 +86,6 @@
     </ClInclude>
     <ClInclude Include="..\source\TokenClasses\IdentifierToken.h">
       <Filter>Tokens</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\PKB\StorageClasses\ModifiesAbstractionStorage.h">
-      <Filter>PKB</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\PKB\StorageClasses\ParentAbstractionStorage.h">
-      <Filter>PKB</Filter>
     </ClInclude>
     <ClInclude Include="..\source\PKB\Insertor.h">
       <Filter>PKB</Filter>
@@ -133,9 +124,6 @@
       <Filter>Tokens</Filter>
     </ClInclude>
     <ClInclude Include="..\source\PKB.h">
-      <Filter>PKB</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\PKB\StorageClasses\UsesAbstractionStorage.h">
       <Filter>PKB</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\QueryObjects\ClauseObjectFactory.h">

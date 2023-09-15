@@ -27,10 +27,6 @@
     <ClInclude Include="..\source\PKB\Responder.h" />
     <ClInclude Include="..\source\PKB\StorageClasses\AbstractionStorage.h" />
     <ClInclude Include="..\source\PKB\StorageClasses\EntityStorage.h" />
-    <ClInclude Include="..\source\PKB\StorageClasses\FollowsAbstractionStorage.h" />
-    <ClInclude Include="..\source\PKB\StorageClasses\ModifiesAbstractionStorage.h" />
-    <ClInclude Include="..\source\PKB\StorageClasses\ParentAbstractionStorage.h" />
-    <ClInclude Include="..\source\PKB\StorageClasses\UsesAbstractionStorage.h" />
     <ClInclude Include="..\source\PKB\StorageManager.h" />
     <ClInclude Include="..\source\QPS\DataAccessLayer.h" />
     <ClInclude Include="..\source\QPS\QueryDriver.h" />
