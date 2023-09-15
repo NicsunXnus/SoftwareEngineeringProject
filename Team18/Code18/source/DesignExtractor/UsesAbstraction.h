@@ -16,6 +16,10 @@ public:
         this->UsesStorageMap = std::make_shared<map<string, vector<string>>>();
     }
 
+    // Getter for UsesStorageMap
+    std::shared_ptr<map<string, vector<string>>> getUsesStorageMap() {
+        return this->UsesStorageMap;
+    }
 
     void extractUsesAbstraction(shared_ptr<ASTNode> astNode) {
         // Extract the entities based on the type of astNode
@@ -165,9 +169,7 @@ public:
         }
     }
 
-    std::shared_ptr<map<string, vector<string>>> getUsesStorageMap() {
-        return this->UsesStorageMap;
-    }
+    
 
 private:
     std::shared_ptr<map<string, vector<string>>> UsesStorageMap;
