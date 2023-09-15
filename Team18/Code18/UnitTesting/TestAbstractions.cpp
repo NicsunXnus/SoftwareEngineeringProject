@@ -283,7 +283,7 @@ namespace UnitTesting
                   std::shared_ptr<UsesAbstraction> testUsesAbstraction = std::make_shared<UsesAbstraction>();
 
                   // Extract Uses and Modifies from procedure1
-                  testUsesAbstraction->extractUsesAbstraction(testProcedureNode1);
+                  testUsesAbstraction->extractUsesAbstraction(testProgramNode);
                   
                   // Get UsesMap and ModifiesMap from UsesAbstraction and ModifiesAbstraction by using getUsesStorageMap and getModifiesStorageMap
                   std::shared_ptr<map<string, vector<string>>> usesMap = testUsesAbstraction->getUsesStorageMap();

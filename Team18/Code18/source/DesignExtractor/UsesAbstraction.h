@@ -12,13 +12,9 @@ using namespace std;
 
 class UsesAbstraction {
 public:
+    // Constructor
     UsesAbstraction() {
         this->UsesStorageMap = std::make_shared<map<string, vector<string>>>();
-    }
-
-    // Getter for UsesStorageMap
-    std::shared_ptr<map<string, vector<string>>> getUsesStorageMap() {
-        return this->UsesStorageMap;
     }
 
     void extractUsesAbstraction(shared_ptr<ASTNode> astNode) {
@@ -46,8 +42,10 @@ public:
         } 
         else if (auto exprNode = std::dynamic_pointer_cast<ExprNode>(astNode)) {
             // astNode is of type ExprNode
-            extractUsesAbstraction(exprNode->getLeftExpr());
-            extractUsesAbstraction(exprNode->getRightExpr());
+            std::shared_ptr<ExprNode> leftExpr = exprNode->getLeftExpr();
+            std::shared_ptr<ExprNode> rightExpr = exprNode->getRightExpr();
+            extractUsesAbstraction(leftExpr);
+            extractUsesAbstraction(rightExpr);
         }
         else if (auto condExprNode = std::dynamic_pointer_cast<CondExprNode>(astNode)) {
             // astNode is of type CondExprNode
@@ -65,24 +63,22 @@ public:
     void handleStatement(std::shared_ptr<StatementNode> statementNode) {        
         //Check what kind of statement it is
         if (auto readNode = std::dynamic_pointer_cast<ReadNode>(statementNode)) {
-
+            extractUsesAbstraction(readNode->getVar());
         } 
         else if (auto printNode = std::dynamic_pointer_cast<PrintNode>(statementNode)) {
-            extractUsesAbstraction(printNode->getVar());
+            
         }
         else if (auto assignNode = std::dynamic_pointer_cast<AssignNode>(statementNode)) {
-            extractUsesAbstraction(assignNode->getExpr());
+            extractUsesAbstraction(assignNode->getVar());
         }
         else if (auto callNode = std::dynamic_pointer_cast<CallNode>(statementNode)) {
             //TODO: Handle callNode
         } 
         else if (auto whileNode = std::dynamic_pointer_cast<WhileNode>(statementNode)) {
-            extractUsesAbstraction(whileNode->getCondExpr());
-            
             std::vector<std::shared_ptr<StatementNode>> statements = whileNode->getStatements();
             std::vector<int> nestedStatements = vector<int>();
             for (const auto& statement : statements) {
-                // Add the statement number to the vector   
+                // Add the statement number to the vector
                 nestedStatements.push_back(statement->getStatementNumber());
 
                 extractUsesAbstraction(statement);
@@ -97,7 +93,6 @@ public:
             }
         } 
         else if (auto ifNode = std::dynamic_pointer_cast<IfNode>(statementNode)) {
-            extractUsesAbstraction(ifNode->getCondExpr());
             std::vector<std::shared_ptr<StatementNode>> ifStatements = ifNode->getStatements();
             std::vector<std::shared_ptr<StatementNode>> elseStatements = ifNode->getElseStatements();
             std::vector<std::shared_ptr<StatementNode>> statements;
@@ -124,7 +119,7 @@ public:
         } 
         else {
             // Handle other cases or report an error
-            std::cerr << "Unsupported ASTNode type in UsesAbstraction handleStatement." << std::endl;
+            std::cerr << "Unsupported ASTNode type in ModifiesAbstraction handleStatement." << std::endl;
         }
         
     }
@@ -159,17 +154,21 @@ public:
             extractUsesAbstraction(leftCondExpr);
             extractUsesAbstraction(rightCondExpr);
         }
+        
         else {
             std::cerr << "Unsupported ASTNode type in handleCondExpr." << std::endl;
         }
     }
 
-    
+    // Method to get UsesStorageMap
+    std::shared_ptr<map<string, vector<string>>> getUsesStorageMap() {
+        return this->UsesStorageMap;
+    }
 
 private:
     std::shared_ptr<map<string, vector<string>>> UsesStorageMap;
 
-    //Insert to UsesStorageMap
+    // insert to UsesStorageMap
     void insertToUsesStorageMap(string variableName, string statementNumber) {
         if (this->UsesStorageMap->find(variableName) == this->UsesStorageMap->end()) {
             this->UsesStorageMap->insert({variableName, vector<string>()});
