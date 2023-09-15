@@ -76,7 +76,7 @@ public:
             //TODO: Handle callNode
         } 
         else if (auto whileNode = std::dynamic_pointer_cast<WhileNode>(statementNode)) {
-            extractUsesAbstraction(whileNode->getCondExpr());
+            // extractUsesAbstraction(whileNode->getCondExpr());
             std::vector<std::shared_ptr<StatementNode>> statements = whileNode->getStatements();
             std::vector<int> nestedStatements = vector<int>();
             for (const auto& statement : statements) {
@@ -95,7 +95,7 @@ public:
             }
         } 
         else if (auto ifNode = std::dynamic_pointer_cast<IfNode>(statementNode)) {
-            extractUsesAbstraction(ifNode->getCondExpr());
+            // extractUsesAbstraction(ifNode->getCondExpr());
             std::vector<std::shared_ptr<StatementNode>> ifStatements = ifNode->getStatements();
             std::vector<std::shared_ptr<StatementNode>> elseStatements = ifNode->getElseStatements();
             std::vector<std::shared_ptr<StatementNode>> statements;
