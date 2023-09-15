@@ -63,18 +63,19 @@ public:
     void handleStatement(std::shared_ptr<StatementNode> statementNode) {        
         //Check what kind of statement it is
         if (auto readNode = std::dynamic_pointer_cast<ReadNode>(statementNode)) {
-            extractUsesAbstraction(readNode->getVar());
+            
         } 
         else if (auto printNode = std::dynamic_pointer_cast<PrintNode>(statementNode)) {
-            
+            extractUsesAbstraction(printNode->getVar());
         }
         else if (auto assignNode = std::dynamic_pointer_cast<AssignNode>(statementNode)) {
-            extractUsesAbstraction(assignNode->getExpr());
+            // extractUsesAbstraction(assignNode->getExpr());
         }
         else if (auto callNode = std::dynamic_pointer_cast<CallNode>(statementNode)) {
             //TODO: Handle callNode
         } 
         else if (auto whileNode = std::dynamic_pointer_cast<WhileNode>(statementNode)) {
+            extractUsesAbstraction(whileNode->getCondExpr());
             std::vector<std::shared_ptr<StatementNode>> statements = whileNode->getStatements();
             std::vector<int> nestedStatements = vector<int>();
             for (const auto& statement : statements) {
@@ -93,6 +94,7 @@ public:
             }
         } 
         else if (auto ifNode = std::dynamic_pointer_cast<IfNode>(statementNode)) {
+            extractUsesAbstraction(ifNode->getCondExpr());
             std::vector<std::shared_ptr<StatementNode>> ifStatements = ifNode->getStatements();
             std::vector<std::shared_ptr<StatementNode>> elseStatements = ifNode->getElseStatements();
             std::vector<std::shared_ptr<StatementNode>> statements;
