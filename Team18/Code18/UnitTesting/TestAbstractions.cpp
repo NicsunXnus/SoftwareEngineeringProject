@@ -407,7 +407,7 @@ namespace UnitTesting
                   std::shared_ptr<EqualsNode> testEqualNode2 = std::make_shared<EqualsNode>(testVariableNode13, testConstantNode14);
                   std::shared_ptr<VariableNode> testVariableNode12 = std::make_shared<VariableNode>("a", 13);
                   std::shared_ptr<PrintNode> testPrintNode4 = std::make_shared<PrintNode>(13, testVariableNode12);
-                  std::shared_ptr<ProcedureNode> testProcedureNode2 = std::make_shared<ProcedureNode>("procedure2", std::vector<std::shared_ptr<StatementNode>>());
+                  std::shared_ptr<ProcedureNode> testProcedureNode3 = std::make_shared<ProcedureNode>("procedure3", std::vector<std::shared_ptr<StatementNode>>());
                   std::shared_ptr<CallNode> testCallNode = std::make_shared<CallNode>(14, testProcedureNode2);
                   std::vector<std::shared_ptr<StatementNode>> whileStatements = {testPrintNode4, testCallNode};
                   std::shared_ptr<WhileNode> testWhileNode = std::make_shared<WhileNode>(12, testEqualNode2, whileStatements);
@@ -446,8 +446,8 @@ namespace UnitTesting
                   std::shared_ptr<EqualsNode> testEqualNode3 = std::make_shared<EqualsNode>(testVariableNode19, testConstantNode12);
                   std::shared_ptr<VariableNode> testVariableNode20 = std::make_shared<VariableNode>("b", 20);
                   std::shared_ptr<ConstantNode> testConstantNode13 = std::make_shared<ConstantNode>(10, 20);
-                  std::shared_ptr<ConstantNode> testConstantNode14 = std::make_shared<ConstantNode>(20, 20);
-                  std::shared_ptr<PlusNode> testPlusNode6 = std::make_shared<PlusNode>(testConstantNode13, testConstantNode14);
+                  std::shared_ptr<ConstantNode> testConstantNode17 = std::make_shared<ConstantNode>(20, 20);
+                  std::shared_ptr<PlusNode> testPlusNode6 = std::make_shared<PlusNode>(testConstantNode13, testConstantNode17);
                   std::shared_ptr<AssignNode> testAssignNode7 = std::make_shared<AssignNode>(20, testVariableNode20, testPlusNode6);
                   std::shared_ptr<VariableNode> testVariableNode21 = std::make_shared<VariableNode>("b", 21);
                   std::shared_ptr<ConstantNode> testConstantNode15 = std::make_shared<ConstantNode>(30, 21);
@@ -472,7 +472,7 @@ namespace UnitTesting
                   // Create ModifiesAbstraction
                   std::shared_ptr<ModifiesAbstraction> testModifiesAbstraction = std::make_shared<ModifiesAbstraction>();
 
-                  testModifiesAbstraction->extractModifiesAbstraction(testProgramNode);
+                  testModifiesAbstraction->extractModifies(testProgramNode);
                   std::shared_ptr<map<string, vector<string>>> modifiesMap = testModifiesAbstraction->getModifiesStorageMap();
 
                   std::map<std::string, std::vector<std::string>>& modifiesMapRef = *modifiesMap;
