@@ -106,39 +106,6 @@ namespace UnitTesting
 
 			std::shared_ptr<ProcedureNode> proc = program->getProcedures()[0];
 			std::cout << printProcedure(proc);
-			/*vector<shared_ptr<StatementNode>> statements = program->getProcedures()[0]->getStatements();
-
-			std::cout << statements[0]->getStatementNumber() << " if (" << printCondExpr(statements[0]->getCondExpr()) << ") {\n";
-			std::vector<std::shared_ptr<StatementNode>> thenStmts = statements[0]->getStatements();
-			for (std::shared_ptr<StatementNode> stmtNode : thenStmts) {
-				if (stmtNode->getName() == "read" || stmtNode->getName() == "print") {
-					std::cout << stmtNode->getStatementNumber() << " " << stmtNode->getName() << " " << stmtNode->getVar()->getValue() << std::endl;
-				}
-				else if (stmtNode->getName() == "assign") {
-					std::cout << stmtNode->getStatementNumber() << " " << stmtNode->getVar()->getValue() << " = " << printExpr(stmtNode->getExpr()) << std::endl;
-				}
-			}
-			std::cout << "} else {\n";
-			std::vector<std::shared_ptr<StatementNode>> elseStmts = statements[0]->getElseStatements();
-			for (std::shared_ptr<StatementNode> stmtNode : elseStmts) {
-				if (stmtNode->getName() == "read" || stmtNode->getName() == "print") {
-					std::cout << stmtNode->getStatementNumber() << " "  << stmtNode->getName() << " " << stmtNode->getVar()->getValue() << std::endl;
-				}
-				else if (stmtNode->getName() == "assign") {
-					std::cout << stmtNode->getStatementNumber() << " " << stmtNode->getVar()->getValue() << " = " << printExpr(stmtNode->getExpr()) << std::endl;
-				}
-			}
-
-			std::cout << statements[1]->getStatementNumber() << " while (" << printCondExpr(statements[1]->getCondExpr()) << ") {\n";
-			std::vector<std::shared_ptr<StatementNode>> loopStmts = statements[1]->getStatements();
-			for (std::shared_ptr<StatementNode> stmtNode : loopStmts) {
-				if (stmtNode->getName() == "read" || stmtNode->getName() == "print") {
-					std::cout << stmtNode->getStatementNumber() << " " << stmtNode->getName() << " " << stmtNode->getVar()->getValue() << std::endl;
-				}
-				else if (stmtNode->getName() == "assign") {
-					std::cout << stmtNode->getStatementNumber() << " " << stmtNode->getVar()->getValue() << " = " << printExpr(stmtNode->getExpr()) << std::endl;
-				}
-			}*/
 
 			std::cout.rdbuf(oldCoutBuffer);
 
