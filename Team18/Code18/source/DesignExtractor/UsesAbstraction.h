@@ -215,10 +215,10 @@ private:
     }
 
     void addProcedureNames() {
-        for (const auto& [variable, values] : *this->ModifiesStorageMap) {
+        for (const auto& [variable, values] : *this->UsesStorageMap) {
             for (const auto& [procedureName, statementNumbers] : *this->procedureStatementStorageMap) {
                 if (stoi(values[0]) >= stoi(statementNumbers[0]) && stoi(values[0]) <= stoi(statementNumbers[1])) {
-                    this->ModifiesStorageMap->at(variable).push_back(procedureName);
+                    this->UsesStorageMap->at(variable).push_back(procedureName);
                 }
             }
         }        
