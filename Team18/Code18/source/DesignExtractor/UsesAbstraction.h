@@ -45,8 +45,11 @@ private:
         else if (auto procedureNode = std::dynamic_pointer_cast<ProcedureNode>(astNode)) {
             std::vector<std::shared_ptr<StatementNode>> statements = procedureNode->getStatements();
             for (const auto& statement : statements) {
+                insertToProcedureStatementStorageMap(procedureNode->getName(), to_string(statement->getStatementNumber()));
+
                 extractUsesAbstraction(statement);
             }
+            reduceProcedureStatementStorageMap()
         } 
         else if (auto statementNode = std::dynamic_pointer_cast<StatementNode>(astNode)) {
             // astNode is of type StatementNode
