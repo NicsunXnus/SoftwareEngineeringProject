@@ -42,17 +42,12 @@ public:
         } 
         else if (auto variableNode = std::dynamic_pointer_cast<VariableNode>(astNode)) {
             // astNode is of type VariableNode
-            // string variableName = variableNode->getName();
-            // string statementNumber = to_string(variableNode->getStatementNumber());
-
-            insertToUsesStorageMap(variableNode->getName(), to_string(variableNode->getStatementNumber()));
+            insertToUsesStorageMap(variableNode->getValue(), to_string(variableNode->getStatementNumber()));
         } 
         else if (auto exprNode = std::dynamic_pointer_cast<ExprNode>(astNode)) {
             // astNode is of type ExprNode
-            std::shared_ptr<ExprNode> leftExpr = exprNode->getLeftExpr();
-            std::shared_ptr<ExprNode> rightExpr = exprNode->getRightExpr();
-            extractUsesAbstraction(leftExpr);
-            extractUsesAbstraction(rightExpr);
+            extractUsesAbstraction(exprNode->getLeftExpr());
+            extractUsesAbstraction(exprNode->getRightExpr());
         }
         else if (auto condExprNode = std::dynamic_pointer_cast<CondExprNode>(astNode)) {
             // astNode is of type CondExprNode
@@ -174,7 +169,7 @@ public:
 private:
     std::shared_ptr<map<string, vector<string>>> UsesStorageMap;
 
-    // insert to UsesStorageMap
+    //Insert to UsesStorageMap
     void insertToUsesStorageMap(string variableName, string statementNumber) {
         if (this->UsesStorageMap->find(variableName) == this->UsesStorageMap->end()) {
             this->UsesStorageMap->insert({variableName, vector<string>()});
