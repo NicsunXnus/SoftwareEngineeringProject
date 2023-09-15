@@ -14,6 +14,8 @@
     <ClCompile Include="..\source\ApplicationWrapper.cpp" />
     <ClCompile Include="..\source\DesignExtractor.cpp" />
     <ClCompile Include="..\source\QPS\DataAccessLayer.cpp" />
+    <ClCompile Include="..\source\QPS\Errors\QPSError.h" />
+    <ClCompile Include="..\source\QPS\Errors\SyntaxError.h" />
     <ClCompile Include="..\source\QPS\QueryDriver.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\QueryObjectFactory.cpp" />
     <ClCompile Include="..\source\QPS\QueryParser.cpp" />
@@ -33,6 +35,7 @@
     <ClInclude Include="..\source\PKB\StorageClasses\UsesAbstractionStorage.h" />
     <ClInclude Include="..\source\PKB\StorageManager.h" />
     <ClInclude Include="..\source\QPS\DataAccessLayer.h" />
+    <ClInclude Include="..\source\QPS\Errors\SemanticError.h" />
     <ClInclude Include="..\source\QPS\QueryDriver.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\ClauseObject.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\ClauseObjectFactory.h" />

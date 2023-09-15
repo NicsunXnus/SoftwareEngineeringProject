@@ -3,6 +3,7 @@
 
 #include <list>
 #include <string>
+#include "Errors/QPSError.h"
 
 
 using namespace std;
@@ -42,8 +43,9 @@ list<string> QueryDriver::execute() {
 
 		return myList;
 	}
-	catch (const exception& ex) {
+	catch (const QPSError& ex) {
 		list<string> empty;
+		empty.push_back(ex.getType());
 		return empty;
 	}
 	
