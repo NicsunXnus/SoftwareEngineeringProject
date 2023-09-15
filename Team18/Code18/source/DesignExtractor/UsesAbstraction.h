@@ -40,6 +40,9 @@ public:
             // astNode is of type VariableNode
             insertToUsesStorageMap(variableNode->getValue(), to_string(variableNode->getStatementNumber()));
         } 
+        else if (auto constantNode = std::dynamic_pointer_cast<ConstantNode>(astNode)) {
+            // astNode is of type ConstantNode
+        }
         else if (auto exprNode = std::dynamic_pointer_cast<ExprNode>(astNode)) {
             // astNode is of type ExprNode
             std::shared_ptr<ExprNode> leftExpr = exprNode->getLeftExpr();
@@ -51,9 +54,7 @@ public:
             // astNode is of type CondExprNode
             handleCondExpr(condExprNode);
         }
-        else if (auto constantNode = std::dynamic_pointer_cast<ConstantNode>(astNode)) {
-            // astNode is of type ConstantNode
-        }
+
         else {
             // Handle other cases or report an error
             std::cerr << "Unsupported ASTNode type in extractUsesAbstraction." << std::endl;
@@ -69,13 +70,13 @@ public:
             extractUsesAbstraction(printNode->getVar());
         }
         else if (auto assignNode = std::dynamic_pointer_cast<AssignNode>(statementNode)) {
-            // extractUsesAbstraction(assignNode->getExpr());
+            extractUsesAbstraction(assignNode->getExpr());
         }
         else if (auto callNode = std::dynamic_pointer_cast<CallNode>(statementNode)) {
             //TODO: Handle callNode
         } 
         else if (auto whileNode = std::dynamic_pointer_cast<WhileNode>(statementNode)) {
-            // extractUsesAbstraction(whileNode->getCondExpr());
+            extractUsesAbstraction(whileNode->getCondExpr());
             std::vector<std::shared_ptr<StatementNode>> statements = whileNode->getStatements();
             std::vector<int> nestedStatements = vector<int>();
             for (const auto& statement : statements) {
@@ -94,7 +95,7 @@ public:
             }
         } 
         else if (auto ifNode = std::dynamic_pointer_cast<IfNode>(statementNode)) {
-            // extractUsesAbstraction(ifNode->getCondExpr());
+            extractUsesAbstraction(ifNode->getCondExpr());
             std::vector<std::shared_ptr<StatementNode>> ifStatements = ifNode->getStatements();
             std::vector<std::shared_ptr<StatementNode>> elseStatements = ifNode->getElseStatements();
             std::vector<std::shared_ptr<StatementNode>> statements;
