@@ -6,6 +6,7 @@
 #include <string_view>
 #include <vector>
 #include "TokenClasses/Token.h"
+#include "ExceptionMessages.h"
 
 using namespace std::string_view_literals;
 
@@ -113,7 +114,7 @@ static std::vector<std::string> splitString(std::string input, std::string delim
 /// <param name="input">The string to split.</param>
 /// <returns>A vector of strings, containing the original input after being split by the delimiters.</returns>
 static std::vector<std::string> splitString(std::string input) {
-  return splitString(input, "\\s+", false);
+  return splitString(input, "[\\s\b]+", false);
 }
 
 // Trims leading and trailing whitespaces.
@@ -124,17 +125,23 @@ static std::string trimWhitespaces(std::string str) {
   str.erase(0, str.find_first_not_of(whitespaces));
   return str;
 }
-
 static std::string substring(std::string str, int startIndex, int endIndex) {
+  if (endIndex < startIndex) {
+    throw std::invalid_argument(ExceptionMessages::endIndexLarger);
+  }
+  if (startIndex < 0) {
+    throw std::invalid_argument(ExceptionMessages::negativeStartIndex);
+  }
+  endIndex = endIndex > str.size() - 1 ? str.size() - 1 : endIndex; // basically min(endIndex, str.size() - 1);
   int len = endIndex - startIndex + 1;
   return str.substr(startIndex, len);
-  
-// prints to console, toggle here to turn on / off for development / production
-static void debug(std::string debugMessage) {
-    bool DEBUG_MODE = true; // toggle this
-    if (DEBUG_MODE) {
-        std::cout << debugMessage  + "\n" << std::endl;
-    }
 }
 
+// prints to console, toggle here to turn on / off for development / production
+static void debug(std::string debugMessage) {
+  bool DEBUG_MODE = true; // toggle this
+  if (DEBUG_MODE) {
+    std::cout << debugMessage + "\n" << std::endl;
+  }
+}
 #endif

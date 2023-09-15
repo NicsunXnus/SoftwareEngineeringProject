@@ -11,6 +11,7 @@
 #include "ExceptionMessages.h"
 #include "TokenFactory.h"
 #include "TokenizerResults.h"
+#include "../ExceptionMessages.h"
 #include "../HelperFunctions.h"
 
 using namespace std::string_view_literals;
@@ -70,37 +71,9 @@ private:
 		IF,
 		WHILE
 	};
-
-	// Processes and validates the conditional statement declaration of a conditional statement
-	static std::pair<ConditionalDeclaration, std::vector<std::shared_ptr<Token>>> processConditionalDeclaration(std::string declaration) {
-		std::string trimmed = trimWhitespaces(declaration);
-		if (trimmed.empty()) {
-			throw std::invalid_argument(ExceptionMessages::emptyStatementGiven);
-		}
-
-		// find first word
-		// if "if", find last word
-		// if "while", do nothing
-		// finally process condtional exp
-
-		// Determine first word and type of conditional statement
-		bool firstWordWhile = trimmed.find_first_not_of(whitespaces) == trimmed.find("while");
-		bool firstWordIf = trimmed.find_first_not_of(whitespaces) == trimmed.find("if");
-		bool isIf = false;
-		if (firstWordIf) {
-			// minus 3 because rfind will find the position of the "t" in "then", but find_last_not_of will find position of "n".
-			// minus exactly 3 because "then" is 4 letters, so 3 letter diff between "t" and "n"
-			bool lastWordThen = (trimmed.find_last_not_of(whitespaces) - 3)== trimmed.rfind("then");
-			if (!lastWordThen) {
-				throw std::invalid_argument(ExceptionMessages::invalidIfDeclaration);
-			}
-			isIf = true;
-		}
-		if (!firstWordIf && !firstWordWhile) {
-			throw std::invalid_argument(ExceptionMessages::invalidConditionalDeclaration);
-		}
-
-		// process conditional expression
+	
+	// just evaluates the conditonal expression and what type of conditional statement it is.
+	static std::pair<ConditionalDeclaration, std::vector<std::shared_ptr<Token>>> processConditionalExpression(std::string trimmed, bool isIf) {
 		ConditionalDeclaration dec;
 		int afterKeyword;
 		int beforeLast;
@@ -126,6 +99,38 @@ private:
 		return std::pair(dec, condExp);
 	}
 
+	// Processes and validates the conditional statement declaration of a conditional statement
+	static std::pair<ConditionalDeclaration, std::vector<std::shared_ptr<Token>>> processConditionalDeclaration(std::string declaration) {
+		std::string trimmed = trimWhitespaces(declaration);
+		if (trimmed.empty()) {
+			throw std::invalid_argument(ExceptionMessages::emptyStatementGiven);
+		}
+
+		// find first word
+		// if "if", find last word, it should be "then"
+		// if "while", do nothing
+		// finally process condtional exp
+
+		// Determine first word and type of conditional statement
+		bool firstWordWhile = trimmed.find_first_not_of(whitespaces) == trimmed.find("while");
+		bool firstWordIf = trimmed.find_first_not_of(whitespaces) == trimmed.find("if");
+		bool isIf = false;
+		if (firstWordIf) {
+			// minus 3 because rfind will find the position of the "t" in "then", but find_last_not_of will find position of "n".
+			// minus exactly 3 because "then" is 4 letters, so 3 letter diff between "t" and "n"
+			bool lastWordThen = (trimmed.find_last_not_of(whitespaces) - 3)== trimmed.rfind("then");
+			if (!lastWordThen) {
+				throw std::invalid_argument(ExceptionMessages::invalidIfDeclaration);
+			}
+			isIf = true;
+		}
+		if (!firstWordIf && !firstWordWhile) {
+			throw std::invalid_argument(ExceptionMessages::invalidConditionalDeclaration);
+		}
+
+		return processConditionalExpression(trimmed, isIf);
+	}
+	
 	// Tokenizes a Statement List, which can be found in either IF/WHILE or Procedures
 	static std::shared_ptr<TokenizedStmtList> tokenizeStmtList(std::string stmtList) {
 		std::string trimmed = trimWhitespaces(std::string(stmtList));
@@ -186,14 +191,18 @@ private:
 			}
 			pairIndex += 1;
 		}
-
-		// process any leftover code after all curly braces
-		std::string afterAllCurly = substring(trimmed, prevEnd, trimmed.size() - 1);
-		// this should contain no semicolons and no { }
-		std::vector<std::string> afterCurlySplit = splitString(afterAllCurly, ";", false);
-		// tokenize each semicolon statement.
-		for (std::string stmt : afterCurlySplit) {
-			out.push_back(tokenizeSemicolonStatement(stmt));
+		if (prevEnd < trimmed.size()) {
+			// process any leftover code after all curly braces
+			std::string afterAllCurly = substring(trimmed, prevEnd, trimmed.size() - 1);
+			// this should contain no semicolons and no { }
+			std::vector<std::string> afterCurlySplit = splitString(afterAllCurly, ";", false);
+			// tokenize each semicolon statement.
+			for (std::string stmt : afterCurlySplit) {
+				out.push_back(tokenizeSemicolonStatement(stmt));
+			}
+		}
+		if (out.empty()) {
+			throw std::invalid_argument(ExceptionMessages::emptyStatementListGiven);
 		}
 
 		return std::make_shared<TokenizedStmtList>(out);
@@ -211,8 +220,13 @@ private:
 
 		if (trimmed.find("=") != std::string::npos) { // Assignment Statement
 			output = tokenizeAssignment(trimmed);
-			validStatement = true;
+
+			SimpleTokenizer::statementNumber += 1;
+			return std::make_shared<TokenizedSemicolonStmt>(SimpleTokenizer::statementNumber, output);
 		}	
+		if (splitString(trimmed).size() != 2) {
+			throw std::invalid_argument(ExceptionMessages::invalidSemicolonStmt);
+		}
 		// if the substring "read " exists and it is the first word occurence in the statement
 		else if (trimmed.find_first_not_of(whitespaces) == trimmed.find("read ")) {
 			output = tokenizeTwoWordStmt(trimmed, "read");
@@ -270,6 +284,9 @@ private:
 		}
 		output.push_back(TokenFactory::generateToken(expectedWord1, true));
 		std::string right = trimWhitespaces(split[1]);
+		if (!isValidName(right)) {
+			throw std::invalid_argument(ExceptionMessages::invalidIdentifier);
+		}
 		output.push_back(TokenFactory::generateToken(right, true, true));
 		return output;
 	}
@@ -278,7 +295,8 @@ private:
 	// Throws exceptions if the procedure declaration is invalid.
 	// Returns the procedure name
 	static std::string processPreProcedureDetails(std::string input) {
-		std::vector<std::string> beforeOpenSplit = splitString(input);
+		std::string trimmed = trimWhitespaces(input);
+		std::vector<std::string> beforeOpenSplit = splitString(trimmed);
 		if (beforeOpenSplit.size() != 2) {
 			throw std::invalid_argument(ExceptionMessages::invalidProcedureDefinition);
 		}
@@ -313,6 +331,9 @@ public:
 		int previousEnd = 0;
 		for (std::shared_ptr<std::pair<int, int>> shared_ptr_p : curlyPairs) {
 			std::pair<int, int> p = *shared_ptr_p;
+			if (p.second == p.first + 1) {
+				throw std::invalid_argument(ExceptionMessages::emptyStatementListGiven);
+			}
 
 			// Process Procedure Name using string indexes
 			std::string beforeOpen = substring(trimmed, previousEnd, p.first - 1); // -1 because we do not want the open curly to be included
@@ -324,6 +345,11 @@ public:
 			out.push_back(std::make_shared<TokenizedProcedure>(procName, stmtList));
 
 			previousEnd = p.second + 1; // + 1 to not include the close curly in the next iteration
+		}
+		// There are leftover chracters. Which should not be the case since the program was trimmed of whitespaces
+		// already.
+		if (previousEnd != trimmed.size()) {
+			throw std::invalid_argument(ExceptionMessages::invalidProgramDefinition);
 		}
 		return std::make_shared<TokenizedProgram>(out);
 	}

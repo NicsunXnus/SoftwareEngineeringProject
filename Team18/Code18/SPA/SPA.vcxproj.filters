@@ -8,9 +8,6 @@
     <ClCompile Include="..\source\AST\**\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
-    <ClCompile Include="..\source\AST\ASTNode.h" />
-    <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
     <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
     <ClCompile Include="..\source\DesignExtractor\Entity.h" />
     <ClCompile Include="..\source\QPS\QueryDriver.cpp">
@@ -143,12 +140,6 @@
     </ClInclude>
     <ClInclude Include="..\source\QPS\QueryObjects\ClauseObjectFactory.h">
       <Filter>QPS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenizerClasses\TokenizerResults.h">
-      <Filter>Tokeniser</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\TokenizerClasses\ExceptionMessages.h">
-      <Filter>Tokeniser</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
