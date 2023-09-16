@@ -162,8 +162,6 @@ public:
                 rows.emplace_back(currRow);
             }
         }
-        //eliminate columns with duplicate headers
-        crossProducted.erase(std::unique(crossProducted.begin(), crossProducted.end()), crossProducted.end());
 
         return make_shared<QueryResultsTable>(crossProducted);
     }
