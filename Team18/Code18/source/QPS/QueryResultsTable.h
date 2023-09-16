@@ -21,6 +21,8 @@ public:
         // Sort the columns of both tables by headers
         vector<map<string, vector<string>>> thisColumns = this->columns;
         vector<map<string, vector<string>>> otherColumns = other->getColumns();
+        sort(thisColumns.begin(), thisColumns.end());
+        sort(otherColumns.begin(), otherColumns.end());
 
         // Get the number of columns and rows in both tables
         int thisColNums = thisColumns.size();
