@@ -9,7 +9,7 @@
 
 using namespace std;
 
-typedef map<string, vector<string>> EntityMapArg;
+typedef map<string, vector<string>> StringMap;
 
 class ProcedureEntity;
 class StatementEntity;
@@ -27,8 +27,8 @@ public:
     
     virtual ~Entity() = default;
 
-    shared_ptr<EntityMapArg> getMap() {
-      return make_shared<EntityMapArg>(this->EntityStorageMap);
+    shared_ptr<StringMap> getMap() {
+      return make_shared<StringMap>(this->EntityStorageMap);
     }
 
     // Overloaded function for inserting to map with line number
@@ -88,6 +88,7 @@ public:
             
             // Store the statement name as the key and add the line number to the vector
             insertToMap(statementName, lineNumber);
+            insertToMap("stmt", lineNumber);
         }
         else {
             cerr << "Unsupported ASTNode type." << endl;
@@ -115,6 +116,7 @@ public:
             
             // Store the variable name as the key and add the line number to the vector
             insertToMap(variableName, lineNumber);
+            
         }
         else {
             cerr << "Unsupported ASTNode type." << endl;

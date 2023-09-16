@@ -12,6 +12,8 @@
 #include "QPS/QueryDriver.h"
 #include "DesignExtractor/DesignExtractor.h"
 
+using namespace std::string_view_literals;
+
 class ApplicationWrapper {
 public:
   // a default constructor
@@ -21,7 +23,7 @@ public:
   ~ApplicationWrapper();
 
   // directly parses source code assuming the input is the actual code
-  void directParse(std::string srcCode);
+  void directParse(std::string_view srcCode);
 
   // method for parsing the SIMPLE source, assuming the input is the filename
   void parse(std::string filename) {
@@ -38,7 +40,7 @@ public:
         src += c;
       }
     }
-    this->directParse(src);
+    this->directParse(std::string_view(src));
   }
 
   // method to evaluating a query

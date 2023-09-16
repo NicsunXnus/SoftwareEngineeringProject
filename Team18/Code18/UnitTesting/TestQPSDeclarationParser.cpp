@@ -2,6 +2,7 @@
 #include "CppUnitTest.h"
 #include "../source/QPS/QueryParser.h"
 #include "../source/TokenizerClasses/PQLTokenizer.h"
+#include "../source/QPS/Errors/QPSError.h"
 #include <cassert>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -40,7 +41,7 @@ namespace UnitTesting
 				tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(testSv);
 				Assert::Fail();
 			}
-			catch (const exception& ex)
+			catch (const QPSError& ex)
 			{
 				Assert::AreEqual(ex.what(), "No Declaration clause found");
 			}
@@ -56,7 +57,7 @@ namespace UnitTesting
 				tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(testSv);
 				Assert::Fail();
 			}
-			catch (const exception& ex)
+			catch (const QPSError& ex)
 			{
 				Assert::AreEqual(ex.what(), "No Query or Declaration clause found");
 			}
@@ -81,7 +82,7 @@ namespace UnitTesting
 			try {
 				vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(declarationQuery));
 			}
-			catch (const exception& ex)
+			catch (const QPSError& ex)
 			{
 				Assert::AreEqual("Invalid synonym", ex.what());
 			}
@@ -98,7 +99,7 @@ namespace UnitTesting
 			try {
 				vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(declarationQuery));
 			}
-			catch (const exception& ex)
+			catch (const QPSError& ex)
 			{
 				Assert::AreEqual("Invalid declaration", ex.what());
 			}
@@ -117,7 +118,7 @@ namespace UnitTesting
 				vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(declarationQuery));
 				Assert::Fail();
 			}
-			catch (const exception& ex)
+			catch (const QPSError& ex)
 			{
 				Assert::AreEqual("Invalid string token for design object", ex.what());
 			}
@@ -135,7 +136,7 @@ namespace UnitTesting
 				vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(declarationQuery));
 				Assert::Fail();
 			}
-			catch (const exception& ex)
+			catch (const QPSError& ex)
 			{
 				Assert::AreEqual("Missing comma", ex.what());
 			}
@@ -153,8 +154,9 @@ namespace UnitTesting
 				vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(declarationQuery));
 				Assert::Fail();
 			}
-			catch (const exception& ex)
+			catch (const QPSError& ex)
 			{
+				Assert::AreEqual("SyntaxError", ex.getType());
 				Assert::AreEqual("Extra comma", ex.what());
 			}
 
@@ -171,7 +173,7 @@ namespace UnitTesting
 				vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(declarationQuery));
 				Assert::Fail();
 			}
-			catch (const exception& ex)
+			catch (const QPSError& ex)
 			{
 				Assert::AreEqual("Repeated synonym declaration", ex.what());
 			}
