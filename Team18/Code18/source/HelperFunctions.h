@@ -6,10 +6,13 @@
 #include <string_view>
 #include <vector>
 #include "TokenClasses/Token.h"
+#include "ExceptionMessages.h"
 
 using namespace std::string_view_literals;
 
 const std::string whitespaces = " \t\f\v\n\r\b";
+const std::string arithmeticOpsWithWhitespace = "([()+\\-/*%\\s])";
+const std::string relationalOps = "([><]=?|==|!=)";
 
 // Checks if a given input string are all numbers
 // Does NOT check if it is a valid integer literal (ie leading 0)
@@ -55,7 +58,7 @@ static bool isValidName(std::string input) {
 /// </summary>
 /// 
 /// <param name="input">The string to split.</param>
-/// <param name="delimiter">The delimiter to split the string with.</param>
+/// <param name="delimiter">The delimiter to split the string with. Input can be a single-character string or a regex as a string</param>
 /// <param name="includeDelimiter">Whether the delimiters should appear in the output as well or not.</param>
 /// <returns>A vector of strings, containing the original input after being split by the delimiters.</returns>
 static std::vector<std::string> splitString(std::string input, std::string delimiter, bool includeDelimiter = false) {
@@ -111,7 +114,7 @@ static std::vector<std::string> splitString(std::string input, std::string delim
 /// <param name="input">The string to split.</param>
 /// <returns>A vector of strings, containing the original input after being split by the delimiters.</returns>
 static std::vector<std::string> splitString(std::string input) {
-  return splitString(input, "\\s+", false);
+  return splitString(input, "[\\s\b]+", false);
 }
 
 // Trims leading and trailing whitespaces.
@@ -122,13 +125,23 @@ static std::string trimWhitespaces(std::string str) {
   str.erase(0, str.find_first_not_of(whitespaces));
   return str;
 }
+static std::string substring(std::string str, int startIndex, int endIndex) {
+  if (endIndex < startIndex) {
+    throw std::invalid_argument(ExceptionMessages::endIndexLarger);
+  }
+  if (startIndex < 0) {
+    throw std::invalid_argument(ExceptionMessages::negativeStartIndex);
+  }
+  endIndex = endIndex > str.size() - 1 ? str.size() - 1 : endIndex; // basically min(endIndex, str.size() - 1);
+  int len = endIndex - startIndex + 1;
+  return str.substr(startIndex, len);
+}
 
 // prints to console, toggle here to turn on / off for development / production
 static void debug(std::string debugMessage) {
-    bool DEBUG_MODE = true; // toggle this
-    if (DEBUG_MODE) {
-        std::cout << debugMessage  + "\n" << std::endl;
-    }
+  bool DEBUG_MODE = true; // toggle this
+  if (DEBUG_MODE) {
+    std::cout << debugMessage + "\n" << std::endl;
+  }
 }
-
 #endif

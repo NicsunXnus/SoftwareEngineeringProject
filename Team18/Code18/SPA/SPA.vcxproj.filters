@@ -3,11 +3,23 @@
   <ItemGroup>
     <ClCompile Include="..\source\AST\**\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
-    <ClCompile Include="..\source\DesignExtractor\*.h" />
     <ClCompile Include="..\source\ApplicationWrapper.cpp" />
-    <ClCompile Include="..\source\AST\**\*.h" />
-    <ClCompile Include="..\source\DesignExtractor\*.h" />
-    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\AST\ASTNode.h" />
+    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
+    <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
+    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
+    <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
+    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
+    <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
+    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
+    <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
+    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
+    <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
     <ClCompile Include="..\source\QPS\QueryDriver.cpp">
       <Filter>QPS</Filter>
     </ClCompile>
@@ -26,14 +38,8 @@
     <ClCompile Include="..\source\AST\**\*.h">
       <Filter>AST</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\AST\**\*.h">
-      <Filter>AST</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\DesignExtractor\*.h">
-      <Filter>PKB</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\DesignExtractor\*.h">
-      <Filter>PKB</Filter>
+    <ClCompile Include="..\source\TokenizerClasses\TokenizerResults.cpp">
+      <Filter>Tokeniser</Filter>
     </ClCompile>
     <ClCompile Include="..\source\AST\**\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
@@ -79,9 +85,6 @@
     <ClInclude Include="..\source\PKB\StorageClasses\EntityStorage.h">
       <Filter>PKB</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\PKB\StorageClasses\FollowsAbstractionStorage.h">
-      <Filter>PKB</Filter>
-    </ClInclude>
     <ClInclude Include="..\source\TokenClasses\LiteralToken.h">
       <Filter>Tokens</Filter>
     </ClInclude>
@@ -90,12 +93,6 @@
     </ClInclude>
     <ClInclude Include="..\source\TokenClasses\IdentifierToken.h">
       <Filter>Tokens</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\PKB\StorageClasses\ModifiesAbstractionStorage.h">
-      <Filter>PKB</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\PKB\StorageClasses\ParentAbstractionStorage.h">
-      <Filter>PKB</Filter>
     </ClInclude>
     <ClInclude Include="..\source\PKB\Insertor.h">
       <Filter>PKB</Filter>
@@ -134,9 +131,6 @@
       <Filter>Tokens</Filter>
     </ClInclude>
     <ClInclude Include="..\source\PKB.h">
-      <Filter>PKB</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\PKB\StorageClasses\UsesAbstractionStorage.h">
       <Filter>PKB</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\QueryObjects\ClauseObjectFactory.h">
