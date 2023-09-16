@@ -30,6 +30,14 @@ public:
 	variant<vector<string>, map<string, vector<string>>> getResult() override {
 		return res;
 	}
+
+	shared_ptr<ClauseArg> getArg1() {
+		return argument0;
+	}
+
+	shared_ptr<ClauseArg> getArg2() {
+		return argument1;
+	}
 };
 
 /*

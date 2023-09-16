@@ -22,6 +22,10 @@ private:
 public:
 	ClauseArg(string_view arg, std::shared_ptr<SynonymObject> synonym) : arg{ arg }, synonym{ synonym } {};
 
+	string_view getArg() {
+		return this->arg;
+	}
+
 	// function to check if argument is an integer
 	bool isInteger() {
 		bool isNum{ true };
