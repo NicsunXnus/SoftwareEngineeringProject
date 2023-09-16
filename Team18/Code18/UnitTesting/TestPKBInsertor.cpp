@@ -272,12 +272,197 @@ namespace UnitTesting {
 				shared_ptr<StringMap> variable_db = entity_storage->getVariableDatabase();
 				shared_ptr<map<ENTITY, vector<string>>> stmt_db = entity_storage->getStatementDatabase();
 
-				// assert database is empty
-				Assert::IsTrue(stringMapEqualityWrapper(*variable_db, { {"x", {"1", "2"}}, {"y", {"2", "5", "7"}} }));
-				Assert::IsTrue(stringMapEqualityWrapper(*procedure_db, { {"proc1", {"1", "2"}}, {"proc2", {"5", "6", "7"}} }));
-				Assert::IsTrue(stringMapEqualityWrapper(*constant_db, { {"10", {"1"}}, {"HERE", {"4", "7", "10"}} }));
+				// assert database has correct entries
+				Assert::IsTrue(stringMapEqualityWrapper(*variable_db, variableData));
+				Assert::IsTrue(stringMapEqualityWrapper(*procedure_db, procedureData));
+				Assert::IsTrue(stringMapEqualityWrapper(*constant_db, constantData));
 				Assert::IsTrue(vectorEqualityWrapper(stmt_db->at(CALL), { "1", "2" }));
 				Assert::IsTrue(vectorEqualityWrapper(stmt_db->at(PRINT), { "4" }));
 			}
+
+			TEST_METHOD(TestAddUsesAbstractionSuccess) {
+				// Create mock data to insert
+				StringMap usesData = { {"x", {"main", "3", "6"}}};
+				shared_ptr<StringMap> toInsert = make_shared<StringMap>(usesData);
+
+				// Insertion
+				PKB::insertor.addAbstraction(toInsert, USES);
+
+				// Create reference to AbstractionStorage to check database
+				shared_ptr<AbstractionStorage> uses_storage = StorageManager::getAbstractionStorage(USES);
+				shared_ptr<StringMap> db = uses_storage->getDatabase();
+
+				// assert database contains the correct data
+				Assert::IsTrue(stringMapEqualityWrapper(*db, usesData));
+			}
+
+			TEST_METHOD(TestAddModifiesAbstractionSuccess) {
+				// Create mock data to insert
+				StringMap modifiesData = { {"y", {"main", "8", "proc1", "2"}} };
+				shared_ptr<StringMap> toInsert = make_shared<StringMap>(modifiesData);
+
+				// Insertion
+				PKB::insertor.addAbstraction(toInsert, MODIFIES);
+
+				// Create reference to AbstractionStorage to check database
+				shared_ptr<AbstractionStorage> modifies_storage = StorageManager::getAbstractionStorage(MODIFIES);
+				shared_ptr<StringMap> db = modifies_storage->getDatabase();
+
+				// assert database contains the correct data
+				Assert::IsTrue(stringMapEqualityWrapper(*db, modifiesData));
+			}
+
+			TEST_METHOD(TestAddFollowsAbstractionSuccess) {
+				// Create mock data to insert
+				StringMap followsStarData = { {"1", {"2", "3", "6", "7"}}, {"2", {"3", "6", "7"}}};
+				StringMap followsData = { {"1", {"2"}}, {"2", {"3"}} };
+				shared_ptr<StringMap> toInsert = make_shared<StringMap>(followsStarData);
+
+				// Insertion
+				PKB::insertor.addAbstraction(toInsert, FOLLOWS);
+
+				// Create reference to AbstractionStorage to check database
+				shared_ptr<AbstractionStorage> follows_storage = StorageManager::getAbstractionStorage(FOLLOWS);
+				shared_ptr<StringMap> db = follows_storage->getTruncatedDatabase();
+
+				// assert database contains the correct data (only first element of vector)
+				Assert::IsTrue(stringMapEqualityWrapper(*db, followsData));
+			}
+
+			TEST_METHOD(TestAddFollowsStarAbstractionSuccess) {
+				// Create mock data to insert
+				StringMap followsStarData = { {"1", {"2", "4", "5"}} };
+				shared_ptr<StringMap> toInsert = make_shared<StringMap>(followsStarData);
+
+				// Insertion
+				PKB::insertor.addAbstraction(toInsert, FOLLOWSSTAR);
+
+				// Create reference to AbstractionStorage to check database
+				shared_ptr<AbstractionStorage> follows_storage = StorageManager::getAbstractionStorage(FOLLOWS);
+				shared_ptr<AbstractionStorage> followsstar_storage = StorageManager::getAbstractionStorage(FOLLOWSSTAR);
+
+				// assert that same storage (and database) is used for follows and followsstar
+				Assert::IsTrue(follows_storage == followsstar_storage);
+
+				shared_ptr<StringMap> db = followsstar_storage->getDatabase();
+
+				// assert database contains the correct data
+				Assert::IsTrue(stringMapEqualityWrapper(*db, followsStarData));
+			}
+
+			TEST_METHOD(TestAddParentAbstractionSuccess) {
+				// Create mock data to insert
+				StringMap parentStarData = { {"10", {"7", "3", "1"}}, {"6", {"5", "1"}} };
+				StringMap parentData = { {"10", {"7"}}, {"6", {"5"}} };
+				shared_ptr<StringMap> toInsert = make_shared<StringMap>(parentStarData);
+
+				// Insertion
+				PKB::insertor.addAbstraction(toInsert, PARENT);
+
+				// Create reference to AbstractionStorage to check database
+				shared_ptr<AbstractionStorage> parent_storage = StorageManager::getAbstractionStorage(PARENT);
+				shared_ptr<StringMap> db = parent_storage->getTruncatedDatabase();
+
+				// assert database contains the correct data (only first element of vector)
+				Assert::IsTrue(stringMapEqualityWrapper(*db, parentData));
+			}
+
+			TEST_METHOD(TestAddParentStarAbstractionSuccess) {
+				// Create mock data to insert
+				StringMap parentStarData = { {"10", {"9", "7", "5"}} };
+				shared_ptr<StringMap> toInsert = make_shared<StringMap>(parentStarData);
+
+				// Insertion
+				PKB::insertor.addAbstraction(toInsert, PARENTSTAR);
+
+				// Create reference to AbstractionStorage to check database
+				shared_ptr<AbstractionStorage> parent_storage = StorageManager::getAbstractionStorage(PARENT);
+				shared_ptr<AbstractionStorage> parentstar_storage = StorageManager::getAbstractionStorage(PARENTSTAR);
+
+				// assert that same storage (and database) is used for follows and followsstar
+				Assert::IsTrue(parent_storage == parentstar_storage);
+
+				shared_ptr<StringMap> db = parentstar_storage->getDatabase();
+
+				// assert database contains the correct data
+				Assert::IsTrue(stringMapEqualityWrapper(*db, parentStarData));
+			}
+			
+			TEST_METHOD(TestAddZeroAbstractionSuccess) {
+				// Create mock data to insert
+				StringMap emptyAbstractionData = {};
+				shared_ptr<StringMap> toInsert = make_shared<StringMap>(emptyAbstractionData);
+
+				// Insertion
+				PKB::insertor.addAbstraction(toInsert, PARENT);
+				PKB::insertor.addAbstraction(toInsert, PARENTSTAR);
+				PKB::insertor.addAbstraction(toInsert, FOLLOWS);
+				PKB::insertor.addAbstraction(toInsert, FOLLOWSSTAR);
+				PKB::insertor.addAbstraction(toInsert, MODIFIES);
+				PKB::insertor.addAbstraction(toInsert, USES);
+
+				// Create reference to AbstractionStorage to check database
+				shared_ptr<AbstractionStorage> parent_storage = StorageManager::getAbstractionStorage(PARENT);
+				shared_ptr<AbstractionStorage> follows_storage = StorageManager::getAbstractionStorage(FOLLOWS);
+				shared_ptr<AbstractionStorage> modifies_storage = StorageManager::getAbstractionStorage(MODIFIES);
+				shared_ptr<AbstractionStorage> uses_storage = StorageManager::getAbstractionStorage(USES);	
+
+				shared_ptr<StringMap> parent_db = parent_storage->getTruncatedDatabase();
+				shared_ptr<StringMap> parentstar_db = parent_storage->getDatabase();
+				shared_ptr<StringMap> follows_db = follows_storage->getTruncatedDatabase();
+				shared_ptr<StringMap> followsstar_db = follows_storage->getDatabase();
+				shared_ptr<StringMap> modifies_db = modifies_storage->getDatabase();
+				shared_ptr<StringMap> uses_db = uses_storage->getDatabase();
+
+				// assert database is empty
+				Assert::IsTrue(parent_db->empty());
+				Assert::IsTrue(parentstar_db->empty());
+				Assert::IsTrue(follows_db->empty());
+				Assert::IsTrue(followsstar_db->empty());
+				Assert::IsTrue(modifies_db->empty());
+				Assert::IsTrue(uses_db->empty());
+			}
+
+			//TEST_METHOD(TestAddMultipleAbstractionsSuccess) {
+			//	// Create mock data to insert
+			//	StringMap usesData = { {"x", {"main", "3", "6"}} };
+			//	StringMap modifiesData = { {"y", {"main", "8", "proc1", "2"}} };
+			//	StringMap followsStarData = { {"1", {"2", "3", "6", "7"}}, {"2", {"3", "6", "7"}} };
+			//	StringMap followsData = { {"1", {"2"}}, {"2", {"3"}} };
+			//	StringMap parentStarData = { {"10", {"7", "3", "1"}}, {"6", {"5", "1"}} };
+			//	StringMap parentData = { {"10", {"7"}}, {"6", {"5"}} };
+			//
+			//	shared_ptr<StringMap> toInsertUses = make_shared<StringMap>(usesData);
+			//	shared_ptr<StringMap> toInsertModifies = make_shared<StringMap>(modifiesData);
+			//	shared_ptr<StringMap> toInsertFollows = make_shared<StringMap>(followsStarData);
+			//	shared_ptr<StringMap> toInsertParent = make_shared<StringMap>(parentStarData);
+			//
+			//	// Insertion
+			//	PKB::insertor.addAbstraction(toInsertUses, USES);
+			//	PKB::insertor.addAbstraction(toInsertModifies, MODIFIES);
+			//	PKB::insertor.addAbstraction(toInsertFollows, FOLLOWS);
+			//	PKB::insertor.addAbstraction(toInsertParent, PARENT);
+			//
+			//	// Create reference to AbstractionStorage to check database
+			//	shared_ptr<AbstractionStorage> parent_storage = StorageManager::getAbstractionStorage(PARENT);
+			//	shared_ptr<AbstractionStorage> follows_storage = StorageManager::getAbstractionStorage(FOLLOWS);
+			//	shared_ptr<AbstractionStorage> modifies_storage = StorageManager::getAbstractionStorage(MODIFIES);
+			//	shared_ptr<AbstractionStorage> uses_storage = StorageManager::getAbstractionStorage(USES);
+			//
+			//	shared_ptr<StringMap> parent_db = parent_storage->getTruncatedDatabase();
+			//	shared_ptr<StringMap> parentstar_db = parent_storage->getDatabase();
+			//	shared_ptr<StringMap> follows_db = follows_storage->getTruncatedDatabase();
+			//	shared_ptr<StringMap> followsstar_db = follows_storage->getDatabase();
+			//	shared_ptr<StringMap> modifies_db = modifies_storage->getDatabase();
+			//	shared_ptr<StringMap> uses_db = uses_storage->getDatabase();
+			//
+			//	// assert database has correct entries
+			//	Assert::IsTrue(stringMapEqualityWrapper(*parent_db, parentData));
+			//	Assert::IsTrue(stringMapEqualityWrapper(*parentstar_db, parentStarData));
+			//	Assert::IsTrue(stringMapEqualityWrapper(*follows_db, followsData));
+			//	Assert::IsTrue(stringMapEqualityWrapper(*followsstar_db, followsStarData));
+			//	Assert::IsTrue(stringMapEqualityWrapper(*modifies_db, modifiesData));
+			//	Assert::IsTrue(stringMapEqualityWrapper(*uses_db, usesData));
+			//}
 		};
 }
