@@ -30,7 +30,6 @@ public:
         int otherColNums = otherColumns.size();
         int otherRowNums = otherColumns[0].begin()->second.size();
 
-        // Find the columns with the headers in both tables
         vector<string> thisHeaders;
         vector<string> otherHeaders;
 
@@ -135,7 +134,7 @@ public:
                 string key = crossProductedAgain[thisCol].begin()->first;
                 vector<string> values = crossProducted[thisCol].begin()->second;
                 vector<string> values2 = crossProductedAgain[thisCol].begin()->second;
-                // Merge vector2 into vector1
+                // Merge values2 into values
                 values.insert(values.end(), values2.begin(), values2.end());
                 crossProducted[thisCol][key] = values;
             }
