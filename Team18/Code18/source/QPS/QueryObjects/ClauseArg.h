@@ -16,7 +16,7 @@ private:
 	// the argument name
 	string_view arg;
 
-	// is not a null ptr if the argument is a synonym
+	// is a null ptr if the argument is not a synonym
 	std::shared_ptr<SynonymObject> synonym;
 
 public:

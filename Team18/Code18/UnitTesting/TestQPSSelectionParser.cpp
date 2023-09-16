@@ -136,5 +136,18 @@ namespace UnitTesting
 			Assert::IsTrue(qo[0]->getQueryObjectName() == "v"sv);
 		}
 
+		TEST_METHOD(TestValidSelectUsesStmtQuery)
+		{
+			vector<string> testS = tokenize("assign a; variable v; Select v such that Uses(a, v)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+
+			Assert::IsTrue(qo[0]->getQueryObjectName() == "v"sv);
+			Assert::IsTrue
+		}
+
 	};
 }

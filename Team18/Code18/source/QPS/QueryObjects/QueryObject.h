@@ -22,19 +22,18 @@ public:
 		: data{ data } {
 	};
 
-	// pure virtual function, for calling PKB
-	virtual void call(shared_ptr<DataAccessLayer> dataAccessLayer) = 0;
-
 	string_view getQueryObjectName() {
 		return data;
 	}
+
+	// pure virtual function, for calling PKB
+	virtual void call(shared_ptr<DataAccessLayer> dataAccessLayer) = 0;
 
 	// variant: design entities, clauses
 	// Setting the results of the PKB call
 	virtual void setResult(variant<vector<string>, map<string, vector<string>>> result) = 0;
 
 	virtual variant<vector<string>, map<string, vector<string>>> getResult() = 0;
-
 
 };
 

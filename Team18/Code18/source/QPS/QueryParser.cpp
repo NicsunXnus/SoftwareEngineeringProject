@@ -6,6 +6,8 @@
 
 #include "QueryParser.h"
 #include "QueryObjects/ClauseArg.h"
+#include "QueryObjects/ClauseObject.h"
+#include "QueryObjects/InvalidQueryObject.h"
 
 
 
@@ -127,8 +129,6 @@ vector<shared_ptr<QueryObject>> QueryParser::validateDeclaration(vector<string_v
 vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> query) {
 	vector<shared_ptr<QueryObject>> result;
 	
-	//shared_ptr<ClauseFactory> clauseFactory = ClauseObjectFactory::createClauseFactory();
-	shared_ptr<QueryObject> selectQuery;
 
 	int currentWordIndex = 0;
 
@@ -142,7 +142,7 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 	if (!isDeclared(query, currentWordIndex)) {
 		throw runtime_error("Synonym not present in select clause, or synonym not declared");
 	}
-	selectQuery = synonyms.find(query[currentWordIndex])->second;
+	shared_ptr<QueryObject> selectQuery{ synonyms.find(query[currentWordIndex])->second };
 	result.push_back(selectQuery);
 	currentWordIndex++;
 
@@ -164,15 +164,13 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 			}
 
 			// Construct query object
-			shared_ptr<QueryObject> suchThatClauseObj {}
+			shared_ptr<QueryObject> suchThatClauseObj{ createClauseObj(query, currentWordIndex) };
+			result.push_back(suchThatClauseObj);
 
 		} else if (isPattern) {
 			currentWordIndex += 1;
-
-			
 		}
 	}
-
 	return result;
 }
 
@@ -227,7 +225,7 @@ shared_ptr<QueryObject> QueryParser::createClauseObj(std::vector<string_view>& q
 		if (synonyms.find(arg1Name) == synonyms.end()) { // argument is an undeclared synonym
 			throw std::runtime_error("Semantic error: Synonym in clause is undeclared");
 		}
-		shared_ptr<SynonymObject> synonym1 = make_shared<SynonymObject>(arg1Name, synonymToEntity.find(arg1Name));
+		shared_ptr<SynonymObject> synonym1 = make_shared<SynonymObject>(arg1Name, synonymToEntity[arg1Name]);
 	}
 	argVector.push_back(make_shared<ClauseArg>(arg1Name, synonym1));
 
@@ -238,15 +236,16 @@ shared_ptr<QueryObject> QueryParser::createClauseObj(std::vector<string_view>& q
 		if (synonyms.find(arg2Name) == synonyms.end()) { // argument is an undeclared synonym
 			throw std::runtime_error("Semantic error: Synonym in clause is undeclared");
 		}
-		shared_ptr<SynonymObject> synonym2 = make_shared<SynonymObject>(arg2Name, synonymToEntity.find(arg2Name));
+		shared_ptr<SynonymObject> synonym2 = make_shared<SynonymObject>(arg2Name, synonymToEntity[arg2Name]);
 	}
 	argVector.push_back(make_shared<ClauseArg>(arg2Name, synonym2));
 
 	try {
-		shared_ptr<QueryObject> clauseObj{ clauseFactory->create(relationalReference, argVector) };
+		return clauseFactory->create(relationalReference, argVector);
 	} catch (const std::exception& e) {
 		std::cout << e.what() << '\n';
-	}
+		return make_shared<InvalidQueryObject>("Error in creating clause object"sv);
+	} 
 }
 
 

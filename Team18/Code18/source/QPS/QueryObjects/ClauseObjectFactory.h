@@ -9,15 +9,11 @@
 
 class ClauseObjectFactory : public QueryObjectFactory {
 private:
-	/*
-	* This function checks if a given vector of arguments are syntactically valid for a clause
-	*/
-	virtual bool isSyntaticallyValid(vector<string_view>& data);
 
 public:
-	ClauseObjectFactory() : QueryObjectFactory{} {
-		
-	}
+	ClauseObjectFactory() : QueryObjectFactory{} {}
+
+	
 };
 
 /*   

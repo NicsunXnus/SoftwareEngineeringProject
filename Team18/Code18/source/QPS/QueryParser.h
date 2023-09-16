@@ -75,9 +75,6 @@ private:
 	// Helper function to check if a such that clause is present
 	bool hasRelationalReference(std::vector<string_view>& query, int index);
 
-	// Helper function to check if a clause is syntactically valid
-	bool isSyntacticallyValidClauseArg(string_view arg);
-
 	// Creates a clause query object
 	shared_ptr<QueryObject> createClauseObj(std::vector<string_view>& query, int index);
 

@@ -62,7 +62,4 @@ static ABSTRACTIONS AbstractionEnumToString(string abstraction) {
     throw runtime_error("abstraction is invalid!");
 }
 
-
-const unordered_set<ENTITY> stmtEntities
-
 #endif

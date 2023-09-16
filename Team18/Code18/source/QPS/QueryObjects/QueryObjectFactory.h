@@ -26,6 +26,6 @@ public:
 	* This function creates the factory for each type (design entities, clauses etc.)
 	*/
 	static shared_ptr<QueryObjectFactory> createFactory(string_view type);
-		
+
 };
 #endif
