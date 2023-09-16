@@ -5,6 +5,8 @@
 #include <vector>
 
 #include "QueryParser.h"
+#include "Errors/SyntaxError.h"
+#include "Errors/SemanticError.h"
 
 
 
@@ -29,7 +31,7 @@ tuple<vector<string_view>, vector<string_view>> QueryParser::splitDeclarationQue
 		}
 	}
 	if (indexSemiColon == 0) {
-		throw runtime_error("No Declaration clause found");
+		throw SyntaxErrorException("No Declaration clause found");
 	}
 	for (int i = 0; i < words.size(); ++i) {
 		string_view current = words[i];
@@ -41,7 +43,7 @@ tuple<vector<string_view>, vector<string_view>> QueryParser::splitDeclarationQue
 		
 	}
 	if (declarations.size() == 0 || query.size() == 0) {
-		throw runtime_error("No Query or Declaration clause found");
+		throw SyntaxErrorException("No Query or Declaration clause found");
 	}
 	return make_tuple(declarations, query);
 
@@ -82,7 +84,7 @@ vector<shared_ptr<QueryObject>> QueryParser::validateDeclaration(vector<string_v
 	for (const vector<string_view>declaration : splittedDeclarations) {
 		int size = declaration.size();
 		if (size < 2) { // declarations must contain at least 2 items; design-entity synonym
-			throw runtime_error("Invalid declaration");
+			throw SyntaxErrorException("Invalid declaration");
 		}
 		// first token must be a design entity, then a synonym, exception thrown by createDesignFactory otherwise
 		// get the respective factory required to create QueryObjects
@@ -94,21 +96,21 @@ vector<shared_ptr<QueryObject>> QueryParser::validateDeclaration(vector<string_v
 			if (wasDeclaration) {
 				wasDeclaration = false;
 				if (currentDeclaration != ",") {
-					throw runtime_error("Missing comma");
+					throw SyntaxErrorException("Missing comma");
 				}
 				if (i == size - 1) {
-					throw runtime_error("Extra comma");
+					throw SyntaxErrorException("Extra comma");
 				}
 				continue; // at a ",", continue parsing
 			}
 			if (!SynonymObject::isValid(currentDeclaration)) { // check if valid synonym
-				throw runtime_error("Invalid synonym");
+				throw SyntaxErrorException("Invalid synonym");
 			}
 			vector<string_view> data;
 			data.push_back(currentDeclaration);
 			shared_ptr<QueryObject> queryObject = designFactory->create(data);
 			if (synonyms.find(currentDeclaration) != synonyms.end()) { // synonym already declared
-				throw runtime_error("Repeated synonym declaration");
+				throw SemanticErrorException("Repeated synonym declaration");
 			}
 			else {
 				synonyms[currentDeclaration] = queryObject;
@@ -133,13 +135,13 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 
 	// check 'Select' keyword is present
 	if (!hasSelect(query, currentWordIndex)) {
-		throw runtime_error("'Select' keyword not present");
+		throw SyntaxErrorException("'Select' keyword not present");
 	}
 	currentWordIndex++;
 
 	// check synonym is present in declaration
 	if (!isDeclared(query, currentWordIndex)) {
-		throw runtime_error("Synonym not present in select clause, or synonym not declared");
+		throw SemanticErrorException("Synonym not present in select clause, or synonym not declared");
 	}
 	selectQuery = synonyms.find(query[currentWordIndex])->second;
 	result.push_back(selectQuery);

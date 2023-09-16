@@ -53,6 +53,15 @@
     <ClCompile Include="..\source\AST\**\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\AST\**\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\QPS\Errors\QPSError.h">
+      <Filter>QPS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\QPS\Errors\SyntaxError.h">
+      <Filter>QPS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\Constants\QPSPKB.h" />
@@ -137,6 +146,9 @@
       <Filter>QPS</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\QueryObjects\PatternClauseObject.h">
+      <Filter>QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\Errors\SemanticError.h">
       <Filter>QPS</Filter>
     </ClInclude>
   </ItemGroup>
