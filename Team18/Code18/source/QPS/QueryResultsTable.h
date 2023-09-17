@@ -100,7 +100,7 @@ public:
                 continue;
             }
             vector<string>  values = otherColumns[otherCol].begin()->second;
-            vector<string> repValues = repeatEntries(values);
+            vector<string> repValues = repeatEntries(values, thisRowNums);
 
             otherColumnsCopy[otherCol][key] = repValues;
             crossProducted.emplace_back(otherColumnsCopy[otherCol]);
@@ -123,7 +123,7 @@ public:
                     continue;
                 }
                 vector<string>  values = thisColumns[thisCol].begin()->second;
-                vector<string> repValues = repeatEntries(values);
+                vector<string> repValues = repeatEntries(values, otherRowNums);
 
                 thisColumnsCopy[thisCol][key] = repValues;
                 crossProductedAgain.emplace_back(thisColumnsCopy[thisCol]);
@@ -177,20 +177,48 @@ public:
     }
 
     //Helper method where (a,b) -> (a,b,a,b)
-    std::vector<std::string> repeatEntries(const std::vector<std::string>& input) {
-        std::vector<std::string> result;
-        for (const auto& str : input) {
-            result.push_back(str);
+    std::vector<std::string> repeatEntries(std::vector<std::string> input, int repetition) {
+        std::vector<std::string> result(input);
+        std::vector<std::string> copied(input);
+        for (int i = 1; i < repetition; i++) {
+            copied.insert(copied.end(), result.begin(), result.end());
         }
-        for (const auto& str : input) {
-            result.push_back(str);
-        }
-        return result;
+        return copied;
     }
     
     //Getter method for columns
     vector<map<string, vector<string>>> getColumns() {
         return this->columns;
+    }
+
+    vector<string> getHeaders() {
+        vector<string> headers;
+
+        for (map<string, vector<string>> column : this->columns) {
+            headers.emplace_back(column.begin()->first);
+        }
+
+        return headers;
+    }
+
+    bool haveSameHeaders(shared_ptr<QueryResultsTable> other) {
+        vector<map<string, vector<string>>> thisColumns = this->columns;
+        vector<map<string, vector<string>>> otherColumns = other->getColumns();
+        vector<string> thisHeaders;
+        vector<string> otherHeaders;
+
+        for (map<string, vector<string>> thisColumn : thisColumns) {
+            thisHeaders.emplace_back(thisColumn.begin()->first);
+        }
+
+        for (map<string, vector<string>> otherColumn : otherColumns) {
+            string header = otherColumn.begin()->first;
+            auto it = find(thisHeaders.begin(), thisHeaders.end(), header);
+            if (it != thisHeaders.end()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     //Returns inner joining of two tables
@@ -303,7 +331,7 @@ public:
         return make_shared<QueryResultsTable>(innerJoined);
     }
 
-    void printByRow() const {
+    void printByColumn() const {
         for (const auto& m : columns) {
             for (const auto& p : m) {
                 cout << p.first << ": ";
@@ -315,7 +343,7 @@ public:
         }
     }
 
-    void printByColumns() {
+    void printTable() {
         // Print the header row
         for (const auto& m : columns) {
             for (const auto& p : m) {
