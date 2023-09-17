@@ -83,7 +83,7 @@ public:
 };
 
 /*
-* This class represents a Query object, for clause Modifies with an entity ref as the second argument
+* This class represents a Query object, for clause Modifies with an entity ref as the first argument
 */
 class ModifiesEntityObject : public ClauseObject {
 public:

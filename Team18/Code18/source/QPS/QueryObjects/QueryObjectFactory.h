@@ -6,6 +6,8 @@
 #include <vector>
 #include "QueryObject.h"
 #include "ClauseArg.h"
+#include "../Errors/SemanticError.h"
+#include "../Errors/SyntaxError.h"
 
 /**
 * This abstract class represents all Query Object factories

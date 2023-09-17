@@ -156,13 +156,13 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 	// loop to check for such that clauses and pattern clauses
 	while (currentWordIndex < static_cast<int>(query.size())) {
 		bool isSuchThat{ hasSuchThat(query, currentWordIndex) }; // checks the current clause is a such that clause
-		bool isPattern{ hasPattern(query, currentWordIndex) }; // checks the current clause is a patter clause
+		bool isPattern{ hasPattern(query, currentWordIndex) }; // checks the current clause is a pattern clause
 		
 		if (isSuchThat) {
 			currentWordIndex += 2;
 
 			if (!hasRelationalReference(query, currentWordIndex)) {
-				throw runtime_error("such that clause has invalid syntax");
+				throw SyntaxErrorException("such that clause has invalid syntax");
 			}
 
 			// Construct query object
@@ -228,7 +228,7 @@ shared_ptr<QueryObject> QueryParser::createClauseObj(std::vector<string_view>& q
 	shared_ptr<SynonymObject> synonym1;
 	if (SynonymObject::isValid(arg1Name)) {
 		if (synonyms.find(arg1Name) == synonyms.end()) { // argument is an undeclared synonym
-			throw std::runtime_error("Semantic error: Synonym in clause is undeclared");
+			throw SemanticErrorException("Semantic error: Synonym in clause is undeclared");
 		}
 		synonym1 = make_shared<SynonymObject>(arg1Name, synonymToEntity[arg1Name]);
 	}
@@ -239,18 +239,19 @@ shared_ptr<QueryObject> QueryParser::createClauseObj(std::vector<string_view>& q
 	shared_ptr<SynonymObject> synonym2;
 	if (SynonymObject::isValid(arg2Name)) {
 		if (synonyms.find(arg2Name) == synonyms.end()) { // argument is an undeclared synonym
-			throw std::runtime_error("Semantic error: Synonym in clause is undeclared");
+			throw SemanticErrorException("Semantic error: Synonym in clause is undeclared");
 		}
 		synonym2 = make_shared<SynonymObject>(arg2Name, synonymToEntity[arg2Name]);
 	}
 	argVector.push_back(make_shared<ClauseArg>(arg2Name, synonym2));
 
-	try {
+	// check with Jan the purpose
+	//try {
 		return clauseFactory->create(relationalReference, argVector);
-	} catch (const std::exception& e) {
-		std::cout << e.what() << '\n';
-		return make_shared<InvalidQueryObject>("Error in creating clause object"sv);
-	} 
+	//} catch (const std::exception& e) {
+		//std::cout << e.what() << '\n';
+		//return make_shared<InvalidQueryObject>("Error in creating clause object"sv);
+	//} 
 }
 
 
