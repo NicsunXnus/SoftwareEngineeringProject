@@ -30,6 +30,12 @@ list<string> QueryDriver::execute() {
 
 
 		shared_ptr<QueryObject> obj = queryParser[0];
+		/*For QueryBuilder passage*/
+		//vector<QueryResultsTable> queryResultsTable = QueryBulder::buildQuery(queryParser);
+		// list<string> resultOfCrossQueryExamination = ResultHandler::processQueryResultsTable(queryResultsTable);
+		// return resultOfCrossQueryExamination;
+		// 
+
 		//std::cout << "QueryDriver::execute 4.5" << std::endl;
 		//std::cout << typeid(*(obj.get())).name() << std::endl;
 		obj->call(dataAccessLayer);

@@ -4,8 +4,8 @@
 #include <iostream>
 #include <string_view>
 #include <vector>
-
-#include "Token.h"
+#include "QueryResultsTable.h"
+#include "QueryObjects/QueryObject.h"
 
 /**
 * This class a query builder object
@@ -27,7 +27,7 @@ public:
 	/**
 	 * Builds the query results given a list of query objects
 	 */
-	buildQuery(std::vector<QueryObjects> queryObjects);
+	vector<shared_ptr<QueryResultsTable>> buildQuery(std::vector<QueryObject> queryObjects);
 	  
 	
 };

@@ -16,11 +16,14 @@
     <ClCompile Include="..\source\QPS\Errors\QPSError.h" />
     <ClCompile Include="..\source\QPS\Errors\SyntaxError.h" />
     <ClCompile Include="..\source\QPS\QueryDriver.cpp" />
+    <ClCompile Include="..\source\QPS\QueryBuilder.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\QueryObjectFactory.cpp" />
     <ClCompile Include="..\source\QPS\QueryParser.cpp" />
     <ClCompile Include="..\source\TokenizerClasses\TokenizerResults.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\source\QPS\QueryBuilder.h" />
+    <ClCompile Include="..\source\QPS\QueryResultsTable.h" />
     <ClInclude Include="..\source\ApplicationWrapper.h" />
     <ClInclude Include="..\source\Constants\QPSPKB.h" />
     <ClInclude Include="..\source\ExceptionMessages.h" />
@@ -56,6 +59,7 @@
     <ClCompile Include="..\source\DesignExtractor\*.h" />
     <ClInclude Include="..\source\TokenizerClasses\TokenFactory.h" />
     <ClInclude Include="..\source\TokenizerClasses\TokenizerResults.h" />
+    <ClInclude Include="QueryResultsTable.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{DC21A1EA-D2C6-4D14-A2B4-E025B64BDE81}</ProjectGuid>
