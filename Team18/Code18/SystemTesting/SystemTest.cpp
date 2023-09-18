@@ -5,7 +5,7 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-namespace IntegrationTesting
+namespace SystemTesting
 {		
 	TEST_CLASS(UnitTest1)
 	{
@@ -13,9 +13,9 @@ namespace IntegrationTesting
 		
 		TEST_METHOD(DESCRIBE_THIS_TEST)
 		{
-			std::string srcCode = "";
+			std::string fileName = "fileName";
 			ApplicationWrapper applicationWrapper;
-			applicationWrapper.directParse(srcCode);
+			applicationWrapper.parse(fileName);
 			std::string query = "";
 			std::list<std::string> output;
 			applicationWrapper.evaluate(query, output);
