@@ -4,6 +4,7 @@
 #include <list>
 #include <string>
 #include "Errors/QPSError.h"
+#include "../HelperFunctions.h"
 
 
 using namespace std;
@@ -51,6 +52,7 @@ list<string> QueryDriver::execute() {
 	}
 	catch (const QPSError& ex) {
 		list<string> empty;
+		debug(ex.what());
 		empty.push_back(ex.getType());
 		return empty;
 	}
