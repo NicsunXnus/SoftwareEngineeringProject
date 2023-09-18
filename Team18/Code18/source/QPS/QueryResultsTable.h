@@ -16,7 +16,8 @@ public:
     //Tested using: https://www.onlinegdb.com/online_c++_compiler#
     QueryResultsTable(vector<map<string, vector<string>>> _columns) : columns(_columns) {}
 
-    //Returns cross product for both tables
+    //Returns cross product for both tables with different headers
+    //Performing on tables with same headers may introduce unexpected results
     shared_ptr<QueryResultsTable> crossProduct(shared_ptr<QueryResultsTable> other) {
         // Sort the columns of both tables by headers
         vector<map<string, vector<string>>> thisColumns = this->columns;
@@ -106,62 +107,6 @@ public:
             crossProducted.emplace_back(otherColumnsCopy[otherCol]);
         }
         sort(crossProducted.begin(), crossProducted.end());
-
-        if (repeat) {
-            std::vector<std::map<std::string, std::vector<std::string>>> crossProductedAgain(otherColumns);
-            std::vector<std::map<std::string, std::vector<std::string>>> thisColumnsCopy(thisColumns);
-            for (int otherCol = 0; otherCol < otherColNums; otherCol++) {
-                string key = crossProductedAgain[otherCol].begin()->first;
-                vector<string> values = crossProductedAgain[otherCol].begin()->second;
-                crossProductedAgain[otherCol][key] = duplicateEntries(values, thisRowNums);
-            }
-
-            for (int thisCol = 0; thisCol < thisColNums; thisCol++) {
-                string key = thisColumns[thisCol].begin()->first;
-                auto it = find(otherHeaders.begin(), otherHeaders.end(), key);
-                if (it != otherHeaders.end()) {
-                    continue;
-                }
-                vector<string>  values = thisColumns[thisCol].begin()->second;
-                vector<string> repValues = repeatEntries(values, otherRowNums);
-
-                thisColumnsCopy[thisCol][key] = repValues;
-                crossProductedAgain.emplace_back(thisColumnsCopy[thisCol]);
-            }
-            std::sort(crossProductedAgain.begin(), crossProductedAgain.end());
-
-            for (int thisCol = 0; thisCol < crossProducted.size(); thisCol++) {
-                string key = crossProductedAgain[thisCol].begin()->first;
-                vector<string> values = crossProducted[thisCol].begin()->second;
-                vector<string> values2 = crossProductedAgain[thisCol].begin()->second;
-                // Merge values2 into values
-                values.insert(values.end(), values2.begin(), values2.end());
-                crossProducted[thisCol][key] = values;
-            }
-        }
-        std::sort(crossProducted.begin(), crossProducted.end());
-
-        int colSize = crossProducted.size();
-        int rowSize = crossProducted[0].begin()->second.size();
-        //eliminate duplicate rows
-        vector<vector<string>> rows;
-        for (int row = 0; row < rowSize; row++) {
-            vector<string> currRow;
-            for (int col = 0; col < colSize; col++) {
-                currRow.emplace_back(crossProducted[col].begin()->second[row]);
-            }
-            auto it = find(rows.begin(), rows.end(), currRow);
-            if (it != rows.end()) {
-                for (int col = 0; col < colSize; col++) {
-                    crossProducted[col].begin()->second.erase(crossProducted[col].begin()->second.begin() + row);
-                }
-                rowSize -= 1;
-                row -= 1;
-            }
-            else {
-                rows.emplace_back(currRow);
-            }
-        }
 
         return make_shared<QueryResultsTable>(crossProducted);
     }
