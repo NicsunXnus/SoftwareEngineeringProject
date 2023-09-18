@@ -5,19 +5,40 @@ list<string> ResultHandler::processTables(std::vector<std::shared_ptr<QueryResul
 	shared_ptr<QueryResultsTable> immediateTable;
 
 	//for now we do brute force left to right execution, optimisation can come in the future
-	std::stack<std::shared_ptr<QueryResultsTable>> queryTableStack;
+	//std::stack<std::shared_ptr<QueryResultsTable>> queryTableStack;
 
 	shared_ptr<QueryResultsTable> selectTable = tables[0]; //always the first one added
+
 	std::vector<string> selectVariables = selectTable->getHeaders();
 	tables.erase(tables.begin());
-	for (std::shared_ptr<QueryResultsTable> table : tables) {
-		queryTableStack.push(std::move(table));
+	if (tables.empty()) {
+		//it means only a select statement
+		//for now no tuples
+		vector<string> columns = selectTable->getColumns()[0].begin()->second;
+		list<string> returnList(columns.begin(), columns.end());
+		return returnList;
 	}
-	immediateTable = queryTableStack.top();
-	queryTableStack.pop();
+	//for (std::shared_ptr<QueryResultsTable> table : tables) {
+		//queryTableStack.push(std::move(table));
+	//}
+	//immediateTable = queryTableStack.top();
+	immediateTable = tables[0];
+	//queryTableStack.pop();
 
 	shared_ptr<QueryResultsTable> currTable;
-	while (!queryTableStack.empty()) {
+	for (shared_ptr<QueryResultsTable> table : tables) {
+		currTable = table;
+		if (immediateTable->haveSameHeaders(currTable)) {
+			//do inner join
+			immediateTable = immediateTable->innerJoin(currTable);
+		}
+		else {
+			//do cross product
+			immediateTable = immediateTable->crossProduct(currTable);
+		}
+	}
+	
+	/*while (!queryTableStack.empty()) {
 		currTable = queryTableStack.top();
 		queryTableStack.pop();
 		if (immediateTable->haveSameHeaders(currTable)) {
@@ -28,7 +49,7 @@ list<string> ResultHandler::processTables(std::vector<std::shared_ptr<QueryResul
 			//do cross product
 			immediateTable = immediateTable->crossProduct(currTable);
 		}
-	}
+	}*/
 
 	//filter out the required result
 	//this is only meant for non tupled results

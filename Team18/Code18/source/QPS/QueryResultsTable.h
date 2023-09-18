@@ -269,18 +269,6 @@ public:
         return make_shared<QueryResultsTable>(innerJoined);
     }
 
-    void printByColumn() const {
-        for (const auto& m : columns) {
-            for (const auto& p : m) {
-                cout << p.first << ": ";
-                for (const auto& s : p.second) {
-                    cout << s << " ";
-                }
-                cout << endl;
-            }
-        }
-    }
-
     void printTable() {
         // Print the header row
         for (const auto& m : columns) {
