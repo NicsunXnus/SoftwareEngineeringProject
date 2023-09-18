@@ -20,8 +20,8 @@ public:
 	 * Destructor for the ResultHandler object
 	 */
 	~ResultHandler() {};
-
-	list<string> processTables(std::vector<QueryResultsTable>);
+	
+	list<string> processTables(std::vector<std::shared_ptr<QueryResultsTable>>);
 
 
 };

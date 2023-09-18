@@ -79,13 +79,6 @@ public:
             1,  2,   3    ,d,  e,  f
             4,  5,    6    ,a, b,  c
             4,  5 ,   6    ,d,  e,  f
-
-            Optional Fourth Step: if both tables have common headers then just do step 1 to 3 but flip the tables around
-
-            Optional Fifth Step: Stack both the tables on top of each other. This will most likely create duplicate rows.
-
-            Optional Sixth step: Remove duplicates.
-
             */
         for (int thisCol = 0; thisCol < thisColNums; thisCol++) {
             string key = crossProducted[thisCol].begin()->first;

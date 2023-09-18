@@ -1,6 +1,6 @@
 #include "ResultsHandler.h"
 #include <stack>
-list<string> processTables(std::vector<std::shared_ptr<QueryResultsTable>> tables) {
+list<string> ResultHandler::processTables(std::vector<std::shared_ptr<QueryResultsTable>> tables) {
 	list<string> result;
 	shared_ptr<QueryResultsTable> immediateTable;
 
