@@ -2,25 +2,23 @@
 #include "CppUnitTest.h"
 
 #include "../source/ApplicationWrapper.h"
+#include "SystemTestWrapper.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace SystemTesting
 {		
-	TEST_CLASS(UnitTest1)
-	{
+	TEST_CLASS(UnitTest1) {
+	private:
+		static inline const std::string defaultPath = "../../Tests18/";
 	public:
 		
-		TEST_METHOD(DESCRIBE_THIS_TEST)
+		TEST_METHOD(noExtraClauses_success)
 		{
-			std::string fileName = "fileName";
-			ApplicationWrapper applicationWrapper;
-			applicationWrapper.parse(fileName);
-			std::string query = "";
-			std::list<std::string> output;
-			applicationWrapper.evaluate(query, output);
-			std::list<std::string> expected;
-			assert(output == expected);
+			std::string fileName = defaultPath + "";
+			std::string srcFilePath = fileName + "source";
+			std::string queryFilePath = fileName + "query";
+			assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
 		}
 
 	};
