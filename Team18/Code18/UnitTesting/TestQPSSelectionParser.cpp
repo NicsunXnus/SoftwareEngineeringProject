@@ -220,7 +220,7 @@ namespace UnitTesting
 			}
 			catch (const QPSError& ex)
 			{
-				Assert::AreEqual(ex.what(), "Semantic error: 2nd argument is not a variable entity");
+				Assert::AreEqual(ex.what(), "Semantic error: 2nd argument is not a variable entity for Uses");
 			}
 			
 		}
@@ -422,6 +422,24 @@ namespace UnitTesting
 				&& coInt->getArg1()->getArg() == "10"sv
 				&& coInt->getArg2()->getArg() == "v"sv);
 		}
+
+		TEST_METHOD(TestValidSelectLongQuery)
+		{
+			vector<string> testS = tokenize("assign a1, a2, a3; stmt s1, s2, s3; variable v1, v2, v3; Select s1 such that Uses(s3, v1) such that Modifies(s3, \"x\") such that Follows(s1, s2) such that Parent(s3, s1) such that Uses(s2, v1)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+
+			Assert::IsTrue(typeid(*qo[1]) == typeid(UsesObject));
+			Assert::IsTrue(typeid(*qo[2]) == typeid(ModifiesObject));
+			Assert::IsTrue(typeid(*qo[3]) == typeid(FollowsObject));
+			Assert::IsTrue(typeid(*qo[4]) == typeid(ParentObject));
+			Assert::IsTrue(typeid(*qo[5]) == typeid(UsesObject));
+
+		}
+
 
 	};
 }
