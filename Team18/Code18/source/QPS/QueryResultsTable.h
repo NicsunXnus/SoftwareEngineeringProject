@@ -13,15 +13,20 @@ public:
     //Each column is reprsented by a map, key being header and value being its contents
     //It is assumed that there are no duplicate headers in the table.
     //A table is always sorted by headers.
-    //Tested using: https://www.onlinegdb.com/online_c++_compiler#
     QueryResultsTable(vector<map<string, vector<string>>> _columns) : columns(_columns) {
         sort(columns.begin(), columns.end());
     }
 
+    //Constructor for empty table creation
     QueryResultsTable() {}
 
-    //Returns cross product for both tables with different headers
-    //Performing on tables with same headers may introduce unexpected results
+    /**
+     * Creates a new QueryResultsTable objet that is the result of a cartesian product between the row of elements of this table
+     * and the other table.
+     *
+     * @param other A shared pointer to a QueryResultsTable object that represents the other tables.
+     * @return A shared pointer to a newly created QueryResultsTable object.
+     */
     shared_ptr<QueryResultsTable> crossProduct(shared_ptr<QueryResultsTable> other) {
         vector<map<string, vector<string>>> thisColumns = this->columns;
         vector<map<string, vector<string>>> otherColumns = other->getColumns();
@@ -98,110 +103,12 @@ public:
         return make_shared<QueryResultsTable>(crossProducted);
     }
 
-    vector<map<string, vector<string>>> createColumnsWithHeaders(vector<string> theseHeaders) {
-        vector<map<string, vector<string>>> columns;
-        for (string header : theseHeaders) {
-            map<string, vector<string>> column;
-            vector<string> emptyValues;
-            column[header] = emptyValues;
-            columns.emplace_back(column);
-        }
-        return columns;
-    }
-    
-    //Returns a new query table which is the original table filtered by a column of values
-    //So given a table:   ->  filter("B", {"2"}) will be
-    //    A b                  -> A b
-    //    1 2                     1 2
-    //    3 4
-    //Providing a header not in the original table will give an empty table result
-    // -> 
-    //Providing a correct header but targets not in the column of the target column will return an empty table with headers
-    // -> A b
-    shared_ptr<QueryResultsTable> filter(string key, vector<string> targets) { //assuming there is no spacing/wrong capitalisation in key & there is no duplicates in targets
-        shared_ptr<QueryResultsTable> filteredTable;
-        vector<string> headers = this->getHeaders();
-        vector<map<string, vector<string>>> filteredTableColumns = this->createColumnsWithHeaders(headers);
-        
-        auto it = find(headers.begin(), headers.end(), key);
-        if (it != headers.end()) {
-            int headerIndex = distance(headers.begin(), it);
-            vector<string> targetColumn = this->columns[headerIndex].begin()->second;
-            for (string target : targets) { // Time taken = O(t x r x c)
-                for (int row = 0; row < targetColumn.size(); row++) {
-                    if (targetColumn[row] == target) {
-                        for (int col = 0; col < headers.size(); col++) {
-                            filteredTableColumns[col].begin()->second.emplace_back(this->columns[col].begin()->second[row]);
-                        }
-                    }
-                }
-            }
-            filteredTable = make_shared<QueryResultsTable>(filteredTableColumns);
-            return filteredTable;
-        }
-        else {
-            //return empty table if target not in headers
-            return filteredTable;
-        }
-    }
-
-    //Helper method where (a,b) -> (a,a,b,b)
-    vector<string> duplicateEntries(const vector<string>& input, int x) {
-        vector<string> result;
-        for (const auto& str : input) {
-            for (int i = 0; i < x; ++i) {
-                result.push_back(str);
-            }
-        }
-        return result;
-    }
-
-    //Helper method where (a,b) -> (a,b,a,b)
-    vector<string> repeatEntries(vector<string> input, int repetition) {
-        vector<string> result(input);
-        vector<string> copied(input);
-        for (int i = 1; i < repetition; i++) {
-            copied.insert(copied.end(), result.begin(), result.end());
-        }
-        return copied;
-    }
-    
-    //Getter method for columns
-    vector<map<string, vector<string>>> getColumns() {
-        return this->columns;
-    }
-
-    vector<string> getHeaders() {
-        vector<string> headers;
-
-        for (map<string, vector<string>> column : this->columns) {
-            headers.emplace_back(column.begin()->first);
-        }
-
-        return headers;
-    }
-
-    bool haveSameHeaders(shared_ptr<QueryResultsTable> other) {
-        vector<map<string, vector<string>>> thisColumns = this->columns;
-        vector<map<string, vector<string>>> otherColumns = other->getColumns();
-        vector<string> thisHeaders;
-        vector<string> otherHeaders;
-
-        for (map<string, vector<string>> thisColumn : thisColumns) {
-            thisHeaders.emplace_back(thisColumn.begin()->first);
-        }
-
-        for (map<string, vector<string>> otherColumn : otherColumns) {
-            string header = otherColumn.begin()->first;
-            auto it = find(thisHeaders.begin(), thisHeaders.end(), header);
-            if (it != thisHeaders.end()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    //Returns inner joining of two tables
+    /**
+     * Creates a shared pointer to a QueryResultsTable object representing the intersection between this table and the other table.
+     *
+     * @param other A shared pointer to a QueryResultsTable object representing the other table
+     * @return A sharer pointer to a newly created QueryResultsTable object
+     */
     shared_ptr<QueryResultsTable> innerJoin(shared_ptr<QueryResultsTable> other) const {
         vector<map<string, vector<string>>> thisMap = this->columns;
         vector<map<string, vector<string>>> otherMap = other->columns;
@@ -307,7 +214,212 @@ public:
         }
         return make_shared<QueryResultsTable>(innerJoined);
     }
+    
+    /**
+     * A static method that creates a new QueryResultsTable object with a single column.
+     *
+     * @param header The header of the column, represented as a string.
+     * @param columnValues A vector of strings representing the values in the column.
+     *                     The vector should have the same length for all columns in the table.
+     * @return A shared_ptr to the newly created QueryResultsTable object.
+     */
+    static shared_ptr<QueryResultsTable> createTable(string header, vector<string> columnValues) {
+        map<string, vector<string>> column;
+        column[header] = columnValues;
+        vector<map<string, vector<string>>> columns;
+        columns.emplace_back(column);
+        shared_ptr<QueryResultsTable> singleColTable = make_shared<QueryResultsTable>(columns);
+        return singleColTable;
+    }
 
+    /**
+     * A static method that flattens a map into a table of two columns, left column representing the key and right column representing the values
+     *
+     * @param headers A vector of strings representing the headers of the table to be created.
+     * @param columnValues A map of a string to a vector of strings representing the unflattened map.
+     * @return A shared pointer to the newly created QueryResultsTable object.
+    */
+    static shared_ptr<QueryResultsTable> createTable(vector<string> headers, map<string, vector<string>> columnValues) {
+        vector<map<string, vector<string>>> columns;
+        map<string, vector<string>> col1;
+        map<string, vector<string>> col2;
+        vector<string> colContent1;
+        vector<string> colContent2;
+        for (const auto& entry : columnValues) {
+            string leftTuple = entry.first;
+            for (string rightTuple : entry.second) {
+                colContent1.emplace_back(leftTuple);
+                colContent2.emplace_back(rightTuple);
+            }
+        }
+        //Start of check for error
+        if (colContent1.size() != colContent2.size()) {
+            cerr << "Table cannot contain columns of different row length!";
+            return make_shared<QueryResultsTable>();
+        }
+        //End of Check for error
+        col1[headers[0]] = colContent1;
+        col2[headers[1]] = colContent2;
+
+        columns.emplace_back(col1);
+        columns.emplace_back(col2);
+
+        shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>(columns);
+        return table;
+    }
+
+    /**
+     * A static method that creates a new QueryResultsTable object with the provided headers and column values.
+     *
+     * @param headers A vector of strings representing the headers of the table to be created.
+     * @param columnValues A vector of a vector of strings representing the column values.
+     * @return A shared pointer to the newly created QueryResultsTable object.
+    */
+    static shared_ptr<QueryResultsTable> createTable(vector<string> headers, vector<vector<string>> columnValues) {
+        vector<map<string, vector<string>>> columns;
+
+        //Start of check for error
+        int currSize = columnValues[0].size();
+        for (vector<string> column : columnValues) {
+            if (column.size() != currSize) {
+                cerr << "Table cannot contain columns of different row length!";
+                return make_shared<QueryResultsTable>();
+            }
+            currSize = column.size();
+        }
+        if (headers.size() != columnValues.size()) {
+            cerr << "Actual and Expected Number of columns do not match";
+            return make_shared<QueryResultsTable>();
+        }
+        //End of Check for error
+
+        for (int headerInd = 0; headerInd < headers.size(); headerInd++) {
+            map<string, vector<string>> column;
+            string header = headers[headerInd];
+            column[header] = columnValues[headerInd];
+            columns.emplace_back(column);
+        }
+        shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>(columns);
+        return table;
+    }
+
+    /**
+     * Deletes a column with the provided header.
+     *
+     * @param deleteHeader The header of the column to be deleted, represented as a string.
+     */
+    void deleteColumn(string deleteHeader) {
+        vector<string> headers = this->getHeaders();
+        auto it = find(headers.begin(), headers.end(), deleteHeader);
+        if (it != headers.end()) {
+            int index = distance(headers.begin(), it);
+            columns.erase(columns.begin() + index);
+        }
+        else {
+            cerr << "Header not found, returning back the same table.";
+        }
+    }
+
+    /**
+     * Renames a column indicated by the header given with the new header provided.
+     *
+     * @param newName The new header to be changed to, represented as a string.
+     * @param oldName The old header to be renamed, repersented as a string.
+    */
+    void renameColumn(string newName, string oldName) {
+        vector<string> headers = this->getHeaders();
+        auto it = find(headers.begin(), headers.end(), oldName);
+        if (it != headers.end()) {
+            int index = distance(headers.begin(), it);
+            vector<string> columnContent = columns[index].begin()->second;
+            columns.erase(columns.begin() + index);
+            map<string, vector<string>> renamedColumn;
+            renamedColumn[newName] = columnContent;
+            columns.emplace_back(renamedColumn);
+        }
+        else {
+            cerr << "Header not found, returning back the same table.";
+        }
+    }
+
+    /**
+     * Creates a new QueryResultsTable object that represents the filtered table.
+     *
+     * @param key The header of the target column represented by a string
+     * @param targets A vector of strings representing the values the column should only have.
+     * @return A shared pointer to the newly created QueryResultsTable object
+     * representing the old table but only containing rows having only values of the "targets" of the column with header "key"
+    */
+    shared_ptr<QueryResultsTable> filter(string key, vector<string> targets) { //assuming there is no spacing/wrong capitalisation in key & there is no duplicates in targets
+        shared_ptr<QueryResultsTable> filteredTable;
+        vector<string> headers = this->getHeaders();
+        vector<map<string, vector<string>>> filteredTableColumns = this->createColumnsWithHeaders(headers);
+        
+        auto it = find(headers.begin(), headers.end(), key);
+        if (it != headers.end()) {
+            int headerIndex = distance(headers.begin(), it);
+            vector<string> targetColumn = this->columns[headerIndex].begin()->second;
+            for (string target : targets) { // Time taken = O(t x r x c)
+                for (int row = 0; row < targetColumn.size(); row++) {
+                    if (targetColumn[row] == target) {
+                        for (int col = 0; col < headers.size(); col++) {
+                            filteredTableColumns[col].begin()->second.emplace_back(this->columns[col].begin()->second[row]);
+                        }
+                    }
+                }
+            }
+            filteredTable = make_shared<QueryResultsTable>(filteredTableColumns);
+            return filteredTable;
+        }
+        else {
+            //return empty table if target not in headers
+            return filteredTable;
+        }
+    }
+
+    /**
+     * Checks whether this table and other table contains the same headers.
+     *
+     * @param other A shared pointer to a QueryResultsTable object representing the other table
+     * @return A boolean value, with a true value representing same headers for both, and a false value for otherwise.
+    */
+    bool haveSameHeaders(shared_ptr<QueryResultsTable> other) {
+        vector<map<string, vector<string>>> thisColumns = this->columns;
+        vector<map<string, vector<string>>> otherColumns = other->getColumns();
+        vector<string> thisHeaders;
+        vector<string> otherHeaders;
+
+        for (map<string, vector<string>> thisColumn : thisColumns) {
+            thisHeaders.emplace_back(thisColumn.begin()->first);
+        }
+
+        for (map<string, vector<string>> otherColumn : otherColumns) {
+            string header = otherColumn.begin()->first;
+            auto it = find(thisHeaders.begin(), thisHeaders.end(), header);
+            if (it != thisHeaders.end()) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    //Getter method for columns
+    vector<map<string, vector<string>>> getColumns() {
+        return this->columns;
+    }
+
+    //Getter method for headers of columns
+    vector<string> getHeaders() {
+        vector<string> headers;
+
+        for (map<string, vector<string>> column : this->columns) {
+            headers.emplace_back(column.begin()->first);
+        }
+
+        return headers;
+    }
+
+    //Prints out the table
     void printTable() {
         // Print the header row
         for (const auto& m : columns) {
@@ -332,4 +444,36 @@ public:
 private:
     vector<map<string, vector<string>>> columns;
 
+    //Helper method where (a,b) -> (a,a,b,b)
+    vector<string> duplicateEntries(const vector<string>& input, int x) {
+        vector<string> result;
+        for (const auto& str : input) {
+            for (int i = 0; i < x; ++i) {
+                result.push_back(str);
+            }
+        }
+        return result;
+    }
+
+    //Helper method where (a,b) -> (a,b,a,b)
+    vector<string> repeatEntries(vector<string> input, int repetition) {
+        vector<string> result(input);
+        vector<string> copied(input);
+        for (int i = 1; i < repetition; i++) {
+            copied.insert(copied.end(), result.begin(), result.end());
+        }
+        return copied;
+    }
+
+    //Create the vector representation of a table. To only be used internally
+    vector<map<string, vector<string>>> createColumnsWithHeaders(vector<string> theseHeaders) {
+        vector<map<string, vector<string>>> columns;
+        for (string header : theseHeaders) {
+            map<string, vector<string>> column;
+            vector<string> emptyValues;
+            column[header] = emptyValues;
+            columns.emplace_back(column);
+        }
+        return columns;
+    }
 };
