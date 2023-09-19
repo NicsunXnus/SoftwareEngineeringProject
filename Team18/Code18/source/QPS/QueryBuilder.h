@@ -11,8 +11,6 @@
 * This class a query builder object
 */
 class QueryBuilder {
-private:
-	std::vector<QueryObject> queryObjects;
 public:
 	/**
 	 * Constructor for the QueryBuilder object
@@ -22,13 +20,11 @@ public:
 	/**
 	 * Destructor for the QueryBuilder object
 	 */
-	~QueryBuilder() {};
+	~QueryBuilder() {};	
 
 	/**
 	 * Builds the query results given a list of query objects
 	 */
-	vector<shared_ptr<QueryResultsTable>> buildQuery(std::vector<QueryObject> queryObjects);
-	  
-	
+	vector<shared_ptr<QueryResultsTable>> buildQuery(vector<shared_ptr<QueryObject>> queryObjects);
 };
 #endif
