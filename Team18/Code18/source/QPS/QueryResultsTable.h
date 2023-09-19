@@ -14,16 +14,17 @@ public:
     //It is assumed that there are no duplicate headers in the table.
     //A table is always sorted by headers.
     //Tested using: https://www.onlinegdb.com/online_c++_compiler#
-    QueryResultsTable(vector<map<string, vector<string>>> _columns) : columns(_columns) {}
+    QueryResultsTable(vector<map<string, vector<string>>> _columns) : columns(_columns) {
+        sort(columns.begin(), columns.end());
+    }
+
+    QueryResultsTable() {}
 
     //Returns cross product for both tables with different headers
     //Performing on tables with same headers may introduce unexpected results
     shared_ptr<QueryResultsTable> crossProduct(shared_ptr<QueryResultsTable> other) {
-        // Sort the columns of both tables by headers
         vector<map<string, vector<string>>> thisColumns = this->columns;
         vector<map<string, vector<string>>> otherColumns = other->getColumns();
-        sort(thisColumns.begin(), thisColumns.end());
-        sort(otherColumns.begin(), otherColumns.end());
 
         // Get the number of columns and rows in both tables
         int thisColNums = thisColumns.size();
@@ -43,9 +44,8 @@ public:
             otherHeaders.emplace_back(otherColumns[otherCol].begin()->first);
         }
 
-        bool repeat = false; //check true if there are common headers, essentially reverse which table does the following process 
-        std::vector<std::map<std::string, std::vector<std::string>>> crossProducted(thisColumns);
-        std::vector<std::map<std::string, std::vector<std::string>>> otherColumnsCopy(otherColumns);
+        vector<map<string, vector<string>>> crossProducted(thisColumns);
+        vector<map<string, vector<string>>> otherColumnsCopy(otherColumns);
         /*if you have 2 tables
             etc; table1: a, b table2:C, d
             Then for each entry in table1 columns a and b, duplicate each value by size(table2)
@@ -88,24 +88,66 @@ public:
 
         for (int otherCol = 0; otherCol < otherColNums; otherCol++) {
             string key = otherColumns[otherCol].begin()->first;
-            auto it = find(thisHeaders.begin(), thisHeaders.end(), key);
-            if (it != thisHeaders.end()) {
-                repeat = true;
-                continue;
-            }
             vector<string>  values = otherColumns[otherCol].begin()->second;
             vector<string> repValues = repeatEntries(values, thisRowNums);
 
             otherColumnsCopy[otherCol][key] = repValues;
             crossProducted.emplace_back(otherColumnsCopy[otherCol]);
         }
-        sort(crossProducted.begin(), crossProducted.end());
 
         return make_shared<QueryResultsTable>(crossProducted);
     }
+
+    vector<map<string, vector<string>>> createColumnsWithHeaders(vector<string> theseHeaders) {
+        vector<map<string, vector<string>>> columns;
+        for (string header : theseHeaders) {
+            map<string, vector<string>> column;
+            vector<string> emptyValues;
+            column[header] = emptyValues;
+            columns.emplace_back(column);
+        }
+        return columns;
+    }
+    
+    //Returns a new query table which is the original table filtered by a column of values
+    //So given a table:   ->  filter("B", {"2"}) will be
+    //    A b                  -> A b
+    //    1 2                     1 2
+    //    3 4
+    //Providing a header not in the original table will give an empty table result
+    // -> 
+    //Providing a correct header but targets not in the column of the target column will return an empty table with headers
+    // -> A b
+    shared_ptr<QueryResultsTable> filter(string key, vector<string> targets) { //assuming there is no spacing/wrong capitalisation in key & there is no duplicates in targets
+        shared_ptr<QueryResultsTable> filteredTable;
+        vector<string> headers = this->getHeaders();
+        vector<map<string, vector<string>>> filteredTableColumns = this->createColumnsWithHeaders(headers);
+        
+        auto it = find(headers.begin(), headers.end(), key);
+        if (it != headers.end()) {
+            int headerIndex = distance(headers.begin(), it);
+            vector<string> targetColumn = this->columns[headerIndex].begin()->second;
+            for (string target : targets) { // Time taken = O(t x r x c)
+                for (int row = 0; row < targetColumn.size(); row++) {
+                    if (targetColumn[row] == target) {
+                        for (int col = 0; col < headers.size(); col++) {
+                            filteredTableColumns[col].begin()->second.emplace_back(this->columns[col].begin()->second[row]);
+                        }
+                    }
+                }
+            }
+            filteredTable = make_shared<QueryResultsTable>(filteredTableColumns);
+            return filteredTable;
+        }
+        else {
+            //return empty table if target not in headers
+            return filteredTable;
+        }
+    }
+
     //Helper method where (a,b) -> (a,a,b,b)
-    std::vector<std::string> duplicateEntries(const std::vector<std::string>& input, int x) {
-        std::vector<std::string> result;
+    vector<string> duplicateEntries(const vector<string>& input, int x) {
+        vector<string> result;
         for (const auto& str : input) {
             for (int i = 0; i < x; ++i) {
                 result.push_back(str);
@@ -115,9 +157,9 @@ public:
     }
 
     //Helper method where (a,b) -> (a,b,a,b)
-    std::vector<std::string> repeatEntries(std::vector<std::string> input, int repetition) {
-        std::vector<std::string> result(input);
-        std::vector<std::string> copied(input);
+    vector<string> repeatEntries(vector<string> input, int repetition) {
+        vector<string> result(input);
+        vector<string> copied(input);
         for (int i = 1; i < repetition; i++) {
             copied.insert(copied.end(), result.begin(), result.end());
         }
@@ -161,11 +203,9 @@ public:
 
     //Returns inner joining of two tables
     shared_ptr<QueryResultsTable> innerJoin(shared_ptr<QueryResultsTable> other) const {
-        // Sort the columns of both tables by headers
         vector<map<string, vector<string>>> thisMap = this->columns;
         vector<map<string, vector<string>>> otherMap = other->columns;
-        std::sort(thisMap.begin(), thisMap.end());
-        std::sort(otherMap.begin(), otherMap.end());
+
         // Get the number of columns and rows in both tables
         int thisColNums = thisMap.size();
         int thisRowNums = thisMap[0].begin()->second.size();
@@ -182,7 +222,7 @@ public:
             for (int otherCol = 0; otherCol < otherColNums; otherCol++) {
                 auto it = find(thisHeaders.begin(), thisHeaders.end(), otherMap[otherCol].begin()->first);
                 if (it != thisHeaders.end()) {
-                    int index = std::distance(thisHeaders.begin(), it);
+                    int index = distance(thisHeaders.begin(), it);
                     sameCols.emplace_back((tuple<int, int>({ thisCol, otherCol })));
                     thisHeaders.erase(thisHeaders.begin() + index);
                 }
@@ -265,7 +305,6 @@ public:
                 }
             }
         }
-        sort(innerJoined.begin(), innerJoined.end());
         return make_shared<QueryResultsTable>(innerJoined);
     }
 
@@ -273,20 +312,20 @@ public:
         // Print the header row
         for (const auto& m : columns) {
             for (const auto& p : m) {
-                std::cout << p.first << " | ";
+                cout << p.first << " | ";
             }
         }
-        std::cout << std::endl;
+        cout << endl;
 
         // Print the data rows
         int numRows = columns[0].begin()->second.size();
         for (int i = 0; i < numRows; i++) {
             for (const auto& m : columns) {
                 for (const auto& p : m) {
-                    std::cout << p.second[i] << " | ";
+                    cout << p.second[i] << " | ";
                 }
             }
-            std::cout << std::endl;
+            cout << endl;
         }
     }
 
