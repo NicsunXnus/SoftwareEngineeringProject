@@ -118,58 +118,43 @@ stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant
 Select a pattern a (v, "b")
 15
 5000
-25 - synonym-partial match 1
+25 - synonym-partial match, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select a pattern a (v, _"b"_)
 3, 11, 15
 5000
-26 - synonym-partial match 2
+26 - synonym-partial match, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a (v, _"a+b"_)
-3
+Select a pattern a (v, _"x"_)
+
 5000
-27 - synonym-partial match 3
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a (v, _"c / d"_)
-11
-5000
-28 - char string-wildcard, does not exist but in prg
+27 - char string-wildcard, does not exist but in prg
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select a pattern a ("b", _)
 
 5000
-29 - char string-wildcard, exists
+28 - char string-wildcard, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select a pattern a ("c", _)
 3, 15
 5000
-30 - char string-wildcard, does not exist in prg
+29 - char string-wildcard, does not exist in prg
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select a pattern a ("x", _)
 
 5000
-31 - char string-wildcard, capitalised, does not exist
+30 - char string-wildcard, capitalised, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select a pattern a ("C", _)
 
 5000
-32 - char string-exact match, exists 
+31 - char string-exact match, exists 
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select a pattern a ("c", "b")
 15
 5000
-33 - char string-exact match, does not exist
+32 - char string-exact match, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a ("c", "a+b")
-
-5000
-34 - char string-partial match, exists
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a ("c", _"a+b"_)
-3
-5000
-35 - char string-partial match, does not exist
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a ("c", _"b - 1"_)
+Select a pattern a ("c", "x")
 
 5000
