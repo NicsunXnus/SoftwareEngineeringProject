@@ -5,6 +5,7 @@
 #include <tuple>
 #include <vector>
 #include <fstream>
+#include <sstream>
 #include "../source/HelperFunctions.h"
 #include "../source/ApplicationWrapper.h"
 
@@ -59,6 +60,8 @@ public:
   static bool run(std::string srcFilePath, std::string queryFilePath) {
     ApplicationWrapper applicationWrapper;
     applicationWrapper.parse(srcFilePath);
+    bool isAllOk = true;
+    std::vector<bool> queryResults;
     std::vector<std::pair<std::string, std::list<std::string>>> unpacked = unpackQueryFile(queryFilePath);
     for (int i = 0; i < unpacked.size(); i++) {
       std::pair<std::string, std::list<std::string>> curr = unpacked[i];
@@ -67,11 +70,24 @@ public:
 
       std::list<std::string> results = {};
       applicationWrapper.evaluate(query, results);
-      if (!checkListEquality(expected, results)) {
-        throw std::invalid_argument("Query " + to_string(i) + " failed");
+      bool passed = checkListEquality(expected, results);
+      queryResults.push_back(passed);
+      if (!passed) {
+        isAllOk = false;
       }
     }
-    return true;
+    if (!isAllOk) {
+      // convert results into string and return as error
+      std::stringstream ss;
+      for (size_t i = 0; i < queryResults.size(); i++) {
+        if (i != 0) {
+          ss << "\n";
+        }
+        ss << "Query #" + to_string(i) + ": " + to_string(queryResults[i]);
+      }
+      throw std::invalid_argument(ss.str());
+    }
+    return isAllOk;
   }
 };
 

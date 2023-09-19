@@ -1,0 +1,5 @@
+1 - 
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that FILL THIS IN pattern a (_, _)
+
+5000

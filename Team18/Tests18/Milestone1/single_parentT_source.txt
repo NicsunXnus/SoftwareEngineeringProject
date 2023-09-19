@@ -2,7 +2,7 @@ procedure first {
   read a;
   read b;
   c = a + b - 1;
-  d = c * e % c / d;
+  d = c * e % f / d;
   while (c < d) {
     if (a < b) then {
       print e;
@@ -12,7 +12,7 @@ procedure first {
       call third;
     }
   }
-  e = a + b * c + c / d % e - f;
+  e = a * b + c / d % e - f;
 }
 procedure second {
   read a;

@@ -25,10 +25,22 @@ namespace SystemTesting
 			std::string queryFilePath = defaultPath + "single_follows_queries.txt";
 			assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
 		}
+		TEST_METHOD(single_followsT_clause)
+		{
+			std::string srcFilePath = defaultPath + "single_followsT_source.txt";
+			std::string queryFilePath = defaultPath + "single_followsT_queries.txt";
+			assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+		}
 		TEST_METHOD(single_parent_clause)
 		{
 			std::string srcFilePath = defaultPath + "single_parent_source.txt";
 			std::string queryFilePath = defaultPath + "single_parent_queries.txt";
+			assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+		}
+		TEST_METHOD(single_parentT_clause)
+		{
+			std::string srcFilePath = defaultPath + "single_parentT_source.txt";
+			std::string queryFilePath = defaultPath + "single_parentT_queries.txt";
 			assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
 		}
 		TEST_METHOD(single_uses_clause)
@@ -47,6 +59,12 @@ namespace SystemTesting
 		{
 			std::string srcFilePath = defaultPath + "single_pattern_source.txt";
 			std::string queryFilePath = defaultPath + "single_pattern_queries.txt";
+			assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+		}
+		TEST_METHOD(double_clause)
+		{
+			std::string srcFilePath = defaultPath + "double_clause_source.txt";
+			std::string queryFilePath = defaultPath + "double_clause_queries.txt";
 			assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
 		}
 

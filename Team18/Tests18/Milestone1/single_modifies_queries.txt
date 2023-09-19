@@ -58,7 +58,7 @@ stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant
 Select w such that Modifies(w, v)
 5
 5000
-13 - synonym-synonym, right: var, left: while, mismatch, exists. Does not exist will be below when dealing with integers
+13 - synonym-synonym, right: var, left: while, mismatch, exists. NOTE: Does not exist will be below when dealing with integers
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select i such that Modifies(w, v)
 6
@@ -112,4 +112,114 @@ Select i such that Modifies(i, _)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select w such that Modifies(w, _)
 5
+5000
+24 - synonym-wildcard, left: while, mismatch, exists
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select c such that Modifies(w, _)
+1, 2
+5000
+25 - synonym-identity, left: stmt, right: variable name
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Modifies(s, "a")
+1, 12, 13
+5000
+26 - synonym-identity, left: stmt, right: constant (invalid)
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Modifies(s, "1")
+semantic error
+5000
+27 - synonym-identity, left: stmt, right: does not exist
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Modifies(s, "x")
+
+5000
+28 - synonym-identity, left: stmt, right: variable name, mismatch, exists
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select p such that Modifies(s, "a")
+first, second, third
+5000
+29 - synonym-identity, left: stmt, right: variable name, mismatch, does not exist
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select p such that Modifies(s, "x")
+
+5000
+30 - wildcard-synonym, right: stmt (non-var)
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select p such that Modifies(_, s)
+semantic error
+5000
+31 - wildcard-synonym, right: variable
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select c such that Modifies(_, v)
+1, 2
+5000
+31 - wildcard-wildcard
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select c such that Modifies(_, _)
+1, 2
+5000
+32 - wildcard-identity, exists
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select c such that Modifies(_, "a")
+1, 2
+5000
+33 - wildcard-identity, does not exist
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select c such that Modifies(_, "x")
+
+5000
+34 - wildcard-identity, constant (invalid)
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select c such that Modifies(_, "1")
+semantic error
+5000
+35 - integer-synonym, right: stmt (non-var), stmt number inside
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select r such that Modifies(1, s)
+semantic error
+5000
+36 - integer-synonym, right: variable, stmt number inside
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select v such that Modifies(1, v)
+a
+5000
+37 - integer-synonym, right: variable, stmt number out of bounds
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select v such that Modifies(99999, v)
+
+5000
+38 - integer-synonym, right: variable, stmt number is 0
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select v such that Modifies(0, v)
+
+5000
+39 - integer-wildcard
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select v such that Modifies(1, _)
+a, b, c, d, e, f
+5000
+40 - integer-identity, exists in stmt
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select v such that Modifies(1, "a")
+a, b, c, d, e, f
+5000
+41 - integer-identity, does not exists in stmt but in prg
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select v such that Modifies(1, "b")
+
+5000
+42 - integer-identity, does not exists in prg
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select v such that Modifies(1, "x")
+
+5000
+43 - identity-x, line number in string (invalid)
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select v such that Modifies("1", v)
+semantic error
+5000
+44 - identity-x, procedure name in string (invalid)
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select v such that Modifies("first", v)
+semantic error
 5000
