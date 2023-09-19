@@ -29,11 +29,17 @@ private:
       }
       getline(infile, line); // this line is for results
       std::list<std::string> results;
-      std::vector<std::string> split = splitString(line, ",");
-      for (std::string s : split) {
-        results.push_back(trimWhitespaces(s));
+      if (line == "semantic error") {
+        results.push_back("semantic error");
+        out.push_back(std::pair<std::string, std::list<std::string>>(tempQuery, results));
       }
-      out.push_back(std::pair<std::string, std::list<std::string>>(tempQuery, results));
+      else {
+        std::vector<std::string> split = splitString(line, ",");
+        for (std::string s : split) {
+          results.push_back(trimWhitespaces(s));
+        }
+        out.push_back(std::pair<std::string, std::list<std::string>>(tempQuery, results));
+      }
       tempQuery = "";
       getline(infile, line); // this line is for time limit
     }

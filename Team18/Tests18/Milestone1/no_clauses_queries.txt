@@ -48,3 +48,18 @@ stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant
 Select p
 first, second, third
 5000
+11 - not declared
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select x
+semantic error
+5000
+12 - empty declaration
+
+Select s
+semantic error
+5000
+13 - multi declaration
+stmt s1, s2; read r1, r2;
+Select s1
+semantic error
+5000
