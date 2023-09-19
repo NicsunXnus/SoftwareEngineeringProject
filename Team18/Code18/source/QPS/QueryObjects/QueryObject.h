@@ -4,7 +4,9 @@
 
 #include "../DataAccessLayer.h"
 #include "../../Constants/QPSPKB.h"
-#include <variant>
+#include "../QueryResultsTable.h"
+#include "../../HelperFunctions.h"
+#include <unordered_map>
 
 
 using namespace std;
@@ -17,24 +19,29 @@ using namespace std;
 class QueryObject {
 private:
 	string_view data; // stores information about the queryObject, such as its name, or arguments for clauses
+	shared_ptr<QueryResultsTable> table;
 public:
 	QueryObject(string_view data)
-		: data{ data } {
-	};
+		: data{ data } {};
 
 	string_view getQueryObjectName() {
 		return data;
 	}
 
-	// pure virtual function, for calling PKB
-	virtual void call(shared_ptr<DataAccessLayer> dataAccessLayer) = 0;
+	// pure virtual function, for getting the data from PKB and processing it into a results table by filtering and remove columns
+	virtual shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) = 0;
+	// Filters the Table for the specific synonym / IDENT / _ / others (PKB gives entire table, e.g. entire Follows Table)
+	// synonyms comes from QueryParser, will be passed in QueryBuilder from QueryDriver
 
 	// variant: design entities, clauses
 	// Setting the results of the PKB call
-	virtual void setResult(variant<vector<string>, map<string, vector<string>>> result) = 0;
+	void setResult(shared_ptr<QueryResultsTable> result) {
+		table = result;
+	}
 
-	virtual variant<vector<string>, map<string, vector<string>>> getResult() = 0;
-
+	shared_ptr<QueryResultsTable> getResult() {
+		return table;
+	}
 };
 
 

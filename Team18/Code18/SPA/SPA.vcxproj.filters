@@ -4,9 +4,6 @@
     <ClCompile Include="..\source\AST\**\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
     <ClCompile Include="..\source\ApplicationWrapper.cpp" />
-    <ClCompile Include="..\source\AST\ASTNode.h" />
-    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
-    <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
     <ClCompile Include="..\source\DesignExtractor\Entity.h" />
     <ClCompile Include="..\source\DesignExtractor\Entity.h" />
     <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
@@ -27,9 +24,6 @@
       <Filter>QPS</Filter>
     </ClCompile>
     <ClCompile Include="..\source\DesignExtractor\*.h">
-      <Filter>DesignExtractor</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\DesignExtractor.cpp">
       <Filter>DesignExtractor</Filter>
     </ClCompile>
     <ClCompile Include="..\source\QPS\DataAccessLayer.cpp">
@@ -60,6 +54,17 @@
       <Filter>QPS</Filter>
     </ClCompile>
     <ClCompile Include="..\source\QPS\Errors\SyntaxError.h">
+      <Filter>QPS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryResultsTable.h" />
+    <ClCompile Include="..\source\AST\**\*.h" />
+    <ClCompile Include="..\source\AST\**\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\QPS\QueryBuilder.h">
+      <Filter>QPS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryBuilder.cpp">
       <Filter>QPS</Filter>
     </ClCompile>
   </ItemGroup>
@@ -151,6 +156,8 @@
     <ClInclude Include="..\source\QPS\Errors\SemanticError.h">
       <Filter>QPS</Filter>
     </ClInclude>
+    <ClInclude Include="..\source\ExceptionMessages.h" />
+    <ClInclude Include="..\source\TokenizerClasses\TokenizerResults.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Tokens">

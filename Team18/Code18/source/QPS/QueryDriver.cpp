@@ -25,11 +25,13 @@ list<string> QueryDriver::execute() {
 
 		std::cout << "In Query Driver, starting validateQuery\n";
 
-		vector<shared_ptr<QueryObject>> queryParser = parser->validateQuery(get<1>(declarationQuery));
+		vector<shared_ptr<QueryObject>> queryObjects = parser->validateQuery(get<1>(declarationQuery));
+		unordered_map<string_view, shared_ptr<QueryObject>> synonyms = parser->getSynonyms();
 		shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayer>();
+		shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(queryObjects, synonyms);
+		
 
-
-		shared_ptr<QueryObject> obj = queryParser[0];
+		//shared_ptr<QueryObject> obj = queryParser[0]; // sprint 1
 		/*For QueryBuilder passage*/
 		//vector<QueryResultsTable> queryResultsTable = QueryBulder::buildQuery(queryParser);
 		// list<string> resultOfCrossQueryExamination = ResultHandler::processQueryResultsTable(queryResultsTable);
@@ -38,12 +40,12 @@ list<string> QueryDriver::execute() {
 
 		//std::cout << "QueryDriver::execute 4.5" << std::endl;
 		//std::cout << typeid(*(obj.get())).name() << std::endl;
-		obj->call(dataAccessLayer);
+		/*obj->call(dataAccessLayer);
 		variant<vector<string>, map<string, vector<string>>> resultVariant = obj->getResult();
-		vector<string> result = get<vector<string>>(resultVariant);
+		vector<string> result = get<vector<string>>(resultVariant);*/
 
 		// chat-gpt code
-		list<string> myList(result.begin(), result.end());
+		list<string> myList;
 		/*variant<vector<string>, vector<string, vector<string>>> test;
 		vector<string> ta = get<vector<string>>(test);*/
 

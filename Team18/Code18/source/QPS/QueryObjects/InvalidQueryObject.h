@@ -19,20 +19,25 @@ private:
 public:
 	InvalidQueryObject(string_view message) : QueryObject{ message } {}
 
-	void setResult(variant<vector<string>, map<string, vector<string>>> result) override {
+	/*void setResult(variant<vector<string>, map<string, vector<string>>> result) override {
 		res = get<map<string, vector<string>>>(result);
 	}
 
 	std::variant<vector<string>, map<string, vector<string>>> getResult() override {
 		return res;
-	}
+	}*/
 
-	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		std::vector<string> emptyVec;
-		variant<vector<string>, map<string, vector<string>>> var{ emptyVec };
+	//shared_ptr<QueryResultsTable> call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
+	//	std::vector<string> emptyVec;
+	//	variant<vector<string>, map<string, vector<string>>> var{ emptyVec };
 
-		setResult(var);
-	}
+	//	//setResult(var);
+	//}
+
+	//shared_ptr<QueryResultsTable> filter(shared_ptr<QueryResultsTable> table, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) {
+	//	shared_ptr<QueryResultsTable> test;
+	//	return test;
+	//}
 };
 
 #endif

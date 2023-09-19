@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <map>
 #include <memory>
+#include "../HelperFunctions.h"
 using namespace std;
 
 class QueryResultsTable {
@@ -14,7 +15,7 @@ public:
     //It is assumed that there are no duplicate headers in the table.
     //A table is always sorted by headers.
     //Tested using: https://www.onlinegdb.com/online_c++_compiler#
-    QueryResultsTable(vector<map<string, vector<string>>> _columns) : columns(_columns) {}
+    QueryResultsTable(vector<map<string, vector<string>>> _columns) : columns(_columns), isEmpty(false) {}
 
     //Returns cross product for both tables
     shared_ptr<QueryResultsTable> crossProduct(shared_ptr<QueryResultsTable> other) {
@@ -336,7 +337,16 @@ public:
         }
     }
 
+    void setEmpty(bool empty) {
+        isEmpty = empty;
+    }
+
+    bool getEmpty() {
+        return isEmpty;
+    }
+
 private:
-    vector<map<string, vector<string>>> columns;
+    vector<map<string, vector<string>>> columns; // column name: values
+    bool isEmpty; // denotes whether a table is empty or not (if uses(_, _) has more than one row, i will drop both columns, but table is NOT empty)
 
 };

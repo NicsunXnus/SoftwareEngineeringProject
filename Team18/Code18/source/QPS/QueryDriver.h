@@ -8,6 +8,7 @@
 #include "QueryParser.h"
 #include "../TokenizerClasses/PQLTokenizer.h"
 #include "DataAccessLayer.h"
+#include "QueryBuilder.h"
 
 using namespace std;
 
