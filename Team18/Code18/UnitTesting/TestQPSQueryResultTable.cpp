@@ -146,5 +146,49 @@ namespace UnitTesting
             Logger::WriteMessage(output.str().c_str());
         }
 
+        TEST_METHOD(TestCrossProduct) {
+            map<string, vector<string>> map1;
+            map1.insert({ "s2", {"5", "5", "7", "8", "2"} });
+
+            map<string, vector<string>> map2;
+            map2.insert({ "v1", {"y", "z", "x", "y", "y"} });
+
+            vector<map<string, vector<string>>> columnsUses = { map1,map2 };
+            shared_ptr<QueryResultsTable> tab1 = make_shared<QueryResultsTable>(columnsUses);
+
+            map<string, vector<string>> map3;
+            map3.insert({ "s3", {"6", "5","7"} });
+
+            vector<map<string, vector<string>>> columnsModEnt = { map3 };
+            shared_ptr<QueryResultsTable> tab2 = make_shared<QueryResultsTable>(columnsModEnt);
+
+            shared_ptr<QueryResultsTable> immediate1 = tab2->crossProduct(tab1);
+            shared_ptr<QueryResultsTable> immediate2 = tab1->crossProduct(tab2);
+            bool isSame = compare_vectors_of_maps(immediate1->getColumns(), immediate2->getColumns());
+            assert(isSame);
+        }
+
+        TEST_METHOD(TestInnerJoin) {
+            map<string, vector<string>> map1;
+            map1.insert({ "s3", {"5", "5", "7", "8", "2"} });
+
+            map<string, vector<string>> map2;
+            map2.insert({ "v1", {"y", "z", "x", "y", "y"} });
+
+            vector<map<string, vector<string>>> columnsUses = { map1,map2 };
+            shared_ptr<QueryResultsTable> tab1 = make_shared<QueryResultsTable>(columnsUses);
+
+            map<string, vector<string>> map3;
+            map3.insert({ "s3", {"6", "5","7"} });
+
+            vector<map<string, vector<string>>> columnsModEnt = { map3 };
+            shared_ptr<QueryResultsTable> tab2 = make_shared<QueryResultsTable>(columnsModEnt);
+
+            shared_ptr<QueryResultsTable> immediate1 = tab2->innerJoin(tab1);
+            shared_ptr<QueryResultsTable> immediate2 = tab1->innerJoin(tab2);
+            bool isSame = compare_vectors_of_maps(immediate1->getColumns() ,immediate2->getColumns());
+            assert(isSame);
+        }
+
 	};
 }
