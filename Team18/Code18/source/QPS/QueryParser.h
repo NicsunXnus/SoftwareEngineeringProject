@@ -54,6 +54,8 @@ private:
 
 	int SUCH_THAT_CLAUSE_TOKEN_COUNT{ 6 };
 
+	int MAX_PATTERN_CLAUSE_TOKEN_COUNT{ 8 };
+
 
 	/*
 	* Helper function splits the declarations into each individual declaration (up till ";")
@@ -63,7 +65,7 @@ private:
 	// Helper function to check if Select keyword is present
 	bool hasSelect(std::vector<string_view>& query, int index);
 
-	// Helper function to check if patter keyword is present
+	// Helper function to check if pattern keyword is present
 	bool hasPattern(std::vector<string_view>& query, int index);
 
 	// Helper function to check if a synonym is declared
@@ -75,9 +77,14 @@ private:
 	// Helper function to check if a such that clause is present
 	bool hasRelationalReference(std::vector<string_view>& query, int index);
 
-	// Creates a clause query object
+	// Creates a such that clause query object
 	shared_ptr<QueryObject> createClauseObj(std::vector<string_view>& query, int index);
 
+	// Helper function to check if a pattern clause is present
+	bool hasPatternClause(std::vector<string_view>& query, int index);
+
+	// Creates a pattern clause query object 
+	std::tuple<shared_ptr<QueryObject>, int> createPatternObject(std::vector<string_view>& query, int index);
 };
 
 #endif

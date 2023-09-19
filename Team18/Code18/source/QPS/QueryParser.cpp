@@ -165,13 +165,20 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 				throw SyntaxErrorException("such that clause has invalid syntax");
 			}
 
-			// Construct query object
+			// Construct such that query object
 			shared_ptr<QueryObject> suchThatClauseObj{ createClauseObj(query, currentWordIndex) };
 			result.push_back(suchThatClauseObj);
 			currentWordIndex += SUCH_THAT_CLAUSE_TOKEN_COUNT;
 
 		} else if (isPattern) {
 			currentWordIndex += 1;
+
+			if (!hasPatternClause(query, currentWordIndex)) {
+				throw SyntaxErrorException("such that clause has invalid syntax");
+			}
+
+			// construct pattern query object
+			shared_ptr<QueryObject> patternClauseObj{}
 		}
 
 		currentWordIndex += 1;
@@ -200,7 +207,6 @@ bool QueryParser::hasSuchThat(std::vector<string_view>& query, int index) {
 }
 
 bool QueryParser::hasRelationalReference(std::vector<string_view>& query, int index) {
-	// 6 here is the expected number of tokens we generate from tokenizing a relational reference clause
 	// Eg., "Uses" "(" "a" "," "b" ")"
 	if (index > static_cast<int>(query.size()) - SUCH_THAT_CLAUSE_TOKEN_COUNT) {
 		return false;
@@ -222,7 +228,7 @@ shared_ptr<QueryObject> QueryParser::createClauseObj(std::vector<string_view>& q
 
 	// create a vector of args for the clause objects
 	std::vector<shared_ptr<ClauseArg>> argVector;
-	
+
 	// create clauseArg object for first argument
 	string_view arg1Name{ query[index + 2] };
 	shared_ptr<SynonymObject> synonym1;
@@ -245,14 +251,33 @@ shared_ptr<QueryObject> QueryParser::createClauseObj(std::vector<string_view>& q
 	}
 	argVector.push_back(make_shared<ClauseArg>(arg2Name, synonym2));
 
-	// check with Jan the purpose
-	//try {
-		return clauseFactory->create(relationalReference, argVector);
-	//} catch (const std::exception& e) {
-		//std::cout << e.what() << '\n';
-		//return make_shared<InvalidQueryObject>("Error in creating clause object"sv);
-	//} 
+
+	return clauseFactory->create(relationalReference, argVector);
 }
 
+bool QueryParser::hasPatternClause(std::vector<string_view>& query, int index) {
+	// pattern clause has a variable number of tokens
+	// E.g., "a", "(", "_", ",", "_", "x", "_", ")": a(_,_"x"_)has 8
+	// "a", "(", "_", ",", "_", ")": a(_,_) has 6
 
+	if (index > (static_cast<int>(query.size()) - MAX_PATTERN_CLAUSE_TOKEN_COUNT)) {
+		return false;
+	}
 
+	bool isSynonym{ SynonymObject::isValid(query[index]) };
+	bool hasOpenBracket{ query[index + 1] == "("sv };
+	bool hasComma{ query[index + 3] == ","sv };
+	bool hasCloseBracket;
+	if (query[index + 4] == "_"sv && query[index + 5] != ")"sv) { // pattern is looking for partial match
+		hasCloseBracket = query[index + 7] == ")"sv;
+	} else { // pattern is looking for a wildcard
+		hasCloseBracket = query[index + 5] == ")"sv;
+	}
+	
+	bool hasPC{ isSynonym && hasOpenBracket && hasComma && hasCloseBracket };
+	return hasPC;
+}
+
+std::tuple<shared_ptr<QueryObject>, int> QueryParser::createPatternObject(std::vector<string_view>& query, int index) {
+
+}
