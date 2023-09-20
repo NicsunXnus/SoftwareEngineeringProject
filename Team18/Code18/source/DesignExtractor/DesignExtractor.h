@@ -24,8 +24,6 @@ public:
     // Constructor
     DesignExtractor() {
         this->entityExtractor = make_shared<EntityExtractor>();
-        this->modifiesAbstraction = make_shared<ModifiesAbstraction>();
-        this->usesAbstraction = make_shared<UsesAbstraction>();
     }
 
     void extractEntities(shared_ptr<ASTNode> astNode) {
@@ -68,7 +66,4 @@ public:
 
 private:
     shared_ptr<EntityExtractor> entityExtractor;
-    shared_ptr<ModifiesAbstraction> modifiesAbstraction;
-    shared_ptr<UsesAbstraction> usesAbstraction;
-
 };
