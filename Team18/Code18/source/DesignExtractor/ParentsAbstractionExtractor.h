@@ -38,7 +38,7 @@ public:
                     insertToMapFront(to_string(statement->getStatementNumber()), to_string(parentStatementNumber));
                     
                     // Append Grandparents
-                    vector<string> grandParents = getValueFromMap(parentStatementNumber);
+                    vector<string> grandParents = getValueFromMap(to_string(parentStatementNumber));
                     for (const auto& grandParent : grandParents) {
                         insertToMap(to_string(statement->getStatementNumber()), grandParent);
                     }
