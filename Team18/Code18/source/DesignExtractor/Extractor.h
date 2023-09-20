@@ -30,15 +30,15 @@ private:
         } 
         else if (auto variableNode = std::dynamic_pointer_cast<VariableNode>(astNode)) {
             // astNode is of type VariableNode
-            handleVariable(variableNode)
-        } 
+            handleVariable(variableNode);
+        }
         else if (auto constantNode = std::dynamic_pointer_cast<ConstantNode>(astNode)) {
             // astNode is of type ConstantNode
-            handleConstant(constantNode)
+            handleConstant(constantNode);
         }
         else if (auto exprNode = std::dynamic_pointer_cast<ExprNode>(astNode)) {
             // astNode is of type ExprNode
-            handleExpr(exprNode)
+            handleExpr(exprNode);
         }
         else if (auto condExprNode = std::dynamic_pointer_cast<CondExprNode>(astNode)) {
             // astNode is of type CondExprNode
