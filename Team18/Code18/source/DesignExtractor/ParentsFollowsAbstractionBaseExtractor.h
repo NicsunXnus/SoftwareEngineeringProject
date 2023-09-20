@@ -24,6 +24,10 @@ public:
         return this->AbstractionStorageMap;
     }
 
+    void extractAbstractions(shared_ptr<ASTNode> astNode) {
+        extractDesigns(astNode);
+    }
+
     void extractDesigns(shared_ptr<ASTNode> astNode) override {
         auto programNode = std::dynamic_pointer_cast<ProgramNode>(astNode);
         auto procedureNode = std::dynamic_pointer_cast<ProcedureNode>(astNode);

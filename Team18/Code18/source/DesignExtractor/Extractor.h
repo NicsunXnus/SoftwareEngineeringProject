@@ -14,7 +14,7 @@ public:
     virtual ~Extractor() = default;
 
     virtual void extractDesigns(shared_ptr<ASTNode> astNode) {
-        // Extract the entities based on the type of astNode
+        // Extract the designs based on the type of astNode
         if (auto programNode = std::dynamic_pointer_cast<ProgramNode>(astNode)) {
             handleProgram(programNode);
         } 
@@ -57,7 +57,7 @@ public:
         }
     }
 
-    void handleProcedure(std::shared_ptr<ProcedureNode> procedureNode) {
+    virtual void handleProcedure(std::shared_ptr<ProcedureNode> procedureNode) {
         std::vector<std::shared_ptr<StatementNode>> statements = procedureNode->getStatements();
         for (const auto& statement : statements) {
             extractDesigns(statement);
@@ -67,45 +67,74 @@ public:
     void handleStatement(std::shared_ptr<StatementNode> statementNode) {        
         //Check what kind of statement it is
         if (auto readNode = std::dynamic_pointer_cast<ReadNode>(statementNode)) {
-            extractDesigns(readNode->getVar());
-        } 
+            handleRead(readNode);
+        }
         else if (auto printNode = std::dynamic_pointer_cast<PrintNode>(statementNode)) {
-            extractDesigns(printNode->getVar());
+            handlePrint(printNode);
         }
         else if (auto assignNode = std::dynamic_pointer_cast<AssignNode>(statementNode)) {
-            extractDesigns(assignNode->getExpr());
-            extractDesigns(assignNode->getVar());
+            handleAssign(assignNode);
         }
         else if (auto callNode = std::dynamic_pointer_cast<CallNode>(statementNode)) {
-            //TODO: Handle callNode
-            extractDesigns(callNode->getProc());
+            handleCall(callNode);
         } 
         else if (auto whileNode = std::dynamic_pointer_cast<WhileNode>(statementNode)) {
-            extractDesigns(whileNode->getCondExpr());
-            std::vector<std::shared_ptr<StatementNode>> statements = whileNode->getStatements();
-            std::vector<int> nestedStatements = vector<int>();
-            for (const auto& statement : statements) {
-                extractDesigns(statement);
-            }
+            handleWhile(whileNode);
         } 
         else if (auto ifNode = std::dynamic_pointer_cast<IfNode>(statementNode)) {
-            extractDesigns(ifNode->getCondExpr());
-            std::vector<std::shared_ptr<StatementNode>> ifStatements = ifNode->getStatements();
-            std::vector<std::shared_ptr<StatementNode>> elseStatements = ifNode->getElseStatements();
-            std::vector<std::shared_ptr<StatementNode>> statements;
-
-            statements.insert(statements.end(), ifStatements.begin(), ifStatements.end());
-            statements.insert(statements.end(), elseStatements.begin(), elseStatements.end());
-            
-            for (const auto& statement : statements) {
-                extractDesigns(statement);
-            }
+            handleIf(ifNode);
         } 
         else {
             // Handle other cases or report an error
             std::cerr << "Unsupported ASTNode type in handleStatement." << std::endl;
         }
         
+    }
+
+    // Method to handle read statements
+    virtual void handleRead(std::shared_ptr<ReadNode> readNode) {
+        extractDesigns(readNode->getVar());
+    }
+
+    // Method to handle print statements
+    virtual void handlePrint(std::shared_ptr<PrintNode> printNode) {
+        extractDesigns(printNode->getVar());
+    }
+
+    // Method to handle assignment statements
+    virtual void handleAssign(std::shared_ptr<AssignNode> assignNode) {
+        extractDesigns(assignNode->getExpr());
+        extractDesigns(assignNode->getVar());
+    }
+
+    // Method to handle call statements
+    void handleCall(std::shared_ptr<CallNode> callNode) {
+        //TODO: Handle callNode
+    }
+
+    // Method to handle while statements
+    virtual void handleWhile(std::shared_ptr<WhileNode> whileNode) {
+        extractDesigns(whileNode->getCondExpr());
+        std::vector<std::shared_ptr<StatementNode>> statements = whileNode->getStatements();
+        std::vector<int> nestedStatements = vector<int>();
+        for (const auto& statement : statements) {
+            extractDesigns(statement);
+        }
+    }
+
+    // Method to handle if statements
+    virtual void handleIf(std::shared_ptr<IfNode> ifNode) {
+        extractDesigns(ifNode->getCondExpr());
+        std::vector<std::shared_ptr<StatementNode>> ifStatements = ifNode->getStatements();
+        std::vector<std::shared_ptr<StatementNode>> elseStatements = ifNode->getElseStatements();
+        std::vector<std::shared_ptr<StatementNode>> statements;
+
+        statements.insert(statements.end(), ifStatements.begin(), ifStatements.end());
+        statements.insert(statements.end(), elseStatements.begin(), elseStatements.end());
+        
+        for (const auto& statement : statements) {
+            extractDesigns(statement);
+        }
     }
 
     // Method to handle expressions
@@ -152,13 +181,10 @@ public:
         }
     }
 
-    // Methods to be overriden if additional functionality is needed 
-    virtual void handleVariable(std::shared_ptr<VariableNode> variableNode) {}
-
-    virtual void handleConstant(std::shared_ptr<ConstantNode> constantNode) {}
-
+    // Methods to be overriden if additional functionality is needed
+    virtual void handleVariable(std::shared_ptr<VariableNode> variableNode){}
+    virtual void handleConstant(std::shared_ptr<ConstantNode> constantNode){}
     virtual void preProcessProcedureNode(std::shared_ptr<ProcedureNode> procedureNode) {}
-
     virtual void preProcessStatementNode(std::shared_ptr<StatementNode> statementNode) {}
 
 };

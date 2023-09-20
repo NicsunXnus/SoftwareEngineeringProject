@@ -3,8 +3,8 @@
 #include <string>
 #include "../source/DesignExtractor/ParentsAbstractionExtractor.h"
 #include "../source/DesignExtractor/FollowsAbstractionExtractor.h"
-#include "../source/DesignExtractor/UsesAbstraction.h"
-#include "../source/DesignExtractor/ModifiesAbstraction.h"
+#include "../source/DesignExtractor/UsesAbstractionExtractor.h"
+#include "../source/DesignExtractor/ModifiesAbstractionExtractor.h"
 #include "../source/AST/ASTNode.h"
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -112,8 +112,8 @@ namespace UnitTesting
                   std::shared_ptr<FollowsAbstractionExtractor> testFollowsAbstraction = std::make_shared<FollowsAbstractionExtractor>();
                   
                   // Extract abstraction from program node
-                  testParentsAbstraction->extractDesigns(testProgramNode);
-                  testFollowsAbstraction->extractDesigns(testProgramNode);
+                  testParentsAbstraction->extractAbstractions(testProgramNode);
+                  testFollowsAbstraction->extractAbstractions(testProgramNode);
 
                   // Get abstraction map from abstraction entity
                   std::map<std::string, std::vector<string>> parentsMap = *(testParentsAbstraction->getStorageMap());
@@ -341,13 +341,13 @@ namespace UnitTesting
                   std::shared_ptr<ProgramNode> testProgramNode = std::make_shared<ProgramNode>(testProcedureNodes);
 
                   // Create UsesAbstraction and ModifiesAbstraction
-                  std::shared_ptr<UsesAbstraction> testUsesAbstraction = std::make_shared<UsesAbstraction>();
+                  std::shared_ptr<UsesAbstractionExtractor> testUsesAbstraction = std::make_shared<UsesAbstractionExtractor>();
 
                   // Extract Uses and Modifies from procedure1
-                  testUsesAbstraction->extractUses(testProgramNode);
+                  testUsesAbstraction->extractAbstractions(testProgramNode);
                   
                   // Get UsesMap and ModifiesMap from UsesAbstraction and ModifiesAbstraction by using getUsesStorageMap and getModifiesStorageMap
-                  std::shared_ptr<map<string, vector<string>>> usesMap = testUsesAbstraction->getUsesStorageMap();
+                  std::shared_ptr<map<string, vector<string>>> usesMap = testUsesAbstraction->getStorageMap();
 
                   std::map<std::string, std::vector<std::string>>& usesMapRef = *usesMap;
 
@@ -541,9 +541,10 @@ namespace UnitTesting
                   std::shared_ptr<ProgramNode> testProgramNode = std::make_shared<ProgramNode>(testProcedureNodes);
 
                   // Create ModifiesAbstraction
-                  std::shared_ptr<ModifiesAbstraction> testModifiesAbstraction = std::make_shared<ModifiesAbstraction>();
+                  std::shared_ptr<ModifiesAbstractionExtractor> testModifiesAbstraction = std::make_shared<ModifiesAbstractionExtractor>();
 
-                  testModifiesAbstraction->extractModifies(testProgramNode);
+                  testModifiesAbstraction->extractAbstractions(testProgramNode);
+
                   std::shared_ptr<map<string, vector<string>>> modifiesMap = testModifiesAbstraction->getModifiesStorageMap();
 
                   std::map<std::string, std::vector<std::string>>& modifiesMapRef = *modifiesMap;
