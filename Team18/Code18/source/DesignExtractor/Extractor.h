@@ -79,7 +79,7 @@ private:
         }
         else if (auto callNode = std::dynamic_pointer_cast<CallNode>(statementNode)) {
             //TODO: Handle callNode
-            extractDesigns(callNode->getProcName());
+            extractDesigns(callNode->getProc());
         } 
         else if (auto whileNode = std::dynamic_pointer_cast<WhileNode>(statementNode)) {
             extractDesigns(whileNode->getCondExpr());
@@ -99,7 +99,7 @@ private:
             statements.insert(statements.end(), elseStatements.begin(), elseStatements.end());
             
             for (const auto& statement : statements) {
-                extractUsesAbstraction(statement);
+                extractDesigns(statement);
             }
         } 
         else {
@@ -119,8 +119,8 @@ private:
     void handleExpr(std::shared_ptr<ExprNode> exprNode) {
         std::shared_ptr<ExprNode> leftExpr = exprNode->getLeftExpr();
         std::shared_ptr<ExprNode> rightExpr = exprNode->getRightExpr();
-        extractUsesAbstraction(leftExpr);
-        extractUsesAbstraction(rightExpr);
+        extractDesigns(leftExpr);
+        extractDesigns(rightExpr);
     }
 
     // Method to handle conditional expressions
