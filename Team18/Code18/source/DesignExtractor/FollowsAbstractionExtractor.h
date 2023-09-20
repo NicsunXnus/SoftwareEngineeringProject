@@ -17,16 +17,14 @@ public:
         if (ifNode) {
             std::vector<std::shared_ptr<StatementNode>> ifStatements = ifNode->getStatements();
             std::vector<std::shared_ptr<StatementNode>> elseStatements = ifNode->getElseStatements();
-            // Process "if" statements
-            for (const auto& statement : ifStatements) {
-                extractDesigns(statement);
-            }
-            // Process "else" statements separately
-            for (const auto& statement : elseStatements) {
-                extractDesigns(statement);
-            }
-            handleEquallyNestedStatements(ifStatements);
-            handleEquallyNestedStatements(elseStatements);
+            vector<int> equallyNestedStatementsIf = vector<int>();
+            vector<int> equallyNestedStatementsElse = vector<int>();
+
+            extractAndConvertToStatementNumbers(ifStatements, equallyNestedStatementsIf);
+            extractAndConvertToStatementNumbers(elseStatements, equallyNestedStatementsElse);
+
+            handleEquallyNestedStatements(equallyNestedStatementsIf);
+            handleEquallyNestedStatements(equallyNestedStatementsElse);
             return;
         }
         else if (procedureNode) {
@@ -35,16 +33,20 @@ public:
         else if (whileNode) {
             statements = whileNode->getStatements();
         }
-        // Extract the line numbers of the statements and insert them into the FollowsStorageMap
         vector<int> equallyNestedStatements = vector<int>();
-        for (const auto& statement : statements) {
-            extractDesigns(statement);
-            equallyNestedStatements.push_back(statement->getStatementNumber());
-        }
+        extractAndConvertToStatementNumbers(statements, equallyNestedStatements);
         handleEquallyNestedStatements(equallyNestedStatements);
     }
 
 private:
+    // Method to convert a vector of statements to a vector of statement numbers
+    void extractAndConvertToStatementNumbers(vector<shared_ptr<StatementNode>> statements, vector<int> &statementNumbers) {
+        for (const auto& statement : statements) {
+            extractDesigns(statement);
+            statementNumbers.push_back(statement->getStatementNumber());
+        }
+    }
+
     void handleEquallyNestedStatements(vector<int> equallyNestedStatements) {
         //For each element within equallyNestedStatments, add the element and every other element after it to the FollowsStorageMap
         for (int i = 0; i < equallyNestedStatements.size(); i++) {
