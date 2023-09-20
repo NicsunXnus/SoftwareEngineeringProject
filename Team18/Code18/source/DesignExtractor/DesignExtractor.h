@@ -24,10 +24,23 @@ public:
     // Constructor
     DesignExtractor() {
         this->entityExtractor = make_shared<EntityExtractor>();
+        this->modifiesExtractor = make_shared<ModifiesAbstractionExtractor>();
+        this->usesExtractor = make_shared<UsesAbstractionExtractor>();
+        this->parentsExtractor = make_shared<ParentsAbstractionExtractor>();
+        this->followsExtractor = make_shared<FollowsAbstractionExtractor>();
     }
 
+    // Method to extract all the entities
     void extractEntities(shared_ptr<ASTNode> astNode) {
         entityExtractor->extractDesigns(astNode);
+    }
+
+    // Method to extract all the abstractions
+    void extractAbstractions(shared_ptr<ASTNode> astNode) {
+        modifiesExtractor->extractDesigns(astNode);
+        usesExtractor->extractDesigns(astNode);
+        parentsExtractor->extractDesigns(astNode);
+        followsExtractor->extractDesigns(astNode);
     }
 
     // Method to get procedure entity
@@ -64,6 +77,25 @@ public:
         PKB::insertor.addEntity(constantMap, CONSTANT);  
     }
 
+    void insertAbstractions() {
+        // Get the Abstraction maps
+        static shared_ptr<StringMap> modifiesMap = this->modifiesExtractor->getStorageMap();
+        static shared_ptr<StringMap> usesMap = this->usesExtractor->getStorageMap();
+        static shared_ptr<StringMap> parentsMap = this->parentsExtractor->getStorageMap();
+        static shared_ptr<StringMap> followsMap = this->followsExtractor->getStorageMap();
+
+        // Insert the abstractions into the PKB
+        PKB::insertor.addAbstraction(modifiesMap, MODIFIES);
+        PKB::insertor.addAbstraction(usesMap, USES);
+        PKB::insertor.addAbstraction(parentsMap, PARENTS);
+        PKB::insertor.addAbstraction(followsMap, FOLLOWS);
+    }
+
+
 private:
     shared_ptr<EntityExtractor> entityExtractor;
+    shared_ptr<ModifiesAbstractionExtractor> modifiesExtractor;
+    shared_ptr<UsesAbstractionExtractor> usesExtractor;
+    shared_ptr<ParentsAbstractionExtractor> parentsExtractor;
+    shared_ptr<FollowsAbstractionExtractor> followsExtractor;
 };
