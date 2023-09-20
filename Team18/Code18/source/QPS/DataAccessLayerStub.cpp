@@ -2,9 +2,9 @@
 #include "DataAccessLayerStub.h"
 #include <list>
 vector<string> entities = { "1", "2", "3", "4"};
-vector<string> procedures;
+vector<string> procedures = {"main"};
 vector<string> variables = { "a", "b", "c" };
-vector<string> constants;
+vector<string> constants = {"100", "300"};
 map<string, vector<string>> clauses = { {"1", {"2"}}, {"2", {"3", "4"}}, {"3", {"4"}}};
 map<string, vector<string>> clausesEnts = { {"a", {"1"}}, {"b", {"2", "3"}}, {"c", {"3"}}};
 

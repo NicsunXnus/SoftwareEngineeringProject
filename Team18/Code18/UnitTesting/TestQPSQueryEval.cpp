@@ -337,6 +337,73 @@ namespace UnitTesting
 
 		}
 
+		TEST_METHOD(TestValidAssignModifiesStatementIdent)
+		{
+			vector<string> testS = tokenize("assign s; variable v; Select s such that Modifies(s, \"a\")");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+
+			auto clause = std::dynamic_pointer_cast<ClauseObject>(qo[1]);
+			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
+			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
+			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
+
+			Assert::IsTrue(tables[1]->getSignificant());
+			Assert::IsTrue(tables[0]->getColumns()[0]["s"][0] == "1");
+			Assert::IsTrue(tables[1]->getColumns()[0]["s"][0] == "1");
+		
+		}
+
+		TEST_METHOD(TestValidAssignModifiesStatementWildcard)
+		{
+			vector<string> testS = tokenize("assign s; variable v; Select s such that Modifies(s, _)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+
+			auto clause = std::dynamic_pointer_cast<ClauseObject>(qo[1]);
+			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
+			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
+			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
+
+			Assert::IsTrue(tables[1]->getSignificant());
+			Assert::IsTrue(tables[0]->getColumns()[0]["s"][0] == "1");
+			Assert::IsTrue(tables[1]->getColumns()[0]["s"][0] == "1");
+			Assert::IsTrue(tables[1]->getColumns()[0]["s"][1] == "2");
+			Assert::IsTrue(tables[1]->getColumns()[0]["s"][2] == "3");
+
+		}
+
+		TEST_METHOD(TestValidAssignStatementModifiesIntegerVariable)
+		{
+			vector<string> testS = tokenize("assign s; variable v; Select v such that Modifies(3, v)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+
+			auto clause = std::dynamic_pointer_cast<ClauseObject>(qo[1]);
+			//Assert::IsTrue(clause->getArg2()->isSynonym());
+			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
+			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
+			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
+			Assert::IsTrue(tables[1]->getSignificant());
+			Assert::IsTrue(tables[0]->getColumns()[0]["v"][0] == "a");
+			Assert::IsTrue(tables[1]->getColumns()[0]["v"][0] == "b");
+			Assert::IsTrue(tables[1]->getColumns()[0]["v"][1] == "c");
+
+
+		}
+
 	};
 
 }
