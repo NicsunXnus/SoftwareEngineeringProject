@@ -26,19 +26,19 @@ public:
         this->constantEntity = make_shared<ConstantEntity>();
     }
 
-    preProcessProcedureNode(shared_ptr<ProcedureNode> procedureNode) override {
+    void preProcessProcedureNode(shared_ptr<ProcedureNode> procedureNode) override {
         this->procedureEntity->extractEntity(procedureName);
     }
 
-    preProcessStatementNode(shared_ptr<StatementNode> statementNode) override {
+    void preProcessStatementNode(shared_ptr<StatementNode> statementNode) override {
         this->statementEntity->extractEntity(statementNode);
     }
 
-    handleVariable(shared_ptr<VariableNode> variableNode) override {
+    void handleVariable(shared_ptr<VariableNode> variableNode) override {
         this->variableEntity->extractEntity(variableNode);
     }
 
-    handleConstant(shared_ptr<ConstantNode> constantNode) override {
+    void handleConstant(shared_ptr<ConstantNode> constantNode) override {
         this->constantEntity->extractEntity(constantNode);
     }
 

@@ -25,7 +25,7 @@ private:
         }
         else if (auto statementNode = std::dynamic_pointer_cast<StatementNode>(astNode)) {
             // astNode is of type StatementNode
-            preProcessProcedureNode(statementNode);
+            preProcessStatementNode(statementNode);
             handleStatement(statementNode);
         } 
         else if (auto variableNode = std::dynamic_pointer_cast<VariableNode>(astNode)) {
