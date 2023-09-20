@@ -62,6 +62,6 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
 			cerr << "Unknown Entity detected. Please debug.";
 		}	
 	}
-	sort(queryResultsTables.begin(), queryResultsTables.end());
+	//sort(queryResultsTables.begin(), queryResultsTables.end());
 	return queryResultsTables;
 }

@@ -36,7 +36,7 @@ public:
 	
 };
 
-static shared_ptr<QueryResultsTable> filterStmtRef(shared_ptr<ClauseArg> arg, string colName, shared_ptr<QueryResultsTable> table
+inline shared_ptr<QueryResultsTable> filterStmtRef(shared_ptr<ClauseArg> arg, string colName, shared_ptr<QueryResultsTable> table
 	, shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) {
 	if (arg->isInteger()) {
 		// filter out rows where row val from colName == integer, REMOVE THE ENTIRE COLUMN AFTERWARDS
@@ -86,7 +86,7 @@ static shared_ptr<QueryResultsTable> filterStmtRef(shared_ptr<ClauseArg> arg, st
 	return table;
 }
 
-static shared_ptr<QueryResultsTable> filterEntRef(shared_ptr<ClauseArg> arg, string colName, shared_ptr<QueryResultsTable> table
+inline shared_ptr<QueryResultsTable> filterEntRef(shared_ptr<ClauseArg> arg, string colName, shared_ptr<QueryResultsTable> table
 	, shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) {
 	if (arg->isIdentifier()) {
 		// filter out rows where row val from colName == IDENTIFIER, REMOVE THE ENTIRE COLUMN AFTERWARDS
@@ -155,7 +155,7 @@ public:
 		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
 		shared_ptr<QueryResultsTable> filterFirstArg = filterStmtRef(getArg1(), col2, table, dataAccessLayer, synonyms);
 		shared_ptr<QueryResultsTable> filterSecondArg = filterEntRef(getArg2(), col1, filterFirstArg, dataAccessLayer, synonyms);
-		return table;
+		return filterSecondArg;
 	}
 
 	
@@ -179,7 +179,7 @@ public:
 		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
 		shared_ptr<QueryResultsTable> filterFirstArg = filterEntRef(getArg1(), col2, table, dataAccessLayer, synonyms);
 		shared_ptr<QueryResultsTable> filterSecondArg = filterEntRef(getArg2(), col1, filterFirstArg, dataAccessLayer, synonyms);
-		return table;
+		return filterSecondArg;
 	}
 
 };
@@ -201,7 +201,7 @@ public:
 		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
 		shared_ptr<QueryResultsTable> filterFirstArg = filterStmtRef(getArg1(), col2, table, dataAccessLayer, synonyms);
 		shared_ptr<QueryResultsTable> filterSecondArg = filterEntRef(getArg2(), col1, filterFirstArg, dataAccessLayer, synonyms);
-		return table;
+		return filterSecondArg;
 	}
 
 
@@ -225,7 +225,7 @@ public:
 		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
 		shared_ptr<QueryResultsTable> filterFirstArg = filterEntRef(getArg1(), col2, table, dataAccessLayer, synonyms);
 		shared_ptr<QueryResultsTable> filterSecondArg = filterEntRef(getArg2(), col1, filterFirstArg, dataAccessLayer, synonyms);
-		return table;
+		return filterSecondArg;
 	}
 
 
@@ -249,7 +249,7 @@ public:
 		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
 		shared_ptr<QueryResultsTable> filterFirstArg = filterStmtRef(getArg1(), col1, table, dataAccessLayer, synonyms);
 		shared_ptr<QueryResultsTable> filterSecondArg = filterStmtRef(getArg2(), col2, filterFirstArg, dataAccessLayer, synonyms);
-		return table;
+		return filterSecondArg;
 	}
 
 
@@ -272,7 +272,7 @@ public:
 		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
 		shared_ptr<QueryResultsTable> filterFirstArg = filterStmtRef(getArg1(), col1, table, dataAccessLayer, synonyms);
 		shared_ptr<QueryResultsTable> filterSecondArg = filterStmtRef(getArg2(), col2, filterFirstArg, dataAccessLayer, synonyms);
-		return table;
+		return filterSecondArg;
 	}
 
 };
@@ -294,7 +294,7 @@ public:
 		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
 		shared_ptr<QueryResultsTable> filterFirstArg = filterStmtRef(getArg1(), col1, table, dataAccessLayer, synonyms);
 		shared_ptr<QueryResultsTable> filterSecondArg = filterStmtRef(getArg2(), col2, filterFirstArg, dataAccessLayer, synonyms);
-		return table;
+		return filterSecondArg;
 	}
 
 };
@@ -316,7 +316,7 @@ public:
 		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
 		shared_ptr<QueryResultsTable> filterFirstArg = filterStmtRef(getArg1(), col1, table, dataAccessLayer, synonyms);
 		shared_ptr<QueryResultsTable> filterSecondArg = filterStmtRef(getArg2(), col2, filterFirstArg, dataAccessLayer, synonyms);
-		return table;
+		return filterSecondArg;
 	}
 
 };
