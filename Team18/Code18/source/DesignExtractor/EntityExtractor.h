@@ -27,7 +27,7 @@ public:
     }
 
     void preProcessProcedureNode(shared_ptr<ProcedureNode> procedureNode) override {
-        this->procedureEntity->extractEntity(procedureName);
+        this->procedureEntity->extractEntity(procedureNode);
     }
 
     void preProcessStatementNode(shared_ptr<StatementNode> statementNode) override {

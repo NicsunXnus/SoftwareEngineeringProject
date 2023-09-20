@@ -154,12 +154,12 @@ private:
     }
 
     // Methods to be overriden if additional functionality is needed 
-    void handleVariable(std::shared_ptr<VariableNode> variableNode) {}
+    virtual void handleVariable(std::shared_ptr<VariableNode> variableNode) {}
 
-    void handleConstant(std::shared_ptr<ConstantNode> constantNode) {}
+    virtual void handleConstant(std::shared_ptr<ConstantNode> constantNode) {}
 
-    void preProcessProcedureNode(std::shared_ptr<ProcedureNode> procedureNode) {}
+    virtual void preProcessProcedureNode(std::shared_ptr<ProcedureNode> procedureNode) {}
 
-    void preProcessStatementNode(std::shared_ptr<StatementNode> statementNode) {}
+    virtual void preProcessStatementNode(std::shared_ptr<StatementNode> statementNode) {}
 
 };
