@@ -13,10 +13,10 @@ using namespace std;
 class UsesAbstractionExtractor : public UsesModifiesAbstractionBaseExtractor {
 public:
     // Override handleRead to ignore read statements
-    handleRead(std::shared_ptr<ReadNode> readNode) override {}
+    void handleRead(std::shared_ptr<ReadNode> readNode) override {}
 
     // Override handleAssign to just consider the RHS of the assignment statement
-    handleAssign(std::shared_ptr<AssignNode> assignNode) override {
+    void handleAssign(std::shared_ptr<AssignNode> assignNode) override {
         extractUsesAbstraction(assignNode->getExpr());
     }
 

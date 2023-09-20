@@ -55,7 +55,7 @@ public:
         }
         // if any of the nestedStatement values can be found in the UsesStorageMap, add the whileNode statement number to the UsesStorageMap
         for (const auto& nestedStatement : nestedStatements) {
-            for (const auto& [variable, values] : *this->UsesStorageMap) {
+            for (const auto& [variable, values] : *this->AbstractionStorageMap) {
                 if (std::find(values.begin(), values.end(), to_string(nestedStatement)) != values.end()) {
                     insertToAbstractionMap(variable, to_string(whileNode->getStatementNumber()));
                 }
