@@ -13,7 +13,7 @@ public:
     // Constructor
     virtual ~Extractor() = default;
 
-    void extractDesigns(shared_ptr<ASTNode> astNode) {
+    virtual void extractDesigns(shared_ptr<ASTNode> astNode) {
         // Extract the entities based on the type of astNode
         if (auto programNode = std::dynamic_pointer_cast<ProgramNode>(astNode)) {
             handleProgram(programNode);
