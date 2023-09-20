@@ -169,6 +169,7 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 			shared_ptr<QueryObject> suchThatClauseObj{ createClauseObj(query, currentWordIndex) };
 			result.push_back(suchThatClauseObj);
 			currentWordIndex += SUCH_THAT_CLAUSE_TOKEN_COUNT;
+			continue;
 
 		} else if (isPattern) {
 			currentWordIndex += 1;
