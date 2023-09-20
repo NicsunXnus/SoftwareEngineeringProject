@@ -68,4 +68,12 @@ protected:
         }
         this->AbstractionStorageMap->at(key).insert(this->AbstractionStorageMap->at(key).begin(), value);
     }
+
+    // Get the value of a key in the map
+    vector<string> getValueFromMap(string key) {
+        if (this->AbstractionStorageMap->find(key) == this->AbstractionStorageMap->end()) {
+            return vector<string>();
+        }
+        return this->AbstractionStorageMap->at(key);
+    }
 };
