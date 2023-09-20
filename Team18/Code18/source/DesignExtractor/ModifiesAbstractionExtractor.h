@@ -17,6 +17,6 @@ public:
 
     // Override handleAssign to consider the LHS of the assignment statement
     void handleAssign(std::shared_ptr<AssignNode> assignNode) override {
-        extractUsesAbstraction(assignNode->getVar());
+        extractDesigns(assignNode->getVar());
     }
 };
