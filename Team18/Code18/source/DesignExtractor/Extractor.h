@@ -2,8 +2,6 @@
 #include<stdio.h>
 #include <iostream>
 #include <string>
-#include <vector>
-#include <map>
 
 using namespace std;
 
@@ -22,10 +20,12 @@ private:
             handleProgram(programNode);
         } 
         else if (auto procedureNode = std::dynamic_pointer_cast<ProcedureNode>(astNode)) {
+            preProcessProcedureNode(procedureNode);
             handleProcedure(procedureNode);
         }
         else if (auto statementNode = std::dynamic_pointer_cast<StatementNode>(astNode)) {
             // astNode is of type StatementNode
+            preProcessProcedureNode(statementNode);
             handleStatement(statementNode);
         } 
         else if (auto variableNode = std::dynamic_pointer_cast<VariableNode>(astNode)) {
@@ -109,12 +109,6 @@ private:
         
     }
 
-    void handleVariable(std::shared_ptr<VariableNode> variableNode) {
-    }
-
-    void handleConstant(std::shared_ptr<ConstantNode> constantNode) {
-    }
-
     // Method to handle expressions
     void handleExpr(std::shared_ptr<ExprNode> exprNode) {
         std::shared_ptr<ExprNode> leftExpr = exprNode->getLeftExpr();
@@ -159,5 +153,13 @@ private:
         }
     }
 
+    // Methods to be overriden if additional functionality is needed 
+    void handleVariable(std::shared_ptr<VariableNode> variableNode) {}
+
+    void handleConstant(std::shared_ptr<ConstantNode> constantNode) {}
+
+    void preProcessProcedureNode(std::shared_ptr<ProcedureNode> procedureNode) {}
+
+    void preProcessStatementNode(std::shared_ptr<StatementNode> statementNode) {}
 
 };
