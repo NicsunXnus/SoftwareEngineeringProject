@@ -545,7 +545,7 @@ namespace UnitTesting
 
                   testModifiesAbstraction->extractAbstractions(testProgramNode);
 
-                  std::shared_ptr<map<string, vector<string>>> modifiesMap = testModifiesAbstraction->getModifiesStorageMap();
+                  std::shared_ptr<map<string, vector<string>>> modifiesMap = testModifiesAbstraction->getStorageMap();
 
                   std::map<std::string, std::vector<std::string>>& modifiesMapRef = *modifiesMap;
 

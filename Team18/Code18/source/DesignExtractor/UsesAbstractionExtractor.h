@@ -17,7 +17,7 @@ public:
 
     // Override handleAssign to just consider the RHS of the assignment statement
     void handleAssign(std::shared_ptr<AssignNode> assignNode) override {
-        extractUsesAbstraction(assignNode->getExpr());
+        extractDesigns(assignNode->getExpr());
     }
 
     // Override handleWhile to consider the condition expression of the while statement
