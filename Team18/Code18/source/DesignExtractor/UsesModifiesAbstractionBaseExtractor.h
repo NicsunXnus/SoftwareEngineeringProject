@@ -26,6 +26,7 @@ public:
     // Method to extract the uses abstraction
     void extractAbstractions(shared_ptr<ASTNode> astNode) {
         extractDesigns(astNode);
+        reduceProcedureStatementStorageMap();
         addProcedureNames();
     }
 
@@ -35,7 +36,6 @@ public:
             insertToProcedureStatementStorageMap(procedureNode->getName(), to_string(statement->getStatementNumber()));
             extractDesigns(statement);
         }
-        reduceProcedureStatementStorageMap();
     }
 
     void handleVariable(std::shared_ptr<VariableNode> variableNode) override {
@@ -47,8 +47,11 @@ public:
         std::vector<std::shared_ptr<StatementNode>> statements = whileNode->getStatements();
         std::vector<int> nestedStatements = vector<int>();
         for (const auto& statement : statements) {
+            int statementNumber = statement->getStatementNumber();
+            addToProcedureStatementStorageMap(statementNumber);
+
             // Add the statement number to the vector
-            nestedStatements.push_back(statement->getStatementNumber());
+            nestedStatements.push_back(statementNumber);
 
             extractDesigns(statement);
         }
@@ -73,8 +76,10 @@ public:
         statements.insert(statements.end(), elseStatements.begin(), elseStatements.end());
         
         for (const auto& statement : statements) {
+            int statementNumber = statement->getStatementNumber();
+            addToProcedureStatementStorageMap(statementNumber);
             // Add the statement number to the vector
-            nestedStatements.push_back(statement->getStatementNumber());
+            nestedStatements.push_back(statementNumber);
             
             extractDesigns(statement);
         }
@@ -130,6 +135,15 @@ protected:
         }
     }
 
+    // Check the procedureStatementStorageMap to find the procedure key that contains the statementNumber, and add the statement number to it
+    void addToProcedureStatementStorageMap(int statementNumber) {
+        for (const auto& [procedureName, statementNumbers] : *this->procedureStatementStorageMap) {
+            if (std::find(statementNumbers.begin(), statementNumbers.end(), to_string(statementNumber)) != statementNumbers.end()) {
+                insertToProcedureStatementStorageMap(procedureName, to_string(whileNode->getStatementNumber()));
+            }
+        }
+    }
+
     void addProcedureNames() {
         for (const auto& [variable, values] : *this->AbstractionStorageMap) {
             for (const auto& [procedureName, statementNumbers] : *this->procedureStatementStorageMap) {
@@ -139,6 +153,7 @@ protected:
             }
         }        
     }
+
 
     
 };
