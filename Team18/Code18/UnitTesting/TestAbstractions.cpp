@@ -623,6 +623,7 @@ namespace UnitTesting
 
                   Assert::AreEqual(followsMapRef["3"][0], std::string("4"));
                   
+                  Assert::AreEqual(followsMapRef["4"][0], std::string("1000"));
                   Assert::IsTrue(followsMapRef["4"].empty());
 
                   Assert::AreEqual(followsMapRef["5"][0], std::string("6"));
