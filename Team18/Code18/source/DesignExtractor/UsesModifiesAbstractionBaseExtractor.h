@@ -53,7 +53,7 @@ public:
 
             extractDesigns(statement);
         }
-        // if any of the nestedStatement values can be found in the UsesStorageMap, add the whileNode statement number to the UsesStorageMap
+        // if any of the nestedStatement values can be found in the AbstractionStorageMap, add the whileNode statement number to the AbstractionStorageMap
         for (const auto& nestedStatement : nestedStatements) {
             for (const auto& [variable, values] : *this->AbstractionStorageMap) {
                 if (std::find(values.begin(), values.end(), to_string(nestedStatement)) != values.end()) {
@@ -79,9 +79,9 @@ public:
             
             extractDesigns(statement);
         }
-        // if any of the nestedStatement values can be found in the UsesStorageMap, add the ifNode statement number to the UsesStorageMap
+        // if any of the nestedStatement values can be found in the AbstractionStorageMap, add the ifNode statement number to the AbstractionStorageMap
         for (const auto& nestedStatement : nestedStatements) {
-            for (const auto& [variable, values] : *this->UsesStorageMap) {
+            for (const auto& [variable, values] : *this->AbstractionStorageMap) {
                 if (std::find(values.begin(), values.end(), to_string(nestedStatement)) != values.end()) {
                     insertToAbstractionMap(variable, to_string(ifNode->getStatementNumber()));
                 }
@@ -132,10 +132,10 @@ protected:
     }
 
     void addProcedureNames() {
-        for (const auto& [variable, values] : *this->UsesStorageMap) {
+        for (const auto& [variable, values] : *this->AbstractionStorageMap) {
             for (const auto& [procedureName, statementNumbers] : *this->procedureStatementStorageMap) {
                 if (stoi(values[0]) >= stoi(statementNumbers[0]) && stoi(values[0]) <= stoi(statementNumbers[1])) {
-                    this->UsesStorageMap->at(variable).push_back(procedureName);
+                    this->AbstractionStorageMap->at(variable).push_back(procedureName);
                 }
             }
         }        
