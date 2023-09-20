@@ -7,11 +7,14 @@
 using namespace std;
 
 #include "Entity.h"
-#include "ModifiesAbstraction.h"
-#include "UsesAbstraction.h"
+#include "EntityExtractor.h"
+#include "ModifiesAbstractionExtractor.h"
+#include "UsesAbstractionExtractor.h"
+#include "ParentsAbstractionExtractor.h"
+#include "FollowsAbstractionExtractor.h"
 #include "../AST/ASTNode.h"
 #include "../PKB.h"
-#include "EntityExtractor.h"
+
 
 /**
 * This class represents the Design Extractor component of the SPA.
