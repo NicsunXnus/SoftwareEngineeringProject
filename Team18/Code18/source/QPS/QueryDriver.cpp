@@ -1,9 +1,13 @@
 #pragma once
 #include "QueryDriver.h"
+#include "QueryBuilder.h"
+#include "QueryResultsTable.h"
+#include "ResultsHandler.h"
 
 #include <list>
 #include <string>
 #include "Errors/QPSError.h"
+#include "../HelperFunctions.h"
 
 
 using namespace std;
@@ -31,9 +35,12 @@ list<string> QueryDriver::execute() {
 
 		shared_ptr<QueryObject> obj = queryParser[0];
 		/*For QueryBuilder passage*/
-		//vector<QueryResultsTable> queryResultsTable = QueryBulder::buildQuery(queryParser);
-		// list<string> resultOfCrossQueryExamination = ResultHandler::processQueryResultsTable(queryResultsTable);
-		// return resultOfCrossQueryExamination;
+		//shared_ptr<QueryBuilder> queryBuilderObj = make_shared<QueryBuilder>();
+		//vector<shared_ptr<QueryResultsTable>> queryResultsTable = queryBuilderObj->buildQuery(queryParser);
+
+		//shared_ptr<ResultHandler> resultHandlerObj = make_shared<ResultHandler>();
+		//list<string> resultOfCrossQueryExamination = resultHandlerObj->processTables(queryResultsTable);
+		//return resultOfCrossQueryExamination;
 		// 
 
 		//std::cout << "QueryDriver::execute 4.5" << std::endl;
@@ -46,11 +53,12 @@ list<string> QueryDriver::execute() {
 		list<string> myList(result.begin(), result.end());
 		/*variant<vector<string>, vector<string, vector<string>>> test;
 		vector<string> ta = get<vector<string>>(test);*/
-
+		
 		return myList;
 	}
 	catch (const QPSError& ex) {
 		list<string> empty;
+		debug(ex.what());
 		empty.push_back(ex.getType());
 		return empty;
 	}

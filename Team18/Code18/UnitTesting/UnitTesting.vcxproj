@@ -184,6 +184,7 @@
     <ClCompile Include="TestDesignExtractor.cpp" />
     <ClCompile Include="TestAbstractions.cpp" />
 	  <ClCompile Include="TestAST.cpp" />
+    <ClCompile Include="TestQPSQueryResultTable.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

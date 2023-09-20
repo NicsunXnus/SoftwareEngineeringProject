@@ -43,17 +43,17 @@ public:
 
 		// check if first arg is wildcard or if arg1 is a declared entity that is not semantically accepted by Uses
 		if (arg1->isWildcard() || (arg1->isSynonym() && !isArg1SynonymEntityRef && !isArg1SynonymStmtRef)) {
-			throw SemanticErrorException("Semantic error: invalid 1st argument in clause");
+			throw SemanticErrorException("Semantic error: invalid 1st argument in clause for Uses");
 		}
 		else if (arg2->isSynonym() && arg2->getSynonym()->getEntityType() != VARIABLE) { // check if arg2 is a declared entity thats not a variable
-			throw SemanticErrorException("Semantic error: 2nd argument is not a variable entity");
+			throw SemanticErrorException("Semantic error: 2nd argument is not a variable entity for Uses");
 		}
 		else { // should be a syntactic error in the query
-			throw SyntaxErrorException("Syntax error: Error in validating the clause");
+			throw SyntaxErrorException("Syntax error: Error in validating the clause for Uses");
 		}
 	}
 private:
-	const unordered_set<ENTITY> validStmtEntities{ PRINT, WHILE, IF, ASSIGN };
+	const unordered_set<ENTITY> validStmtEntities{ PRINT, WHILE, IF, ASSIGN, STMT };
 	const unordered_set<ENTITY> validOtherEntities{ CALL, PROCEDURE };
 };
 
@@ -86,17 +86,17 @@ public:
 
 		// check if first arg is wildcard or if arg1 is a declared entity that is not semantically accepted by Uses
 		if (arg1->isWildcard() || (arg1->isSynonym() && !isArg1SynonymEntityRef && !isArg1SynonymStmtRef)) {
-			throw SemanticErrorException("Semantic error: invalid 1st argument in clause");
+			throw SemanticErrorException("Semantic error: invalid 1st argument in clause for Modifies");
 		}
 		else if (arg2->isSynonym() && arg2->getSynonym()->getEntityType() != VARIABLE) { // check if arg2 is a declared entity thats not a variable
-			throw SemanticErrorException("Semantic error: 2nd argument is not a variable entity");
+			throw SemanticErrorException("Semantic error: 2nd argument is not a variable entity for Modifies");
 		}
 		else { // should be a syntactic error in the query
-			throw SyntaxErrorException("Syntax error: Error in validating the clause");
+			throw SyntaxErrorException("Syntax error: Error in validating the clause for Modifies");
 		}
 	}
 private:
-	const unordered_set<ENTITY> validStmtEntities{ READ, WHILE, IF, ASSIGN };
+	const unordered_set<ENTITY> validStmtEntities{ READ, WHILE, IF, ASSIGN, STMT };
 	const unordered_set<ENTITY> validOtherEntities{ CALL, PROCEDURE };
 
 };
@@ -124,7 +124,7 @@ public:
 			return make_shared<FollowsObject>(clauseName, arg1, arg2);
 		}
 		else {
-			throw SemanticErrorException("Error constructing Follows Object");
+			throw SyntaxErrorException("Error constructing Follows Object");
 		}
 	}
 private:
@@ -155,7 +155,7 @@ public:
 			return make_shared<FollowsStarObject>(clauseName, arg1, arg2);
 		}
 		else {
-			throw SemanticErrorException("Error constructing Follows* Object");
+			throw SyntaxErrorException("Error constructing Follows* Object");
 		}
 	}
 private:
@@ -186,7 +186,7 @@ public:
 			return make_shared<ParentObject>(clauseName, arg1, arg2);
 		}
 		else {
-			throw SemanticErrorException("Error constructing Parent Object");
+			throw SyntaxErrorException("Error constructing Parent Object");
 		}
 	}
 private:
@@ -217,7 +217,7 @@ public:
 			return make_shared<ParentStarObject>(clauseName, arg1, arg2);
 		}
 		else {
-			throw SemanticErrorException("Error constructing Parent* Object");
+			throw SyntaxErrorException("Error constructing Parent* Object");
 		}
 	}
 private:
