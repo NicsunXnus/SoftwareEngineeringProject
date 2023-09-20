@@ -7,7 +7,6 @@
 using namespace std;
 
 #include "Entity.h"
-#include "ParentFollowsAbstraction.h"
 #include "ModifiesAbstraction.h"
 #include "UsesAbstraction.h"
 #include "../AST/ASTNode.h"
@@ -22,7 +21,6 @@ public:
     // Constructor
     DesignExtractor() {
         this->entityExtractor = make_shared<EntityExtractor>();
-        this->parentFollowsAbstraction = make_shared<ParentFollowsAbstraction>();
         this->modifiesAbstraction = make_shared<ModifiesAbstraction>();
         this->usesAbstraction = make_shared<UsesAbstraction>();
     }
@@ -67,7 +65,6 @@ public:
 
 private:
     shared_ptr<EntityExtractor> entityExtractor;
-    shared_ptr<ParentFollowsAbstraction> parentFollowsAbstraction;
     shared_ptr<ModifiesAbstraction> modifiesAbstraction;
     shared_ptr<UsesAbstraction> usesAbstraction;
 
