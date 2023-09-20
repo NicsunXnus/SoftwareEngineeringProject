@@ -296,7 +296,8 @@ shared_ptr<QueryObject> QueryParser::createPatternObject(std::vector<string_view
 	} else if (synonyms.find(patternSynonymArg) == synonyms.end()) { // synonym is undeclared
 		throw SemanticErrorException("Semantic error: Pattern synonym is undeclared");
 	}
-	shared_ptr<ClauseArg> patternSynonym{ make_shared<ClauseArg>(patternSynonymArg, synonymToEntity[patternSynonymArg]) };
+	shared_ptr<SynonymObject> patternSynonymObj{ make_shared<SynonymObject>(patternSynonymArg, synonymToEntity[patternSynonymArg]) };
+	shared_ptr<ClauseArg> patternSynonym{ make_shared<ClauseArg>(patternSynonymArg, patternSynonymObj) };
 	argVector.push_back(patternSynonym);
 
 	// create ClauseArg for arg 1 of pattern clause

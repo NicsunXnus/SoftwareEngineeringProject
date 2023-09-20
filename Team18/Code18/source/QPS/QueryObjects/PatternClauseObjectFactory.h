@@ -21,11 +21,11 @@ public:
 
 
 		bool isArg0ValidSynonym{ patternSynonym->isSynonym() 
-			&& (validArg0SynonymEntities.find(patternSynonym->getSynonym()->getEntityType()) != validArg0SynonymEntities.end() };
+			&& (validArg0SynonymEntities.find(patternSynonym->getSynonym()->getEntityType()) != validArg0SynonymEntities.end()) };
 
 		bool isArg1Wildcard{ arg1->isWildcard() };
 		bool isArg1ValidSynonym{ arg1->isSynonym() 
-			&& (validSynonymEntities.find(arg1->getSynonym()->getEntityType()) != validArg1SynonymEntities.end()) };
+			&& (validArg1SynonymEntities.find(arg1->getSynonym()->getEntityType()) != validArg1SynonymEntities.end()) };
 		bool isArg1Ident{ arg1->isIdentifier() };
 		bool isArg1ValidEntRef{ isArg1Wildcard || isArg1ValidSynonym || isArg1Ident };
 
@@ -48,3 +48,4 @@ public:
 	
 	}
 };
+#endif
