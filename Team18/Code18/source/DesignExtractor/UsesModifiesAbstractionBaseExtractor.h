@@ -139,7 +139,7 @@ protected:
     void addToProcedureStatementStorageMap(int statementNumber) {
         for (const auto& [procedureName, statementNumbers] : *this->procedureStatementStorageMap) {
             if (std::find(statementNumbers.begin(), statementNumbers.end(), to_string(statementNumber)) != statementNumbers.end()) {
-                insertToProcedureStatementStorageMap(procedureName, to_string(whileNode->getStatementNumber()));
+                insertToProcedureStatementStorageMap(procedureName, to_string(statementNumber));
             }
         }
     }
