@@ -631,24 +631,8 @@ namespace UnitTesting
                   Assert::IsTrue(followsMapRef["8"].empty());
 
                   Assert::IsTrue(followsMapRef["9"].empty());
-
-
-
-
-
-
-
-                  
-
-
-                  
-
-
-
   
             }
-
-
 
 
     };

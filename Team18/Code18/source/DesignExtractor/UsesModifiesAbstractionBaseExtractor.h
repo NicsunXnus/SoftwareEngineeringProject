@@ -46,9 +46,11 @@ public:
         preProcessWhileNode(whileNode);
         std::vector<std::shared_ptr<StatementNode>> statements = whileNode->getStatements();
         std::vector<int> nestedStatements = vector<int>();
+        string procedureName = getProcedureName(whileNode->getStatementNumber());
+
         for (const auto& statement : statements) {
             int statementNumber = statement->getStatementNumber();
-            addToProcedureStatementStorageMap(statementNumber);
+            insertToProcedureStatementStorageMap(procedureName, to_string(statementNumber));
 
             // Add the statement number to the vector
             nestedStatements.push_back(statementNumber);
@@ -71,13 +73,15 @@ public:
         std::vector<std::shared_ptr<StatementNode>> elseStatements = ifNode->getElseStatements();
         std::vector<std::shared_ptr<StatementNode>> statements;
         std::vector<int> nestedStatements = vector<int>();
+        string procedureName = getProcedureName(ifNode->getStatementNumber());
 
         statements.insert(statements.end(), ifStatements.begin(), ifStatements.end());
         statements.insert(statements.end(), elseStatements.begin(), elseStatements.end());
         
         for (const auto& statement : statements) {
             int statementNumber = statement->getStatementNumber();
-            addToProcedureStatementStorageMap(statementNumber);
+            insertToProcedureStatementStorageMap(procedureName, to_string(statementNumber));
+            
             // Add the statement number to the vector
             nestedStatements.push_back(statementNumber);
             
@@ -136,10 +140,10 @@ protected:
     }
 
     // Check the procedureStatementStorageMap to find the procedure key that contains the statementNumber, and add the statement number to it
-    void addToProcedureStatementStorageMap(int statementNumber) {
+    string getProcedureName(int statementNumber) {
         for (const auto& [procedureName, statementNumbers] : *this->procedureStatementStorageMap) {
             if (std::find(statementNumbers.begin(), statementNumbers.end(), to_string(statementNumber)) != statementNumbers.end()) {
-                insertToProcedureStatementStorageMap(procedureName, to_string(statementNumber));
+                return procedureName;
             }
         }
     }
