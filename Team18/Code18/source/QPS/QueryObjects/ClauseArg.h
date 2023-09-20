@@ -4,6 +4,7 @@
 #include <string>
 #include <string_view>
 #include "SynonymObjects.h"
+#include "../../HelperFunctions.h"
 #include "../../Constants/QPSPKB.h"
 
 
@@ -24,6 +25,8 @@ private:
 
 	// indicates if the clauseArg is a partial pattern match
 	bool isPartialMatch;
+
+	bool isNum;
 
 public:
 	ClauseArg(string_view arg, std::shared_ptr<SynonymObject> synonym, bool isPartialMatch=false)
@@ -65,9 +68,17 @@ public:
 		return (arg[0] == '"') && (arg.back() == '"') && (SynonymObject::isValid(identifierName));
 	}
 
+	bool isExpr() {
+		if (static_cast<int>(arg.size()) <= IDENTIFIER_MIN_CHARS) {
+			return false;
+		}
+		string_view expr = arg.substr(1, arg.size() - 2);
+		return (arg[0] == '"') && (arg.back() == '"') && (SynonymObject::isValid(expr) || isNumber(std::string(expr)));
+	}
+
 	// function to check if clauseArg is a partial matching expression-spec
 	bool isPartialMatchingExprSpec() {
-		return isIdentifier() && isPartialMatch;
+		return isExpr() && isPartialMatch;
 	}
 };
 

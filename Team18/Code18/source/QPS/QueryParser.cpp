@@ -264,20 +264,24 @@ bool QueryParser::hasPatternClause(std::vector<string_view>& query, int index, i
 	// E.g., "a", "(", "_", ",", "_", "x", "_", ")": a(_,_"x"_)has 8
 	// "a", "(", "_", ",", "_", ")": a(_,_) has 6
 
-	if (index > (static_cast<int>(query.size()) - MAX_PATTERN_CLAUSE_TOKEN_COUNT)) {
+	if (index > (static_cast<int>(query.size()) - MIN_PATTERN_CLAUSE_TOKEN_COUNT)) {
 		return false;
 	}
 
 	bool isSynonym{ SynonymObject::isValid(query[index]) };
 	bool hasOpenBracket{ query[index + 1] == "("sv };
 	bool hasComma{ query[index + 3] == ","sv };
-	bool hasCloseBracket;
-	if (query[index + 4] == "_"sv && query[index + 5] == ")"sv) { // pattern is looking for a wildcard
+	bool hasCloseBracket{ false };
+	if (query[index + 5] == ")"sv) { // pattern is looking for an exact match
 		tokenCount = MIN_PATTERN_CLAUSE_TOKEN_COUNT;
 		hasCloseBracket = true;
 	} else { // pattern is looking for partial match
+		if (index > (static_cast<int>(query.size()) - MAX_PATTERN_CLAUSE_TOKEN_COUNT)) {
+			return false;
+		}
+
 		tokenCount = MAX_PATTERN_CLAUSE_TOKEN_COUNT;
-		hasCloseBracket = query[index + 5] == ")"sv;
+		hasCloseBracket = query[index + 7] == ")"sv;
 	}
 	
 	bool hasPC{ isSynonym && hasOpenBracket && hasComma && hasCloseBracket };
@@ -312,10 +316,11 @@ shared_ptr<QueryObject> QueryParser::createPatternObject(std::vector<string_view
 	argVector.push_back(make_shared<ClauseArg>(arg1Name, synonym1));
 
 	// create ClauseArg for arg 2 of pattern clause
-	string_view arg2Name{ query[index + 4] };
 	if (tokenCount == MIN_PATTERN_CLAUSE_TOKEN_COUNT) { // pattern clause is an exact match
+		string_view arg2Name{ query[index + 4] };
 		argVector.push_back(make_shared<ClauseArg>(arg2Name, nullptr, false));
-	} else if (tokenCount == MAX_PATTERN_CLAUSE_TOKEN_COUNT) {
+	} else if (tokenCount == MAX_PATTERN_CLAUSE_TOKEN_COUNT) { // pattern clause is a partial match
+		string_view arg2Name{ query[index + 5] };
 		argVector.push_back(make_shared<ClauseArg>(arg2Name, nullptr, true));
 	} else {
 		std::cout << "Invalid token count in pattern object creation\n";

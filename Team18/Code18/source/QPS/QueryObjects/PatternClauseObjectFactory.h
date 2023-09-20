@@ -31,7 +31,7 @@ public:
 
 		bool isArg2Wildcard{ arg2->isWildcard() };
 		bool isArg2PartialMatching{ arg2->isPartialMatchingExprSpec()};
-		bool isArg2ValidExprSpec{ isArg1Wildcard || isArg2PartialMatching };
+		bool isArg2ValidExprSpec{ isArg2Wildcard || isArg2PartialMatching };
 
 		
 		if (isArg0ValidSynonym && isArg1ValidEntRef && isArg2ValidExprSpec) { // all 3 args are valid for a pattern clause
