@@ -87,7 +87,7 @@ public:
         // Insert the abstractions into the PKB
         PKB::insertor.addAbstraction(modifiesMap, MODIFIES);
         PKB::insertor.addAbstraction(usesMap, USES);
-        PKB::insertor.addAbstraction(parentsMap, PARENTS);
+        PKB::insertor.addAbstraction(parentsMap, PARENT);
         PKB::insertor.addAbstraction(followsMap, FOLLOWS);
     }
 
