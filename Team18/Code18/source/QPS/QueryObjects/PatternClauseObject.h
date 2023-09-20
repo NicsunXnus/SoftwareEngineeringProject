@@ -28,5 +28,16 @@ public:
 	shared_ptr<ClauseArg> getArg2() {
 		return arguments[2];
 	}
+
+	// TODO: impleme
+	void call(shared_ptr<DataAccessLayer> dataAccessLayer) {};
+
+	// variant: design entities, clauses
+	// Setting the results of the PKB call
+	void setResult(variant<vector<string>, map<string, vector<string>>> result) {}
+
+	variant<vector<string>, map<string, vector<string>>> getResult() {
+		return res;
+	}
 };
 #endif

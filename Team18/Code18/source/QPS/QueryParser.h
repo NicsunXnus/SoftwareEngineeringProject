@@ -53,7 +53,7 @@ private:
 		{"Follows"sv, "Follows*"sv, "Parent"sv, "Parent*"sv, "Uses"sv, "Modifies"sv};
 
 	int SUCH_THAT_CLAUSE_TOKEN_COUNT{ 6 };
-
+	int MIN_PATTERN_CLAUSE_TOKEN_COUNT{ 6 };
 	int MAX_PATTERN_CLAUSE_TOKEN_COUNT{ 8 };
 
 
@@ -63,7 +63,7 @@ private:
 	vector<vector<string_view>> splitDeclarations(vector<string_view> declarations);
 
 	// Helper function to check if Select keyword is present
-	bool hasSelect(std::vector<string_view>& query, int index);
+	bool hasSelect(std::vector<string_view>& query, int& index);
 
 	// Helper function to check if pattern keyword is present
 	bool hasPattern(std::vector<string_view>& query, int index);
@@ -77,14 +77,14 @@ private:
 	// Helper function to check if a such that clause is present
 	bool hasRelationalReference(std::vector<string_view>& query, int index);
 
-	// Creates a such that clause query object
-	shared_ptr<QueryObject> createClauseObj(std::vector<string_view>& query, int index);
+	// Creates a such that clause query object, and increments the index by the number of tokens the clause has
+	shared_ptr<QueryObject> createClauseObj(std::vector<string_view>& query, int& index);
 
 	// Helper function to check if a pattern clause is present
-	bool hasPatternClause(std::vector<string_view>& query, int index);
+	bool hasPatternClause(std::vector<string_view>& query, int index, int& tokenCount);
 
 	// Creates a pattern clause query object 
-	std::tuple<shared_ptr<QueryObject>, int> createPatternObject(std::vector<string_view>& query, int index);
+	shared_ptr<QueryObject> createPatternObject(std::vector<string_view>& query, int& index, int tokenCount);
 };
 
 #endif
