@@ -14,27 +14,34 @@ class FollowsAbstractionExtractor : public ParentsFollowsAbstractionBaseExtracto
 public:
     void handleNode(shared_ptr<ProcedureNode> procedureNode, shared_ptr<IfNode> ifNode, shared_ptr<WhileNode> whileNode) override {
         vector<shared_ptr<StatementNode>> statements;
-
-            if (procedureNode) {
-                statements = procedureNode->getStatements();
-            }
-            else if (ifNode) {
-                std::vector<std::shared_ptr<StatementNode>> ifStatements = ifNode->getStatements();
-                std::vector<std::shared_ptr<StatementNode>> elseStatements = ifNode->getElseStatements();
-                statements.insert(statements.end(), ifStatements.begin(), ifStatements.end());
-                statements.insert(statements.end(), elseStatements.begin(), elseStatements.end());
-            }
-            else if (whileNode) {
-                statements = whileNode->getStatements();
-            }
-            
-            // Extract the line numbers of the statements and insert them into the FollowsStorageMap
-            vector<int> equallyNestedStatements = vector<int>();
-            for (const auto& statement : statements) {
+        if (ifNode) {
+            std::vector<std::shared_ptr<StatementNode>> ifStatements = ifNode->getStatements();
+            std::vector<std::shared_ptr<StatementNode>> elseStatements = ifNode->getElseStatements();
+            // Process "if" statements
+            for (const auto& statement : ifStatements) {
                 extractDesigns(statement);
-                equallyNestedStatements.push_back(statement->getStatementNumber());
             }
-            handleEquallyNestedStatements(equallyNestedStatements);
+            // Process "else" statements separately
+            for (const auto& statement : elseStatements) {
+                extractDesigns(statement);
+            }
+            handleEquallyNestedStatements(ifStatements);
+            handleEquallyNestedStatements(elseStatements);
+            return;
+        }
+        else if (procedureNode) {
+            statements = procedureNode->getStatements();
+        }
+        else if (whileNode) {
+            statements = whileNode->getStatements();
+        }
+        // Extract the line numbers of the statements and insert them into the FollowsStorageMap
+        vector<int> equallyNestedStatements = vector<int>();
+        for (const auto& statement : statements) {
+            extractDesigns(statement);
+            equallyNestedStatements.push_back(statement->getStatementNumber());
+        }
+        handleEquallyNestedStatements(equallyNestedStatements);
     }
 
 private:
