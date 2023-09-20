@@ -171,20 +171,17 @@ namespace UnitTesting
                   Assert::AreEqual(followsMap["6"][0], std::string("11"));
                   Assert::AreEqual(followsMap["6"][1], std::string("12"));
 
-                  Assert::AreEqual(followsMap["11"][0], std::string("12"));
-
-                  Assert::AreEqual(followsMap["12"].empty(), true);
-
                   Assert::AreEqual(followsMap["7"][0], std::string("8"));
-                  Assert::AreEqual(followsMap["7"][1], std::string("9"));
-                  Assert::AreEqual(followsMap["7"][2], std::string("10"));
 
-                  Assert::AreEqual(followsMap["8"][0], std::string("9"));
-                  Assert::AreEqual(followsMap["8"][1], std::string("10"));
+                  Assert::AreEqual(followsMap["8"].empty(), true);
 
                   Assert::AreEqual(followsMap["9"][0], std::string("10"));
 
                   Assert::AreEqual(followsMap["10"].empty(), true);
+                  
+                  Assert::AreEqual(followsMap["11"][0], std::string("12"));
+
+                  Assert::AreEqual(followsMap["12"].empty(), true);
 
 		}
 
