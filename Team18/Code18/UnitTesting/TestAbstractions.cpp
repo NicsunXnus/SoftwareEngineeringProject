@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include <string>
-#include "../source/DesignExtractor/ParentFollowsAbstraction.h"
+#include "../source/DesignExtractor/ParentsAbstractionExtractor.h"
+#include "../source/DesignExtractor/FollowsAbstractionExtractor.h"
 #include "../source/DesignExtractor/UsesAbstraction.h"
 #include "../source/DesignExtractor/ModifiesAbstraction.h"
 #include "../source/AST/ASTNode.h"
@@ -106,15 +107,17 @@ namespace UnitTesting
                   // Create program node
                   std::shared_ptr<ProgramNode> testProgramNode = std::make_shared<ProgramNode>(testProcedureNodes);
 
-                  // Create ParentsFollowsAbstraction
-                  std::shared_ptr<ParentFollowsAbstraction> testParentsFollowsAbstraction = std::make_shared<ParentFollowsAbstraction>();
+                  // Create ParentsAbstractionExtractor and FollowsAbstractionExtractor
+                  std::shared_ptr<ParentsAbstractionExtractor> testParentsAbstraction = std::make_shared<ParentsAbstractionExtractor>();
+                  std::shared_ptr<FollowsAbstractionExtractor> testFollowsAbstraction = std::make_shared<FollowsAbstractionExtractor>();
                   
                   // Extract abstraction from program node
-                  testParentsFollowsAbstraction->extractAbstraction(testProgramNode);
+                  testParentsAbstraction->extractDesigns(testProgramNode);
+                  testFollowsAbstraction->extractDesigns(testProgramNode);
 
                   // Get abstraction map from abstraction entity
-                  std::map<std::string, std::vector<string>> parentsMap = *(testParentsFollowsAbstraction->getParentsStorageMap());
-                  std::map<std::string, std::vector<string>> followsMap = *(testParentsFollowsAbstraction->getFollowsStorageMap());
+                  std::map<std::string, std::vector<string>> parentsMap = *(testParentsAbstraction->getStorageMap());
+                  std::map<std::string, std::vector<string>> followsMap = *(testFollowsAbstraction->getStorageMap());
                   
                   // Check if the parentsMap is extracted correctly
                   Assert::AreEqual(parentsMap["1"].empty(), true);
