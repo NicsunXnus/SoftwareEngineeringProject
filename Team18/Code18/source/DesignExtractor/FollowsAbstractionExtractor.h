@@ -10,8 +10,12 @@ using namespace std;
 #include "../AST/ASTNode.h"
 #include "ParentsFollowsAbstractionBaseExtractor.h"
 
+/**
+ * This class is used to extract the Follows abstraction from the AST.
+ */
 class FollowsAbstractionExtractor : public ParentsFollowsAbstractionBaseExtractor {
 public:
+    // Overriden method to handle the different types of nodes, its use is found in the ParentsFollowsAbstractionBaseExtractor base class
     void handleNode(shared_ptr<ProcedureNode> procedureNode, shared_ptr<IfNode> ifNode, shared_ptr<WhileNode> whileNode) override {
         vector<shared_ptr<StatementNode>> statements;
         if (ifNode) {
@@ -47,6 +51,7 @@ private:
         }
     }
 
+    // Method to use the nested statments to build the FollowsStorageMap
     void handleEquallyNestedStatements(vector<int> equallyNestedStatements) {
         //For each element within equallyNestedStatments, add the element and every other element after it to the FollowsStorageMap
         for (int i = 0; i < equallyNestedStatements.size(); i++) {

@@ -8,11 +8,16 @@ using namespace std;
 #include "../AST/ASTNode.h"
 
 
+/**
+ * This class is used as the base class to all the extractors. It is used to extract all the designs from the AST.
+ * Methods are virtual so that they can be overriden by the individual extractors.
+ */
 class Extractor {
 public:
     // Constructor
     virtual ~Extractor() = default;
 
+    // Method to extract the designs, override if needed
     virtual void extractDesigns(shared_ptr<ASTNode> astNode) {
         // Extract the designs based on the type of astNode
         if (auto programNode = std::dynamic_pointer_cast<ProgramNode>(astNode)) {
@@ -50,13 +55,15 @@ public:
         }
     }
 
-    void handleProgram(std::shared_ptr<ProgramNode> programNode) {
+    // Method to handle program nodes, override if needed
+    virtual void handleProgram(std::shared_ptr<ProgramNode> programNode) {
         std::vector<std::shared_ptr<ProcedureNode>> procedures = programNode->getProcedures();
         for (const auto& procedure : procedures) {
             extractDesigns(procedure);
         }
     }
 
+    // Method to handle procedure nodes, override if needed
     virtual void handleProcedure(std::shared_ptr<ProcedureNode> procedureNode) {
         std::vector<std::shared_ptr<StatementNode>> statements = procedureNode->getStatements();
         for (const auto& statement : statements) {
@@ -64,7 +71,8 @@ public:
         }
     }
 
-    void handleStatement(std::shared_ptr<StatementNode> statementNode) {        
+    // Method to handle statement nodes, override if needed
+    virtual void handleStatement(std::shared_ptr<StatementNode> statementNode) {        
         //Check what kind of statement it is
         if (auto readNode = std::dynamic_pointer_cast<ReadNode>(statementNode)) {
             handleRead(readNode);
@@ -108,7 +116,7 @@ public:
     }
 
     // Method to handle call statements
-    void handleCall(std::shared_ptr<CallNode> callNode) {
+    virtual void handleCall(std::shared_ptr<CallNode> callNode) {
         //TODO: Handle callNode
     }
 
@@ -146,7 +154,7 @@ public:
     }
 
     // Method to handle conditional expressions
-    void handleCondExpr(std::shared_ptr<CondExprNode> condExprNode) {
+    virtual void handleCondExpr(std::shared_ptr<CondExprNode> condExprNode) {
         if (auto relExprNode = std::dynamic_pointer_cast<RelExprNode>(condExprNode)) {
             // Get the left and right expressions
             std::shared_ptr<ExprNode> leftExpr = relExprNode->getLeftRelFactor();

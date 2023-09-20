@@ -17,7 +17,7 @@ using namespace std;
 
 
 /**
-* This class represents the Design Extractor component of the SPA.
+* This class represents the Design Extractor component of the SPA. It is used to extract all the entities and abstractions from the AST.
 */
 class DesignExtractor {
 public:
@@ -63,6 +63,7 @@ public:
         return this->entityExtractor->getConstantEntity();
     }
     
+    // Method to insert the entities into the PKB
     void insertEntities() {
         // Get the entity maps
         static shared_ptr<StringMap> statementMap = getStatementEntity()->getMap();
@@ -77,6 +78,7 @@ public:
         PKB::insertor.addEntity(constantMap, CONSTANT);  
     }
 
+    // Method to insert the abstractions into the PKB
     void insertAbstractions() {
         // Get the Abstraction maps
         static shared_ptr<StringMap> modifiesMap = this->modifiesExtractor->getStorageMap();

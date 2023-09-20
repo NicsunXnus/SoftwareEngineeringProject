@@ -10,7 +10,11 @@ using namespace std;
 #include "../AST/ASTNode.h"
 #include "Extractor.h"
 
-
+/**
+ * This class is the base class for the Parents and Follows Abstraction extractors
+ * It is used to provide default implementations and common methods for the two extractors
+ * Override the relevant methods to implement the different abstractions
+ */
 class ParentsFollowsAbstractionBaseExtractor : public Extractor {
 public:
     //Constructor
@@ -18,16 +22,20 @@ public:
         this->AbstractionStorageMap = std::make_shared<map<string, vector<string>>>();
     }
 
+    // Method to handle the different types of nodes
     virtual void handleNode(shared_ptr<ProcedureNode> procedureNode, shared_ptr<IfNode> ifNode, shared_ptr<WhileNode> whileNode) = 0;
 
+    // Gets the map of the abstraction
     std::shared_ptr<map<string, vector<string>>> getStorageMap() {
         return this->AbstractionStorageMap;
     }
 
+    // Method to abstract the extraction of designs to line up with the different abstractions
     void extractAbstractions(shared_ptr<ASTNode> astNode) {
         extractDesigns(astNode);
     }
 
+    // Overriden method to extract the necessary designs 
     void extractDesigns(shared_ptr<ASTNode> astNode) override {
         auto programNode = std::dynamic_pointer_cast<ProgramNode>(astNode);
         auto procedureNode = std::dynamic_pointer_cast<ProcedureNode>(astNode);

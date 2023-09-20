@@ -10,6 +10,9 @@ using namespace std;
 #include "../AST/ASTNode.h"
 #include "UsesModifiesAbstractionBaseExtractor.h"
 
+/**
+ * This class is used to extract the uses abstraction from the AST.
+ */
 class UsesAbstractionExtractor : public UsesModifiesAbstractionBaseExtractor {
 public:
     // Override handleRead to ignore read statements

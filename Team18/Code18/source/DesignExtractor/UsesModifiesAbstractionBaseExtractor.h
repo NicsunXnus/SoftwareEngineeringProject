@@ -10,6 +10,11 @@ using namespace std;
 #include "../AST/ASTNode.h"
 #include "Extractor.h"
 
+/*
+ * This class is the base class for the Uses and Modifies Abstraction extractors
+ * It is used to provide default implementations and common methods for the two extractors
+ * Override the relevant methods to implement the different abstractions
+ */
 
 class UsesModifiesAbstractionBaseExtractor : public Extractor {
 public:
@@ -19,6 +24,7 @@ public:
         this->procedureStatementStorageMap = std::make_shared<map<string, vector<string>>>();
     }
 
+    // Gets the map of the abstraction
     std::shared_ptr<map<string, vector<string>>> getStorageMap() {
         return this->AbstractionStorageMap;
     }
@@ -30,6 +36,7 @@ public:
         addProcedureNames();
     }
 
+    // Overriden method to store procedure names on top of extraction of designs
     void handleProcedure(std::shared_ptr<ProcedureNode> procedureNode) override {
         std::vector<std::shared_ptr<StatementNode>> statements = procedureNode->getStatements();
         for (const auto& statement : statements) {
@@ -38,10 +45,12 @@ public:
         }
     }
 
+    // Overriden method to store variable name (no default implmentation)
     void handleVariable(std::shared_ptr<VariableNode> variableNode) override {
         insertToAbstractionMap(variableNode->getValue(), to_string(variableNode->getStatementNumber()));
     }
 
+    // Overriden method to store statement numbers of the child of while node
     void handleWhile(std::shared_ptr<WhileNode> whileNode) override {
         preProcessWhileNode(whileNode);
         std::vector<std::shared_ptr<StatementNode>> statements = whileNode->getStatements();
@@ -67,6 +76,7 @@ public:
         }
     }
 
+    // Overriden method to store statement numbers of the child of if node
     void handleIf(std::shared_ptr<IfNode> ifNode) override {
         preProcessIfNode(ifNode);
         std::vector<std::shared_ptr<StatementNode>> ifStatements = ifNode->getStatements();
@@ -148,6 +158,7 @@ protected:
         }
     }
 
+    // Method to add procedure names to the abstraction map from reduced ProcedureStatementStorageMap
     void addProcedureNames() {
         for (const auto& [variable, values] : *this->AbstractionStorageMap) {
             for (const auto& [procedureName, statementNumbers] : *this->procedureStatementStorageMap) {

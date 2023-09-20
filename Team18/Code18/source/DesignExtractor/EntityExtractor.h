@@ -10,6 +10,9 @@ using namespace std;
 #include "Extractor.h"
 #include "Entity.h"
 
+/**
+ * This class is used to extract all the entities from the AST.
+ */
 class EntityExtractor : public Extractor {
 private:
     shared_ptr<ProcedureEntity> procedureEntity;
@@ -26,18 +29,22 @@ public:
         this->constantEntity = make_shared<ConstantEntity>();
     }
 
+    // Overriden method to to extract procedure names
     void preProcessProcedureNode(shared_ptr<ProcedureNode> procedureNode) override {
         this->procedureEntity->extractEntity(procedureNode);
     }
 
+    // Overriden method to to extract statement names and line numbers
     void preProcessStatementNode(shared_ptr<StatementNode> statementNode) override {
         this->statementEntity->extractEntity(statementNode);
     }
 
+    // Overriden method to to extract variable names and line numbers
     void handleVariable(shared_ptr<VariableNode> variableNode) override {
         this->variableEntity->extractEntity(variableNode);
     }
 
+    // Overriden method to to extract constant names and line numbers
     void handleConstant(shared_ptr<ConstantNode> constantNode) override {
         this->constantEntity->extractEntity(constantNode);
     }
