@@ -81,7 +81,7 @@ public:
         for (const auto& statement : statements) {
             int statementNumber = statement->getStatementNumber();
             insertToProcedureStatementStorageMap(procedureName, to_string(statementNumber));
-            
+
             // Add the statement number to the vector
             nestedStatements.push_back(statementNumber);
             
@@ -139,7 +139,7 @@ protected:
         }
     }
 
-    // Check the procedureStatementStorageMap to find the procedure key that contains the statementNumber, and add the statement number to it
+    // Get the procedure name of a statement number
     string getProcedureName(int statementNumber) {
         for (const auto& [procedureName, statementNumbers] : *this->procedureStatementStorageMap) {
             if (std::find(statementNumbers.begin(), statementNumbers.end(), to_string(statementNumber)) != statementNumbers.end()) {
