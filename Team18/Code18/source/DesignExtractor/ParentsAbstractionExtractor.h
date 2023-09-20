@@ -32,8 +32,6 @@ public:
             }
             
             for (const auto& statement : statements) {
-                extractDesigns(statement);
-
                 if (parentStatementNumber != -1) {
                     insertToMapFront(to_string(statement->getStatementNumber()), to_string(parentStatementNumber));
                     
@@ -44,7 +42,8 @@ public:
                     }
 
                 }
-
+                
+                extractDesigns(statement);
             }
     }
 
