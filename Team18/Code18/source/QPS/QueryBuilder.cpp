@@ -7,11 +7,14 @@ using namespace std;
 
 //Takes in a Query object and then returns a vector of QueryResultsTable. This vector will
 //be pased to ResultHandler to process the various tables of the clauses
+
 vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
+
 	vector<shared_ptr<QueryResultsTable>> queryResultsTables;
 	//shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayer>();
 	for (shared_ptr<QueryObject> obj : queryObjects) {
-		
+		shared_ptr<QueryResultsTable> table = obj->callAndProcess(dataAccessLayer, synonyms);
+		queryResultsTables.push_back(table);
 		//obj->call(dataAccessLayer);
 		//If it is a select query, a vector<string> is returned,
 		auto designEntity = std::dynamic_pointer_cast<DesignObject>(obj);
@@ -34,6 +37,9 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
 			/*map<string,vector<string>> result = obj->getResult();
 			if (result.empty()) {
 				//should just return nothing since it is the result of a false clause
+				//short circuit the process and return an empty list
+				vector<shared_ptr<QueryResultsTable>> emptyQueryResultsTables;
+				return emptyQueryResultsTables;
 			}
 			vector<string> column1;
 			vector<string> column2;
@@ -56,5 +62,6 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
 			cerr << "Unknown Entity detected. Please debug.";
 		}	
 	}
+	sort(queryResultsTables.begin(), queryResultsTables.end());
 	return queryResultsTables;
 }

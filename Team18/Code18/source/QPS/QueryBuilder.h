@@ -17,24 +17,27 @@ class QueryBuilder {
 private:
 	vector <shared_ptr<QueryObject>> queryObjects;
 	unordered_map<string_view, shared_ptr<QueryObject>> synonyms;
+	shared_ptr<DataAccessLayer> dataAccessLayer;
+
 public:
 	/**
 	 * Constructor for the QueryBuilder object
 	 */
-	QueryBuilder(vector<shared_ptr<QueryObject>> queryObjects, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) :queryObjects(queryObjects), synonyms(synonyms) {
+	QueryBuilder(vector<shared_ptr<QueryObject>> queryObjects, unordered_map<string_view, shared_ptr<QueryObject>> synonyms, shared_ptr<DataAccessLayer> dataAccessLayer)
+		:queryObjects(queryObjects), synonyms(synonyms), dataAccessLayer(dataAccessLayer) {
 
 	}
 
 	/**
 	 * Destructor for the QueryBuilder object
 	 */
-	~QueryBuilder() {};
+	~QueryBuilder() {};	
 
 	/**
 	 * Builds the query results given a list of query objects
 	 */
+
 	vector<shared_ptr<QueryResultsTable>> buildQuery();
-	  
-	
+
 };
 #endif

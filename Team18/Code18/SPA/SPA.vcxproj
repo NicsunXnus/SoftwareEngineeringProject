@@ -13,10 +13,12 @@
   <ItemGroup>
     <ClCompile Include="..\source\ApplicationWrapper.cpp" />
     <ClCompile Include="..\source\QPS\DataAccessLayer.cpp" />
+    <ClCompile Include="..\source\QPS\DataAccessLayerStub.cpp" />
     <ClCompile Include="..\source\QPS\Errors\QPSError.h" />
     <ClCompile Include="..\source\QPS\Errors\SyntaxError.h" />
     <ClCompile Include="..\source\QPS\QueryDriver.cpp" />
     <ClCompile Include="..\source\QPS\QueryBuilder.cpp" />
+    <ClCompile Include="..\source\QPS\ResultsHandler.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\QueryObjectFactory.cpp" />
     <ClCompile Include="..\source\QPS\QueryParser.cpp" />
     <ClCompile Include="..\source\TokenizerClasses\TokenizerResults.cpp" />
@@ -35,6 +37,7 @@
     <ClInclude Include="..\source\PKB\StorageClasses\EntityStorage.h" />
     <ClInclude Include="..\source\PKB\StorageManager.h" />
     <ClInclude Include="..\source\QPS\DataAccessLayer.h" />
+    <ClInclude Include="..\source\QPS\DataAccessLayerStub.h" />
     <ClInclude Include="..\source\QPS\Errors\SemanticError.h" />
     <ClInclude Include="..\source\QPS\QueryDriver.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\ClauseObject.h" />
@@ -46,6 +49,7 @@
     <ClInclude Include="..\source\QPS\QueryObjects\QueryObjectFactory.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\SynonymObjects.h" />
     <ClInclude Include="..\source\QPS\QueryParser.h" />
+    <ClCompile Include="..\source\QPS\ResultsHandler.h" />
     <ClInclude Include="..\source\TokenClasses\IdentifierToken.h" />
     <ClInclude Include="..\source\TokenClasses\KeywordToken.h" />
     <ClInclude Include="..\source\TokenClasses\LiteralToken.h" />

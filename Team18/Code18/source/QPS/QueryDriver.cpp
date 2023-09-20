@@ -1,5 +1,8 @@
 #pragma once
 #include "QueryDriver.h"
+#include "QueryBuilder.h"
+#include "QueryResultsTable.h"
+#include "ResultsHandler.h"
 
 #include <list>
 #include <string>
@@ -28,14 +31,17 @@ list<string> QueryDriver::execute() {
 		vector<shared_ptr<QueryObject>> queryObjects = parser->validateQuery(get<1>(declarationQuery));
 		unordered_map<string_view, shared_ptr<QueryObject>> synonyms = parser->getSynonyms();
 		shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayer>();
-		shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(queryObjects, synonyms);
+		shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(queryObjects, synonyms, dataAccessLayer);
 		
 
 		//shared_ptr<QueryObject> obj = queryParser[0]; // sprint 1
 		/*For QueryBuilder passage*/
-		//vector<QueryResultsTable> queryResultsTable = QueryBulder::buildQuery(queryParser);
-		// list<string> resultOfCrossQueryExamination = ResultHandler::processQueryResultsTable(queryResultsTable);
-		// return resultOfCrossQueryExamination;
+		//shared_ptr<QueryBuilder> queryBuilderObj = make_shared<QueryBuilder>();
+		//vector<shared_ptr<QueryResultsTable>> queryResultsTable = queryBuilderObj->buildQuery(queryParser);
+
+		//shared_ptr<ResultHandler> resultHandlerObj = make_shared<ResultHandler>();
+		//list<string> resultOfCrossQueryExamination = resultHandlerObj->processTables(queryResultsTable);
+		//return resultOfCrossQueryExamination;
 		// 
 
 		//std::cout << "QueryDriver::execute 4.5" << std::endl;
@@ -48,7 +54,7 @@ list<string> QueryDriver::execute() {
 		list<string> myList;
 		/*variant<vector<string>, vector<string, vector<string>>> test;
 		vector<string> ta = get<vector<string>>(test);*/
-
+		
 		return myList;
 	}
 	catch (const QPSError& ex) {

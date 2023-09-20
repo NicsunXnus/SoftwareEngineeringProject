@@ -6,8 +6,6 @@
     <ClCompile Include="..\source\ApplicationWrapper.cpp" />
     <ClCompile Include="..\source\DesignExtractor\Entity.h" />
     <ClCompile Include="..\source\DesignExtractor\Entity.h" />
-    <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
     <ClCompile Include="..\source\DesignExtractor\Entity.h" />
     <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
     <ClCompile Include="..\source\DesignExtractor\Entity.h" />
@@ -65,6 +63,15 @@
       <Filter>QPS</Filter>
     </ClCompile>
     <ClCompile Include="..\source\QPS\QueryBuilder.cpp">
+      <Filter>QPS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\QPS\ResultsHandler.cpp" />
+    <ClCompile Include="..\source\QPS\ResultsHandler.h" />
+    <ClCompile Include="..\source\AST\**\*.h" />
+    <ClCompile Include="..\source\AST\**\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\QPS\DataAccessLayerStub.cpp">
       <Filter>QPS</Filter>
     </ClCompile>
   </ItemGroup>
@@ -158,6 +165,9 @@
     </ClInclude>
     <ClInclude Include="..\source\ExceptionMessages.h" />
     <ClInclude Include="..\source\TokenizerClasses\TokenizerResults.h" />
+    <ClInclude Include="..\source\QPS\DataAccessLayerStub.h">
+      <Filter>QPS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Tokens">
