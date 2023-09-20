@@ -617,15 +617,15 @@ namespace UnitTesting
                   Assert::AreEqual(parentsMapRef["9"][0], std::string("2"));
 
                   // Check the existence of values in followsMap
-                  Assert::IsTrue(followsMapRef["1"][0], std::string("2"));
+                  Assert::AreEqual(followsMapRef["1"][0], std::string("2"));
                   
                   Assert::IsTrue(followsMapRef["2"].empty());
 
-                  Assert::IsTrue(followsMapRef["3"][0], std::string("4"));
+                  Assert::AreEqual(followsMapRef["3"][0], std::string("4"));
                   
                   Assert::IsTrue(followsMapRef["4"].empty());
 
-                  Assert::IsTrue(followsMapRef["5"][0], std::string("6"));
+                  Assert::AreEqual(followsMapRef["5"][0], std::string("6"));
 
                   Assert::IsTrue(followsMapRef["6"].empty());
 
