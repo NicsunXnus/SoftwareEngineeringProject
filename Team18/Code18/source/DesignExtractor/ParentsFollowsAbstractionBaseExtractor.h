@@ -64,6 +64,4 @@ protected:
         }
         this->AbstractionStorageMap->at(key).insert(this->AbstractionStorageMap->at(key).begin(), value);
     }
-
-
 };

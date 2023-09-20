@@ -10,7 +10,7 @@ using namespace std;
 #include "../AST/ASTNode.h"
 #include "ParentsFollowsAbstractionBaseExtractor.h"
 
-class ParentsAbstractionExtractor : ParentsFollowsAbstractionBaseExtractor  {
+class ParentsAbstractionExtractor : public ParentsFollowsAbstractionBaseExtractor {
 public:
     void handleNode(shared_ptr<ProcedureNode> procedureNode, shared_ptr<IfNode> ifNode, shared_ptr<WhileNode> whileNode) override {
         vector<shared_ptr<StatementNode>> statements;
