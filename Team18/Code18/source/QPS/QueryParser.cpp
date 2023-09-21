@@ -169,6 +169,7 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 			result.push_back(suchThatClauseObj);
 
 		} else if (isPattern) {
+			cout << "ispattern" << endl;
 			currentWordIndex += 1;
 			int patternTokenCount {}; // tracks the number of tokens the clause has if it was a pattern clause
 
@@ -177,7 +178,7 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 			}
 
 			// construct pattern query object
-			shared_ptr<QueryObject> patternClauseObj{createPatternObject(query, currentWordIndex, patternTokenCount)};
+			shared_ptr<QueryObject> patternClauseObj{ createPatternObject(query, currentWordIndex, patternTokenCount) };
 			result.push_back(patternClauseObj);
 		} else {
 			currentWordIndex++;
@@ -289,6 +290,7 @@ bool QueryParser::hasPatternClause(std::vector<string_view>& query, int index, i
 }
 
 shared_ptr<QueryObject> QueryParser::createPatternObject(std::vector<string_view>& query, int& index, int tokenCount) {
+	cout << "creating pattern object" << endl;
 	shared_ptr<QueryObjectFactory> patternFactory{ QueryObjectFactory::createFactory("pattern"sv)};
 
 	std::vector<shared_ptr<ClauseArg>> argVector;
@@ -300,12 +302,14 @@ shared_ptr<QueryObject> QueryParser::createPatternObject(std::vector<string_view
 	} else if (synonyms.find(patternSynonymArg) == synonyms.end()) { // synonym is undeclared
 		throw SemanticErrorException("Semantic error: Pattern synonym is undeclared");
 	}
+	cout << "patternSynonymArg: " << patternSynonymArg << endl;
 	shared_ptr<SynonymObject> patternSynonymObj{ make_shared<SynonymObject>(patternSynonymArg, synonymToEntity[patternSynonymArg]) };
 	shared_ptr<ClauseArg> patternSynonym{ make_shared<ClauseArg>(patternSynonymArg, patternSynonymObj) };
 	argVector.push_back(patternSynonym);
 
 	// create ClauseArg for arg 1 of pattern clause
 	string_view arg1Name{ query[index + 2] };
+	cout << "arg1Name: " << arg1Name << endl;
 	shared_ptr<SynonymObject> synonym1{};
 	if (SynonymObject::isValid(arg1Name)) {
 		if (synonyms.find(arg1Name) == synonyms.end()) { // argument is an undeclared synonym
@@ -318,9 +322,11 @@ shared_ptr<QueryObject> QueryParser::createPatternObject(std::vector<string_view
 	// create ClauseArg for arg 2 of pattern clause
 	if (tokenCount == MIN_PATTERN_CLAUSE_TOKEN_COUNT) { // pattern clause is an exact match
 		string_view arg2Name{ query[index + 4] };
+		cout << "arg2Name: " << arg2Name << endl;
 		argVector.push_back(make_shared<ClauseArg>(arg2Name, nullptr, false));
 	} else if (tokenCount == MAX_PATTERN_CLAUSE_TOKEN_COUNT) { // pattern clause is a partial match
 		string_view arg2Name{ query[index + 5] };
+		cout << "arg2Name: " << arg2Name << endl;
 		argVector.push_back(make_shared<ClauseArg>(arg2Name, nullptr, true));
 	} else {
 		std::cout << "Invalid token count in pattern object creation\n";

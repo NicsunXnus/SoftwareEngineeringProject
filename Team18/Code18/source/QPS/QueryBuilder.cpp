@@ -3,6 +3,7 @@
 #include "QueryBuilder.h"
 #include "QueryObjects/DesignObjects.h"
 #include "QueryObjects/ClauseObject.h"
+#include "QueryObjects/PatternClauseObject.h"
 using namespace std;
 
 //Takes in a Query object and then returns a vector of QueryResultsTable. This vector will
@@ -19,6 +20,7 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
 		//If it is a select query, a vector<string> is returned,
 		auto designEntity = std::dynamic_pointer_cast<DesignObject>(obj);
 		auto clauseEntity = std::dynamic_pointer_cast<ClauseObject>(obj);
+		auto patternEntity = std::dynamic_pointer_cast<PatternObject>(obj);
 		if (designEntity) {
 			/*variant<vector<string>, map<string, vector<string>>> resultVariant = obj->getResult();
 			vector<string> result = get<vector<string>>(resultVariant);
@@ -58,6 +60,8 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
 			vector<map<string, vector<string>>> table;
 			table.emplace_back(columnWithHeader1);
 			table.emplace_back(columnWithHeader2);*/
+		} else if (patternEntity) {
+			cout << "Pattern entity detected" << endl;
 		} else {
 			cerr << "Unknown Entity detected. Please debug.";
 		}	

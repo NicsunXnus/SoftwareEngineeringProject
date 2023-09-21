@@ -34,6 +34,7 @@ list<string> QueryDriver::execute() {
 		shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayer>();
 		shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(queryObjects, synonyms, dataAccessLayer);
 		
+		vector<shared_ptr<QueryResultsTable>> queryResultsTable = queryBuilder->buildQuery();
 
 		//shared_ptr<QueryObject> obj = queryParser[0]; // sprint 1
 		/*For QueryBuilder passage*/
