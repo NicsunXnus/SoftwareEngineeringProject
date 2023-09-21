@@ -131,14 +131,12 @@ vector<shared_ptr<QueryObject>> QueryParser::validateDeclaration(vector<string_v
 vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> query) {
 	vector<shared_ptr<QueryObject>> result;
 	
-
 	int currentWordIndex = 0;
 
 	// check 'Select' keyword is present
 	if (!hasSelect(query, currentWordIndex)) {
 		throw SyntaxErrorException("'Select' keyword not present");
 	}
-	currentWordIndex++;
 
 	// check synonym is present in declaration
 	if (!isDeclared(query, currentWordIndex)) {
@@ -158,6 +156,7 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 		bool isSuchThat{ hasSuchThat(query, currentWordIndex) }; // checks the current clause is a such that clause
 		bool isPattern{ hasPattern(query, currentWordIndex) }; // checks the current clause is a pattern clause
 		
+		
 		if (isSuchThat) {
 			currentWordIndex += 2;
 
@@ -165,17 +164,24 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 				throw SyntaxErrorException("such that clause has invalid syntax");
 			}
 
-			// Construct query object
+			// Construct such that query object
 			shared_ptr<QueryObject> suchThatClauseObj{ createClauseObj(query, currentWordIndex) };
 			result.push_back(suchThatClauseObj);
-			currentWordIndex += SUCH_THAT_CLAUSE_TOKEN_COUNT;
-			continue;
 
 		} else if (isPattern) {
 			currentWordIndex += 1;
-		}
+			int patternTokenCount {}; // tracks the number of tokens the clause has if it was a pattern clause
 
-		currentWordIndex += 1;
+			if (!hasPatternClause(query, currentWordIndex, patternTokenCount)) {
+				throw SyntaxErrorException("such that clause has invalid syntax");
+			}
+
+			// construct pattern query object
+			shared_ptr<QueryObject> patternClauseObj{createPatternObject(query, currentWordIndex, patternTokenCount)};
+			result.push_back(patternClauseObj);
+		} else {
+			currentWordIndex++;
+		}
 	}
 	return result;
 }
@@ -188,8 +194,12 @@ bool QueryParser::isDeclared(std::vector<string_view>& query, int index) {
 	return this->synonyms.find(synonym) != this->synonyms.end();
 }
 
-bool QueryParser::hasSelect(std::vector<string_view>& query, int index) {
-	return index < static_cast<int>(query.size()) && query[index] == "Select"sv;
+bool QueryParser::hasSelect(std::vector<string_view>& query, int& index) {
+	if (index < static_cast<int>(query.size()) && query[index] == "Select"sv) {
+		index++;
+		return true;
+	}
+	return false;
 }
 
 bool QueryParser::hasPattern(std::vector<string_view>& query, int index) {
@@ -201,7 +211,6 @@ bool QueryParser::hasSuchThat(std::vector<string_view>& query, int index) {
 }
 
 bool QueryParser::hasRelationalReference(std::vector<string_view>& query, int index) {
-	// 6 here is the expected number of tokens we generate from tokenizing a relational reference clause
 	// Eg., "Uses" "(" "a" "," "b" ")"
 	if (index > static_cast<int>(query.size()) - SUCH_THAT_CLAUSE_TOKEN_COUNT) {
 		return false;
@@ -216,14 +225,14 @@ bool QueryParser::hasRelationalReference(std::vector<string_view>& query, int in
 	return hasRR;
 }
 
-shared_ptr<QueryObject> QueryParser::createClauseObj(std::vector<string_view>& query, int index) {
+shared_ptr<QueryObject> QueryParser::createClauseObj(std::vector<string_view>& query, int& index) {
 	string_view relationalReference{ query[index] };
 
 	shared_ptr<QueryObjectFactory> clauseFactory{ QueryObjectFactory::createFactory(relationalReference) };
 
 	// create a vector of args for the clause objects
 	std::vector<shared_ptr<ClauseArg>> argVector;
-	
+
 	// create clauseArg object for first argument
 	string_view arg1Name{ query[index + 2] };
 	shared_ptr<SynonymObject> synonym1;
@@ -246,14 +255,77 @@ shared_ptr<QueryObject> QueryParser::createClauseObj(std::vector<string_view>& q
 	}
 	argVector.push_back(make_shared<ClauseArg>(arg2Name, synonym2));
 
-	// check with Jan the purpose
-	//try {
-		return clauseFactory->create(relationalReference, argVector);
-	//} catch (const std::exception& e) {
-		//std::cout << e.what() << '\n';
-		//return make_shared<InvalidQueryObject>("Error in creating clause object"sv);
-	//} 
+	index += SUCH_THAT_CLAUSE_TOKEN_COUNT;
+	return clauseFactory->create(relationalReference, argVector);
 }
 
+bool QueryParser::hasPatternClause(std::vector<string_view>& query, int index, int& tokenCount) {
+	// pattern clause has a variable number of tokens
+	// E.g., "a", "(", "_", ",", "_", "x", "_", ")": a(_,_"x"_)has 8
+	// "a", "(", "_", ",", "_", ")": a(_,_) has 6
 
+	if (index > (static_cast<int>(query.size()) - MIN_PATTERN_CLAUSE_TOKEN_COUNT)) {
+		return false;
+	}
 
+	bool isSynonym{ SynonymObject::isValid(query[index]) };
+	bool hasOpenBracket{ query[index + 1] == "("sv };
+	bool hasComma{ query[index + 3] == ","sv };
+	bool hasCloseBracket{ false };
+	if (query[index + 5] == ")"sv) { // pattern is looking for an exact match
+		tokenCount = MIN_PATTERN_CLAUSE_TOKEN_COUNT;
+		hasCloseBracket = true;
+	} else { // pattern is looking for partial match
+		if (index > (static_cast<int>(query.size()) - MAX_PATTERN_CLAUSE_TOKEN_COUNT)) {
+			return false;
+		}
+
+		tokenCount = MAX_PATTERN_CLAUSE_TOKEN_COUNT;
+		hasCloseBracket = query[index + 7] == ")"sv;
+	}
+	
+	bool hasPC{ isSynonym && hasOpenBracket && hasComma && hasCloseBracket };
+	return hasPC;
+}
+
+shared_ptr<QueryObject> QueryParser::createPatternObject(std::vector<string_view>& query, int& index, int tokenCount) {
+	shared_ptr<QueryObjectFactory> patternFactory{ QueryObjectFactory::createFactory("pattern"sv)};
+
+	std::vector<shared_ptr<ClauseArg>> argVector;
+
+	// create ClauseArg for pattern synonym
+	string_view patternSynonymArg{ query[index] };
+	if (!SynonymObject::isValid(patternSynonymArg)) {
+		throw SyntaxErrorException("Syntax error: Pattern synonym is not syntactically correct");
+	} else if (synonyms.find(patternSynonymArg) == synonyms.end()) { // synonym is undeclared
+		throw SemanticErrorException("Semantic error: Pattern synonym is undeclared");
+	}
+	shared_ptr<SynonymObject> patternSynonymObj{ make_shared<SynonymObject>(patternSynonymArg, synonymToEntity[patternSynonymArg]) };
+	shared_ptr<ClauseArg> patternSynonym{ make_shared<ClauseArg>(patternSynonymArg, patternSynonymObj) };
+	argVector.push_back(patternSynonym);
+
+	// create ClauseArg for arg 1 of pattern clause
+	string_view arg1Name{ query[index + 2] };
+	shared_ptr<SynonymObject> synonym1{};
+	if (SynonymObject::isValid(arg1Name)) {
+		if (synonyms.find(arg1Name) == synonyms.end()) { // argument is an undeclared synonym
+			throw SemanticErrorException("Semantic error: Synonym in pattern clause is undeclared");
+		}
+		synonym1 = make_shared<SynonymObject>(arg1Name, synonymToEntity[arg1Name]);
+	}
+	argVector.push_back(make_shared<ClauseArg>(arg1Name, synonym1));
+
+	// create ClauseArg for arg 2 of pattern clause
+	if (tokenCount == MIN_PATTERN_CLAUSE_TOKEN_COUNT) { // pattern clause is an exact match
+		string_view arg2Name{ query[index + 4] };
+		argVector.push_back(make_shared<ClauseArg>(arg2Name, nullptr, false));
+	} else if (tokenCount == MAX_PATTERN_CLAUSE_TOKEN_COUNT) { // pattern clause is a partial match
+		string_view arg2Name{ query[index + 5] };
+		argVector.push_back(make_shared<ClauseArg>(arg2Name, nullptr, true));
+	} else {
+		std::cout << "Invalid token count in pattern object creation\n";
+	}
+
+	index += tokenCount;
+	return patternFactory->create("pattern"sv, argVector);
+}

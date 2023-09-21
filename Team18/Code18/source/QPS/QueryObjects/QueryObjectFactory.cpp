@@ -1,6 +1,7 @@
 #include "QueryObjectFactory.h"
 #include "DesignObjectsFactory.h"
 #include "ClauseObjectFactory.h"
+#include "PatternClauseObjectFactory.h"
 #include "../Errors/SyntaxError.h"
 
 shared_ptr<QueryObjectFactory> QueryObjectFactory::createFactory(string_view type) {
@@ -54,6 +55,11 @@ shared_ptr<QueryObjectFactory> QueryObjectFactory::createFactory(string_view typ
 	}
 	else if (type == "Parent*"sv) {
 		return make_shared<ParentStarObjectFactory>();
+	}
+
+	/* Pattern type */
+	else if (type == "pattern"sv) {
+		return make_shared<PatternClauseObjectFactory>();
 	}
 	throw SyntaxErrorException("Invalid string token for design object");
 }

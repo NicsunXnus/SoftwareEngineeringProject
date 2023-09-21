@@ -4,6 +4,7 @@
 #include <string>
 #include <string_view>
 #include "SynonymObjects.h"
+#include "../../HelperFunctions.h"
 #include "../../Constants/QPSPKB.h"
 
 
@@ -19,8 +20,17 @@ private:
 	// is a null ptr if the argument is not a synonym
 	std::shared_ptr<SynonymObject> synonym;
 
+	// each identifier arg holds an open and close quote marks
+	int IDENTIFIER_MIN_CHARS{ 2 };
+
+	// indicates if the clauseArg is a partial pattern match
+	bool isPartialMatch;
+
+	bool isNum;
+
 public:
-	ClauseArg(string_view arg, std::shared_ptr<SynonymObject> synonym) : arg{ arg }, synonym{ synonym } {};
+	ClauseArg(string_view arg, std::shared_ptr<SynonymObject> synonym, bool isPartialMatch=false)
+		: arg{ arg }, synonym{ synonym }, isPartialMatch{ isPartialMatch } {};
 
 	string_view getArg() {
 		return this->arg;
@@ -51,6 +61,9 @@ public:
 
 	// function to check if clauseArg is an identifier
 	bool isIdentifier() {
+		if (static_cast<int>(arg.size()) <= IDENTIFIER_MIN_CHARS) {
+			return false;
+		}
 		string_view identifierName = arg.substr(1, arg.size() - 2);
 		return (arg[0] == '"') && (arg.back() == '"') && (SynonymObject::isValid(identifierName));
 	}
@@ -60,9 +73,17 @@ public:
 		return identifierName;
 	}
 
-	// function to check if clauseArg is an entity
-	bool isEntityRef() {
+	bool isExpr() {
+		if (static_cast<int>(arg.size()) <= IDENTIFIER_MIN_CHARS) {
+			return false;
+		}
+		string_view expr = arg.substr(1, arg.size() - 2);
+		return (arg[0] == '"') && (arg.back() == '"') && (SynonymObject::isValid(expr) || isNumber(std::string(expr)));
+	}
 
+	// function to check if clauseArg is a partial matching expression-spec
+	bool isPartialMatchingExprSpec() {
+		return isExpr() && isPartialMatch;
 	}
 };
 
