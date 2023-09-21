@@ -1,0 +1,80 @@
+@startuml
+' !include ../style.puml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+
+title Token Overview
+
+Class TokenFactory {
+    {static} - unordered_set<string> commonKeywords
+    {static} - unordered_set<string> uniqueSimple
+    {static} - unordered_set<string> uniquePql
+    {static} - bool isNumber(string)
+    {static} - bool isValidName(string)
+    {static} - Token generateCommonToken(string)
+    {static} - Token generateSimpleToken(string)
+    {static} - Token generatePqlToken(string)
+    {static} - Token generateIdentifier(string)
+    {static} - Token generateIntLiteral(string)
+    {static} + generateToken(string input, bool forSimple, bool forceIdentifer)
+}
+package Tokens <<rectangle>> {
+    Class Token {
+        - string tokenName
+        + Token(tokenName)
+        + string getName()
+    }
+    Class UnderscoreToken {}
+    Class IdentifierToken {}
+    Class LiteralToken {}
+    Class IntergerLiteralToken {}
+    package SeparatorTokens <<rectangle>> {
+        Class SeparatorToken {}
+            Class CurlyCloseSepToken {}
+            Class CurlyOpenSepToken {}
+            Class ParenOpenSepToken {}
+            Class ParenCloseSepToken {}
+            Class DoubleQuoSepToken {}
+            Class SemicolonSepToken {}
+            Class CommaSepToken {}
+    }
+    package OperatorTokens <<rectangle>> {
+        Class OperatorToken {}
+        note right of OperatorToken
+        Further expanded in
+        another file
+        end note
+    }
+    package KeywordTokens <<rectangle>> {
+        Class KeywordToken {}
+        note right of KeywordToken
+        Further expanded in
+        another file
+        end note
+    }
+}
+
+TokenFactory -left- Token
+
+skinparam groupInheritance 2
+UnderscoreToken --|> Token
+IdentifierToken --|> Token
+
+LiteralToken --|> Token
+IntergerLiteralToken --|> LiteralToken
+
+SeparatorToken -right-|> Token
+    CurlyCloseSepToken -up-|> SeparatorToken
+    CurlyOpenSepToken -up-|> SeparatorToken
+    ParenCloseSepToken -up-|> SeparatorToken
+    ParenOpenSepToken -down-|> SeparatorToken
+    SemicolonSepToken -down-|> SeparatorToken
+    CommaSepToken -down-|> SeparatorToken
+    DoubleQuoSepToken -down-|> SeparatorToken
+
+OperatorToken -up-|> Token
+   
+KeywordToken -up-|> Token
+
+
+@end
