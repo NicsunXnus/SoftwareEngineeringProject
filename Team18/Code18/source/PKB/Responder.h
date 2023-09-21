@@ -23,7 +23,7 @@ public:
 
 	vector<string> Responder::getAllProcedures() const {
 		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		StringMap proc_database = *(entity_storage)->getProcedureDatabase();
+		shared_ptr<StringMap> proc_database = entity_storage->getProcedureDatabase();
 		return getKeys(proc_database);
 	}
 
@@ -35,7 +35,7 @@ public:
 
 	vector<string> Responder::getAllVariables() const {
 		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		StringMap var_database = *(entity_storage)->getVariableDatabase();
+		shared_ptr<StringMap> var_database = entity_storage->getVariableDatabase();
 		return getKeys(var_database);
 	}
 
@@ -47,7 +47,7 @@ public:
 
 	vector<string> Responder::getAllConstants() const {
 		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		StringMap const_database = *(entity_storage)->getConstantDatabase();
+		shared_ptr<StringMap> const_database = entity_storage->getConstantDatabase();
 		return getKeys(const_database);
 	}
 
@@ -75,9 +75,9 @@ public:
 	}
 
 private:
-	vector<string> getKeys(StringMap db) const {
+	vector<string> getKeys(shared_ptr<StringMap> db) const {
 		vector<string> keys;
-		for (const auto& [k, v] : db) {
+		for (const auto& [k, v] : *db) {
 			keys.push_back(k);
 		}
 		return keys;

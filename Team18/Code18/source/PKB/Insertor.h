@@ -11,6 +11,7 @@ public:
 
 	void Insertor::addEntity(shared_ptr<StringMap> entity_map, ENTITY entity_type = STMT) {
 		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
+
 		switch (entity_type) {
 			case VARIABLE:
 				(*entity_storage).setVariableDatabase(entity_map);

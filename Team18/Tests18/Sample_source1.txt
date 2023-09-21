@@ -1,4 +1,6 @@
-read x;
-x = 2;
-y = 3;
-print y;
+procedure main {
+	read x;
+	x = 2;
+	y = 3;
+	print y;
+}
