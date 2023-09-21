@@ -14,6 +14,17 @@ using namespace std;
 */
 class StorageManager {
 public:
+	StorageManager() {
+		this->entity_storage = make_shared<EntityStorage>();
+		this->uses_abstractions = make_shared<UsesAbstractionStorage>();
+		this->modifies_abstractions = make_shared<ModifiesAbstractionStorage>();
+		this->follows_abstractions = make_shared<FollowsAbstractionStorage>();
+		this->parent_abstractions = make_shared<ParentAbstractionStorage>();
+	}
+
+	~StorageManager() {}
+
+
 	static shared_ptr<AbstractionStorage> StorageManager::getAbstractionStorage(const ABSTRACTION abstraction_type) {
 		switch (abstraction_type) {
 			case USES:
@@ -34,6 +45,10 @@ public:
 	}
 
 	static shared_ptr<EntityStorage> StorageManager::getEntityStorage() {
+		if (!entity_storage) {
+			cerr << "entity storage is null" << endl;
+			return;
+		}
 		return entity_storage;
 	}
 

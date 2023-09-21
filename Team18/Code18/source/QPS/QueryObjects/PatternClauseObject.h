@@ -29,8 +29,27 @@ public:
 		return arguments[2];
 	}
 
-	// TODO: impleme
-	void call(shared_ptr<DataAccessLayer> dataAccessLayer) {};
+	string col1 = "col1";
+	string col2 = "col2";
+
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
+		// Currently patterns only supported for assign
+		
+		map<string, vector<string>> PKBUsesData = dataAccessLayer->getClause(USES);
+		map<string, vector<string>> PKBModifiesData = dataAccessLayer->getClause(MODIFIES);
+		vector<string> headers;
+		
+		headers.push_back(col1);
+		headers.push_back(col2);
+		
+		// create table with temporary name table headers: col1, col2
+		//shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
+
+
+		//shared_ptr<QueryResultsTable> filterFirstArg = filterStmtRef(getArg1(), col2, table, dataAccessLayer, synonyms);
+		//shared_ptr<QueryResultsTable> filterSecondArg = filterEntRef(getArg2(), col1, filterFirstArg, dataAccessLayer, synonyms);
+		//return filterSecondArg;
+	}
 
 	// variant: design entities, clauses
 	// Setting the results of the PKB call
