@@ -6,6 +6,7 @@
 #include <map>
 #include <memory>
 #include "../HelperFunctions.h"
+#include <unordered_set>
 using namespace std;
 
 class QueryResultsTable {
