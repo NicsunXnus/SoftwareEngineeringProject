@@ -11,7 +11,6 @@
 */
 class ClauseObject : public QueryObject {
 private:
-	map<string, vector<string>> res;
 	shared_ptr<ClauseArg> argument0;
 	shared_ptr<ClauseArg> argument1;
 
@@ -23,13 +22,6 @@ public:
 	// Constructor for creating an empty clause object, to be used in gracefully handling clauses with errors.
 	ClauseObject(string_view name) : QueryObject{ name } {}
 
-	void setResult(variant<vector<string>, map<string, vector<string>>> result) override {
-		res = get<map<string, vector<string>>>(result);
-	}
-
-	variant<vector<string>, map<string, vector<string>>> getResult() override {
-		return res;
-	}
 
 	shared_ptr<ClauseArg> getArg1() {
 		return argument0;
@@ -38,7 +30,112 @@ public:
 	shared_ptr<ClauseArg> getArg2() {
 		return argument1;
 	}
+
+	string col1 = "col1";
+	string col2 = "col2";
+	
 };
+
+inline shared_ptr<QueryResultsTable> filterStmtRef(shared_ptr<ClauseArg> arg, string colName, shared_ptr<QueryResultsTable> table
+	, shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) {
+	if (arg->isInteger()) {
+		// filter out rows where row val from colName == integer, REMOVE THE ENTIRE COLUMN AFTERWARDS
+		//  if table.cols.size < 1, set isSignificant to true or false depending on table.rows.size > 0 or not
+		vector<string> targets;
+		
+		targets.push_back(svToString(arg->getArg()));
+		shared_ptr<QueryResultsTable> filteredTable = table->filter(colName, targets);
+		bool isSignificant = filteredTable->getNumberOfRows() > 0; // table will be "empty" after drop
+		filteredTable->deleteColumn(colName);
+		if (filteredTable->getNumberOfCols() < 1) {
+
+			filteredTable->setSignificant(isSignificant);
+
+		}
+		return filteredTable;
+
+	}
+	else if (arg->isSynonym()) {
+		// get synoynm type. if stmt, then do nothing, else, cross join with select synonym
+		ENTITY type = arg->getSynonym()->getEntityType();
+		// RENAME colName to synonym name
+		table->renameColumn(svToString(arg->getArg()),colName);
+		if (type == STMT) {
+			// do nothing, RENAME colName to stmt synonym name
+			return table;
+		}
+		else {
+			// call select synonym and inner join (need similar col names though, )
+			shared_ptr<QueryObject> synoynm = synonyms.at(arg->getArg());
+			shared_ptr<QueryResultsTable> synonymQueryObject = synoynm->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> innerJoined = table->innerJoin(synonymQueryObject);
+			return innerJoined;
+		}
+	}
+	else {
+		// wildcard, drop column, if table.cols.size < 1, set isSignificant to true or false depending on table.rows.size > 0 or not
+		bool isSignificant = table->getNumberOfRows() > 0; // table will be "empty" after drop
+		table->deleteColumn(colName);
+		if (table->getNumberOfCols() < 1) {
+			
+			table->setSignificant(isSignificant);
+			
+		}
+
+	}
+	return table;
+}
+
+inline shared_ptr<QueryResultsTable> filterEntRef(shared_ptr<ClauseArg> arg, string colName, shared_ptr<QueryResultsTable> table
+	, shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) {
+	if (arg->isIdentifier()) {
+		// filter out rows where row val from colName == IDENTIFIER, REMOVE THE ENTIRE COLUMN AFTERWARDS
+		// if table.cols.size < 1, set isSignificant to true or false depending on table.rows.size > 0 or not
+		vector<string> targets;
+
+		targets.push_back(svToString(arg->getIdentifier()));
+		shared_ptr<QueryResultsTable> filteredTable = table->filter(colName, targets);
+		bool isSignificant = filteredTable->getNumberOfRows() > 0; // table will be "empty" after drop
+		filteredTable->deleteColumn(colName);
+		if (filteredTable->getNumberOfCols() < 1) {
+
+			filteredTable->setSignificant(isSignificant);
+
+		}
+		return filteredTable;
+
+	}
+	else if (arg->isSynonym()) {
+		// get synoynm type. if stmt, then do nothing, else, cross join with select synonym
+		ENTITY type = arg->getSynonym()->getEntityType();
+		// RENAME colName to synonym name
+		table->renameColumn(svToString(arg->getArg()), colName);
+		if (type == STMT) {
+			// do nothing, RENAME colName to stmt synonym name
+			return table;
+		}
+		else {
+			// call select synonym and inner join (need similar col names though, )
+			shared_ptr<QueryObject> synoynm = synonyms.at(arg->getArg());
+			shared_ptr<QueryResultsTable> synonymQueryObject = synoynm->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> innerJoined = table->innerJoin(synonymQueryObject);
+			return innerJoined;
+		}
+	}
+	else {
+		// wildcard, drop column, if table.cols.size < 1, set isSignificant to true or false depending on table.rows.size > 0 or not
+		bool isSignificant = table->getNumberOfRows() > 0; // table will be "empty" after drop
+		table->deleteColumn(colName);
+		if (table->getNumberOfCols() < 1) {
+
+			table->setSignificant(isSignificant);
+
+		}
+
+		
+	}
+	return table;
+}
 
 /*
 * This class represents a Query object, for clause Uses with a statement ref as the first argument
@@ -49,9 +146,19 @@ public:
 		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
 
-	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getClause());
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
+		map<string, vector<string>> PKBdata = dataAccessLayer->getClause(USES);
+		vector<string> headers;
+		headers.push_back(col1);
+		headers.push_back(col2);
+		// create table with temporary name table headers: col1, col2
+		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
+		shared_ptr<QueryResultsTable> filterFirstArg = filterStmtRef(getArg1(), col2, table, dataAccessLayer, synonyms);
+		shared_ptr<QueryResultsTable> filterSecondArg = filterEntRef(getArg2(), col1, filterFirstArg, dataAccessLayer, synonyms);
+		return filterSecondArg;
 	}
+
+	
 };
 
 /*
@@ -63,9 +170,18 @@ public:
 		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
 
-	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getClause());
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
+		map<string, vector<string>> PKBdata = dataAccessLayer->getClause(USES);
+		vector<string> headers;
+		headers.push_back(col1);
+		headers.push_back(col2);
+		// create table with temporary name table headers: col1, col2
+		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
+		shared_ptr<QueryResultsTable> filterFirstArg = filterEntRef(getArg1(), col2, table, dataAccessLayer, synonyms);
+		shared_ptr<QueryResultsTable> filterSecondArg = filterEntRef(getArg2(), col1, filterFirstArg, dataAccessLayer, synonyms);
+		return filterSecondArg;
 	}
+
 };
 
 /*
@@ -76,9 +192,19 @@ public:
 	ModifiesObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
 		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
-	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getClause());
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
+		map<string, vector<string>> PKBdata = dataAccessLayer->getClause(MODIFIES);
+		vector<string> headers;
+		headers.push_back(col1);
+		headers.push_back(col2);
+		// create table with temporary name table headers: col1, col2
+		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
+		shared_ptr<QueryResultsTable> filterFirstArg = filterStmtRef(getArg1(), col2, table, dataAccessLayer, synonyms);
+		shared_ptr<QueryResultsTable> filterSecondArg = filterEntRef(getArg2(), col1, filterFirstArg, dataAccessLayer, synonyms);
+		return filterSecondArg;
 	}
+
+
 
 };
 
@@ -90,9 +216,19 @@ public:
 	ModifiesEntityObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
 		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
-	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getClause());
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
+		map<string, vector<string>> PKBdata = dataAccessLayer->getClause(MODIFIES);
+		vector<string> headers;
+		headers.push_back(col1);
+		headers.push_back(col2);
+		// create table with temporary name table headers: col1, col2
+		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
+		shared_ptr<QueryResultsTable> filterFirstArg = filterEntRef(getArg1(), col2, table, dataAccessLayer, synonyms);
+		shared_ptr<QueryResultsTable> filterSecondArg = filterEntRef(getArg2(), col1, filterFirstArg, dataAccessLayer, synonyms);
+		return filterSecondArg;
 	}
+
+
 
 };
 
@@ -104,9 +240,18 @@ public:
 	FollowsObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
 		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
-	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getClause());
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
+		map<string, vector<string>> PKBdata = dataAccessLayer->getClause(FOLLOWS);
+		vector<string> headers;
+		headers.push_back(col1);
+		headers.push_back(col2);
+		// create table with temporary name table headers: col1, col2
+		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
+		shared_ptr<QueryResultsTable> filterFirstArg = filterStmtRef(getArg1(), col1, table, dataAccessLayer, synonyms);
+		shared_ptr<QueryResultsTable> filterSecondArg = filterStmtRef(getArg2(), col2, filterFirstArg, dataAccessLayer, synonyms);
+		return filterSecondArg;
 	}
+
 
 };
 
@@ -118,8 +263,16 @@ public:
 	FollowsStarObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
 		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
-	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getClause());
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
+		map<string, vector<string>> PKBdata = dataAccessLayer->getClause(FOLLOWSSTAR);
+		vector<string> headers;
+		headers.push_back(col1);
+		headers.push_back(col2);
+		// create table with temporary name table headers: col1, col2
+		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
+		shared_ptr<QueryResultsTable> filterFirstArg = filterStmtRef(getArg1(), col1, table, dataAccessLayer, synonyms);
+		shared_ptr<QueryResultsTable> filterSecondArg = filterStmtRef(getArg2(), col2, filterFirstArg, dataAccessLayer, synonyms);
+		return filterSecondArg;
 	}
 
 };
@@ -132,8 +285,16 @@ public:
 	ParentObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
 		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
-	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getClause());
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
+		map<string, vector<string>> PKBdata = dataAccessLayer->getClause(PARENT);
+		vector<string> headers;
+		headers.push_back(col1);
+		headers.push_back(col2);
+		// create table with temporary name table headers: col1, col2
+		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
+		shared_ptr<QueryResultsTable> filterFirstArg = filterStmtRef(getArg1(), col1, table, dataAccessLayer, synonyms);
+		shared_ptr<QueryResultsTable> filterSecondArg = filterStmtRef(getArg2(), col2, filterFirstArg, dataAccessLayer, synonyms);
+		return filterSecondArg;
 	}
 
 };
@@ -146,8 +307,16 @@ public:
 	ParentStarObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
 		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
-	void call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		setResult(dataAccessLayer->getClause());
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
+		map<string, vector<string>> PKBdata = dataAccessLayer->getClause(PARENTSTAR);
+		vector<string> headers;
+		headers.push_back(col1);
+		headers.push_back(col2);
+		// create table with temporary name table headers: col1, col2
+		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
+		shared_ptr<QueryResultsTable> filterFirstArg = filterStmtRef(getArg1(), col1, table, dataAccessLayer, synonyms);
+		shared_ptr<QueryResultsTable> filterSecondArg = filterStmtRef(getArg2(), col2, filterFirstArg, dataAccessLayer, synonyms);
+		return filterSecondArg;
 	}
 
 };

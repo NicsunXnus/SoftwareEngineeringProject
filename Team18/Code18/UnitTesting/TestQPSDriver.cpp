@@ -35,6 +35,14 @@ namespace UnitTesting
 			Assert::IsTrue(ex->getType() == result.back());
 		}
 
+		TEST_METHOD(TestQPSDriverValidQuery)
+		{
+			string query = "constant c; Select c;"; // synonym not declared
+			shared_ptr<QueryDriver> driver = make_shared<QueryDriver>(query);
+			list<string> result = driver->execute();
+			shared_ptr<SemanticErrorException> ex = make_shared<SemanticErrorException>("");
+		}
+
 
 	};
 }

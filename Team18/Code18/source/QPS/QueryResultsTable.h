@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <map>
 #include <memory>
+#include "../HelperFunctions.h"
 using namespace std;
 
 class QueryResultsTable {
@@ -13,12 +14,25 @@ public:
     //Each column is reprsented by a map, key being header and value being its contents
     //It is assumed that there are no duplicate headers in the table.
     //A table is always sorted by headers.
-    QueryResultsTable(vector<map<string, vector<string>>> _columns) : columns(_columns) {
+
+    //Tested using: https://www.onlinegdb.com/online_c++_compiler#
+
+    QueryResultsTable(vector<map<string, vector<string>>> _columns) : columns(_columns), isSignificant(getNumberOfCols() > 0 && getNumberOfRows() > 0) {
         sort(columns.begin(), columns.end());
     }
 
     //Constructor for empty table creation
     QueryResultsTable() {}
+
+    // get number of rows in rable
+    int getNumberOfRows() {
+        return columns[0].begin()->second.size();
+    }
+
+    // get number of cols in rable
+    int getNumberOfCols() {
+        return columns.size();
+    }
 
     /**
      * Creates a new QueryResultsTable objet that is the result of a cartesian product between the row of elements of this table
@@ -441,8 +455,21 @@ public:
         }
     }
 
+    void setSignificant(bool empty) {
+        isSignificant = empty;
+    }
+
+    bool getSignificant() {
+        return isSignificant;
+    }
+
+    bool isEmpty() {
+        return getNumberOfCols() == 0 || getNumberOfRows() == 0;
+    }
+
 private:
-    vector<map<string, vector<string>>> columns;
+    vector<map<string, vector<string>>> columns; // column name: values
+    bool isSignificant; // denotes whether a table is significant or not (if uses(_, _) has more than one row, i will drop both columns, but table is NOT empty)
 
     //Helper method where (a,b) -> (a,a,b,b)
     vector<string> duplicateEntries(const vector<string>& input, int x) {

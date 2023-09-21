@@ -28,6 +28,17 @@ list<string> ResultHandler::processTables(std::vector<std::shared_ptr<QueryResul
 	shared_ptr<QueryResultsTable> currTable;
 	for (shared_ptr<QueryResultsTable> table : tables) {
 		currTable = table;
+		// for empty but significant tables
+		if (currTable->isEmpty()) {
+			if (currTable->getSignificant()) {
+				continue; // just keep current table
+			}
+			else {
+				list<string> empty;
+				return empty;
+			}
+			
+		}
 		if (immediateTable->haveSameHeaders(currTable)) {
 			//do inner join
 			immediateTable = immediateTable->innerJoin(currTable);
@@ -67,7 +78,7 @@ list<string> ResultHandler::processTables(std::vector<std::shared_ptr<QueryResul
 		cerr << "Cannot find symbol mentioned in select statement";
 	}
 	else {
-		//do next time for tupled/<a,b,c> results
+		//do next time for tupled/<a,b,c> results, probably cross product of a, b, c
 	}
 
 	return result;

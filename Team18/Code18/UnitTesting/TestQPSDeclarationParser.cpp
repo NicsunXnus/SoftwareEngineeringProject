@@ -310,6 +310,23 @@ namespace UnitTesting
 
 		}
 
+		TEST_METHOD(TestGetSynonyms)
+		{
+			vector<string> tokenizer = tokenize("assign a, a1; Select a");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(testSv);
+
+			vector<shared_ptr<QueryObject>> declarations = p->validateDeclaration(get<0>(declarationQuery));
+			unordered_map<string_view, shared_ptr<QueryObject>> syn = p->getSynonyms();
+			shared_ptr<QueryObject> obj1 = syn.at("a"sv);
+			shared_ptr<QueryObject> obj2 = syn.at("a1"sv);
+			Assert::IsTrue(obj1->getQueryObjectName() == "a");
+			Assert::IsTrue(obj2->getQueryObjectName() == "a1");
+
+
+		}
+
 
 	};
 }

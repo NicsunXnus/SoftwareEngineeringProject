@@ -54,6 +54,11 @@ public:
 		string_view identifierName = arg.substr(1, arg.size() - 2);
 		return (arg[0] == '"') && (arg.back() == '"') && (SynonymObject::isValid(identifierName));
 	}
+	// returns the identifier without "
+	string_view getIdentifier() {
+		string_view identifierName = arg.substr(1, arg.size() - 2);
+		return identifierName;
+	}
 
 	// function to check if clauseArg is an entity
 	bool isEntityRef() {
