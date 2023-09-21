@@ -144,4 +144,9 @@ static void debug(std::string debugMessage) {
     std::cout << debugMessage + "\n" << std::endl;
   }
 }
+
+static std::string svToString(std::string_view sv) {
+    std::string str(sv);
+    return str;
+}
 #endif

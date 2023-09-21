@@ -41,6 +41,10 @@ public:
 	* This function validates the query clause
 	*/
 	vector<shared_ptr<QueryObject>> validateQuery(vector<string_view> query);
+
+	unordered_map<string_view, shared_ptr<QueryObject>> getSynonyms() {
+		return synonyms;
+	}
 private:
 	// Synonyms declared in the query's declaration statements
 	unordered_map<string_view, shared_ptr<QueryObject>> synonyms;
