@@ -40,7 +40,5 @@ public:
 
 	/* For Design Abstractions / Clauses */
 	map<string, vector<string>> DataAccessLayer::getClause(ABSTRACTION abstraction);
-
-
 };
 #endif

@@ -96,8 +96,8 @@ public:
 
 		map<string, vector<string>> PKBModifiesData = dataAccessLayer->getClause(MODIFIES);
 		vector<string> PKBAssignData = dataAccessLayer->getEntity(ASSIGN);
-		//map<string, vector<string>> PKBVarData = dataAccessLayer->getVariableMap();
-		//map<string, vector<string>> PKBConstData = dataAccessLayer->getConstantMap();
+		map<string, vector<string>> PKBVarData = dataAccessLayer->getVariableMap();
+		map<string, vector<string>> PKBConstData = dataAccessLayer->getConstantMap();
 
 		vector<string> headers;
 		
