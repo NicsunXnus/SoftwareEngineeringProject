@@ -91,7 +91,7 @@ public:
         else { //TokenizedConditionalStmt 
             if (auto tokenizedIfStmt = dynamic_pointer_cast<TokenizedIfStmt>(statement)) { 
                 vector<shared_ptr<Token>> condExprTokens = tokenizedIfStmt->getConditionalExp(); 
-                shared_ptr<CondExprNode> condExpr = parseCondExpr(condExprTokens);
+                shared_ptr<CondExprNode> condExpr = parseCondExpr(condExprTokens, statementNumber);
 
                 vector<shared_ptr<TokenizedStmt>> tokenizedThenSmts = tokenizedIfStmt->getThenBlock()->getStmts();
                 vector<shared_ptr<StatementNode>> thenStmts;
@@ -110,7 +110,7 @@ public:
             else { //TokenizedWhileStmt 
                 shared_ptr<TokenizedWhileStmt> tokenizedWhileStmt = dynamic_pointer_cast<TokenizedWhileStmt>(statement);
                 vector<shared_ptr<Token>> condExprTokens = tokenizedWhileStmt->getConditionalExp();
-                shared_ptr<CondExprNode> condExpr = parseCondExpr(condExprTokens);
+                shared_ptr<CondExprNode> condExpr = parseCondExpr(condExprTokens, statementNumber);
 
                 vector<shared_ptr<TokenizedStmt>> tokenizedLoopStmts = tokenizedWhileStmt->getWhileBlock()->getStmts();
                 vector<shared_ptr<StatementNode>> loopStmts;
@@ -191,7 +191,7 @@ public:
     }
     
     //Refactor this to remove duplicate codes and handle error situations
-    static shared_ptr<CondExprNode> parseCondExpr(vector<shared_ptr<Token>> listOfTokens) {
+    static shared_ptr<CondExprNode> parseCondExpr(vector<shared_ptr<Token>> listOfTokens, int statementNumber) {
         stack<shared_ptr<CondExprNode>> condValues;
         stack<shared_ptr<ExprNode>> relValues;
         stack<string> ops;
