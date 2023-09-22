@@ -1,0 +1,6 @@
+1 - comment
+stmt a; variable v;
+Select a such that Modifies(a, "x")
+4
+5000
+
