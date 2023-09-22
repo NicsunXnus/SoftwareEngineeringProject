@@ -316,9 +316,6 @@ private:
 
 class ConstantNode : public ExprNode {
 public:
-    ConstantNode(int value)
-        : ExprNode("ConstantNode"), value(value) {}
-
     ConstantNode(int value, int statementNumber)
         : ExprNode("ConstantNode", statementNumber), value(value) {}
 
@@ -342,9 +339,6 @@ class VariableNode : public ExprNode {
 public:
     VariableNode(std::string name, int statementNumber)
         : ExprNode("VariableNode", statementNumber), name(std::move(name)) {}
-
-    VariableNode(std::string name)
-        : ExprNode("VariableNode"), name(std::move(name)) {}
 
     bool isTerminal() const override {
         return true;
