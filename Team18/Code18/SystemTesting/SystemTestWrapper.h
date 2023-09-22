@@ -90,6 +90,7 @@ public:
         }
         Logger::WriteMessage(tempExp.c_str());
         Logger::WriteMessage(tempActl.c_str());
+        Logger::WriteMessage(std::string("\n").c_str());
       }
       queryResults.push_back(passed);
       if (!passed) {
