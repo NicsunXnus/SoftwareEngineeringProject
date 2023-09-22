@@ -93,107 +93,107 @@ stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant
 Select pn such that Parent*(w, pn)
 7, 9
 5000
-19 - two synonyms, normal, parents of assignments
+20 - two synonyms, normal, parents of assignments
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Parent*(s, a)
 
 5000
-20 - two synonyms, invalid, any children of calls
+21 - two synonyms, invalid, any children of calls
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Parent*(cl, s)
 SemanticError
 5000
-21 - two synonyms, invalid, any children of read
+22 - two synonyms, invalid, any children of read
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Parent*(r, s)
 SemanticError
 5000
-22 - two synonyms, invalid, any children of prints
+23 - two synonyms, invalid, any children of prints
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Parent*(pn, s)
 SemanticError
 5000
-23 - two synonyms, invalid, any children of assignments
+24 - two synonyms, invalid, any children of assignments
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Parent*(a, s)
 SemanticError
 5000
-24 - two synonyms, invalid, any children of variables
+25 - two synonyms, invalid, any children of variables
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Parent*(v, s)
 SemanticError
 5000
-25 - two synonyms, invalid, any children of constants
+26 - two synonyms, invalid, any children of constants
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Parent*(c, s)
 SemanticError
 5000
-25 - two synonyms, invalid, any children of procedures
+27 - two synonyms, invalid, any children of procedures
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Parent*(p, s)
 SemanticError
 5000
-27 - two synonyms, invalid, variable on right
+28 - two synonyms, invalid, variable on right
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Parent*(s, v)
 SemanticError
 5000
-28 - two synonyms, invalid, procedure on right
+29 - two synonyms, invalid, procedure on right
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Parent*(s, p)
 SemanticError
 5000
-29 - two synonyms, invalid, constant on right
+30 - two synonyms, invalid, constant on right
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Parent*(s, c)
 SemanticError
 5000
-30 - left synonym, right wildcard
+31 - left synonym, right wildcard
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Parent*(s, _)
 5, 6
 5000
-31 - left synonym, right wildcard, mismatch synonym, exists
+32 - left synonym, right wildcard, mismatch synonym, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select p such that Parent*(s, _)
 first, second, third
 5000
-32 - left synonym, right wildcard, mismatch synonym, does not exist
+33 - left synonym, right wildcard, mismatch synonym, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Parent*(cl, _)
 SemanticError
 5000
-33 - left wildcard, right integer, exists
+34 - left wildcard, right integer, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select c such that Parent*(_, 6)
 1, 2
 5000
-34 - left wildcard, right integer, does not exist
+35 - left wildcard, right integer, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select i such that Parent*(_, 2)
 
 5000
-35 - left wildcard, right synonym, exists
+36 - left wildcard, right synonym, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select pn such that Parent*(_, pn)
 6
 5000
-36 - left wildcard, right synonym, does not exist
+37 - left wildcard, right synonym, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select a such that Parent*(_, a)
 
 5000
-37 - left wildcard, right synonym, mismatch synonym, exists
+38 - left wildcard, right synonym, mismatch synonym, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Parent*(_, pn)
 a, b, c, d, e, f
 5000
-38 - left wildcard, right synonym, mismatch synonym, does not exist
+39 - left wildcard, right synonym, mismatch synonym, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select p such that Parent*(_, a)
 
 5000
-39 - two wildcards
+40 - two wildcards
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select w such that Parent*(_, _)
 5

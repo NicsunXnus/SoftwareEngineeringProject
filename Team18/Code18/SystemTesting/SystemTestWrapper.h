@@ -67,7 +67,7 @@ public:
     std::vector<bool> queryResults;
     std::vector<std::pair<std::string, std::list<std::string>>> unpacked = unpackQueryFile(queryFilePath);
     for (int i = 1; i < unpacked.size() + 1; i++) {
-      std::pair<std::string, std::list<std::string>> curr = unpacked[i];
+      std::pair<std::string, std::list<std::string>> curr = unpacked[i - 1];
       std::string query = curr.first;
       std::list < std::string> expected = curr.second;
 
