@@ -52,7 +52,7 @@ public:
                 int startOfExpression = 2; //0 -> variable, 1 -> =, 2 -> ....
                 std::vector<std::shared_ptr<Token>> exprTokens(statementContents.begin() + startOfExpression, statementContents.end());
                 // Evaluate statements
-                std::shared_ptr <AssignNode> assignNode = std::make_shared<AssignNode>(statementNumber, varNode, parseExpr(exprTokens));
+                std::shared_ptr <AssignNode> assignNode = std::make_shared<AssignNode>(statementNumber, varNode, parseExpr(exprTokens, statementNumber));
                 return assignNode;
             }
             else if (keywordToken->getName() == "call") {
@@ -131,7 +131,7 @@ public:
     //Uses 2 stacks - One to store the operators and paranthesis, one to store the expressions/ExprNode
     //Once a ")" is reached, the top operator is popped and the top 2 expressions are also popped,then the applyoperation
     // method takes in these 3 inputs and outputs the combined expression 
-    static shared_ptr<ExprNode> parseExpr(vector<shared_ptr<Token>> listOfTokens) {
+    static shared_ptr<ExprNode> parseExpr(vector<shared_ptr<Token>> listOfTokens, int statementNumber) {
         stack<shared_ptr<ExprNode>> values;
         stack<string> ops;
 
@@ -158,8 +158,8 @@ public:
             }
             else if (isAlphanumeric(currToken->getName())) {
                 shared_ptr<ExprNode> refNode;
-                if (isNumber(currToken->getName()))  refNode = make_shared<ConstantNode>(stoi(currToken->getName()));
-                else refNode = make_shared <VariableNode>(currToken->getName());
+                if (isNumber(currToken->getName()))  refNode = make_shared<ConstantNode>(stoi(currToken->getName()), statementNumber);
+                else refNode = make_shared <VariableNode>(currToken->getName(), statementNumber);
                 values.push(refNode);
             }
             else {
@@ -248,8 +248,8 @@ public:
             }
             else if (isAlphanumeric(currToken->getName())) {
                 shared_ptr<ExprNode> refNode;
-                if (isNumber(currToken->getName()))  refNode = make_shared<ConstantNode>(stoi(currToken->getName()));
-                else refNode = make_shared <VariableNode>(currToken->getName());
+                if (isNumber(currToken->getName()))  refNode = make_shared<ConstantNode>(stoi(currToken->getName()), statementNumber);
+                else refNode = make_shared <VariableNode>(currToken->getName(), statementNumber);
                 relValues.push(refNode);
             }
             else {
