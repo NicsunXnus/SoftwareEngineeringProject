@@ -5,6 +5,7 @@
 #include "../source/TokenizerClasses/PQLTokenizer.h"
 #include "../source/QPS/QueryBuilder.h"
 #include "../source/QPS/DataAccessLayerStub.h"
+#include <QPS/QueryObjects/PatternClauseObject.h>
 
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -339,6 +340,27 @@ namespace UnitTesting {
 			Assert::IsTrue(tables[0]->getColumns()[0]["v"][0] == "a");
 			Assert::IsTrue(tables[1]->getColumns()[0]["v"][0] == "b");
 			Assert::IsTrue(tables[1]->getColumns()[0]["v"][1] == "c");
+		}
+
+		TEST_METHOD(TestValidAssignStatementPatternWildcardWildcard) {
+			vector<string> testS = tokenize("assign a; Select a pattern a(_, _)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+
+			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
+			//Assert::IsTrue(clause->getArg2()->isSynonym());
+			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
+			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
+			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
+
+			//Assert::IsTrue(tables[1]->getSignificant());
+			//Assert::IsTrue(tables[0]->getColumns()[0]["v"][0] == "a");
+			//Assert::IsTrue(tables[1]->getColumns()[0]["v"][0] == "b");
+			//Assert::IsTrue(tables[1]->getColumns()[0]["v"][1] == "c");
 		}
 	};
 }
