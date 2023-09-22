@@ -1,30 +1,30 @@
 1 - Follows and Pattern
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select s such that Follows(s, cl) pattern a ("simple", _"100"_)
-5, 6, 9, 16, 30, 49, 53, 55
+Select s such that Follows(s, r) pattern a ("simple", _"100"_)
+5, 6, 10, 16
 5000
 2 - FollowsT and Pattern
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select a such that Follows*(a, i) pattern a ("qps", _)
-5, 34
+5, 10
 5000
 3 - Modifies and Pattern
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select s such that Modifies(s, "pkb") pattern a ("sp", _"error"_)
-4, 33
+Select s such that Modifies(s, "pkb") pattern a ("error", _"qps"_)
+4
 5000
 4 - Parent and Pattern
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select a such that Parent(_, a) pattern a (_, _"error"_)
-32, 33, 34, 37
+13
 5000
 5 - ParentT and Pattern
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Parent*(s, pn) pattern a (v, _)
-8, 12, 16, 18, 19, 30, 35, 36
+8, 12, 16, 18, 19
 5000
 6 - Uses and Pattern
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Uses(a, v) pattern a (v, _)
-error, sp, simple, query
+error
 5000

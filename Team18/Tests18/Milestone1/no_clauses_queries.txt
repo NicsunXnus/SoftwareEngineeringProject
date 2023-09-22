@@ -1,22 +1,22 @@
 1 - stmt
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s
-1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 5000
 2 - read
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select r
-1, 2, 12
+1, 2, 8
 5000
 3 - print
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select pn
-7, 9, 14
+7, 10, 11
 5000
 4 - call
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select cl
-8, 10
+
 5000
 5 - while
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -31,7 +31,7 @@ Select i
 7 - assign
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select a
-3, 4, 11, 13, 15
+3, 4, 9, 12, 13
 5000
 8 - variable
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -46,7 +46,7 @@ Select c
 10 - procedure
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select p
-first, second, third
+first
 5000
 11 - not declared
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -61,7 +61,7 @@ SyntaxError
 13 - multi declaration
 stmt s1, s2; read r1, r2;
 Select s1
-1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 5000
 14 - select bad capitalisation
 stmt s1, s2; read r1, r2;

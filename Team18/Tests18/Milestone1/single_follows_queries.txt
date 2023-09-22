@@ -1,12 +1,12 @@
 1 - two integers valid, select all
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Follows(1, 2)
-1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 5000
 2 - two integers valid, select assignments. This should extend to all the other synonyms declared
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select a such that Follows(1, 2)
-3, 4, 11, 13, 15
+3, 4, 9, 12, 13
 5000
 3 - two integers invalid
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -21,17 +21,17 @@ Select s such that Follows(1, s)
 5 - left integer, right synonym, container statement
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Follows(5, s)
-11
+13
 5000
 6 - left integer, right synonym, none left
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select s such that Follows(11, s)
+Select s such that Follows(13, s)
 
 5000
 7 - left integer, right synonym, mismatch synonyms, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Follows(2, a)
-1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 5000
 8 - left integer, right synonym, mismatch synonyms, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -41,7 +41,7 @@ Select s such that Follows(2, r)
 9 - left integer, right wildcard, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Follows(1, _)
-1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 5000
 10 - left integer, right wildcard, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -71,7 +71,7 @@ Select s such that Follows(s, 7)
 15 - left synonym, right integer, mismatch synonyms, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Follows(a, 4)
-1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 5000
 16 - left synonym, right integer, mismatch synonyms, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -81,7 +81,7 @@ Select s such that Follows(cl, 4)
 17 - two synonyms, normal, statements that are before assignments
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Follows(s, a)
-2, 3, 5, 14, 12
+2, 3, 5, 8, 11
 5000
 18 - two synonyms, normal, assignments that are before assignments
 stmt s; read r; print pn; call cl; while w; if i; assign a1, a2; variable v; constant c; procedure p;
@@ -96,12 +96,12 @@ Select s such that Follows(a, s)
 19 - two synonyms, normal, read that are before assignments
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select r such that Follows(r, a)
-2, 12
+2, 8
 5000
 20 - two synonyms, normal, calls that are after prints
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select cl such that Follows(pn, cl)
-8, 10
+
 5000
 21 - two synonyms, invalid, same synonym
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -151,12 +151,12 @@ SemanticError
 30 - left synonym, right wildcard
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Follows(s, _)
-1, 2, 3, 4, 5, 7, 9, 12, 14
+1, 2, 3, 4, 5, 7, 8, 10, 11, 14
 5000
 31 - left synonym, right wildcard, mismatch synonym, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select p such that Follows(r, _)
-first, second, third
+first
 5000
 32 - left synonym, right wildcard, mismatch synonym, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -176,12 +176,12 @@ Select i such that Follows(_, 7)
 35 - left wildcard, right synonym, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select r such that Follows(_, r)
-2
+2, 8
 5000
 36 - left wildcard, right synonym, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select pn such that Follows(_, pn)
-
+11
 5000
 37 - left wildcard, right synonym, mismatch synonym, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -191,7 +191,7 @@ a, b, c, d, e, f
 38 - left wildcard, right synonym, mismatch synonym, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select p such that Follows(_, pn)
-
+first
 5000
 39 - two wildcards
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
