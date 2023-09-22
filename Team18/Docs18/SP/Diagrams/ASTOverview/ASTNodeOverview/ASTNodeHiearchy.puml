@@ -1,0 +1,90 @@
+@startuml
+
+' !include ../style.puml
+'skinparam ClassFontColor #000000
+'skinparam ClassBorderColor #000000
+skinparam class {
+BackgroundColor<<ChildOfBase>> PaleGreen 
+ArrowColor SeaGreen
+BorderColor SpringGreen
+BackgroundColor<<Base>> Wheat
+BorderColor<<Base>> Salmon
+BackgroundColor<<GrandChildOfBase>> LightSeaGreen
+BorderColor<<GrandChildOfBase>> Salmon
+BackgroundColor<<GrandGrandChildOfBase>> Lavender
+BorderColor<<GrandGrandChildOfBase>> Salmon
+}
+
+title ASTNode Overview
+
+package AST <<Rectangle>> {
+    
+    Class ASTNode <<Base>>
+    Class ProgramNode <<ChildOfBase>>
+    Class ProcedureNode <<ChildOfBase>>
+    Class StatementNode <<ChildOfBase>>
+    Class ExprNode <<ChildOfBase>>
+    Class CondExprNode <<ChildOfBase>>
+    Class AssignNode <<GrandChildOfBase>>
+    Class ReadNode <<GrandChildOfBase>>
+    Class CallNode <<GrandChildOfBase>>
+    Class PrintNode <<GrandChildOfBase>>
+    Class IfNode <<GrandChildOfBase>>
+    Class WhileNode <<GrandChildOfBase>>
+    Class DividesNode <<GrandChildOfBase>>
+    Class MinusNode <<GrandChildOfBase>>
+    Class ModNode <<GrandChildOfBase>>
+    Class PlusNode <<GrandChildOfBase>>
+    Class TimesNode <<GrandChildOfBase>>
+    Class ConstantNode <<GrandChildOfBase>>
+    Class VariableNode <<GrandChildOfBase>>
+    Class AndNode <<GrandChildOfBase>>
+    Class OrNode <<GrandChildOfBase>>
+    Class NotNode <<GrandChildOfBase>>
+    Class RelExprNode <<GrandChildOfBase>>
+    Class GreaterThanNode <<GrandGrandChildOfBase>>
+    Class GreaterThanEqualNode <<GrandGrandChildOfBase>>
+    Class LesserThanNode <<GrandGrandChildOfBase>>
+    Class LesserThanEqualNode <<GrandGrandChildOfBase>>
+    Class EqualsNode <<GrandGrandChildOfBase>>
+    Class NotEqualsNode <<GrandGrandChildOfBase>>
+
+ProgramNode -up[#Red]-|> ASTNode
+ProcedureNode -up[#Red]-|> ASTNode
+ExprNode -up[#Red]-|> ASTNode
+CondExprNode -up[#Red]-|> ASTNode
+StatementNode -up[#Red]-|> ASTNode
+
+ProgramNode "1" *-[#Black]- "many" ProcedureNode
+ProcedureNode "1" *-[#Black]- "many" StatementNode
+ExprNode "1" *-[#Black]- "2" ExprNode
+RelExprNode "1" *-[#Black]- "2" RelExprNode
+
+AssignNode -up[#Blue]-|> StatementNode
+CallNode -up[#Blue]--|> StatementNode
+IfNode -up[#Blue]--|> StatementNode
+PrintNode -up[#Blue]--|> StatementNode
+ReadNode -up[#Blue]--|> StatementNode
+WhileNode -up[#Blue]--|> StatementNode
+
+RelExprNode -up[#Blue]-|> CondExprNode
+NotNode -up[#Blue]-|> CondExprNode
+AndNode -up[#Blue]-|> CondExprNode
+OrNode -up[#Blue]-|> CondExprNode
+
+GreaterThanNode -up[#Green]-|> RelExprNode
+GreaterThanEqualNode -up[#Green]-|> RelExprNode
+LesserThanNode -up[#Green]-|> RelExprNode
+LesserThanEqualNode -up[#Green]-|> RelExprNode
+EqualsNode -up[#Green]-|> RelExprNode
+NotEqualsNode -up[#Green]-|> RelExprNode
+
+PlusNode -[#Blue]|> ExprNode
+MinusNode -[#Blue]|> ExprNode
+ModNode -[#Blue]|> ExprNode
+DividesNode -[#Blue]|> ExprNode
+TimesNode -[#Blue]|> ExprNode
+ConstantNode --[#Blue]|> ExprNode
+VariableNode --[#Blue]|> ExprNode
+
+@enduml

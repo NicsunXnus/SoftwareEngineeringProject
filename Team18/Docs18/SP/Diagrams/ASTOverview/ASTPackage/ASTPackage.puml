@@ -1,0 +1,49 @@
+@startuml
+class AST.ASTNode {
+    - string name
+    - int statementNumber
+    __
+    + virtual ~ASTNode() = default;
+    + virtual shared_ptr<ExprNode> getVar() const
+    + virtual shared_ptr<ExprNode> getExpr() const
+    + virtual shared_ptr<CondExprNode> getCondExpr() const
+    + virtual vector<shared_ptr<StatementNode>> getStatements() const
+    + virtual vector<shared_ptr<StatementNode>> getElseStatements() const
+    + virtual shared_ptr<ProcedureNode> getProc() const
+    ..
+    + string getName() const
+    + int getStatementNumber() const
+    + bool isStatement() const
+    ..
+    # ASTNode(string name="", int statementNumber=-1)
+}
+
+class AST.ASTBuilder {
+    + {static} shared_ptr<ProgramNode> parseProgram(
+    shared_ptr<TokenizedProgram> tokenizedProgram)
+    + {static} shared_ptr<StatementNode> parseStatement(
+    shared_ptr<TokenizedStmt> statement)
+    + {static} shared_ptr<ExprNode> parseExpr(
+    vector<shared_ptr<Token> listOfTokens)
+    + {static} shared_ptr<CondExprNode> parseCondExpr(
+    vector<shared_ptr<Token> listOfTokens)
+}
+
+class AST.ASTBuilderHelperFunctions {
+    {static} int precedence(string op)
+    {static} string printExpr(shared_ptr<ExprNode> expr)
+    {static} shared_ptr<ExprNode> applyOperation(string op, shared_ptr<ExprNode> a, shared_ptr<ExprNode> b) 
+    {static} shared_ptr<CondExprNode> applyCompOperation(string op, shared_ptr<ExprNode> a, shared_ptr<ExprNode> b)
+    {static} shared_ptr<CondExprNode> applyBoolOperation(string op, shared_ptr<CondExprNode> a, shared_ptr<CondExprNode> b) 
+    {static} bool isComparisonOpr(string op)
+    {static} bool isBoolOpr(string op)
+    {static} string printCondExpr(shared_ptr<CondExprNode> condExpr)
+    {static} string printStatement(shared_ptr<StatementNode> statement, int nesting)
+    {static} string printProcedure(shared_ptr<ProcedureNode> procNode)
+}
+
+AST.ASTBuilder --> AST.ASTNode
+AST.ASTBuilder --> AST.ASTBuilderHelperFunctions
+AST.ASTBuilderHelperFunctions --> AST.ASTNode
+
+@enduml

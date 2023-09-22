@@ -1,0 +1,20 @@
+1 - assign
+assign a;
+Select a
+3, 4
+5000
+2 - read
+read a;
+Select a
+1
+5000
+3 - print
+print a;
+Select a
+2
+5000
+4 - variable
+variable a;
+Select a
+x, y, read, print
+5000
