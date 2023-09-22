@@ -15,20 +15,45 @@ using namespace std;
 */
 class EntityStorage {
 public:
+    EntityStorage() {
+        this->statement_database = make_shared<map<ENTITY, vector<string>>>();
+        this->procedure_database = make_shared<StringMap>();
+        this->variable_database = make_shared<StringMap>();
+        this->constant_database = make_shared<StringMap>();
+    }
+
+    ~EntityStorage() {}
+
     // entities categorised as statement types and non-statement types.
     shared_ptr<map<ENTITY, vector<string>>> EntityStorage::getStatementDatabase() {
+        if (!(this->statement_database)) {
+            cerr << "stmt_database is null" << endl;
+            return nullptr;
+        }
         return this->statement_database;
     }
 
     shared_ptr<StringMap> EntityStorage::getProcedureDatabase() {
+        if (!(this->procedure_database)) {
+            cerr << "proc_database is null" << endl;
+            return nullptr;
+        }
         return this->procedure_database;
     }
 
     shared_ptr<StringMap> EntityStorage::getVariableDatabase() {
+        if (!(this->variable_database)) {
+            cerr << "var_database is null" << endl;
+            return nullptr;
+        }
         return this->variable_database;
     }
 
     shared_ptr<StringMap> EntityStorage::getConstantDatabase() {
+        if (!(this->constant_database)) {
+            cerr << "const_database is null" << endl;
+            return nullptr;
+        }
         return this->constant_database;
     }
 

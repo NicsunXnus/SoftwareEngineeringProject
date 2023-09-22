@@ -34,9 +34,11 @@ public:
 	vector<string> getAllVariables();
 	vector<string> getAllConstants();
 
+	/* For Patterns (Milestone 1) */
+	map<string, vector<string>> getVariableMap();
+	map<string, vector<string>> getConstantMap();
+
 	/* For Design Abstractions / Clauses */
 	map<string, vector<string>> DataAccessLayer::getClause(ABSTRACTION abstraction);
-
-
 };
 #endif

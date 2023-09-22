@@ -33,15 +33,6 @@ public:
 	// Filters the Table for the specific synonym / IDENT / _ / others (PKB gives entire table, e.g. entire Follows Table)
 	// synonyms comes from QueryParser, will be passed in QueryBuilder from QueryDriver
 
-	// variant: design entities, clauses
-	// Setting the results of the PKB call
-	void setResult(shared_ptr<QueryResultsTable> result) {
-		table = result;
-	}
-
-	shared_ptr<QueryResultsTable> getResult() {
-		return table;
-	}
 };
 
 

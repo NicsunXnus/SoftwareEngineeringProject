@@ -177,7 +177,7 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 			}
 
 			// construct pattern query object
-			shared_ptr<QueryObject> patternClauseObj{createPatternObject(query, currentWordIndex, patternTokenCount)};
+			shared_ptr<QueryObject> patternClauseObj{ createPatternObject(query, currentWordIndex, patternTokenCount) };
 			result.push_back(patternClauseObj);
 		} else {
 			currentWordIndex++;

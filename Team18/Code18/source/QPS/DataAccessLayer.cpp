@@ -23,7 +23,17 @@ vector<string> DataAccessLayer::getAllConstants() {
 	return PKBResponse;
 }
 
-StringMap DataAccessLayer::getClause(ABSTRACTION abstraction) {
+map<string, vector<string>> DataAccessLayer::getVariableMap() {
+	map<string, vector<string>> PKBResponse = PKB::responder.getVariableMap();
+	return PKBResponse;
+}
+
+map<string, vector<string>> DataAccessLayer::getConstantMap() {
+	map<string, vector<string>> PKBResponse = PKB::responder.getConstantMap();
+	return PKBResponse;
+}
+
+map<string, vector<string>> DataAccessLayer::getClause(ABSTRACTION abstraction) {
 	map<string, vector<string>> PKBResponse = PKB::responder.getAbstraction(abstraction);
 	return PKBResponse;
 }

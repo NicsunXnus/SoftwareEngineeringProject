@@ -6,6 +6,7 @@
 #include <map>
 #include <memory>
 #include "../HelperFunctions.h"
+#include <unordered_set>
 using namespace std;
 
 class QueryResultsTable {
@@ -35,7 +36,7 @@ public:
     }
 
     /**
-     * Creates a new QueryResultsTable objet that is the result of a cartesian product between the row of elements of this table
+     * Creates a new QueryResultsTable object that is the result of a cartesian product between the row of elements of this table
      * and the other table.
      *
      * @param other A shared pointer to a QueryResultsTable object that represents the other tables.

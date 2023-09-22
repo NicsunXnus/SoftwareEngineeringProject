@@ -23,7 +23,7 @@ public:
 
 	vector<string> Responder::getAllProcedures() const {
 		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		StringMap proc_database = *(entity_storage)->getProcedureDatabase();
+		shared_ptr<map<string, vector<string>>> proc_database = entity_storage->getProcedureDatabase();
 		return getKeys(proc_database);
 	}
 
@@ -33,9 +33,15 @@ public:
 		return (*(entity_storage)->getProcedureDatabase()).at(procedure);
 	}
 
+	map<string, vector<string>> Responder::getVariableMap() const {
+		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
+		shared_ptr<map<string, vector<string>>> var_database = entity_storage->getVariableDatabase();
+		return *var_database;
+	}
+	
 	vector<string> Responder::getAllVariables() const {
 		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		StringMap var_database = *(entity_storage)->getVariableDatabase();
+		shared_ptr<map<string, vector<string>>> var_database = entity_storage->getVariableDatabase();
 		return getKeys(var_database);
 	}
 
@@ -45,9 +51,15 @@ public:
 		return (*(entity_storage)->getVariableDatabase()).at(variable);
 	}
 
+	map<string, vector<string>> Responder::getConstantMap() const {
+		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
+		shared_ptr<map<string, vector<string>>> const_database = entity_storage->getConstantDatabase();
+		return *const_database;
+	}
+
 	vector<string> Responder::getAllConstants() const {
 		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		StringMap const_database = *(entity_storage)->getConstantDatabase();
+		shared_ptr<map<string, vector<string>>> const_database = entity_storage->getConstantDatabase();
 		return getKeys(const_database);
 	}
 
@@ -57,7 +69,7 @@ public:
 		return (*(entity_storage)->getConstantDatabase()).at(constant);
 	}
 
-	StringMap Responder::getAbstraction(ABSTRACTION abstraction) const {
+	map<string, vector<string>> Responder::getAbstraction(ABSTRACTION abstraction) const {
 		shared_ptr<AbstractionStorage> abstraction_storage = StorageManager::getAbstractionStorage(abstraction);
 		// note: for Follows* and Parent*, we return the whole database.
 		// for Follows and Parent, we return a truncated database with the value just the direct follower/parent.
@@ -75,9 +87,9 @@ public:
 	}
 
 private:
-	vector<string> getKeys(StringMap db) const {
+	vector<string> getKeys(shared_ptr<StringMap> db) const {
 		vector<string> keys;
-		for (const auto& [k, v] : db) {
+		for (const auto& [k, v] : *db) {
 			keys.push_back(k);
 		}
 		return keys;
