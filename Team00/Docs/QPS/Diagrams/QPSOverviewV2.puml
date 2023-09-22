@@ -6,7 +6,7 @@ skinparam ClassBorderColor #000000
 title QPS Overview
 
 package QPS <<Rectangle>> {
-    note top of QPS
+    note right of QPS
     Shorthand for symbols:
     ∅ - void, str - String, [...] - vector,
     strv - string_view, (...) - tuple,
@@ -25,7 +25,6 @@ package QPS <<Rectangle>> {
     
     Class QueryDriver {
         - str query
-        + QueryDriver(strv query)
         + list<str> execute()
     }
     
@@ -41,14 +40,6 @@ package QPS <<Rectangle>> {
         + UM<strv, @QueryObject> getSynonyms()
     }
 
-    'Holds the info needed to request the PKB'
-    Class QueryObject {
-        parse()
-    }
-    Class Uses
-    Class Modifies
-    Class Others
-    
     'builds the query based on Query Object (which API calls to make to PKB)'
     Class QueryBuilder {
         - [@QueryObject] queryObjects
@@ -58,6 +49,7 @@ package QPS <<Rectangle>> {
         synonyms, @DataAccessLayer dataAcessLayer)
         + [@QueryResultsTable] buildQuery()
     }
+
     'Handles return values from PKB'
     Class ResultsHandler {
         list<str> processTables([@QueryResultsTable])
@@ -72,19 +64,34 @@ package QPS <<Rectangle>> {
         map<str, [str]> getClause(ABS)
     }
 
-    
+    'Holds the info needed to request the PKB'
+    Class QueryObject {
+        - strv tokenName
+        - [str] res
+        + QueryObject(strv tokenName)
+        + virtual ∅ call(@DataAccessLayer dataAccessLayer) = 0
+    }
 
+    Class QueryObjectFactory {
+        + virtual @QueryObject create(strv str) = 0
+        
+    }
+    Class DesignObjectsFactory {
+        + {static} @DesignObjectFactory createDesignFactory(strv type)
+    }
+    Class ClauseObjectFactory {
+        + {static} @ClauseObject createClauseObject(strv type)
+    }
+
+    Class DesignObject
+    Class ClauseObject
+    Class SuchThatClauseObject
+    Class PatternClauseObject
+    Class SynonymObject
 }
 
-
-Uses -up-|> QueryObject
-Modifies -up-|> QueryObject
-Others -up-|> QueryObject
-QueryParser .down.> QueryObject
-DataAccessLayer .left.> QueryObject
-QueryBuilder .right.> QueryObject
+DataAccessLayer <.. QueryDriver
+QueryDriver ..> QueryBuilder
 QueryDriver ..> QueryParser
-' QueryProcessingSubsystem -down-> QPS
-' Clauses -up-|> QueryEvaluator
-
+QueryDriver ..> ResultsHandler
 @end
