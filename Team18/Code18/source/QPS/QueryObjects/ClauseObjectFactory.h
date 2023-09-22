@@ -124,7 +124,13 @@ public:
 			return make_shared<FollowsObject>(clauseName, arg1, arg2);
 		}
 		else {
-			throw SyntaxErrorException("Error constructing Follows Object");
+			if (isArg1ValidStmtRef && isArg2ValidStmtRef) {
+				throw SyntaxErrorException("Error constructing Follows Object");
+			}
+			else {
+				throw SemanticErrorException("Error constructing Follows Object");
+			}
+			
 		}
 	}
 private:
@@ -155,7 +161,12 @@ public:
 			return make_shared<FollowsStarObject>(clauseName, arg1, arg2);
 		}
 		else {
-			throw SyntaxErrorException("Error constructing Follows* Object");
+			if (isArg1ValidStmtRef && isArg2ValidStmtRef) {
+				throw SyntaxErrorException("Error constructing Follows* Object");
+			}
+			else {
+				throw SemanticErrorException("Error constructing Follows* Object");
+			}
 		}
 	}
 private:
@@ -186,7 +197,12 @@ public:
 			return make_shared<ParentObject>(clauseName, arg1, arg2);
 		}
 		else {
-			throw SyntaxErrorException("Error constructing Parent Object");
+			if (isArg1ValidStmtRef && isArg2ValidStmtRef) {
+				throw SyntaxErrorException("Error constructing Parent Object");
+			}
+			else {
+				throw SemanticErrorException("Error constructing Parent Object");
+			}
 		}
 	}
 private:
@@ -217,7 +233,12 @@ public:
 			return make_shared<ParentStarObject>(clauseName, arg1, arg2);
 		}
 		else {
-			throw SyntaxErrorException("Error constructing Parent* Object");
+			if (isArg1ValidStmtRef && isArg2ValidStmtRef) {
+				throw SyntaxErrorException("Error constructing Parent* Object");
+			}
+			else {
+				throw SemanticErrorException("Error constructing Parent* Object");
+			}
 		}
 	}
 private:

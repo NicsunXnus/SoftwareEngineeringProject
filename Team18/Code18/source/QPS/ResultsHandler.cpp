@@ -87,7 +87,15 @@ list<string> ResultHandler::processTables(std::vector<std::shared_ptr<QueryResul
 				return result;
 			}
 		}
-		cerr << "Cannot find symbol mentioned in select statement";
+		if (immediateTable->getSignificant()) {
+			vector<string> colContents = selectTable->getColumns()[0].begin()->second;
+			list<string> result(colContents.begin(), colContents.end());
+			return result;
+		}
+		else {
+			list<string> empty;
+			return empty;
+		}
 	}
 	else {
 		//do next time for tupled/<a,b,c> results, probably cross product of a, b, c
