@@ -112,7 +112,7 @@ public:
 		}
 
 		if (arg2->isWildcard()) {}
-		else if (arg2->isExpr()) {
+		else if (arg2->isPartialMatchingExprSpec()) {
 			// differentiate between constant and variable
 			string identifier = svToString(arg2->getIdentifier());
 
@@ -152,7 +152,7 @@ public:
 				//cout << "arg2 is variable" << endl;
 				if (isSingleColumn) {
 					// Get all assignment statement numbers that appear in variable database with variable as key
-					if (PKBVarData.count(identifier)) {
+					if (PKBUsesData.count(identifier)) {
 						vector<string> to_intersect = PKBUsesData.at(identifier);
 						assignSynonymColumn = intersection(assignSynonymColumn, to_intersect);
 					}
@@ -161,7 +161,7 @@ public:
 					}
 				}
 				else {
-					if (PKBVarData.count(identifier)) {
+					if (PKBUsesData.count(identifier)) {
 						vector<string> to_intersect = PKBUsesData.at(identifier);
 						for (auto pair = columnValues.begin(); pair != columnValues.end();) {
 							string variable_key = pair->first;

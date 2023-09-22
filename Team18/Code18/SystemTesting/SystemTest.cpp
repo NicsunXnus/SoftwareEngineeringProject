@@ -67,12 +67,6 @@ namespace SystemTesting
 			std::string queryFilePath = defaultPath + "double_clause_queries.txt";
 			assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
 		}
-		TEST_METHOD(debug)
-		{
-			std::string srcFilePath = defaultPath + "single_follows_source.txt";
-			std::string queryFilePath = defaultPath + "single_follows_queries.txt";
-			assert(SystemTestWrapper::run(srcFilePath, queryFilePath, true));
-		}
 
 	};
 }
