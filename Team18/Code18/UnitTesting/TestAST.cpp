@@ -52,7 +52,7 @@ namespace UnitTesting
 				std::make_shared<Token>(")")
 			};
 			
-			std::shared_ptr<ExprNode> e = ASTBuilder::parseExpr(exprTest2, 1);
+			std::shared_ptr<ExprNode> e = ASTBuilder::parseExpr(exprTest2);
 			std::stringstream output;
 			std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
 
