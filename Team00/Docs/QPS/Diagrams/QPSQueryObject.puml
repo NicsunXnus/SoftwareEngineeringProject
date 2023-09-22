@@ -5,9 +5,60 @@ skinparam ClassBorderColor #000000
 
 title QPS QueryObjects
 
+package <<QueryObjects>> {
 
+    abstract class QueryObject {
+        -string_view data
+        -shared_ptr<QueryResultsTable> table
 
+        +{abstract} shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, 
+        unordered_map<string_view, shared_ptr<QueryObject>> synonyms)
+        +string_view getQueryObjectName()
+    }
 
+    abstract class DesignObject extends QueryObject {}
 
+    abstract class ClauseObject extends QueryObject {
+        -shared_ptr<ClauseArg> argument0
+	    -shared_ptr<ClauseArg> argument1
+
+        +shared_ptr<ClauseArg> getArg1()
+        +shared_ptr<ClauseArg> getArg2()
+    }
+
+    'Design object classes'
+    class StmtObject extends DesignObject {}
+    class ReadObject extends DesignObject {}
+    class PrintObject extends DesignObject {}
+    class CallObject extends DesignObject {}
+    class WhileObject extends DesignObject {}
+    class IfObject extends DesignObject {}
+    class AssignObject extends DesignObject {}
+    class VariableObject extends DesignObject {}
+    class ConstantObject extends DesignObject {}
+    class ProcedureObject extends DesignObject {}
+
+    'Clause object classes'
+    class UsesObject extends ClauseObject {}
+    class UsesEntityObject extends ClauseObject {}
+    class ModifiesObject extends ClauseObject {}
+    class ModifiesEntityObject extends ClauseObject {}
+    class FollowsObject extends ClauseObject {}
+    class FollowsStarObject extends ClauseObject {}
+    class ParentObject extends ClauseObject {}
+    class ParentStarObject extends ClauseObject {}
+
+    'Pattern object classes'
+    class PatternObject extends QueryObject {
+        -vector<shared_ptr<ClauseArg>> arguments
+
+        +shared_ptr<ClauseArg> getPatternSynonym()
+        +shared_ptr<ClauseArg> getArg1()
+        +shared_ptr<ClauseArg> getArg2()
+    }
+}
+
+PatternObject -[hidden]> ClauseObject
+DesignObject -[hidden]> PatternObject
 
 @end
