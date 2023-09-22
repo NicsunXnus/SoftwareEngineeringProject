@@ -4,6 +4,7 @@
 #include "../source/DesignExtractor/Entity.h"
 #include "../source/DesignExtractor/DesignExtractor.h"
 #include "../source/AST/ASTNode.h"
+
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace UnitTesting
@@ -188,6 +189,7 @@ namespace UnitTesting
 
             }
 
+            
     };
       
 }
