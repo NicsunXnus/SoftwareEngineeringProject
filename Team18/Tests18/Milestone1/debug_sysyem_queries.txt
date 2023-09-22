@@ -1,5 +1,0 @@
-1 - synonym-synonym, right: var, left: if
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select i such that Modifies(i, v)
-6
-5000
