@@ -60,7 +60,7 @@ private:
   }
   
 public:
-  static bool run(std::string srcFilePath, std::string queryFilePath, bool debugMode = false) {
+  static bool run(std::string srcFilePath, std::string queryFilePath, bool debugMode = true) {
     ApplicationWrapper applicationWrapper;
     applicationWrapper.parse(srcFilePath);
     bool isAllOk = true;
