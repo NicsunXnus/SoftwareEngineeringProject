@@ -4,31 +4,40 @@
 #include <iostream>
 #include <string_view>
 #include <vector>
-
-#include "Token.h"
+#include "QueryResultsTable.h"
+#include "QueryObjects/QueryObject.h"
+#include "DataAccessLayer.h"
 
 /**
 * This class a query builder object
 */
+using namespace std;
+
 class QueryBuilder {
 private:
-	std::vector<QueryObject> queryObjects;
+	vector <shared_ptr<QueryObject>> queryObjects;
+	unordered_map<string_view, shared_ptr<QueryObject>> synonyms;
+	shared_ptr<DataAccessLayer> dataAccessLayer;
+
 public:
 	/**
 	 * Constructor for the QueryBuilder object
 	 */
-	QueryBuilder() {};
+	QueryBuilder(vector<shared_ptr<QueryObject>> queryObjects, unordered_map<string_view, shared_ptr<QueryObject>> synonyms, shared_ptr<DataAccessLayer> dataAccessLayer)
+		:queryObjects(queryObjects), synonyms(synonyms), dataAccessLayer(dataAccessLayer) {
+
+	}
 
 	/**
 	 * Destructor for the QueryBuilder object
 	 */
-	~QueryBuilder() {};
+	~QueryBuilder() {};	
 
 	/**
 	 * Builds the query results given a list of query objects
 	 */
-	buildQuery(std::vector<QueryObjects> queryObjects);
-	  
-	
+
+	vector<shared_ptr<QueryResultsTable>> buildQuery();
+
 };
 #endif

@@ -46,7 +46,7 @@ public:
 	static shared_ptr<EntityStorage> StorageManager::getEntityStorage() {
 		if (!entity_storage) {
 			cerr << "entity storage is null" << endl;
-			return;
+			return nullptr;
 		}
 		return entity_storage;
 	}

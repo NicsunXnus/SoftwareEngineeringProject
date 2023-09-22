@@ -35,9 +35,9 @@ public:
 
     shared_ptr<StringMap> EntityStorage::getProcedureDatabase() {
         if (!(this->procedure_database)) {
-			cerr << "proc_database is null" << endl;
-			return nullptr;
-		}
+			    cerr << "proc_database is null" << endl;
+			    return nullptr;
+		    }
         return this->procedure_database;
     }
 
@@ -51,9 +51,9 @@ public:
 
     shared_ptr<StringMap> EntityStorage::getConstantDatabase() {
         if (!(this->constant_database)) {
-			cerr << "const_database is null" << endl;
-			return nullptr;
-		}
+			    cerr << "const_database is null" << endl;
+			    return nullptr;
+		    }
         return this->constant_database;
     }
 

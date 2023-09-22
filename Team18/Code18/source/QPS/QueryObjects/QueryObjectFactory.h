@@ -3,19 +3,31 @@
 
 #include <iostream>
 #include <string_view>
+#include <vector>
 #include "QueryObject.h"
+#include "ClauseArg.h"
+#include "../Errors/SemanticError.h"
+#include "../Errors/SyntaxError.h"
 
 /**
-* This class represents all Query Object factories
+* This abstract class represents all Query Object factories
 */
 class QueryObjectFactory {
 private: 
-	// string_view factoryType;
+
 public:
 	QueryObjectFactory() {
 
 	};
+	/*
+	* This function creates the QueryObject, overriden in the subclasses for design entities
+	*/
+	virtual inline shared_ptr<QueryObject> create(string_view name, vector<std::shared_ptr<ClauseArg>> arguments = {}) = 0;
 
-	virtual shared_ptr<QueryObject> create(string_view str) = 0;
+	/*
+	* This function creates the factory for each type (design entities, clauses etc.)
+	*/
+	static shared_ptr<QueryObjectFactory> createFactory(string_view type);
+
 };
 #endif

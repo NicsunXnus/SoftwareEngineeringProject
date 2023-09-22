@@ -1,16 +1,11 @@
 #pragma once
 #include "DataAccessLayer.h"
 #include <list>
-#include <string>
 
-vector<string> DataAccessLayer::getEntityStatement(ENTITY type) {
-	vector<string> stringVector;
+
+vector<string> DataAccessLayer::getEntity(ENTITY type) {
 	vector<string> PKBResponse = PKB::responder.getEntityStatement(type);
-	for (const string& intValue : PKBResponse) {
-		// Convert each integer to a string and append it to the stringVector
-		stringVector.push_back(intValue);
-	}
-	return stringVector;
+	return PKBResponse;
 }
 
 vector<string> DataAccessLayer::getAllProcedures() {
@@ -28,3 +23,17 @@ vector<string> DataAccessLayer::getAllConstants() {
 	return PKBResponse;
 }
 
+map<string, vector<string>> DataAccessLayer::getVariableMap() {
+	map<string, vector<string>> PKBResponse = PKB::responder.getVariableMap();
+	return PKBResponse;
+}
+
+map<string, vector<string>> DataAccessLayer::getConstantMap() {
+	map<string, vector<string>> PKBResponse = PKB::responder.getConstantMap();
+	return PKBResponse;
+}
+
+map<string, vector<string>> DataAccessLayer::getClause(ABSTRACTION abstraction) {
+	map<string, vector<string>> PKBResponse = PKB::responder.getAbstraction(abstraction);
+	return PKBResponse;
+}
