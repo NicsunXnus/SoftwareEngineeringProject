@@ -1,0 +1,160 @@
+1 - invalid pattern selection - stmt
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s pattern s (_, _)
+semantic error
+5000
+2 - invalid pattern selection - read
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select r pattern r (_, _)
+semantic error
+5000
+3 - invalid pattern selection - print
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select pn pattern pn (_, _)
+semantic error
+5000
+4 - invalid pattern selection - call
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select cl pattern cl (_, _)
+semantic error
+5000
+5 - invalid pattern selection - variable
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select v pattern v (_, _)
+semantic error
+5000
+6 - invalid pattern selection - constant
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select c pattern c (_, _)
+semantic error
+5000
+7 - invalid pattern selection - procedure
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select p pattern p (_, _)
+semantic error
+5000
+8 - invalid pattern selection - unknown
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s pattern whatever (_, _)
+semantic error
+5000
+9 - double wildcard, select a
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select a pattern a (_, _)
+3, 4, 11, 13, 15
+5000
+10 - double wildcard, mismatch select p
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select p pattern a (_, _)
+first, second, third
+5000
+11 - synonym-wildcard, syn: assignment invalid
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select a pattern a (a, _)
+semantic error
+5000
+12 - synonym-wildcard, syn: print invalid
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select a pattern a (pn, _)
+semantic error
+5000
+13 - synonym-wildcard, syn: read invalid
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select a pattern a (r, _)
+semantic error
+5000
+14 - synonym-wildcard, syn: statement invalid
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select a pattern a (s, _)
+semantic error
+5000
+15 - synonym-wildcard, syn: call invalid
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select a pattern a (c, _)
+semantic error
+5000
+16 - synonym-wildcard, syn: while invalid
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select a pattern a (w, _)
+semantic error
+5000
+17 - synonym-wildcard, syn: if invalid
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select a pattern a (i, _)
+semantic error
+5000
+18 - synonym-wildcard, syn: constant invalid
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select a pattern a (c, _)
+semantic error
+5000
+19 - synonym-wildcard, syn: procedure invalid
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select a pattern a (p, _)
+semantic error
+5000
+20 - synonym-wildcard, syn: variable valid
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select a pattern a (v, _)
+3, 4, 11, 13, 15
+5000
+21 - synonym-wildcard, syn: variable valid
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select a pattern a (v, _)
+3, 4, 11, 13, 15
+5000
+22 - synonym-exact match line 3 
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select a pattern a (v, "a+b-1")
+3
+5000
+23 - synonym-exact match line 13 
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select a pattern a (v, "2")
+13
+5000
+24 - synonym-exact match line 15
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select a pattern a (v, "b")
+15
+5000
+25 - synonym-partial match, exists
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select a pattern a (v, _"b"_)
+3, 11, 15
+5000
+26 - synonym-partial match, does not exist
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select a pattern a (v, _"x"_)
+
+5000
+27 - char string-wildcard, does not exist but in prg
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select a pattern a ("b", _)
+
+5000
+28 - char string-wildcard, exists
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select a pattern a ("c", _)
+3, 15
+5000
+29 - char string-wildcard, does not exist in prg
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select a pattern a ("x", _)
+
+5000
+30 - char string-wildcard, capitalised, does not exist
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select a pattern a ("C", _)
+
+5000
+31 - char string-exact match, exists 
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select a pattern a ("c", "b")
+15
+5000
+32 - char string-exact match, does not exist
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select a pattern a ("c", "x")
+
+5000
