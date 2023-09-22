@@ -76,12 +76,18 @@ public:
       if (debugMode) {
         Logger::WriteMessage(("Query Number " + to_string(i)).c_str());
         //std::cout << "Query Number " << to_string(i) << std::endl;
-        std::string temp = "";
+        std::string tempActl = "Actual: ";
+        std::string tempExp = "Expected: ";
         for (auto r : results) {
-          temp += r + " ";
+          tempActl += r + " ";
           //std::cout << r << " " << std::endl;
         }
-        Logger::WriteMessage(temp.c_str());
+        for (auto r : expected) {
+          tempExp += r + " ";
+          //std::cout << r << " " << std::endl;
+        }
+        Logger::WriteMessage(tempExp.c_str());
+        Logger::WriteMessage(tempActl.c_str());
       }
       bool passed = checkListEquality(expected, results);
       queryResults.push_back(passed);
