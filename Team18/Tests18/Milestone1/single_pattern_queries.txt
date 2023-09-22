@@ -41,12 +41,12 @@ SemanticError
 9 - double wildcard, select a
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select a pattern a (_, _)
-3, 4, 11, 13, 15
+3, 4, 9, 12, 13
 5000
 10 - double wildcard, mismatch select p
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select p pattern a (_, _)
-first, second, third
+first
 5000
 11 - synonym-wildcard, syn: assignment invalid
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -96,49 +96,44 @@ SemanticError
 20 - synonym-wildcard, syn: variable valid
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select a pattern a (v, _)
-3, 4, 11, 13, 15
+3, 4, 9, 12, 13
 5000
-21 - synonym-wildcard, syn: variable valid
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a (v, _)
-3, 4, 11, 13, 15
-5000
-22 - synonym-partial match, exists
+21 - synonym-partial match, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select a pattern a (v, _"b"_)
 3, 11, 15
 5000
-23 - synonym-partial match, does not exist
+22 - synonym-partial match, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select a pattern a (v, _"x"_)
 
 5000
-24 - char string-wildcard, does not exist but in prg
+23 - char string-wildcard, does not exist but in prg
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select a pattern a ("b", _)
 
 5000
-25 - char string-wildcard, exists
+24 - char string-wildcard, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select a pattern a ("c", _)
-3, 15
+3, 12
 5000
-26 - char string-wildcard, does not exist in prg
+25 - char string-wildcard, does not exist in prg
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select a pattern a ("x", _)
 
 5000
-27 - char string-wildcard, capitalised, does not exist
+26 - char string-wildcard, capitalised, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select a pattern a ("C", _)
 
 5000
-28 - char string-exact match, exists 
+27 - char string-exact match, exists 
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select a pattern a ("c", "b")
-15
+12
 5000
-29 - char string-exact match, does not exist
+28 - char string-exact match, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select a pattern a ("c", "x")
 
