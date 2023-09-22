@@ -1,0 +1,90 @@
+@startuml
+' !include ../style.puml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+
+title QPS Overview
+
+package QPS <<Rectangle>> {
+    note top of QPS
+    Shorthand for symbols:
+    ∅ - void, str - String, [...] - vector,
+    strv - string_view, (...) - tuple,
+    UM - unorderedmap, ENT - ENTITY,
+    @ - shared_ptr, US -unorderedset,
+    ABS - ABSTRACTION
+    end note
+
+    Class QueryResultsTable {
+        - [map<str, [str]>] columns
+        - bool isSignificant
+        + QueryResultsTable([map<str, [str]>] _columns)
+        + @QueryResultsTable innerJoin(@QueryResultsTable other)
+        + @QueryResultsTable crossProduct(@QueryResultsTable other)
+    }
+    
+    Class QueryDriver {
+        - str query
+        + QueryDriver(strv query)
+        + list<str> execute()
+    }
+    
+    'Can remove unnecessary info'
+    'Converts the Tokens into Query Object'
+    Class QueryParser {
+        - UM<strv, @QueryObject> synonyms
+        - UM<strv, ENT> synonymToEntity
+        - US<strv> relationalReferences 
+        + ([strv], [strv]) splitDeclarationQuery([strv] tokens)
+        + [@QueryObject] validateDeclaration([strv] declarations)
+        + [@QueryObject] validateQuery([strv] query)
+        + UM<strv, @QueryObject> getSynonyms()
+    }
+
+    'Holds the info needed to request the PKB'
+    Class QueryObject {
+        parse()
+    }
+    Class Uses
+    Class Modifies
+    Class Others
+    
+    'builds the query based on Query Object (which API calls to make to PKB)'
+    Class QueryBuilder {
+        - [@QueryObject] queryObjects
+        - UM<strv, @QueryObject> synonyms
+        - @DataAccessLayer dataAccessLayer
+        + QueryBuilder([@QueryObject queryObjects], UM<strv, @QueryObject>
+        synonyms, @DataAccessLayer dataAcessLayer)
+        + [@QueryResultsTable] buildQuery()
+    }
+    'Handles return values from PKB'
+    Class ResultsHandler {
+        list<str> processTables([@QueryResultsTable])
+    }
+
+    'Talks to PKB'
+    Class DataAccessLayer {
+        [str] getEntity(ENT type)
+        [str] getAllProcedures()
+        [str] getAllVariables()
+        [str] getAllConstants()
+        map<str, [str]> getClause(ABS)
+    }
+
+    
+
+}
+
+
+Uses -up-|> QueryObject
+Modifies -up-|> QueryObject
+Others -up-|> QueryObject
+QueryParser .down.> QueryObject
+DataAccessLayer .left.> QueryObject
+QueryBuilder .right.> QueryObject
+QueryDriver ..> QueryParser
+' QueryProcessingSubsystem -down-> QPS
+' Clauses -up-|> QueryEvaluator
+
+@end
