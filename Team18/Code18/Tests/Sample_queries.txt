@@ -1,0 +1,20 @@
+1 - comment
+read r;
+Select r
+2
+5000
+2 - comment
+variable read;
+Select read
+read, r, x, c
+5000
+3 - comment
+assign a;
+Select a
+1, 3
+5000
+4 - comment
+print   a  ;
+Select a
+4
+5000
