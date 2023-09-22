@@ -46,7 +46,7 @@ public:
     }
 
 private:
-    static inline shared_ptr<StringMap> database;
+    shared_ptr<StringMap> database;
 };
 
 // This class represents the storage for the Follows/Follows* design abstractions.
