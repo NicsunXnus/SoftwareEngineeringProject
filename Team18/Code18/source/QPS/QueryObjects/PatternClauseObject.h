@@ -112,7 +112,7 @@ public:
 		}
 
 		if (arg2->isWildcard()) {}
-		else if (arg2->isPartialMatchingExprSpec()) {
+		else if (arg2->isExpr()) {
 			// differentiate between constant and variable
 			string identifier = svToString(arg2->getIdentifier());
 
