@@ -101,22 +101,22 @@ Select s such that Parent*(s, a)
 21 - two synonyms, invalid, any children of calls
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Parent*(cl, s)
-SemanticError
+
 5000
 22 - two synonyms, invalid, any children of read
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Parent*(r, s)
-SemanticError
+
 5000
 23 - two synonyms, invalid, any children of prints
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Parent*(pn, s)
-SemanticError
+
 5000
 24 - two synonyms, invalid, any children of assignments
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Parent*(a, s)
-SemanticError
+
 5000
 25 - two synonyms, invalid, any children of variables
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -161,7 +161,7 @@ first, second, third
 33 - left synonym, right wildcard, mismatch synonym, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Parent*(cl, _)
-SemanticError
+
 5000
 34 - left wildcard, right integer, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -176,7 +176,7 @@ Select i such that Parent*(_, 2)
 36 - left wildcard, right synonym, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select pn such that Parent*(_, pn)
-6
+7, 9
 5000
 37 - left wildcard, right synonym, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;

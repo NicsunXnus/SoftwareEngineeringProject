@@ -292,8 +292,8 @@ public:
 		headers.push_back(col2);
 		// create table with temporary name table headers: col1, col2
 		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
-		shared_ptr<QueryResultsTable> filterFirstArg = filterStmtRef(getArg1(), col1, table, dataAccessLayer, synonyms);
-		shared_ptr<QueryResultsTable> filterSecondArg = filterStmtRef(getArg2(), col2, filterFirstArg, dataAccessLayer, synonyms);
+		shared_ptr<QueryResultsTable> filterFirstArg = filterStmtRef(getArg1(), col2, table, dataAccessLayer, synonyms);
+		shared_ptr<QueryResultsTable> filterSecondArg = filterStmtRef(getArg2(), col1, filterFirstArg, dataAccessLayer, synonyms);
 		return filterSecondArg;
 	}
 
@@ -314,8 +314,8 @@ public:
 		headers.push_back(col2);
 		// create table with temporary name table headers: col1, col2
 		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
-		shared_ptr<QueryResultsTable> filterFirstArg = filterStmtRef(getArg1(), col1, table, dataAccessLayer, synonyms);
-		shared_ptr<QueryResultsTable> filterSecondArg = filterStmtRef(getArg2(), col2, filterFirstArg, dataAccessLayer, synonyms);
+		shared_ptr<QueryResultsTable> filterFirstArg = filterStmtRef(getArg1(), col2, table, dataAccessLayer, synonyms);
+		shared_ptr<QueryResultsTable> filterSecondArg = filterStmtRef(getArg2(), col1, filterFirstArg, dataAccessLayer, synonyms);
 		return filterSecondArg;
 	}
 
