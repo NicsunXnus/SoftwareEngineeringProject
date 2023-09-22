@@ -10,15 +10,11 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;
 
-namespace UnitTesting
-
-{
-	TEST_CLASS(TestQPSQueryEval)
-	{
+namespace UnitTesting {
+	TEST_CLASS(TestQPSQueryEval) {
 	public:
 
-		TEST_METHOD(TestValidAssignFollowsIntInt)
-		{
+		TEST_METHOD(TestValidAssignFollowsIntInt) {
 			vector<string> testS = tokenize("assign s; Select s such that Follows(1, 2)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
@@ -60,13 +56,9 @@ namespace UnitTesting
 			Assert::IsTrue(tables[1]->getSignificant());
 			Assert::IsTrue(tables[0]->getColumns()[0]["s"][0] == "1");
 			Assert::IsTrue(tables[1]->getColumns().size() == 0);
-	
-
-
 		}
 
-		TEST_METHOD(TestValidAssignStatementFollowsIntStatement)
-		{
+		TEST_METHOD(TestValidAssignStatementFollowsIntStatement) {
 			vector<string> testS = tokenize("assign s; Select s such that Follows(2, s)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
@@ -84,14 +76,9 @@ namespace UnitTesting
 			Assert::IsTrue(tables[0]->getColumns()[0]["s"][0] == "1");
 			Assert::IsTrue(tables[1]->getColumns()[0]["s"][0] == "3");
 			Assert::IsTrue(tables[1]->getColumns()[0]["s"][1] == "4");
-			
-
-
-
 		}
 
-		TEST_METHOD(TestValidAssignStatementFollowsStmtWildcard)
-		{
+		TEST_METHOD(TestValidAssignStatementFollowsStmtWildcard) {
 			vector<string> testS = tokenize("assign s; Select s such that Follows(s, _)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
@@ -112,13 +99,9 @@ namespace UnitTesting
 			Assert::IsTrue(tables[1]->getColumns()[0]["s"][2] == "2");
 			Assert::IsTrue(tables[1]->getColumns()[0]["s"][3] == "3");
 			Assert::IsTrue(tables[1]->getNumberOfCols() == 1);
-
-
-
 		}
 
-		TEST_METHOD(TestValidAssignStatementFollowsWildcardStmt)
-		{
+		TEST_METHOD(TestValidAssignStatementFollowsWildcardStmt) {
 			vector<string> testS = tokenize("assign s; Select s such that Follows(_, s)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
@@ -139,14 +122,9 @@ namespace UnitTesting
 			Assert::IsTrue(tables[1]->getColumns()[0]["s"][2] == "4");
 			Assert::IsTrue(tables[1]->getColumns()[0]["s"][3] == "4");
 			Assert::IsTrue(tables[1]->getNumberOfCols() == 1);
-
-
-
-
 		}
 
-		TEST_METHOD(TestValidAssignStatementFollowsWildcardInt)
-		{
+		TEST_METHOD(TestValidAssignStatementFollowsWildcardInt) {
 			vector<string> testS = tokenize("assign s; Select s such that Follows(_, 3)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
@@ -163,14 +141,9 @@ namespace UnitTesting
 			Assert::IsTrue(tables[1]->getSignificant());
 			Assert::IsTrue(tables[0]->getColumns()[0]["s"][0] == "1");
 			Assert::IsTrue(tables[1]->getNumberOfCols() == 0);
-
-
-
-
 		}
 
-		TEST_METHOD(TestValidAssignParent)
-		{
+		TEST_METHOD(TestValidAssignParent) {
 			vector<string> testS = tokenize("assign s; Select s such that Parent(1, 2)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
@@ -188,13 +161,9 @@ namespace UnitTesting
 			Assert::IsTrue(tables[1]->getSignificant());
 			Assert::IsTrue(tables[0]->getColumns()[0]["s"][0] == "1");
 			Assert::IsTrue(tables[1]->getColumns().size() == 0);
-
-
-
 		}
 
-		TEST_METHOD(TestValidAssignStatementParentStatement)
-		{
+		TEST_METHOD(TestValidAssignStatementParentStatement) {
 			vector<string> testS = tokenize("assign s; Select s such that Follows(2, s)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
@@ -211,14 +180,9 @@ namespace UnitTesting
 			Assert::IsTrue(tables[1]->getSignificant());
 			Assert::IsTrue(tables[0]->getColumns()[0]["s"][0] == "1");
 			Assert::IsTrue(tables[1]->getColumns()[0]["s"][0] == "3");
-
-
-
-
 		}
 
-		TEST_METHOD(TestValidAssignUsesStatementIdent)
-		{
+		TEST_METHOD(TestValidAssignUsesStatementIdent) {
 			vector<string> testS = tokenize("assign s; variable v; Select s such that Uses(s, \"b\")");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
@@ -236,13 +200,9 @@ namespace UnitTesting
 			Assert::IsTrue(tables[0]->getColumns()[0]["s"][0] == "1");
 			Assert::IsTrue(tables[1]->getColumns()[0]["s"][0] == "2");
 			Assert::IsTrue(tables[1]->getColumns()[0]["s"][1] == "3");
-
-
-
 		}
 
-		TEST_METHOD(TestValidAssignUsesStatementWildCard)
-		{
+		TEST_METHOD(TestValidAssignUsesStatementWildCard) {
 			vector<string> testS = tokenize("assign s; variable v; Select s such that Uses(s, _)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
@@ -262,13 +222,9 @@ namespace UnitTesting
 			Assert::IsTrue(tables[1]->getColumns()[0]["s"][1] == "2");
 			Assert::IsTrue(tables[1]->getColumns()[0]["s"][2] == "3");
 			Assert::IsTrue(tables[1]->getColumns()[0]["s"][3] == "3");
-
-
-
 		}
 
-		TEST_METHOD(TestValidAssignStatementUsesIntegerVariable)
-		{
+		TEST_METHOD(TestValidAssignStatementUsesIntegerVariable) {
 			vector<string> testS = tokenize("assign s; variable v; Select v such that Uses(2, v)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
@@ -285,14 +241,9 @@ namespace UnitTesting
 			Assert::IsTrue(tables[1]->getSignificant());
 			Assert::IsTrue(tables[0]->getColumns()[0]["v"][0] == "a");
 			Assert::IsTrue(tables[1]->getColumns()[0]["v"][0] == "b");
-
-
-
-
 		}
 
-		TEST_METHOD(TestValidAssignStatementUsesIntegerWildcard)
-		{
+		TEST_METHOD(TestValidAssignStatementUsesIntegerWildcard) {
 			vector<string> testS = tokenize("assign s; variable v; Select v such that Uses(2, _)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
@@ -309,13 +260,9 @@ namespace UnitTesting
 			Assert::IsTrue(tables[1]->getSignificant());
 			Assert::IsTrue(tables[1]->getNumberOfCols() == 0);
 			Assert::IsTrue(tables[0]->getColumns()[0]["v"][0] == "a");
-
-
-
 		}
 
-		TEST_METHOD(TestValidAssignStatementUsesIntegerWildcardNotSignificant)
-		{
+		TEST_METHOD(TestValidAssignStatementUsesIntegerWildcardNotSignificant) {
 			vector<string> testS = tokenize("assign s; variable v; Select v such that Uses(69, _)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
@@ -332,13 +279,9 @@ namespace UnitTesting
 			Assert::IsTrue(!tables[1]->getSignificant()); // table is not significant
 			Assert::IsTrue(tables[1]->getNumberOfCols() == 0);
 			Assert::IsTrue(tables[0]->getColumns()[0]["v"][0] == "a");
-
-
-
 		}
 
-		TEST_METHOD(TestValidAssignModifiesStatementIdent)
-		{
+		TEST_METHOD(TestValidAssignModifiesStatementIdent) {
 			vector<string> testS = tokenize("assign s; variable v; Select s such that Modifies(s, \"a\")");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
@@ -355,11 +298,9 @@ namespace UnitTesting
 			Assert::IsTrue(tables[1]->getSignificant());
 			Assert::IsTrue(tables[0]->getColumns()[0]["s"][0] == "1");
 			Assert::IsTrue(tables[1]->getColumns()[0]["s"][0] == "1");
-		
 		}
 
-		TEST_METHOD(TestValidAssignModifiesStatementWildcard)
-		{
+		TEST_METHOD(TestValidAssignModifiesStatementWildcard) {
 			vector<string> testS = tokenize("assign s; variable v; Select s such that Modifies(s, _)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
@@ -378,11 +319,9 @@ namespace UnitTesting
 			Assert::IsTrue(tables[1]->getColumns()[0]["s"][0] == "1");
 			Assert::IsTrue(tables[1]->getColumns()[0]["s"][1] == "2");
 			Assert::IsTrue(tables[1]->getColumns()[0]["s"][2] == "3");
-
 		}
 
-		TEST_METHOD(TestValidAssignStatementModifiesIntegerVariable)
-		{
+		TEST_METHOD(TestValidAssignStatementModifiesIntegerVariable) {
 			vector<string> testS = tokenize("assign s; variable v; Select v such that Modifies(3, v)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
@@ -400,10 +339,6 @@ namespace UnitTesting
 			Assert::IsTrue(tables[0]->getColumns()[0]["v"][0] == "a");
 			Assert::IsTrue(tables[1]->getColumns()[0]["v"][0] == "b");
 			Assert::IsTrue(tables[1]->getColumns()[0]["v"][1] == "c");
-
-
 		}
-
 	};
-
 }

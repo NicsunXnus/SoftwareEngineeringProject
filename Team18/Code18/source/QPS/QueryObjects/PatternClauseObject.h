@@ -10,7 +10,7 @@
 */
 class PatternObject : public QueryObject {
 private:
-	map<string, vector<string>> res;
+	variant<vector<string>, map<string, vector<string>>> res;
 	vector<shared_ptr<ClauseArg>> arguments;
 
 public:
@@ -29,9 +29,6 @@ public:
 		return arguments[2];
 	}
 
-	//string col1 = "col1";
-	//string col2 = "col2";
-
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
 		// Currently patterns only supported for assign
 		
@@ -44,28 +41,20 @@ public:
 
 		// 1. pattern a (v, _)
 		// Return a, v: for all n in Modifies(n, v) [for all map values] that are in assignments
-		
 		// 2. pattern a (v, _"y"_)
 		// Return a, v: for all n in Modifies(n, v) [for all map values] that are in assignments and n also in Uses(n, "y")
-		
 		// 3. pattern a (v, _"1"_)
 		// Return a, v: for all n in Modifies(n, v) [for all map values] that are in assignments and n also in constant database for key "1"
-		
 		// 4. pattern a ("x", _)
 		// Return a: for all n in Modifies(n, "x") that are in assignments and n also in variable database for key "x"
-
 		// 5. pattern a ("x", _"y"_)
 		// Return a: for all n in Modifies(n, "x") that are in assignments and n also in Uses(n, "y")
-		
 		// 6. pattern a ("x", _"1"_)
 		// Return a: for all n in Modifies(n, "x") that are in assignments and n also in constant database for key "1"
-		
 		// 7. pattern a (_, _)
 		// Return a: for all n in assignments
-		
 		// 8. pattern a (_, _"y"_)
 		// Return a: for all n in assignments and n also in Uses(n, "y")
-		
 		// 9. pattern a (_, _"1"_)
 		// Return a: for all n in assignments and n also in constant database for key "1"
 
@@ -73,17 +62,17 @@ public:
 		shared_ptr<ClauseArg> arg1 = getArg1();
 		shared_ptr<ClauseArg> arg2 = getArg2();
 
-		//map<string, vector<string>> PKBModifiesData = dataAccessLayer->getClause(MODIFIES);
-		//map<string, vector<string>> PKBUsesData = dataAccessLayer->getClause(USES);
-		//vector<string> PKBAssignData = dataAccessLayer->getEntity(ASSIGN);
-		//map<string, vector<string>> PKBVarData = dataAccessLayer->getVariableMap();
-		//map<string, vector<string>> PKBConstData = dataAccessLayer->getConstantMap();
+		map<string, vector<string>> PKBModifiesData = dataAccessLayer->getClause(MODIFIES);
+		map<string, vector<string>> PKBUsesData = dataAccessLayer->getClause(USES);
+		vector<string> PKBAssignData = dataAccessLayer->getEntity(ASSIGN);
+		map<string, vector<string>> PKBVarData = dataAccessLayer->getVariableMap();
+		map<string, vector<string>> PKBConstData = dataAccessLayer->getConstantMap();
 
-		map<string, vector<string>> PKBModifiesData = { {"x", {"main", "2"}}, {"y", {"main", "3"}}};
-		map<string, vector<string>> PKBUsesData = { {"x", {"main"}}, {"y", {"main", "4"}} };
-		vector<string> PKBAssignData = { "2", "3" };
-		map<string, vector<string>> PKBVarData = { {"x", {"main", "1", "2"}}, {"y", {"main", "3", "4"}} };;
-		map<string, vector<string>> PKBConstData = { {"2", {"2"}}, {"3", {"3"}} };
+		//map<string, vector<string>> PKBModifiesData = { {"x", {"main", "2"}}, {"y", {"main", "3"}}};
+		//map<string, vector<string>> PKBUsesData = { {"x", {"main"}}, {"y", {"main", "4"}} };
+		//vector<string> PKBAssignData = { "2", "3" };
+		//map<string, vector<string>> PKBVarData = { {"x", {"main", "1", "2"}}, {"y", {"main", "3", "4"}} };;
+		//map<string, vector<string>> PKBConstData = { {"2", {"2"}}, {"3", {"3"}} };
 
 		shared_ptr<QueryResultsTable> table;
 
@@ -212,7 +201,7 @@ public:
 	// variant: design entities, clauses
 	// Setting the results of the PKB call
 	void setResult(variant<vector<string>, map<string, vector<string>>> result) {
-		//this->res = result;
+		this->res = result;
 	}
 
 	variant<vector<string>, map<string, vector<string>>> getResult() {
