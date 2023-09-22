@@ -1,6 +1,6 @@
 1 - Follows and Pattern
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select s such that Follows(s, cl) pattern a ("simple", "100")
+Select s such that Follows(s, cl) pattern a ("simple", _"100"_)
 5, 6, 9, 16, 30, 49, 53, 55
 5000
 2 - FollowsT and Pattern
@@ -10,7 +10,7 @@ Select a such that Follows*(a, i) pattern a ("qps", _)
 5000
 3 - Modifies and Pattern
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select s such that Modifies(s, "pkb") pattern a ("sp", "error")
+Select s such that Modifies(s, "pkb") pattern a ("sp", _"error"_)
 4, 33
 5000
 4 - Parent and Pattern
