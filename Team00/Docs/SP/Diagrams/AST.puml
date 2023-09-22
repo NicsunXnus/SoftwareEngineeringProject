@@ -1,0 +1,158 @@
+@startuml
+' !include ../style.puml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+
+title AST Overview
+
+' package QueryProcessingSubsystem <<Rectangle>> {
+    
+' }
+' Class Tokens {
+        
+' }
+package AST <<Rectangle>> {
+    
+    Class ASTNode
+    Class ProgramNode {
+        vector<ProcedureNode> procedures
+    }
+
+    Class ProcedureNode {
+        vector<StatementNode> statements
+    }
+    Class StatementNode
+    Class CondExprNode
+    Class RelFactorNode
+
+    Class AssignmentNode {
+        VariableNode varNode
+        ExprNode exprNode
+    }
+
+    Class ReadNode {
+        VariableNode varNode 
+    }
+    Class PrintNode {
+        VariableNode varNode
+    }
+    Class CallNode {
+        ProcedureNode procNode
+    }
+    Class IfNode {
+        CondExprNode condExpr
+        Vector<StatementNode> thenStatements
+        Vector<StatementNode> rightStatements
+    }
+    Class WhileNode {
+        CondExprNode condExpr
+        Vector<StatementNode> loopStatements
+    }
+
+    Class RelExprNode
+    Class NotNode {
+        CondExprNode condExpr
+    }
+    Class AndNode {
+        CondExprNode leftCondExpr
+        CondExprNode rightCondExpr
+    }
+    Class OrNode {
+        CondExprNode leftCondExpr
+        CondExprNode rightCondExpr
+    }
+    Class GreaterThanNode {
+        RelFactorNode leftRelFactorNode
+        RelFactorNode rightRelFactorNode
+    }
+    Class GreaterThanEqualNode {
+        RelFactorNode leftRelFactorNode
+        RelFactorNode rightRelFactorNode
+    }
+    Class LesserThanNode {
+        RelFactorNode leftRelFactorNode
+        RelFactorNode rightRelFactorNode
+    }
+    Class LesserThanEqualNode {
+        RelFactorNode leftRelFactorNode
+        RelFactorNode rightRelFactorNode
+    }
+    Class EqualNode {
+        RelFactorNode leftRelFactorNode
+        RelFactorNode rightRelFactorNode
+    }
+    Class NotEqualNode {
+        RelFactorNode leftRelFactorNode
+        RelFactorNode rightRelFactorNode
+    }
+    Class RefNode
+    Class VariableNode {
+        String varName
+    }
+    Class ConstantNode {
+        Integer number
+    }
+    Class ExprNode
+    Class PlusNode {
+        ExprNode leftExprNode
+        ExprNode rightExprNode
+    }
+    Class MinusNode {
+        ExprNode leftExprNode
+        ExprNode rightExprNode
+    }
+    Class TimesNode {
+        ExprNode leftExprNode
+        ExprNode rightExprNode
+    }
+    Class DividesNode {
+        ExprNode leftExprNode
+        ExprNode rightExprNode
+    }
+    Class ModNode {
+        ExprNode leftExprNode
+        ExprNode rightExprNode
+    }
+}
+
+
+ProgramNode -up-|> ASTNode
+ProcedureNode -up-|> ASTNode
+StatementNode -up-|> ASTNode
+CondExprNode -up-|> ASTNode
+RelFactorNode -up-|> ASTNode
+
+AssignmentNode -up-|> StatementNode
+ReadNode -up-|> StatementNode
+IfNode -up-|> StatementNode
+CallNode -up-|> StatementNode
+WhileNode -up-|> StatementNode
+PrintNode -up-|> StatementNode
+
+RelExprNode -up-|> CondExprNode
+NotNode -up-|> CondExprNode
+AndNode -up-|> CondExprNode
+OrNode -up-|> CondExprNode
+
+GreaterThanNode -up-|> RelExprNode
+GreaterThanEqualNode -up-|> RelExprNode
+LesserThanNode -up-|> RelExprNode
+LesserThanEqualNode -up-|> RelExprNode
+EqualNode -up-|> RelExprNode
+NotEqualNode -up-|> RelExprNode
+
+VariableNode --|> RelFactorNode
+ConstantNode --|> RelFactorNode
+VariableNode --|> RefNode
+ConstantNode --|> RefNode
+ExprNode -up-|> RelFactorNode
+
+PlusNode -|> ExprNode
+MinusNode -|> ExprNode
+ModNode -|> ExprNode
+DividesNode -|> ExprNode
+TimesNode -|> ExprNode
+RefNode --|> ExprNode
+
+
+@end

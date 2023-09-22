@@ -1,0 +1,40 @@
+@startuml
+!include ../style.puml
+skinparam ClassFontColor #000000
+
+
+skinparam ClassBorderColor #000000
+box QPS LOGIC_COLOR_T1
+participant ":SpFacade" as SpFacade LOGIC_COLOR
+participant ":SimpleTokenizer" as SimpleTokenizer LOGIC_COLOR
+participant ":ASTBuilder" as ASTBuilder LOGIC_COLOR
+participant ":DesignExtractor" as DesignExtractor LOGIC_COLOR
+participant ":PKB" as PKB LOGIC_COLOR
+end box
+
+[-> SpFacade : processCode(String src)
+activate SpFacade
+
+SpFacade -> SimpleTokenizer : <<static>>\n tokenize(String src)
+activate SimpleTokenizer
+SimpleTokenizer -> SpFacade : vector<Token> tokens
+deactivate SimpleTokenizer
+
+SpFacade -> ASTBuilder : <<static>>\n build(vector<Token> tokens)
+activate ASTBuilder
+ASTBuilder -> SpFacade : AST ast
+deactivate ASTBuilder
+
+SpFacade --> DesignExtractor : <<static>>\n extract(AST ast)
+activate DesignExtractor
+    DesignExtractor -> PKB : populatePKB()
+    activate PKB
+    PKB -> DesignExtractor : success
+    deactivate PKB
+DesignExtractor -> SpFacade
+deactivate DesignExtractor
+
+[<--SpFacade : success
+deactivate SpFacade
+
+@end

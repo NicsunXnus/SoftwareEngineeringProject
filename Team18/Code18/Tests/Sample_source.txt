@@ -1,4 +1,7 @@
+procedure example {
 r = 3;
 read read;
 x = 2;
 print c;
+
+}

@@ -1,0 +1,22 @@
+@startuml
+
+    EqualsOpToken -Right-|> OperatorToken
+    ArithmeticOpToken -Down-|> OperatorToken
+        DivideOpToken --|> ArithmeticOpToken
+        MinusOpToken --|> ArithmeticOpToken
+        PlusOpToken --|> ArithmeticOpToken
+        MultiplyOpToken --|> ArithmeticOpToken
+        ModuloOpToken --|> ArithmeticOpToken
+    BooleanOpToken -Left-|> OperatorToken
+        AndOpToken -Down-|> BooleanOpToken
+        OrOpToken -Down-|> BooleanOpToken
+        NotOpToken -Down-|> BooleanOpToken
+    RelationalOpToken -up-|> OperatorToken
+        MoreThanOpToken -up-|> RelationalOpToken
+        MoreThanEqualOpToken -up-|> RelationalOpToken
+        LessThanOpToken -up-|> RelationalOpToken
+        LessThanEqualOpToken -up-|> RelationalOpToken
+        EqualityOpToken -up-|> RelationalOpToken
+        InequalityOpToken -up-|> RelationalOpToken
+
+@enduml
