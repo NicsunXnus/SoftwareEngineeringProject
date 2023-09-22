@@ -46,27 +46,27 @@ SemanticError
 10 - synonym-synonym, right: var, left: call
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select cl such that Modifies(cl, v)
-8, 10
+SemanticError
 5000
 11 - synonym-synonym, right: var, left: if
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select i such that Modifies(i, v)
-6
+
 5000
 12 - synonym-synonym, right: var, left: while
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select w such that Modifies(w, v)
-5
+
 5000
 13 - synonym-synonym, right: var, left: while, mismatch, exists. NOTE: Does not exist will be below when dealing with integers
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select i such that Modifies(w, v)
-6
+
 5000
 14 - synonym-wildcard, left: stmt
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Modifies(s, _)
-1, 2, 3, 4, 5, 6, 8, 10, 11, 12, 13, 15
+1, 2, 3, 4, 8, 10, 11, 12, 13, 15
 5000
 15 - synonym-wildcard, left: assignment
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
