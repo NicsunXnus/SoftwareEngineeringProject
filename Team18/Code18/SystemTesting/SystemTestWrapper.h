@@ -83,7 +83,7 @@ public:
         if (i != 0) {
           ss << "\n";
         }
-        ss << "Query #" + to_string(i) + ": " + to_string(queryResults[i]);
+        ss << "Query #" + to_string(i + 1) + ": " + to_string(queryResults[i]);
       }
       throw std::invalid_argument(ss.str());
     }

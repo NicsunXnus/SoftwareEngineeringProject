@@ -11,34 +11,34 @@ map<string, vector<string>> clauses = { {"1", {"2"}}, {"2", {"3", "4"}}, {"3", {
 map<string, vector<string>> clausesEnts = { {"a", {"1"}}, {"b", {"2", "3"}}, {"c", {"3"}}};
 
 
-vector<string> DataAccessLayer::getEntity(ENTITY type) {
+vector<string> DataAccessLayerStub::getEntity(ENTITY type) {
 	if (type == VARIABLE) {
 		return variables;
 	}
 	return entities;
 }
 
-vector<string> DataAccessLayer::getAllProcedures() {
+vector<string> DataAccessLayerStub::getAllProcedures() {
 	return procedures;
 }
 
-vector<string> DataAccessLayer::getAllVariables() {
+vector<string> DataAccessLayerStub::getAllVariables() {
 	return variables;
 }
 
-vector<string> DataAccessLayer::getAllConstants() {
+vector<string> DataAccessLayerStub::getAllConstants() {
 	return constants;
 }
 
-map<string, vector<string>> DataAccessLayer::getVariableMap() {
+map<string, vector<string>> DataAccessLayerStub::getVariableMap() {
 	return variableMap;
 }
 
-map<string, vector<string>> DataAccessLayer::getConstantMap() {
+map<string, vector<string>> DataAccessLayerStub::getConstantMap() {
 	return constantMap;
 }
 
-map<string, vector<string>> DataAccessLayer::getClause(ABSTRACTION abstraction) {
+map<string, vector<string>> DataAccessLayerStub::getClause(ABSTRACTION abstraction) {
 	if (abstraction == USES || abstraction == MODIFIES) {
 		return clausesEnts;
 	}
