@@ -10,7 +10,6 @@
 */
 class PatternObject : public QueryObject {
 private:
-	variant<vector<string>, map<string, vector<string>>> res;
 	vector<shared_ptr<ClauseArg>> arguments;
 
 public:
@@ -198,15 +197,7 @@ public:
 		return table;
 	}
 
-	// variant: design entities, clauses
-	// Setting the results of the PKB call
-	void setResult(variant<vector<string>, map<string, vector<string>>> result) {
-		this->res = result;
-	}
 
-	variant<vector<string>, map<string, vector<string>>> getResult() {
-		return res;
-	}
 
 	// Gets the intersect of two vectors
 	vector<string> intersection(vector<string>& strings1, vector<string>& strings2) {

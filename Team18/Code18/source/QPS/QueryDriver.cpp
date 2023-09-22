@@ -35,29 +35,11 @@ list<string> QueryDriver::execute() {
 		shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(queryObjects, synonyms, dataAccessLayer);
 		
 		vector<shared_ptr<QueryResultsTable>> queryResultsTable = queryBuilder->buildQuery();
+		shared_ptr<ResultHandler> resultHandler = make_shared<ResultHandler>();
+		list<string> finalResult = resultHandler->processTables(queryResultsTable);
 
-		//shared_ptr<QueryObject> obj = queryParser[0]; // sprint 1
-		/*For QueryBuilder passage*/
-		//shared_ptr<QueryBuilder> queryBuilderObj = make_shared<QueryBuilder>();
-		//vector<shared_ptr<QueryResultsTable>> queryResultsTable = queryBuilderObj->buildQuery(queryParser);
-
-		//shared_ptr<ResultHandler> resultHandlerObj = make_shared<ResultHandler>();
-		//list<string> resultOfCrossQueryExamination = resultHandlerObj->processTables(queryResultsTable);
-		//return resultOfCrossQueryExamination;
-		// 
-
-		//std::cout << "QueryDriver::execute 4.5" << std::endl;
-		//std::cout << typeid(*(obj.get())).name() << std::endl;
-		/*obj->call(dataAccessLayer);
-		variant<vector<string>, map<string, vector<string>>> resultVariant = obj->getResult();
-		vector<string> result = get<vector<string>>(resultVariant);*/
-
-		// chat-gpt code
-		list<string> myList;
-		/*variant<vector<string>, vector<string, vector<string>>> test;
-		vector<string> ta = get<vector<string>>(test);*/
 		
-		return myList;
+		return finalResult;
 	}
 	catch (const QPSError& ex) {
 		list<string> empty;
