@@ -93,107 +93,107 @@ stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant
 Select s such that Follows*(a, s)
 4, 5, 6, 7
 5000
-19 - two synonyms, normal, read that are before assignments
+20 - two synonyms, normal, read that are before assignments
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select r such that Follows*(r, a)
 1, 2, 12
 5000
-20 - two synonyms, normal, calls that are after prints
+21 - two synonyms, normal, calls that are after prints
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select cl such that Follows*(cl, pn)
 8, 10
 5000
-21 - two synonyms, invalid, same synonym
+22 - two synonyms, invalid, same synonym
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select a such that Follows*(a, a)
 
 5000
-22 - two synonyms, invalid, mismatch synonym, exists
+23 - two synonyms, invalid, mismatch synonym, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select i such that Follows*(a, r)
+Select i such that Follows*(r, a)
 6
 5000
-23 - two synonyms, invalid, mismatch synonym, does not exist
+24 - two synonyms, invalid, mismatch synonym, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Follows*(i, w)
 
 5000
-24 - two synonyms, invalid, procedure on left
+25 - two synonyms, invalid, procedure on left
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Follows*(p, s)
 SemanticError
 5000
-25 - two synonyms, invalid, procedure on right
+29 - two synonyms, invalid, procedure on right
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Follows*(s, p)
 SemanticError
 5000
-26 - two synonyms, invalid, variable on left
+27 - two synonyms, invalid, variable on left
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Follows*(v, s)
 SemanticError
 5000
-27 - two synonyms, invalid, variable on right
+28 - two synonyms, invalid, variable on right
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Follows*(s, v)
 SemanticError
 5000
-28 - two synonyms, invalid, constant on left
+29 - two synonyms, invalid, constant on left
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Follows*(c, s)
 SemanticError
 5000
-29 - two synonyms, invalid, constant on right
+30 - two synonyms, invalid, constant on right
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Follows*(s, c)
 SemanticError
 5000
-30 - left synonym, right wildcard
+31 - left synonym, right wildcard
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Follows*(s, _)
 1, 2, 3, 4, 5, 7, 9, 12, 14
 5000
-31 - left synonym, right wildcard, mismatch synonym, exists
+32 - left synonym, right wildcard, mismatch synonym, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select p such that Follows*(r, _)
 first, second, third
 5000
-32 - left synonym, right wildcard, mismatch synonym, does not exist
+33 - left synonym, right wildcard, mismatch synonym, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Follows*(cl, _)
 
 5000
-33 - left wildcard, right integer, exists
+34 - left wildcard, right integer, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select c such that Follows*(_, 3)
 1, 2
 5000
-34 - left wildcard, right integer, does not exist
+35 - left wildcard, right integer, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select i such that Follows*(_, 7)
 
 5000
-35 - left wildcard, right synonym, exists
+36 - left wildcard, right synonym, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select a such that Follows*(_, a)
 3, 4, 11, 13, 15
 5000
-36 - left wildcard, right synonym, does not exist
+37 - left wildcard, right synonym, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select pn such that Follows*(_, pn)
 
 5000
-37 - left wildcard, right synonym, mismatch synonym, exists
+38 - left wildcard, right synonym, mismatch synonym, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Follows*(_, r)
 a, b, c, d, e, f
 5000
-38 - left wildcard, right synonym, mismatch synonym, does not exist
+39 - left wildcard, right synonym, mismatch synonym, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select p such that Follows*(_, pn)
 
 5000
-39 - two wildcards
+40 - two wildcards
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select w such that Follows*(_, _)
 5

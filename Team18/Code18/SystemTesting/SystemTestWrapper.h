@@ -6,8 +6,11 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <iostream>
 #include "../source/HelperFunctions.h"
 #include "../source/ApplicationWrapper.h"
+
+using Microsoft::VisualStudio::CppUnitTestFramework::Logger;
 
 class SystemTestWrapper {
 private:
@@ -57,19 +60,29 @@ private:
   }
   
 public:
-  static bool run(std::string srcFilePath, std::string queryFilePath) {
+  static bool run(std::string srcFilePath, std::string queryFilePath, bool debugMode = false) {
     ApplicationWrapper applicationWrapper;
     applicationWrapper.parse(srcFilePath);
     bool isAllOk = true;
     std::vector<bool> queryResults;
     std::vector<std::pair<std::string, std::list<std::string>>> unpacked = unpackQueryFile(queryFilePath);
-    for (int i = 0; i < unpacked.size(); i++) {
+    for (int i = 1; i < unpacked.size() + 1; i++) {
       std::pair<std::string, std::list<std::string>> curr = unpacked[i];
       std::string query = curr.first;
       std::list < std::string> expected = curr.second;
 
       std::list<std::string> results = {};
       applicationWrapper.evaluate(query, results);
+      if (debugMode) {
+        Logger::WriteMessage(("Query Number " + to_string(i)).c_str());
+        //std::cout << "Query Number " << to_string(i) << std::endl;
+        std::string temp = "";
+        for (auto r : results) {
+          temp += r + " ";
+          //std::cout << r << " " << std::endl;
+        }
+        Logger::WriteMessage(temp.c_str());
+      }
       bool passed = checkListEquality(expected, results);
       queryResults.push_back(passed);
       if (!passed) {
@@ -83,7 +96,7 @@ public:
         if (i != 0) {
           ss << "\n";
         }
-        ss << "Query #" + to_string(i + 1) + ": " + to_string(queryResults[i]);
+        ss << "Query #" + to_string(i) + ": " + to_string(queryResults[i]);
       }
       throw std::invalid_argument(ss.str());
     }
