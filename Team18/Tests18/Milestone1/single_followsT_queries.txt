@@ -121,32 +121,32 @@ Select s such that Follows*(i, w)
 24 - two synonyms, invalid, procedure on left
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Follows*(p, s)
-semantic error
+SemanticError
 5000
 25 - two synonyms, invalid, procedure on right
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Follows*(s, p)
-semantic error
+SemanticError
 5000
 26 - two synonyms, invalid, variable on left
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Follows*(v, s)
-semantic error
+SemanticError
 5000
 27 - two synonyms, invalid, variable on right
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Follows*(s, v)
-semantic error
+SemanticError
 5000
 28 - two synonyms, invalid, constant on left
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Follows*(c, s)
-semantic error
+SemanticError
 5000
 29 - two synonyms, invalid, constant on right
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Follows*(s, c)
-semantic error
+SemanticError
 5000
 30 - left synonym, right wildcard
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;

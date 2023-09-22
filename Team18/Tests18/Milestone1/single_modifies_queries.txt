@@ -1,7 +1,7 @@
 1 - synonym-synonym, right: stmt (non-var)
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s1 such that Modifies(s1, s2)
-semantic error
+SemanticError
 5000
 2 - synonym-synonym, right: var, left: stmt
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -31,17 +31,17 @@ a, b, c, d, e
 7 - synonym-synonym, right: var, left: var (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Modifies(v, v)
-semantic error
+SemanticError
 5000
 8 - synonym-synonym, right: var, left: print (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Modifies(pn, v)
-semantic error
+SemanticError
 5000
 9 - synonym-synonym, right: var, left: constant (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select c such that Modifies(c, v)
-semantic error
+SemanticError
 5000
 10 - synonym-synonym, right: var, left: call
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -86,17 +86,17 @@ Select r such that Modifies(r, _)
 18 - synonym-wildcard, left: var (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Modifies(v, _)
-semantic error
+SemanticError
 5000
 19 - synonym-wildcard, left: print (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Modifies(pn, _)
-semantic error
+SemanticError
 5000
 20 - synonym-wildcard, left: constant (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select c such that Modifies(c, _)
-semantic error
+SemanticError
 5000
 21 - synonym-wildcard, left: call 
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -126,7 +126,7 @@ Select s such that Modifies(s, "a")
 26 - synonym-identity, left: stmt, right: constant (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Modifies(s, "1")
-semantic error
+SemanticError
 5000
 27 - synonym-identity, left: stmt, right: does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -146,7 +146,7 @@ Select p such that Modifies(s, "x")
 30 - wildcard-synonym, right: stmt (non-var)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select p such that Modifies(_, s)
-semantic error
+SemanticError
 5000
 31 - wildcard-synonym, right: variable
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -171,12 +171,12 @@ Select c such that Modifies(_, "x")
 34 - wildcard-identity, constant (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select c such that Modifies(_, "1")
-semantic error
+SemanticError
 5000
 35 - integer-synonym, right: stmt (non-var), stmt number inside
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select r such that Modifies(1, s)
-semantic error
+SemanticError
 5000
 36 - integer-synonym, right: variable, stmt number inside
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -216,10 +216,10 @@ Select v such that Modifies(1, "x")
 43 - identity-x, line number in string (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Modifies("1", v)
-semantic error
+SemanticError
 5000
 44 - identity-x, procedure name in string (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Modifies("first", v)
-semantic error
+SemanticError
 5000

@@ -51,15 +51,20 @@ first, second, third
 11 - not declared
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select x
-semantic error
+SemanticError
 5000
 12 - empty declaration
 
 Select s
-semantic error
+SyntaxError
 5000
 13 - multi declaration
 stmt s1, s2; read r1, r2;
 Select s1
-semantic error
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
+5000
+14 - select bad capitalisation
+stmt s1, s2; read r1, r2;
+select s1
+SyntaxError
 5000

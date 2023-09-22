@@ -1,7 +1,7 @@
 1 - synonym-synonym, right: stmt (non-var)
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s1 such that Uses(s1, s2)
-semantic error
+SemanticError
 5000
 2 - synonym-synonym, right: var, left: stmt
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -21,7 +21,7 @@ first, third
 5 - synonym-synonym, right: var, left: read (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select r such that Uses(r, v)
-semantic error
+SemanticError
 5000
 6 - synonym-synonym, right: var, left: stmt, select v
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -31,7 +31,7 @@ a, b, c, d, e, f
 7 - synonym-synonym, right: var, left: var (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Uses(v, v)
-semantic error
+SemanticError
 5000
 8 - synonym-synonym, right: var, left: print
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -41,7 +41,7 @@ e, f, b
 9 - synonym-synonym, right: var, left: constant (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select c such that Uses(c, v)
-semantic error
+SemanticError
 5000
 10 - synonym-synonym, right: var, left: call
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -81,12 +81,12 @@ first, third
 17 - synonym-wildcard, left: read (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select r such that Uses(r, _)
-semantic error
+SemanticError
 5000
 18 - synonym-wildcard, left: var (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Uses(v, _)
-semantic error
+SemanticError
 5000
 19 - synonym-wildcard, left: print
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -96,7 +96,7 @@ Select pn such that Uses(pn, _)
 20 - synonym-wildcard, left: constant (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select c such that Uses(c, _)
-semantic error
+SemanticError
 5000
 21 - synonym-wildcard, left: call 
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -126,7 +126,7 @@ Select s such that Uses(s, "a")
 26 - synonym-identity, left: stmt, right: constant (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Uses(s, "1")
-semantic error
+SemanticError
 5000
 27 - synonym-identity, left: stmt, right: does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -146,7 +146,7 @@ Select p such that Uses(s, "x")
 30 - wildcard-synonym, right: stmt (non-var)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select p such that Uses(_, s)
-semantic error
+SemanticError
 5000
 31 - wildcard-synonym, right: variable
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -171,12 +171,12 @@ Select c such that Uses(_, "x")
 34 - wildcard-identity, constant (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select c such that Uses(_, "1")
-semantic error
+SemanticError
 5000
 35 - integer-synonym, right: stmt (non-var), stmt number inside
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select r such that Uses(1, s)
-semantic error
+SemanticError
 5000
 36 - integer-synonym, right: variable, stmt number inside
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -216,10 +216,10 @@ Select v such that Uses(1, "x")
 43 - identity-x, line number in string (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Uses("1", v)
-semantic error
+SemanticError
 5000
 44 - identity-x, procedure name in string (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Uses("first", v)
-semantic error
+SemanticError
 5000
