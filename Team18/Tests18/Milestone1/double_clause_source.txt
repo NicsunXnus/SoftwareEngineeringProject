@@ -1,5 +1,4 @@
-procedure SPA {
-	simple = 100;
+procedure SPA {simple = 100;
 	query = 25;
 	sp = 1;
 	pkb = 2;
@@ -10,46 +9,37 @@ procedure SPA {
 		print query;
 		call QPS;
 		read qps;
-		if (qps > 25) {
+		if (qps > 25) then {
 			error = sp * pkb * qps;
 			print error;
-		}
-	}
-	if (sp + pkb + qps > 9 - 3) {
+		} else { read error; }}
+	if (sp + pkb + qps > 9 - 3) then {
 		moreThan6People = 1;
 		while (1 > 0) {
 			while (2 > 1) {
-				print error;
-			}
-		}
-		if (1 > 0) {
+				print error;}}
+		if (1 > 0) then {
 			read a;
-		}
-	}
-	call call;
-}
-procedure SP {
-	read simple;
+		} else { read error; }
+	} else { read error; }
+	call call;}
+procedure SP {read simple;
 	while (simple > 0) {
 		sp = (10 * simple + sp) % simple;
-		simple = simple / 2;
-	}
-	if (sp > 6) {
+		simple = simple / 2;}
+	if (sp > 6) then {
 		read error;
 		sp = error;
 		pkb = error;
 		qps = error;
-		if (pkb > qps) {
+		if (pkb > qps) then {
 			while (pkb > qps) {
 				error = sp + qps % pkb - error;
-				print error;
-			}
-		}
-	}
-	call meMaybe;
-}
-procedure PKB {
-	storageA = 1;
+				print error;}
+		} else { read error; }
+	} else { read error; }
+	call meMaybe;}
+procedure PKB { storageA = 1;
 	storageB = storageA + 2;
 	print storageA;
 	storageC = storageA * storageB;
@@ -57,13 +47,10 @@ procedure PKB {
 	print storageC;
 	print storageD;
 	storageD = storageA / storageB % storage C;
-	call police;
-}
-procedure QPS {
-	read pkb;
+	call police;}
+procedure QPS {	read pkb;
 	read query;
 	sp = query;
 	call PKB;
 	query = query - 1;
-	call mrBean;
-}
+	call mrBean;}
