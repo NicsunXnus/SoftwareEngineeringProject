@@ -93,7 +93,7 @@ public:
 				assignSynonymColumn = intersection(PKBAssignData, to_intersect);
 			}
 			else {
-				assignSynonymColumn = PKBAssignData;
+				assignSynonymColumn = {};
 			}
 		}
 		else if (arg1->isSynonym()) {

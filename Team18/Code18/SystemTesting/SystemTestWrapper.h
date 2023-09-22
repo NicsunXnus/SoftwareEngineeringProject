@@ -75,7 +75,8 @@ public:
       applicationWrapper.evaluate(query, results);
       bool passed = checkListEquality(expected, results);
       if (debugMode) {
-        Logger::WriteMessage(("! Query Number " + to_string(i) + " !").c_str());
+        std::string passedStr = passed ? " passed" : " failed";
+        Logger::WriteMessage(("! Query Number " + to_string(i) + passedStr + " !").c_str());
         //std::cout << "Query Number " << to_string(i) << std::endl;
         std::string tempActl = "Actual: ";
         std::string tempExp = "Expected: ";
@@ -89,8 +90,6 @@ public:
         }
         Logger::WriteMessage(tempExp.c_str());
         Logger::WriteMessage(tempActl.c_str());
-        std::string boolstr = passed ? "true" : "false";
-        Logger::WriteMessage(("Passed: " + boolstr + "\n").c_str());
       }
       queryResults.push_back(passed);
       if (!passed) {
