@@ -23,8 +23,7 @@ list<string> ResultHandler::processTables(std::vector<std::shared_ptr<QueryResul
 	//}
 	//immediateTable = queryTableStack.top();
 	immediateTable = tables[0];
-	//queryTableStack.pop();
-
+	tables.erase(tables.begin());
 	shared_ptr<QueryResultsTable> currTable;
 	for (shared_ptr<QueryResultsTable> table : tables) {
 		currTable = table;
@@ -66,7 +65,20 @@ list<string> ResultHandler::processTables(std::vector<std::shared_ptr<QueryResul
 	//this is only meant for non tupled results
 	if (selectVariables.size() == 1) {
 		string selectVar = selectVariables[0];
+
 		vector<map<string, vector<string>>> thisColumns = immediateTable->getColumns();
+		if (immediateTable->isEmpty()) {
+			if (immediateTable->getSignificant()) {
+				vector<string> colContents = selectTable->getColumns()[0].begin()->second;
+				list<string> result(colContents.begin(), colContents.end());
+				return result;
+			}
+			else {
+				list<string> empty;
+				return empty;
+			}
+
+		}
 		for (map<string, vector<string>> column : thisColumns) {
 			string key = column.begin()->first;
 			if (key == selectVar) {
