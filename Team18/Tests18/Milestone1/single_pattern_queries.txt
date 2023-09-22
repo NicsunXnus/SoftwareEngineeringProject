@@ -101,7 +101,7 @@ Select a pattern a (v, _)
 21 - synonym-partial match, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select a pattern a (v, _"b"_)
-3, 11, 15
+3, 12, 13
 5000
 22 - synonym-partial match, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -130,7 +130,7 @@ Select a pattern a ("C", _)
 5000
 27 - char string-exact match, exists 
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a ("c", "b")
+Select a pattern a ("c", _"b"_)
 12
 5000
 28 - char string-exact match, does not exist

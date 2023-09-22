@@ -121,7 +121,7 @@ Select c such that Uses(w, _)
 25 - synonym-identity, left: stmt, right: variable name
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Uses(s, "a")
-3, 8, 13
+3, 6, 8, 13
 5000
 26 - synonym-identity, left: stmt, right: constant (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;

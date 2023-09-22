@@ -8,15 +8,15 @@ stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant
 Select a such that Follows*(1, 2)
 3, 4, 9, 12, 13
 5000
-3 - two integers invalid
+3 - two integers not same nesting level
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select s such that Follows*(1, 3)
+Select s such that Follows*(1, 6)
 
 5000
 4 - left integer, right synonym, normal
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Follows*(1, s)
-2
+2, 3, 4, 5, 13
 5000
 5 - left integer, right synonym, container statement
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -45,7 +45,7 @@ Select s such that Follows*(1, _)
 5000
 10 - left integer, right wildcard, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select s such that Follows*(11, _)
+Select s such that Follows*(12, _)
 
 5000
 11 - left synonym, right integer, normal, exists
