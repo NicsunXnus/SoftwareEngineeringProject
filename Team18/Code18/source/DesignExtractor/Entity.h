@@ -27,6 +27,7 @@ public:
     
     virtual ~Entity() = default;
 
+    // Method to get the map
     shared_ptr<StringMap> getMap() {
       return make_shared<StringMap>(this->EntityStorageMap);
     }
@@ -46,23 +47,26 @@ public:
         }
     }
 
+    // Abstract method to be implemented by the individual entities
     virtual void extractEntity(shared_ptr<ASTNode> astNode) = 0;
 
 private:
     map<string, vector<string>> EntityStorageMap;
 };
 
+/*
+* The following classes are used to extract the different types of entities.
+*/
+
 class ProcedureEntity : public Entity {
 public:
     void extractEntity(shared_ptr<ASTNode> astNode) override {
-        // Check if astNode is a ProgramNode
+        // Check if astNode is a ProcedureNode
         shared_ptr<ProcedureNode> procedureNode = dynamic_pointer_cast<ProcedureNode>(astNode);
 
         if (procedureNode) {
-            // If astNode is indeed a ProgramNode, extract information
+            // If astNode is indeed a ProcedureNode, extract information
             string procedureName = procedureNode->getName();
-            
-            // Store the procedure name as the key and add the line number to the vector
             insertToMap(procedureName);
         }
         else {
@@ -72,7 +76,6 @@ public:
     }
 };
 
-// Used for statements which do not have pattern matching
 class StatementEntity : public Entity {
 public:
     void extractEntity(shared_ptr<ASTNode> astNode) override {
@@ -93,13 +96,6 @@ public:
         else {
             cerr << "Unsupported ASTNode type." << endl;
         }
-    }
-};
-
-class PatternStatementEntity : public StatementEntity {
-public:
-    void extractEntity(shared_ptr<ASTNode> astNode) override {
-        // TODO: For pattern matching
     }
 };
 
