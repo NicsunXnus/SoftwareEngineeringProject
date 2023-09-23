@@ -6,7 +6,7 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace UnitTesting {
-	TEST_CLASS(TestPKBInsertor) {
+	TEST_CLASS(TestPKBInsertStorageManager) {
 		public:
 			TEST_METHOD(TestAddSingleEntityStatementSuccess) {
 				// Create mock data to insert
@@ -423,46 +423,46 @@ namespace UnitTesting {
 				Assert::IsTrue(uses_db->empty());
 			}
 
-			//TEST_METHOD(TestAddMultipleAbstractionsSuccess) {
-			//	// Create mock data to insert
-			//	StringMap usesData = { {"x", {"main", "3", "6"}} };
-			//	StringMap modifiesData = { {"y", {"main", "8", "proc1", "2"}} };
-			//	StringMap followsStarData = { {"1", {"2", "3", "6", "7"}}, {"2", {"3", "6", "7"}} };
-			//	StringMap followsData = { {"1", {"2"}}, {"2", {"3"}} };
-			//	StringMap parentStarData = { {"10", {"7", "3", "1"}}, {"6", {"5", "1"}} };
-			//	StringMap parentData = { {"10", {"7"}}, {"6", {"5"}} };
-			//
-			//	shared_ptr<StringMap> toInsertUses = make_shared<StringMap>(usesData);
-			//	shared_ptr<StringMap> toInsertModifies = make_shared<StringMap>(modifiesData);
-			//	shared_ptr<StringMap> toInsertFollows = make_shared<StringMap>(followsStarData);
-			//	shared_ptr<StringMap> toInsertParent = make_shared<StringMap>(parentStarData);
-			//
-			//	// Insertion
-			//	PKB::insertor.addAbstraction(toInsertUses, USES);
-			//	PKB::insertor.addAbstraction(toInsertModifies, MODIFIES);
-			//	PKB::insertor.addAbstraction(toInsertFollows, FOLLOWS);
-			//	PKB::insertor.addAbstraction(toInsertParent, PARENT);
-			//
-			//	// Create reference to AbstractionStorage to check database
-			//	shared_ptr<AbstractionStorage> parent_storage = StorageManager::getAbstractionStorage(PARENT);
-			//	shared_ptr<AbstractionStorage> follows_storage = StorageManager::getAbstractionStorage(FOLLOWS);
-			//	shared_ptr<AbstractionStorage> modifies_storage = StorageManager::getAbstractionStorage(MODIFIES);
-			//	shared_ptr<AbstractionStorage> uses_storage = StorageManager::getAbstractionStorage(USES);
-			//
-			//	shared_ptr<StringMap> parent_db = parent_storage->getTruncatedDatabase();
-			//	shared_ptr<StringMap> parentstar_db = parent_storage->getDatabase();
-			//	shared_ptr<StringMap> follows_db = follows_storage->getTruncatedDatabase();
-			//	shared_ptr<StringMap> followsstar_db = follows_storage->getDatabase();
-			//	shared_ptr<StringMap> modifies_db = modifies_storage->getDatabase();
-			//	shared_ptr<StringMap> uses_db = uses_storage->getDatabase();
-			//
-			//	// assert database has correct entries
-			//	Assert::IsTrue(compare_maps(*parent_db, parentData));
-			//	Assert::IsTrue(compare_maps(*parentstar_db, parentStarData));
-			//	Assert::IsTrue(compare_maps(*follows_db, followsData));
-			//	Assert::IsTrue(compare_maps(*followsstar_db, followsStarData));
-			//	Assert::IsTrue(compare_maps(*modifies_db, modifiesData));
-			//	Assert::IsTrue(compare_maps(*uses_db, usesData));
-			//}
+			TEST_METHOD(TestAddMultipleAbstractionsSuccess) {
+				// Create mock data to insert
+				StringMap usesData = { {"x", {"main", "3", "6"}} };
+				StringMap modifiesData = { {"y", {"main", "8", "proc1", "2"}} };
+				StringMap followsStarData = { {"1", {"2", "3", "6", "7"}}, {"2", {"3", "6", "7"}} };
+				StringMap followsData = { {"1", {"2"}}, {"2", {"3"}} };
+				StringMap parentStarData = { {"10", {"7", "3", "1"}}, {"6", {"5", "1"}} };
+				StringMap parentData = { {"10", {"7"}}, {"6", {"5"}} };
+			
+				shared_ptr<StringMap> toInsertUses = make_shared<StringMap>(usesData);
+				shared_ptr<StringMap> toInsertModifies = make_shared<StringMap>(modifiesData);
+				shared_ptr<StringMap> toInsertFollows = make_shared<StringMap>(followsStarData);
+				shared_ptr<StringMap> toInsertParent = make_shared<StringMap>(parentStarData);
+			
+				// Insertion
+				PKB::insertor.addAbstraction(toInsertUses, USES);
+				PKB::insertor.addAbstraction(toInsertModifies, MODIFIES);
+				PKB::insertor.addAbstraction(toInsertFollows, FOLLOWS);
+				PKB::insertor.addAbstraction(toInsertParent, PARENT);
+			
+				// Create reference to AbstractionStorage to check database
+				shared_ptr<AbstractionStorage> parent_storage = StorageManager::getAbstractionStorage(PARENT);
+				shared_ptr<AbstractionStorage> follows_storage = StorageManager::getAbstractionStorage(FOLLOWS);
+				shared_ptr<AbstractionStorage> modifies_storage = StorageManager::getAbstractionStorage(MODIFIES);
+				shared_ptr<AbstractionStorage> uses_storage = StorageManager::getAbstractionStorage(USES);
+			
+				shared_ptr<StringMap> parent_db = parent_storage->getTruncatedDatabase();
+				shared_ptr<StringMap> parentstar_db = parent_storage->getDatabase();
+				shared_ptr<StringMap> follows_db = follows_storage->getTruncatedDatabase();
+				shared_ptr<StringMap> followsstar_db = follows_storage->getDatabase();
+				shared_ptr<StringMap> modifies_db = modifies_storage->getDatabase();
+				shared_ptr<StringMap> uses_db = uses_storage->getDatabase();
+
+				// assert database has correct entries
+				Assert::IsTrue(compare_maps(*parent_db, parentData));
+				Assert::IsTrue(compare_maps(*parentstar_db, parentStarData));
+				Assert::IsTrue(compare_maps(*follows_db, followsData));
+				Assert::IsTrue(compare_maps(*followsstar_db, followsStarData));
+				Assert::IsTrue(compare_maps(*modifies_db, modifiesData));
+				Assert::IsTrue(compare_maps(*uses_db, usesData));
+			}
 	};
 }

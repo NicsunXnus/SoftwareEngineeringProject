@@ -172,8 +172,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TestHelperFunctions.cpp" />
-    <ClCompile Include="TestPKBInsertor.cpp" />
-    <ClCompile Include="TestPKBResponder.cpp" />
+    <ClCompile Include="TestPKBInsertStorageManager.cpp" />
+    <ClCompile Include="TestPKBRespondStorageManager.cpp" />
     <ClCompile Include="TestQPSDriver.cpp" />
     <ClCompile Include="TestQPSQueryEval.cpp" />
     <ClCompile Include="TestSimpleTokenizer.cpp" />
