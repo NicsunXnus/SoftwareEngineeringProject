@@ -13,20 +13,23 @@
 #include <string>
 #include <algorithm>
 #include <map>
-// TODO: reference additional headers your program requires here
 #include <cassert>
+#include "DesignExtractor/Entity.h"
 
-inline bool compare_vectors(std::vector<std::string> v1, std::vector<std::string> v2) {
+using namespace std;
+
+inline bool compare_vectors(vector<string> v1, vector<string> v2) {
     if (v1.size() != v2.size()) {
         return false;
     }
-    std::vector<std::string> temp1 = v1;
-    std::vector<std::string> temp2 = v2;
-    std::sort(temp1.begin(), temp1.end());
-    std::sort(temp2.begin(), temp2.end());
+    vector<string> temp1 = v1;
+    vector<string> temp2 = v2;
+    sort(temp1.begin(), temp1.end());
+    sort(temp2.begin(), temp2.end());
     return temp1 == temp2;
 }
-inline bool compare_maps(std::map<std::string, std::vector<std::string>> m1, std::map<std::string, std::vector<std::string>> m2) {
+
+inline bool compare_maps(StringMap m1, StringMap m2) {
     if (m1.size() != m2.size()) {
         return false;
     }
@@ -41,15 +44,14 @@ inline bool compare_maps(std::map<std::string, std::vector<std::string>> m1, std
     return true;
 }
 
-
-inline bool compare_vectors_of_maps(std::vector<std::map<std::string, std::vector<std::string>>> v1, std::vector<std::map<std::string, std::vector<std::string>>> v2) {
+inline bool compare_vectors_of_maps(vector<StringMap> v1, vector<StringMap> v2) {
     if (v1.size() != v2.size()) {
         return false;
     }
-    std::vector<std::map<std::string, std::vector<std::string>>> temp1 = v1;
-    std::vector<std::map<std::string, std::vector<std::string>>> temp2 = v2;
-    std::sort(temp1.begin(), temp1.end());
-    std::sort(temp2.begin(), temp2.end());
+    vector<StringMap> temp1 = v1;
+    vector<StringMap> temp2 = v2;
+    sort(temp1.begin(), temp1.end());
+    sort(temp2.begin(), temp2.end());
     for (size_t i = 0; i < temp1.size(); ++i) {
         if (!compare_maps(temp1[i], temp2[i])) {
             return false;

@@ -2,6 +2,7 @@
 #include "CppUnitTest.h"
 
 #include "../source/HelperFunctions.h"
+#include <map>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

@@ -62,7 +62,7 @@ namespace UnitTesting
             // Create statement entity
             std::shared_ptr<StatementEntity> testStatementEntity = std::make_shared<StatementEntity>();
 
-            // Extract statment entity from each statement node
+            // Extract statement entity from each statement node
             for (const auto &statement : testStatementNodes) {
                 testStatementEntity->extractEntity(statement);
             }

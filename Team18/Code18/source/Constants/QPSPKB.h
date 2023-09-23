@@ -30,7 +30,7 @@ const map<string, ENTITY> entityMap = {
     {"procedure", PROCEDURE},
 };
 
-static ENTITY EntityEnumToString(string entity) {
+static ENTITY EntityStringToEnum(string entity) {
     if (entityMap.count(entity)) {
         return entityMap.at(entity);
     }
@@ -55,7 +55,7 @@ const map<string, ABSTRACTION> abstractionMap = {
     {"followsstar", FOLLOWSSTAR},
 };
 
-static ABSTRACTION AbstractionEnumToString(string abstraction) {
+static ABSTRACTION AbstractionStringToEnum(string abstraction) {
     if (abstractionMap.count(abstraction)) {
         return abstractionMap.at(abstraction);
     }

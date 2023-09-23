@@ -4,10 +4,6 @@
 #include "PKB/StorageManager.h"
 #include "PKB/Responder.h"
 
-//Insertor insertor = Insertor();
-//const Responder responder = Responder();
-//const StorageManager storageManager = StorageManager();
-
 /**
 * This class represents the PKB component.
 * Comprises 3 main sub-components: Insertor, StorageManager, Responder
