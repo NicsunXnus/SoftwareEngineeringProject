@@ -3,58 +3,48 @@
 skinparam ClassFontColor #000000
 skinparam ClassBorderColor #000000
 
-title SIMPLE Tokenizer Results
+title SIMPLE Tokenizer Results Overview
 
-Class TokenizedProgram {
-    - v<@TokenizedProcedure> procedures
-    + v<@TokenizedProcedure> getAllProcedures()
-    + bool equalsTo(TokenizedProgram)
-}
+package SimpleTokeniserResults {
+    Class TokenizedProgram {
+        - v<@TokenizedProcedure> procedures
+    }
 
-Class TokenizedProcedure {
-    - string procedureName
-    - @TokenizedStmtList statementList
-    + string getName()
-    + @TokenizedStmtList getStmts()
-    + bool equalsTo(TokeniszedProcedure)
-}
+    note as n1
+        Shorthand for types used:
+        @ - Shared Pointer, str - String, b - Bool,
+        strv - String View, v - vector, ∅ - void
+    end note
 
-Class TokenizedStmtList {
-    - v<@TokenizedStmt> statements
-    + v<@TokenizedStmt> getStmts()
-    + bool equalsTo(TokenizedStmtList)
-}
+    Class TokenizedProcedure {
+        - string procedureName
+        - @TokenizedStmtList statementList
+    }
 
-Class TokenizedStmt {
-    - const int statementNumber
-    + int getStatementNumber()
-    + bool equalsTo(TokenizedStmt)
-}
+    Class TokenizedStmtList {
+        - v<@TokenizedStmt> statements
+    }
 
-Class TokenizedSemicolonStmt {
-    - v<@Token> contents
-    + v<@Token> getContents()
-    + bool equalsTo(TokenizedSemicolonStmt)
-}
+    Class TokenizedStmt {
+        - const int statementNumber
+    }
 
-Class TokenizedConditionalStmt {
-    - v<@Token> conditionalExp
-    + v<@Token> getConditionalExp()
-    + bool equalsTo(TokenizedConditionalStmt)
-}
+    Class TokenizedSemicolonStmt {
+        - v<@Token> contents
+    }
 
-Class TokenizedIfStmt {
-    - @TokenizedStmtList thenBlock
-    - @TokenizedStmtList elseBlock
-    + @TokenizedStmtList getThenBlock()
-    + @TokenizedStmtList getElseBlock()
-    + bool equalsTo(TokenizedIfStmt)
-}
+    Class TokenizedConditionalStmt {
+        - v<@Token> conditionalExp
+    }
 
-Class TokenizedWhileStmt {
-    - @TokenizedStmtList whileBlock
-    + @TokenizedStmtList getWhileBlock()
-    + bool equalsTo(TokenizedWhileStmt)
+    Class TokenizedIfStmt {
+        - @TokenizedStmtList thenBlock
+        - @TokenizedStmtList elseBlock
+    }
+
+    Class TokenizedWhileStmt {
+        - @TokenizedStmtList whileBlock
+    }
 }
 TokenizedProgram *-- TokenizedProcedure
 TokenizedProcedure *-- TokenizedStmtList
@@ -62,9 +52,9 @@ TokenizedStmtList *-- TokenizedStmt
 TokenizedIfStmt *-- TokenizedStmtList
 TokenizedWhileStmt *-- TokenizedStmtList
 
-TokenizedIfStmt <|-- TokenizedConditionalStmt
-TokenizedWhileStmt <|-- TokenizedConditionalStmt
-TokenizedConditionalStmt <|-- TokenizedStmt
-TokenizedSemicolonStmt <|-- TokenizedStmt
+TokenizedIfStmt --|> TokenizedConditionalStmt
+TokenizedWhileStmt --|> TokenizedConditionalStmt
+TokenizedConditionalStmt --|> TokenizedStmt
+TokenizedSemicolonStmt --|> TokenizedStmt
 
 @end

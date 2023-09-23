@@ -10,20 +10,32 @@ enum ConditionalDeclaration {
     WHILE
 }
 
+note as n1
+    Shorthand for types used:
+    @ - Shared Pointer, str - String, b - Bool,
+    strv - String View, v - vector, ∅ - void, p - pair
+end note
+
 Class SimpleTokeniser {
     {static} - int statementNumber
-    {static} - v<@pair<int, int>> outermostScopeDetector(string)
-    {static} - v<@Token> tokenizeExpression(string expression, string delimiter)
-    {static} - pair<ConditionalDeclaration, v<@Token>> processConditionalExpression(string, bool isIf)
-    {static} - pair<ConditionalDeclaration, v<@Token>> processConditionalDeclaration(string)
-    {static} - @TokenizedStmtList tokenizeStmtList(string)
-    {static} - @TokenizedSemicolonStmt tokenizeSemicolonStatement(string)
-    {static} - v<@Token> tokenizeAssignment(string)
-    {static} - v<@Token> tokenizeTwoWordStmt(string stmt, string expectedWord1)
-    {static} - string processPreProcedureDetails(string)
-    {static} + @TokenizedProgram tokenizeProgram(string)
+    {static} - v<@p<int, int>> outermostScopeDetector(str)
+    {static} - v<@Token> tokenizeExpression(str expression, str delimiter)
+    {static} - p<ConditionalDeclaration, v<@Token>> processConditionalExpression(str, bool isIf)
+    {static} - p<ConditionalDeclaration, v<@Token>> processConditionalDeclaration(str)
+    {static} - @TokenizedStmtList tokenizeStmtList(str)
+    {static} - @TokenizedSemicolonStmt tokenizeSemicolonStatement(str)
+    {static} - v<@Token> tokenizeAssignment(str)
+    {static} - v<@Token> tokenizeTwoWordStmt(str stmt, str expectedWord1)
+    {static} - st processPreProcedureDetails(str)
+    {static} + @TokenizedProgram tokenizeProgram(str)
+}
+package SimpleTokeniserResults {
+    note as n2
+        Further expanded in another file
+    end note
 }
 
-SimpleTokeniser --> Token
+SimpleTokeniser ..> Token
+SimpleTokeniser -- SimpleTokeniserResults
 ConditionalDeclaration -- SimpleTokeniser
 @enduml
