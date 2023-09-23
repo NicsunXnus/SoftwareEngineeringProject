@@ -116,7 +116,7 @@ vector<shared_ptr<QueryObject>> QueryParser::validateDeclaration(vector<string_v
 			else {
 				synonyms[currentDeclaration] = queryObject;
 				std::string entityType(declaration[0].begin(), declaration[0].end());
-				synonymToEntity[currentDeclaration] = EntityEnumToString(entityType);
+				synonymToEntity[currentDeclaration] = EntityStringToEnum(entityType);
 			}
 			wasDeclaration = true;
 			converted.push_back(queryObject);
