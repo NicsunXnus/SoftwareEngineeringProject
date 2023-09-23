@@ -16,7 +16,7 @@ Select s such that Modifies(s, "pkb") pattern a ("error", _"qps"_)
 4 - Parent and Pattern
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select a such that Parent(_, a) pattern a (_, _"error"_)
-13
+3, 13
 5000
 5 - ParentT and Pattern
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;

@@ -176,7 +176,7 @@ Select i such that Parent*(_, 2)
 36 - left wildcard, right synonym, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select pn such that Parent*(_, pn)
-7, 9
+7, 10, 11
 5000
 37 - left wildcard, right synonym, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
