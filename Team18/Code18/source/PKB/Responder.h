@@ -18,7 +18,12 @@ public:
 	
 	vector<string> Responder::getEntityStatement(ENTITY entity) const {
 		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		return (*(entity_storage->getStatementDatabase())).at(entity);
+		shared_ptr<map<ENTITY, vector<string>>> entity_database = entity_storage->getStatementDatabase();
+		// check if entity exists
+		if (entity_database->find(entity) == entity_database->end()) {
+			return vector<string>();
+		}
+		return (*entity_database).at(entity);
 	}
 
 	vector<string> Responder::getAllProcedures() const {
@@ -30,7 +35,12 @@ public:
 	// unused now
 	vector<string> Responder::getProcedure(string procedure) const {
 		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		return (*(entity_storage)->getProcedureDatabase()).at(procedure);
+		shared_ptr<StringMap> proc_database = entity_storage->getProcedureDatabase();
+		// check if procedure exists
+		if (proc_database->find(procedure) == proc_database->end()) {
+			return vector<string>();
+		}
+		return (*proc_database).at(procedure);
 	}
 
 	map<string, vector<string>> Responder::getVariableMap() const {
@@ -48,7 +58,12 @@ public:
 	// unused now
 	vector<string> Responder::getVariable(string variable) const {
 		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		return (*(entity_storage)->getVariableDatabase()).at(variable);
+		shared_ptr<StringMap> var_database = entity_storage->getVariableDatabase();
+		// check if variable exists
+		if (var_database->find(variable) == var_database->end()) {
+			return vector<string>();
+		}
+		return (*var_database).at(variable);
 	}
 
 	map<string, vector<string>> Responder::getConstantMap() const {
@@ -66,14 +81,18 @@ public:
 	// unused now
 	vector<string> Responder::getConstant(string constant) const {
 		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		return (*(entity_storage)->getConstantDatabase()).at(constant);
+		shared_ptr<StringMap> constant_database = entity_storage->getConstantDatabase();
+		// check if constant exists
+		if (constant_database->find(constant) == constant_database->end()) {
+			return vector<string>();
+		}
+		return (*constant_database).at(constant);
 	}
 
 	map<string, vector<string>> Responder::getAbstraction(ABSTRACTION abstraction) const {
 		shared_ptr<AbstractionStorage> abstraction_storage = StorageManager::getAbstractionStorage(abstraction);
 		// note: for Follows* and Parent*, we return the whole database.
 		// for Follows and Parent, we return a truncated database with the value just the direct follower/parent.
-
 		if (abstraction == FOLLOWS || abstraction == PARENT) {
 			return *(abstraction_storage->getTruncatedDatabase());
 		}
@@ -83,7 +102,12 @@ public:
 	// unused now
 	vector<string> Responder::getAbstractionVariable(ABSTRACTION abstraction, string key) const {
 		shared_ptr<AbstractionStorage> abstraction_storage = StorageManager::getAbstractionStorage(abstraction);
-		return (*(abstraction_storage->getDatabase())).at(key);
+		shared_ptr<StringMap> abstraction_database = abstraction_storage->getDatabase();
+		// check if key exists
+		if (abstraction_database->find(key) == abstraction_database->end()) {
+			return vector<string>();
+		}
+		return (*abstraction_database).at(key);
 	}
 
 private:

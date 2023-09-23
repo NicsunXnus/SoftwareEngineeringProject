@@ -45,7 +45,7 @@ Select s such that Follows(1, _)
 5000
 10 - left integer, right wildcard, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select s such that Follows(11, _)
+Select s such that Follows(12, _)
 
 5000
 11 - left synonym, right integer, normal, exists
@@ -151,7 +151,7 @@ SemanticError
 30 - left synonym, right wildcard
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Follows(s, _)
-1, 2, 3, 4, 5, 7, 8, 10, 11, 14
+1, 2, 3, 4, 5, 7, 8, 10, 11
 5000
 31 - left synonym, right wildcard, mismatch synonym, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -178,7 +178,7 @@ stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant
 Select r such that Follows(_, r)
 2, 8
 5000
-36 - left wildcard, right synonym, does not exist
+36 - left wildcard, right synonym, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select pn such that Follows(_, pn)
 11
@@ -188,7 +188,7 @@ stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant
 Select v such that Follows(_, r)
 a, b, c, d, e, f
 5000
-38 - left wildcard, right synonym, mismatch synonym, does not exist
+38 - left wildcard, right synonym, mismatch synonym, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select p such that Follows(_, pn)
 first
