@@ -20,6 +20,7 @@ package QPS <<Rectangle>> {
     
     Class QueryDriver {
         -String Query
+        +execute()
     }
 
     Class PQLTokenizer {
@@ -77,7 +78,7 @@ package QPS <<Rectangle>> {
 
     Class SynonymObject {
         -string_view synonymName;
-	    -ENTITY designEntity;'
+	    -ENTITY designEntity;
         +string_view getSynonymName()
         +ENTITY getEntityType()
     }
@@ -115,7 +116,6 @@ package QPS <<Rectangle>> {
 QueryParser .down.> QueryObject
 QueryObject .left.> DataAccessLayer
 QueryBuilder .right.> QueryObject
-QueryDriver ..> QueryParser
 ClauseArg ..> SynonymObject
 ClauseArg --|> QueryObject
 ResultsHandler ..> QueryResultsTable

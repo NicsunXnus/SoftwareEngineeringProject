@@ -6,48 +6,97 @@ skinparam ClassFontColor #000000
 skinparam ClassBorderColor #000000
 box QPS LOGIC_COLOR_T1
 participant ":QueryDriver" as QueryDriver LOGIC_COLOR
+participant ":PQLTokenizer" as Tokenizer LOGIC_COLOR
 participant ":QueryParser" as QueryParser LOGIC_COLOR
+participant "f:QueryObjectFactory" as QueryObjectFactory LOGIC_COLOR
 participant "o:QueryObject" as QueryObject LOGIC_COLOR
 participant ":QueryBuilder" as QueryBuilder LOGIC_COLOR
 participant "t:DataAccessLayer" as DataAccessLayer LOGIC_COLOR
+participant ":QueryResultsTable" as QueryResultsTable LOGIC_COLOR
 participant "r:ResultsHandler" as ResultsHandler LOGIC_COLOR
 end box
 
-[-> QueryDriver : executeQuery(String query)
+[-> QueryDriver : execute()
 activate QueryDriver
 
-QueryDriver -> QueryParser : generateQueryObjects(String query)
+QueryDriver -> Tokenizer : tokenize(query)
+activate Tokenizer
+
+Tokenizer --> QueryDriver : tokens
+deactivate Tokenizer
+
+QueryDriver -> QueryParser : splitDeclarationQuery(tokens)
 activate QueryParser
 
+QueryParser --> QueryDriver : declarationQuerySplit
+
+QueryDriver -> QueryParser : validateDeclaration(tokens)
+
+QueryParser --> QueryDriver : declarations
+
+QueryDriver -> QueryParser : validateQuery(tokens)
+
+loop for each design entity, such that, pattern clause
+create QueryObjectFactory
+QueryParser -> QueryObjectFactory : createFactory(type)
+activate QueryObjectFactory
+
+QueryObjectFactory --> QueryParser : QueryObjectFactory factory
+
+
 create QueryObject
-QueryParser -> QueryObject : parse()
+QueryObjectFactory -> QueryObject : create(type)
 activate QueryObject
 
-QueryObject --> QueryParser : o
-deactivate QueryObject
+QueryObject --> QueryObjectFactory : QueryObject queryObject
+QueryObjectFactory --> QueryParser : QueryObject queryObject
+deactivate QueryObjectFactory
+end
 
-QueryParser -> QueryBuilder : buildQuery(vector<QueryObject> o)
-activate QueryBuilder
+QueryParser --> QueryDriver : queryObjects
 
-QueryBuilder -> DataAccessLayer : callPKBAPI(...args*)
-activate DataAccessLayer
+QueryDriver -> QueryParser : getSynonyms()
 
-DataAccessLayer --> QueryBuilder : t
-deactivate DataAccessLayer
-
-QueryBuilder --> ResultsHandler : processTuples(vector<Tuples> tuples)
-activate ResultsHandler
-
-ResultsHandler --> QueryBuilder : r
-deactivate ResultsHandler
-
-QueryBuilder --> QueryParser : r
-deactivate QueryBuilder
-
-QueryParser --> QueryDriver : r
+QueryParser --> QueryDriver : synonyms
 deactivate QueryParser
 
-[<--QueryDriver
+QueryDriver -> DataAccessLayer : DataAccessLayer
+activate DataAccessLayer
+
+DataAccessLayer --> QueryDriver : dataAccessLayer
+
+
+
+QueryDriver -> QueryBuilder : buildQuery()
+activate QueryBuilder
+
+loop for each design entity, such that, pattern clause
+QueryBuilder -> QueryObject : callAndProcess(dataAccessLayer, synonyms)
+
+QueryObject -> DataAccessLayer: getData(type)
+
+DataAccessLayer --> QueryObject: PKBData
+
+QueryObject -> QueryResultsTable: createTable(headers, PKBData)
+activate QueryResultsTable
+QueryResultsTable --> QueryObject: table
+
+QueryObject --> QueryBuilder : QueryResultsTable
+deactivate QueryObject
+end
+deactivate DataAccessLayer
+
+QueryBuilder --> QueryDriver : AllQueryResultTables
+deactivate QueryBuilder
+
+
+QueryDriver -> ResultsHandler : processTables(AllQueryResultTables)
+activate ResultsHandler
+ResultsHandler --> QueryDriver : listOfResults
+deactivate QueryResultsTable
+deactivate ResultsHandler
+
+[<--QueryDriver : results
 deactivate QueryDriver
 
 @end
