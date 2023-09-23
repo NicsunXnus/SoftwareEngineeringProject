@@ -19,7 +19,7 @@ public:
     }
     
     shared_ptr<StringMap> AbstractionStorage::getTruncatedDatabase() {
-        static StringMap truncated_database;
+        StringMap truncated_database;
         for (auto const& [key, lines] : *database) {
             truncated_database[key] = vector<string>({ lines.front() });
         }
@@ -38,7 +38,7 @@ public:
     }
     
     void AbstractionStorage::setAbstraction(shared_ptr<StringMap> database_to_insert) {
-        static StringMap new_database;
+        StringMap new_database;
         this->database = make_shared<StringMap>(new_database);
         for (auto const& [key, lines] : *database_to_insert) {
             (*(this->database))[key] = lines;
