@@ -23,7 +23,7 @@ namespace UnitTesting {
 				// assert database contains the correct data
 				vector<string> expected_vector = { "1" };
 
-				Assert::IsTrue(vectorEqualityWrapper(stmt_db->at(READ), expected_vector));
+				Assert::IsTrue(compare_vectors(stmt_db->at(READ), expected_vector));
 			}
 
 			TEST_METHOD(TestAddInvalidEntityStatementFailure) {
@@ -53,8 +53,8 @@ namespace UnitTesting {
 				vector<string> expected_vector2 = { "4" };
 
 				// assert database contains the correct data
-				Assert::IsTrue(vectorEqualityWrapper(stmt_db->at(CALL), expected_vector1));
-				Assert::IsTrue(vectorEqualityWrapper(stmt_db->at(PRINT), expected_vector2));
+				Assert::IsTrue(compare_vectors(stmt_db->at(CALL), expected_vector1));
+				Assert::IsTrue(compare_vectors(stmt_db->at(PRINT), expected_vector2));
 
 				// assert database does not contain data that was not inserted
 				Assert::IsTrue(stmt_db->find(READ) == stmt_db->end());
@@ -91,7 +91,7 @@ namespace UnitTesting {
 				// assert database contains the correct data
 				vector<string> expected_vector = { "1" };
 
-				Assert::IsTrue(vectorEqualityWrapper(procedure_db->at("proc1"), expected_vector));
+				Assert::IsTrue(compare_vectors(procedure_db->at("proc1"), expected_vector));
 			}
 
 			TEST_METHOD(TestAddMultipleProceduresSuccess) {
@@ -110,8 +110,8 @@ namespace UnitTesting {
 				vector<string> expected_vector2 = { "5", "6", "7" };
 
 				// assert database contains the correct data
-				Assert::IsTrue(vectorEqualityWrapper(procedure_db->at("proc1"), expected_vector1));
-				Assert::IsTrue(vectorEqualityWrapper(procedure_db->at("proc2"), expected_vector2));
+				Assert::IsTrue(compare_vectors(procedure_db->at("proc1"), expected_vector1));
+				Assert::IsTrue(compare_vectors(procedure_db->at("proc2"), expected_vector2));
 
 				// assert database does not contain data that was not inserted
 				Assert::IsTrue(procedure_db->find("unknown_proc") == procedure_db->end());
@@ -148,7 +148,7 @@ namespace UnitTesting {
 				// assert database contains the correct data
 				vector<string> expected_vector = { "5" };
 
-				Assert::IsTrue(vectorEqualityWrapper(variable_db->at("x"), expected_vector));
+				Assert::IsTrue(compare_vectors(variable_db->at("x"), expected_vector));
 			}
 
 			TEST_METHOD(TestAddMultipleVariablesSuccess) {
@@ -167,8 +167,8 @@ namespace UnitTesting {
 				vector<string> expected_vector2 = { "2", "5", "7" };
 
 				// assert database contains the correct data
-				Assert::IsTrue(vectorEqualityWrapper(variable_db->at("x"), expected_vector1));
-				Assert::IsTrue(vectorEqualityWrapper(variable_db->at("y"), expected_vector2));
+				Assert::IsTrue(compare_vectors(variable_db->at("x"), expected_vector1));
+				Assert::IsTrue(compare_vectors(variable_db->at("y"), expected_vector2));
 
 				// assert database does not contain data that was not inserted
 				Assert::IsTrue(variable_db->find("z") == variable_db->end());
@@ -205,7 +205,7 @@ namespace UnitTesting {
 				// assert database contains the correct data
 				vector<string> expected_vector = { "1" };
 
-				Assert::IsTrue(vectorEqualityWrapper(constant_db->at("10"), expected_vector));
+				Assert::IsTrue(compare_vectors(constant_db->at("10"), expected_vector));
 			}
 
 			TEST_METHOD(TestAddMultipleConstantsSuccess) {
@@ -224,8 +224,8 @@ namespace UnitTesting {
 				vector<string> expected_vector2 = { "4", "7", "10" };
 
 				// assert database contains the correct data
-				Assert::IsTrue(vectorEqualityWrapper(constant_db->at("10"), expected_vector1));
-				Assert::IsTrue(vectorEqualityWrapper(constant_db->at("HERE"), expected_vector2));
+				Assert::IsTrue(compare_vectors(constant_db->at("10"), expected_vector1));
+				Assert::IsTrue(compare_vectors(constant_db->at("HERE"), expected_vector2));
 
 				// assert database does not contain data that was not inserted
 				Assert::IsTrue(constant_db->find("unknown_const") == constant_db->end());
@@ -273,11 +273,11 @@ namespace UnitTesting {
 				shared_ptr<map<ENTITY, vector<string>>> stmt_db = entity_storage->getStatementDatabase();
 
 				// assert database has correct entries
-				Assert::IsTrue(stringMapEqualityWrapper(*variable_db, variableData));
-				Assert::IsTrue(stringMapEqualityWrapper(*procedure_db, procedureData));
-				Assert::IsTrue(stringMapEqualityWrapper(*constant_db, constantData));
-				Assert::IsTrue(vectorEqualityWrapper(stmt_db->at(CALL), { "1", "2" }));
-				Assert::IsTrue(vectorEqualityWrapper(stmt_db->at(PRINT), { "4" }));
+				Assert::IsTrue(compare_maps(*variable_db, variableData));
+				Assert::IsTrue(compare_maps(*procedure_db, procedureData));
+				Assert::IsTrue(compare_maps(*constant_db, constantData));
+				Assert::IsTrue(compare_vectors(stmt_db->at(CALL), { "1", "2" }));
+				Assert::IsTrue(compare_vectors(stmt_db->at(PRINT), { "4" }));
 			}
 
 			TEST_METHOD(TestAddUsesAbstractionSuccess) {
@@ -293,7 +293,7 @@ namespace UnitTesting {
 				shared_ptr<StringMap> db = uses_storage->getDatabase();
 
 				// assert database contains the correct data
-				Assert::IsTrue(stringMapEqualityWrapper(*db, usesData));
+				Assert::IsTrue(compare_maps(*db, usesData));
 			}
 
 			TEST_METHOD(TestAddModifiesAbstractionSuccess) {
@@ -309,7 +309,7 @@ namespace UnitTesting {
 				shared_ptr<StringMap> db = modifies_storage->getDatabase();
 
 				// assert database contains the correct data
-				Assert::IsTrue(stringMapEqualityWrapper(*db, modifiesData));
+				Assert::IsTrue(compare_maps(*db, modifiesData));
 			}
 
 			TEST_METHOD(TestAddFollowsAbstractionSuccess) {
@@ -326,7 +326,7 @@ namespace UnitTesting {
 				shared_ptr<StringMap> db = follows_storage->getTruncatedDatabase();
 
 				// assert database contains the correct data (only first element of vector)
-				Assert::IsTrue(stringMapEqualityWrapper(*db, followsData));
+				Assert::IsTrue(compare_maps(*db, followsData));
 			}
 
 			TEST_METHOD(TestAddFollowsStarAbstractionSuccess) {
@@ -347,7 +347,7 @@ namespace UnitTesting {
 				shared_ptr<StringMap> db = followsstar_storage->getDatabase();
 
 				// assert database contains the correct data
-				Assert::IsTrue(stringMapEqualityWrapper(*db, followsStarData));
+				Assert::IsTrue(compare_maps(*db, followsStarData));
 			}
 
 			TEST_METHOD(TestAddParentAbstractionSuccess) {
@@ -364,7 +364,7 @@ namespace UnitTesting {
 				shared_ptr<StringMap> db = parent_storage->getTruncatedDatabase();
 
 				// assert database contains the correct data (only first element of vector)
-				Assert::IsTrue(stringMapEqualityWrapper(*db, parentData));
+				Assert::IsTrue(compare_maps(*db, parentData));
 			}
 
 			TEST_METHOD(TestAddParentStarAbstractionSuccess) {
@@ -385,7 +385,7 @@ namespace UnitTesting {
 				shared_ptr<StringMap> db = parentstar_storage->getDatabase();
 
 				// assert database contains the correct data
-				Assert::IsTrue(stringMapEqualityWrapper(*db, parentStarData));
+				Assert::IsTrue(compare_maps(*db, parentStarData));
 			}
 			
 			TEST_METHOD(TestAddZeroAbstractionSuccess) {
@@ -457,12 +457,12 @@ namespace UnitTesting {
 			//	shared_ptr<StringMap> uses_db = uses_storage->getDatabase();
 			//
 			//	// assert database has correct entries
-			//	Assert::IsTrue(stringMapEqualityWrapper(*parent_db, parentData));
-			//	Assert::IsTrue(stringMapEqualityWrapper(*parentstar_db, parentStarData));
-			//	Assert::IsTrue(stringMapEqualityWrapper(*follows_db, followsData));
-			//	Assert::IsTrue(stringMapEqualityWrapper(*followsstar_db, followsStarData));
-			//	Assert::IsTrue(stringMapEqualityWrapper(*modifies_db, modifiesData));
-			//	Assert::IsTrue(stringMapEqualityWrapper(*uses_db, usesData));
+			//	Assert::IsTrue(compare_maps(*parent_db, parentData));
+			//	Assert::IsTrue(compare_maps(*parentstar_db, parentStarData));
+			//	Assert::IsTrue(compare_maps(*follows_db, followsData));
+			//	Assert::IsTrue(compare_maps(*followsstar_db, followsStarData));
+			//	Assert::IsTrue(compare_maps(*modifies_db, modifiesData));
+			//	Assert::IsTrue(compare_maps(*uses_db, usesData));
 			//}
-		};
+	};
 }
