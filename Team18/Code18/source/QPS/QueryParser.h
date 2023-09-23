@@ -5,7 +5,11 @@
 #include <vector>
 #include <iostream>
 #include <unordered_map>
+#include <unordered_set>
 #include "QueryObjects/QueryObject.h"
+#include "QueryObjects/DesignObjects.h"
+#include "QueryObjects/QueryObjectFactory.h"
+#include "QueryObjects/SynonymObjects.h"
 
 
 using namespace std;
@@ -19,7 +23,6 @@ using namespace std;
 */
 class QueryParser  {
 public:
-	unordered_map<string_view, shared_ptr<QueryObject>> synonyms;
 	QueryParser();
 	
 	/*
@@ -38,30 +41,54 @@ public:
 	* This function validates the query clause
 	*/
 	vector<shared_ptr<QueryObject>> validateQuery(vector<string_view> query);
+
+	unordered_map<string_view, shared_ptr<QueryObject>> getSynonyms() {
+		return synonyms;
+	}
 private:
+	// Synonyms declared in the query's declaration statements
+	unordered_map<string_view, shared_ptr<QueryObject>> synonyms;
+
+	// A mapping between the synonyms declared in the declarations statements to its design-entity
+	unordered_map <string_view, ENTITY> synonymToEntity;
+
+	// Valid relational references
+	std::unordered_set<string_view> relationalReferences
+		{"Follows"sv, "Follows*"sv, "Parent"sv, "Parent*"sv, "Uses"sv, "Modifies"sv};
+
+	int SUCH_THAT_CLAUSE_TOKEN_COUNT{ 6 };
+	int MIN_PATTERN_CLAUSE_TOKEN_COUNT{ 6 };
+	int MAX_PATTERN_CLAUSE_TOKEN_COUNT{ 8 };
+
+
 	/*
 	* Helper function splits the declarations into each individual declaration (up till ";")
 	*/
 	vector<vector<string_view>> splitDeclarations(vector<string_view> declarations);
-	/*
-	* Helper function to check if Select keyword is present
-	*/
-	bool hasSelect(std::vector<string_view> query, int index);
 
-	/*
-	* Helper function to check if a synonym is declared
-	*/
-	bool isDeclared(std::vector<string_view> query, int index);
+	// Helper function to check if Select keyword is present
+	bool hasSelect(std::vector<string_view>& query, int& index);
 
-	/*
-	* Helper function to check if such that is present
-	*/
-	bool hasSuchThat(std::vector<string_view> query, int index);
+	// Helper function to check if pattern keyword is present
+	bool hasPattern(std::vector<string_view>& query, int index);
 
-	/*
-	* Helper function to check if a such that clause is present
-	*/
-	bool hasRelationalReference(std::vector<string_view> query, int index);
+	// Helper function to check if a synonym is declared
+	bool isDeclared(std::vector<string_view>& query, int index);
+
+	// Helper function to check if such that is present
+	bool hasSuchThat(std::vector<string_view>& query, int index);
+
+	// Helper function to check if a such that clause is present
+	bool hasRelationalReference(std::vector<string_view>& query, int index);
+
+	// Creates a such that clause query object, and increments the index by the number of tokens the clause has
+	shared_ptr<QueryObject> createClauseObj(std::vector<string_view>& query, int& index);
+
+	// Helper function to check if a pattern clause is present
+	bool hasPatternClause(std::vector<string_view>& query, int index, int& tokenCount);
+
+	// Creates a pattern clause query object 
+	shared_ptr<QueryObject> createPatternObject(std::vector<string_view>& query, int& index, int tokenCount);
 };
 
 #endif

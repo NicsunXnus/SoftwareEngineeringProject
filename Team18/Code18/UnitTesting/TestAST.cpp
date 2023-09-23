@@ -52,7 +52,7 @@ namespace UnitTesting
 				std::make_shared<Token>(")")
 			};
 			
-			std::shared_ptr<ExprNode> e = ASTBuilder::parseExpr(exprTest2);
+			std::shared_ptr<ExprNode> e = ASTBuilder::parseExpr(exprTest2, 1);
 			std::stringstream output;
 			std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
 
@@ -179,7 +179,7 @@ namespace UnitTesting
 			procedureTest.emplace_back(std::make_shared<EqualityOpToken>());
 			procedureTest.emplace_back(std::make_shared<LiteralToken>("5"));
 			
-			std::shared_ptr<CondExprNode> condExpr = ASTBuilder::parseCondExpr(procedureTest);
+			std::shared_ptr<CondExprNode> condExpr = ASTBuilder::parseCondExpr(procedureTest, 0);
 			
 			std::stringstream output;
 			std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());

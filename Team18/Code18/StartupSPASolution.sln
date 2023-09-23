@@ -20,6 +20,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IntegrationTesting", "Integ
 		{DC21A1EA-D2C6-4D14-A2B4-E025B64BDE81} = {DC21A1EA-D2C6-4D14-A2B4-E025B64BDE81}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SystemTesting", "SystemTesting\SystemTesting.vcxproj", "{16AEC2BE-9C57-43EB-8566-96D68DA41CEF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DC21A1EA-D2C6-4D14-A2B4-E025B64BDE81} = {DC21A1EA-D2C6-4D14-A2B4-E025B64BDE81}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -60,6 +65,14 @@ Global
 		{09AD1D74-2D3C-42AE-B4E0-52A792A27E60}.Release|Win32.Build.0 = Release|Win32
 		{09AD1D74-2D3C-42AE-B4E0-52A792A27E60}.Release|x64.ActiveCfg = Release|x64
 		{09AD1D74-2D3C-42AE-B4E0-52A792A27E60}.Release|x64.Build.0 = Release|x64
+		{16AEC2BE-9C57-43EB-8566-96D68DA41CEF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{16AEC2BE-9C57-43EB-8566-96D68DA41CEF}.Debug|Win32.Build.0 = Debug|Win32
+		{16AEC2BE-9C57-43EB-8566-96D68DA41CEF}.Debug|x64.ActiveCfg = Debug|Win32
+		{16AEC2BE-9C57-43EB-8566-96D68DA41CEF}.Debug|x64.Build.0 = Debug|Win32
+		{16AEC2BE-9C57-43EB-8566-96D68DA41CEF}.Release|Win32.ActiveCfg = Release|Win32
+		{16AEC2BE-9C57-43EB-8566-96D68DA41CEF}.Release|Win32.Build.0 = Release|Win32
+		{16AEC2BE-9C57-43EB-8566-96D68DA41CEF}.Release|x64.ActiveCfg = Release|x64
+		{16AEC2BE-9C57-43EB-8566-96D68DA41CEF}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

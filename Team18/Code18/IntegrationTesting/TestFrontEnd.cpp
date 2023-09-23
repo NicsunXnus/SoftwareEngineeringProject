@@ -13,6 +13,7 @@ namespace IntegrationTesting
 		
 		TEST_METHOD(DESCRIBE_THIS_TEST)
 		{
+			/*
 			std::string srcCode = "";
 			ApplicationWrapper applicationWrapper;
 			applicationWrapper.directParse(srcCode);
@@ -21,6 +22,7 @@ namespace IntegrationTesting
 			applicationWrapper.evaluate(query, output);
 			std::list<std::string> expected;
 			assert(output == expected);
+			*/
 		}
 
 	};

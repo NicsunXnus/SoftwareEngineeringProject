@@ -1,6 +1,8 @@
 #ifndef QPSPKB_H
 #define QPSPKB_H
 
+#include<unordered_set>
+
 enum ENTITY {
     STMT,
     READ,
