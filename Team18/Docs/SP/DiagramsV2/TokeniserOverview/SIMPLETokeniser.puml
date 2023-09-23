@@ -1,0 +1,29 @@
+@startuml
+' !include ../style.puml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+
+title SIMPLE Tokeniser
+
+enum ConditionalDeclaration {
+    IF 
+    WHILE
+}
+
+Class SimpleTokeniser {
+    {static} - int statementNumber
+    {static} - v<@pair<int, int>> outermostScopeDetector(string)
+    {static} - v<@Token> tokenizeExpression(string expression, string delimiter)
+    {static} - pair<ConditionalDeclaration, v<@Token>> processConditionalExpression(string, bool isIf)
+    {static} - pair<ConditionalDeclaration, v<@Token>> processConditionalDeclaration(string)
+    {static} - @TokenizedStmtList tokenizeStmtList(string)
+    {static} - @TokenizedSemicolonStmt tokenizeSemicolonStatement(string)
+    {static} - v<@Token> tokenizeAssignment(string)
+    {static} - v<@Token> tokenizeTwoWordStmt(string stmt, string expectedWord1)
+    {static} - string processPreProcedureDetails(string)
+    {static} + @TokenizedProgram tokenizeProgram(string)
+}
+
+SimpleTokeniser --> Token
+ConditionalDeclaration -- SimpleTokeniser
+@enduml

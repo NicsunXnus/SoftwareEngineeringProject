@@ -9,8 +9,6 @@ Class TokenFactory {
     {static} - unordered_set<string> commonKeywords
     {static} - unordered_set<string> uniqueSimple
     {static} - unordered_set<string> uniquePql
-    {static} - bool isNumber(string)
-    {static} - bool isValidName(string)
     {static} - Token generateCommonToken(string)
     {static} - Token generateSimpleToken(string)
     {static} - Token generatePqlToken(string)
@@ -30,13 +28,11 @@ package Tokens <<rectangle>> {
     Class IntergerLiteralToken {}
     package SeparatorTokens <<rectangle>> {
         Class SeparatorToken {}
-            Class CurlyCloseSepToken {}
-            Class CurlyOpenSepToken {}
-            Class ParenOpenSepToken {}
-            Class ParenCloseSepToken {}
-            Class DoubleQuoSepToken {}
-            Class SemicolonSepToken {}
-            Class CommaSepToken {}
+        note right of SeparatorToken
+        Further expanded in
+        another file
+        end note
+
     }
     package OperatorTokens <<rectangle>> {
         Class OperatorToken {}
@@ -54,23 +50,15 @@ package Tokens <<rectangle>> {
     }
 }
 
-TokenFactory -left- Token
+Token -left- TokenFactory
 
-skinparam groupInheritance 2
 UnderscoreToken --|> Token
 IdentifierToken --|> Token
 
 LiteralToken --|> Token
 IntergerLiteralToken --|> LiteralToken
 
-SeparatorToken -right-|> Token
-    CurlyCloseSepToken -up-|> SeparatorToken
-    CurlyOpenSepToken -up-|> SeparatorToken
-    ParenCloseSepToken -up-|> SeparatorToken
-    ParenOpenSepToken -down-|> SeparatorToken
-    SemicolonSepToken -down-|> SeparatorToken
-    CommaSepToken -down-|> SeparatorToken
-    DoubleQuoSepToken -down-|> SeparatorToken
+Token -right-|> SeparatorToken
 
 OperatorToken -up-|> Token
    
