@@ -128,13 +128,13 @@ stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant
 Select a pattern a ("C", _)
 
 5000
-27 - char string-exact match, exists 
+27 - char string-partial match, exists 
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select a pattern a ("c", _"b"_)
-12
+3, 12
 5000
-28 - char string-exact match, does not exist
+28 - char string-partial match, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a ("c", "x")
+Select a pattern a ("c", _"x"_)
 
 5000

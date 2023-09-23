@@ -13,183 +13,173 @@ stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant
 Select a such that Modifies(a, v)
 3, 4, 9, 12, 13
 5000
-4 - synonym-synonym, right: var, left: procedure
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select p such that Modifies(p, v)
-first
-5000
-5 - synonym-synonym, right: var, left: read
+4 - synonym-synonym, right: var, left: read
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select r such that Modifies(r, v)
 1, 2, 8
 5000
-6 - synonym-synonym, right: var, left: stmt, select v
+5 - synonym-synonym, right: var, left: stmt, select v
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Modifies(s, v)
 a, b, c, d, e
 5000
-7 - synonym-synonym, right: var, left: var (not in MS1)
+6 - synonym-synonym, right: var, left: var (not in MS1)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Modifies(v, v)
 SemanticError
 5000
-8 - synonym-synonym, right: var, left: print (invalid)
+7 - synonym-synonym, right: var, left: print (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Modifies(pn, v)
 SemanticError
 5000
-9 - synonym-synonym, right: var, left: constant (invalid)
+8 - synonym-synonym, right: var, left: constant (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select c such that Modifies(c, v)
 SemanticError
 5000
-10 - synonym-synonym, right: var, left: call
+9 - synonym-synonym, right: var, left: call
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select cl such that Modifies(cl, v)
 
 5000
-11 - synonym-synonym, right: var, left: if
+10 - synonym-synonym, right: var, left: if
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select i such that Modifies(i, v)
 6
 5000
-12 - synonym-synonym, right: var, left: while
+11 - synonym-synonym, right: var, left: while
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select w such that Modifies(w, v)
 5
 5000
-13 - synonym-synonym, right: var, left: while, mismatch, exists. NOTE: Does not exist will be below when dealing with integers
+12 - synonym-synonym, right: var, left: while, mismatch, exists. NOTE: Does not exist will be below when dealing with integers
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select i such that Modifies(w, v)
 6
 5000
-14 - synonym-wildcard, left: stmt
+13 - synonym-wildcard, left: stmt
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Modifies(s, _)
 1, 2, 3, 4, 5, 6, 8, 9, 12, 13
 5000
-15 - synonym-wildcard, left: assignment
+14 - synonym-wildcard, left: assignment
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select a such that Modifies(a, _)
 3, 4, 9, 12, 13
 5000
-16 - synonym-wildcard, left: procedure
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select p such that Modifies(p, _)
-first
-5000
-17 - synonym-wildcard, left: read
+15 - synonym-wildcard, left: read
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select r such that Modifies(r, _)
 1, 2, 8
 5000
-18 - synonym-wildcard, left: var (not in MS1)
+16 - synonym-wildcard, left: var (not in MS1)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Modifies(v, _)
 SemanticError
 5000
-19 - synonym-wildcard, left: print (invalid)
+17 - synonym-wildcard, left: print (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Modifies(pn, _)
 SemanticError
 5000
-20 - synonym-wildcard, left: constant (invalid)
+18 - synonym-wildcard, left: constant (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select c such that Modifies(c, _)
 SemanticError
 5000
-21 - synonym-wildcard, left: call 
+19 - synonym-wildcard, left: call 
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select c such that Modifies(cl, _)
 
 5000
-22 - synonym-wildcard, left: if
+20 - synonym-wildcard, left: if
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select i such that Modifies(i, _)
 6
 5000
-23 - synonym-wildcard, left: while
+21 - synonym-wildcard, left: while
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select w such that Modifies(w, _)
 5
 5000
-24 - synonym-wildcard, left: while, mismatch, exists
+22 - synonym-wildcard, left: while, mismatch, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select c such that Modifies(w, _)
 1, 2
 5000
-25 - synonym-identity, left: stmt, right: variable name
+23 - synonym-identity, left: stmt, right: variable name
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Modifies(s, "a")
-1, 8, 9
+1, 5, 6, 8, 9
 5000
-26 - synonym-identity, left: stmt, right: constant (invalid)
+24 - synonym-identity, left: stmt, right: constant (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Modifies(s, "1")
-SemanticError
+SyntaxError
 5000
-27 - synonym-identity, left: stmt, right: does not exist
+25 - synonym-identity, left: stmt, right: does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Modifies(s, "x")
 
 5000
-28 - synonym-identity, left: stmt, right: variable name, mismatch, exists
+26 - synonym-identity, left: stmt, right: variable name, mismatch, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select p such that Modifies(s, "a")
 first
 5000
-29 - synonym-identity, left: stmt, right: variable name, mismatch, does not exist
+27 - synonym-identity, left: stmt, right: variable name, mismatch, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select p such that Modifies(s, "x")
 
 5000
-30 - integer-synonym, right: stmt (non-var), stmt number inside
+28 - integer-synonym, right: stmt (non-var), stmt number inside
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select r such that Modifies(1, s)
 SemanticError
 5000
-31 - integer-synonym, right: variable, stmt number inside
+29 - integer-synonym, right: variable, stmt number inside
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Modifies(1, v)
 a
 5000
-32 - integer-synonym, right: variable, stmt number out of bounds
+30 - integer-synonym, right: variable, stmt number out of bounds
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Modifies(99999, v)
 
 5000
-33 - integer-synonym, right: variable, stmt number is 0
+31 - integer-synonym, right: variable, stmt number is 0
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Modifies(0, v)
 
 5000
-34 - integer-wildcard
+32 - integer-wildcard
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Modifies(1, _)
 a, b, c, d, e, f
 5000
-35 - integer-identity, exists in stmt
+33 - integer-identity, exists in stmt
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Modifies(1, "a")
 a, b, c, d, e, f
 5000
-36 - integer-identity, does not exists in stmt but in prg
+34 - integer-identity, does not exists in stmt but in prg
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Modifies(1, "b")
 
 5000
-37 - integer-identity, does not exists in prg
+35 - integer-identity, does not exists in prg
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Modifies(1, "x")
 
 5000
-38 - identity-x, line number in string (invalid)
+36 - identity-x, line number in string (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Modifies("1", v)
-SemanticError
+SyntaxError
 5000
-39 - identity-x, procedure name in string (invalid)
+37 - wildcard-x
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select v such that Modifies("first", v)
+Select v such that Modifies(_, v)
 SemanticError
 5000

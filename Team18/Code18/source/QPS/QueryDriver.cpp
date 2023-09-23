@@ -6,6 +6,7 @@
 
 #include <list>
 #include <string>
+#include <set>
 #include "Errors/QPSError.h"
 #include "../HelperFunctions.h"
 
@@ -38,8 +39,17 @@ list<string> QueryDriver::execute() {
 		shared_ptr<ResultHandler> resultHandler = make_shared<ResultHandler>();
 		list<string> finalResult = resultHandler->processTables(queryResultsTable);
 
+		set<string> uniqueStrings;
+		for (const string& str : finalResult) {
+			uniqueStrings.insert(str);
+		}
+
+		list<string> stringList;
+		for (const string& str : uniqueStrings) {
+			stringList.push_back(str);
+		}
 		
-		return finalResult;
+		return stringList;
 	}
 	catch (const QPSError& ex) {
 		list<string> empty;
