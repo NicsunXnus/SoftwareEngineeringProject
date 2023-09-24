@@ -89,8 +89,6 @@ LiteralToken --|> Token
 IntergerLiteralToken --|> LiteralToken
 
 SeparatorToken --|> Token
-    CurlyCloseSepToken --|> SeparatorToken
-    CurlyOpenSepToken --|> SeparatorToken
     ParenCloseSepToken --|> SeparatorToken
     ParenOpenSepToken --|> SeparatorToken
     SemicolonSepToken --|> SeparatorToken
@@ -121,7 +119,6 @@ KeywordToken -up-|> Token
     AssignKeywordToken --|> KeywordToken
     CallKeywordToken --|> KeywordToken
     ConstantKeywordToken --|> KeywordToken
-    ElseKeywordToken --|> KeywordToken
     IfKeywordToken --|> KeywordToken
     PrintKeywordToken --|> KeywordToken
     ProcedureKeywordToken --|> KeywordToken
@@ -131,8 +128,5 @@ KeywordToken -up-|> Token
     VariableKeywordToken --|> KeywordToken
     WhileKeywordToken --|> KeywordToken
     SelectKeywordToken --|> KeywordToken
-    SuchKeywordToken --|> KeywordToken
-    ThatKeywordToken --|> KeywordToken
-
 
 @end

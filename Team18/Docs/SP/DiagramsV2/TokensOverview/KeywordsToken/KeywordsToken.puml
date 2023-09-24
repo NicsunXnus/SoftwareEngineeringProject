@@ -11,5 +11,3 @@
     VariableKeywordToken -right-|> KeywordToken
     WhileKeywordToken -down-|> KeywordToken
     SelectKeywordToken -down-|> KeywordToken
-    SuchKeywordToken -down-|> KeywordToken
-    ThatKeywordToken -down-|> KeywordToken

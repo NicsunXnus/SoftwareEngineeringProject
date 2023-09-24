@@ -1,0 +1,60 @@
+@startuml
+' !include ../style.puml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+
+title SIMPLE Tokenizer Results Overview
+
+package SimpleTokeniserResults {
+    Class TokenizedProgram {
+        - v<@TokenizedProcedure> procedures
+    }
+
+    note as n1
+        Shorthand for types used:
+        @ - Shared Pointer, str - String, b - Bool,
+        strv - String View, v - vector, ∅ - void
+    end note
+
+    Class TokenizedProcedure {
+        - string procedureName
+        - @TokenizedStmtList statementList
+    }
+
+    Class TokenizedStmtList {
+        - v<@TokenizedStmt> statements
+    }
+
+    Class TokenizedStmt {
+        - const int statementNumber
+    }
+
+    Class TokenizedSemicolonStmt {
+        - v<@Token> contents
+    }
+
+    Class TokenizedConditionalStmt {
+        - v<@Token> conditionalExp
+    }
+
+    Class TokenizedIfStmt {
+        - @TokenizedStmtList thenBlock
+        - @TokenizedStmtList elseBlock
+    }
+
+    Class TokenizedWhileStmt {
+        - @TokenizedStmtList whileBlock
+    }
+}
+TokenizedProgram *-- TokenizedProcedure
+TokenizedProcedure *-- TokenizedStmtList
+TokenizedStmtList *-- TokenizedStmt
+TokenizedIfStmt *-- TokenizedStmtList
+TokenizedWhileStmt *-- TokenizedStmtList
+
+TokenizedIfStmt --|> TokenizedConditionalStmt
+TokenizedWhileStmt --|> TokenizedConditionalStmt
+TokenizedConditionalStmt --|> TokenizedStmt
+TokenizedSemicolonStmt --|> TokenizedStmt
+
+@end

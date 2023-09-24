@@ -1,0 +1,25 @@
+@startuml
+!include ../../style.puml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+box SimpleTokenizer LOGIC_COLOR_T1
+participant "SimpleTokenizer" as SimpleTokenizer LOGIC_COLOR
+end box
+
+[-> SimpleTokenizer : tokenizeSemicolonStmt(String stmt)
+activate SimpleTokenizer
+alt assignment statement
+    SimpleTokenizer -> SimpleTokenizer : <<static>>\n tokenizeAssignment()
+    activate SimpleTokenizer
+    SimpleTokenizer -> SimpleTokenizer
+    deactivate SimpleTokenizer
+else two-word statements
+    SimpleTokenizer -> SimpleTokenizer : <<static>>\n tokenizeTwoWordStmt()
+    activate SimpleTokenizer
+    SimpleTokenizer -> SimpleTokenizer
+    deactivate SimpleTokenizer
+end
+[<--SimpleTokenizer : TokenizedSemicolonStmt
+deactivate SimpleTokenizer
+
+@end

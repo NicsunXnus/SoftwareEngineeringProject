@@ -1,27 +1,116 @@
 @startuml
-!include ../style.puml
+' !include ../style.puml
 skinparam ClassFontColor #000000
 skinparam ClassBorderColor #000000
 
-title PKB Overview
+title PKB Class Diagram
 
-node "Inserter" as Inserter
+package PKB <<Rectangle>> {
 
-database "Storage" as Storage {
-  [AST]
-  frame "Manager" {
-    [Entity Manager]
-    [Abstraction Manager]
-  }
+    Class PKB {
+        -StorageManager storageManager
+        +Insertor insertor
+        +Responder responder
+    }
+
+    Class StorageManager {
+        -{static} shared_ptr<EntityStorage> entity_storage;
+        -{static} shared_ptr<UsesAbstractionStorage> uses_abstractions;
+        -{static} shared_ptr<ModifiesAbstractionStorage> modifies_abstractions;
+        -{static} shared_ptr<FollowsAbstractionStorage> follows_abstractions;
+        -{static} shared_ptr<ParentAbstractionStorage> parent_abstractions;
+        +{static} shared_ptr<AbstractionStorage> getAbstractionStorage(const ABSTRACTION abstraction_type)
+        +{static} shared_ptr<EntityStorage> getEntityStorage()
+    }
+
+    Class Insertor {
+        +void addEntity(shared_ptr<StringMap> entity_map, ENTITY entity_type = STMT)
+        +void addAbstraction(shared_ptr<StringMap> abstraction_map, ABSTRACTION abstraction_type)
+    }
+
+    Class Responder {
+        +vector<string> getEntityStatement(ENTITY entity)
+        +vector<string> getAllProcedures()
+        +vector<string> getAllVariables()
+        +vector<string> getAllConstants()
+        +StringMap getVariableMap()
+        +StringMap getConstantMap()
+        +StringMap getAbstraction(ABSTRACTION abstraction)
+    }
+
+    Class EntityStorage {
+      -{static} shared_ptr<map<ENTITY, vector<string>>> statement_database;
+      -{static} shared_ptr<StringMap> procedure_database;
+      -{static} shared_ptr<StringMap> variable_database;
+      -{static} shared_ptr<StringMap> constant_database;
+      +shared_ptr<map<ENTITY, vector<string>>> getStatementDatabase()
+      +shared_ptr<StringMap> getProcedureDatabase()
+      +shared_ptr<StringMap> getVariableDatabase()
+      +shared_ptr<StringMap> getConstantDatabase()
+      +void setStatementDatabase(shared_ptr<StringMap> database)
+      +void setProcedureDatabase(shared_ptr<StringMap> database)
+      +void setVariableDatabase(shared_ptr<StringMap> database)
+      +void setConstantDatabase(shared_ptr<StringMap> database)
+    }
+
+    Class AbstractionStorage {
+      -shared_ptr<StringMap> database
+      +shared_ptr<StringMap> getDatabase()
+      +shared_ptr<StringMap> getTruncatedDatabase()
+      +void setAbstraction(shared_ptr<StringMap> database_to_insert)
+    }
+
+    Class UsesAbstractionStorage {    }
+
+    Class ModifiesAbstractionStorage {    }
+
+    Class ParentAbstractionStorage {    }
+    
+    Class FollowsAbstractionStorage {    }
+
 }
 
-node "Responder" as Responder
+'QueryParser .down.> QueryObject
+'QueryObject .left.> DataAccessLayer
 
-Inserter -[hidden]-> AST
-Inserter -[hidden]-> [Entity Manager]
-Inserter -[hidden]-> [Abstraction Manager]
-AST -[hidden]-> Responder
-[Entity Manager] -[hidden]-> Responder
-[Abstraction Manager] -[hidden]-> Responder
+' inheritance line: ClauseArg --|> QueryObject 
+' dependency line: ClauseArg ..> SynonymObject
+
+PKB ..> Insertor
+PKB ..> StorageManager
+PKB ..> Responder
+
+StorageManager ..> EntityStorage
+StorageManager ..> AbstractionStorage
+
+Insertor .[hidden]right.> StorageManager
+StorageManager .[hidden]right.> Responder
+
+UsesAbstractionStorage -up-|> AbstractionStorage
+ModifiesAbstractionStorage -up-|> AbstractionStorage
+FollowsAbstractionStorage -up-|> AbstractionStorage
+ParentAbstractionStorage -up-|> AbstractionStorage
 
 @end
+
+
+' node "Inserter" as Inserter
+
+' database "Storage" as Storage {
+'   [AST]
+'   frame "Manager" {
+'     [Entity Manager]
+'     [Abstraction Manager]
+'   }
+' }
+
+' node "Responder" as Responder
+
+' Inserter -[hidden]-> AST
+' Inserter -[hidden]-> [Entity Manager]
+' Inserter -[hidden]-> [Abstraction Manager]
+' AST -[hidden]-> Responder
+' [Entity Manager] -[hidden]-> Responder
+' [Abstraction Manager] -[hidden]-> Responder
+
+' @end
