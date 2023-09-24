@@ -30,19 +30,19 @@ public:
 	 */
 	~DataAccessLayerStub() {};
 
-	vector<string> getEntity(ENTITY type);
+	vector<string> getEntity(ENTITY type) override;
 
-	vector<string> getAllProcedures();
+	vector<string> getAllProcedures() override;
 
-	vector<string> getAllVariables();
+	vector<string> getAllVariables() override;
 
-	vector<string> getAllConstants();
+	vector<string> getAllConstants() override;
 
-	map<string, vector<string>> getVariableMap();
+	map<string, vector<string>> getVariableMap() override;
 
-	map<string, vector<string>> getConstantMap();
+	map<string, vector<string>> getConstantMap() override;
 
-	map<string, vector<string>> getClause(ABSTRACTION abstraction);
+	map<string, vector<string>> getClause(ABSTRACTION abstraction) override;
 
 
 };

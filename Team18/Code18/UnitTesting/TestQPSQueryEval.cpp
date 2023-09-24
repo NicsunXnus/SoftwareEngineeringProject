@@ -50,7 +50,7 @@ namespace UnitTesting {
 			auto clause = std::dynamic_pointer_cast<ClauseObject>(qo[1]);
 			Assert::IsTrue(clause->getArg1()->isInteger());
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
-			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
 			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
 			
@@ -70,7 +70,7 @@ namespace UnitTesting {
 			auto clause = std::dynamic_pointer_cast<ClauseObject>(qo[1]);
 			//Assert::IsTrue(clause->getArg2()->isSynonym());
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
-			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
 			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
 			Assert::IsTrue(tables[1]->getSignificant());
@@ -90,7 +90,7 @@ namespace UnitTesting {
 			auto clause = std::dynamic_pointer_cast<ClauseObject>(qo[1]);
 			//Assert::IsTrue(clause->getArg2()->isSynonym());
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
-			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
 			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
 			Assert::IsTrue(tables[1]->getSignificant());
@@ -113,7 +113,7 @@ namespace UnitTesting {
 			auto clause = std::dynamic_pointer_cast<ClauseObject>(qo[1]);
 			//Assert::IsTrue(clause->getArg2()->isSynonym());
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
-			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
 			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
 			Assert::IsTrue(tables[1]->getSignificant());
@@ -136,7 +136,7 @@ namespace UnitTesting {
 			auto clause = std::dynamic_pointer_cast<ClauseObject>(qo[1]);
 			//Assert::IsTrue(clause->getArg2()->isSynonym());
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
-			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
 			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
 			Assert::IsTrue(tables[1]->getSignificant());
@@ -155,11 +155,11 @@ namespace UnitTesting {
 			auto clause = std::dynamic_pointer_cast<ClauseObject>(qo[1]);
 			Assert::IsTrue(clause->getArg1()->isInteger());
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
-			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
 			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
 
-			Assert::IsTrue(tables[1]->getSignificant());
+			Assert::IsTrue(!tables[1]->getSignificant());
 			Assert::IsTrue(tables[0]->getColumns()[0]["s"][0] == "1");
 			Assert::IsTrue(tables[1]->getColumns().size() == 0);
 		}
@@ -175,7 +175,7 @@ namespace UnitTesting {
 			auto clause = std::dynamic_pointer_cast<ClauseObject>(qo[1]);
 			//Assert::IsTrue(clause->getArg2()->isSynonym());
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
-			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
 			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
 			Assert::IsTrue(tables[1]->getSignificant());
@@ -193,7 +193,7 @@ namespace UnitTesting {
 
 			auto clause = std::dynamic_pointer_cast<ClauseObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
-			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
 			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
 
@@ -213,7 +213,7 @@ namespace UnitTesting {
 
 			auto clause = std::dynamic_pointer_cast<ClauseObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
-			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
 			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
 
@@ -236,7 +236,7 @@ namespace UnitTesting {
 			auto clause = std::dynamic_pointer_cast<ClauseObject>(qo[1]);
 			//Assert::IsTrue(clause->getArg2()->isSynonym());
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
-			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
 			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
 			Assert::IsTrue(tables[1]->getSignificant());
@@ -255,7 +255,7 @@ namespace UnitTesting {
 			auto clause = std::dynamic_pointer_cast<ClauseObject>(qo[1]);
 			//Assert::IsTrue(clause->getArg2()->isSynonym());
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
-			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
 			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
 			Assert::IsTrue(tables[1]->getSignificant());
@@ -274,7 +274,7 @@ namespace UnitTesting {
 			auto clause = std::dynamic_pointer_cast<ClauseObject>(qo[1]);
 			//Assert::IsTrue(clause->getArg2()->isSynonym());
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
-			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
 			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
 			Assert::IsTrue(!tables[1]->getSignificant()); // table is not significant
@@ -292,7 +292,7 @@ namespace UnitTesting {
 
 			auto clause = std::dynamic_pointer_cast<ClauseObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
-			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
 			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
 
@@ -311,7 +311,7 @@ namespace UnitTesting {
 
 			auto clause = std::dynamic_pointer_cast<ClauseObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
-			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
 			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
 
@@ -332,7 +332,7 @@ namespace UnitTesting {
 
 			auto clause = std::dynamic_pointer_cast<ClauseObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
-			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
 			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
 			Assert::IsTrue(tables[1]->getSignificant());
@@ -351,7 +351,7 @@ namespace UnitTesting {
 
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
-			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
 			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
 
@@ -371,7 +371,7 @@ namespace UnitTesting {
 
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
-			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
 			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
 
@@ -391,7 +391,7 @@ namespace UnitTesting {
 
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
-			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
 			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
 
@@ -411,7 +411,7 @@ namespace UnitTesting {
 
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
-			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
 			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
 
@@ -431,7 +431,7 @@ namespace UnitTesting {
 
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
-			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
 			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
 
@@ -450,7 +450,7 @@ namespace UnitTesting {
 
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
-			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
 			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
 
@@ -469,7 +469,7 @@ namespace UnitTesting {
 
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
-			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
 			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
 
@@ -496,7 +496,7 @@ namespace UnitTesting {
 
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
-			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
 			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
 
@@ -518,7 +518,7 @@ namespace UnitTesting {
 
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
-			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
 			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
 
@@ -541,7 +541,7 @@ namespace UnitTesting {
 
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
-			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
 			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
 
@@ -570,7 +570,7 @@ namespace UnitTesting {
 
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
-			shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
 			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
 
