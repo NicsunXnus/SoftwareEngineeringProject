@@ -29,16 +29,16 @@ public:
 	~DataAccessLayer() {};
 
 	/* For Design Entities */
-	vector<string> getEntity(ENTITY type);
-	vector<string> getAllProcedures();
-	vector<string> getAllVariables();
-	vector<string> getAllConstants();
+	virtual vector<string> getEntity(ENTITY type);
+	virtual vector<string> getAllProcedures();
+	virtual vector<string> getAllVariables();
+	virtual vector<string> getAllConstants();
 
 	/* For Patterns (Milestone 1) */
-	map<string, vector<string>> getVariableMap();
-	map<string, vector<string>> getConstantMap();
+	virtual map<string, vector<string>> getVariableMap();
+	virtual map<string, vector<string>> getConstantMap();
 
 	/* For Design Abstractions / Clauses */
-	map<string, vector<string>> DataAccessLayer::getClause(ABSTRACTION abstraction);
+	virtual map<string, vector<string>> DataAccessLayer::getClause(ABSTRACTION abstraction);
 };
 #endif
