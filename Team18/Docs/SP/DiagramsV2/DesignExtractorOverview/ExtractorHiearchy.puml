@@ -78,8 +78,8 @@ package DesignExtractor <<Rectangle>> {
 
     DesignExtractor ..> Exractor
     Exractor <|-- EntityExtractor
-    Exractor <|-- ParentsFollowsAbstractionExtractor
-    Exractor <|-- UsesModifiesAbstractionExtractor
+    Exractor <|-right- ParentsFollowsAbstractionExtractor
+    Exractor <|-right- UsesModifiesAbstractionExtractor
     ParentsFollowsAbstractionExtractor <|-- ParentsAbstractionExtractor
     ParentsFollowsAbstractionExtractor <|-- FollowsAbstractionExtractor
     UsesModifiesAbstractionExtractor <|-- UsesAbstractionExtractor
