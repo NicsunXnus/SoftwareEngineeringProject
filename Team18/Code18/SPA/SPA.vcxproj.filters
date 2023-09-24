@@ -1,10 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\source\AST\**\*.h" />
-    <ClCompile Include="..\source\DesignExtractor\*.h" />
-    <ClCompile Include="..\source\ApplicationWrapper.cpp" />
+    <ClCompile Include="..\source\AST\ASTBuilderHelperFunctions.h" />
     <ClCompile Include="..\source\AST\ASTNode.h" />
+    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
+    <ClCompile Include="..\source\DesignExtractor\EntityExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\Extractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\FollowsAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ModifiesAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ParentsAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ParentsFollowsAbstractionBaseExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\UsesAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\UsesModifiesAbstractionBaseExtractor.h" />
+    <ClCompile Include="..\source\ApplicationWrapper.cpp" />
     <ClCompile Include="..\source\QPS\QueryDriver.cpp">
       <Filter>QPS</Filter>
     </ClCompile>
@@ -44,7 +52,6 @@
     <ClCompile Include="..\source\QPS\Errors\SyntaxError.h">
       <Filter>QPS</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\QPS\QueryResultsTable.h" />
     <ClCompile Include="..\source\AST\**\*.h" />
     <ClCompile Include="..\source\AST\**\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
@@ -55,14 +62,145 @@
     <ClCompile Include="..\source\QPS\QueryBuilder.cpp">
       <Filter>QPS</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\QPS\ResultsHandler.cpp" />
-    <ClCompile Include="..\source\QPS\ResultsHandler.h" />
     <ClCompile Include="..\source\AST\**\*.h" />
     <ClCompile Include="..\source\AST\**\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
     <ClCompile Include="..\source\QPS\DataAccessLayerStub.cpp">
       <Filter>QPS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\AST\ASTBuilderHelperFunctions.h" />
+    <ClCompile Include="..\source\AST\ASTNode.h" />
+    <ClCompile Include="..\source\AST\ASTBuilderHelperFunctions.h" />
+    <ClCompile Include="..\source\AST\ASTNode.h" />
+    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
+    <ClCompile Include="..\source\DesignExtractor\EntityExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\Extractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\FollowsAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ModifiesAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ParentsAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ParentsFollowsAbstractionBaseExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\UsesAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\UsesModifiesAbstractionBaseExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
+    <ClCompile Include="..\source\DesignExtractor\EntityExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\Extractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\FollowsAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ModifiesAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ParentsAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ParentsFollowsAbstractionBaseExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\UsesAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\UsesModifiesAbstractionBaseExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
+    <ClCompile Include="..\source\DesignExtractor\EntityExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\Extractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\FollowsAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ModifiesAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ParentsAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ParentsFollowsAbstractionBaseExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\UsesAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\UsesModifiesAbstractionBaseExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
+    <ClCompile Include="..\source\DesignExtractor\EntityExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\Extractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\FollowsAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ModifiesAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ParentsAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ParentsFollowsAbstractionBaseExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\UsesAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\UsesModifiesAbstractionBaseExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
+    <ClCompile Include="..\source\DesignExtractor\EntityExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\Extractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\FollowsAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ModifiesAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ParentsAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ParentsFollowsAbstractionBaseExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\UsesAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\UsesModifiesAbstractionBaseExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
+    <ClCompile Include="..\source\DesignExtractor\EntityExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\Extractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\FollowsAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ModifiesAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ParentsAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ParentsFollowsAbstractionBaseExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\UsesAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\UsesModifiesAbstractionBaseExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
+    <ClCompile Include="..\source\DesignExtractor\EntityExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\Extractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\FollowsAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ModifiesAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ParentsAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ParentsFollowsAbstractionBaseExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\UsesAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\UsesModifiesAbstractionBaseExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
+    <ClCompile Include="..\source\DesignExtractor\EntityExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\Extractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\FollowsAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ModifiesAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ParentsAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ParentsFollowsAbstractionBaseExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\UsesAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\UsesModifiesAbstractionBaseExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
+    <ClCompile Include="..\source\DesignExtractor\EntityExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\Extractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\FollowsAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ModifiesAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ParentsAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\ParentsFollowsAbstractionBaseExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\UsesAbstractionExtractor.h" />
+    <ClCompile Include="..\source\DesignExtractor\UsesModifiesAbstractionBaseExtractor.h" />
+    <ClCompile Include="..\source\AST\**\*.h">
+      <Filter>AST</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\AST\**\*.h">
+      <Filter>AST</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\AST\**\*.h">
+      <Filter>AST</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\DesignExtractor\*.h">
+      <Filter>DesignExtractor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\DesignExtractor\*.h">
+      <Filter>DesignExtractor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\DesignExtractor\*.h">
+      <Filter>DesignExtractor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\DesignExtractor\*.h">
+      <Filter>DesignExtractor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\DesignExtractor\*.h">
+      <Filter>DesignExtractor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\DesignExtractor\*.h">
+      <Filter>DesignExtractor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\DesignExtractor\*.h">
+      <Filter>DesignExtractor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\DesignExtractor\*.h">
+      <Filter>DesignExtractor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\DesignExtractor\*.h">
+      <Filter>DesignExtractor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\QPS\ResultsHandler.cpp">
+      <Filter>QPS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\QPS\ResultsHandler.h">
+      <Filter>QPS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryResultsTable.h">
+      <Filter>QPS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\DesignExtractor\*.h">
+      <Filter>DesignExtractor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -154,9 +292,11 @@
       <Filter>QPS</Filter>
     </ClInclude>
     <ClInclude Include="..\source\ExceptionMessages.h" />
-    <ClInclude Include="..\source\TokenizerClasses\TokenizerResults.h" />
     <ClInclude Include="..\source\QPS\DataAccessLayerStub.h">
       <Filter>QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenizerClasses\TokenizerResults.h">
+      <Filter>Tokeniser</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

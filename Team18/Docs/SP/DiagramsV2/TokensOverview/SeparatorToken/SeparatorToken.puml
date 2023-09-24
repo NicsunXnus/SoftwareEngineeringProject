@@ -1,0 +1,7 @@
+    CurlyCloseSepToken -up-|> SeparatorToken
+    CurlyOpenSepToken -up-|> SeparatorToken
+    ParenCloseSepToken -up-|> SeparatorToken
+    ParenOpenSepToken -down-|> SeparatorToken
+    SemicolonSepToken -down-|> SeparatorToken
+    CommaSepToken -down-|> SeparatorToken
+    DoubleQuoSepToken -down-|> SeparatorToken
