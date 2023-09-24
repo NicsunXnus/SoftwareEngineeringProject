@@ -125,12 +125,13 @@ static std::string trimWhitespaces(std::string str) {
   str.erase(0, str.find_first_not_of(whitespaces));
   return str;
 }
+
 static std::string substring(std::string str, int startIndex, int endIndex) {
   if (endIndex < startIndex) {
-    throw std::invalid_argument(ExceptionMessages::endIndexLarger);
+    std::cerr << ExceptionMessages::endIndexLarger << std::endl;
   }
   if (startIndex < 0) {
-    throw std::invalid_argument(ExceptionMessages::negativeStartIndex);
+    std::cerr << ExceptionMessages::negativeStartIndex << std::endl;
   }
   endIndex = endIndex > str.size() - 1 ? str.size() - 1 : endIndex; // basically min(endIndex, str.size() - 1);
   int len = endIndex - startIndex + 1;
@@ -139,10 +140,10 @@ static std::string substring(std::string str, int startIndex, int endIndex) {
 
 // prints to console, toggle here to turn on / off for development / production
 static void debug(std::string debugMessage) {
-  bool DEBUG_MODE = true; // toggle this
-  if (DEBUG_MODE) {
-    std::cout << debugMessage + "\n" << std::endl;
-  }
+    bool DEBUG_MODE = true; // toggle this
+    if (DEBUG_MODE) {
+        std::cout << debugMessage  + "\n" << std::endl;
+    }
 }
 
 static std::string svToString(std::string_view sv) {

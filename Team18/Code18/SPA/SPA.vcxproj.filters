@@ -4,7 +4,6 @@
     <ClCompile Include="..\source\AST\**\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
     <ClCompile Include="..\source\ApplicationWrapper.cpp" />
-    <ClCompile Include="..\source\AST\ASTNode.h" />
     <ClCompile Include="..\source\QPS\QueryDriver.cpp">
       <Filter>QPS</Filter>
     </ClCompile>
@@ -64,6 +63,17 @@
     <ClCompile Include="..\source\QPS\DataAccessLayerStub.cpp">
       <Filter>QPS</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\AST\**\*.h" />
+    <ClCompile Include="..\source\AST\**\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\Constants\QPSPKB.h" />
@@ -154,9 +164,11 @@
       <Filter>QPS</Filter>
     </ClInclude>
     <ClInclude Include="..\source\ExceptionMessages.h" />
-    <ClInclude Include="..\source\TokenizerClasses\TokenizerResults.h" />
     <ClInclude Include="..\source\QPS\DataAccessLayerStub.h">
       <Filter>QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\TokenizerClasses\TokenizerResults.h">
+      <Filter>Tokeniser</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
