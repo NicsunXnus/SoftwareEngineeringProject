@@ -1,0 +1,210 @@
+1 - two integers valid, select all
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(1, 2)
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+5000
+2 - two integers valid, select assignments. This should extend to all the other synonyms declared
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select a such that Follows(1, 2)
+3, 4, 9, 12, 13
+5000
+3 - two integers invalid
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(1, 3)
+
+5000
+4 - left integer, right synonym, normal
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(1, s)
+2
+5000
+5 - left integer, right synonym, container statement
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(5, s)
+13
+5000
+6 - left integer, right synonym, none left
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(13, s)
+
+5000
+7 - left integer, right synonym, mismatch synonyms, exists
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(2, a)
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+5000
+8 - left integer, right synonym, mismatch synonyms, does not exist
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(2, r)
+
+5000
+9 - left integer, right wildcard, exists
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(1, _)
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+5000
+10 - left integer, right wildcard, does not exist
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(12, _)
+
+5000
+11 - left synonym, right integer, normal, exists
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(s, 2)
+1
+5000
+12 - left synonym, right integer, normal, does not exist
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(s, 1)
+
+5000
+13 - left synonym, right integer, nested, exists
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(s, 8)
+7
+5000
+14 - left synonym, right integer, nested, does not exists
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(s, 7)
+
+5000
+15 - left synonym, right integer, mismatch synonyms, exists
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(a, 4)
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
+5000
+16 - left synonym, right integer, mismatch synonyms, does not exist
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(cl, 4)
+
+5000
+17 - two synonyms, normal, statements that are before assignments
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(s, a)
+2, 3, 5, 8, 11
+5000
+18 - two synonyms, normal, assignments that are before assignments
+stmt s; read r; print pn; call cl; while w; if i; assign a1, a2; variable v; constant c; procedure p;
+Select a1 such that Follows(a1, a2)
+3
+5000
+19 - two synonyms, normal, statements that are after assignments
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(a, s)
+4, 5
+5000
+19 - two synonyms, normal, read that are before assignments
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select r such that Follows(r, a)
+2, 8
+5000
+20 - two synonyms, normal, calls that are after prints
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select cl such that Follows(pn, cl)
+
+5000
+21 - two synonyms, invalid, same synonym
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select a such that Follows(a, a)
+
+5000
+22 - two synonyms, invalid, mismatch synonym, exists
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select i such that Follows(r, a)
+6
+5000
+23 - two synonyms, invalid, mismatch synonym, does not exist
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(i, w)
+
+5000
+24 - two synonyms, invalid, procedure on left
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(p, s)
+SemanticError
+5000
+25 - two synonyms, invalid, procedure on right
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(s, p)
+SemanticError
+5000
+26 - two synonyms, invalid, variable on left
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(v, s)
+SemanticError
+5000
+27 - two synonyms, invalid, variable on right
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(s, v)
+SemanticError
+5000
+28 - two synonyms, invalid, constant on left
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(c, s)
+SemanticError
+5000
+29 - two synonyms, invalid, constant on right
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(s, c)
+SemanticError
+5000
+30 - left synonym, right wildcard
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(s, _)
+1, 2, 3, 4, 5, 7, 8, 10, 11
+5000
+31 - left synonym, right wildcard, mismatch synonym, exists
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select p such that Follows(r, _)
+first
+5000
+32 - left synonym, right wildcard, mismatch synonym, does not exist
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(cl, _)
+
+5000
+33 - left wildcard, right integer, exists
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select c such that Follows(_, 2)
+1, 2
+5000
+34 - left wildcard, right integer, does not exist
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select i such that Follows(_, 7)
+
+5000
+35 - left wildcard, right synonym, exists
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select r such that Follows(_, r)
+2, 8
+5000
+36 - left wildcard, right synonym, exists
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select pn such that Follows(_, pn)
+11
+5000
+37 - left wildcard, right synonym, mismatch synonym, exists
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select v such that Follows(_, r)
+a, b, c, d, e, f
+5000
+38 - left wildcard, right synonym, mismatch synonym, exists
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select p such that Follows(_, pn)
+first
+5000
+39 - two wildcards
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select w such that Follows(_, _)
+5
+5000
+40 - integer out of bounds
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select w such that Follows(_, 0)
+
+5000
+41 - integer out of bounds
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select w such that Follows(_, 9999)
+
+5000

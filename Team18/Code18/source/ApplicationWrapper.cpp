@@ -16,12 +16,13 @@ ApplicationWrapper::~ApplicationWrapper() {
 void ApplicationWrapper::directParse(std::string_view sourceCode) {
   std::shared_ptr<TokenizedProgram> tokenizedProgram = SimpleTokenizer::tokenizeProgram(sourceCode);
 
-  //std::vector<std::shared_ptr<StatementNode>> statements = ASTBuilder::parseProgram(tokens);
-  //DesignExtractor designExtractor = DesignExtractor();
-  //for (const auto& statement : statements) {
-  //    designExtractor.extractEntities(statement);
-  //}
-  //designExtractor.insertEntities();
+  std::shared_ptr<ProgramNode> prg = ASTBuilder::parseProgram(tokenizedProgram);
+  
+  DesignExtractor designExtractor = DesignExtractor();
+  designExtractor.extractEntities(prg);
+  designExtractor.extractAbstractions(prg);
+  designExtractor.insertEntities();
+  designExtractor.insertAbstractions();
 }
 
 // method to evaluating a query

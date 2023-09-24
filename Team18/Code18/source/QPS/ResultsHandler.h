@@ -1,9 +1,9 @@
 #ifndef RESULTSHANDLER_H
 #define RESULTSHANDLER_H
 
-#include <string_view>
 #include <vector>
-
+#include <list>
+#include "QueryResultsTable.h"
 /**
  * This class represents a ResultsHandler object that processes tuples from the PKB to generate
  * query results
@@ -20,8 +20,8 @@ public:
 	 * Destructor for the ResultHandler object
 	 */
 	~ResultHandler() {};
-
-	std::string_view processTuples(std::vector<Tuples> tuples);
+	
+	list<string> processTables(std::vector<std::shared_ptr<QueryResultsTable>>);
 
 
 };

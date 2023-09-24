@@ -1,0 +1,25 @@
+procedure SPA {simple = 100;
+	query = 25;
+	sp = error;
+	pkb = 2;
+	qps = 3;
+	read SP;
+	read PKB;
+	while (query > 0) {
+		print query;
+		qps = milestone1;
+		read qps;
+		if (qps > 25) then {
+			error = sp * pkb * qps + error;
+			print error;
+		} else { read error; }}
+	if (sp + pkb + qps > 9 - 3) then {
+		moreThan6People = 1;
+		while (1 > 0) {
+			while (2 > 1) {
+				print error;}}
+		if (1 > 0) then {
+			read a;
+		} else { read error; }
+	} else { read error; }
+	read read;}

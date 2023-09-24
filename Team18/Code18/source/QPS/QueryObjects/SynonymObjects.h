@@ -4,20 +4,28 @@
 
 #include <string_view>
 #include <ctype.h>
-#include "QueryObject.h"
+#include "../../Constants/QPSPKB.h"
 
 using namespace std;
 
 /*
 * This class represents a Query object, for synonyms: LETTER ( LETTER | DIGIT )*
 */
-class SynonymObject : public QueryObject {
-public:
-	SynonymObject(string_view tokenName)
-		: QueryObject{ tokenName } {
+class SynonymObject {
+private:
+	string_view synonymName;
+	ENTITY designEntity;
 
+public:
+	SynonymObject(string_view synonymName, ENTITY designEntity) : synonymName{ synonymName }, designEntity{ designEntity } {};
+
+	string_view getSynonymName() {
+		return this->synonymName;
 	}
 
+	ENTITY getEntityType() {
+		return this->designEntity;
+	}
 	/*
 	* This function checks if a given string is a valid synonym: LETTER ( LETTER | DIGIT )*
 	*/

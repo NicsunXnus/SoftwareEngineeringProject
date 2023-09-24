@@ -1,0 +1,13 @@
+procedure first {read a;
+  read b;
+  c = a + b - 1;
+  d = c * e % f / d;
+  while (c < d) {
+    if (a < b) then {
+      print e;
+      read a;
+      a = 2;
+    } else {print f;
+      print b;
+      c = b;}}
+  e = a * b + c / d % e - f;}

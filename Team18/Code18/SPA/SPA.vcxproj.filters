@@ -5,34 +5,13 @@
     <ClCompile Include="..\source\DesignExtractor\*.h" />
     <ClCompile Include="..\source\ApplicationWrapper.cpp" />
     <ClCompile Include="..\source\AST\ASTNode.h" />
-    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
-    <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
-    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
-    <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
-    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
-    <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
-    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
-    <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
-    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
-    <ClCompile Include="..\source\DesignExtractor\DesignExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
     <ClCompile Include="..\source\QPS\QueryDriver.cpp">
       <Filter>QPS</Filter>
     </ClCompile>
     <ClCompile Include="..\source\QPS\QueryParser.cpp">
       <Filter>QPS</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\QPS\QueryObjects\DesignObjectsFactory.cpp">
-      <Filter>QPS</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\DesignExtractor\*.h">
-      <Filter>DesignExtractor</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\DesignExtractor.cpp">
       <Filter>DesignExtractor</Filter>
     </ClCompile>
     <ClCompile Include="..\source\QPS\DataAccessLayer.cpp">
@@ -43,6 +22,47 @@
     </ClCompile>
     <ClCompile Include="..\source\TokenizerClasses\TokenizerResults.cpp">
       <Filter>Tokeniser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\AST\**\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\AST\**\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\QPS\QueryObjects\QueryObjectFactory.cpp">
+      <Filter>QPS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\AST\**\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\AST\**\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\QPS\Errors\QPSError.h">
+      <Filter>QPS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\QPS\Errors\SyntaxError.h">
+      <Filter>QPS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryResultsTable.h" />
+    <ClCompile Include="..\source\AST\**\*.h" />
+    <ClCompile Include="..\source\AST\**\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\QPS\QueryBuilder.h">
+      <Filter>QPS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryBuilder.cpp">
+      <Filter>QPS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\QPS\ResultsHandler.cpp" />
+    <ClCompile Include="..\source\QPS\ResultsHandler.h" />
+    <ClCompile Include="..\source\AST\**\*.h" />
+    <ClCompile Include="..\source\AST\**\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\DesignExtractor\*.h" />
+    <ClCompile Include="..\source\QPS\DataAccessLayerStub.cpp">
+      <Filter>QPS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -125,6 +145,17 @@
       <Filter>PKB</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\QueryObjects\ClauseObjectFactory.h">
+      <Filter>QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryObjects\PatternClauseObject.h">
+      <Filter>QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\Errors\SemanticError.h">
+      <Filter>QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\ExceptionMessages.h" />
+    <ClInclude Include="..\source\TokenizerClasses\TokenizerResults.h" />
+    <ClInclude Include="..\source\QPS\DataAccessLayerStub.h">
       <Filter>QPS</Filter>
     </ClInclude>
   </ItemGroup>
