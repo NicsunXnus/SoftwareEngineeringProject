@@ -73,6 +73,7 @@ public:
 		return identifierName;
 	}
 
+	// used for validation of pattern clauses
 	bool isExpr() {
 		if (static_cast<int>(arg.size()) <= IDENTIFIER_MIN_CHARS) {
 			return false;
