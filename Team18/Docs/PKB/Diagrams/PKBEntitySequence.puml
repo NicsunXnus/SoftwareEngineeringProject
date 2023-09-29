@@ -1,0 +1,85 @@
+@startuml
+!include ../style.puml
+skinparam ClassFontColor #000000
+
+
+skinparam ClassBorderColor #000000
+box PKB Entities LOGIC_COLOR_T1
+participant ":Insertor" as Insertor LOGIC_COLOR
+participant ":Responder" as Responder LOGIC_COLOR
+participant ":StorageManager" as StorageManager LOGIC_COLOR
+participant ":EntityStorage" as EntityStorage LOGIC_COLOR
+
+end box
+
+[-> Insertor : addEntity(entity_map, entity_type)
+activate Insertor
+
+Insertor -> StorageManager : getEntityStorage()
+activate StorageManager
+
+StorageManager --> Insertor : entity_storage
+deactivate StorageManager
+
+alt entity_type == STMT
+    Insertor -> EntityStorage : setStatementDatabase(entity_map)
+    activate EntityStorage
+    EntityStorage --> Insertor
+    deactivate EntityStorage
+
+else entity_type == VARIABLE
+    Insertor -> EntityStorage : setVariableDatabase(entity_map)
+    activate EntityStorage
+    EntityStorage --> Insertor
+    deactivate EntityStorage
+
+else entity_type == PROCEDURE
+    Insertor -> EntityStorage : setProcedureDatabase(entity_map)
+    activate EntityStorage
+    EntityStorage --> Insertor
+    deactivate EntityStorage
+
+else entity_type == CONSTANT
+    Insertor -> EntityStorage : setConstantDatabase(entity_map)
+    activate EntityStorage
+    EntityStorage --> Insertor
+    deactivate EntityStorage
+end
+
+deactivate Insertor
+
+[-> Responder : getEntityStatement(entity)
+activate Responder
+
+Responder -> StorageManager : getEntityStorage()
+activate StorageManager
+
+StorageManager --> Responder : entity_storage
+deactivate StorageManager
+
+Responder -> EntityStorage : getStatementDatabase()
+activate EntityStorage
+EntityStorage --> Responder : stmt_db
+deactivate EntityStorage
+
+[<--Responder : statement_vector
+deactivate Responder
+
+[-> Responder : getAllProcedures(entity)
+activate Responder
+
+Responder -> StorageManager : getEntityStorage()
+activate StorageManager
+
+StorageManager --> Responder : entity_storage
+deactivate StorageManager
+
+Responder -> EntityStorage : getProcedureDatabase()
+activate EntityStorage
+EntityStorage --> Responder : proc_db
+deactivate EntityStorage
+
+[<--Responder : statement_vector
+deactivate Responder
+
+@end

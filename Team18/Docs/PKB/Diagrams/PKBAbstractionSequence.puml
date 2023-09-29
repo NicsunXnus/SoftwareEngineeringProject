@@ -1,0 +1,48 @@
+@startuml
+!include ../style.puml
+skinparam ClassFontColor #000000
+
+
+skinparam ClassBorderColor #000000
+box PKB Abstractions LOGIC_COLOR_T1
+participant ":Insertor" as Insertor LOGIC_COLOR
+participant ":Responder" as Responder LOGIC_COLOR
+participant ":StorageManager" as StorageManager LOGIC_COLOR
+participant ":AbstractionStorage" as AbstractionStorage LOGIC_COLOR
+
+end box
+
+[-> Insertor : addAbstraction(abstraction_map, abstraction_type)
+activate Insertor
+
+Insertor -> StorageManager : getAbstractionStorage(abstraction_type)
+activate StorageManager
+
+StorageManager --> Insertor : abstraction_storage
+deactivate StorageManager
+
+Insertor -> AbstractionStorage : setAbstraction(abstraction_map)
+activate AbstractionStorage
+AbstractionStorage --> Insertor
+deactivate AbstractionStorage
+
+deactivate Insertor
+
+[-> Responder : getAbstraction(abstraction)
+activate Responder
+
+Responder -> StorageManager : getAbstractionStorage()
+activate StorageManager
+
+StorageManager --> Responder : abstraction_storage
+deactivate StorageManager
+
+Responder -> AbstractionStorage : getDatabase()
+activate AbstractionStorage
+AbstractionStorage --> Responder : abstraction_db
+deactivate AbstractionStorage
+
+[<--Responder : abstraction
+deactivate Responder
+
+@end
