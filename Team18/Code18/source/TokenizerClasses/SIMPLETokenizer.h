@@ -1,6 +1,7 @@
 #ifndef SIMPLETOKENIZER_H
 #define SIMPLETOKENIZER_H
 
+#include <iostream>
 #include <memory>
 #include <string>
 #include <string_view>
@@ -8,7 +9,6 @@
 #include <stack>
 #include <utility>
 
-#include "ExceptionMessages.h"
 #include "TokenFactory.h"
 #include "TokenizerResults.h"
 #include "../ExceptionMessages.h"
@@ -35,7 +35,7 @@ private:
 			}
 			if (thisChar == '}') {
 				if (scopeTracker.empty()) {
-					throw std::invalid_argument(ExceptionMessages::extraCloseCurly);
+					std::cerr << ExceptionMessages::extraCloseCurly << std::endl;
 				}
 				int lastSeen = scopeTracker.top();
 				scopeTracker.pop();
@@ -46,7 +46,7 @@ private:
 		}
 
 		if (!scopeTracker.empty()) {
-			throw std::invalid_argument(ExceptionMessages::extraOpenCurly);
+			std::cerr << ExceptionMessages::extraOpenCurly << std::endl;
 		}
 		return output;
 
@@ -90,7 +90,7 @@ private:
 		std::string inBetween = trimWhitespaces(substring(trimmed, afterKeyword, beforeLast));
 		bool parenFormatting = inBetween[0] == '(' && inBetween.back() == ')';
 		if (!parenFormatting) {
-			throw std::invalid_argument(ExceptionMessages::invalidConditionalDeclaration);
+			std::cerr << ExceptionMessages::invalidConditionalDeclaration << std::endl;
 		}
 
 		std::string delimiter = arithmeticOpsWithWhitespace + "|" + relationalOps;
@@ -104,7 +104,7 @@ private:
 	static std::pair<ConditionalDeclaration, std::vector<std::shared_ptr<Token>>> processConditionalDeclaration(std::string declaration) {
 		std::string trimmed = trimWhitespaces(declaration);
 		if (trimmed.empty()) {
-			throw std::invalid_argument(ExceptionMessages::emptyStatementGiven);
+			std::cerr << ExceptionMessages::emptyStatementGiven << std::endl;
 		}
 
 		// find first word
@@ -121,12 +121,12 @@ private:
 			// minus exactly 3 because "then" is 4 letters, so 3 letter diff between "t" and "n"
 			bool lastWordThen = (trimmed.find_last_not_of(whitespaces) - 3)== trimmed.rfind("then");
 			if (!lastWordThen) {
-				throw std::invalid_argument(ExceptionMessages::invalidIfDeclaration);
+				std::cerr << ExceptionMessages::invalidIfDeclaration << std::endl;
 			}
 			isIf = true;
 		}
 		if (!firstWordIf && !firstWordWhile) {
-			throw std::invalid_argument(ExceptionMessages::invalidConditionalDeclaration);
+			std::cerr << ExceptionMessages::invalidConditionalDeclaration << std::endl;
 		}
 
 		return processConditionalExpression(trimmed, isIf);
@@ -136,7 +136,7 @@ private:
 	static std::shared_ptr<TokenizedStmtList> tokenizeStmtList(std::string stmtList) {
 		std::string trimmed = trimWhitespaces(std::string(stmtList));
 		if (trimmed.empty()) {
-			throw std::invalid_argument(ExceptionMessages::emptyStatementListGiven);
+			std::cerr << ExceptionMessages::emptyStatementListGiven << std::endl;
 		}
 		std::vector<std::shared_ptr<std::pair<int, int>>> curlyPairs = outermostScopeDetector(trimmed); // this should detect { and } for if-then-else and while
 		std::vector<std::shared_ptr<TokenizedStmt>> out;
@@ -151,7 +151,7 @@ private:
 			// this should contain no semicolons and no { }. Should also be at least size 1 due to conditional declaration
 			std::vector<std::string> preCurlySplit = splitString(preCurly, ";", false);
 			if (preCurlySplit.empty()) {
-				throw std::invalid_argument(ExceptionMessages::missingConditionalDeclaration);
+				std::cerr << ExceptionMessages::missingConditionalDeclaration << std::endl;
 			}
 			// tokenize each semicolon statement. Last element is not a semicolon statement due to conditional declaration
 			for (int stmtIndex = 0; stmtIndex < preCurlySplit.size() - 1; stmtIndex++) {
@@ -178,13 +178,13 @@ private:
 			if (dec == ConditionalDeclaration::IF) {
 				pairIndex += 1;
 				if (pairIndex >= curlyPairs.size()) {
-					throw std::invalid_argument(ExceptionMessages::missingElseBlock);
+					std::cerr << ExceptionMessages::missingElseBlock << std::endl;
 				}
 				std::pair<int, int> nextPair = *(curlyPairs[pairIndex]);
 				std::string inBetweenCurly = substring(trimmed, currPair.second + 1, nextPair.first - 1);
 				bool isElseString = trimWhitespaces(inBetweenCurly) == "else";
 				if (!isElseString) {
-					throw std::invalid_argument(ExceptionMessages::missingElseKeyword);
+					std::cerr << ExceptionMessages::missingElseKeyword << std::endl;
 				}
 				std::shared_ptr<TokenizedStmtList> elseBody = tokenizeStmtList(substring(trimmed, nextPair.first + 1, nextPair.second - 1));
 				out.push_back(std::make_shared<TokenizedIfStmt>(conditionalStmtNumber, processed.second, firstBody, elseBody));
@@ -203,7 +203,7 @@ private:
 			}
 		}
 		if (out.empty()) {
-			throw std::invalid_argument(ExceptionMessages::emptyStatementListGiven);
+			std::cerr << ExceptionMessages::emptyStatementListGiven << std::endl;
 		}
 
 		return std::make_shared<TokenizedStmtList>(out);
@@ -213,7 +213,7 @@ private:
 	static std::shared_ptr<TokenizedSemicolonStmt> tokenizeSemicolonStatement(std::string stmt) {
 		std::string trimmed = trimWhitespaces(stmt);
 		if (trimmed.empty()) {
-			throw std::invalid_argument(ExceptionMessages::emptyStatementGiven);
+			std::cerr << ExceptionMessages::emptyStatementGiven << std::endl;
 		}
 
 		std::vector<std::shared_ptr<Token>> output;
@@ -224,9 +224,9 @@ private:
 
 			SimpleTokenizer::statementNumber += 1;
 			return std::make_shared<TokenizedSemicolonStmt>(SimpleTokenizer::statementNumber, output);
-		}	
+		}
 		if (splitString(trimmed).size() != 2) {
-			throw std::invalid_argument(ExceptionMessages::invalidSemicolonStmt);
+			std::cerr << ExceptionMessages::invalidSemicolonStmt << std::endl;
 		}
 		// if the substring "read " exists and it is the first word occurence in the statement
 		else if (trimmed.find_first_not_of(whitespaces) == trimmed.find("read ")) {
@@ -246,7 +246,7 @@ private:
 		}
 
 		if (!validStatement) {
-			throw std::invalid_argument(ExceptionMessages::invalidSemicolonStmt);
+			std::cerr << ExceptionMessages::invalidSemicolonStmt << std::endl;
 		}
 		SimpleTokenizer::statementNumber += 1;
 		return std::make_shared<TokenizedSemicolonStmt>(SimpleTokenizer::statementNumber, output);
@@ -258,11 +258,11 @@ private:
 		std::vector<std::string> splitByEquals = splitString(assStmt, "=");
 		if (splitByEquals.size() != 2) {
 			// Invalid assignment statement
-			throw std::invalid_argument(ExceptionMessages::invalidAssignmentStmt);
+			std::cerr << ExceptionMessages::invalidAssignmentStmt << std::endl;
 		}
 		std::string trimmedLeft = trimWhitespaces(splitByEquals[0]);
 		if (!isValidName(trimmedLeft)) {
-			throw std::invalid_argument(ExceptionMessages::invalidIdentifier);
+			std::cerr << ExceptionMessages::invalidIdentifier << std::endl;
 		}
 		std::shared_ptr<Token> left = TokenFactory::generateToken(trimmedLeft, true, true);
 		// arithmeticOpsWithWhitespace is defined in HelperFunctions.h
@@ -281,12 +281,12 @@ private:
 		std::vector<std::string> split = splitString(stmt);
 		if (split.size() != 2) {
 			// Invalid two-word statement
-			throw std::invalid_argument(ExceptionMessages::invalidTwoWordStmt);
+			std::cerr << ExceptionMessages::invalidTwoWordStmt << std::endl;
 		}
 		output.push_back(TokenFactory::generateToken(expectedWord1, true));
 		std::string right = trimWhitespaces(split[1]);
 		if (!isValidName(right)) {
-			throw std::invalid_argument(ExceptionMessages::invalidIdentifier);
+			std::cerr << ExceptionMessages::invalidIdentifier << std::endl;
 		}
 		output.push_back(TokenFactory::generateToken(right, true, true));
 		return output;
@@ -299,15 +299,15 @@ private:
 		std::string trimmed = trimWhitespaces(input);
 		std::vector<std::string> beforeOpenSplit = splitString(trimmed);
 		if (beforeOpenSplit.size() != 2) {
-			throw std::invalid_argument(ExceptionMessages::invalidProcedureDefinition);
+			std::cerr << ExceptionMessages::invalidProcedureDefinition << std::endl;
 		}
 		std::string procedureKeyword = trimWhitespaces(beforeOpenSplit[0]);
 		if (procedureKeyword != "procedure") {
-			throw std::invalid_argument(ExceptionMessages::invalidProcedureDefinition);
+			std::cerr << ExceptionMessages::invalidProcedureDefinition << std::endl;
 		}
 		std::string procName = trimWhitespaces(beforeOpenSplit[1]);
 		if (!isValidName(procName)) {
-			throw std::invalid_argument(ExceptionMessages::invalidProcedureDefinition);
+			std::cerr << ExceptionMessages::invalidProcedureDefinition << std::endl;
 		}
 		return procName;
 	}
@@ -324,7 +324,7 @@ public:
 		SimpleTokenizer::statementNumber = 0;
 		std::string trimmed = trimWhitespaces(std::string(srcCode));
 		if (trimmed.empty()) {
-			throw std::invalid_argument(ExceptionMessages::emptyProgramGiven);
+			std::cerr << ExceptionMessages::emptyProgramGiven << std::endl;
 		}
 		std::vector<std::shared_ptr<TokenizedProcedure>> out;
 
@@ -333,7 +333,7 @@ public:
 		for (std::shared_ptr<std::pair<int, int>> shared_ptr_p : curlyPairs) {
 			std::pair<int, int> p = *shared_ptr_p;
 			if (p.second == p.first + 1) {
-				throw std::invalid_argument(ExceptionMessages::emptyStatementListGiven);
+				std::cerr << ExceptionMessages::emptyStatementListGiven << std::endl;
 			}
 
 			// Process Procedure Name using string indexes
@@ -350,7 +350,7 @@ public:
 		// There are leftover chracters. Which should not be the case since the program was trimmed of whitespaces
 		// already.
 		if (previousEnd != trimmed.size()) {
-			throw std::invalid_argument(ExceptionMessages::invalidProgramDefinition);
+			std::cerr << ExceptionMessages::invalidProgramDefinition << std::endl;
 		}
 		return std::make_shared<TokenizedProgram>(out);
 	}

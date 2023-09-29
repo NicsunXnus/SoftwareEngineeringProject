@@ -113,7 +113,7 @@ private:
 		if (tokenName == "%"sv) {
 			return std::make_shared<ModuloOpToken>();
 		}
-		throw std::invalid_argument(ExceptionMessages::invalidToken);
+		std::cerr << ExceptionMessages::invalidToken << std::endl;
 	}
 
 	// Generates a Token with a name that is unique to SIMPLE
@@ -148,7 +148,7 @@ private:
 		if (tokenName == "!="sv) {
 			return std::make_shared<InequalityOpToken>();
 		}
-		throw std::invalid_argument(ExceptionMessages::invalidToken);
+		std::cerr << ExceptionMessages::invalidToken << std::endl;
 	}
 
 	// Generates a Token with a name that is unique to PQL
@@ -213,7 +213,7 @@ private:
 		if (tokenName == ","sv) {
 			return std::make_shared<CommaSepToken>();
 		}
-		throw std::invalid_argument(ExceptionMessages::invalidToken);
+		std::cerr << ExceptionMessages::invalidToken << std::endl;
 	}
 
 	// Generates a Identifier Token. REMINDER that this does not validate the argument to ensure that it is a valid name
@@ -240,7 +240,7 @@ public:
 	/// <returns>a shared pointer to the generated token</returns>
 	static std::shared_ptr<Token> generateToken(std::string tokenName, bool forSimple, bool forceIdentifier = false) {
 		if (tokenName.empty()) {
-			throw std::invalid_argument(ExceptionMessages::invalidToken);
+			std::cerr << ExceptionMessages::invalidToken << std::endl;
 		}
 		// Prioritises creating an identifier if given tokenName is a valid name
 		if (forceIdentifier && isValidName(tokenName)) {
@@ -260,11 +260,11 @@ public:
 		}
 		if (isNumber(tokenName)) {
 			if (tokenName.size() > 1 && tokenName[0] == '0') {
-				throw std::invalid_argument(ExceptionMessages::invalidToken);
+				std::cerr << ExceptionMessages::invalidToken << std::endl;
 			}
 			return generateIntLiteral(tokenName);
 		}
-		throw std::invalid_argument(ExceptionMessages::invalidToken);
+		std::cerr << ExceptionMessages::invalidToken << std::endl;
 	}
 
 	// Overloaded method to take in string views instead
