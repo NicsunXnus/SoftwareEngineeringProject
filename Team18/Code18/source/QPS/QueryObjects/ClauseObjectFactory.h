@@ -125,7 +125,7 @@ public:
 		} else {
 			 if (arg1->isSynonym() && !isArg1ValidStmtRef) {
 				 throw SemanticErrorException("Arg 1 of Follows clause is an invalid synonym");
-			 } else if (arg2->isSynonym() && !isArg1ValidStmtRef) {
+			 } else if (arg2->isSynonym() && !isArg2ValidStmtRef) {
 				 throw SemanticErrorException("Arg 2 of Follows clause is an invalid synonym");
 			 } else {
 				 throw SyntaxErrorException("Follows clause has invalid stmtRef");
@@ -160,7 +160,7 @@ public:
 			if (arg1->isSynonym() && !isArg1ValidStmtRef) {
 				throw SemanticErrorException("Arg 1 of Follows* clause is an invalid synonym");
 			}
-			else if (arg2->isSynonym() && !isArg1ValidStmtRef) {
+			else if (arg2->isSynonym() && !isArg2ValidStmtRef) {
 				throw SemanticErrorException("Arg 2 of Follows* clause is an invalid synonym");
 			}
 			else {
@@ -198,7 +198,7 @@ public:
 			if (arg1->isSynonym() && !isArg1ValidStmtRef) {
 				throw SemanticErrorException("Arg 1 of Parents clause is an invalid synonym");
 			}
-			else if (arg2->isSynonym() && !isArg1ValidStmtRef) {
+			else if (arg2->isSynonym() && !isArg2ValidStmtRef) {
 				throw SemanticErrorException("Arg 2 of Parents clause is an invalid synonym");
 			}
 			else {
@@ -237,7 +237,7 @@ public:
 			if (arg1->isSynonym() && !isArg1ValidStmtRef) {
 				throw SemanticErrorException("Arg 1 of Parents* clause is an invalid synonym");
 			}
-			else if (arg2->isSynonym() && !isArg1ValidStmtRef) {
+			else if (arg2->isSynonym() && !isArg2ValidStmtRef) {
 				throw SemanticErrorException("Arg 2 of Parents* clause is an invalid synonym");
 			}
 			else {
@@ -304,7 +304,7 @@ public:
 
 
 		if (isArg1ValidEntRef && isArg2ValidEntRef) {
-			return make_shared<CallsObject>(clauseName, arg1, arg2);
+			return make_shared<CallsStarObject>(clauseName, arg1, arg2);
 		}
 		else {
 			if (arg1->isSynonym() && !isArg1SynonymEntRef) {
@@ -320,6 +320,84 @@ public:
 	}
 private:
 	const unordered_set<ENTITY> validEntEntities{ PROCEDURE };
+};
+
+/*
+* This class represents a Query Object Factory, for clause Next: 'Next' '(' stmtRef ',' stmtRef ')'
+*/
+class NextObjectFactory : public ClauseObjectFactory {
+public:
+	NextObjectFactory() {
+
+	};
+
+	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
+		shared_ptr<ClauseArg> arg1 = arguments[0];
+		shared_ptr<ClauseArg> arg2 = arguments[1];
+		bool isArg1SynonymStmtRef{ arg1->isSynonym() && (validStmtEntities.find(arg1->getSynonym()->getEntityType()) != validStmtEntities.end()) };
+		bool isArg2SynonymStmtRef{ arg2->isSynonym() && (validStmtEntities.find(arg2->getSynonym()->getEntityType()) != validStmtEntities.end()) };
+
+		bool isArg1ValidStmtRef{ isArg1SynonymStmtRef || arg1->isInteger() || arg1->isWildcard() };
+		bool isArg2ValidStmtRef{ isArg2SynonymStmtRef || arg2->isInteger() || arg2->isWildcard() };
+
+
+		if (isArg1ValidStmtRef && isArg2ValidStmtRef) {
+			return make_shared<NextObject>(clauseName, arg1, arg2);
+		}
+		else {
+			if (arg1->isSynonym() && !isArg1ValidStmtRef) {
+				throw SemanticErrorException("Arg 1 of Next clause is an invalid synonym");
+			}
+			else if (arg2->isSynonym() && !isArg1ValidStmtRef) {
+				throw SemanticErrorException("Arg 2 of Next clause is an invalid synonym");
+			}
+			else {
+				throw SyntaxErrorException("Next clause has invalid stmtRef");
+			}
+		}
+	}
+private:
+	const unordered_set<ENTITY> validStmtEntities{ STMT, READ, PRINT, CALL, WHILE, IF, ASSIGN };
+
+};
+
+/*
+* This class represents a Query Object Factory, for clause Next*: 'Next*' '(' stmtRef ',' stmtRef ')'
+*/
+class NextStarObjectFactory : public ClauseObjectFactory {
+public:
+	NextStarObjectFactory() {
+
+	};
+
+	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
+		shared_ptr<ClauseArg> arg1 = arguments[0];
+		shared_ptr<ClauseArg> arg2 = arguments[1];
+		bool isArg1SynonymStmtRef{ arg1->isSynonym() && (validStmtEntities.find(arg1->getSynonym()->getEntityType()) != validStmtEntities.end()) };
+		bool isArg2SynonymStmtRef{ arg2->isSynonym() && (validStmtEntities.find(arg2->getSynonym()->getEntityType()) != validStmtEntities.end()) };
+
+		bool isArg1ValidStmtRef{ isArg1SynonymStmtRef || arg1->isInteger() || arg1->isWildcard() };
+		bool isArg2ValidStmtRef{ isArg2SynonymStmtRef || arg2->isInteger() || arg2->isWildcard() };
+
+
+		if (isArg1ValidStmtRef && isArg2ValidStmtRef) {
+			return make_shared<NextStarObject>(clauseName, arg1, arg2);
+		}
+		else {
+			if (arg1->isSynonym() && !isArg1ValidStmtRef) {
+				throw SemanticErrorException("Arg 1 of Next* clause is an invalid synonym");
+			}
+			else if (arg2->isSynonym() && !isArg1ValidStmtRef) {
+				throw SemanticErrorException("Arg 2 of Next* clause is an invalid synonym");
+			}
+			else {
+				throw SyntaxErrorException("Next* clause has invalid stmtRef");
+			}
+		}
+	}
+private:
+	const unordered_set<ENTITY> validStmtEntities{ STMT, READ, PRINT, CALL, WHILE, IF, ASSIGN };
+
 };
 
 /*
