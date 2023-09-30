@@ -9,11 +9,17 @@ StringMap entityStatementData = { {"call", {"1", "2"}}, {"print", {"4"}} };
 StringMap variableData = { {"x", {"1", "2"}}, {"y", {"2", "5", "7"}} };
 StringMap procedureData = { {"proc1", {"1", "2"}}, {"proc2", {"5", "6", "7"}} };
 StringMap constantData = { {"10", {"1"}}, {"HERE", {"4", "7", "10"}} };
+StringMap callProcNameData = { {"2", {"proc1"}}, {"4", {"proc2"}}, {"11", {"proc3"}} };
+StringMap readVarNameData = { {"4", {"x"}}, {"13", {"y"}}, {"21", {"z"}} };
+StringMap printVarNameData = { {"3", {"x"}}, {"7", {"y"}}, {"19", {"z"}} };
 
 shared_ptr<StringMap> statementMap = make_shared<StringMap>(entityStatementData);
 shared_ptr<StringMap> variableMap = make_shared<StringMap>(variableData);
 shared_ptr<StringMap> procedureMap = make_shared<StringMap>(procedureData);
 shared_ptr<StringMap> constantMap = make_shared<StringMap>(constantData);
+shared_ptr<StringMap> callProcNameMap = make_shared<StringMap>(callProcNameData);
+shared_ptr<StringMap> readVarNameMap = make_shared<StringMap>(readVarNameData);
+shared_ptr<StringMap> printVarNameMap = make_shared<StringMap>(printVarNameData);
 
 StringMap usesData = { {"x", {"main", "3", "6"}} };
 StringMap modifiesData = { {"y", {"main", "8", "proc1", "2"}} };
@@ -73,6 +79,21 @@ namespace UnitTesting {
 				// Assert::IsTrue(compare_vectors(PKB::responder.getConstant("HERE"), { "4", "7", "10" }));
 				// Assert::IsTrue(compare_vectors(PKB::responder.getConstant("noSuchConst"), {}));
 				Assert::IsTrue(compare_maps(PKB::responder.getConstantMap(), constantData));
+			}
+
+			TEST_METHOD(TestGetCallProcNames) {
+				PKB::insertor.addEntityNames(callProcNameMap, CALL);
+				Assert::IsTrue(compare_maps(PKB::responder.getCallProcNameMap(), callProcNameData));
+			}
+
+			TEST_METHOD(TestGetReadVarNames) {
+				PKB::insertor.addEntityNames(readVarNameMap, READ);
+				Assert::IsTrue(compare_maps(PKB::responder.getReadVarNameMap(), readVarNameData));
+			}
+
+			TEST_METHOD(TestGetPrintVarNames) {
+				PKB::insertor.addEntityNames(printVarNameMap, PRINT);
+				Assert::IsTrue(compare_maps(PKB::responder.getPrintVarNameMap(), printVarNameData));
 			}
 
 			TEST_METHOD(TestGetAbstractions) {
