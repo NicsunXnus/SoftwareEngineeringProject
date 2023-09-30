@@ -21,11 +21,18 @@ StringMap followsStarData = { {"1", {"2", "3", "6", "7"}}, {"2", {"3", "6", "7"}
 StringMap followsData = { {"1", {"2"}}, {"2", {"3"}} };
 StringMap parentStarData = { {"10", {"7", "3", "1"}}, {"6", {"5", "1"}} };
 StringMap parentData = { {"10", {"7"}}, {"6", {"5"}} };
+StringMap callsStarData = { {"main", {"proc1", "proc2", "proc3"}}, {"proc1", {"proc2", "proc3"}}, {"proc2", {"proc3"}} };
+StringMap callsData = { {"main", {"proc1"}}, {"proc1", {"proc2"}}, {"proc2", {"proc3"}} };
+StringMap nextDataValid = { {"1", {"2"}}, {"2", {"3"}}, {"3", {"7"}}, {"7", {"1"}}, {"5", {"6"}} };
+StringMap nextDataInvalid = { {"1", {"2", "4"}}, {"2", {"3", "5"}}, {"3", {"7"}}, {"7", {"1"}}, {"5", {"6"}}};
 
 shared_ptr<StringMap> usesMap = make_shared<StringMap>(usesData);
 shared_ptr<StringMap> modifiesMap = make_shared<StringMap>(modifiesData);
 shared_ptr<StringMap> followsMap = make_shared<StringMap>(followsStarData);
 shared_ptr<StringMap> parentsMap = make_shared<StringMap>(parentStarData);
+shared_ptr<StringMap> callsMap = make_shared<StringMap>(callsStarData);
+shared_ptr<StringMap> nextMapValid = make_shared<StringMap>(nextDataValid);
+shared_ptr<StringMap> nextMapInvalid = make_shared<StringMap>(nextDataInvalid);
 
 
 namespace UnitTesting {
@@ -73,6 +80,8 @@ namespace UnitTesting {
 				PKB::insertor.addAbstraction(usesMap, USES);
 				PKB::insertor.addAbstraction(parentsMap, PARENT);
 				PKB::insertor.addAbstraction(followsMap, FOLLOWS);
+				PKB::insertor.addAbstraction(callsMap, CALLS);
+				PKB::insertor.addAbstraction(nextMapValid, NEXT);
 
 				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(USES), usesData));
 				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(MODIFIES), modifiesData));
@@ -80,6 +89,17 @@ namespace UnitTesting {
 				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(FOLLOWS), followsData));
 				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(PARENTSTAR), parentStarData));
 				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(FOLLOWSSTAR), followsStarData));
+				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(CALLS), callsData));
+				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(CALLSSTAR), callsStarData));
+				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(NEXT), nextDataValid));
+			}
+
+			TEST_METHOD(TestGetNextAbstraction) {
+				PKB::insertor.addAbstraction(nextMapInvalid, NEXT);
+				// assert database contains the correct data (truncates to the valid data)
+				StringMap news = PKB::responder.getAbstraction(NEXT); 
+				
+				Assert::IsTrue(compare_maps(news, nextDataValid));
 			}
 		};
 }
