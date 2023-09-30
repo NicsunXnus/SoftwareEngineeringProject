@@ -328,6 +328,10 @@ public:
         auto it = find(headers.begin(), headers.end(), deleteHeader);
         if (it != headers.end()) {
             int index = distance(headers.begin(), it);
+            bool isSignificant = getNumberOfRows() > 0; // table will be "empty" after drop
+            if (getNumberOfCols() < 1) {
+                setSignificant(isSignificant);
+            }
             columns.erase(columns.begin() + index);
         }
         else {
@@ -470,7 +474,8 @@ public:
 
 private:
     vector<map<string, vector<string>>> columns; // column name: values
-    bool isSignificant; // denotes whether a table is significant or not (if uses(_, _) has more than one row, i will drop both columns, but table is NOT empty)
+    bool isSignificant; // denotes whether a table is significant or not (if uses(_, _) has more than one row, will drop both columns, 
+    // but table is NOT empty, and is hence significant), important for constructing final result
 
     //Helper method where (a,b) -> (a,a,b,b)
     vector<string> duplicateEntries(const vector<string>& input, int x) {

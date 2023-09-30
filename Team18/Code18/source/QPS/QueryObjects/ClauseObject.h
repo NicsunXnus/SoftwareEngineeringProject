@@ -45,13 +45,7 @@ inline shared_ptr<QueryResultsTable> filterStmtRef(shared_ptr<ClauseArg> arg, st
 		
 		targets.push_back(svToString(arg->getArg()));
 		shared_ptr<QueryResultsTable> filteredTable = table->filter(colName, targets);
-		bool isSignificant = filteredTable->getNumberOfRows() > 0; // table will be "empty" after drop
 		filteredTable->deleteColumn(colName);
-		if (filteredTable->getNumberOfCols() < 1) {
-
-			filteredTable->setSignificant(isSignificant);
-
-		}
 		return filteredTable;
 
 	}
@@ -74,14 +68,7 @@ inline shared_ptr<QueryResultsTable> filterStmtRef(shared_ptr<ClauseArg> arg, st
 	}
 	else {
 		// wildcard, drop column, if table.cols.size < 1, set isSignificant to true or false depending on table.rows.size > 0 or not
-		bool isSignificant = table->getNumberOfRows() > 0; // table will be "empty" after drop
 		table->deleteColumn(colName);
-		if (table->getNumberOfCols() < 1) {
-			
-			table->setSignificant(isSignificant);
-			
-		}
-
 	}
 	return table;
 }
@@ -95,13 +82,8 @@ inline shared_ptr<QueryResultsTable> filterEntRef(shared_ptr<ClauseArg> arg, str
 
 		targets.push_back(svToString(arg->getIdentifier()));
 		shared_ptr<QueryResultsTable> filteredTable = table->filter(colName, targets);
-		bool isSignificant = filteredTable->getNumberOfRows() > 0; // table will be "empty" after drop
 		filteredTable->deleteColumn(colName);
-		if (filteredTable->getNumberOfCols() < 1) {
 
-			filteredTable->setSignificant(isSignificant);
-
-		}
 		return filteredTable;
 
 	}
@@ -124,15 +106,7 @@ inline shared_ptr<QueryResultsTable> filterEntRef(shared_ptr<ClauseArg> arg, str
 	}
 	else {
 		// wildcard, drop column, if table.cols.size < 1, set isSignificant to true or false depending on table.rows.size > 0 or not
-		bool isSignificant = table->getNumberOfRows() > 0; // table will be "empty" after drop
 		table->deleteColumn(colName);
-		if (table->getNumberOfCols() < 1) {
-
-			table->setSignificant(isSignificant);
-
-		}
-
-		
 	}
 	return table;
 }
