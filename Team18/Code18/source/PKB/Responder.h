@@ -93,7 +93,7 @@ public:
 		shared_ptr<AbstractionStorage> abstraction_storage = StorageManager::getAbstractionStorage(abstraction);
 		// note: for Follows* and Parent*, we return the whole database.
 		// for Follows and Parent, we return a truncated database with the value just the direct follower/parent.
-		if (abstraction == FOLLOWS || abstraction == PARENT || abstraction == CALLS) {
+		if (abstraction == FOLLOWS || abstraction == PARENT || abstraction == CALLS || abstraction == NEXT) {
 			return *(abstraction_storage->getTruncatedDatabase());
 		}
 		return *(abstraction_storage->getDatabase());
