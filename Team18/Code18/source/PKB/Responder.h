@@ -5,6 +5,7 @@
 
 #include "StorageManager.h"
 #include "../Constants/DesignEnums.h"
+#include "../DesignExtractor/Entity.h"
 
 using namespace std;
 
