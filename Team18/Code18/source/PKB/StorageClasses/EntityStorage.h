@@ -20,6 +20,9 @@ public:
         this->procedure_database = make_shared<StringMap>();
         this->variable_database = make_shared<StringMap>();
         this->constant_database = make_shared<StringMap>();
+        this->call_procname_database = make_shared<StringMap>();
+        this->read_varname_database = make_shared<StringMap>();
+        this->print_varname_database = make_shared<StringMap>();
     }
 
     ~EntityStorage() {}
@@ -51,10 +54,34 @@ public:
 
     shared_ptr<StringMap> EntityStorage::getConstantDatabase() {
         if (!(this->constant_database)) {
-			    cerr << "const_database is null" << endl;
-			    return nullptr;
-		    }
+			cerr << "const_database is null" << endl;
+			return nullptr;
+		}
         return this->constant_database;
+    }
+
+    shared_ptr<StringMap> EntityStorage::getCallProcnameDatabase() {
+		if (!(this->call_procname_database)) {
+            cerr << "call_procname_database is null" << endl;
+	          return nullptr;
+        }
+        return this->call_procname_database;
+    }
+
+    shared_ptr<StringMap> EntityStorage::getReadVarnameDatabase() {
+        if (!(this->read_varname_database)) {
+			cerr << "read_varname_database is null" << endl;
+	          return nullptr;
+		}
+		return this->read_varname_database;
+	}
+
+    shared_ptr<StringMap> EntityStorage::getPrintVarnameDatabase() {
+        if (!(this->print_varname_database)) {
+            cerr << "print_varname_database is null" << endl;
+	            return nullptr;
+        }
+        return this->print_varname_database;
     }
 
     void EntityStorage::setStatementDatabase(shared_ptr<StringMap> database) {
@@ -74,8 +101,6 @@ public:
     }
 
     void EntityStorage::setVariableDatabase(shared_ptr<StringMap> database) {
-        cout << "setVariableDatabase" << endl;
-        cout << "database size: " << database->size() << endl;
         static StringMap variable_db;
         this->variable_database = make_shared<StringMap>(variable_db);
         for (auto const& [varName, lines] : *database) {
@@ -91,22 +116,46 @@ public:
         }
     }
 
+    void EntityStorage::setCallProcnameDatabase(shared_ptr<StringMap> database) {
+		static StringMap call_procname_db;
+		this->call_procname_database = make_shared<StringMap>(call_procname_db);
+		for (auto const& [varName, lines] : *database) {
+			(*(this->call_procname_database))[varName] = lines;
+		}
+	}
+
+	void EntityStorage::setReadVarnameDatabase(shared_ptr<StringMap> database) {
+        static StringMap read_varname_db;
+		this->read_varname_database = make_shared<StringMap>(read_varname_db);
+        for (auto const& [varName, lines] : *database) {
+            (*(this->read_varname_database))[varName] = lines;
+        }
+    }
+
+    void EntityStorage::setPrintVarnameDatabase(shared_ptr<StringMap> database) {
+		static StringMap print_varname_db;
+		this->print_varname_database = make_shared<StringMap>(print_varname_db);
+		for (auto const& [varName, lines] : *database) {
+			(*(this->print_varname_database))[varName] = lines;
+		}
+	}
+
     void EntityStorage::printDatabase() const {
-        //    for (const auto& pair : *statement_database) {
-        //        string result;
-        //        for (const int& num : pair.second) {
-        //            result += to_string(num);
-        //        }
-        //        cout << "Key: " << pair.first << ", Value: " << result << endl;
-        //    }
+        for (const auto& pair : *statement_database) {
+            string result;
+            for (const string& s : pair.second) {
+                result += s;
+            }
+            cout << "Key: " << pair.first << ", Value: " << result << endl;
+        }
     }
 
 private:
     static inline shared_ptr<map<ENTITY, vector<string>>> statement_database;
-
     static inline shared_ptr<StringMap> procedure_database;
-  
     static inline shared_ptr<StringMap> variable_database;
-
     static inline shared_ptr<StringMap> constant_database;
+    static inline shared_ptr<StringMap> call_procname_database;
+    static inline shared_ptr<StringMap> read_varname_database;
+    static inline shared_ptr<StringMap> print_varname_database;
 };
