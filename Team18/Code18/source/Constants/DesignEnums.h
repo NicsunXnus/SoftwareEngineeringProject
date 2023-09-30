@@ -1,5 +1,5 @@
-#ifndef QPSPKB_H
-#define QPSPKB_H
+#ifndef DESIGNENUMS_H
+#define DESIGNENUMS_H
 
 #include<unordered_set>
 

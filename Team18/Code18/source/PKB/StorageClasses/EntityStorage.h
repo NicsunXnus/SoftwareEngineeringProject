@@ -4,7 +4,7 @@
 #include <vector>
 #include <iostream>
 
-#include "../../Constants/QPSPKB.h"
+#include "../../Constants/DesignEnums.h"
 #include "../../DesignExtractor/Entity.h"
 
 using namespace std;

@@ -76,7 +76,7 @@
     <ClCompile Include="..\source\DesignExtractor\*.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\source\Constants\QPSPKB.h" />
+    <ClInclude Include="..\source\Constants\DesignEnums.h" />
     <ClInclude Include="..\source\HelperFunctions.h" />
     <ClInclude Include="..\source\ApplicationWrapper.h" />
     <ClInclude Include="..\source\QPS\QueryDriver.h">
