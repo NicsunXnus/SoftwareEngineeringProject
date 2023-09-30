@@ -5,7 +5,7 @@
 #include <string_view>
 #include "SynonymObjects.h"
 #include "../../HelperFunctions.h"
-#include "../../Constants/QPSPKB.h"
+#include "../../Constants/DesignEnums.h"
 
 
 using namespace std::string_view_literals;
