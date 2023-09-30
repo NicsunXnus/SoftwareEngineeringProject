@@ -32,20 +32,20 @@ public:
 		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
 
 		switch (entity_type) {
-			case PROCEDURE:
-				(*entity_storage).setCallProcNameDatabase(entity_name_map);
+			case CALL:
+				(*entity_storage).setCallProcnameDatabase(entity_name_map);
 				break;
 			case READ:
-				(*entity_storage).setReadVarNameDatabase(entity_name_map);
+				(*entity_storage).setReadVarnameDatabase(entity_name_map);
 				break;
 			case PRINT:
-				(*entity_storage).setPrintVarNameDatabase(entity_name_map);
+				(*entity_storage).setPrintVarnameDatabase(entity_name_map);
 				break;
 			default:  // other entities are statement types
-				cerr << "This entity does not support name storage" << endl;
+				throw runtime_error("This entity does not support name storage");
 				break;
 		}
-	})
+	}
 
 	// keys are the first argument for abstractions. include variable names or line numbers.
 	void Insertor::addAbstraction(shared_ptr<StringMap> abstraction_map, ABSTRACTION abstraction_type) {
