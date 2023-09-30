@@ -438,6 +438,20 @@ public:
         return headers;
     }
 
+    //Getter method for data in a column
+    vector<string> getColumnData(string header) {
+        vector<string> data;
+
+        for (map<string, vector<string>> column : this->columns) {
+            if (column.begin()->first == header) {
+                return column.begin()->second;
+            }
+           
+        }
+
+        return data;
+    }
+
     //Prints out the table
     void printTable() {
         // Print the header row
