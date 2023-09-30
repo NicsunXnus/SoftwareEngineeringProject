@@ -20,6 +20,8 @@ public:
 		this->modifies_abstractions = make_shared<ModifiesAbstractionStorage>();
 		this->follows_abstractions = make_shared<FollowsAbstractionStorage>();
 		this->parent_abstractions = make_shared<ParentAbstractionStorage>();
+		this->calls_abstractions = make_shared<CallsAbstractionStorage>();
+		this->next_abstractions = make_shared<NextAbstractionStorage>();
 	}
 
 	~StorageManager() {}
@@ -36,6 +38,12 @@ public:
 		}
 		else if (abstraction_type == FOLLOWS || abstraction_type == FOLLOWSSTAR) {
 			return follows_abstractions;
+		}
+		else if (abstraction_type == CALLS || abstraction_type == CALLSSTAR) {
+			return calls_abstractions;
+		}
+		else if (abstraction_type == NEXT) {
+			return next_abstractions;
 		}
 		else {
 			cerr << "No such abstraction found" << endl;
@@ -63,5 +71,7 @@ private:
 	static inline shared_ptr<ModifiesAbstractionStorage> modifies_abstractions;
 	static inline shared_ptr<FollowsAbstractionStorage> follows_abstractions;
 	static inline shared_ptr<ParentAbstractionStorage> parent_abstractions;
+	static inline shared_ptr<CallsAbstractionStorage> calls_abstractions;
+	static inline shared_ptr<NextAbstractionStorage> next_abstractions;
 };
 #endif
