@@ -16,6 +16,7 @@ using namespace std;
 #include "../PKB.h"
 
 
+
 /**
 * This class represents the Design Extractor component of the SPA. It is used to extract all the entities and abstractions from the AST.
 */
@@ -70,12 +71,20 @@ public:
         static shared_ptr<StringMap> procedureMap = getProcedureEntity()->getMap();
         static shared_ptr<StringMap> variableMap = getVariableEntity()->getMap();
         static shared_ptr<StringMap> constantMap = getConstantEntity()->getMap();
+
+        // Convert the maps to unordered sets
+        static shared_ptr<map<string, unordered_set<string>>> statementSet = PKB::adapter.convertVectorToUnorderedSet(statementMap);
+        static shared_ptr<map<string, unordered_set<string>>> procedureSet = PKB::adapter.convertVectorToUnorderedSet(procedureMap);
+        static shared_ptr<map<string, unordered_set<string>>> variableSet = PKB::adapter.convertVectorToUnorderedSet(variableMap);
+        static shared_ptr<map<string, unordered_set<string>>> constantSet = PKB::adapter.convertVectorToUnorderedSet(constantMap);
         
         // Insert the entities into the PKB
+        // TODO: Change to new API
         PKB::insertor.addEntity(statementMap);
         PKB::insertor.addEntity(procedureMap, PROCEDURE);
         PKB::insertor.addEntity(variableMap, VARIABLE);
         PKB::insertor.addEntity(constantMap, CONSTANT);  
+
     }
 
     // Method to insert the abstractions into the PKB
@@ -86,7 +95,16 @@ public:
         static shared_ptr<StringMap> parentsMap = this->parentsExtractor->getStorageMap();
         static shared_ptr<StringMap> followsMap = this->followsExtractor->getStorageMap();
 
+        // Convert the maps to unordered sets
+        static shared_ptr<map<string, unordered_set<string>>> modifiesSet = PKB::adapter.convertVectorToUnorderedSet(modifiesMap);
+        static shared_ptr<map<string, unordered_set<string>>> usesSet = PKB::adapter.convertVectorToUnorderedSet(usesMap);
+        static shared_ptr<map<string, unordered_set<string>>> parentsSet = PKB::adapter.convertParentsFollowsStarToParentsFollows(parentsMap);
+        static shared_ptr<map<string, unordered_set<string>>> followsSet = PKB::adapter.convertParentsFollowsStarToParentsFollows(followsMap);
+        static shared_ptr<map<string, unordered_set<string>>> parentsStarSet = PKB::adapter.convertVectorToUnorderedSet(parentsMap);
+        static shared_ptr<map<string, unordered_set<string>>> followsStarSet = PKB::adapter.convertVectorToUnorderedSet(followsMap);
+
         // Insert the abstractions into the PKB
+        // TODO: Change to new API
         PKB::insertor.addAbstraction(modifiesMap, MODIFIES);
         PKB::insertor.addAbstraction(usesMap, USES);
         PKB::insertor.addAbstraction(parentsMap, PARENT);
