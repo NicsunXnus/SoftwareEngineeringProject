@@ -3,7 +3,7 @@
 #include "PKB/Insertor.h"
 #include "PKB/StorageManager.h"
 #include "PKB/Responder.h"
-#include "DesignExtractor/Adapter.h"
+#include "PKB/Adapter.h"
 
 
 /**
