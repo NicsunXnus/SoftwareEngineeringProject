@@ -54,7 +54,7 @@ namespace UnitTesting {
 
 			TEST_METHOD(TestGetProcedures) {
 				PKB::insertor.addEntity(procedureMap, PROCEDURE);
-
+        
 				Assert::IsTrue(compare_sets(PKB::responder.getAllProcedures(), { "proc1", "proc2" }));
 			}
 
