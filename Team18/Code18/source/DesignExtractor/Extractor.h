@@ -115,11 +115,6 @@ public:
         extractDesigns(assignNode->getVar());
     }
 
-    // Method to handle call statements
-    virtual void handleCall(std::shared_ptr<CallNode> callNode) {
-        //TODO: Handle callNode
-    }
-
     // Method to handle while statements
     virtual void handleWhile(std::shared_ptr<WhileNode> whileNode) {
         extractDesigns(whileNode->getCondExpr());
@@ -190,9 +185,10 @@ public:
     }
 
     // Methods to be overriden if additional functionality is needed
-    virtual void handleVariable(std::shared_ptr<VariableNode> variableNode){}
-    virtual void handleConstant(std::shared_ptr<ConstantNode> constantNode){}
+    virtual void handleVariable(std::shared_ptr<VariableNode> variableNode) {}
+    virtual void handleConstant(std::shared_ptr<ConstantNode> constantNode) {}
     virtual void preProcessProcedureNode(std::shared_ptr<ProcedureNode> procedureNode) {}
     virtual void preProcessStatementNode(std::shared_ptr<StatementNode> statementNode) {}
+    virtual void handleCall(std::shared_ptr<CallNode> callNode) {}
 
 };

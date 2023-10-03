@@ -18,7 +18,7 @@ using namespace std;
 
 class UsesModifiesAbstractionBaseExtractor : public Extractor {
 public:
-    //Constructor
+    // Constructor
     UsesModifiesAbstractionBaseExtractor() {
         this->AbstractionStorageMap = std::make_shared<map<string, vector<string>>>();
         this->procedureStatementStorageMap = std::make_shared<map<string, vector<string>>>();
@@ -32,7 +32,7 @@ public:
     // Method to extract the uses abstraction
     void extractAbstractions(shared_ptr<ASTNode> astNode) {
         extractDesigns(astNode);
-        reduceProcedureStatementStorageMap();
+        reduceProcedureStatementStorageMapToMinMax();
         addProcedureNames();
     }
 
@@ -107,6 +107,12 @@ public:
         }
     }
 
+    // Overriden method to account for the inclusion of call statments
+    void handleCall(std::shared_ptr<CallNode> callNode) override {
+        shared_ptr<ProcedureNode> procedureNode = callNode->getProc();
+        extractDesigns(procedureNode);
+    }
+
 protected:
     std::shared_ptr<map<string, vector<string>>> AbstractionStorageMap;
     std::shared_ptr<map<string, vector<string>>> procedureStatementStorageMap;
@@ -131,7 +137,7 @@ protected:
     }
 
      // Method to reduce the procedureStatementStorageMap to two values (min and max)
-    void reduceProcedureStatementStorageMap() {
+    void reduceProcedureStatementStorageMapToMinMax() {
         for (const auto& [procedureName, statementNumbers] : *this->procedureStatementStorageMap) {
             int min = stoi(statementNumbers[0]);
             int max = stoi(statementNumbers[0]);

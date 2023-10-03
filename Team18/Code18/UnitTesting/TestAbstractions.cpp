@@ -634,6 +634,98 @@ namespace UnitTesting
   
             }
 
+            TEST_METHOD(TestModifiesUsesWithCallStatements)
+            {
+                  /* The code in mind
+                        procedure testprocedure {
+                              x = 10;
+                              call testprocedure2;
+                              call testprocedure3;
+                        }
+                        procedure testprocedure2 {
+                              y = 10;
+                        }
+                        procedure testprocedure3 {
+                              z = 10;
+                        }
+                  */
+                  
+                  // Create statement nodes
+                  std::shared_ptr<VariableNode> testVariableNode = std::make_shared<VariableNode>("x", 1);
+                  std::shared_ptr<ConstantNode> testConstantNode = std::make_shared<ConstantNode>(10, 1);
+                  std::shared_ptr<AssignNode> testAssignNode = std::make_shared<AssignNode>(1, testVariableNode, testConstantNode);
+
+                  std::shared_ptr<VariableNode> testVariableNode2 = std::make_shared<VariableNode>("y", 4);
+                  std::shared_ptr<ConstantNode> testConstantNode2 = std::make_shared<ConstantNode>(10, 4);
+                  std::shared_ptr<AssignNode> testAssignNode2 = std::make_shared<AssignNode>(4, testVariableNode2, testConstantNode2);
+
+                  std::shared_ptr<VariableNode> testVariableNode3 = std::make_shared<VariableNode>("z", 5);
+                  std::shared_ptr<ConstantNode> testConstantNode3 = std::make_shared<ConstantNode>(10, 5);
+                  std::shared_ptr<AssignNode> testAssignNode3 = std::make_shared<AssignNode>(5, testVariableNode3, testConstantNode3);
+
+                  // Create procedure nodes
+                  std::shared_ptr<ProcedureNode> testProcedureNode2 = std::make_shared<ProcedureNode>("testprocedure2", std::vector<std::shared_ptr<StatementNode>>{testAssignNode2});
+                  std::shared_ptr<ProcedureNode> testProcedureNode3 = std::make_shared<ProcedureNode>("testprocedure3", std::vector<std::shared_ptr<StatementNode>>{testAssignNode3});
+
+                  // Create call nodes
+                  std::shared_ptr<CallNode> testCallNode = std::make_shared<CallNode>(2, testProcedureNode2);
+                  std::shared_ptr<CallNode> testCallNode2 = std::make_shared<CallNode>(3, testProcedureNode3);
+
+                  // Combine the above statement nodes
+                  std::vector<std::shared_ptr<StatementNode>> testStatementNodes = {testAssignNode, testCallNode, testCallNode2};
+
+                  // Create procedure 1
+                  std::shared_ptr<ProcedureNode> testProcedureNode = std::make_shared<ProcedureNode>("testprocedure", testStatementNodes);
+
+                  // Create program node
+                  std::shared_ptr<ProgramNode> testProgramNode = std::make_shared<ProgramNode>(std::vector<std::shared_ptr<ProcedureNode>>{testProcedureNode, testProcedureNode2, testProcedureNode3});
+
+                  // Create Abstraction Extractors
+                  std::shared_ptr<UsesAbstractionExtractor> testUsesAbstraction = std::make_shared<UsesAbstractionExtractor>();
+                  std::shared_ptr<ModifiesAbstractionExtractor> testModifiesAbstraction = std::make_shared<ModifiesAbstractionExtractor>();
+
+                  // Extract abstraction from program node
+                  testUsesAbstraction->extractAbstractions(testProgramNode);
+                  testModifiesAbstraction->extractAbstractions(testProgramNode);
+
+                  // Get abstraction maps
+                  std::shared_ptr<map<string, vector<string>>> usesMap = testUsesAbstraction->getStorageMap();
+                  std::shared_ptr<map<string, vector<string>>> modifiesMap = testModifiesAbstraction->getStorageMap();
+
+                  std::map<std::string, std::vector<std::string>>& usesMapRef = *usesMap;
+                  std::map<std::string, std::vector<std::string>>& modifiesMapRef = *modifiesMap;
+
+                  // Check the existence of values in usesMap
+                  Assert::IsTrue(std::find(usesMapRef["x"].begin(), usesMapRef["x"].end(), std::to_string(1)) == usesMapRef["x"].end());
+                  Assert::IsTrue(std::find(usesMapRef["x"].begin(), usesMapRef["x"].end(), std::to_string(2)) == usesMapRef["x"].end());
+                  Assert::IsTrue(std::find(usesMapRef["x"].begin(), usesMapRef["x"].end(), std::to_string(3)) == usesMapRef["x"].end());
+                  Assert::IsTrue(std::find(usesMapRef["x"].begin(), usesMapRef["x"].end(), std::to_string(4)) == usesMapRef["x"].end());
+                  Assert::IsTrue(std::find(usesMapRef["x"].begin(), usesMapRef["x"].end(), std::to_string(5)) == usesMapRef["x"].end());
+                  Assert::IsTrue(std::find(usesMapRef["x"].begin(), usesMapRef["x"].end(), "testprocedure") != usesMapRef["x"].end());
+                  Assert::IsTrue(std::find(usesMapRef["x"].begin(), usesMapRef["x"].end(), "testprocedure2") != usesMapRef["x"].end());
+                  Assert::IsTrue(std::find(usesMapRef["x"].begin(), usesMapRef["x"].end(), "testprocedure3") != usesMapRef["x"].end());
+
+                  Assert::IsTrue(std::find(usesMapRef["y"].begin(), usesMapRef["y"].end(), std::to_string(1)) == usesMapRef["y"].end());
+                  Assert::IsTrue(std::find(usesMapRef["y"].begin(), usesMapRef["y"].end(), std::to_string(2)) == usesMapRef["y"].end());
+                  Assert::IsTrue(std::find(usesMapRef["y"].begin(), usesMapRef["y"].end(), std::to_string(3)) == usesMapRef["y"].end());
+                  Assert::IsTrue(std::find(usesMapRef["y"].begin(), usesMapRef["y"].end(), std::to_string(4)) != usesMapRef["y"].end());
+                  Assert::IsTrue(std::find(usesMapRef["y"].begin(), usesMapRef["y"].end(), std::to_string(5)) == usesMapRef["y"].end());
+                  Assert::IsTrue(std::find(usesMapRef["y"].begin(), usesMapRef["y"].end(), "testprocedure") != usesMapRef["y"].end());
+                  Assert::IsTrue(std::find(usesMapRef["y"].begin(), usesMapRef["y"].end(), "testprocedure2") != usesMapRef["y"].end());
+                  Assert::IsTrue(std::find(usesMapRef["y"].begin(), usesMapRef["y"].end(), "testprocedure3") == usesMapRef["y"].end());
+
+                  Assert::IsTrue(std::find(usesMapRef["z"].begin(), usesMapRef["z"].end(), std::to_string(1)) == usesMapRef["z"].end());
+                  Assert::IsTrue(std::find(usesMapRef["z"].begin(), usesMapRef["z"].end(), std::to_string(2)) == usesMapRef["z"].end());
+                  Assert::IsTrue(std::find(usesMapRef["z"].begin(), usesMapRef["z"].end(), std::to_string(3)) == usesMapRef["z"].end());
+                  Assert::IsTrue(std::find(usesMapRef["z"].begin(), usesMapRef["z"].end(), std::to_string(4)) == usesMapRef["z"].end());
+                  Assert::IsTrue(std::find(usesMapRef["z"].begin(), usesMapRef["z"].end(), std::to_string(5)) != usesMapRef["z"].end());
+                  Assert::IsTrue(std::find(usesMapRef["z"].begin(), usesMapRef["z"].end(), "testprocedure") != usesMapRef["z"].end());
+                  Assert::IsTrue(std::find(usesMapRef["z"].begin(), usesMapRef["z"].end(), "testprocedure2") == usesMapRef["z"].end());
+                  Assert::IsTrue(std::find(usesMapRef["z"].begin(), usesMapRef["z"].end(), "testprocedure3") != usesMapRef["z"].end());
+
+
+
+            }
 
     };
 }
