@@ -321,4 +321,78 @@ public:
 
 };
 
+/*
+* This class represents a Query object, for clause Calls
+*/
+class CallsObject : public ClauseObject {
+public:
+	CallsObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
+		: ClauseObject{ clauseName, argument0, argument1 } {
+	};
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
+		// TODO
+		return make_shared<QueryResultsTable>();
+	}
+
+};
+
+/*
+* This class represents a Query object, for clause CallsStar
+*/
+class CallsStarObject : public ClauseObject {
+public:
+	CallsStarObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
+		: ClauseObject{ clauseName, argument0, argument1 } {
+	};
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
+		// TODO
+		return make_shared<QueryResultsTable>();
+	}
+
+};
+
+/*
+* This class represents a Query object, for clause Next
+*/
+class NextObject : public ClauseObject {
+public:
+	NextObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
+		: ClauseObject{ clauseName, argument0, argument1 } {
+	};
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
+		// TODO
+		return make_shared<QueryResultsTable>();
+	}
+
+};
+
+/*
+* This class represents a Query object, for clause Next*
+*/
+class NextStarObject : public ClauseObject {
+public:
+	NextStarObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
+		: ClauseObject{ clauseName, argument0, argument1 } {
+	};
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
+		// TODO
+		return make_shared<QueryResultsTable>();
+	}
+
+};
+
+/*
+* This class represents a Query object, for clause Affects
+*/
+class AffectsObject : public ClauseObject {
+public:
+	AffectsObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
+		: ClauseObject{ clauseName, argument0, argument1 } {
+	};
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
+		// TODO
+		return make_shared<QueryResultsTable>();
+	}
+
+};
 #endif
