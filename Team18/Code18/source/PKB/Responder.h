@@ -5,6 +5,7 @@
 
 #include "StorageManager.h"
 #include "../Constants/DesignEnums.h"
+#include "../DesignExtractor/Entity.h"
 
 using namespace std;
 
@@ -33,19 +34,19 @@ public:
 	}
 
 	// unused now
-	vector<string> Responder::getProcedure(string procedure) const {
-		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		shared_ptr<StringMap> proc_database = entity_storage->getProcedureDatabase();
+	// vector<string> Responder::getProcedure(string procedure) const {
+	// 	shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
+	//	shared_ptr<StringMap> proc_database = entity_storage->getProcedureDatabase();
 		// check if procedure exists
-		if (proc_database->find(procedure) == proc_database->end()) {
-			return vector<string>();
-		}
-		return (*proc_database).at(procedure);
-	}
+	// 	if (proc_database->find(procedure) == proc_database->end()) {
+	// 		return vector<string>();
+	// 	}
+	// 	return (*proc_database).at(procedure);
+	// }
 
-	map<string, vector<string>> Responder::getVariableMap() const {
+	StringMap Responder::getVariableMap() const {
 		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		shared_ptr<map<string, vector<string>>> var_database = entity_storage->getVariableDatabase();
+		shared_ptr<StringMap> var_database = entity_storage->getVariableDatabase();
 		return *var_database;
 	}
 	
@@ -55,20 +56,9 @@ public:
 		return getKeys(var_database);
 	}
 
-	// unused now
-	vector<string> Responder::getVariable(string variable) const {
+	StringMap Responder::getConstantMap() const {
 		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		shared_ptr<StringMap> var_database = entity_storage->getVariableDatabase();
-		// check if variable exists
-		if (var_database->find(variable) == var_database->end()) {
-			return vector<string>();
-		}
-		return (*var_database).at(variable);
-	}
-
-	map<string, vector<string>> Responder::getConstantMap() const {
-		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		shared_ptr<map<string, vector<string>>> const_database = entity_storage->getConstantDatabase();
+		shared_ptr<StringMap> const_database = entity_storage->getConstantDatabase();
 		return *const_database;
 	}
 
@@ -78,18 +68,25 @@ public:
 		return getKeys(const_database);
 	}
 
-	// unused now
-	vector<string> Responder::getConstant(string constant) const {
+	StringMap Responder::getCallProcNameMap() const {
 		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		shared_ptr<StringMap> constant_database = entity_storage->getConstantDatabase();
-		// check if constant exists
-		if (constant_database->find(constant) == constant_database->end()) {
-			return vector<string>();
-		}
-		return (*constant_database).at(constant);
+		shared_ptr<StringMap> call_procname_database = entity_storage->getCallProcnameDatabase();
+		return *call_procname_database;
 	}
 
-	map<string, vector<string>> Responder::getAbstraction(ABSTRACTION abstraction) const {
+	StringMap Responder::getReadVarNameMap() const {
+		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
+		shared_ptr<StringMap> read_varname_database = entity_storage->getReadVarnameDatabase();
+		return *read_varname_database;
+	}
+
+	StringMap Responder::getPrintVarNameMap() const {
+		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
+		shared_ptr<StringMap> print_varname_database = entity_storage->getPrintVarnameDatabase();
+		return *print_varname_database;
+	}
+
+	StringMap Responder::getAbstraction(ABSTRACTION abstraction) const {
 		shared_ptr<AbstractionStorage> abstraction_storage = StorageManager::getAbstractionStorage(abstraction);
 		// note: for Follows* and Parent*, we return the whole database.
 		// for Follows and Parent, we return a truncated database with the value just the direct follower/parent.
@@ -103,7 +100,6 @@ public:
 	vector<string> Responder::getAbstractionVariable(ABSTRACTION abstraction, string key) const {
 		shared_ptr<AbstractionStorage> abstraction_storage = StorageManager::getAbstractionStorage(abstraction);
 		shared_ptr<StringMap> abstraction_database = abstraction_storage->getDatabase();
-		// check if key exists
 		if (abstraction_database->find(key) == abstraction_database->end()) {
 			return vector<string>();
 		}
