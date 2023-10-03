@@ -32,7 +32,7 @@ namespace UnitTesting {
 				shared_ptr<StringMap> toInsert = make_shared<StringMap>(entityStatementData);
 
 				// Insertion
-				Assert::ExpectException<std::runtime_error>([toInsert] {
+				Assert::ExpectException<runtime_error>([toInsert] {
 					PKB::insertor.addEntity(toInsert);
 				});
 			}
@@ -245,6 +245,64 @@ namespace UnitTesting {
 
 				// assert database is empty
 				Assert::IsTrue(constant_db->empty());
+			}
+
+			TEST_METHOD(TestAddCallProcNameSuccess) {
+				// Create mock data to insert
+				StringMap callProcNameData = { {"2", {"proc1"}}, {"4", {"proc2"}}, {"11", {"proc3"}} };
+				shared_ptr<StringMap> toInsert = make_shared<StringMap>(callProcNameData);
+
+				// Insertion
+				PKB::insertor.addEntityNames(toInsert, CALL);
+
+				// Create reference to EntityStorage to check database
+				shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
+				shared_ptr<StringMap> call_procname_db = entity_storage->getCallProcnameDatabase();
+
+				// assert database contains the correct data
+				Assert::IsTrue(compare_maps(*call_procname_db, callProcNameData));
+			}
+
+			TEST_METHOD(TestAddReadVarNameSuccess) {
+				// Create mock data to insert
+				StringMap readVarNameData = { {"4", {"x"}}, {"13", {"y"}}, {"21", {"z"}} };
+				shared_ptr<StringMap> toInsert = make_shared<StringMap>(readVarNameData);
+
+				// Insertion
+				PKB::insertor.addEntityNames(toInsert, READ);
+
+				// Create reference to EntityStorage to check database
+				shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
+				shared_ptr<StringMap> read_varname_db = entity_storage->getReadVarnameDatabase();
+
+				// assert database contains the correct data
+				Assert::IsTrue(compare_maps(*read_varname_db, readVarNameData));
+			}
+
+			TEST_METHOD(TestAddPrintVarNameSuccess) {
+				// Create mock data to insert
+				StringMap printVarNameData = { {"3", {"x"}}, {"7", {"y"}}, {"19", {"z"}} };
+				shared_ptr<StringMap> toInsert = make_shared<StringMap>(printVarNameData);
+
+				// Insertion
+				PKB::insertor.addEntityNames(toInsert, PRINT);
+
+				// Create reference to EntityStorage to check database
+				shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
+				shared_ptr<StringMap> print_varname_db = entity_storage->getPrintVarnameDatabase();
+
+				// assert database contains the correct data
+				Assert::IsTrue(compare_maps(*print_varname_db, printVarNameData));
+			}
+
+			TEST_METHOD(TestAddInvalidEntityNameFailure) {
+				// Create mock data to insert
+				StringMap dummyNameData = { {"3", {"x"}}, {"7", {"y"}}, {"19", {"z"}} };
+				shared_ptr<StringMap> toInsert = make_shared<StringMap>(dummyNameData);
+
+				Assert::ExpectException<runtime_error>([toInsert] {
+					PKB::insertor.addEntityNames(toInsert, STMT);
+				});
 			}
 
 			TEST_METHOD(TestAddMultipleEntitiesSuccess) {
