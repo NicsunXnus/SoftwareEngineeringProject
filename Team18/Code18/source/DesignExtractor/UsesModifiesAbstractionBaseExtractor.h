@@ -108,6 +108,12 @@ public:
 
     // Overriden method to account for the inclusion of call statments
     void handleCall(std::shared_ptr<CallNode> callNode) override {
+        // Add the statement number of the call node to vector of the given procedure name
+        int statementNumber = callNode->getStatementNumber();
+        string procedureName = getProcedureName(statementNumber);
+        insertToProcedureStatementStorageMap(procedureName, to_string(statementNumber));
+
+        // Continue with the extraction of designs
         shared_ptr<ProcedureNode> procedureNode = callNode->getProc();
         extractDesigns(procedureNode);
     }
