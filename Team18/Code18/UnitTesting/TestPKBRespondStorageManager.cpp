@@ -5,21 +5,21 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-map<string, vector<string>> entityStatementData = { {"call", {"1", "2"}}, {"print", {"4"}} };
-map<string, vector<string>> variableData = { {"x", {"1", "2"}}, {"y", {"2", "5", "7"}} };
-map<string, vector<string>> procedureData = { {"proc1", {"1", "2"}}, {"proc2", {"5", "6", "7"}} };
-map<string, vector<string>> constantData = { {"10", {"1"}}, {"HERE", {"4", "7", "10"}} };
-map<string, vector<string>> callProcNameData = { {"2", {"proc1"}}, {"4", {"proc2"}}, {"11", {"proc3"}} };
-map<string, vector<string>> readVarNameData = { {"4", {"x"}}, {"13", {"y"}}, {"21", {"z"}} };
-map<string, vector<string>> printVarNameData = { {"3", {"x"}}, {"7", {"y"}}, {"19", {"z"}} };
+map<string, unordered_set<string>> entityStatementData = { {"call", {"1", "2"}}, {"print", {"4"}} };
+map<string, unordered_set<string>> variableData = { {"x", {"1", "2"}}, {"y", {"2", "5", "7"}} };
+map<string, unordered_set<string>> procedureData = { {"proc1", {"1", "2"}}, {"proc2", {"5", "6", "7"}} };
+map<string, unordered_set<string>> constantData = { {"10", {"1"}}, {"HERE", {"4", "7", "10"}} };
+map<string, unordered_set<string>> callProcNameData = { {"2", {"proc1"}}, {"4", {"proc2"}}, {"11", {"proc3"}} };
+map<string, unordered_set<string>> readVarNameData = { {"4", {"x"}}, {"13", {"y"}}, {"21", {"z"}} };
+map<string, unordered_set<string>> printVarNameData = { {"3", {"x"}}, {"7", {"y"}}, {"19", {"z"}} };
 
-shared_ptr<map<string, vector<string>>> statementMap = make_shared<map<string, vector<string>>>(entityStatementData);
-shared_ptr<map<string, vector<string>>> variableMap = make_shared<map<string, vector<string>>>(variableData);
-shared_ptr<map<string, vector<string>>> procedureMap = make_shared<map<string, vector<string>>>(procedureData);
-shared_ptr<map<string, vector<string>>> constantMap = make_shared<map<string, vector<string>>>(constantData);
-shared_ptr<map<string, vector<string>>> callProcNameMap = make_shared<map<string, vector<string>>>(callProcNameData);
-shared_ptr<map<string, vector<string>>> readVarNameMap = make_shared<map<string, vector<string>>>(readVarNameData);
-shared_ptr<map<string, vector<string>>> printVarNameMap = make_shared<map<string, vector<string>>>(printVarNameData);
+shared_ptr<map<string, unordered_set<string>>> statementMap = make_shared<map<string, unordered_set<string>>>(entityStatementData);
+shared_ptr<map<string, unordered_set<string>>> variableMap = make_shared<map<string, unordered_set<string>>>(variableData);
+shared_ptr<map<string, unordered_set<string>>> procedureMap = make_shared<map<string, unordered_set<string>>>(procedureData);
+shared_ptr<map<string, unordered_set<string>>> constantMap = make_shared<map<string, unordered_set<string>>>(constantData);
+shared_ptr<map<string, unordered_set<string>>> callProcNameMap = make_shared<map<string, unordered_set<string>>>(callProcNameData);
+shared_ptr<map<string, unordered_set<string>>> readVarNameMap = make_shared<map<string, unordered_set<string>>>(readVarNameData);
+shared_ptr<map<string, unordered_set<string>>> printVarNameMap = make_shared<map<string, unordered_set<string>>>(printVarNameData);
 
 StringMap usesData = { {"x", {"main", "3", "6"}} };
 StringMap modifiesData = { {"y", {"main", "8", "proc1", "2"}} };
