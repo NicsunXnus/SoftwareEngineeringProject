@@ -67,12 +67,6 @@ public:
 		map<string, vector<string>> PKBVarData = dataAccessLayer->getVariableMap();
 		map<string, vector<string>> PKBConstData = dataAccessLayer->getConstantMap();
 
-		//map<string, vector<string>> PKBModifiesData = { {"x", {"main", "2"}}, {"y", {"main", "3"}}};
-		//map<string, vector<string>> PKBUsesData = { {"x", {"main"}}, {"y", {"main", "4"}} };
-		//vector<string> PKBAssignData = { "2", "3" };
-		//map<string, vector<string>> PKBVarData = { {"x", {"main", "1", "2"}}, {"y", {"main", "3", "4"}} };;
-		//map<string, vector<string>> PKBConstData = { {"2", {"2"}}, {"3", {"3"}} };
-
 		shared_ptr<QueryResultsTable> table;
 
 		bool isSingleColumn = true;
@@ -184,13 +178,11 @@ public:
 
 		if (isSingleColumn) {
 			table = QueryResultsTable::createTable(assignSynonym, assignSynonymColumn);
-			//cout << "FINAL ANSWER:" << endl;
 			//printVectorString(assignSynonymColumn);
 		}
 		else {
 			vector<string> headers = { svToString(arg1->getArg()), assignSynonym };
 			table = QueryResultsTable::createTable(headers, columnValues);
-			//cout << "FINAL ANSWER:" << endl;
 			//printMap(columnValues);
 		}
 		

@@ -3,9 +3,9 @@
 #include <map>
 #include <vector>
 #include <iostream>
+#include <unordered_set>
 
 #include "../../Constants/DesignEnums.h"
-#include "../../DesignExtractor/Entity.h"
 
 using namespace std;
 
@@ -16,7 +16,7 @@ using namespace std;
 class EntityStorage {
 public:
     EntityStorage() {
-        this->statement_database = make_shared<map<ENTITY, vector<string>>>();
+        this->statement_database = make_shared<map<ENTITY, unordered_set<string>>>();
         this->procedure_database = make_shared<StringMap>();
         this->variable_database = make_shared<StringMap>();
         this->constant_database = make_shared<StringMap>();
@@ -28,7 +28,7 @@ public:
     ~EntityStorage() {}
 
     // entities categorised as statement types and non-statement types.
-    shared_ptr<map<ENTITY, vector<string>>> EntityStorage::getStatementDatabase() {
+    shared_ptr<map<ENTITY, unordered_set<string>>> EntityStorage::getStatementDatabase() {
         if (!(this->statement_database)) {
             cerr << "stmt_database is null" << endl;
             return nullptr;
@@ -85,8 +85,8 @@ public:
     }
 
     void EntityStorage::setStatementDatabase(shared_ptr<StringMap> database) {
-        static map<ENTITY, vector<string>> statement_db;
-        this->statement_database = make_shared<map<ENTITY, vector<string>>>(statement_db);
+        static map<ENTITY, unordered_set<string>> statement_db;
+        this->statement_database = make_shared<map<ENTITY, unordered_set<string>>>(statement_db);
         for (auto const& [entity_string, value] : *database) {
             (*statement_database)[EntityStringToEnum(entity_string)] = value;
         }
@@ -151,7 +151,7 @@ public:
     }
 
 private:
-    static inline shared_ptr<map<ENTITY, vector<string>>> statement_database;
+    static inline shared_ptr<map<ENTITY, unordered_set<string>>> statement_database;
     static inline shared_ptr<StringMap> procedure_database;
     static inline shared_ptr<StringMap> variable_database;
     static inline shared_ptr<StringMap> constant_database;

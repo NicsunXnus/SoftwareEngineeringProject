@@ -4,8 +4,10 @@
 #include <vector>
 #include <variant>
 #include <iostream>
+#include <string>
+#include <unordered_set>
 
-#include "../../DesignExtractor/Entity.h"
+#include "../../Constants/DesignEnums.h"
 
 using namespace std;
 
@@ -16,14 +18,6 @@ class AbstractionStorage {
 public:
     shared_ptr<StringMap> AbstractionStorage::getDatabase() {
         return this->database;
-    }
-    
-    shared_ptr<StringMap> AbstractionStorage::getTruncatedDatabase() {
-        StringMap truncated_database;
-        for (auto const& [key, lines] : *database) {
-            truncated_database[key] = vector<string>({ lines.front() });
-        }
-        return make_shared<StringMap>(truncated_database);
     }
 
     void AbstractionStorage::printDatabase() const {
@@ -51,34 +45,49 @@ private:
 
 // This class represents the storage for the Uses design abstractions.
 // key: variable v
-// vector of values : line numbers(for non - procedure) or procedure names
+// set of values : line numbers(for non - procedure) or procedure names
 // essentially, in a typical Uses(x, v), v will be the key and x will be the possible values in the vector.
 class UsesAbstractionStorage : public AbstractionStorage {};
 
 // This class represents the storage for the Modifies design abstractions.
 // key: variable v
-// vector of values : line numbers(for non - procedure) or procedure names
+// set of values : line numbers(for non - procedure) or procedure names
 // essentially, in a typical Modifies(x, v), v will be the key and x will be the possible values in the vector.
 class ModifiesAbstractionStorage : public AbstractionStorage {};
 
 // This class represents the storage for the Follows/Follows* design abstractions.
 // key: line number
-// vector of values : all line numbers that follows*. The first element of the vector will be the one that follows.
+// set of values : The one line number that follows.
 class FollowsAbstractionStorage : public AbstractionStorage {};
+
+// This class represents the storage for the Follows/Follows* design abstractions.
+// key: line number
+// set of values : all line numbers that follows*.
+class FollowsStarAbstractionStorage : public AbstractionStorage {};
 
 // This class represents the storage for the Parent/Parent* design abstractions.
 // key: line number
-// vector of values : all line numbers that are parent* (parent, grandparent etc.). The first element of the vector will be the one that is the direct parent.
+// set of values : The one line number that is the direct parent.
 class ParentAbstractionStorage : public AbstractionStorage {};
+
+// This class represents the storage for the Parent/Parent* design abstractions.
+// key: line number
+// set of values : all line numbers that are parent* (parent, grandparent etc.).
+class ParentStarAbstractionStorage : public AbstractionStorage {};
 
 // This class represents the storage for the Calls/Calls* design abstractions.
 // key: procedure name
-// vector of values : all procedures that calls*. The first element of the vector will be the one that calls.
+// set of values : The procedure names of procedures directly called.
 class CallsAbstractionStorage : public AbstractionStorage {};
+
+// This class represents the storage for the Calls/Calls* design abstractions.
+// key: procedure name
+// set of values : all procedures that calls*.
+class CallsStarAbstractionStorage : public AbstractionStorage {};
 
 // This class represents the storage for the Next design abstractions.
 // key: line number of statement
-// vector of values : line number of statement that is next. vector has one element only
+// set of values : line number of statement that is next. vector has one element only
 class NextAbstractionStorage : public AbstractionStorage {};
 
 #endif

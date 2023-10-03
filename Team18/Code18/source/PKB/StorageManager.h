@@ -19,8 +19,11 @@ public:
 		this->uses_abstractions = make_shared<UsesAbstractionStorage>();
 		this->modifies_abstractions = make_shared<ModifiesAbstractionStorage>();
 		this->follows_abstractions = make_shared<FollowsAbstractionStorage>();
+		this->follows_star_abstractions = make_shared<FollowsStarAbstractionStorage>();
 		this->parent_abstractions = make_shared<ParentAbstractionStorage>();
+		this->parent_star_abstractions = make_shared<ParentStarAbstractionStorage>();
 		this->calls_abstractions = make_shared<CallsAbstractionStorage>();
+		this->calls_star_abstractions = make_shared<CallsStarAbstractionStorage>();
 		this->next_abstractions = make_shared<NextAbstractionStorage>();
 	}
 
@@ -35,15 +38,15 @@ public:
 			case FOLLOWS:
 				return follows_abstractions;
 			case FOLLOWSSTAR:
-				return follows_abstractions; 
+				return follows_star_abstractions; 
 			case PARENT:
 				return parent_abstractions;
 			case PARENTSTAR:
-				return parent_abstractions; 
+				return parent_star_abstractions; 
 			case CALLS:
 				return calls_abstractions;
 			case CALLSSTAR:
-				return calls_abstractions;
+				return calls_star_abstractions;
 			case NEXT:
 				return next_abstractions;
 			default:
@@ -70,8 +73,11 @@ private:
 	static inline shared_ptr<UsesAbstractionStorage> uses_abstractions;
 	static inline shared_ptr<ModifiesAbstractionStorage> modifies_abstractions;
 	static inline shared_ptr<FollowsAbstractionStorage> follows_abstractions;
+	static inline shared_ptr<FollowsStarAbstractionStorage> follows_star_abstractions;
 	static inline shared_ptr<ParentAbstractionStorage> parent_abstractions;
+	static inline shared_ptr<ParentStarAbstractionStorage> parent_star_abstractions;
 	static inline shared_ptr<CallsAbstractionStorage> calls_abstractions;
+	static inline shared_ptr<CallsStarAbstractionStorage> calls_star_abstractions;
 	static inline shared_ptr<NextAbstractionStorage> next_abstractions;
 };
 #endif

@@ -5,40 +5,40 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-StringMap entityStatementData = { {"call", {"1", "2"}}, {"print", {"4"}} };
-StringMap variableData = { {"x", {"1", "2"}}, {"y", {"2", "5", "7"}} };
-StringMap procedureData = { {"proc1", {"1", "2"}}, {"proc2", {"5", "6", "7"}} };
-StringMap constantData = { {"10", {"1"}}, {"HERE", {"4", "7", "10"}} };
-StringMap callProcNameData = { {"2", {"proc1"}}, {"4", {"proc2"}}, {"11", {"proc3"}} };
-StringMap readVarNameData = { {"4", {"x"}}, {"13", {"y"}}, {"21", {"z"}} };
-StringMap printVarNameData = { {"3", {"x"}}, {"7", {"y"}}, {"19", {"z"}} };
+map<string, vector<string>> entityStatementData = { {"call", {"1", "2"}}, {"print", {"4"}} };
+map<string, vector<string>> variableData = { {"x", {"1", "2"}}, {"y", {"2", "5", "7"}} };
+map<string, vector<string>> procedureData = { {"proc1", {"1", "2"}}, {"proc2", {"5", "6", "7"}} };
+map<string, vector<string>> constantData = { {"10", {"1"}}, {"HERE", {"4", "7", "10"}} };
+map<string, vector<string>> callProcNameData = { {"2", {"proc1"}}, {"4", {"proc2"}}, {"11", {"proc3"}} };
+map<string, vector<string>> readVarNameData = { {"4", {"x"}}, {"13", {"y"}}, {"21", {"z"}} };
+map<string, vector<string>> printVarNameData = { {"3", {"x"}}, {"7", {"y"}}, {"19", {"z"}} };
 
-shared_ptr<StringMap> statementMap = make_shared<StringMap>(entityStatementData);
-shared_ptr<StringMap> variableMap = make_shared<StringMap>(variableData);
-shared_ptr<StringMap> procedureMap = make_shared<StringMap>(procedureData);
-shared_ptr<StringMap> constantMap = make_shared<StringMap>(constantData);
-shared_ptr<StringMap> callProcNameMap = make_shared<StringMap>(callProcNameData);
-shared_ptr<StringMap> readVarNameMap = make_shared<StringMap>(readVarNameData);
-shared_ptr<StringMap> printVarNameMap = make_shared<StringMap>(printVarNameData);
+shared_ptr<map<string, vector<string>>> statementMap = make_shared<map<string, vector<string>>>(entityStatementData);
+shared_ptr<map<string, vector<string>>> variableMap = make_shared<map<string, vector<string>>>(variableData);
+shared_ptr<map<string, vector<string>>> procedureMap = make_shared<map<string, vector<string>>>(procedureData);
+shared_ptr<map<string, vector<string>>> constantMap = make_shared<map<string, vector<string>>>(constantData);
+shared_ptr<map<string, vector<string>>> callProcNameMap = make_shared<map<string, vector<string>>>(callProcNameData);
+shared_ptr<map<string, vector<string>>> readVarNameMap = make_shared<map<string, vector<string>>>(readVarNameData);
+shared_ptr<map<string, vector<string>>> printVarNameMap = make_shared<map<string, vector<string>>>(printVarNameData);
 
-StringMap usesData = { {"x", {"main", "3", "6"}} };
-StringMap modifiesData = { {"y", {"main", "8", "proc1", "2"}} };
-StringMap followsStarData = { {"1", {"2", "3", "6", "7"}}, {"2", {"3", "6", "7"}} };
-StringMap followsData = { {"1", {"2"}}, {"2", {"3"}} };
-StringMap parentStarData = { {"10", {"7", "3", "1"}}, {"6", {"5", "1"}} };
-StringMap parentData = { {"10", {"7"}}, {"6", {"5"}} };
-StringMap callsStarData = { {"main", {"proc1", "proc2", "proc3"}}, {"proc1", {"proc2", "proc3"}}, {"proc2", {"proc3"}} };
-StringMap callsData = { {"main", {"proc1"}}, {"proc1", {"proc2"}}, {"proc2", {"proc3"}} };
-StringMap nextDataValid = { {"1", {"2"}}, {"2", {"3"}}, {"3", {"7"}}, {"7", {"1"}}, {"5", {"6"}} };
-StringMap nextDataInvalid = { {"1", {"2", "4"}}, {"2", {"3", "5"}}, {"3", {"7"}}, {"7", {"1"}}, {"5", {"6"}}};
+map<string, vector<string>> usesData = { {"x", {"main", "3", "6"}} };
+map<string, vector<string>> modifiesData = { {"y", {"main", "8", "proc1", "2"}} };
+map<string, vector<string>> followsStarData = { {"1", {"2", "3", "6", "7"}}, {"2", {"3", "6", "7"}} };
+map<string, vector<string>> followsData = { {"1", {"2"}}, {"2", {"3"}} };
+map<string, vector<string>> parentStarData = { {"10", {"7", "3", "1"}}, {"6", {"5", "1"}} };
+map<string, vector<string>> parentData = { {"10", {"7"}}, {"6", {"5"}} };
+map<string, vector<string>> callsStarData = { {"main", {"proc1", "proc2", "proc3"}}, {"proc1", {"proc2", "proc3"}}, {"proc2", {"proc3"}} };
+map<string, vector<string>> callsData = { {"main", {"proc1"}}, {"proc1", {"proc2"}}, {"proc2", {"proc3"}} };
+map<string, vector<string>> nextDataValid = { {"1", {"2"}}, {"2", {"3"}}, {"3", {"7"}}, {"7", {"1"}}, {"5", {"6"}} };
+map<string, vector<string>> nextDataInvalid = { {"1", {"2", "4"}}, {"2", {"3", "5"}}, {"3", {"7"}}, {"7", {"1"}}, {"5", {"6"}}};
 
-shared_ptr<StringMap> usesMap = make_shared<StringMap>(usesData);
-shared_ptr<StringMap> modifiesMap = make_shared<StringMap>(modifiesData);
-shared_ptr<StringMap> followsMap = make_shared<StringMap>(followsStarData);
-shared_ptr<StringMap> parentsMap = make_shared<StringMap>(parentStarData);
-shared_ptr<StringMap> callsMap = make_shared<StringMap>(callsStarData);
-shared_ptr<StringMap> nextMapValid = make_shared<StringMap>(nextDataValid);
-shared_ptr<StringMap> nextMapInvalid = make_shared<StringMap>(nextDataInvalid);
+shared_ptr<map<string, vector<string>>> usesMap = make_shared<map<string, vector<string>>>(usesData);
+shared_ptr<map<string, vector<string>>> modifiesMap = make_shared<map<string, vector<string>>>(modifiesData);
+shared_ptr<map<string, vector<string>>> followsMap = make_shared<map<string, vector<string>>>(followsStarData);
+shared_ptr<map<string, vector<string>>> parentsMap = make_shared<map<string, vector<string>>>(parentStarData);
+shared_ptr<map<string, vector<string>>> callsMap = make_shared<map<string, vector<string>>>(callsStarData);
+shared_ptr<map<string, vector<string>>> nextMapValid = make_shared<map<string, vector<string>>>(nextDataValid);
+shared_ptr<map<string, vector<string>>> nextMapInvalid = make_shared<map<string, vector<string>>>(nextDataInvalid);
 
 
 namespace UnitTesting {
@@ -56,18 +56,12 @@ namespace UnitTesting {
 				PKB::insertor.addEntity(procedureMap, PROCEDURE);
 
 				Assert::IsTrue(compare_vectors(PKB::responder.getAllProcedures(), { "proc1", "proc2" }));
-				// Assert::IsTrue(compare_vectors(PKB::responder.getProcedure("proc1"), { "1", "2" }));
-				// Assert::IsTrue(compare_vectors(PKB::responder.getProcedure("proc2"), { "5", "6", "7" }));
-				// Assert::IsTrue(compare_vectors(PKB::responder.getProcedure("noSuchProc"), {}));
 			}
 
 			TEST_METHOD(TestGetVariables) {
 				PKB::insertor.addEntity(variableMap, VARIABLE);
 
 				Assert::IsTrue(compare_vectors(PKB::responder.getAllVariables(), { "x", "y" }));
-				// Assert::IsTrue(compare_vectors(PKB::responder.getVariable("x"), { "1", "2" }));
-				// Assert::IsTrue(compare_vectors(PKB::responder.getVariable("y"), { "2", "5", "7" }));
-				// Assert::IsTrue(compare_vectors(PKB::responder.getVariable("noSuchVar"), {}));
 				Assert::IsTrue(compare_maps(PKB::responder.getVariableMap(), variableData));
 			}
 
@@ -75,9 +69,6 @@ namespace UnitTesting {
 				PKB::insertor.addEntity(constantMap, CONSTANT);
 
 				Assert::IsTrue(compare_vectors(PKB::responder.getAllConstants(), { "10", "HERE" }));
-				// Assert::IsTrue(compare_vectors(PKB::responder.getConstant("10"), { "1" }));
-				// Assert::IsTrue(compare_vectors(PKB::responder.getConstant("HERE"), { "4", "7", "10" }));
-				// Assert::IsTrue(compare_vectors(PKB::responder.getConstant("noSuchConst"), {}));
 				Assert::IsTrue(compare_maps(PKB::responder.getConstantMap(), constantData));
 			}
 
@@ -118,7 +109,7 @@ namespace UnitTesting {
 			TEST_METHOD(TestGetNextAbstraction) {
 				PKB::insertor.addAbstraction(nextMapInvalid, NEXT);
 				// assert database contains the correct data (truncates to the valid data)
-				StringMap news = PKB::responder.getAbstraction(NEXT); 
+				map<string, vector<string>> news = PKB::responder.getAbstraction(NEXT); 
 				
 				Assert::IsTrue(compare_maps(news, nextDataValid));
 			}

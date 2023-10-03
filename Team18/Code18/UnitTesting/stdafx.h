@@ -14,7 +14,6 @@
 #include <algorithm>
 #include <map>
 #include <cassert>
-#include "DesignExtractor/Entity.h"
 
 using namespace std;
 
@@ -29,7 +28,7 @@ inline bool compare_vectors(vector<string> v1, vector<string> v2) {
     return temp1 == temp2;
 }
 
-inline bool compare_maps(StringMap m1, StringMap m2) {
+inline bool compare_maps(map<string, vector<string>> m1, map<string, vector<string>> m2) {
     if (m1.size() != m2.size()) {
         return false;
     }
@@ -44,12 +43,12 @@ inline bool compare_maps(StringMap m1, StringMap m2) {
     return true;
 }
 
-inline bool compare_vectors_of_maps(vector<StringMap> v1, vector<StringMap> v2) {
+inline bool compare_vectors_of_maps(vector<map<string, vector<string>>> v1, vector<map<string, vector<string>>> v2) {
     if (v1.size() != v2.size()) {
         return false;
     }
-    vector<StringMap> temp1 = v1;
-    vector<StringMap> temp2 = v2;
+    vector<map<string, vector<string>>> temp1 = v1;
+    vector<map<string, vector<string>>> temp2 = v2;
     sort(temp1.begin(), temp1.end());
     sort(temp2.begin(), temp2.end());
     for (size_t i = 0; i < temp1.size(); ++i) {
