@@ -32,7 +32,6 @@ public:
     // Method to extract the uses abstraction
     void extractAbstractions(shared_ptr<ASTNode> astNode) {
         extractDesigns(astNode);
-        reduceProcedureStatementStorageMapToMinMax();
         addProcedureNames();
     }
 
@@ -136,25 +135,6 @@ protected:
         this->procedureStatementStorageMap->at(procedureName).push_back(statementNumber);
     }
 
-     // Method to reduce the procedureStatementStorageMap to two values (min and max)
-    void reduceProcedureStatementStorageMapToMinMax() {
-        for (const auto& [procedureName, statementNumbers] : *this->procedureStatementStorageMap) {
-            int min = stoi(statementNumbers[0]);
-            int max = stoi(statementNumbers[0]);
-            for (const auto& statementNumber : statementNumbers) {
-                if (stoi(statementNumber) < min) {
-                    min = stoi(statementNumber);
-                }
-                if (stoi(statementNumber) > max) {
-                    max = stoi(statementNumber);
-                }
-            }
-            this->procedureStatementStorageMap->at(procedureName).clear();
-            this->procedureStatementStorageMap->at(procedureName).push_back(to_string(min));
-            this->procedureStatementStorageMap->at(procedureName).push_back(to_string(max));
-        }
-    }
-
     // Get the procedure name of a statement number
     string getProcedureName(int statementNumber) {
         for (const auto& [procedureName, statementNumbers] : *this->procedureStatementStorageMap) {
@@ -164,15 +144,17 @@ protected:
         }
     }
 
-    // Method to add procedure names to the abstraction map from reduced ProcedureStatementStorageMap
+    // Method to add procedure names to the abstraction map from ProcedureStatementStorageMap
     void addProcedureNames() {
+        // Add procedure names to the vector for each variable if the statement number is found in the procedureStatementStorageMap
         for (const auto& [variable, values] : *this->AbstractionStorageMap) {
-            for (const auto& [procedureName, statementNumbers] : *this->procedureStatementStorageMap) {
-                if (stoi(values[0]) >= stoi(statementNumbers[0]) && stoi(values[0]) <= stoi(statementNumbers[1])) {
-                    this->AbstractionStorageMap->at(variable).push_back(procedureName);
+            for (const auto& value : values) {
+                string procedureName = getProcedureName(stoi(value));
+                if (procedureName != "") {
+                    insertToAbstractionMap(variable, procedureName);
                 }
             }
-        }        
+        }       
     }
 
 
