@@ -135,6 +135,17 @@ protected:
         this->procedureStatementStorageMap->at(procedureName).push_back(statementNumber);
     }
 
+    // Method to get procedure name from statement number
+    string getProcedureName(int statementNumber) {
+        for (const auto& [procedureName, statementNumbers] : *this->procedureStatementStorageMap) {
+            if (std::find(statementNumbers.begin(), statementNumbers.end(), to_string(statementNumber)) != statementNumbers.end()) {
+                return procedureName;
+            }
+        }
+        std::cerr << "Procedure name not found for statement number: " << statementNumber << std::endl;
+    }
+
+
     // Method to add procedure names to the abstraction map from ProcedureStatementStorageMap
     void addProcedureNames() {
         // Add procedure names to the vector for each variable if the statement number is found in the procedureStatementStorageMap
