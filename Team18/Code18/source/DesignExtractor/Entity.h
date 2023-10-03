@@ -9,8 +9,6 @@
 
 using namespace std;
 
-typedef map<string, vector<string>> StringMap;
-
 class ProcedureEntity;
 class StatementEntity;
 class VariableEntity;
@@ -28,8 +26,8 @@ public:
     virtual ~Entity() = default;
 
     // Method to get the map
-    shared_ptr<StringMap> getMap() {
-      return make_shared<StringMap>(this->EntityStorageMap);
+    shared_ptr<map<string, vector<string>>> getMap() {
+      return make_shared<map<string, vector<string>>>(this->EntityStorageMap);
     }
 
     // Overloaded function for inserting to map with line number
