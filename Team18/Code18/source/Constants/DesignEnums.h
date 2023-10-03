@@ -3,6 +3,10 @@
 
 #include<unordered_set>
 
+using namespace std;
+
+typedef map<string, unordered_set<string>> StringMap;
+
 enum ENTITY {
     STMT,
     READ,
