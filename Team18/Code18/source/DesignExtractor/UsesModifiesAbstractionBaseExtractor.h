@@ -165,10 +165,8 @@ protected:
                     // Add the vector to the original key
                     this->procedureStatementStorageMap->at(procedureName).insert(this->procedureStatementStorageMap->at(procedureName).end(), statementNumbers.begin(), statementNumbers.end());                    
                 }
-            }
-            
+            }   
         }
-          
     }
     
     // Method to add procedure names to the abstraction map from ProcedureStatementStorageMap
