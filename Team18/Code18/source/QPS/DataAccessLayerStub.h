@@ -5,7 +5,7 @@
 #include <string>
 #include <unordered_map>
 #include "../PKB.h"
-#include "../Constants/QPSPKB.h"
+#include "../Constants/DesignEnums.h"
 #include "DataAccessLayer.h"
 #include "../QPS/QueryResultsTable.h"
 #include "../QPS/QueryObjects/ClauseArg.h"

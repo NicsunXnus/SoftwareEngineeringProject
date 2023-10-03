@@ -445,6 +445,60 @@ namespace UnitTesting {
 				// assert database contains the correct data
 				Assert::IsTrue(compare_maps(*db, parentStarData));
 			}
+
+			TEST_METHOD(TestAddCallsAbstractionSuccess) {
+				// Create mock data to insert
+				StringMap callsStarData = { {"main", {"proc1", "proc2", "proc3"}}, {"proc1", {"proc2", "proc3"}}, {"proc2", {"proc3"}} };
+				StringMap callsData = { {"main", {"proc1"}}, {"proc1", {"proc2"}}, {"proc2", {"proc3"}} };
+				shared_ptr<StringMap> toInsert = make_shared<StringMap>(callsStarData);
+
+				// Insertion
+				PKB::insertor.addAbstraction(toInsert, CALLS);
+
+				// Create reference to AbstractionStorage to check database
+				shared_ptr<AbstractionStorage> calls_storage = StorageManager::getAbstractionStorage(CALLS);
+				shared_ptr<StringMap> db = calls_storage->getTruncatedDatabase();
+
+				// assert database contains the correct data (only first element of vector)
+				Assert::IsTrue(compare_maps(*db, callsData));
+			}
+
+			TEST_METHOD(TestAddCallsStarAbstractionSuccess) {
+				// Create mock data to insert
+				StringMap callsStarData = { {"main", {"proc1", "proc2", "proc3"}}, {"proc1", {"proc2", "proc3"}}, {"proc2", {"proc3"}} };
+				shared_ptr<StringMap> toInsert = make_shared<StringMap>(callsStarData);
+
+				// Insertion
+				PKB::insertor.addAbstraction(toInsert, CALLSSTAR);
+
+				// Create reference to AbstractionStorage to check database
+				shared_ptr<AbstractionStorage> calls_storage = StorageManager::getAbstractionStorage(CALLS);
+				shared_ptr<AbstractionStorage> callsstar_storage = StorageManager::getAbstractionStorage(CALLSSTAR);
+
+				// assert that same storage (and database) is used for follows and followsstar
+				Assert::IsTrue(calls_storage == callsstar_storage);
+
+				shared_ptr<StringMap> db = callsstar_storage->getDatabase();
+
+				// assert database contains the correct data
+				Assert::IsTrue(compare_maps(*db, callsStarData));
+			}
+
+			TEST_METHOD(TestAddNextAbstractionSuccess) {
+				// Create mock data to insert
+				StringMap nextDataValid = { {"1", {"2"}}, {"2", {"3"}}, {"3", {"7"}}, {"7", {"1"}} };
+				shared_ptr<StringMap> toInsert = make_shared<StringMap>(nextDataValid);
+
+				// Insertion
+				PKB::insertor.addAbstraction(toInsert, NEXT);
+
+				// Create reference to AbstractionStorage to check database
+				shared_ptr<AbstractionStorage> next_storage = StorageManager::getAbstractionStorage(NEXT);
+				shared_ptr<StringMap> db = next_storage->getDatabase();
+
+				// assert database contains the correct data
+				Assert::IsTrue(compare_maps(*db, nextDataValid));
+			}
 			
 			TEST_METHOD(TestAddZeroAbstractionSuccess) {
 				// Create mock data to insert

@@ -3,7 +3,7 @@
 #define QUERYOBJECT_H
 
 #include "../DataAccessLayer.h"
-#include "../../Constants/QPSPKB.h"
+#include "../../Constants/DesignEnums.h"
 #include "../QueryResultsTable.h"
 #include "../../HelperFunctions.h"
 #include <unordered_map>

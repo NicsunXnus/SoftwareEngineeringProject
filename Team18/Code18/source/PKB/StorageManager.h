@@ -20,27 +20,35 @@ public:
 		this->modifies_abstractions = make_shared<ModifiesAbstractionStorage>();
 		this->follows_abstractions = make_shared<FollowsAbstractionStorage>();
 		this->parent_abstractions = make_shared<ParentAbstractionStorage>();
+		this->calls_abstractions = make_shared<CallsAbstractionStorage>();
+		this->next_abstractions = make_shared<NextAbstractionStorage>();
 	}
 
 	~StorageManager() {}
 
 	static shared_ptr<AbstractionStorage> StorageManager::getAbstractionStorage(const ABSTRACTION abstraction_type) {
-		if (abstraction_type == USES) {
-			return uses_abstractions;
-		}
-		else if (abstraction_type == MODIFIES) {
-			return modifies_abstractions;
-		}
-		else if (abstraction_type == PARENT || abstraction_type == PARENTSTAR) {
-			return parent_abstractions;
-		}
-		else if (abstraction_type == FOLLOWS || abstraction_type == FOLLOWSSTAR) {
-			return follows_abstractions;
-		}
-		else {
-			cerr << "No such abstraction found" << endl;
-			// You may need to return a default value or handle this case accordingly
-			// depending on your program's logic.
+		switch (abstraction_type) {
+			case USES:
+				return uses_abstractions;
+			case MODIFIES:
+				return modifies_abstractions;
+			case FOLLOWS:
+				return follows_abstractions;
+			case FOLLOWSSTAR:
+				return follows_abstractions; 
+			case PARENT:
+				return parent_abstractions;
+			case PARENTSTAR:
+				return parent_abstractions; 
+			case CALLS:
+				return calls_abstractions;
+			case CALLSSTAR:
+				return calls_abstractions;
+			case NEXT:
+				return next_abstractions;
+			default:
+				cerr << "No such abstraction found" << endl;
+				return nullptr;
 		}
 	}
 
@@ -63,5 +71,7 @@ private:
 	static inline shared_ptr<ModifiesAbstractionStorage> modifies_abstractions;
 	static inline shared_ptr<FollowsAbstractionStorage> follows_abstractions;
 	static inline shared_ptr<ParentAbstractionStorage> parent_abstractions;
+	static inline shared_ptr<CallsAbstractionStorage> calls_abstractions;
+	static inline shared_ptr<NextAbstractionStorage> next_abstractions;
 };
 #endif
