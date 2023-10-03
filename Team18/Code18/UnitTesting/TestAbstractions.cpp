@@ -638,30 +638,30 @@ namespace UnitTesting
             {
                   /* The code in mind
                         procedure testprocedure {
-                              x = 10;
+                              x = x;
                               call testprocedure2;
                               call testprocedure3;
                         }
                         procedure testprocedure2 {
-                              y = 10;
+                              y = y;
                         }
                         procedure testprocedure3 {
-                              z = 10;
+                              z = z;
                         }
                   */
                   
                   // Create statement nodes
                   std::shared_ptr<VariableNode> testVariableNode = std::make_shared<VariableNode>("x", 1);
-                  std::shared_ptr<ConstantNode> testConstantNode = std::make_shared<ConstantNode>(10, 1);
-                  std::shared_ptr<AssignNode> testAssignNode = std::make_shared<AssignNode>(1, testVariableNode, testConstantNode);
+                  std::shared_ptr<ConstantNode> testVariableNode4 = std::make_shared<VariableNode>("x", 1);
+                  std::shared_ptr<AssignNode> testAssignNode = std::make_shared<AssignNode>(1, testVariableNode, testVariableNode4);
 
                   std::shared_ptr<VariableNode> testVariableNode2 = std::make_shared<VariableNode>("y", 4);
-                  std::shared_ptr<ConstantNode> testConstantNode2 = std::make_shared<ConstantNode>(10, 4);
-                  std::shared_ptr<AssignNode> testAssignNode2 = std::make_shared<AssignNode>(4, testVariableNode2, testConstantNode2);
+                  std::shared_ptr<ConstantNode> testVariableNode5 = std::make_shared<VariableNode>("y", 4);
+                  std::shared_ptr<AssignNode> testAssignNode2 = std::make_shared<AssignNode>(4, testVariableNode2, testVariableNode5);
 
                   std::shared_ptr<VariableNode> testVariableNode3 = std::make_shared<VariableNode>("z", 5);
-                  std::shared_ptr<ConstantNode> testConstantNode3 = std::make_shared<ConstantNode>(10, 5);
-                  std::shared_ptr<AssignNode> testAssignNode3 = std::make_shared<AssignNode>(5, testVariableNode3, testConstantNode3);
+                  std::shared_ptr<ConstantNode> testVariableNode6 = std::make_shared<VariableNode>("z", 5);
+                  std::shared_ptr<AssignNode> testAssignNode3 = std::make_shared<AssignNode>(5, testVariableNode3, testVariableNode6);
 
                   // Create procedure nodes
                   std::shared_ptr<ProcedureNode> testProcedureNode2 = std::make_shared<ProcedureNode>("testprocedure2", std::vector<std::shared_ptr<StatementNode>>{testAssignNode2});
