@@ -5,41 +5,41 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-map<string, unordered_set<string>> entityStatementData = { {"call", {"1", "2"}}, {"print", {"4"}} };
-map<string, unordered_set<string>> variableData = { {"x", {"1", "2"}}, {"y", {"2", "5", "7"}} };
-map<string, unordered_set<string>> procedureData = { {"proc1", {"1", "2"}}, {"proc2", {"5", "6", "7"}} };
-map<string, unordered_set<string>> constantData = { {"10", {"1"}}, {"HERE", {"4", "7", "10"}} };
-map<string, unordered_set<string>> callProcNameData = { {"2", {"proc1"}}, {"4", {"proc2"}}, {"11", {"proc3"}} };
-map<string, unordered_set<string>> readVarNameData = { {"4", {"x"}}, {"13", {"y"}}, {"21", {"z"}} };
-map<string, unordered_set<string>> printVarNameData = { {"3", {"x"}}, {"7", {"y"}}, {"19", {"z"}} };
+StringMap entityStatementData = { {"call", {"1", "2"}}, {"print", {"4"}} };
+StringMap variableData = { {"x", {"1", "2"}}, {"y", {"2", "5", "7"}} };
+StringMap procedureData = { {"proc1", {"1", "2"}}, {"proc2", {"5", "6", "7"}} };
+StringMap constantData = { {"10", {"1"}}, {"HERE", {"4", "7", "10"}} };
+StringMap callProcNameData = { {"2", {"proc1"}}, {"4", {"proc2"}}, {"11", {"proc3"}} };
+StringMap readVarNameData = { {"4", {"x"}}, {"13", {"y"}}, {"21", {"z"}} };
+StringMap printVarNameData = { {"3", {"x"}}, {"7", {"y"}}, {"19", {"z"}} };
 
-shared_ptr<map<string, unordered_set<string>>> statementMap = make_shared<map<string, unordered_set<string>>>(entityStatementData);
-shared_ptr<map<string, unordered_set<string>>> variableMap = make_shared<map<string, unordered_set<string>>>(variableData);
-shared_ptr<map<string, unordered_set<string>>> procedureMap = make_shared<map<string, unordered_set<string>>>(procedureData);
-shared_ptr<map<string, unordered_set<string>>> constantMap = make_shared<map<string, unordered_set<string>>>(constantData);
-shared_ptr<map<string, unordered_set<string>>> callProcNameMap = make_shared<map<string, unordered_set<string>>>(callProcNameData);
-shared_ptr<map<string, unordered_set<string>>> readVarNameMap = make_shared<map<string, unordered_set<string>>>(readVarNameData);
-shared_ptr<map<string, unordered_set<string>>> printVarNameMap = make_shared<map<string, unordered_set<string>>>(printVarNameData);
+shared_ptr<StringMap> statementMap = make_shared<StringMap>(entityStatementData);
+shared_ptr<StringMap> variableMap = make_shared<StringMap>(variableData);
+shared_ptr<StringMap> procedureMap = make_shared<StringMap>(procedureData);
+shared_ptr<StringMap> constantMap = make_shared<StringMap>(constantData);
+shared_ptr<StringMap> callProcNameMap = make_shared<StringMap>(callProcNameData);
+shared_ptr<StringMap> readVarNameMap = make_shared<StringMap>(readVarNameData);
+shared_ptr<StringMap> printVarNameMap = make_shared<StringMap>(printVarNameData);
 
-map<string, unordered_set<string>> usesData = { {"x", {"main", "3", "6"}} };
-map<string, unordered_set<string>> modifiesData = { {"y", {"main", "8", "proc1", "2"}} };
-map<string, unordered_set<string>> followsStarData = { {"1", {"2", "3", "6", "7"}}, {"2", {"3", "6", "7"}} };
-map<string, unordered_set<string>> followsData = { {"1", {"2"}}, {"2", {"3"}} };
-map<string, unordered_set<string>> parentStarData = { {"10", {"7", "3", "1"}}, {"6", {"5", "1"}} };
-map<string, unordered_set<string>> parentData = { {"10", {"7"}}, {"6", {"5"}} };
-map<string, unordered_set<string>> callsStarData = { {"main", {"proc1", "proc2", "proc3"}}, {"proc1", {"proc2", "proc3"}}, {"proc2", {"proc3"}} };
-map<string, unordered_set<string>> callsData = { {"main", {"proc1"}}, {"proc1", {"proc2"}}, {"proc2", {"proc3"}} };
-map<string, unordered_set<string>> nextData = { {"1", {"2"}}, {"2", {"3"}}, {"3", {"7"}}, {"7", {"1"}}, {"5", {"6"}} };
+StringMap usesData = { {"x", {"main", "3", "6"}} };
+StringMap modifiesData = { {"y", {"main", "8", "proc1", "2"}} };
+StringMap followsStarData = { {"1", {"2", "3", "6", "7"}}, {"2", {"3", "6", "7"}} };
+StringMap followsData = { {"1", {"2"}}, {"2", {"3"}} };
+StringMap parentStarData = { {"10", {"7", "3", "1"}}, {"6", {"5", "1"}} };
+StringMap parentData = { {"10", {"7"}}, {"6", {"5"}} };
+StringMap callsStarData = { {"main", {"proc1", "proc2", "proc3"}}, {"proc1", {"proc2", "proc3"}}, {"proc2", {"proc3"}} };
+StringMap callsData = { {"main", {"proc1"}}, {"proc1", {"proc2"}}, {"proc2", {"proc3"}} };
+StringMap nextData = { {"1", {"2"}}, {"2", {"3"}}, {"3", {"7"}}, {"7", {"1"}}, {"5", {"6"}} };
 
-shared_ptr<map<string, unordered_set<string>>> usesMap = make_shared<map<string, unordered_set<string>>>(usesData);
-shared_ptr<map<string, unordered_set<string>>> modifiesMap = make_shared<map<string, unordered_set<string>>>(modifiesData);
-shared_ptr<map<string, unordered_set<string>>> followsMap = make_shared<map<string, unordered_set<string>>>(followsData);
-shared_ptr<map<string, unordered_set<string>>> followsStarMap = make_shared<map<string, unordered_set<string>>>(followsStarData);
-shared_ptr<map<string, unordered_set<string>>> parentsMap = make_shared<map<string, unordered_set<string>>>(parentData);
-shared_ptr<map<string, unordered_set<string>>> parentsStarMap = make_shared<map<string, unordered_set<string>>>(parentStarData);
-shared_ptr<map<string, unordered_set<string>>> callsMap = make_shared<map<string, unordered_set<string>>>(callsData);
-shared_ptr<map<string, unordered_set<string>>> callsStarMap = make_shared<map<string, unordered_set<string>>>(callsStarData);
-shared_ptr<map<string, unordered_set<string>>> nextMap = make_shared<map<string, unordered_set<string>>>(nextData);
+shared_ptr<StringMap> usesMap = make_shared<StringMap>(usesData);
+shared_ptr<StringMap> modifiesMap = make_shared<StringMap>(modifiesData);
+shared_ptr<StringMap> followsMap = make_shared<StringMap>(followsData);
+shared_ptr<StringMap> followsStarMap = make_shared<StringMap>(followsStarData);
+shared_ptr<StringMap> parentsMap = make_shared<StringMap>(parentData);
+shared_ptr<StringMap> parentsStarMap = make_shared<StringMap>(parentStarData);
+shared_ptr<StringMap> callsMap = make_shared<StringMap>(callsData);
+shared_ptr<StringMap> callsStarMap = make_shared<StringMap>(callsStarData);
+shared_ptr<StringMap> nextMap = make_shared<StringMap>(nextData);
 
 namespace UnitTesting {
 	TEST_CLASS(TestPKBRespondStorageManager) {
