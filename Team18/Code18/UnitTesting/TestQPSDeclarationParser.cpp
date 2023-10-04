@@ -36,15 +36,10 @@ namespace UnitTesting
 			vector<string> test = tokenize("Select v");
 			vector<string_view> testSv{ sToSvVector(test) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
-			try
-			{
-				tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(testSv);
-				Assert::Fail();
-			}
-			catch (const QPSError& ex)
-			{
-				Assert::AreEqual(ex.what(), "No Declaration clause found");
-			}
+
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(testSv);
+			Assert::IsTrue(static_cast<int>(std::get<0>(testObj).size()) == 0);
+
 		}
 
 		TEST_METHOD(TestSplitDeclarationQueryEmptyQuery)
@@ -59,7 +54,7 @@ namespace UnitTesting
 			}
 			catch (const QPSError& ex)
 			{
-				Assert::AreEqual(ex.what(), "No Query or Declaration clause found");
+				Assert::AreEqual(ex.what(), "No Query clause found");
 			}
 
 		}
@@ -169,15 +164,12 @@ namespace UnitTesting
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(testSv);
 
-			try {
-				vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(declarationQuery));
-				Assert::Fail();
-			}
-			catch (const QPSError& ex)
-			{
-				Assert::AreEqual("Repeated synonym declaration", ex.what());
-			}
-
+			vector<shared_ptr<QueryObject>> declarations = p->validateDeclaration(get<0>(declarationQuery));
+			
+			Assert::IsTrue(declarations[0]->getQueryObjectName() == "a");
+			Assert::IsTrue(declarations[1]->getQueryObjectName() == "variable");
+			Assert::IsTrue(declarations[2]->getQueryObjectName() == "v1");
+			Assert::IsTrue(declarations[3]->getQueryObjectName() == "a");
 		}
 
 		TEST_METHOD(TestValidStmtDeclaration)

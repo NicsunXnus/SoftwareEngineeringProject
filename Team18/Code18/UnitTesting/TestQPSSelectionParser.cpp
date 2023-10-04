@@ -12,7 +12,7 @@ using namespace std;
 namespace UnitTesting
 
 {
-	TEST_CLASS(TestQPSSimpleSelectionParser)
+	TEST_CLASS(TestQPSSelectionParser)
 	{
 	public:
 
@@ -140,7 +140,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectUsesStmtQuery)
 		{
-			vector<string> testS = tokenize("assign a; variable v; Select v such that Uses(a, v)");
+			vector<string> testS = tokenize("call a; variable v; Select v such that Uses(a, v)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -173,7 +173,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectUsesEntQuery)
 		{
-			vector<string> testEntRefSyn = tokenize("call c; variable v; Select v such that Uses(c, v)");
+			vector<string> testEntRefSyn = tokenize("constant c; variable v; Select v such that Uses(c, v)");
 			vector<string_view> testEntRefSynSV{ sToSvVector(testEntRefSyn) };
 			shared_ptr<QueryParser> p1 = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testEntRefSynObj = p1->splitDeclarationQuery(testEntRefSynSV);
@@ -184,8 +184,8 @@ namespace UnitTesting
 			const std::type_info& t2 = typeid(UsesObject);
 
 			Assert::IsTrue(typeid(*qo1[1]) == typeid(UsesEntityObject));
-
 			std::shared_ptr<ClauseObject> co1 = std::static_pointer_cast<UsesEntityObject>(qo1[1]);
+
 			Assert::IsTrue(qo1[0]->getQueryObjectName() == "v"sv);
 			Assert::IsTrue(co1->getQueryObjectName() == "Uses"sv
 				&& co1->getArg1()->getArg() == "c"sv
@@ -217,7 +217,6 @@ namespace UnitTesting
 			try {
 				vector<shared_ptr<QueryObject>> qo1 = p1->validateQuery(std::get<1>(testEntRefSynObj));
 				std::shared_ptr<ClauseObject> co1 = std::static_pointer_cast<UsesObject>(qo1[1]);
-				cout << co1->getArg2() << std::endl;
 			}
 			catch (const QPSError& ex)
 			{
@@ -260,7 +259,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectModifiesEntQuery)
 		{
-			vector<string> testEntRefSyn = tokenize("call c; variable v; Select v such that Modifies(c, v)");
+			vector<string> testEntRefSyn = tokenize("constant c; variable v; Select v such that Modifies(c, v)");
 			vector<string_view> testEntRefSynSV{ sToSvVector(testEntRefSyn) };
 			shared_ptr<QueryParser> p1 = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testEntRefSynObj = p1->splitDeclarationQuery(testEntRefSynSV);
@@ -269,8 +268,8 @@ namespace UnitTesting
 
 
 			Assert::IsTrue(typeid(*qo1[1]) == typeid(ModifiesEntityObject));
-
 			std::shared_ptr<ClauseObject> co1 = std::static_pointer_cast<ModifiesEntityObject>(qo1[1]);
+
 			Assert::IsTrue(qo1[0]->getQueryObjectName() == "v"sv);
 			Assert::IsTrue(co1->getQueryObjectName() == "Modifies"sv
 				&& co1->getArg1()->getArg() == "c"sv
@@ -519,59 +518,7 @@ namespace UnitTesting
 				&& co2->getArg2()->isPartialMatchingExprSpec());
 		}
 
-		TEST_METHOD(TestFollowsClauseWithIdent1stArg)
-		{
-			vector<string> tokenizer = tokenize("stmt s, s1; Select s1 such that Follows (\"s\", s1)");
-			vector<string_view> testSv{ sToSvVector(tokenizer) };
-			shared_ptr<QueryParser> p = make_shared<QueryParser>();
-			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(testSv);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
 
-			try {
-				vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
-				Assert::Fail();
-			}
-			catch (const QPSError& ex)
-			{	
-				Assert::AreEqual("SyntaxError", ex.getType());
-			}
-		}
-
-		TEST_METHOD(TestFollowsClauseWithIdent2ndArg)
-		{
-			vector<string> tokenizer = tokenize("stmt s, s1; Select s1 such that Follows (s, \"s1\")");
-			vector<string_view> testSv{ sToSvVector(tokenizer) };
-			shared_ptr<QueryParser> p = make_shared<QueryParser>();
-			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(testSv);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-
-			try {
-				vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
-				Assert::Fail();
-			}
-			catch (const QPSError& ex)
-			{
-				Assert::AreEqual("SyntaxError", ex.getType());
-			}
-		}
-
-		TEST_METHOD(TestEmptyDeclaration)
-		{
-			vector<string> tokenizer = tokenize("Select s");
-			vector<string_view> testSv{ sToSvVector(tokenizer) };
-			shared_ptr<QueryParser> p = make_shared<QueryParser>();
-			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(testSv);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-
-			try {
-				vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
-				Assert::Fail();
-			}
-			catch (const QPSError& ex)
-			{
-				Assert::AreEqual("SemanticError", ex.getType());
-			}
-		}
 
 		TEST_METHOD(TestModifiesWithPrint1stArg)
 		{
@@ -592,22 +539,6 @@ namespace UnitTesting
 		TEST_METHOD(TestUsesWithRead1stArg)
 		{
 			vector<string> tokenizer = tokenize("read s; variable v; Select s such that Uses (s, v)");
-			vector<string_view> testSv{ sToSvVector(tokenizer) };
-			shared_ptr<QueryParser> p = make_shared<QueryParser>();
-			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(testSv);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
-
-			Assert::IsTrue(typeid(*qo[1]) == typeid(UsesObject));
-			std::shared_ptr<ClauseObject> co1 = std::static_pointer_cast<UsesObject>(qo[1]);
-			Assert::IsTrue(co1->getQueryObjectName() == "Uses"sv
-				&& co1->getArg1()->getArg() == "s"sv
-				&& co1->getArg2()->getArg() == "v"sv);
-		}
-
-		TEST_METHOD(TestSemanticAndSyntaxError)
-		{
-			vector<string> tokenizer = tokenize("assign a; variable v; constant c; Select a such that Uses (a, c) pattern a ("8", _)");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(testSv);

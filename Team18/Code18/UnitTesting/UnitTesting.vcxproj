@@ -175,6 +175,7 @@
     <ClCompile Include="TestPKBInsertStorageManager.cpp" />
     <ClCompile Include="TestPKBRespondStorageManager.cpp" />
     <ClCompile Include="TestQPSDriver.cpp" />
+    <ClCompile Include="TestQPSErrorQueries.cpp" />
     <ClCompile Include="TestQPSQueryEval.cpp" />
     <ClCompile Include="TestSimpleTokenizer.cpp" />
     <ClCompile Include="TestToken.cpp" />

@@ -24,7 +24,15 @@ using namespace std;
 class QueryParser  {
 public:
 	QueryParser();
-	
+
+	/*
+	* This function executes the entire parsing process for a pql query
+	* 
+	* @param tokens A tokenized pql query
+	* @return A vector of query objects in the select portion of the pql query
+	*/
+	vector<shared_ptr<QueryObject>> parsePQL(vector<string_view> tokens);
+
 	/*
 	* This function splits the string into two groups: the declaration (variable v, assign a etc..) clause and the query (select...) clause
 	*/
@@ -45,6 +53,8 @@ public:
 	unordered_map<string_view, shared_ptr<QueryObject>> getSynonyms() {
 		return synonyms;
 	}
+
+
 private:
 	// Synonyms declared in the query's declaration statements
 	unordered_map<string_view, shared_ptr<QueryObject>> synonyms;
@@ -55,6 +65,9 @@ private:
 	// Valid relational references
 	std::unordered_set<string_view> relationalReferences
 		{"Follows"sv, "Follows*"sv, "Parent"sv, "Parent*"sv, "Uses"sv, "Modifies"sv};
+
+	// Is set to true if the query contains a semantic error
+	vector<shared_ptr<SemanticErrorException>> semanticErrors;
 
 	int SUCH_THAT_CLAUSE_TOKEN_COUNT{ 6 };
 	int MIN_PATTERN_CLAUSE_TOKEN_COUNT{ 6 };
@@ -89,6 +102,9 @@ private:
 
 	// Creates a pattern clause query object 
 	shared_ptr<QueryObject> createPatternObject(std::vector<string_view>& query, int& index, int tokenCount);
+
+	// Stores semantic errors to be thrown once syntax validation is complete
+	void storeSemanticError(shared_ptr<SemanticErrorException> semanticError);
 };
 
 #endif
