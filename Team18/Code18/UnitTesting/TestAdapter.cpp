@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include <PKB.h>
-#include <Adapter.h>
+#include <PKB/Adapter.h>
 
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;

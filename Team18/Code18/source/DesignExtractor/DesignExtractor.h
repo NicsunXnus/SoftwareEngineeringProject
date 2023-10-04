@@ -14,7 +14,7 @@ using namespace std;
 #include "FollowsAbstractionExtractor.h"
 #include "../AST/ASTNode.h"
 #include "../PKB.h"
-#include "PKB/Adapter.h"
+#include "../PKB/Adapter.h"
 
 
 
