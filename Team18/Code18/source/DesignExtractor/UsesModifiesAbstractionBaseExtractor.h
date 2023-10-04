@@ -32,7 +32,6 @@ public:
     // Method to extract the uses abstraction
     void extractAbstractions(shared_ptr<ASTNode> astNode) {
         extractDesigns(astNode);
-        addStatmentNumbersForCallStatements();
         addProcedureNames();
     }
 
@@ -107,17 +106,6 @@ public:
         }
     }
 
-    // Overriden method to account for the inclusion of call statments
-    void handleCall(std::shared_ptr<CallNode> callNode) override {
-        // Add the procedure name called by the call statement to the vector of the procedure with the call statement
-        int statementNumber = callNode->getStatementNumber();
-        string procedureName = getProcedureName(statementNumber);
-        shared_ptr<ProcedureNode> procedureNode = callNode->getProc();
-        string procedureNameCalled = procedureNode->getName();
-        insertToProcedureStatementStorageMap(procedureName, procedureNameCalled);
-        
-        extractDesigns(procedureNode);
-    }
 
 protected:
     std::shared_ptr<map<string, vector<string>>> AbstractionStorageMap;
@@ -150,30 +138,6 @@ protected:
             }
         }
         std::cerr << "Procedure name not found for statement number: " << statementNumber << std::endl;
-    }
-
-    // Method that checks if any of the vectors of the procedureNames contains another procedureName, if it exists, add the vector of the found procedureName to the original key
-    void addStatmentNumbersForCallStatements() {
-        for (const auto& [procedureName, values] : *this->procedureStatementStorageMap) {
-            vector<string> procedureNamesToBeRemoved = vector<string>();
-            for (const auto& value : values) {
-                // Check if the value is a procedure name
-                if (this->procedureStatementStorageMap->find(value) != this->procedureStatementStorageMap->end()) {
-                    // Get the vector of the found procedureName
-                    vector<string> statementNumbers = this->procedureStatementStorageMap->at(value);
-                    // Add the vector to the original key
-                    this->procedureStatementStorageMap->at(procedureName).insert(this->procedureStatementStorageMap->at(procedureName).end(), statementNumbers.begin(), statementNumbers.end());                    
-                    // add value to the procedureNames vector
-                    procedureNamesToBeRemoved.push_back(value);
-                }
-            }
-            
-            // Remove all procedurenames from the statement numbers vector for each procedureName
-            for (const auto& procedureNameToBeRemoved : procedureNamesToBeRemoved) {
-                this->procedureStatementStorageMap->erase(procedureNameToBeRemoved);
-            }
-            
-        }
     }
     
     // Method to add procedure names to the abstraction map from ProcedureStatementStorageMap
