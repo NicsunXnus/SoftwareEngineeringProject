@@ -155,6 +155,7 @@ protected:
     // Method that checks if any of the vectors of the procedureNames contains another procedureName, if it exists, add the vector of the found procedureName to the original key
     void addStatmentNumbersForCallStatements() {
         for (const auto& [procedureName, values] : *this->procedureStatementStorageMap) {
+            vector<string> procedureNamesToBeRemoved = vector<string>();
             for (const auto& value : values) {
                 // Check if the value is a procedure name
                 if (this->procedureStatementStorageMap->find(value) != this->procedureStatementStorageMap->end()) {
@@ -162,10 +163,16 @@ protected:
                     vector<string> statementNumbers = this->procedureStatementStorageMap->at(value);
                     // Add the vector to the original key
                     this->procedureStatementStorageMap->at(procedureName).insert(this->procedureStatementStorageMap->at(procedureName).end(), statementNumbers.begin(), statementNumbers.end());                    
-                    // Remove the value from the vector
-                    this->procedureStatementStorageMap->at(procedureName).erase(std::remove(this->procedureStatementStorageMap->at(procedureName).begin(), this->procedureStatementStorageMap->at(procedureName).end(), value), this->procedureStatementStorageMap->at(procedureName).end());
+                    // add value to the procedureNames vector
+                    procedureNamesToBeRemoved.push_back(value);
                 }
-            }   
+            }
+            
+            // Remove all procedurenames from the statement numbers vector for each procedureName
+            for (const auto& procedureNameToBeRemoved : procedureNamesToBeRemoved) {
+                this->procedureStatementStorageMap->erase(procedureNameToBeRemoved);
+            }
+            
         }
     }
     
