@@ -103,7 +103,7 @@ public:
         return this->parentProcedureName;
     }
 private:
-    string parentProcedureName;
+    std::string parentProcedureName;
 };
 
 class AssignNode : public StatementNode {
