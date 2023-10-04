@@ -32,21 +32,14 @@ public:
     // Method to extract the uses abstraction
     void extractAbstractions(shared_ptr<ASTNode> astNode) {
         extractDesigns(astNode);
-        addProcedureNames();
-    }
-
-    // Overriden method to store procedure names on top of extraction of designs
-    void handleProcedure(std::shared_ptr<ProcedureNode> procedureNode) override {
-        std::vector<std::shared_ptr<StatementNode>> statements = procedureNode->getStatements();
-        for (const auto& statement : statements) {
-            insertToProcedureStatementStorageMap(procedureNode->getName(), to_string(statement->getStatementNumber()));
-            extractDesigns(statement);
-        }
     }
 
     // Overriden method to store variable name (no default implmentation)
     void handleVariable(std::shared_ptr<VariableNode> variableNode) override {
-        insertToAbstractionMap(variableNode->getValue(), to_string(variableNode->getStatementNumber()));
+        string variableName = variableNode->getValue();
+        string parentProcedure = variableNode->getParentProcedure();
+        insertToAbstractionMap(variableName, to_string(variableNode->getStatementNumber()));
+        insertToAbstractionMap(variableName, parentProcedure);
     }
 
     // Overriden method to store statement numbers of the child of while node
@@ -54,11 +47,9 @@ public:
         preProcessWhileNode(whileNode);
         std::vector<std::shared_ptr<StatementNode>> statements = whileNode->getStatements();
         std::vector<int> nestedStatements = vector<int>();
-        string procedureName = getProcedureName(whileNode->getStatementNumber());
 
         for (const auto& statement : statements) {
             int statementNumber = statement->getStatementNumber();
-            insertToProcedureStatementStorageMap(procedureName, to_string(statementNumber));
 
             // Add the statement number to the vector
             nestedStatements.push_back(statementNumber);
@@ -82,15 +73,13 @@ public:
         std::vector<std::shared_ptr<StatementNode>> elseStatements = ifNode->getElseStatements();
         std::vector<std::shared_ptr<StatementNode>> statements;
         std::vector<int> nestedStatements = vector<int>();
-        string procedureName = getProcedureName(ifNode->getStatementNumber());
 
         statements.insert(statements.end(), ifStatements.begin(), ifStatements.end());
         statements.insert(statements.end(), elseStatements.begin(), elseStatements.end());
         
         for (const auto& statement : statements) {
             int statementNumber = statement->getStatementNumber();
-            insertToProcedureStatementStorageMap(procedureName, to_string(statementNumber));
-
+            
             // Add the statement number to the vector
             nestedStatements.push_back(statementNumber);
             
@@ -109,8 +98,7 @@ public:
 
 protected:
     std::shared_ptr<map<string, vector<string>>> AbstractionStorageMap;
-    std::shared_ptr<map<string, vector<string>>> procedureStatementStorageMap;
-
+    
     virtual void preProcessWhileNode(std::shared_ptr<WhileNode> whileNode) {}
     virtual void preProcessIfNode(std::shared_ptr<IfNode> ifNode) {}
 
@@ -121,38 +109,4 @@ protected:
         }
         this->AbstractionStorageMap->at(key).push_back(value);
     }
-
-    // insert to procedureStatementStorageMap
-    void insertToProcedureStatementStorageMap(string procedureName, string statementNumber) {
-        if (this->procedureStatementStorageMap->find(procedureName) == this->procedureStatementStorageMap->end()) {
-            this->procedureStatementStorageMap->insert({procedureName, vector<string>()});
-        }
-        this->procedureStatementStorageMap->at(procedureName).push_back(statementNumber);
-    }
-
-    // Method to get procedure name from statement number
-    string getProcedureName(int statementNumber) {
-        for (const auto& [procedureName, statementNumbers] : *this->procedureStatementStorageMap) {
-            if (std::find(statementNumbers.begin(), statementNumbers.end(), to_string(statementNumber)) != statementNumbers.end()) {
-                return procedureName;
-            }
-        }
-        std::cerr << "Procedure name not found for statement number: " << statementNumber << std::endl;
-    }
-    
-    // Method to add procedure names to the abstraction map from ProcedureStatementStorageMap
-    void addProcedureNames() {
-        // Add procedure names to the vector for each variable if the statement number is found in the procedureStatementStorageMap
-        for (const auto& [variable, values] : *this->AbstractionStorageMap) {
-            for (const auto& value : values) {
-                for (const auto& [procedureName, statementNumbers] : *this->procedureStatementStorageMap) {
-                    if (std::find(statementNumbers.begin(), statementNumbers.end(), value) != statementNumbers.end()) {
-                        insertToAbstractionMap(variable, procedureName);
-                        break;
-                    }
-                }
-            }
-        }     
-    }
-    
 };
