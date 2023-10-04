@@ -323,10 +323,7 @@ namespace UnitTesting
 			shared_ptr<QueryObject> obj2 = syn.at("a1"sv);
 			Assert::IsTrue(obj1->getQueryObjectName() == "a");
 			Assert::IsTrue(obj2->getQueryObjectName() == "a1");
-
-
 		}
-
 
 	};
 }

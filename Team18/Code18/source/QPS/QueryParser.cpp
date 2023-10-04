@@ -25,16 +25,13 @@ QueryParser::QueryParser() {
 tuple<vector<string_view>, vector<string_view>> QueryParser::splitDeclarationQuery(vector<string_view> words) {
 	vector<string_view> declarations;
 	vector<string_view> query;
-	int indexSemiColon = 0;
+	int indexSemiColon = -1; // start at -1 so all tokens get pushed into query vector in the case of 0 declarations
 	for (int i = words.size() - 1; i >= 0; --i) { // get index of the split, first semicolon from the back
 		string_view current = words[i];
 		if (current == ";") {
 			indexSemiColon = i;
 			break;
 		}
-	}
-	if (indexSemiColon == 0) {
-		throw SyntaxErrorException("No Declaration clause found");
 	}
 	for (int i = 0; i < words.size(); ++i) {
 		string_view current = words[i];
@@ -45,8 +42,8 @@ tuple<vector<string_view>, vector<string_view>> QueryParser::splitDeclarationQue
 		}
 		
 	}
-	if (declarations.size() == 0 || query.size() == 0) {
-		throw SyntaxErrorException("No Query or Declaration clause found");
+	if (query.size() == 0) {
+		throw SyntaxErrorException("No Query clause found");
 	}
 	return make_tuple(declarations, query);
 
@@ -84,6 +81,13 @@ vector<shared_ptr<QueryObject>> QueryParser::validateDeclaration(vector<string_v
 	vector<shared_ptr<QueryObject>> converted;
 	vector<vector<string_view>> splittedDeclarations = splitDeclarations(declarations);
 	int totalDeclarations = splittedDeclarations.size();
+
+	// Check if declarations is empty. If so, return an empty query object
+	int declarationCount = declarations.size();
+	if (declarationCount == 0) {
+		return converted;
+	}
+
 	for (const vector<string_view>declaration : splittedDeclarations) {
 		int size = declaration.size();
 		if (size < 2) { // declarations must contain at least 2 items; design-entity synonym

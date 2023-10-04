@@ -555,6 +555,23 @@ namespace UnitTesting
 			}
 		}
 
+		TEST_METHOD(TestEmptyDeclaration)
+		{
+			vector<string> tokenizer = tokenize("Select s");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(testSv);
+			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SemanticError", ex.getType());
+			}
+		}
 		
 	};
 
