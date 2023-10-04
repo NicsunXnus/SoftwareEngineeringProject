@@ -1,6 +1,3 @@
-#ifndef ADAPTER_H
-#define ADAPTER_H
-
 #pragma once
 #include<stdio.h>
 #include <string>
@@ -10,7 +7,7 @@
 
 using namespace std;
 
-static shared_ptr<map<string, unordered_set<string>>> convertVectorToUnorderedSet(shared_ptr<map<string, vector<string>>> stringMap) const {
+static shared_ptr<map<string, unordered_set<string>>> convertVectorToUnorderedSet(shared_ptr<map<string, vector<string>>> stringMap) {
     shared_ptr<map<string, unordered_set<string>>> resultSet = make_shared<map<string, unordered_set<string>>>();
     for (const auto& pair : *stringMap) {
         const string& key = pair.first;
@@ -26,7 +23,7 @@ static shared_ptr<map<string, unordered_set<string>>> convertVectorToUnorderedSe
 }
 
 // Used to convert the full ParentsStar/FollowsStar maps into the Parents/Follows maps
-static shared_ptr<map<string, unordered_set<string>>> convertParentsFollowsStarToParentsFollows(shared_ptr<map<string, vector<string>>> stringMap) const {
+static shared_ptr<map<string, unordered_set<string>>> convertParentsFollowsStarToParentsFollows(shared_ptr<map<string, vector<string>>> stringMap) {
     shared_ptr<map<string, unordered_set<string>>> resultSet = make_shared<map<string, unordered_set<string>>>();
     for (const auto& pair : *stringMap) {
         const string& key = pair.first;
@@ -36,4 +33,3 @@ static shared_ptr<map<string, unordered_set<string>>> convertParentsFollowsStarT
     }
     return resultSet;
 }
-#endif
