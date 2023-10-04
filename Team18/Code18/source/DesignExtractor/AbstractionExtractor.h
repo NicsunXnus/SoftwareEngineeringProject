@@ -48,7 +48,7 @@ protected:
     void insertToProcedureStatementStorageMap(string procedureName, string statementNumber) {
         // Insert to the map if the procedureName is not found
         if (this->procedureStatementStorageMap->find(procedureName) == this->procedureStatementStorageMap->end()) {
-            this->procedureStatementStorageMap->insert({ procedureName, pair<string, string>() });
+            this->procedureStatementStorageMap->insert({ procedureName, pair<string, string>(to_string(0), to_string(0))});
         }
         // Insert to the first value if the statement number is smaller than the current value
         if (stoi(statementNumber) < stoi(this->procedureStatementStorageMap->at(procedureName).first)) {
