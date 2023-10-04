@@ -18,11 +18,6 @@ using namespace std;
 
 class UsesModifiesAbstractionBaseExtractor : public AbstractionExtractor {
 public:
-    // Method to extract the uses abstraction
-    void extractAbstractions(shared_ptr<ASTNode> astNode) {
-        extractDesigns(astNode);
-    }
-
     // Overriden method to store variable name (no default implmentation)
     void handleVariable(std::shared_ptr<VariableNode> variableNode) override {
         string variableName = variableNode->getValue();

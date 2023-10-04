@@ -21,11 +21,6 @@ public:
     // Method to handle the different types of nodes
     virtual void handleNode(shared_ptr<ProcedureNode> procedureNode, shared_ptr<IfNode> ifNode, shared_ptr<WhileNode> whileNode) = 0;
 
-    // Method to abstract the extraction of designs to line up with the different abstractions
-    void extractAbstractions(shared_ptr<ASTNode> astNode) {
-        extractDesigns(astNode);
-    }
-
     // Overriden method to extract the necessary designs 
     void extractDesigns(shared_ptr<ASTNode> astNode) override {
         auto programNode = std::dynamic_pointer_cast<ProgramNode>(astNode);

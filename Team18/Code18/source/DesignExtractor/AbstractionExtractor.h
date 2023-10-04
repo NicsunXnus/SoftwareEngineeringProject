@@ -26,6 +26,11 @@ public:
     }
 
     // Method to abstract the extraction of designs to line up with the different abstractions
+    void extractAbstractions(shared_ptr<ASTNode> astNode) {
+        extractDesigns(astNode);
+    }
+
+    // Method to abstract the extraction of designs to line up with the different abstractions
     void handleProcedure(std::shared_ptr<ProcedureNode> procedureNode) override {
         string procedureName = procedureNode->getName();
         std::vector<std::shared_ptr<StatementNode>> statements = procedureNode->getStatements();
