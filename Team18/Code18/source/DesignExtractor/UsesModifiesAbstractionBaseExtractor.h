@@ -85,7 +85,7 @@ public:
         // Create CallsAbstractionExtractor to extract the Calls abstraction
         shared_ptr<CallsAbstractionExtractor> callsAbstractionExtractor = make_shared<CallsAbstractionExtractor>();
         callsAbstractionExtractor->extractAbstractions(astNode);
-        shared_ptr<map<string, vector<string>>> callsAbstractionMap = callsAbstractionExtractor->getAbstractionStorageMap();
+        shared_ptr<map<string, vector<string>>> callsAbstractionMap = callsAbstractionExtractor->getStorageMap();
 
         extractDesigns(astNode);
         processIndirectProcedureCalls(callsAbstractionMap);
