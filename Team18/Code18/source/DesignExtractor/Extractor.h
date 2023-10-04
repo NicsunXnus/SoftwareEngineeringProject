@@ -21,7 +21,7 @@ public:
     virtual void extractDesigns(shared_ptr<ASTNode> astNode) {
         // Extract the designs based on the type of astNode
         if (auto programNode = std::dynamic_pointer_cast<ProgramNode>(astNode)) {
-            preProcessProgramNode();
+            preProcessProgramNode(programNode);
             handleProgram(programNode);
         } 
         else if (auto procedureNode = std::dynamic_pointer_cast<ProcedureNode>(astNode)) {
@@ -189,7 +189,7 @@ public:
     // Methods to be overriden if additional functionality is needed
     virtual void handleVariable(std::shared_ptr<VariableNode> variableNode) {}
     virtual void handleConstant(std::shared_ptr<ConstantNode> constantNode) {}
-    virtual void preProcessProgramNode() {}
+    virtual void preProcessProgramNode(std::shared_ptr<ProgramNode> programNode) {}
     virtual void preProcessProcedureNode(std::shared_ptr<ProcedureNode> procedureNode) {}
     virtual void preProcessStatementNode(std::shared_ptr<StatementNode> statementNode) {}
     virtual void handleCall(std::shared_ptr<CallNode> callNode) {}

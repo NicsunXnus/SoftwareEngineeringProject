@@ -34,7 +34,7 @@ public:
     void preProcessProgramNode(shared_ptr<ProgramNode> programNode) override {
         vector<shared_ptr<ProcedureNode>> procedures = programNode->getProcedures();
         for (const auto& procedure : procedures) {
-            string procedureName = procedure->getProcedureName();
+            string procedureName = procedure->getName();
             insertStatementsToProcedureStatementStorageMap(procedureName, procedure);
         }
     }
