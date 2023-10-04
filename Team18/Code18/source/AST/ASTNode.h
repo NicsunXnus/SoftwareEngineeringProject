@@ -95,9 +95,15 @@ class StatementNode: public ASTNode {
 public:
     StatementNode(std::string name, int statementNumber)
     : ASTNode(std::move(name), statementNumber) {
-
+    }
+    void setParentProcedure(std::string parentProcedure) {
+        this->parentProcedureName = parentProcedure;
+    }
+    std::string getParentProcedure() const {
+        return this->parentProcedureName;
     }
 private:
+    string parentProcedureName;
 };
 
 class AssignNode : public StatementNode {
