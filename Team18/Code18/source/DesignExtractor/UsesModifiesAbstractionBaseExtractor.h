@@ -9,6 +9,7 @@ using namespace std;
 
 #include "../AST/ASTNode.h"
 #include "Extractor.h"
+#include "AbstractionExtractor.h"
 
 /*
  * This class is the base class for the Uses and Modifies Abstraction extractors
@@ -16,17 +17,10 @@ using namespace std;
  * Override the relevant methods to implement the different abstractions
  */
 
-class UsesModifiesAbstractionBaseExtractor : public Extractor {
+class UsesModifiesAbstractionBaseExtractor : public AbstractionExtractor {
 public:
     // Constructor
     UsesModifiesAbstractionBaseExtractor() {
-        this->AbstractionStorageMap = std::make_shared<map<string, vector<string>>>();
-        this->procedureStatementStorageMap = std::make_shared<map<string, vector<string>>>();
-    }
-
-    // Gets the map of the abstraction
-    std::shared_ptr<map<string, vector<string>>> getStorageMap() {
-        return this->AbstractionStorageMap;
     }
 
     // Method to extract the uses abstraction
@@ -97,16 +91,7 @@ public:
 
 
 protected:
-    std::shared_ptr<map<string, vector<string>>> AbstractionStorageMap;
-    
     virtual void preProcessWhileNode(std::shared_ptr<WhileNode> whileNode) {}
     virtual void preProcessIfNode(std::shared_ptr<IfNode> ifNode) {}
 
-    // Inserts a key and value into the map
-    void insertToAbstractionMap(string key, string value) {
-        if (this->AbstractionStorageMap->find(key) == this->AbstractionStorageMap->end()) {
-            this->AbstractionStorageMap->insert({ key, vector<string>() });
-        }
-        this->AbstractionStorageMap->at(key).push_back(value);
-    }
 };
