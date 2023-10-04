@@ -6,9 +6,10 @@
 #include "ClauseObject.h"
 #include "QueryObjectFactory.h"
 
-
 class ClauseObjectFactory : public QueryObjectFactory {
-private:
+protected:
+	const unordered_set<ENTITY> validStmtEntities{ STMT, READ, PRINT, ASSIGN, CALL, WHILE, IF };
+	const unordered_set<ENTITY> validOtherEntities{ PROCEDURE, VARIABLE, CONSTANT };
 
 public:
 	ClauseObjectFactory() : QueryObjectFactory{} {}
@@ -52,9 +53,6 @@ public:
 			throw SyntaxErrorException("Syntax error: Error in validating the clause for Uses");
 		}
 	}
-private:
-	const unordered_set<ENTITY> validStmtEntities{ PRINT, WHILE, IF, ASSIGN, STMT };
-	const unordered_set<ENTITY> validOtherEntities{ CALL, PROCEDURE };
 };
 
 /*
@@ -95,9 +93,6 @@ public:
 			throw SyntaxErrorException("Syntax error: Error in validating the clause for Modifies");
 		}
 	}
-private:
-	const unordered_set<ENTITY> validStmtEntities{ READ, WHILE, IF, ASSIGN, STMT };
-	const unordered_set<ENTITY> validOtherEntities{ CALL, PROCEDURE };
 
 };
 
@@ -132,8 +127,6 @@ public:
 			 }
 		}
 	}
-private:
-	const unordered_set<ENTITY> validStmtEntities{ STMT, READ, PRINT, CALL, WHILE, IF, ASSIGN };
 
 };
 
@@ -168,8 +161,6 @@ public:
 			}
 		}
 	}
-private:
-	const unordered_set<ENTITY> validStmtEntities{ STMT, READ, PRINT, CALL, WHILE, IF, ASSIGN };
 
 };
 
@@ -206,8 +197,6 @@ public:
 			}
 		}
 	}
-private:
-	const unordered_set<ENTITY> validStmtEntities{ STMT, READ, PRINT, CALL, WHILE, IF, ASSIGN };
 
 };
 
@@ -245,8 +234,6 @@ public:
 			}
 		}
 	}
-private:
-	const unordered_set<ENTITY> validStmtEntities{ STMT, READ, PRINT, CALL, WHILE, IF, ASSIGN };
 
 };
 
@@ -260,8 +247,8 @@ public:
 	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> arg1 = arguments[0];
 		shared_ptr<ClauseArg> arg2 = arguments[1];
-		bool isArg1SynonymEntRef{ arg1->isSynonym() && (validEntEntities.find(arg1->getSynonym()->getEntityType()) != validEntEntities.end()) };
-		bool isArg2SynonymEntRef{ arg2->isSynonym() && (validEntEntities.find(arg2->getSynonym()->getEntityType()) != validEntEntities.end()) };
+		bool isArg1SynonymEntRef{ arg1->isSynonym() && (validOtherEntities.find(arg1->getSynonym()->getEntityType()) != validOtherEntities.end()) };
+		bool isArg2SynonymEntRef{ arg2->isSynonym() && (validOtherEntities.find(arg2->getSynonym()->getEntityType()) != validOtherEntities.end()) };
 
 		bool isArg1ValidEntRef{ isArg1SynonymEntRef || arg1->isIdentifier() || arg1->isWildcard() };
 		bool isArg2ValidEntRef{ isArg2SynonymEntRef || arg2->isIdentifier() || arg2->isWildcard() };
@@ -282,8 +269,6 @@ public:
 			}
 		}
 	}
-private:
-	const unordered_set<ENTITY> validEntEntities{ PROCEDURE };
 };
 
 /*
@@ -296,8 +281,8 @@ public:
 	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> arg1 = arguments[0];
 		shared_ptr<ClauseArg> arg2 = arguments[1];
-		bool isArg1SynonymEntRef{ arg1->isSynonym() && (validEntEntities.find(arg1->getSynonym()->getEntityType()) != validEntEntities.end()) };
-		bool isArg2SynonymEntRef{ arg2->isSynonym() && (validEntEntities.find(arg2->getSynonym()->getEntityType()) != validEntEntities.end()) };
+		bool isArg1SynonymEntRef{ arg1->isSynonym() && (validOtherEntities.find(arg1->getSynonym()->getEntityType()) != validOtherEntities.end()) };
+		bool isArg2SynonymEntRef{ arg2->isSynonym() && (validOtherEntities.find(arg2->getSynonym()->getEntityType()) != validOtherEntities.end()) };
 
 		bool isArg1ValidEntRef{ isArg1SynonymEntRef || arg1->isIdentifier() || arg1->isWildcard() };
 		bool isArg2ValidEntRef{ isArg2SynonymEntRef || arg2->isIdentifier() || arg2->isWildcard() };
@@ -318,8 +303,6 @@ public:
 			}
 		}
 	}
-private:
-	const unordered_set<ENTITY> validEntEntities{ PROCEDURE };
 };
 
 /*
@@ -356,8 +339,6 @@ public:
 			}
 		}
 	}
-private:
-	const unordered_set<ENTITY> validStmtEntities{ STMT, READ, PRINT, CALL, WHILE, IF, ASSIGN };
 
 };
 
@@ -395,8 +376,6 @@ public:
 			}
 		}
 	}
-private:
-	const unordered_set<ENTITY> validStmtEntities{ STMT, READ, PRINT, CALL, WHILE, IF, ASSIGN };
 
 };
 
@@ -432,8 +411,6 @@ public:
 			}
 		}
 	}
-private:
-	const unordered_set<ENTITY> validStmtEntities{ ASSIGN };
 };
 
 #endif

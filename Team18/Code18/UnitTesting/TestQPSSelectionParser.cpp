@@ -572,7 +572,54 @@ namespace UnitTesting
 				Assert::AreEqual("SemanticError", ex.getType());
 			}
 		}
-		
+
+		TEST_METHOD(TestModifiesWithPrint1stArg)
+		{
+			vector<string> tokenizer = tokenize("print s; variable v; Select s such that Modifies (s, v)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(testSv);
+			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+
+			Assert::IsTrue(typeid(*qo[1]) == typeid(ModifiesObject));
+			std::shared_ptr<ClauseObject> co1 = std::static_pointer_cast<ModifiesObject>(qo[1]);
+			Assert::IsTrue(co1->getQueryObjectName() == "Modifies"sv
+				&& co1->getArg1()->getArg() == "s"sv
+				&& co1->getArg2()->getArg() == "v"sv);
+		}
+
+		TEST_METHOD(TestUsesWithRead1stArg)
+		{
+			vector<string> tokenizer = tokenize("read s; variable v; Select s such that Uses (s, v)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(testSv);
+			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+
+			Assert::IsTrue(typeid(*qo[1]) == typeid(UsesObject));
+			std::shared_ptr<ClauseObject> co1 = std::static_pointer_cast<UsesObject>(qo[1]);
+			Assert::IsTrue(co1->getQueryObjectName() == "Uses"sv
+				&& co1->getArg1()->getArg() == "s"sv
+				&& co1->getArg2()->getArg() == "v"sv);
+		}
+
+		TEST_METHOD(TestSemanticAndSyntaxError)
+		{
+			vector<string> tokenizer = tokenize("assign a; variable v; constant c; Select a such that Uses (a, c) pattern a ("8", _)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(testSv);
+			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+
+			Assert::IsTrue(typeid(*qo[1]) == typeid(UsesObject));
+			std::shared_ptr<ClauseObject> co1 = std::static_pointer_cast<UsesObject>(qo[1]);
+			Assert::IsTrue(co1->getQueryObjectName() == "Uses"sv
+				&& co1->getArg1()->getArg() == "s"sv
+				&& co1->getArg2()->getArg() == "v"sv);
+		}
 	};
 
 }
