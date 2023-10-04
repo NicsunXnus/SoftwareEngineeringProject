@@ -2,6 +2,7 @@
 #define DATAACCESSLAYER_H
 
 #include <vector>
+#include<unordered_set>
 #include <string>
 #include <unordered_map>
 #include "../PKB.h"
@@ -29,16 +30,16 @@ public:
 	~DataAccessLayer() {};
 
 	/* For Design Entities */
-	virtual vector<string> getEntity(ENTITY type);
-	virtual vector<string> getAllProcedures();
-	virtual vector<string> getAllVariables();
-	virtual vector<string> getAllConstants();
+	virtual unordered_set<string> getEntity(ENTITY type);
+	virtual unordered_set<string> getAllProcedures();
+	virtual unordered_set<string> getAllVariables();
+	virtual unordered_set<string> getAllConstants();
 
 	/* For Patterns (Milestone 1) */
-	virtual map<string, vector<string>> getVariableMap();
-	virtual map<string, vector<string>> getConstantMap();
+	virtual map<string, unordered_set<string>> getVariableMap();
+	virtual map<string, unordered_set<string>> getConstantMap();
 
 	/* For Design Abstractions / Clauses */
-	virtual map<string, vector<string>> DataAccessLayer::getClause(ABSTRACTION abstraction);
+	virtual StringMap DataAccessLayer::getClause(ABSTRACTION abstraction);
 };
 #endif

@@ -23,7 +23,7 @@ public:
     }
 
     //Constructor for empty table creation
-    QueryResultsTable() {}
+    QueryResultsTable() : isSignificant(false) {}
 
     // get number of rows in rable
     int getNumberOfRows() {
@@ -282,6 +282,62 @@ public:
         shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>(columns);
         return table;
     }
+
+    /**
+     * A static method that creates a new QueryResultsTable object with a single column.
+     *
+     * @param header The header of the column, represented as a string.
+     * @param columnValues An unordered set of strings representing the values in the column.
+     *                     The vector should have the same length for all columns in the table.
+     * @return A shared_ptr to the newly created QueryResultsTable object.
+     */
+    static shared_ptr<QueryResultsTable> createTable(string header, unordered_set<string> columnValues) {
+        map<string, vector<string>> column;
+        vector<string> vectorFromSet(columnValues.begin(), columnValues.end());
+        column[header] = vectorFromSet;
+        vector<map<string, vector<string>>> columns;
+        columns.emplace_back(column);
+        shared_ptr<QueryResultsTable> singleColTable = make_shared<QueryResultsTable>(columns);
+        return singleColTable;
+    }
+
+    /**
+     * A static method that flattens a map into a table of two columns, left column representing the key and right column representing the values
+     *
+     * @param headers A vector of strings representing the headers of the table to be created.
+     * @param columnValues A map of a string to a vector of strings representing the unflattened map.
+     * @return A shared pointer to the newly created QueryResultsTable object.
+    */
+    static shared_ptr<QueryResultsTable> createTable(vector<string> headers, map<string, unordered_set<string>> columnValues) {
+        vector<map<string, vector<string>>> columns;
+        map<string, vector<string>> col1;
+        map<string, vector<string>> col2;
+        vector<string> colContent1;
+        vector<string> colContent2;
+        for (const auto& entry : columnValues) {
+            string leftTuple = entry.first;
+            for (string rightTuple : entry.second) {
+                colContent1.emplace_back(leftTuple);
+                colContent2.emplace_back(rightTuple);
+            }
+        }
+        //Start of check for error
+        if (colContent1.size() != colContent2.size()) {
+            cerr << "Table cannot contain columns of different row length!";
+            return make_shared<QueryResultsTable>();
+        }
+        //End of Check for error
+        col1[headers[0]] = colContent1;
+        col2[headers[1]] = colContent2;
+
+        columns.emplace_back(col1);
+        columns.emplace_back(col2);
+
+        shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>(columns);
+        return table;
+    }
+
+    
 
     /**
      * A static method that creates a new QueryResultsTable object with the provided headers and column values.

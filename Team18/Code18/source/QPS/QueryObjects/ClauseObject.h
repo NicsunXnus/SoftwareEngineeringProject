@@ -147,15 +147,8 @@ public:
 	};
 
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
-		map<string, vector<string>> PKBdata = dataAccessLayer->getClause(USES);
-		vector<string> headers;
-		headers.push_back(col1);
-		headers.push_back(col2);
-		// create table with temporary name table headers: col1, col2
-		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
-		shared_ptr<QueryResultsTable> filterFirstArg = filterStmtRef(getArg1(), col2, table, dataAccessLayer, synonyms);
-		shared_ptr<QueryResultsTable> filterSecondArg = filterEntRef(getArg2(), col1, filterFirstArg, dataAccessLayer, synonyms);
-		return filterSecondArg;
+		StringMap PKBdata = dataAccessLayer->getClause(USES);
+		return make_shared<QueryResultsTable>();
 	}
 
 	
@@ -171,15 +164,8 @@ public:
 	};
 
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
-		map<string, vector<string>> PKBdata = dataAccessLayer->getClause(USES);
-		vector<string> headers;
-		headers.push_back(col1);
-		headers.push_back(col2);
-		// create table with temporary name table headers: col1, col2
-		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
-		shared_ptr<QueryResultsTable> filterFirstArg = filterEntRef(getArg1(), col2, table, dataAccessLayer, synonyms);
-		shared_ptr<QueryResultsTable> filterSecondArg = filterEntRef(getArg2(), col1, filterFirstArg, dataAccessLayer, synonyms);
-		return filterSecondArg;
+		StringMap PKBdata = dataAccessLayer->getClause(USES);
+		return make_shared<QueryResultsTable>();
 	}
 
 };
@@ -193,15 +179,8 @@ public:
 		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
-		map<string, vector<string>> PKBdata = dataAccessLayer->getClause(MODIFIES);
-		vector<string> headers;
-		headers.push_back(col1);
-		headers.push_back(col2);
-		// create table with temporary name table headers: col1, col2
-		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
-		shared_ptr<QueryResultsTable> filterFirstArg = filterStmtRef(getArg1(), col2, table, dataAccessLayer, synonyms);
-		shared_ptr<QueryResultsTable> filterSecondArg = filterEntRef(getArg2(), col1, filterFirstArg, dataAccessLayer, synonyms);
-		return filterSecondArg;
+		StringMap PKBdata = dataAccessLayer->getClause(MODIFIES);
+		return make_shared<QueryResultsTable>();
 	}
 
 
@@ -217,20 +196,86 @@ public:
 		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
-		map<string, vector<string>> PKBdata = dataAccessLayer->getClause(MODIFIES);
-		vector<string> headers;
-		headers.push_back(col1);
-		headers.push_back(col2);
-		// create table with temporary name table headers: col1, col2
-		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
-		shared_ptr<QueryResultsTable> filterFirstArg = filterEntRef(getArg1(), col2, table, dataAccessLayer, synonyms);
-		shared_ptr<QueryResultsTable> filterSecondArg = filterEntRef(getArg2(), col1, filterFirstArg, dataAccessLayer, synonyms);
-		return filterSecondArg;
+		StringMap PKBdata = dataAccessLayer->getClause(MODIFIES);
+		return make_shared<QueryResultsTable>();
 	}
 
 
 
 };
+
+inline StringMap handleSynonymKeyColumn(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
+	ENTITY typeArg1 = arg->getSynonym()->getEntityType();
+	unordered_set<string> PKBArg1EntityData = dataAccessLayer->getEntity(typeArg1);
+	StringMap filteredPKBClauseData;
+	for (const auto& entry : PKBClauseData) {
+		string leftTuple = entry.first;
+		auto it = PKBArg1EntityData.find(leftTuple);
+		if (it != PKBArg1EntityData.end()) {
+			filteredPKBClauseData[entry.first] = entry.second;
+		}
+	}
+	return filteredPKBClauseData;
+}
+
+inline StringMap handleSynonymSetColumn(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
+	ENTITY typeArg2 = arg->getSynonym()->getEntityType();
+	unordered_set<string> PKBArg2EntityData = dataAccessLayer->getEntity(typeArg2);
+	StringMap filteredPKBClauseData;
+	for (const auto& entry : PKBClauseData) {
+		unordered_set<string> intersection;
+		unordered_set<string> rightTuple = entry.second;
+		for (const string& element : rightTuple) {
+			if (PKBArg2EntityData.find(element) != PKBArg2EntityData.end()) {
+				intersection.insert(element);
+			}
+		}
+		filteredPKBClauseData[entry.first] = intersection;
+	}
+	return filteredPKBClauseData;
+}
+
+
+inline unordered_set<string> handleSynonymSet(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, unordered_set<string> PKBClauseData) {
+	ENTITY typeArg2 = arg->getSynonym()->getEntityType();
+	unordered_set<string> PKBArg2EntityData = dataAccessLayer->getEntity(typeArg2);
+	unordered_set<string> filteredPKBClauseData;
+	for (const std::string& element : PKBClauseData) {
+		if (PKBArg2EntityData.find(element) != PKBArg2EntityData.end()) {
+			filteredPKBClauseData.insert(element);
+		}
+	}
+	return filteredPKBClauseData;
+}
+// used for int, anything or anything, int
+inline unordered_set<string> handleIntegerKeyColumn(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
+	unordered_set<string> filteredPKBClauseData;
+	auto it = PKBClauseData.find(svToString(arg->getArg()));
+	if (it != PKBClauseData.end()) { // integer found in database
+		return PKBClauseData[svToString(arg->getArg())];
+	}
+	return filteredPKBClauseData;
+}
+
+inline bool handleIntegerSet(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, unordered_set<string> PKBClauseData) {
+	auto it = PKBClauseData.find(svToString(arg->getArg()));
+	if (it != PKBClauseData.end()) { // integer found in database
+		return true;
+	}
+	
+	return false;
+}
+
+inline unordered_set<string> handleWildCardDropSetColumn(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
+	unordered_set<string> keySet;
+
+	// Extract keys from the map and insert them into the set
+	for (const auto& pair : PKBClauseData) {
+		keySet.insert(pair.first);
+	}
+	return keySet;
+}
+
 
 /*
 * This class represents a Query object, for clause Follows
@@ -241,15 +286,71 @@ public:
 		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
-		map<string, vector<string>> PKBdata = dataAccessLayer->getClause(FOLLOWS);
-		vector<string> headers;
-		headers.push_back(col1);
-		headers.push_back(col2);
-		// create table with temporary name table headers: col1, col2
-		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
-		shared_ptr<QueryResultsTable> filterFirstArg = filterStmtRef(getArg1(), col1, table, dataAccessLayer, synonyms);
-		shared_ptr<QueryResultsTable> filterSecondArg = filterStmtRef(getArg2(), col2, filterFirstArg, dataAccessLayer, synonyms);
-		return filterSecondArg;
+		// 9 cases, for the types of arguments
+		shared_ptr<ClauseArg> arg1 = getArg1();
+		shared_ptr<ClauseArg> arg2 = getArg2();
+		if (arg1->isSynonym() && arg2->isSynonym()) {
+			if (arg1->getArg() == arg2->getArg()) {
+				return make_shared<QueryResultsTable>();
+			}
+			StringMap PKBClauseData = dataAccessLayer->getClause(FOLLOWS);
+
+			StringMap filteredPKBClauseDataArg1 = handleSynonymKeyColumn(arg1, dataAccessLayer, PKBClauseData);
+			StringMap filteredPKBClauseDataArg2 = handleSynonymSetColumn(arg2, dataAccessLayer, filteredPKBClauseDataArg1);
+
+			vector<string> headers({ svToString(arg1->getArg()), svToString(arg2->getArg()) });
+			return QueryResultsTable::createTable(headers, filteredPKBClauseDataArg2);
+		}
+		else if (arg1->isSynonym() && arg2->isInteger()) {
+			// wait for inverse map
+		}
+		else if (arg2->isSynonym() && arg1->isInteger()) {
+			StringMap PKBClauseData = dataAccessLayer->getClause(FOLLOWS);
+
+			unordered_set<string> filteredPKBClauseDataArg1 = handleIntegerKeyColumn(arg1, dataAccessLayer, PKBClauseData);
+			unordered_set<string> filteredPKBClauseDataArg2 = handleSynonymSet(arg2, dataAccessLayer, filteredPKBClauseDataArg1);
+
+			return QueryResultsTable::createTable(svToString(arg2->getArg()), filteredPKBClauseDataArg2);
+
+		}
+		else if (arg1->isSynonym() && arg2->isWildcard()) {
+			StringMap PKBClauseData = dataAccessLayer->getClause(FOLLOWS);
+			StringMap filteredPKBClauseDataArg1 = handleSynonymKeyColumn(arg1, dataAccessLayer, PKBClauseData);
+			unordered_set<string> filteredPKBClauseDataArg2 = handleWildCardDropSetColumn(arg2, dataAccessLayer, filteredPKBClauseDataArg1);
+			return QueryResultsTable::createTable(svToString(arg1->getArg()), filteredPKBClauseDataArg2);
+		}
+		else if (arg2->isSynonym() && arg1->isWildcard()) {
+			// need inverse map
+		}
+		else if (arg1->isInteger() && arg2->isWildcard()) {
+			StringMap PKBClauseData = dataAccessLayer->getClause(FOLLOWS);
+
+			unordered_set<string> filteredPKBClauseDataArg1 = handleIntegerKeyColumn(arg1, dataAccessLayer, PKBClauseData);
+			shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>();
+			table->setSignificant(filteredPKBClauseDataArg1.size() > 0);
+			return table;
+		}
+		else if (arg2->isInteger() && arg1->isWildcard()) {
+			// need inverse map
+		}
+		else if (arg1->isInteger() && arg2->isInteger()) {
+			StringMap PKBClauseData = dataAccessLayer->getClause(FOLLOWS);
+
+			unordered_set<string> filteredPKBClauseDataArg1 = handleIntegerKeyColumn(arg1, dataAccessLayer, PKBClauseData);
+			bool filteredPKBClauseDataArg2 = handleIntegerSet(arg2, dataAccessLayer, filteredPKBClauseDataArg1);
+			shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>();
+			table->setSignificant(filteredPKBClauseDataArg2);
+			return table;
+		}
+		else { // wildcard, wildcard
+			StringMap PKBClauseData = dataAccessLayer->getClause(FOLLOWS);
+			shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>();
+			table->setSignificant(PKBClauseData.size() > 0);
+			return table;
+		}
+		
+
+		return make_shared<QueryResultsTable>();
 	}
 
 
@@ -264,15 +365,8 @@ public:
 		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
-		map<string, vector<string>> PKBdata = dataAccessLayer->getClause(FOLLOWSSTAR);
-		vector<string> headers;
-		headers.push_back(col1);
-		headers.push_back(col2);
-		// create table with temporary name table headers: col1, col2
-		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
-		shared_ptr<QueryResultsTable> filterFirstArg = filterStmtRef(getArg1(), col1, table, dataAccessLayer, synonyms);
-		shared_ptr<QueryResultsTable> filterSecondArg = filterStmtRef(getArg2(), col2, filterFirstArg, dataAccessLayer, synonyms);
-		return filterSecondArg;
+		StringMap PKBdata = dataAccessLayer->getClause(FOLLOWSSTAR);
+		return make_shared<QueryResultsTable>();
 	}
 
 };
@@ -286,15 +380,8 @@ public:
 		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
-		map<string, vector<string>> PKBdata = dataAccessLayer->getClause(PARENT);
-		vector<string> headers;
-		headers.push_back(col1);
-		headers.push_back(col2);
-		// create table with temporary name table headers: col1, col2
-		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
-		shared_ptr<QueryResultsTable> filterFirstArg = filterStmtRef(getArg1(), col2, table, dataAccessLayer, synonyms);
-		shared_ptr<QueryResultsTable> filterSecondArg = filterStmtRef(getArg2(), col1, filterFirstArg, dataAccessLayer, synonyms);
-		return filterSecondArg;
+		StringMap PKBdata = dataAccessLayer->getClause(PARENT);
+		return make_shared<QueryResultsTable>();
 	}
 
 };
@@ -308,15 +395,8 @@ public:
 		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
-		map<string, vector<string>> PKBdata = dataAccessLayer->getClause(PARENTSTAR);
-		vector<string> headers;
-		headers.push_back(col1);
-		headers.push_back(col2);
-		// create table with temporary name table headers: col1, col2
-		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
-		shared_ptr<QueryResultsTable> filterFirstArg = filterStmtRef(getArg1(), col2, table, dataAccessLayer, synonyms);
-		shared_ptr<QueryResultsTable> filterSecondArg = filterStmtRef(getArg2(), col1, filterFirstArg, dataAccessLayer, synonyms);
-		return filterSecondArg;
+		StringMap PKBdata = dataAccessLayer->getClause(PARENTSTAR);
+		return make_shared<QueryResultsTable>();
 	}
 
 };

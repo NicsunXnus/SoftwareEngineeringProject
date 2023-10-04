@@ -61,130 +61,130 @@ public:
 		shared_ptr<ClauseArg> arg1 = getArg1();
 		shared_ptr<ClauseArg> arg2 = getArg2();
 
-		map<string, vector<string>> PKBModifiesData = dataAccessLayer->getClause(MODIFIES);
+		/*map<string, vector<string>> PKBModifiesData = dataAccessLayer->getClause(MODIFIES);
 		map<string, vector<string>> PKBUsesData = dataAccessLayer->getClause(USES);
 		vector<string> PKBAssignData = dataAccessLayer->getEntity(ASSIGN);
 		map<string, vector<string>> PKBVarData = dataAccessLayer->getVariableMap();
-		map<string, vector<string>> PKBConstData = dataAccessLayer->getConstantMap();
+		map<string, vector<string>> PKBConstData = dataAccessLayer->getConstantMap();*/
 
 		shared_ptr<QueryResultsTable> table;
 
-		bool isSingleColumn = true;
-		vector<string> assignSynonymColumn;
-		map<string, vector<string>> columnValues;
+		//bool isSingleColumn = true;
+		//vector<string> assignSynonymColumn;
+		//map<string, vector<string>> columnValues;
 
-		if (arg1->isWildcard()) {
-			//cout << "arg1 is wildcard" << endl;
-			// Get all assignment statement numbers
-			assignSynonymColumn = PKBAssignData;
-		}
-		else if (arg1->isExpr()) {
-			//cout << "arg1 is expr" << endl;
-			// Get all assignment statement numbers that appear in Modifies(n, "x")
-			string identifier = svToString(arg1->getIdentifier());
-			if (PKBModifiesData.count(identifier)) {
-				vector<string> to_intersect = PKBModifiesData.at(identifier);
-				assignSynonymColumn = intersection(PKBAssignData, to_intersect);
-			}
-			else {
-				assignSynonymColumn = {};
-			}
-		}
-		else if (arg1->isSynonym()) {
-			//cout << "arg1 is synonym" << endl;
-			isSingleColumn = false;
-			// search Modifies database for all keys, find line numbers in the value (value=lineNum) for each key=variable_key.
-			// if these line numbers appear in assignment database, add (v=variable_key, a=lineNum)
-			for (const auto& pair : PKBModifiesData) {
-				string variable_key = pair.first;
-				for (const string& val : pair.second) {
-					if (find(PKBAssignData.begin(), PKBAssignData.end(), val) != PKBAssignData.end()) {
-						columnValues[variable_key].push_back(val);
-					}
-				}
-			}
-		}
+		//if (arg1->isWildcard()) {
+		//	//cout << "arg1 is wildcard" << endl;
+		//	// Get all assignment statement numbers
+		//	assignSynonymColumn = PKBAssignData;
+		//}
+		//else if (arg1->isExpr()) {
+		//	//cout << "arg1 is expr" << endl;
+		//	// Get all assignment statement numbers that appear in Modifies(n, "x")
+		//	string identifier = svToString(arg1->getIdentifier());
+		//	if (PKBModifiesData.count(identifier)) {
+		//		vector<string> to_intersect = PKBModifiesData.at(identifier);
+		//		assignSynonymColumn = intersection(PKBAssignData, to_intersect);
+		//	}
+		//	else {
+		//		assignSynonymColumn = {};
+		//	}
+		//}
+		//else if (arg1->isSynonym()) {
+		//	//cout << "arg1 is synonym" << endl;
+		//	isSingleColumn = false;
+		//	// search Modifies database for all keys, find line numbers in the value (value=lineNum) for each key=variable_key.
+		//	// if these line numbers appear in assignment database, add (v=variable_key, a=lineNum)
+		//	for (const auto& pair : PKBModifiesData) {
+		//		string variable_key = pair.first;
+		//		for (const string& val : pair.second) {
+		//			if (find(PKBAssignData.begin(), PKBAssignData.end(), val) != PKBAssignData.end()) {
+		//				columnValues[variable_key].push_back(val);
+		//			}
+		//		}
+		//	}
+		//}
 
-		if (arg2->isWildcard()) {}
-		else if (arg2->isExpr()) {
-			// differentiate between constant and variable
-			string identifier = svToString(arg2->getIdentifier());
+		//if (arg2->isWildcard()) {}
+		//else if (arg2->isExpr()) {
+		//	// differentiate between constant and variable
+		//	string identifier = svToString(arg2->getIdentifier());
 
-			if (isNumber(identifier)) {  // constant
-				//cout << "arg2 is constant" << endl;
-				if (isSingleColumn) {
-					// Get all assignment statement numbers that appear in constant database with constant as key
-					if (PKBConstData.count(identifier)) {
-						vector<string> to_intersect = PKBConstData.at(identifier);
-						assignSynonymColumn = intersection(assignSynonymColumn, to_intersect);
-					}
-					else {
-						assignSynonymColumn = {};
-					}
-				}
-				else {
-					if (PKBConstData.count(identifier)) {
-						vector<string> to_intersect = PKBConstData.at(identifier);
-						for (auto pair = columnValues.begin(); pair != columnValues.end();) {
-							string variable_key = pair->first;
-							vector<string> intersect = intersection(columnValues[variable_key], to_intersect);
-							if (intersect.size() == 0) {
-								pair = columnValues.erase(pair);
-							}
-							else {
-								columnValues[variable_key] = intersect;
-								++pair;
-							}
-						}
-					}
-					else {
-						columnValues = {};
-					}
-				}
-			}
-			else {  // variable
-				//cout << "arg2 is variable" << endl;
-				if (isSingleColumn) {
-					// Get all assignment statement numbers that appear in variable database with variable as key
-					if (PKBVarData.count(identifier)) {
-						vector<string> to_intersect = PKBUsesData.at(identifier);
-						assignSynonymColumn = intersection(assignSynonymColumn, to_intersect);
-					}
-					else {
-						assignSynonymColumn = {};
-					}
-				}
-				else {
-					if (PKBVarData.count(identifier)) {
-						vector<string> to_intersect = PKBUsesData.at(identifier);
-						for (auto pair = columnValues.begin(); pair != columnValues.end();) {
-							string variable_key = pair->first;
-							vector<string> intersect = intersection(columnValues[variable_key], to_intersect);
-							if (intersect.size() == 0) {
-								pair = columnValues.erase(pair);
-							}
-							else {
-								columnValues[variable_key] = intersect;
-								++pair;
-							}
-						}
-					}
-					else {
-						columnValues = {};
-					}
-				}
-			}
-		}
+		//	if (isNumber(identifier)) {  // constant
+		//		//cout << "arg2 is constant" << endl;
+		//		if (isSingleColumn) {
+		//			// Get all assignment statement numbers that appear in constant database with constant as key
+		//			if (PKBConstData.count(identifier)) {
+		//				vector<string> to_intersect = PKBConstData.at(identifier);
+		//				assignSynonymColumn = intersection(assignSynonymColumn, to_intersect);
+		//			}
+		//			else {
+		//				assignSynonymColumn = {};
+		//			}
+		//		}
+		//		else {
+		//			if (PKBConstData.count(identifier)) {
+		//				vector<string> to_intersect = PKBConstData.at(identifier);
+		//				for (auto pair = columnValues.begin(); pair != columnValues.end();) {
+		//					string variable_key = pair->first;
+		//					vector<string> intersect = intersection(columnValues[variable_key], to_intersect);
+		//					if (intersect.size() == 0) {
+		//						pair = columnValues.erase(pair);
+		//					}
+		//					else {
+		//						columnValues[variable_key] = intersect;
+		//						++pair;
+		//					}
+		//				}
+		//			}
+		//			else {
+		//				columnValues = {};
+		//			}
+		//		}
+		//	}
+		//	else {  // variable
+		//		//cout << "arg2 is variable" << endl;
+		//		if (isSingleColumn) {
+		//			// Get all assignment statement numbers that appear in variable database with variable as key
+		//			if (PKBVarData.count(identifier)) {
+		//				vector<string> to_intersect = PKBUsesData.at(identifier);
+		//				assignSynonymColumn = intersection(assignSynonymColumn, to_intersect);
+		//			}
+		//			else {
+		//				assignSynonymColumn = {};
+		//			}
+		//		}
+		//		else {
+		//			if (PKBVarData.count(identifier)) {
+		//				vector<string> to_intersect = PKBUsesData.at(identifier);
+		//				for (auto pair = columnValues.begin(); pair != columnValues.end();) {
+		//					string variable_key = pair->first;
+		//					vector<string> intersect = intersection(columnValues[variable_key], to_intersect);
+		//					if (intersect.size() == 0) {
+		//						pair = columnValues.erase(pair);
+		//					}
+		//					else {
+		//						columnValues[variable_key] = intersect;
+		//						++pair;
+		//					}
+		//				}
+		//			}
+		//			else {
+		//				columnValues = {};
+		//			}
+		//		}
+		//	}
+		//}
 
-		if (isSingleColumn) {
-			table = QueryResultsTable::createTable(assignSynonym, assignSynonymColumn);
-			//printVectorString(assignSynonymColumn);
-		}
-		else {
-			vector<string> headers = { svToString(arg1->getArg()), assignSynonym };
-			table = QueryResultsTable::createTable(headers, columnValues);
-			//printMap(columnValues);
-		}
+		//if (isSingleColumn) {
+		//	table = QueryResultsTable::createTable(assignSynonym, assignSynonymColumn);
+		//	//printVectorString(assignSynonymColumn);
+		//}
+		//else {
+		//	vector<string> headers = { svToString(arg1->getArg()), assignSynonym };
+		//	table = QueryResultsTable::createTable(headers, columnValues);
+		//	//printMap(columnValues);
+		//}
 		
 		return table;
 	}
