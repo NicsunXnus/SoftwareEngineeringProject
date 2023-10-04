@@ -22,7 +22,7 @@ public:
     std::shared_ptr<map<string, vector<string>>> getStorageMap() {
         return this->AbstractionStorageMap;
     }
-private:
+protected:
     std::shared_ptr<map<string, vector<string>>> AbstractionStorageMap;
 
     // Inserts a key and value into the map
