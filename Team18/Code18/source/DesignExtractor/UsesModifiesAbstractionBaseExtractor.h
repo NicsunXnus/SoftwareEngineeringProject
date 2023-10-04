@@ -33,11 +33,6 @@ public:
         insertToAbstractionMap(variableName, parentProcedure);
     }
 
-    void handleProcedure(std::shared_ptr<ProcedureNode> procedureNode) override {
-        string procedureName = procedureNode->getName();
-        insertToAbstractionMap(procedureName, to_string(procedureNode->getStatementNumber()));
-    }
-
     // Overriden method to store statement numbers of the child of while node
     void handleWhile(std::shared_ptr<WhileNode> whileNode) override {
         preProcessWhileNode(whileNode);
@@ -95,5 +90,5 @@ public:
 protected:
     virtual void preProcessWhileNode(std::shared_ptr<WhileNode> whileNode) {}
     virtual void preProcessIfNode(std::shared_ptr<IfNode> ifNode) {}
-    
+
 };

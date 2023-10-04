@@ -24,6 +24,16 @@ public:
     std::shared_ptr<map<string, vector<string>>> getStorageMap() {
         return this->AbstractionStorageMap;
     }
+
+    // Method to abstract the extraction of designs to line up with the different abstractions
+    void handleProcedure(std::shared_ptr<ProcedureNode> procedureNode) override {
+        string procedureName = procedureNode->getName();
+        std::vector<std::shared_ptr<StatementNode>> statements = procedureNode->getStatements();
+        for (const auto& statement : statements) {
+            extractDesigns(statement);
+            insertToProcedureStatementStorageMap(procedureName, to_string(statement->getStatementNumber()));
+        }
+    }
 protected:
     // map to store procedurename to the min and max values of the statement numbers
     std::shared_ptr<map<string, pair<string, string>>> procedureStatementStorageMap;
