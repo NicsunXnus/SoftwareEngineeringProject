@@ -34,7 +34,8 @@ public:
     void preProcessProgramNode(shared_ptr<ProgramNode> programNode) override {
         vector<shared_ptr<ProcedureNode>> procedures = programNode->getProcedures();
         for (const auto& procedure : procedures) {
-            insertToProcedureStatementStorageMap(procedure->getProcedureName(), procedure->getStatementNumber());
+            string procedureName = procedure->getProcedureName();
+            insertStatementsToProcedureStatementStorageMap(procedureName, procedure);
         }
     }
 
@@ -43,6 +44,15 @@ protected:
     std::shared_ptr<map<string, pair<string, string>>> procedureStatementStorageMap;
     std::shared_ptr<map<string, vector<string>>> AbstractionStorageMap;
 
+    // method to insert statements to procedureStatementStorageMap
+    void insertStatementsToProcedureStatementStorageMap(string procedureName, shared_ptr<ProcedureNode> procedureNode) {
+        std::vector<std::shared_ptr<StatementNode>> statements = procedureNode->getStatements();
+        for (const auto& statement : statements) {
+            string statementNumber = to_string(statement->getStatementNumber());
+            insertToProcedureStatementStorageMap(procedureName, statementNumber);
+        }
+    }
+    
     // insert to procedureStatementStorageMap
     void insertToProcedureStatementStorageMap(string procedureName, string statementNumber) {
         // Insert to the map if the procedureName is not found
