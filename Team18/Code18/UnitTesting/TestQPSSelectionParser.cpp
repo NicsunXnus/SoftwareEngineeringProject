@@ -518,6 +518,43 @@ namespace UnitTesting
 				&& co2->getArg2()->getArg() == "\"1\""sv
 				&& co2->getArg2()->isPartialMatchingExprSpec());
 		}
+
+		TEST_METHOD(TestFollowsClauseWithIdent1stArg)
+		{
+			vector<string> tokenizer = tokenize("stmt s, s1; Select s1 such that Follows (\"s\", s1)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(testSv);
+			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{	
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestFollowsClauseWithIdent2ndArg)
+		{
+			vector<string> tokenizer = tokenize("stmt s, s1; Select s1 such that Follows (s, \"s1\")");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(testSv);
+			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
 		
 	};
 

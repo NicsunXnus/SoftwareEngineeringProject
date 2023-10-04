@@ -14,7 +14,7 @@
 #include <algorithm>
 #include <map>
 #include <cassert>
-#include "DesignExtractor/Entity.h"
+#include "../source/DesignExtractor/Entity.h"
 
 using namespace std;
 
