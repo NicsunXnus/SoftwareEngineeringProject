@@ -14,7 +14,6 @@ class PKB {
   public:
 	static inline Insertor insertor;
 	static inline Responder responder;
-  static inline Adapter adapter;
 
   private:
     static inline StorageManager storage_manager;
