@@ -9,41 +9,50 @@
 using namespace std;
 
 #include "../AST/ASTNode.h"
-#include "Extractor.h"
+#include "AbstractionExtractor.h"
 
 /**
  * This class is used to extract the Calls abstraction from the AST.
  */
-class CallsAbstractionExtractor : public Extractor {
+class CallsAbstractionExtractor : public AbstractionExtractor {
 public:
-    // Constructor
-    CallsAbstractionExtractor() {
-        this->AbstractionStorageMap = std::make_shared<map<string, unordered_set<string>>>();
-    }
-
-    // Method to get the Calls abstraction map
-    shared_ptr<map<string, unordered_set<string>>> getStorageMap() {
-        return this->AbstractionStorageMap;
-    }
-
     // Override methods to avoid unnecessary processing
     void handleRead(std::shared_ptr<ReadNode> readNode) override {}
     void handlePrint(std::shared_ptr<PrintNode> printNode) override {}
     void handleAssign(std::shared_ptr<AssignNode> assignNode) override {}
     
     void handleCall(std::shared_ptr<CallNode> callNode) override {
-        
+        string statementNumber = to_string(callNode->getStatementNumber());
+        string parentProcedureName = getProcedureNameFromStatementNumber(statementNumber);
+        string procedureCalledName = callNode->getProc()->getName();
+        insertToAbstractionMap(parentProcedureName, procedureCalledName);
     }
 
+    void extractAbstractions(shared_ptr<ASTNode> astNode) override {
+        extractDesigns(astNode);
+        processProcedureNames();
+    }
 
 private:
-    shared_ptr<map<string, unordered_set<string>>> AbstractionStorageMap;
-
-    // Inserts a key and value into the map
-    void insertToMap(string key, string value) {
-        if (AbstractionStorageMap->find(key) == AbstractionStorageMap->end()) {
-            AbstractionStorageMap->insert({ key, unordered_set<string>() });
+    // The method adds all procedures called indirectly by the parent procedure
+    void processProcedureNames() {
+        for (const auto& [parentProcedureName, procedureCalledNames] : *AbstractionStorageMap) {
+            unordered_set<string> proceduresCalledIndirectly = unordered_set<string>();
+            for (const auto& procedureCalledName : procedureCalledNames) {
+                proceduresCalledIndirectly.insert(procedureCalledName);
+                processProcedureNamesHelper(procedureCalledName, proceduresCalledIndirectly);
+            }
+            AbstractionStorageMap->at(parentProcedureName) = vector<string>(proceduresCalledIndirectly.begin(), proceduresCalledIndirectly.end());
         }
-        AbstractionStorageMap->at(key).insert(value);
     }
+
+    void processProcedureNamesHelper(string procedureCalledName, unordered_set<string>& proceduresCalledIndirectly) {
+        if (AbstractionStorageMap->find(procedureCalledName) != AbstractionStorageMap->end()) {
+            for (const auto& procedureName : AbstractionStorageMap->at(procedureCalledName)) {
+                proceduresCalledIndirectly.insert(procedureName);
+                processProcedureNamesHelper(procedureName, proceduresCalledIndirectly);
+            }
+        }
+    }
+
 };

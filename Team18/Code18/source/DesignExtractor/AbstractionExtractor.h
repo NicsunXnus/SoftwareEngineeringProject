@@ -26,7 +26,7 @@ public:
     }
 
     // Method to abstract the extraction of designs to line up with the different abstractions
-    void extractAbstractions(shared_ptr<ASTNode> astNode) {
+    virtual void extractAbstractions(shared_ptr<ASTNode> astNode) {
         extractDesigns(astNode);
     }
 
