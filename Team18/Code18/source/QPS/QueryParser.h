@@ -64,7 +64,7 @@ private:
 
 	// Valid relational references
 	std::unordered_set<string_view> relationalReferences
-		{"Follows"sv, "Follows*"sv, "Parent"sv, "Parent*"sv, "Uses"sv, "Modifies"sv};
+		{"Follows"sv, "Follows*"sv, "Parent"sv, "Parent*"sv, "Uses"sv, "Modifies"sv, "Calls"sv, "Calls*"sv, "Next"sv, "Next*"sv, "Affects"sv};
 
 	// Is set to true if the query contains a semantic error
 	vector<shared_ptr<SemanticErrorException>> semanticErrors;

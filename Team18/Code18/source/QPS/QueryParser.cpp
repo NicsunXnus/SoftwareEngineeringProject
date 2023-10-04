@@ -25,6 +25,8 @@ vector<shared_ptr<QueryObject>> QueryParser::parsePQL(vector<string_view> tokens
 		// throw the first semantic error we encountered
 		throw *semanticErrors[0];
 	}
+
+	return queryObjects;
 }
 
 /*
