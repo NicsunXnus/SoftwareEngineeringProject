@@ -714,22 +714,22 @@ namespace UnitTesting
                   Assert::IsTrue(callsMapRef["testprocedure1"].empty());
 
                   Assert::IsTrue(std::find(callsMapRef["testprocedure2"].begin(), callsMapRef["testprocedure2"].end(), "testprocedure1") != callsMapRef["testprocedure2"].end());
-                  Assert::AreEqual(callsMapRef["testprocedure2"].size(), 1); 
+                  Assert::IsTrue(callsMapRef["testprocedure2"].size() == 1); 
 
                   Assert::IsTrue(std::find(callsMapRef["testprocedure3"].begin(), callsMapRef["testprocedure3"].end(), "testprocedure2") != callsMapRef["testprocedure3"].end());
                   Assert::IsTrue(std::find(callsMapRef["testprocedure3"].begin(), callsMapRef["testprocedure3"].end(), "testprocedure1") != callsMapRef["testprocedure3"].end());
-                  Assert::AreEqual(callsMapRef["testprocedure3"].size(), 2);
+                  Assert::IsTrue(callsMapRef["testprocedure3"].size() == 2);
 
                   Assert::IsTrue(std::find(callsMapRef["testprocedure4"].begin(), callsMapRef["testprocedure4"].end(), "testprocedure3") != callsMapRef["testprocedure4"].end());
                   Assert::IsTrue(std::find(callsMapRef["testprocedure4"].begin(), callsMapRef["testprocedure4"].end(), "testprocedure2") != callsMapRef["testprocedure4"].end());
                   Assert::IsTrue(std::find(callsMapRef["testprocedure4"].begin(), callsMapRef["testprocedure4"].end(), "testprocedure1") != callsMapRef["testprocedure4"].end());
-                  Assert::AreEqual(callsMapRef["testprocedure4"].size(), 3);
+                  Assert::IsTrue(callsMapRef["testprocedure4"].size() == 3);
 
                   Assert::IsTrue(std::find(callsMapRef["testprocedure5"].begin(), callsMapRef["testprocedure5"].end(), "testprocedure4") != callsMapRef["testprocedure5"].end());
                   Assert::IsTrue(std::find(callsMapRef["testprocedure5"].begin(), callsMapRef["testprocedure5"].end(), "testprocedure3") != callsMapRef["testprocedure5"].end());
                   Assert::IsTrue(std::find(callsMapRef["testprocedure5"].begin(), callsMapRef["testprocedure5"].end(), "testprocedure2") != callsMapRef["testprocedure5"].end());
                   Assert::IsTrue(std::find(callsMapRef["testprocedure5"].begin(), callsMapRef["testprocedure5"].end(), "testprocedure1") != callsMapRef["testprocedure5"].end());
-                  Assert::AreEqual(callsMapRef["testprocedure5"].size(), 4);
+                  Assert::IsTrue(callsMapRef["testprocedure5"].size() == 4);
             }
 
             TEST_METHOD(TestModifiesUsesWithCallStatements)
