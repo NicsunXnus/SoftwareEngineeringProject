@@ -41,5 +41,6 @@ public:
 
 	/* For Design Abstractions / Clauses */
 	virtual StringMap DataAccessLayer::getClause(ABSTRACTION abstraction);
+	virtual StringMap DataAccessLayer::getClauseInverse(ABSTRACTION abstraction);
 };
 #endif

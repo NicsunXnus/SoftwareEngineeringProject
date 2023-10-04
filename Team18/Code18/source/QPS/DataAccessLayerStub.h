@@ -44,6 +44,8 @@ public:
 
 	map<string, unordered_set<string>> getClause(ABSTRACTION abstraction) override;
 
+	map<string, unordered_set<string>> getClauseInverse(ABSTRACTION abstraction) override;
+
 
 };
 #endif

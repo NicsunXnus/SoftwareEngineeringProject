@@ -18,6 +18,7 @@
     <ClCompile Include="..\source\QPS\Errors\SyntaxError.h" />
     <ClCompile Include="..\source\QPS\QueryDriver.cpp" />
     <ClCompile Include="..\source\QPS\QueryBuilder.cpp" />
+    <ClCompile Include="..\source\QPS\QueryObjects\FollowsParentObject.cpp" />
     <ClCompile Include="..\source\QPS\ResultsHandler.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\QueryObjectFactory.cpp" />
     <ClCompile Include="..\source\QPS\QueryParser.cpp" />
