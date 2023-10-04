@@ -96,10 +96,10 @@ public:
     StatementNode(std::string name, int statementNumber)
     : ASTNode(std::move(name), statementNumber) {
     }
-    void setParentProcedure(std::string parentProcedure) {
+    void setParentProcedureName(std::string parentProcedure) {
         this->parentProcedureName = parentProcedure;
     }
-    std::string getParentProcedure() const {
+    std::string getParentProcedureName() const {
         return this->parentProcedureName;
     }
 private:

@@ -31,7 +31,7 @@ public:
     // Overriden method to store variable name (no default implmentation)
     void handleVariable(std::shared_ptr<VariableNode> variableNode) override {
         string variableName = variableNode->getValue();
-        string parentProcedure = variableNode->getParentProcedure();
+        string parentProcedure = variableNode->getParentProcedureName();
         insertToAbstractionMap(variableName, to_string(variableNode->getStatementNumber()));
         insertToAbstractionMap(variableName, parentProcedure);
     }
