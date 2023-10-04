@@ -1,6 +1,5 @@
 #pragma once
 #include<stdio.h>
-#include <iostream>
 #include <string>
 #include <vector>
 #include <map>
@@ -19,10 +18,6 @@ using namespace std;
 
 class UsesModifiesAbstractionBaseExtractor : public AbstractionExtractor {
 public:
-    // Constructor
-    UsesModifiesAbstractionBaseExtractor() {
-    }
-
     // Method to extract the uses abstraction
     void extractAbstractions(shared_ptr<ASTNode> astNode) {
         extractDesigns(astNode);
@@ -31,9 +26,16 @@ public:
     // Overriden method to store variable name (no default implmentation)
     void handleVariable(std::shared_ptr<VariableNode> variableNode) override {
         string variableName = variableNode->getValue();
-        string parentProcedure = variableNode->getParentProcedureName();
-        insertToAbstractionMap(variableName, to_string(variableNode->getStatementNumber()));
+        string statementNumber = to_string(variableNode->getStatementNumber());
+        string parentProcedure = getProcedureNameFromStatementNumber(statementNumber);
+
+        insertToAbstractionMap(variableName, statementNumber);
         insertToAbstractionMap(variableName, parentProcedure);
+    }
+
+    void handleProcedure(std::shared_ptr<ProcedureNode> procedureNode) override {
+        string procedureName = procedureNode->getName();
+        insertToAbstractionMap(procedureName, to_string(procedureNode->getStatementNumber()));
     }
 
     // Overriden method to store statement numbers of the child of while node
@@ -93,5 +95,5 @@ public:
 protected:
     virtual void preProcessWhileNode(std::shared_ptr<WhileNode> whileNode) {}
     virtual void preProcessIfNode(std::shared_ptr<IfNode> ifNode) {}
-
+    
 };

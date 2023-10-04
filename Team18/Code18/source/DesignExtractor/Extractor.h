@@ -67,7 +67,6 @@ public:
     virtual void handleProcedure(std::shared_ptr<ProcedureNode> procedureNode) {
         std::vector<std::shared_ptr<StatementNode>> statements = procedureNode->getStatements();
         for (const auto& statement : statements) {
-            statement->setParentProcedureName(procedureNode->getName());
             extractDesigns(statement);
         }
     }
