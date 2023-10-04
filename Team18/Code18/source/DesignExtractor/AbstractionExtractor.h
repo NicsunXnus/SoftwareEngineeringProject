@@ -15,7 +15,7 @@ using namespace std;
 
 class AbstractionExtractor : public Extractor {
 public:
-    ~AbstractionExtractor() {
+    AbstractionExtractor() {
         this->AbstractionStorageMap = std::make_shared<map<string, vector<string>>>();
         this->procedureStatementStorageMap = std::make_shared<map<string, pair<string, string>>>();
     }
