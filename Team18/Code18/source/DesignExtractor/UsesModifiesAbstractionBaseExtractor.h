@@ -9,6 +9,7 @@ using namespace std;
 #include "../AST/ASTNode.h"
 #include "Extractor.h"
 #include "AbstractionExtractor.h"
+#include "CallsAbstractionExtractor.h"
 
 /*
  * This class is the base class for the Uses and Modifies Abstraction extractors
@@ -22,10 +23,7 @@ public:
     void handleVariable(std::shared_ptr<VariableNode> variableNode) override {
         string variableName = variableNode->getValue();
         string statementNumber = to_string(variableNode->getStatementNumber());
-        string parentProcedure = getProcedureNameFromStatementNumber(statementNumber);
-
-        insertToAbstractionMap(variableName, statementNumber);
-        insertToAbstractionMap(variableName, parentProcedure);
+        addStatementNumberAndProcedureName(variableName, statementNumber);
     }
 
     // Overriden method to store statement numbers of the child of while node
@@ -47,9 +45,7 @@ public:
             for (const auto& [variable, values] : *this->AbstractionStorageMap) {
                 if (std::find(values.begin(), values.end(), to_string(nestedStatement)) != values.end()) {
                     string statementNumber = to_string(whileNode->getStatementNumber());
-                    string parentProcedure = getProcedureNameFromStatementNumber(statementNumber);
-                    insertToAbstractionMap(variable, statementNumber);
-                    insertToAbstractionMap(variable, parentProcedure);
+                    addStatementNumberAndProcedureName(variable, statementNumber);
                 }
             }
         }
@@ -79,17 +75,44 @@ public:
             for (const auto& [variable, values] : *this->AbstractionStorageMap) {
                 if (std::find(values.begin(), values.end(), to_string(nestedStatement)) != values.end()) {
                     string statementNumber = to_string(ifNode->getStatementNumber());
-                    string parentProcedure = getProcedureNameFromStatementNumber(statementNumber);
-                    insertToAbstractionMap(variable, statementNumber);
-                    insertToAbstractionMap(variable, parentProcedure);
+                    addStatementNumberAndProcedureName(variable, statementNumber);
                 }
             }
         }
+    }
+
+    void extractAbstractions(shared_ptr<ASTNode> astNode) override {
+        // Create CallsAbstractionExtractor to extract the Calls abstraction
+        shared_ptr<CallsAbstractionExtractor> callsAbstractionExtractor = make_shared<CallsAbstractionExtractor>();
+        callsAbstractionExtractor->extractAbstractions(astNode);
+        shared_ptr<map<string, vector<string>>> callsAbstractionMap = callsAbstractionExtractor->getAbstractionStorageMap();
+
+        extractDesigns(astNode);
+        processIndirectProcedureCalls(callsAbstractionMap);
     }
 
 
 protected:
     virtual void preProcessWhileNode(std::shared_ptr<WhileNode> whileNode) {}
     virtual void preProcessIfNode(std::shared_ptr<IfNode> ifNode) {}
-
+    
+    // Add both statement number and parent procedure to the AbstractionStorageMap
+    void addStatementNumberAndProcedureName(string variableName, string statementNumber) {
+        string parentProcedure = getProcedureNameFromStatementNumber(statementNumber);
+        insertToAbstractionMap(variableName, statementNumber);
+        insertToAbstractionMap(variableName, parentProcedure);
+    }
+    
+    // for all keys in the AbstractionStorageMap, if a value within its vector can be found 
+    // in the callsAbstractionMap, add the vector of values from the callsAbstractionMap to 
+    // the vector of values in the AbstractionStorageMap
+    void processIndirectProcedureCalls(shared_ptr<map<string, vector<string>>> callsAbstractionMap) {
+        for (const auto& [variable, values] : *this->AbstractionStorageMap) {
+            for (const auto& value : values) {
+                if (callsAbstractionMap->find(value) != callsAbstractionMap->end()) {
+                    this->AbstractionStorageMap->at(variable).insert(this->AbstractionStorageMap->at(variable).end(), callsAbstractionMap->at(value).begin(), callsAbstractionMap->at(value).end());
+                }
+            }
+        }
+    }
 };
