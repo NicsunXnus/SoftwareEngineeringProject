@@ -30,15 +30,14 @@ public:
         extractDesigns(astNode);
     }
 
-    // Method to abstract the extraction of designs to line up with the different abstractions
-    void handleProcedure(std::shared_ptr<ProcedureNode> procedureNode) override {
-        string procedureName = procedureNode->getName();
-        std::vector<std::shared_ptr<StatementNode>> statements = procedureNode->getStatements();
-        for (const auto& statement : statements) {
-            extractDesigns(statement);
-            insertToProcedureStatementStorageMap(procedureName, to_string(statement->getStatementNumber()));
+    // Override methods to save all line numbers of the procedures
+    void preProcessProgramNode(shared_ptr<ProgramNode> programNode) override {
+        vector<shared_ptr<ProcedureNode>> procedures = programNode->getProcedures();
+        for (const auto& procedure : procedures) {
+            insertToProcedureStatementStorageMap(procedure->getProcedureName(), procedure->getStatementNumber());
         }
     }
+
 protected:
     // map to store procedurename to the min and max values of the statement numbers
     std::shared_ptr<map<string, pair<string, string>>> procedureStatementStorageMap;
@@ -67,8 +66,7 @@ protected:
                 return procedureName;
             }
         }
-        std::cerr << "Error: Could not find procedure name from statement number" << std::endl;
-        return "";
+        return "Error: Could not find procedure name from statement number";
     }
 
     // Inserts a key and value into the map
