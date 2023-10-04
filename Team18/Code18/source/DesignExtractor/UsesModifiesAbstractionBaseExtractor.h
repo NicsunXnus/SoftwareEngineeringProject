@@ -46,7 +46,10 @@ public:
         for (const auto& nestedStatement : nestedStatements) {
             for (const auto& [variable, values] : *this->AbstractionStorageMap) {
                 if (std::find(values.begin(), values.end(), to_string(nestedStatement)) != values.end()) {
-                    insertToAbstractionMap(variable, to_string(whileNode->getStatementNumber()));
+                    string statementNumber = to_string(whileNode->getStatementNumber());
+                    string parentProcedure = getProcedureNameFromStatementNumber(statementNumber);
+                    insertToAbstractionMap(variable, statementNumber);
+                    insertToAbstractionMap(variable, parentProcedure);
                 }
             }
         }
@@ -75,7 +78,10 @@ public:
         for (const auto& nestedStatement : nestedStatements) {
             for (const auto& [variable, values] : *this->AbstractionStorageMap) {
                 if (std::find(values.begin(), values.end(), to_string(nestedStatement)) != values.end()) {
-                    insertToAbstractionMap(variable, to_string(ifNode->getStatementNumber()));
+                    string statementNumber = to_string(ifNode->getStatementNumber());
+                    string parentProcedure = getProcedureNameFromStatementNumber(statementNumber);
+                    insertToAbstractionMap(variable, statementNumber);
+                    insertToAbstractionMap(variable, parentProcedure);
                 }
             }
         }
