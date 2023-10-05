@@ -42,6 +42,15 @@ public:
         std::vector<std::shared_ptr<StatementNode>> ifStatements = ifNode->getStatements();
         std::vector<std::shared_ptr<StatementNode>> elseStatements = ifNode->getElseStatements();
 
+        string ifStatementNumber = to_string(ifNode->getStatementNumber());
+        // Get first value of ifStatements
+        string firstIfStatementNumber = to_string(ifStatements.front()->getStatementNumber());
+        // Get first value of elseStatements
+        string firstElseStatementNumber = to_string(elseStatements.front()->getStatementNumber());
+
+        insertToAbstractionMap(ifStatementNumber, firstIfStatementNumber);
+        insertToAbstractionMap(ifStatementNumber, firstElseStatementNumber);
+
         traverse(ifStatements);
         traverse(elseStatements);
     }
