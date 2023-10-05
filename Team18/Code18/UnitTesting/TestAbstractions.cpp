@@ -1141,10 +1141,7 @@ namespace UnitTesting
 
                   // x = 50
                   Assert::IsTrue(std::find(nextMapRef["9"].begin(), nextMapRef["9"].end(), "10") != nextMapRef["9"].end());
-
-
-
-
+            }
 
     };
 }
