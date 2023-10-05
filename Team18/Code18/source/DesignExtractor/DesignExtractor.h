@@ -57,6 +57,10 @@ public:
         withExtractor->extractDesigns(astNode);
     }
 
+    shared_ptr<WithExtractor> getWithExtractor() {
+        return this->withExtractor;
+    }
+
     // Method to get procedure entity
     shared_ptr<ProcedureEntity> getProcedureEntity() {
         return this->entityExtractor->getProcedureEntity();
