@@ -1,108 +1,72 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 
-#include "../source/TokenizerClasses/SimpleTokenizer.h"
+#include "../source/SimpleTokenizer/SimpleTokenizer.h"
 #include "../source/ExceptionMessages.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace SimpleTokeniser_Test
 {
-	TEST_CLASS(tokeniseMethod_Test) {
+	TEST_CLASS(tokenizeProgram_Test) {
 	public:
 		TEST_METHOD(emptyProgram_failure) {
-			try {
-				std::string input = "";
-				SimpleTokenizer::tokenizeProgram(input);
-				assert(false);
-			}
-			catch (std::invalid_argument e) {
-				assert(e.what() == ExceptionMessages::emptyProgramGiven);
-			}
+			std::string input = "";
+			std::shared_ptr<TokenizedProgram> result = SimpleTokenizer::tokenizeProgram(input);
+			assert(result == nullptr);
 		}
 
 		TEST_METHOD(codeOutsideOfProcedure_failure) {
-			try {
-				std::string input = "read x";
-				SimpleTokenizer::tokenizeProgram(input);
-				assert(false);
-			}
-			catch (std::invalid_argument e) {
-				assert(e.what() == ExceptionMessages::invalidProgramDefinition);
-			}
+			std::string input = "read x";
+			std::shared_ptr<TokenizedProgram> result = SimpleTokenizer::tokenizeProgram(input);
+			assert(result == nullptr);
 		}
 
 		TEST_METHOD(emptyProcedure_failure) {
-			try {
-				std::string input = "procedure x {}";
-				SimpleTokenizer::tokenizeProgram(input);
-				assert(false);
-			}
-			catch (std::invalid_argument e) {
-				assert(e.what() == ExceptionMessages::emptyStatementListGiven);
-			}
+			std::string input = "procedure x {}";
+			std::shared_ptr<TokenizedProgram> result = SimpleTokenizer::tokenizeProgram(input);
+			assert(result == nullptr);
 		}
 
-		TEST_METHOD(invalidProcedureName_failure) {
-			try {
-				std::string input = "procedure 1 {read x;}";
-				SimpleTokenizer::tokenizeProgram(input);
-				assert(false);
-			}
-			catch (std::invalid_argument e) {
-				assert(e.what() == ExceptionMessages::invalidProcedureDefinition);
-			}
-			try {
-				std::string input = "procedure 0x1 {read x;}";
-				SimpleTokenizer::tokenizeProgram(input);
-				assert(false);
-			}
-			catch (std::invalid_argument e) {
-				assert(e.what() == ExceptionMessages::invalidProcedureDefinition);
-			}
-			try {
-				std::string input = "procedure ' {read x;}";
-				SimpleTokenizer::tokenizeProgram(input);
-				assert(false);
-			}
-			catch (std::invalid_argument e) {
-				assert(e.what() == ExceptionMessages::invalidProcedureDefinition);
-			}
+		TEST_METHOD(invalidProcedureName_failure_1) {
+			std::string input = "procedure 1 {read x;}";
+			std::shared_ptr<TokenizedProgram> result = SimpleTokenizer::tokenizeProgram(input);
+			assert(result == nullptr);
 		}
 
+		TEST_METHOD(invalidProcedureName_failure_2) {
+			std::string input = "procedure 0x1 {read x;}";
+			std::shared_ptr<TokenizedProgram> result = SimpleTokenizer::tokenizeProgram(input);
+			assert(result == nullptr);
+		}
+
+		TEST_METHOD(invalidProcedureName_failure_3) {
+			std::string input = "procedure ' {read x;}";
+			std::shared_ptr<TokenizedProgram> result = SimpleTokenizer::tokenizeProgram(input);
+			assert(result == nullptr);
+		}
 		TEST_METHOD(invalidProcedureDeclaration_failure) {
-			try {
-				std::string input = "pr0cedure x {read x;}";
-				SimpleTokenizer::tokenizeProgram(input);
-				assert(false);
-			}
-			catch (std::invalid_argument e) {
-				assert(e.what() == ExceptionMessages::invalidProcedureDefinition);
-			}
-			try {
-				std::string input = "Procedure x {read x;}"; // capitals
-				SimpleTokenizer::tokenizeProgram(input);
-				assert(false);
-			}
-			catch (std::invalid_argument e) {
-				assert(e.what() == ExceptionMessages::invalidProcedureDefinition);
-			}
-			try {
-				std::string input = "procedure    {read x;}";
-				SimpleTokenizer::tokenizeProgram(input);
-				assert(false);
-			}
-			catch (std::invalid_argument e) {
-				assert(e.what() == ExceptionMessages::invalidProcedureDefinition);
-			}
-			try {
-				std::string input = "     procName   {read x;}";
-				SimpleTokenizer::tokenizeProgram(input);
-				assert(false);
-			}
-			catch (std::invalid_argument e) {
-				assert(e.what() == ExceptionMessages::invalidProcedureDefinition);
-			}
+			std::string input = "pr0cedure x {read x;}";
+			std::shared_ptr<TokenizedProgram> result = SimpleTokenizer::tokenizeProgram(input);
+			assert(result == nullptr);
+		}
+
+		TEST_METHOD(capitalisedProcedureDeclaration_failure) {
+			std::string input = "Procedure x {read x;}";
+			std::shared_ptr<TokenizedProgram> result = SimpleTokenizer::tokenizeProgram(input);
+			assert(result == nullptr);
+		}
+
+		TEST_METHOD(missingProcName_failure) {
+			std::string input = "procedure    {read x;}";
+			std::shared_ptr<TokenizedProgram> result = SimpleTokenizer::tokenizeProgram(input);
+			assert(result == nullptr);
+		}
+
+		TEST_METHOD(missingProcedureKeyword_failure) {
+			std::string input = "     procName   {read x;}";
+			std::shared_ptr<TokenizedProgram> result = SimpleTokenizer::tokenizeProgram(input);
+			assert(result == nullptr);
 		}
 
 		TEST_METHOD(validProcedureDeclaration_success) {
@@ -132,93 +96,64 @@ namespace SimpleTokeniser_Test
 			assert((*output).equalsTo(program));
 		}
 
-		TEST_METHOD(emptyStatement_failure) {
-			try {
-				std::string input = "procedure x {}";
-				SimpleTokenizer::tokenizeProgram(input);
-				assert(false);
-			}
-			catch (std::invalid_argument e) {
-				assert(e.what() == ExceptionMessages::emptyStatementListGiven);
-			}
-			try {
-				std::string input = "procedure x { ;}";
-				SimpleTokenizer::tokenizeProgram(input);
-				assert(false);
-			}
-			catch (std::invalid_argument e) {
-				assert(e.what() == ExceptionMessages::emptyStatementListGiven);
-			}
-			try {
-				std::string input = "procedure x { ;;;;}";
-				SimpleTokenizer::tokenizeProgram(input);
-				assert(false);
-			}
-			catch (std::invalid_argument e) {
-				assert(e.what() == ExceptionMessages::emptyStatementListGiven);
-			}
+		TEST_METHOD(emptyStatement_failure_1) {
+			std::string input = "procedure x {}";
+			std::shared_ptr<TokenizedProgram> result = SimpleTokenizer::tokenizeProgram(input);
+			assert(result == nullptr);
 		}
 
-		TEST_METHOD(invalidStatement_failure) {
-			try {
-				std::string input = "procedure x {set y = 1; read z;}";
-				SimpleTokenizer::tokenizeProgram(input);
-				assert(false);
-			}
-			catch (std::invalid_argument e) {
-				assert(e.what() == ExceptionMessages::invalidIdentifier);
-			}
-			try {
-				std::string input = "procedure x {store y; print z;}";
-				SimpleTokenizer::tokenizeProgram(input);
-				assert(false);
-			}
-			catch (std::invalid_argument e) {
-				assert(e.what() == ExceptionMessages::invalidSemicolonStmt);
-			}
-			try {
-				std::string input = "procedure x {allocate here y; deallocate there z;}";
-				SimpleTokenizer::tokenizeProgram(input);
-				assert(false);
-			}
-			catch (std::invalid_argument e) {
-				assert(e.what() == ExceptionMessages::invalidSemicolonStmt);
-			}
-			try {
-				std::string input = "procedure x {read and store y; store and read z;}";
-				SimpleTokenizer::tokenizeProgram(input);
-				assert(false);
-			}
-			catch (std::invalid_argument e) {
-				assert(e.what() == ExceptionMessages::invalidSemicolonStmt);
-			}
+		TEST_METHOD(emptyStatement_failure_2) {
+			std::string input = "procedure x { ;}";
+			std::shared_ptr<TokenizedProgram> result = SimpleTokenizer::tokenizeProgram(input);
+			assert(result == nullptr);
 		}
 
-		TEST_METHOD(invalidNames_failure) {
-			try {
-				std::string input = "procedure x {read 0y;}";
-				SimpleTokenizer::tokenizeProgram(input);
-				assert(false);
-			}
-			catch (std::invalid_argument e) {
-				assert(e.what() == ExceptionMessages::invalidIdentifier);
-			}
-			try {
-				std::string input = "procedure x {read 10;}";
-				SimpleTokenizer::tokenizeProgram(input);
-				assert(false);
-			}
-			catch (std::invalid_argument e) {
-				assert(e.what() == ExceptionMessages::invalidIdentifier);
-			}
-			try {
-				std::string input = "procedure x {read ';}";
-				SimpleTokenizer::tokenizeProgram(input);
-				assert(false);
-			}
-			catch (std::invalid_argument e) {
-				assert(e.what() == ExceptionMessages::invalidIdentifier);
-			}
+		TEST_METHOD(emptyStatement_failure_3) {
+			std::string input = "procedure x { ;;;;}";
+			std::shared_ptr<TokenizedProgram> result = SimpleTokenizer::tokenizeProgram(input);
+			assert(result == nullptr);
+		}
+
+		TEST_METHOD(invalidStatement_failure_1) {
+			std::string input = "procedure x {set y = 1; read z;}";
+			std::shared_ptr<TokenizedProgram> result = SimpleTokenizer::tokenizeProgram(input);
+			assert(result == nullptr);
+		}
+
+		TEST_METHOD(invalidStatement_failure_2) {
+			std::string input = "procedure x {store y; print z;}";
+			std::shared_ptr<TokenizedProgram> result = SimpleTokenizer::tokenizeProgram(input);
+			assert(result == nullptr);
+		}
+
+		TEST_METHOD(invalidStatement_failure_3) {
+			std::string input = "procedure x {allocate here y; deallocate there z;}";
+			std::shared_ptr<TokenizedProgram> result = SimpleTokenizer::tokenizeProgram(input);
+			assert(result == nullptr);
+		}
+
+		TEST_METHOD(invalidStatement_failure_4) {
+			std::string input = "procedure x {read and store y; store and read z;}";
+			std::shared_ptr<TokenizedProgram> result = SimpleTokenizer::tokenizeProgram(input);
+			assert(result == nullptr);
+		}
+
+		TEST_METHOD(invalidNames_failure_1) {
+			std::string input = "procedure x {read 0y;}";
+			std::shared_ptr<TokenizedProgram> result = SimpleTokenizer::tokenizeProgram(input);
+			assert(result == nullptr);
+		}
+
+		TEST_METHOD(invalidNames_failure_2) {
+			std::string input = "procedure x {read 10;}";
+			std::shared_ptr<TokenizedProgram> result = SimpleTokenizer::tokenizeProgram(input);
+			assert(result == nullptr);
+		}
+
+		TEST_METHOD(invalidNames_failure_3) {
+			std::string input = "procedure x {read ';}";
+			std::shared_ptr<TokenizedProgram> result = SimpleTokenizer::tokenizeProgram(input);
+			assert(result == nullptr);
 		}
 		TEST_METHOD(validSemicolonStatements_success) {
 			std::string input = "procedure x {read a; print b; c = ((0 + d )- 3 * 4 / e) % 6}";

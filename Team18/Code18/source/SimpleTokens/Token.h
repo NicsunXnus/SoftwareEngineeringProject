@@ -29,6 +29,9 @@ public:
 	// Checks if the two tokens supplied are the same runtime type and same stored tokenName.
 	// The arguments supplied MUST be pointers.
 	static bool checkEquality(Token* left, Token* right) {
+		if (left == nullptr || right == nullptr) {
+			return false;
+		}
 		std::string leftId = typeid(*left).name();
 		std::string rightId = typeid(*right).name();
 		bool sameType = leftId == rightId;

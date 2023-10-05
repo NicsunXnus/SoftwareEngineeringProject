@@ -7,7 +7,7 @@
 #include <iostream>
 #include <list>
 
-#include "TokenizerClasses/SIMPLETokenizer.h"
+#include "SimpleTokenizer/SIMPLETokenizer.h"
 #include "AST/ASTBuilder.h"
 #include "QPS/QueryDriver.h"
 #include "DesignExtractor/DesignExtractor.h"

@@ -2,7 +2,7 @@
 #include "CppUnitTest.h"
 #include "../source/QPS/QueryParser.h"
 #include "../source/QPS/QueryObjects/ClauseObject.h"
-#include "../source/TokenizerClasses/PQLTokenizer.h"
+#include "../source/PQLTokenizer.h"
 #include "../source/QPS/QueryBuilder.h"
 #include "../source/QPS/DataAccessLayerStub.h"
 #include <QPS/QueryObjects/PatternClauseObject.h>

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
-#include "../source/TokenizerClasses/SimpleTokenizer.h"
+#include "../source/SimpleTokenizer/SimpleTokenizer.h"
 #include "../source/AST/ASTBuilder.h"
 #include "../source/AST/ASTBuilderHelperFunctions.h"
 #include <cassert>
