@@ -23,6 +23,7 @@ public:
     UsesModifiesAbstractionBaseExtractor() {
         this->AbstractionStorageMap = std::make_shared<map<string, vector<string>>>();
         this->procedureVariableStorageMap = std::make_shared<map<string, vector<shared_ptr<map<string, vector<string>>>>>>();
+        this->callNodes = vector<shared_ptr<CallNode>>();
     }
 
     // Overriden method to store variable name (no default implmentation)
@@ -87,11 +88,9 @@ public:
         }
     }
 
-    // void handleCall(std::shared_ptr<CallNode> callNode) override {
-    //     string statementNumber = to_string(callNode->getStatementNumber());
-    //     string procedureCalledName = callNode->getProc()->getName();
-    //     insertIntoUsesModifiesCallsMap(procedureCalledName, statementNumber);
-    // }
+    void handleCall(std::shared_ptr<CallNode> callNode) override {
+        this->callNodes.push_back(callNode);
+    }
 
     void extractAbstractions(shared_ptr<ASTNode> astNode) override {
         // Create CallsAbstractionExtractor to extract the Calls abstraction
@@ -102,12 +101,14 @@ public:
         setUsesModifiesCallsMap(usesModifiesCallsMap);
         extractDesigns(astNode);
         processIndirectProcedureCalls(usesModifiesCallsMap);
+        processCallNodes();
     }
 
 
 protected:
     shared_ptr<map<string, vector<string>>> UsesModifiesCallsMap;
     shared_ptr<map<string, vector<shared_ptr<map<string, vector<string>>>>>> procedureVariableStorageMap;
+    vector<shared_ptr<CallNode>> callNodes;
     
     virtual void preProcessWhileNode(std::shared_ptr<WhileNode> whileNode) {}
     virtual void preProcessIfNode(std::shared_ptr<IfNode> ifNode) {}
@@ -186,14 +187,33 @@ protected:
                 }
             }
             for (const auto& procedureName : procedureNames) {
-                insertToAbstractionMap(variable, procedureName);
-                // Add the statement numbers of all variables in the procedure to the vector of values
-                for (const auto& [variableName, statementNumbers] : *this->procedureVariableStorageMap->at(procedureName).back()) {
-                    for (const auto& statementNumber : statementNumbers) {
-                        insertToAbstractionMap(variableName, statementNumber);
-                    }
+                insertToAbstractionMap(variable, procedureName);   
+            }
+        }
+    }
+
+    void processCallNodes() {
+        for (const auto& callNode : this->callNodes) {
+            string statementNumber = to_string(callNode->getStatementNumber());
+            string procedureCalledName = callNode->getProc()->getName();
+            // Get all the variables that are used in the procedure called
+            vector<string> variablesUsed = getVariablesUsedOrModifiedInProcedure(procedureCalledName);
+            // Add the statement number to the variables used
+            for (const auto& variableUsed : variablesUsed) {
+                insertToAbstractionMap(variableUsed, statementNumber);
+            }
+        }
+    }
+
+    vector<string> getVariablesUsedOrModifiedInProcedure(string procedureName) {
+        vector<string> variablesUsed = vector<string>();
+        if (this->procedureVariableStorageMap->find(procedureName) != this->procedureVariableStorageMap->end()) {
+            for (const auto& map : this->procedureVariableStorageMap->at(procedureName)) {
+                for (const auto& [variableName, statementNumbers] : *map) {
+                    variablesUsed.push_back(variableName);
                 }
             }
         }
+        return variablesUsed;
     }
 };
