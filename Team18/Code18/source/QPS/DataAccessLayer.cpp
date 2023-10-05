@@ -4,6 +4,15 @@
 
 
 unordered_set<string> DataAccessLayer::getEntity(ENTITY type) {
+	if (type == CONSTANT) {
+		return getAllConstants();
+	}
+	else if (type == VARIABLE) {
+		return getAllVariables();
+	}
+	else if (type == PROCEDURE) {
+		return getAllProcedures();
+	}
 	unordered_set<string> PKBResponse = PKB::responder.getEntityStatement(type);
 	return PKBResponse;
 }
