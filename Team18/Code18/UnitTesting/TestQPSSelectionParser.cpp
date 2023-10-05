@@ -3,7 +3,7 @@
 #include "../source/QPS/QueryParser.h"
 #include "../source/QPS/QueryObjects/ClauseObject.h"
 #include "../source/QPS/QueryObjects/PatternClauseObject.h"
-#include "../source/TokenizerClasses/PQLTokenizer.h"
+#include "../source/PQLTokenizer.h"
 #include <cassert>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;

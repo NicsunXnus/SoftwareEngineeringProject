@@ -5,7 +5,8 @@
 #include <string>
 #include <string_view>
 #include <vector>
-#include "TokenClasses/Token.h"
+#include <list>
+#include "SimpleTokens/Token.h"
 #include "ExceptionMessages.h"
 
 using namespace std::string_view_literals;
@@ -126,13 +127,20 @@ static std::string trimWhitespaces(std::string str) {
   return str;
 }
 
+/// <summary>
+/// Returns a continuous substring based on indices provided.
+/// 
+/// </summary>
+/// <param name="str">the original string</param> 
+/// <param name="startIndex">the start index. If negative indexes provided, defaults to 0</param> 
+/// <param name="endIndex">the end index. if index larger than string size provided, defaults to string size</param> 
+/// <returns>The substring</returns>
 static std::string substring(std::string str, int startIndex, int endIndex) {
   if (endIndex < startIndex) {
     std::cerr << ExceptionMessages::endIndexLarger << std::endl;
+    return "";
   }
-  if (startIndex < 0) {
-    std::cerr << ExceptionMessages::negativeStartIndex << std::endl;
-  }
+  startIndex = startIndex < 0 ? 0 : startIndex; // basically max(startIndex, 0)
   endIndex = endIndex > str.size() - 1 ? str.size() - 1 : endIndex; // basically min(endIndex, str.size() - 1);
   int len = endIndex - startIndex + 1;
   return str.substr(startIndex, len);
@@ -149,5 +157,10 @@ static void debug(std::string debugMessage) {
 static std::string svToString(std::string_view sv) {
     std::string str(sv);
     return str;
+}
+
+static std::list<std::string> vectorToList(std::vector<std::string> vectorOfString) {
+    std::list<std::string> listOfString(vectorOfString.begin(), vectorOfString.end());
+    return listOfString;
 }
 #endif

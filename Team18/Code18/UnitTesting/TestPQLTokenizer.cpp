@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
-#include "../source/TokenizerClasses/PQLTokenizer.h"
+#include "../source/PQLTokenizer.h"
 #include <string_view>
 #include <vector>
 #include <cassert>
