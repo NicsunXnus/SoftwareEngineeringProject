@@ -19,6 +19,12 @@ using namespace std;
 
 class UsesModifiesAbstractionBaseExtractor : public AbstractionExtractor {
 public:
+    // Constructor
+    UsesModifiesAbstractionBaseExtractor() {
+        this->AbstractionStorageMap = std::make_shared<map<string, vector<string>>>();
+        this->procedureVariableStorageMap = std::make_shared<map<string, vector<shared_ptr<map<string, vector<string>>>>>>();
+    }
+    
     // Overriden method to store variable name (no default implmentation)
     void handleVariable(std::shared_ptr<VariableNode> variableNode) override {
         string variableName = variableNode->getValue();
@@ -101,7 +107,7 @@ public:
 
 protected:
     shared_ptr<map<string, vector<string>>> UsesModifiesCallsMap;
-    static shared_ptr<map<string, vector<shared_ptr<map<string, vector<string>>>>>> procedureVariableStorageMap;
+    shared_ptr<map<string, vector<shared_ptr<map<string, vector<string>>>>>> procedureVariableStorageMap;
     
     virtual void preProcessWhileNode(std::shared_ptr<WhileNode> whileNode) {}
     virtual void preProcessIfNode(std::shared_ptr<IfNode> ifNode) {}
