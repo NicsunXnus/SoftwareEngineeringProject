@@ -47,6 +47,46 @@ namespace UnitTesting
                         Assert::AreEqual(4, (int)printVarNameMap->size());
             }
 
+            TEST_METHOD(TestPatternExtraction){
+                    std::string sourceCode =
+                        "procedure p {"
+                        "if (x == 3) then {"
+                        "read num1;"
+                        "print num3;"
+                        "sum = num1 + num2 + num3;}"
+                        "else{read num2;}"
+                        "while (y == 4){"
+                        "print num3;"
+                        "read num1;"
+                        "sum = num1 + num2 + num3;"
+                        "call q;"
+                        "}}"
+                        "procedure q {"
+                        "read num1;"
+                        "print num3;"
+                        "call r;"
+                        "}"
+                        "procedure r {"
+                        "read num2;"
+                        "print num1;"
+                        "}";
+                        std::shared_ptr<TokenizedProgram> tokenizedProgram = SimpleTokenizer::tokenizeProgram(sourceCode);
+                        std::shared_ptr<ProgramNode> prg = ASTBuilder::parseProgram(tokenizedProgram);
+                        DesignExtractor designExtractor = DesignExtractor();
+                        designExtractor.extractPattern(prg);
+                        
+                        std::shared_ptr<map<string, std::shared_ptr<ASTNode>>> patternMap = designExtractor.getPatternExtractor()->getPatternMap();
+
+                        Assert::AreEqual(4, (int)patternMap->size());
+
+                        // Check if the nodes are either if, while or assign
+                        for (auto const& pattern : *patternMap) {
+                            std::shared_ptr<ASTNode> node = pattern.second;
+                            string nodeName = node->getName();
+                            Assert::IsTrue(nodeName == "assign" || nodeName == "while" || nodeName == "if");
+                        }
+            }
+
             
     };
       
