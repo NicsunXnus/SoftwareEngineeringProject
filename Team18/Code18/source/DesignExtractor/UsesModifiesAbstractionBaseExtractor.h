@@ -186,6 +186,7 @@ protected:
                         insertToAbstractionMap(variableName, statementNumber);
                     }
                 }
+            }
         }
     }
 };
