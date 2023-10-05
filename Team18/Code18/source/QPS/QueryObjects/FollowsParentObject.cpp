@@ -73,29 +73,17 @@ inline shared_ptr<QueryResultsTable> handleFollowsParents(shared_ptr<ClauseArg> 
 }
 
 shared_ptr<QueryResultsTable> FollowsObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) {
-	shared_ptr<ClauseArg> arg1 = getArg1();
-	shared_ptr<ClauseArg> arg2 = getArg2();
-
-	return handleFollowsParents(arg1, arg2, dataAccessLayer, FOLLOWS);
+	return handleFollowsParents(getArg1(), getArg2(), dataAccessLayer, FOLLOWS);
 }
 
 shared_ptr<QueryResultsTable> FollowsStarObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) {
-	shared_ptr<ClauseArg> arg1 = getArg1();
-	shared_ptr<ClauseArg> arg2 = getArg2();
-
-	return handleFollowsParents(arg1, arg2, dataAccessLayer, FOLLOWSSTAR);
+	return handleFollowsParents(getArg1(), getArg2(), dataAccessLayer, FOLLOWSSTAR);
 }
 
 shared_ptr<QueryResultsTable> ParentObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) {
-	shared_ptr<ClauseArg> arg1 = getArg1();
-	shared_ptr<ClauseArg> arg2 = getArg2();
-
-	return handleFollowsParents(arg1, arg2, dataAccessLayer, PARENT);
+	return handleFollowsParents(getArg1(), getArg2(), dataAccessLayer, PARENT);
 }
 
 shared_ptr<QueryResultsTable> ParentStarObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) {
-	shared_ptr<ClauseArg> arg1 = getArg1();
-	shared_ptr<ClauseArg> arg2 = getArg2();
-
-	return handleFollowsParents(arg1, arg2, dataAccessLayer, PARENTSTAR);
+	return handleFollowsParents(getArg1(), getArg2(), dataAccessLayer, PARENTSTAR);
 }

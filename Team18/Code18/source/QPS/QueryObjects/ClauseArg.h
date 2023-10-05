@@ -39,7 +39,6 @@ public:
 	string_view getArgValue() {
 		if (isIdentifier()) {
 			return getIdentifier();
-			;
 		}
 		return this->arg;
 	}

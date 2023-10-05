@@ -75,29 +75,17 @@ inline shared_ptr<QueryResultsTable> handleUsesModifies(shared_ptr<ClauseArg> ar
 }
 
 shared_ptr<QueryResultsTable> UsesObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) {
-	shared_ptr<ClauseArg> arg1 = getArg1();
-	shared_ptr<ClauseArg> arg2 = getArg2();
-
-	return handleUsesModifies(arg1, arg2, dataAccessLayer, USES);
+	return handleUsesModifies(getArg1(), getArg2(), dataAccessLayer, USES);
 }
 
 shared_ptr<QueryResultsTable> UsesEntityObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) {
-	shared_ptr<ClauseArg> arg1 = getArg1();
-	shared_ptr<ClauseArg> arg2 = getArg2();
-
-	return handleUsesModifies(arg1, arg2, dataAccessLayer, USES);
+	return handleUsesModifies(getArg1(), getArg2(), dataAccessLayer, USES);
 }
 
 shared_ptr<QueryResultsTable> ModifiesObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) {
-	shared_ptr<ClauseArg> arg1 = getArg1();
-	shared_ptr<ClauseArg> arg2 = getArg2();
-
-	return handleUsesModifies(arg1, arg2, dataAccessLayer, MODIFIES);
+	return handleUsesModifies(getArg1(), getArg2(), dataAccessLayer, MODIFIES);
 }
 
 shared_ptr<QueryResultsTable> ModifiesEntityObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) {
-	shared_ptr<ClauseArg> arg1 = getArg1();
-	shared_ptr<ClauseArg> arg2 = getArg2();
-
-	return handleUsesModifies(arg1, arg2, dataAccessLayer, MODIFIES);
+	return handleUsesModifies(getArg1(), getArg2(), dataAccessLayer, MODIFIES);
 }

@@ -84,7 +84,7 @@ inline unordered_set<string> filterSetReturnSet(shared_ptr<ClauseArg> arg, share
 inline unordered_set<string> filterMapKeyReturnSetValues(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
 	unordered_set<string> filteredPKBClauseData;
 	auto it = PKBClauseData.find(svToString(arg->getArgValue()));
-	if (it != PKBClauseData.end()) { // integer found in database
+	if (it != PKBClauseData.end()) {
 		return PKBClauseData[svToString(arg->getArgValue())];
 	}
 	return filteredPKBClauseData;
@@ -92,7 +92,7 @@ inline unordered_set<string> filterMapKeyReturnSetValues(shared_ptr<ClauseArg> a
 
 inline bool filterSetReturnBool(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, unordered_set<string> PKBClauseData) {
 	auto it = PKBClauseData.find(svToString(arg->getArgValue()));
-	if (it != PKBClauseData.end()) { // integer found in database
+	if (it != PKBClauseData.end()) {
 		return true;
 	}
 
