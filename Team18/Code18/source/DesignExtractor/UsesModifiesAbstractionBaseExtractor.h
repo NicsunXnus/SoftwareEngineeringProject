@@ -81,11 +81,11 @@ public:
         }
     }
 
-    void handleCall(std::shared_ptr<CallNode> callNode) override {
-        string statementNumber = to_string(callNode->getStatementNumber());
-        string procedureCalledName = callNode->getProc()->getName();
-        insertIntoUsesModifiesCallsMap(procedureCalledName, statementNumber);
-    }
+    // void handleCall(std::shared_ptr<CallNode> callNode) override {
+    //     string statementNumber = to_string(callNode->getStatementNumber());
+    //     string procedureCalledName = callNode->getProc()->getName();
+    //     insertIntoUsesModifiesCallsMap(procedureCalledName, statementNumber);
+    // }
 
     void extractAbstractions(shared_ptr<ASTNode> astNode) override {
         // Create CallsAbstractionExtractor to extract the Calls abstraction
@@ -101,6 +101,8 @@ public:
 
 protected:
     shared_ptr<map<string, vector<string>>> UsesModifiesCallsMap;
+    shared_ptr<map<string, vector<shared_ptr<map<string, vector<string>>>>>> procedureVariableStorageMap;
+    
     virtual void preProcessWhileNode(std::shared_ptr<WhileNode> whileNode) {}
     virtual void preProcessIfNode(std::shared_ptr<IfNode> ifNode) {}
 
@@ -139,6 +141,23 @@ protected:
         string parentProcedure = getProcedureNameFromStatementNumber(statementNumber);
         insertToAbstractionMap(variableName, statementNumber);
         insertToAbstractionMap(variableName, parentProcedure);
+        insertToProcedureVariableStorageMap(parentProcedure, variableName, statementNumber);
+    }
+
+    void insertToProcedureVariableStorageMap(string parentProcedure, string variableName, string statementNumber) {
+        if (this->procedureVariableStorageMap->find(parentProcedure) == this->procedureVariableStorageMap->end()) {
+            this->procedureVariableStorageMap->insert({ parentProcedure, vector<shared_ptr<map<string, vector<string>>>>() });
+        }
+        // Insert only if the variableName is not found in the vector
+        if (std::find_if(this->procedureVariableStorageMap->at(parentProcedure).begin(), this->procedureVariableStorageMap->at(parentProcedure).end(), [variableName](shared_ptr<map<string, vector<string>>> map) { return map->find(variableName) != map->end(); }) == this->procedureVariableStorageMap->at(parentProcedure).end()) {
+            shared_ptr<map<string, vector<string>>> newMap = make_shared<map<string, vector<string>>>();
+            newMap->insert({ variableName, vector<string>() });
+            this->procedureVariableStorageMap->at(parentProcedure).push_back(newMap);
+        }
+        // Insert only if the statement number is not found in the vector
+        if (std::find(this->procedureVariableStorageMap->at(parentProcedure).back()->at(variableName).begin(), this->procedureVariableStorageMap->at(parentProcedure).back()->at(variableName).end(), statementNumber) == this->procedureVariableStorageMap->at(parentProcedure).back()->at(variableName).end()) {
+            this->procedureVariableStorageMap->at(parentProcedure).back()->at(variableName).push_back(statementNumber);
+        }
     }
 
     // for all keys in the AbstractionStorageMap, if a value within its vector can be found 
@@ -155,6 +174,9 @@ protected:
             }
             for (const auto& procedureName : procedureNames) {
                 insertToAbstractionMap(variable, procedureName);
+                for (const auto& statementNumber : this->procedureVariableStorageMap->at(procedureName).back()->at(variable)) {
+                    insertToAbstractionMap(variable, statementNumber);
+                }
             }
         }
     }
