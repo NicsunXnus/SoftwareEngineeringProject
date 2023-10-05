@@ -28,6 +28,11 @@ public:
         insertToMap(statementNumber, ifNode);
     }
 
+    // Get map of patternMap
+    std::shared_ptr<map<string, std::shared_ptr<ASTNode>>> getPatternMap() {
+        return this->patternMap;
+    }
+
 private:
     std::shared_ptr<map<string, std::shared_ptr<ASTNode>>> patternMap;
 
