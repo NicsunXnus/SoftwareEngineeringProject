@@ -108,6 +108,7 @@ protected:
                 newUsesModifiesCallsMap->at(value).push_back(key);
             }
         }
+        return newUsesModifiesCallsMap;
     }
 
     
