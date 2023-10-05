@@ -21,8 +21,7 @@ class UsesModifiesAbstractionBaseExtractor : public AbstractionExtractor {
 public:
     // Constructor
     UsesModifiesAbstractionBaseExtractor() {
-        this->AbstractionStorageMap = std::make_shared<map<string, vector<string>>>();
-        this->procedureVariableStorageMap = std::make_shared<map<string, vector<shared_ptr<map<string, vector<string>>>>>>();
+        this->UsesModifiesCallsMap = std::make_shared<map<string, vector<string>>>();
         this->procedureCallLinesMap = std::make_shared<map<string, vector<string>>>();
     }
 
@@ -145,13 +144,13 @@ protected:
     // for all keys in the AbstractionStorageMap, if a value within its vector can be found 
     // in the UsesModifiesCallsMap, add the vector of values from the UsesModifiesCallsMap to 
     // the vector of values in the AbstractionStorageMap
-    void processIndirectProcedureCalls(shared_ptr<map<string, vector<string>>> UsesModifiesCallsMap) {
+    void processIndirectProcedureCalls() {
         for (const auto& [variable, values] : *this->AbstractionStorageMap) {
             std::vector<std::string> procedureNames = vector<string>();
             for (const auto& value : values) {
-                if (UsesModifiesCallsMap->find(value) != UsesModifiesCallsMap->end()) {
+                if (this->UsesModifiesCallsMap->find(value) != this->UsesModifiesCallsMap->end()) {
                     // Add to the vector of procedureNames 
-                    procedureNames.insert(procedureNames.end(), UsesModifiesCallsMap->at(value).begin(), UsesModifiesCallsMap->at(value).end());
+                    procedureNames.insert(procedureNames.end(), this->UsesModifiesCallsMap->at(value).begin(), this->UsesModifiesCallsMap->at(value).end());
                 }
             }
             for (const auto& procedureName : procedureNames) {
