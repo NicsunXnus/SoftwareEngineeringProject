@@ -89,9 +89,11 @@ public:
             handleCall(callNode);
         } 
         else if (auto whileNode = std::dynamic_pointer_cast<WhileNode>(statementNode)) {
+            preProcessWhileNode(whileNode);
             handleWhile(whileNode);
         } 
         else if (auto ifNode = std::dynamic_pointer_cast<IfNode>(statementNode)) {
+            preProcessIfNode(ifNode);
             handleIf(ifNode);
         } 
         else {
@@ -192,6 +194,8 @@ public:
     virtual void preProcessProgramNode(std::shared_ptr<ProgramNode> programNode) {}
     virtual void preProcessProcedureNode(std::shared_ptr<ProcedureNode> procedureNode) {}
     virtual void preProcessStatementNode(std::shared_ptr<StatementNode> statementNode) {}
+    virtual void preProcessWhileNode(std::shared_ptr<WhileNode> whileNode) {}
+    virtual void preProcessIfNode(std::shared_ptr<IfNode> ifNode) {}
     virtual void handleCall(std::shared_ptr<CallNode> callNode) {}
 
 };
