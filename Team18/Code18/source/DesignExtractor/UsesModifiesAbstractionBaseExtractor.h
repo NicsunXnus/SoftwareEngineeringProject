@@ -154,16 +154,13 @@ protected:
         if (this->procedureVariableStorageMap->find(parentProcedure) == this->procedureVariableStorageMap->end()) {
             this->procedureVariableStorageMap->insert({ parentProcedure, vector<shared_ptr<map<string, vector<string>>>>() });
         }
-        // Insert only if the variableName is not found in the vector
+        // Insert new map if the variableName is not found in the procedure
         if (std::find_if(this->procedureVariableStorageMap->at(parentProcedure).begin(), this->procedureVariableStorageMap->at(parentProcedure).end(), [variableName](shared_ptr<map<string, vector<string>>> map) { return map->find(variableName) != map->end(); }) == this->procedureVariableStorageMap->at(parentProcedure).end()) {
             shared_ptr<map<string, vector<string>>> newMap = make_shared<map<string, vector<string>>>();
             newMap->insert({ variableName, vector<string>() });
             this->procedureVariableStorageMap->at(parentProcedure).push_back(newMap);
         }
-        // Insert only if the statement number is not found in the vector
-        if (std::find(this->procedureVariableStorageMap->at(parentProcedure).back()->at(variableName).begin(), this->procedureVariableStorageMap->at(parentProcedure).back()->at(variableName).end(), statementNumber) == this->procedureVariableStorageMap->at(parentProcedure).back()->at(variableName).end()) {
-            this->procedureVariableStorageMap->at(parentProcedure).back()->at(variableName).push_back(statementNumber);
-        }
+        this->procedureVariableStorageMap->at(parentProcedure).back()->at(variableName).push_back(statementNumber);
     }
 
     // for all keys in the AbstractionStorageMap, if a value within its vector can be found 
