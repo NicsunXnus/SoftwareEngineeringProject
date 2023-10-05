@@ -23,7 +23,7 @@ public:
     UsesModifiesAbstractionBaseExtractor() {
         this->AbstractionStorageMap = std::make_shared<map<string, vector<string>>>();
         this->procedureVariableStorageMap = std::make_shared<map<string, vector<shared_ptr<map<string, vector<string>>>>>>();
-        this->callNodes = vector<shared_ptr<CallNode>>();
+        this->procedureCallLinesMap = std::make_shared<map<string, vector<string>>>();
     }
 
     // Overriden method to store variable name (no default implmentation)
@@ -89,7 +89,10 @@ public:
     }
 
     void handleCall(std::shared_ptr<CallNode> callNode) override {
-        this->callNodes.push_back(callNode);
+        string statementNumber = to_string(callNode->getStatementNumber());
+        string procedureCalledName = callNode->getProc()->getName();
+        insertToAbstractionMap(procedureName, statementNumber);
+        insertIntoMap(procedureCalledName, statementNumber, procedureCallLinesMap);
     }
 
     void extractAbstractions(shared_ptr<ASTNode> astNode) override {
@@ -97,49 +100,37 @@ public:
         shared_ptr<CallsAbstractionExtractor> callsAbstractionExtractor = make_shared<CallsAbstractionExtractor>();
         callsAbstractionExtractor->extractAbstractions(astNode);
         shared_ptr<map<string, vector<string>>> callsAbstractionMap = callsAbstractionExtractor->getStorageMap();
-        shared_ptr<map<string, vector<string>>> usesModifiesCallsMap = createUsesModifiesCallsMap(callsAbstractionMap);
-        setUsesModifiesCallsMap(usesModifiesCallsMap);
         extractDesigns(astNode);
         processIndirectProcedureCalls(usesModifiesCallsMap);
-        processCallNodes();
     }
 
 
 protected:
     shared_ptr<map<string, vector<string>>> UsesModifiesCallsMap;
-    shared_ptr<map<string, vector<shared_ptr<map<string, vector<string>>>>>> procedureVariableStorageMap;
-    vector<shared_ptr<CallNode>> callNodes;
+    shared_ptr<map<string, vector<string>>> procedureCallLinesMap;
+    
     
     virtual void preProcessWhileNode(std::shared_ptr<WhileNode> whileNode) {}
     virtual void preProcessIfNode(std::shared_ptr<IfNode> ifNode) {}
 
-    void setUsesModifiesCallsMap(shared_ptr<map<string, vector<string>>> usesModifiesCallsMap) {
-        this->UsesModifiesCallsMap = usesModifiesCallsMap;
-    }
-
-    void insertIntoUsesModifiesCallsMap(string procedureName, string statementNumber) {
-        if (this->UsesModifiesCallsMap->find(procedureName) == this->UsesModifiesCallsMap->end()) {
-            this->UsesModifiesCallsMap->insert({ procedureName, vector<string>() });
+    void insertIntoMap(string key, string statementNumber, shared_ptr<map<string, vector<string>>> map) {
+        // Insert to the map if the key is not found
+        if (map->find(key) == map->end()) {
+            map->insert({ key, vector<string>() });
         }
-        // insert only if the statement number is not found in the vector
-        if (std::find(this->UsesModifiesCallsMap->at(procedureName).begin(), this->UsesModifiesCallsMap->at(procedureName).end(), statementNumber) == this->UsesModifiesCallsMap->at(procedureName).end()) {
-            this->UsesModifiesCallsMap->at(procedureName).push_back(statementNumber);
+        // Insert to the vector if the statement number is not found
+        if (std::find(map->at(key).begin(), map->at(key).end(), statementNumber) == map->at(procedureName).end()) {
+            map->at(procedurkeyeName).push_back(statementNumber);
         }
     }
     
     // Create a new map with the values and keys swapped
     shared_ptr<map<string, vector<string>>> createUsesModifiesCallsMap(shared_ptr<map<string, vector<string>>> callsMap) {
-        shared_ptr<map<string, vector<string>>> newUsesModifiesCallsMap = make_shared<map<string, vector<string>>>();
-        // Loop through all values in the vector in the callsMap, add the value as a key and the key as a value to the newUsesModifiesCallsMap
         for (const auto& [key, values] : *callsMap) {
             for (const auto& value : values) {
-                if (newUsesModifiesCallsMap->find(value) == newUsesModifiesCallsMap->end()) {
-                    newUsesModifiesCallsMap->insert({ value, vector<string>() });
-                }
-                newUsesModifiesCallsMap->at(value).push_back(key);
+                insertIntoMap(value, key, UsesModifiesCallsMap);
             }
         }
-        return newUsesModifiesCallsMap;
     }
 
     
@@ -148,30 +139,6 @@ protected:
         string parentProcedure = getProcedureNameFromStatementNumber(statementNumber);
         insertToAbstractionMap(variableName, statementNumber);
         insertToAbstractionMap(variableName, parentProcedure);
-        insertToProcedureVariableStorageMap(parentProcedure, variableName, statementNumber);
-    }
-
-    void insertToProcedureVariableStorageMap(string parentProcedure, string variableName, string statementNumber) {
-        if (this->procedureVariableStorageMap->find(parentProcedure) == this->procedureVariableStorageMap->end()) {
-            this->procedureVariableStorageMap->insert({ parentProcedure, vector<shared_ptr<map<string, vector<string>>>>() });
-        }
-        // Insert new map if the variableName is not found in the procedure
-        if (std::find_if(this->procedureVariableStorageMap->at(parentProcedure).begin(), this->procedureVariableStorageMap->at(parentProcedure).end(), [variableName](shared_ptr<map<string, vector<string>>> map) { return map->find(variableName) != map->end(); }) == this->procedureVariableStorageMap->at(parentProcedure).end()) {
-            shared_ptr<map<string, vector<string>>> newMap = make_shared<map<string, vector<string>>>();
-            newMap->insert({ variableName, vector<string>() });
-            this->procedureVariableStorageMap->at(parentProcedure).push_back(newMap);
-        }
-        // Access the parent procedure's vector
-        auto& parentProcedureVector = this->procedureVariableStorageMap->at(parentProcedure);
-        // Access the last map in the vector
-        auto& lastMap = parentProcedureVector.back();
-        // Check if the variableName is found in the last map
-        if (lastMap->find(variableName) == lastMap->end()) {
-            lastMap->insert({ variableName, vector<string>() });
-        }
-        // Push back the statementNumber to the variableName in the map
-        lastMap->at(variableName).push_back(statementNumber);
-
     }
 
     // for all keys in the AbstractionStorageMap, if a value within its vector can be found 
@@ -188,32 +155,13 @@ protected:
             }
             for (const auto& procedureName : procedureNames) {
                 insertToAbstractionMap(variable, procedureName);   
-            }
-        }
-    }
-
-    void processCallNodes() {
-        for (const auto& callNode : this->callNodes) {
-            string statementNumber = to_string(callNode->getStatementNumber());
-            string procedureCalledName = callNode->getProc()->getName();
-            // Get all the variables that are used in the procedure called
-            vector<string> variablesUsed = getVariablesUsedOrModifiedInProcedure(procedureCalledName);
-            // Add the statement number to the variables used
-            for (const auto& variableUsed : variablesUsed) {
-                insertToAbstractionMap(variableUsed, statementNumber);
-            }
-        }
-    }
-
-    vector<string> getVariablesUsedOrModifiedInProcedure(string procedureName) {
-        vector<string> variablesUsed = vector<string>();
-        if (this->procedureVariableStorageMap->find(procedureName) != this->procedureVariableStorageMap->end()) {
-            for (const auto& map : this->procedureVariableStorageMap->at(procedureName)) {
-                for (const auto& [variableName, statementNumbers] : *map) {
-                    variablesUsed.push_back(variableName);
+                if (procedureCallLinesMap->find(procedureName) != procedureCallLinesMap->end()) {
+                    // Use a for loop to iterate through the vector of statement numbers
+                    for (const auto& statementNumber : procedureCallLinesMap->at(procedureName)) {
+                        insertToAbstractionMap(variable, statementNumber);
+                    }
                 }
             }
         }
-        return variablesUsed;
     }
 };
