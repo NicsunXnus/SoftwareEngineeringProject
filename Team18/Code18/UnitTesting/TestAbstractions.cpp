@@ -7,6 +7,7 @@
 #include "../source/DesignExtractor/UsesAbstractionExtractor.h"
 #include "../source/DesignExtractor/ModifiesAbstractionExtractor.h"
 #include "../source/DesignExtractor/CallsAbstractionExtractor.h"
+#include "../source/DesignExtractor/NextAbstractionExtractor.h"
 #include "../source/AST/ASTNode.h"
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
