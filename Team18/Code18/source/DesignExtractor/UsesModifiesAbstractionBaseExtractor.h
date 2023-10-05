@@ -160,7 +160,15 @@ protected:
             newMap->insert({ variableName, vector<string>() });
             this->procedureVariableStorageMap->at(parentProcedure).push_back(newMap);
         }
-        this->procedureVariableStorageMap->at(parentProcedure).back()->at(variableName).push_back(statementNumber);
+        // Step 1: Access the parent procedure's vector
+        auto& parentProcedureVector = this->procedureVariableStorageMap->at(parentProcedure);
+
+        // Step 2: Access the last map in the vector
+        auto& lastMap = parentProcedureVector.back();
+
+        // Step 3: Push back the statementNumber to the variableName in the map
+        lastMap->at(variableName).push_back(statementNumber);
+
     }
 
     // for all keys in the AbstractionStorageMap, if a value within its vector can be found 
