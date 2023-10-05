@@ -108,11 +108,15 @@ protected:
     // the vector of values in the AbstractionStorageMap
     void processIndirectProcedureCalls(shared_ptr<map<string, vector<string>>> callsAbstractionMap) {
         for (const auto& [variable, values] : *this->AbstractionStorageMap) {
+            std::vector<std::string> procedureNames = vector<string>();
             for (const auto& value : values) {
                 if (callsAbstractionMap->find(value) != callsAbstractionMap->end()) {
-                    this->AbstractionStorageMap->at(variable).insert(this->AbstractionStorageMap->at(variable).end(), callsAbstractionMap->at(value).begin(), callsAbstractionMap->at(value).end());
+                    // Add to the vector of procedureNames 
+                    procedureNames.insert(procedureNames.end(), callsAbstractionMap->at(value).begin(), callsAbstractionMap->at(value).end());
                 }
             }
+            // Add procedureNames to values
+            this->AbstractionStorageMap->at(variable).insert(this->AbstractionStorageMap->at(variable).end(), procedureNames.begin(), procedureNames.end());
         }
     }
 };
