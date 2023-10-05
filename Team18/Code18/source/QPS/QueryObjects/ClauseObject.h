@@ -37,75 +37,7 @@ public:
 inline string col1 = "col1";
 inline string col2 = "col2";
 
-/*
-* This class represents a Query object, for clause Uses with a statement ref as the first argument
-*/
-class UsesObject : public ClauseObject {
-public:
-	UsesObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
-		: ClauseObject{ clauseName, argument0, argument1 } {
-	};
-
-	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
-		StringMap PKBdata = dataAccessLayer->getClause(USES);
-		return make_shared<QueryResultsTable>();
-	}
-
-	
-};
-
-/*
-* This class represents a Query object, for clause Uses with an entity ref as the first argument
-*/
-class UsesEntityObject : public ClauseObject {
-public:
-	UsesEntityObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
-		: ClauseObject{ clauseName, argument0, argument1 } {
-	};
-
-	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
-		StringMap PKBdata = dataAccessLayer->getClause(USES);
-		return make_shared<QueryResultsTable>();
-	}
-
-};
-
-/*
-* This class represents a Query object, for clause Modifies with a statement ref as the first argument
-*/
-class ModifiesObject : public ClauseObject {
-public:
-	ModifiesObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
-		: ClauseObject{ clauseName, argument0, argument1 } {
-	};
-	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
-		StringMap PKBdata = dataAccessLayer->getClause(MODIFIES);
-		return make_shared<QueryResultsTable>();
-	}
-
-
-
-};
-
-/*
-* This class represents a Query object, for clause Modifies with an entity ref as the first argument
-*/
-class ModifiesEntityObject : public ClauseObject {
-public:
-	ModifiesEntityObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
-		: ClauseObject{ clauseName, argument0, argument1 } {
-	};
-	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
-		StringMap PKBdata = dataAccessLayer->getClause(MODIFIES);
-		return make_shared<QueryResultsTable>();
-
-	}
-
-
-
-};
-
-inline StringMap handleSynonymKeyColumn(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
+inline StringMap filterMapKeyReturnMap(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
 	ENTITY typeArg1 = arg->getSynonym()->getEntityType();
 	unordered_set<string> PKBArg1EntityData = dataAccessLayer->getEntity(typeArg1);
 	StringMap filteredPKBClauseData;
@@ -119,7 +51,7 @@ inline StringMap handleSynonymKeyColumn(shared_ptr<ClauseArg> arg, shared_ptr<Da
 	return filteredPKBClauseData;
 }
 
-inline StringMap handleSynonymSetColumn(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
+inline StringMap filterMapValueReturnMap(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
 	ENTITY typeArg2 = arg->getSynonym()->getEntityType();
 	unordered_set<string> PKBArg2EntityData = dataAccessLayer->getEntity(typeArg2);
 	StringMap filteredPKBClauseData;
@@ -137,7 +69,7 @@ inline StringMap handleSynonymSetColumn(shared_ptr<ClauseArg> arg, shared_ptr<Da
 }
 
 
-inline unordered_set<string> handleSynonymSet(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, unordered_set<string> PKBClauseData) {
+inline unordered_set<string> filterSetReturnSet(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, unordered_set<string> PKBClauseData) {
 	ENTITY typeArg2 = arg->getSynonym()->getEntityType();
 	unordered_set<string> PKBArg2EntityData = dataAccessLayer->getEntity(typeArg2);
 	unordered_set<string> filteredPKBClauseData;
@@ -148,26 +80,26 @@ inline unordered_set<string> handleSynonymSet(shared_ptr<ClauseArg> arg, shared_
 	}
 	return filteredPKBClauseData;
 }
-// used for int, anything or anything, int
-inline unordered_set<string> handleIntegerKeyColumn(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
+
+inline unordered_set<string> filterMapKeyReturnSetValues(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
 	unordered_set<string> filteredPKBClauseData;
-	auto it = PKBClauseData.find(svToString(arg->getArg()));
+	auto it = PKBClauseData.find(svToString(arg->getArgValue()));
 	if (it != PKBClauseData.end()) { // integer found in database
-		return PKBClauseData[svToString(arg->getArg())];
+		return PKBClauseData[svToString(arg->getArgValue())];
 	}
 	return filteredPKBClauseData;
 }
 
-inline bool handleIntegerSet(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, unordered_set<string> PKBClauseData) {
-	auto it = PKBClauseData.find(svToString(arg->getArg()));
+inline bool filterSetReturnBool(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, unordered_set<string> PKBClauseData) {
+	auto it = PKBClauseData.find(svToString(arg->getArgValue()));
 	if (it != PKBClauseData.end()) { // integer found in database
 		return true;
 	}
-	
+
 	return false;
 }
 
-inline unordered_set<string> handleWildCardDropSetColumn(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
+inline unordered_set<string> removeMapValuesReturnSet(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
 	unordered_set<string> keySet;
 
 	// Extract keys from the map and insert them into the set
@@ -180,6 +112,56 @@ inline unordered_set<string> handleWildCardDropSetColumn(shared_ptr<ClauseArg> a
 
 
 /*
+* This class represents a Query object, for clause Uses with a statement ref as the first argument
+*/
+class UsesObject : public ClauseObject {
+public:
+	UsesObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
+		: ClauseObject{ clauseName, argument0, argument1 } {
+	};
+
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override;
+
+	
+};
+
+/*
+* This class represents a Query object, for clause Uses with an entity ref as the first argument
+*/
+class UsesEntityObject : public ClauseObject {
+public:
+	UsesEntityObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
+		: ClauseObject{ clauseName, argument0, argument1 } {
+	};
+
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override;
+};
+
+/*
+* This class represents a Query object, for clause Modifies with a statement ref as the first argument
+*/
+class ModifiesObject : public ClauseObject {
+public:
+	ModifiesObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
+		: ClauseObject{ clauseName, argument0, argument1 } {
+	};
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override;
+};
+
+/*
+* This class represents a Query object, for clause Modifies with an entity ref as the first argument
+*/
+class ModifiesEntityObject : public ClauseObject {
+public:
+	ModifiesEntityObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
+		: ClauseObject{ clauseName, argument0, argument1 } {
+	};
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override;
+};
+
+
+
+/*
 * This class represents a Query object, for clause Follows
 */
 class FollowsObject : public ClauseObject {
@@ -188,7 +170,6 @@ public:
 		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override;
-
 };
 
 /*
@@ -212,7 +193,6 @@ public:
 		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override;
-
 };
 
 /*
@@ -224,7 +204,6 @@ public:
 		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override;
-
 };
 
 /*
@@ -239,7 +218,6 @@ public:
 		// TODO
 		return make_shared<QueryResultsTable>();
 	}
-
 };
 
 /*

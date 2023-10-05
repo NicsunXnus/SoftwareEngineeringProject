@@ -10,11 +10,12 @@ map<string, unordered_set<string>> variableMap = { {"a", {"1"}}, {"b", {"2", "3"
 
 map<string, unordered_set<string>> clauses = { {"1", {"2"}}, {"2", {"3"}}, {"3", {"4"}}};
 map<string, unordered_set<string>> clausesMult = { {"1", {"2","3"}}, {"2", {"3", "4"}}, {"3", {"4"}}};
-map<string, unordered_set<string>> clausesEnts = { {"a", {"1"}}, {"b", {"2", "3"}}, {"c", {"3"}}};
+map<string, unordered_set<string>> clausesEnts = { {"1", {"a"}}, {"2", {"b"}}, {"3", {"c", "b"}} };
 
 map<string, unordered_set<string>> clausesInverse = { {"2", {"1"}}, {"3", {"2"}}, {"4", {"3"}} };
 map<string, unordered_set<string>> clausesMultInverse = { {"2", {"1"}}, {"3", {"2", "1"}}, {"4", {"3", "2"}} };
-map<string, unordered_set<string>> clausesEntsInverse = { {"1", {"a"}}, {"2", {"b"}}, {"3", {"c", "b"}}};
+map<string, unordered_set<string>> clausesEntsInverse = { {"a", {"1"}}, {"b", {"2", "3"}}, {"c", {"3"}} };
+
 
 
 unordered_set<string> DataAccessLayerStub::getEntity(ENTITY type) {
