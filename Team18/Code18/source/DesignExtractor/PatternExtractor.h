@@ -13,6 +13,11 @@ using namespace std;
 
 class PatternExtractor : public Extractor {
 public:
+    // Constructor
+    PatternExtractor() {
+        this->patternMap = std::make_shared<map<string, std::shared_ptr<ASTNode>>>();
+    }
+
     void handleAssign(std::shared_ptr<AssignNode> assignNode) override {
         string statementNumber = to_string(assignNode->getStatementNumber());
         insertToMap(statementNumber, assignNode);
