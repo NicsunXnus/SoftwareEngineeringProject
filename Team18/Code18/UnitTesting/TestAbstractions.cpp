@@ -804,41 +804,27 @@ namespace UnitTesting
                   Assert::IsTrue(std::find(usesMapRef["y"].begin(), usesMapRef["y"].end(), "testprocedure") != usesMapRef["y"].end());
                   Assert::IsTrue(std::find(usesMapRef["y"].begin(), usesMapRef["y"].end(), "testprocedure2") != usesMapRef["y"].end());
 
-                  Assert::IsTrue(std::find(usesMapRef["z"].begin(), usesMapRef["z"].end(), std::to_string(1)) == usesMapRef["z"].end());
-                  Assert::IsTrue(std::find(usesMapRef["z"].begin(), usesMapRef["z"].end(), std::to_string(2)) == usesMapRef["z"].end());
-                  Assert::IsTrue(std::find(usesMapRef["z"].begin(), usesMapRef["z"].end(), std::to_string(3)) == usesMapRef["z"].end());
-                  Assert::IsTrue(std::find(usesMapRef["z"].begin(), usesMapRef["z"].end(), std::to_string(4)) == usesMapRef["z"].end());
+                  Assert::IsTrue(usesMapRef["z"].size() == 4);
+                  Assert::IsTrue(std::find(usesMapRef["z"].begin(), usesMapRef["z"].end(), std::to_string(3)) != usesMapRef["z"].end());
                   Assert::IsTrue(std::find(usesMapRef["z"].begin(), usesMapRef["z"].end(), std::to_string(5)) != usesMapRef["z"].end());
                   Assert::IsTrue(std::find(usesMapRef["z"].begin(), usesMapRef["z"].end(), "testprocedure") != usesMapRef["z"].end());
-                  Assert::IsTrue(std::find(usesMapRef["z"].begin(), usesMapRef["z"].end(), "testprocedure2") == usesMapRef["z"].end());
                   Assert::IsTrue(std::find(usesMapRef["z"].begin(), usesMapRef["z"].end(), "testprocedure3") != usesMapRef["z"].end());
 
                   // Check the existence of values in modifiesMap
+                  Assert::IsTrue(modifiesMapRef["x"].size() == 2);
                   Assert::IsTrue(std::find(modifiesMapRef["x"].begin(), modifiesMapRef["x"].end(), std::to_string(1)) != modifiesMapRef["x"].end());
-                  Assert::IsTrue(std::find(modifiesMapRef["x"].begin(), modifiesMapRef["x"].end(), std::to_string(2)) == modifiesMapRef["x"].end());
-                  Assert::IsTrue(std::find(modifiesMapRef["x"].begin(), modifiesMapRef["x"].end(), std::to_string(3)) == modifiesMapRef["x"].end());
-                  Assert::IsTrue(std::find(modifiesMapRef["x"].begin(), modifiesMapRef["x"].end(), std::to_string(4)) == modifiesMapRef["x"].end());
-                  Assert::IsTrue(std::find(modifiesMapRef["x"].begin(), modifiesMapRef["x"].end(), std::to_string(5)) == modifiesMapRef["x"].end());
                   Assert::IsTrue(std::find(modifiesMapRef["x"].begin(), modifiesMapRef["x"].end(), "testprocedure") != modifiesMapRef["x"].end());
-                  Assert::IsTrue(std::find(modifiesMapRef["x"].begin(), modifiesMapRef["x"].end(), "testprocedure2") == modifiesMapRef["x"].end());
-                  Assert::IsTrue(std::find(modifiesMapRef["x"].begin(), modifiesMapRef["x"].end(), "testprocedure3") == modifiesMapRef["x"].end());
 
-                  Assert::IsTrue(std::find(modifiesMapRef["y"].begin(), modifiesMapRef["y"].end(), std::to_string(1)) == modifiesMapRef["y"].end());
-                  Assert::IsTrue(std::find(modifiesMapRef["y"].begin(), modifiesMapRef["y"].end(), std::to_string(2)) == modifiesMapRef["y"].end());
-                  Assert::IsTrue(std::find(modifiesMapRef["y"].begin(), modifiesMapRef["y"].end(), std::to_string(3)) == modifiesMapRef["y"].end());
+                  Assert::IsTrue(modifiesMapRef["y"].size() == 4);
+                  Assert::IsTrue(std::find(modifiesMapRef["y"].begin(), modifiesMapRef["y"].end(), std::to_string(2)) != modifiesMapRef["y"].end());
                   Assert::IsTrue(std::find(modifiesMapRef["y"].begin(), modifiesMapRef["y"].end(), std::to_string(4)) != modifiesMapRef["y"].end());
-                  Assert::IsTrue(std::find(modifiesMapRef["y"].begin(), modifiesMapRef["y"].end(), std::to_string(5)) == modifiesMapRef["y"].end());
                   Assert::IsTrue(std::find(modifiesMapRef["y"].begin(), modifiesMapRef["y"].end(), "testprocedure") != modifiesMapRef["y"].end());
                   Assert::IsTrue(std::find(modifiesMapRef["y"].begin(), modifiesMapRef["y"].end(), "testprocedure2") != modifiesMapRef["y"].end());
-                  Assert::IsTrue(std::find(modifiesMapRef["y"].begin(), modifiesMapRef["y"].end(), "testprocedure3") == modifiesMapRef["y"].end());
 
-                  Assert::IsTrue(std::find(modifiesMapRef["z"].begin(), modifiesMapRef["z"].end(), std::to_string(1)) == modifiesMapRef["z"].end());
-                  Assert::IsTrue(std::find(modifiesMapRef["z"].begin(), modifiesMapRef["z"].end(), std::to_string(2)) == modifiesMapRef["z"].end());
-                  Assert::IsTrue(std::find(modifiesMapRef["z"].begin(), modifiesMapRef["z"].end(), std::to_string(3)) == modifiesMapRef["z"].end());
-                  Assert::IsTrue(std::find(modifiesMapRef["z"].begin(), modifiesMapRef["z"].end(), std::to_string(4)) == modifiesMapRef["z"].end());
+                  Assert::IsTrue(modifiesMapRef["z"].size() == 4);
+                  Assert::IsTrue(std::find(modifiesMapRef["z"].begin(), modifiesMapRef["z"].end(), std::to_string(3)) != modifiesMapRef["z"].end());
                   Assert::IsTrue(std::find(modifiesMapRef["z"].begin(), modifiesMapRef["z"].end(), std::to_string(5)) != modifiesMapRef["z"].end());
                   Assert::IsTrue(std::find(modifiesMapRef["z"].begin(), modifiesMapRef["z"].end(), "testprocedure") != modifiesMapRef["z"].end());
-                  Assert::IsTrue(std::find(modifiesMapRef["z"].begin(), modifiesMapRef["z"].end(), "testprocedure2") == modifiesMapRef["z"].end());
                   Assert::IsTrue(std::find(modifiesMapRef["z"].begin(), modifiesMapRef["z"].end(), "testprocedure3") != modifiesMapRef["z"].end());
             }
             

@@ -112,7 +112,10 @@ protected:
         if (this->UsesModifiesCallsMap->find(procedureName) == this->UsesModifiesCallsMap->end()) {
             this->UsesModifiesCallsMap->insert({ procedureName, vector<string>() });
         }
-        this->UsesModifiesCallsMap->at(procedureName).push_back(statementNumber);
+        // insert only if the statement number is not found in the vector
+        if (std::find(this->UsesModifiesCallsMap->at(procedureName).begin(), this->UsesModifiesCallsMap->at(procedureName).end(), statementNumber) == this->UsesModifiesCallsMap->at(procedureName).end()) {
+            this->UsesModifiesCallsMap->at(procedureName).push_back(statementNumber);
+        }
     }
     
     // Create a new map with the values and keys swapped
