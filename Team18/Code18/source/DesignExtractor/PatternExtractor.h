@@ -23,12 +23,12 @@ public:
         insertToMap(statementNumber, assignNode);
     }
 
-    void handleWhile(std::shared_ptr<WhileNode> whileNode) override {
+    void preProcessWhileNode(std::shared_ptr<WhileNode> whileNode) override {
         string statementNumber = to_string(whileNode->getStatementNumber());
         insertToMap(statementNumber, whileNode);
     }
 
-    void handleIf(std::shared_ptr<IfNode> ifNode) override {
+    void preProcessIfNode(std::shared_ptr<IfNode> ifNode) override {
         string statementNumber = to_string(ifNode->getStatementNumber());
         insertToMap(statementNumber, ifNode);
     }
