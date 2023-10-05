@@ -16,6 +16,9 @@ using namespace std;
  */
 class NextAbstractionExtractor : public AbstractionExtractor {
 public:    
+    // Constructor
+    NextAbstractionExtractor() : AbstractionExtractor() {}
+
     void handleAssign(std::shared_ptr<AssignNode> assignNode) override {}
     void handleCall(std::shared_ptr<CallNode> callNode) override {}
     void handleRead(std::shared_ptr<ReadNode> readNode) override {}
