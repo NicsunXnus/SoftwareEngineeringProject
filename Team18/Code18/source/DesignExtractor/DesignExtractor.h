@@ -33,6 +33,7 @@ public:
         this->parentsExtractor = make_shared<ParentsAbstractionExtractor>();
         this->followsExtractor = make_shared<FollowsAbstractionExtractor>();
         this->callsExtractor = make_shared<CallsAbstractionExtractor>();
+        this->withExtractor = make_shared<WithExtractor>();
     }
 
     void extractAndInsertAll(shared_ptr<ASTNode> astNode) {
