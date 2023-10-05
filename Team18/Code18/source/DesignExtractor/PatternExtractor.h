@@ -18,7 +18,7 @@ public:
         this->patternMap = std::make_shared<map<string, std::shared_ptr<ASTNode>>>();
     }
 
-    void handleAssign(std::shared_ptr<AssignNode> assignNode) override {
+    void preProcessAssignNode(std::shared_ptr<AssignNode> assignNode) override {
         string statementNumber = to_string(assignNode->getStatementNumber());
         insertToMap(statementNumber, assignNode);
     }

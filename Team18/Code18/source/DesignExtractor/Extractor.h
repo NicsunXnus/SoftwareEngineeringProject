@@ -83,6 +83,7 @@ public:
             handlePrint(printNode);
         }
         else if (auto assignNode = std::dynamic_pointer_cast<AssignNode>(statementNode)) {
+            preProcessAssignNode(assignNode);
             handleAssign(assignNode);
         }
         else if (auto callNode = std::dynamic_pointer_cast<CallNode>(statementNode)) {
@@ -196,6 +197,7 @@ public:
     virtual void preProcessStatementNode(std::shared_ptr<StatementNode> statementNode) {}
     virtual void preProcessWhileNode(std::shared_ptr<WhileNode> whileNode) {}
     virtual void preProcessIfNode(std::shared_ptr<IfNode> ifNode) {}
+    virtual void preProcessAssignNode(std::shared_ptr<AssignNode> assignNode) {}
     virtual void handleCall(std::shared_ptr<CallNode> callNode) {}
 
 };
