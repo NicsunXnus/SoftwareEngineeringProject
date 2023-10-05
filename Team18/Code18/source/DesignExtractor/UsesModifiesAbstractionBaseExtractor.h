@@ -120,7 +120,7 @@ protected:
             map->insert({ key, vector<string>() });
         }
         // Insert to the vector if the statement number is not found
-        if (std::find(map->at(key).begin(), map->at(key).end(), statementNumber) == map->at(procedureName).end()) {
+        if (std::find(map->at(key).begin(), map->at(key).end(), statementNumber) == map->at(key).end()) {
             map->at(key).push_back(statementNumber);
         }
     }
