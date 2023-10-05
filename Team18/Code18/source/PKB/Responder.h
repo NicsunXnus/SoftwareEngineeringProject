@@ -34,15 +34,15 @@ public:
 	}
 
 	// unused now
-	// unordered_set<string> Responder::getProcedure(string procedure) const {
-	// 	shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-	//	shared_ptr<StringMap> proc_database = entity_storage->getProcedureDatabase();
+	unordered_set<string> Responder::getProcedure(string procedure) const {
+	 	shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
+		shared_ptr<StringMap> proc_database = entity_storage->getProcedureDatabase();
 		// check if procedure exists
-	// 	if (proc_database->find(procedure) == proc_database->end()) {
-	// 		return unordered_set<string>();
-	// 	}
-	// 	return (*proc_database).at(procedure);
-	// }
+	 	if (proc_database->find(procedure) == proc_database->end()) {
+	 		return unordered_set<string>();
+	 	}
+	 	return (*proc_database).at(procedure);
+	}
 
 	StringMap Responder::getVariableMap() const {
 		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
@@ -86,8 +86,11 @@ public:
 		return *print_varname_database;
 	}
 
-	StringMap Responder::getAbstraction(ABSTRACTION abstraction) const {
+	StringMap Responder::getAbstraction(ABSTRACTION abstraction, bool inverse = false) const {
 		shared_ptr<AbstractionStorage> abstraction_storage = StorageManager::getAbstractionStorage(abstraction);
+		if (inverse ^ isFlippedStorage(abstraction)) {
+			return createInverseMap(abstraction_storage->getDatabase());
+		}
 		return *(abstraction_storage->getDatabase());
 	}
 
@@ -108,5 +111,17 @@ private:
 			keys.insert(k);
 		}
 		return keys;
+	}
+
+	StringMap createInverseMap(shared_ptr<StringMap> originalMap) const {
+		StringMap inverseMap;
+		for (const auto& pair : *originalMap) {
+			const string& key = pair.first;
+			const unordered_set<string>& values = pair.second;
+			for (const string& value : values) {
+				inverseMap[value].insert(key);
+			}
+		}
+		return inverseMap;
 	}
 };
