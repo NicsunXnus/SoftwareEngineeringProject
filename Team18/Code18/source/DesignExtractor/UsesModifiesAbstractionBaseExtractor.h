@@ -86,9 +86,9 @@ public:
         shared_ptr<CallsAbstractionExtractor> callsAbstractionExtractor = make_shared<CallsAbstractionExtractor>();
         callsAbstractionExtractor->extractAbstractions(astNode);
         shared_ptr<map<string, vector<string>>> callsAbstractionMap = callsAbstractionExtractor->getStorageMap();
-
+        shared_ptr<map<string, vector<string>>> usesModifiesCallsMap = createUsesModifiesCallsMap(callsAbstractionMap);
         extractDesigns(astNode);
-        processIndirectProcedureCalls(callsAbstractionMap);
+        processIndirectProcedureCalls(usesModifiesCallsMap);
     }
 
 
@@ -96,13 +96,28 @@ protected:
     virtual void preProcessWhileNode(std::shared_ptr<WhileNode> whileNode) {}
     virtual void preProcessIfNode(std::shared_ptr<IfNode> ifNode) {}
     
+    // Create a new map with the values and keys swapped
+    shared_ptr<map<string, vector<string>>> createUsesModifiesCallsMap(shared_ptr<map<string, vector<string>>> callsMap) {
+        shared_ptr<map<string, vector<string>>> newUsesModifiesCallsMap = make_shared<map<string, vector<string>>>();
+        // Loop through all values in the vector in the callsMap, add the value as a key and the key as a value to the newUsesModifiesCallsMap
+        for (const auto& [key, values] : *callsMap) {
+            for (const auto& value : values) {
+                if (newUsesModifiesCallsMap->find(value) == newUsesModifiesCallsMap->end()) {
+                    newUsesModifiesCallsMap->insert({ value, vector<string>() });
+                }
+                newUsesModifiesCallsMap->at(value).push_back(key);
+            }
+        }
+    }
+
+    
     // Add both statement number and parent procedure to the AbstractionStorageMap
     void addStatementNumberAndProcedureName(string variableName, string statementNumber) {
         string parentProcedure = getProcedureNameFromStatementNumber(statementNumber);
         insertToAbstractionMap(variableName, statementNumber);
         insertToAbstractionMap(variableName, parentProcedure);
     }
-    
+
     // for all keys in the AbstractionStorageMap, if a value within its vector can be found 
     // in the callsAbstractionMap, add the vector of values from the callsAbstractionMap to 
     // the vector of values in the AbstractionStorageMap
@@ -118,8 +133,6 @@ protected:
             for (const auto& procedureName : procedureNames) {
                 insertToAbstractionMap(variable, procedureName);
             }
-            
-            
         }
     }
 };
