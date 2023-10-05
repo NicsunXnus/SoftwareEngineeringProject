@@ -2,7 +2,7 @@
 #include "CppUnitTest.h"
 #include <string>
 #include "../source/DesignExtractor/DesignExtractor.h"
-#include "../source/TokenizerClasses/SIMPLETokenizer.h"
+#include "../source/SimpleTokenizer/SIMPLETokenizer.h"
 #include "../source/AST/ASTBuilder.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
