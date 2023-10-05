@@ -34,6 +34,8 @@ public:
     }
 
 private:
+    std::shared_ptr<map<string, vector<string>>> AbstractionStorageMap;
+
     // The method adds all procedures called indirectly by the parent procedure
     void processProcedureNames() {
         for (const auto& [parentProcedureName, procedureCalledNames] : *AbstractionStorageMap) {
