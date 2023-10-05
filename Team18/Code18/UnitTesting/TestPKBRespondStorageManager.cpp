@@ -22,14 +22,23 @@ shared_ptr<StringMap> readVarNameMap = make_shared<StringMap>(readVarNameData);
 shared_ptr<StringMap> printVarNameMap = make_shared<StringMap>(printVarNameData);
 
 StringMap usesData = { {"x", {"main", "3", "6"}} };
+StringMap usesDataInverse = { {"main", {"x"}}, {"3", {"x"}}, {"6", {"x"}} };
 StringMap modifiesData = { {"y", {"main", "8", "proc1", "2"}} };
+StringMap modifiesDataInverse = { {"main", {"y"}}, {"8", {"y"}}, {"proc1", {"y"}}, {"2", {"y"}} };
 StringMap followsStarData = { {"1", {"2", "3", "6", "7"}}, {"2", {"3", "6", "7"}} };
-StringMap followsData = { {"1", {"2"}}, {"2", {"3"}} };
+StringMap followsStarDataInverse = { {"2", {"1"}}, {"3", {"1", "2"}}, {"6", {"1", "2"}}, {"7", {"1", "2"}} };
+StringMap followsData = { {"1", {"2"}}, {"2", {"3"}} }; 
+StringMap followsDataInverse = { {"2", {"1"}}, {"3", {"2"}} };
 StringMap parentStarData = { {"10", {"7", "3", "1"}}, {"6", {"5", "1"}} };
+StringMap parentStarDataInverse = { {"7", {"10"}}, {"3", {"10"}}, {"1", {"10", "6"}}, {"5", {"6"}} };
 StringMap parentData = { {"10", {"7"}}, {"6", {"5"}} };
+StringMap parentDataInverse = { {"7", {"10"}}, {"5", {"6"}} };
 StringMap callsStarData = { {"main", {"proc1", "proc2", "proc3"}}, {"proc1", {"proc2", "proc3"}}, {"proc2", {"proc3"}} };
+StringMap callsStarDataInverse = { {"proc1", {"main"}}, {"proc2", {"main", "proc1"}}, {"proc3", {"main", "proc1", "proc2"}} };
 StringMap callsData = { {"main", {"proc1"}}, {"proc1", {"proc2"}}, {"proc2", {"proc3"}} };
+StringMap callsDataInverse = { {"proc1", {"main"}}, {"proc2", {"proc1"}}, {"proc3", {"proc2"}} };
 StringMap nextData = { {"1", {"2"}}, {"2", {"3"}}, {"3", {"7"}}, {"7", {"1"}}, {"5", {"6"}} };
+StringMap nextDataInverse = { {"2", {"1"}}, {"3", {"2"}}, {"7", {"3"}}, {"1", {"7"}}, {"6", {"5"}} };
 
 shared_ptr<StringMap> usesMap = make_shared<StringMap>(usesData);
 shared_ptr<StringMap> modifiesMap = make_shared<StringMap>(modifiesData);
@@ -98,15 +107,37 @@ namespace UnitTesting {
 				PKB::insertor.addAbstraction(callsStarMap, CALLSSTAR);
 				PKB::insertor.addAbstraction(nextMap, NEXT);
 
-				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(USES), usesData));
-				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(MODIFIES), modifiesData));
-				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(PARENT), parentData));
-				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(PARENTSTAR), parentStarData));
+				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(USES), usesDataInverse));
+				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(MODIFIES), modifiesDataInverse));
+				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(PARENT), parentDataInverse));
+				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(PARENTSTAR), parentStarDataInverse));
 				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(FOLLOWS), followsData));
 				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(FOLLOWSSTAR), followsStarData));
 				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(CALLS), callsData));
 				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(CALLSSTAR), callsStarData));
 				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(NEXT), nextData));
+			}
+
+			TEST_METHOD(TestGetInverseAbstractions) {
+				PKB::insertor.addAbstraction(modifiesMap, MODIFIES);
+				PKB::insertor.addAbstraction(usesMap, USES);
+				PKB::insertor.addAbstraction(parentsMap, PARENT);
+				PKB::insertor.addAbstraction(parentsStarMap, PARENTSTAR);
+				PKB::insertor.addAbstraction(followsMap, FOLLOWS);
+				PKB::insertor.addAbstraction(followsStarMap, FOLLOWSSTAR);
+				PKB::insertor.addAbstraction(callsMap, CALLS);
+				PKB::insertor.addAbstraction(callsStarMap, CALLSSTAR);
+				PKB::insertor.addAbstraction(nextMap, NEXT);
+
+				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(USES, true), usesData));
+				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(MODIFIES, true), modifiesData));
+				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(PARENT, true), parentData));
+				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(PARENTSTAR, true), parentStarData));
+				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(FOLLOWS, true), followsDataInverse));
+				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(FOLLOWSSTAR, true), followsStarDataInverse));
+				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(CALLS, true), callsDataInverse));
+				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(CALLSSTAR, true), callsStarDataInverse));
+				Assert::IsTrue(compare_maps(PKB::responder.getAbstraction(NEXT, true), nextDataInverse));
 			}
 		};
 }
