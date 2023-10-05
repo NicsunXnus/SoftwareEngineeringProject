@@ -126,7 +126,7 @@ protected:
     }
     
     // Create a new map with the values and keys swapped
-    shared_ptr<map<string, vector<string>>> createUsesModifiesCallsMap(shared_ptr<map<string, vector<string>>> callsMap) {
+    void createUsesModifiesCallsMap(shared_ptr<map<string, vector<string>>> callsMap) {
         for (const auto& [key, values] : *callsMap) {
             for (const auto& value : values) {
                 insertIntoMap(value, key, UsesModifiesCallsMap);
