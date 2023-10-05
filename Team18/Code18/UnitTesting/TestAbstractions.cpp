@@ -952,17 +952,17 @@ namespace UnitTesting
                   std::shared_ptr<VariableNode> testVariableNode4 = std::make_shared<VariableNode>("x", 1);
                   std::shared_ptr<AssignNode> testAssignNode = std::make_shared<AssignNode>(1, testVariableNode, testVariableNode4);
 
-                  std::shared_ptr<VariableNode> testVariableNode2 = std::make_shared<VariableNode>("y", 4);
-                  std::shared_ptr<VariableNode> testVariableNode5 = std::make_shared<VariableNode>("y", 4);
-                  std::shared_ptr<AssignNode> testAssignNode2 = std::make_shared<AssignNode>(4, testVariableNode2, testVariableNode5);
+                  std::shared_ptr<VariableNode> testVariableNode2 = std::make_shared<VariableNode>("y", 5);
+                  std::shared_ptr<VariableNode> testVariableNode5 = std::make_shared<VariableNode>("y", 5);
+                  std::shared_ptr<AssignNode> testAssignNode2 = std::make_shared<AssignNode>(5, testVariableNode2, testVariableNode5);
 
-                  std::shared_ptr<VariableNode> testVariableNode3 = std::make_shared<VariableNode>("z", 5);
-                  std::shared_ptr<VariableNode> testVariableNode6 = std::make_shared<VariableNode>("z", 5);
-                  std::shared_ptr<AssignNode> testAssignNode3 = std::make_shared<AssignNode>(5, testVariableNode3, testVariableNode6);
+                  std::shared_ptr<VariableNode> testVariableNode3 = std::make_shared<VariableNode>("z", 6);
+                  std::shared_ptr<VariableNode> testVariableNode6 = std::make_shared<VariableNode>("z", 6);
+                  std::shared_ptr<AssignNode> testAssignNode3 = std::make_shared<AssignNode>(6, testVariableNode3, testVariableNode6);
 
                   std::shared_ptr<CallNode> testCallNode = std::make_shared<CallNode>(2, std::make_shared<ProcedureNode>("testprocedure2", std::vector<std::shared_ptr<StatementNode>>{}));
                   std::shared_ptr<CallNode> testCallNode2 = std::make_shared<CallNode>(3, std::make_shared<ProcedureNode>("testprocedure2", std::vector<std::shared_ptr<StatementNode>>{}));
-                  std::shared_ptr<CallNode> testCallNode3 = std::make_shared<CallNode>(5, std::make_shared<ProcedureNode>("testprocedure3", std::vector<std::shared_ptr<StatementNode>>{}));
+                  std::shared_ptr<CallNode> testCallNode3 = std::make_shared<CallNode>(4, std::make_shared<ProcedureNode>("testprocedure3", std::vector<std::shared_ptr<StatementNode>>{}));
 
                   // Combine the above statement nodes
                   std::vector<std::shared_ptr<StatementNode>> testStatementNodes = {testAssignNode, testCallNode, testCallNode2};
