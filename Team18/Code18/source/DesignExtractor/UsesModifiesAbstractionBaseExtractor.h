@@ -101,7 +101,7 @@ public:
 
 protected:
     shared_ptr<map<string, vector<string>>> UsesModifiesCallsMap;
-    shared_ptr<map<string, vector<shared_ptr<map<string, vector<string>>>>>> procedureVariableStorageMap;
+    static shared_ptr<map<string, vector<shared_ptr<map<string, vector<string>>>>>> procedureVariableStorageMap;
     
     virtual void preProcessWhileNode(std::shared_ptr<WhileNode> whileNode) {}
     virtual void preProcessIfNode(std::shared_ptr<IfNode> ifNode) {}
