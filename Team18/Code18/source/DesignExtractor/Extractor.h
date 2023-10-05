@@ -143,7 +143,7 @@ public:
     }
 
     // Method to handle expressions
-    void handleExpr(std::shared_ptr<ExprNode> exprNode) {
+    virtual void handleExpr(std::shared_ptr<ExprNode> exprNode) {
         std::shared_ptr<ExprNode> leftExpr = exprNode->getLeftExpr();
         std::shared_ptr<ExprNode> rightExpr = exprNode->getRightExpr();
         extractDesigns(leftExpr);
