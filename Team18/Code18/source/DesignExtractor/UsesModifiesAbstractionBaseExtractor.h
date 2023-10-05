@@ -115,8 +115,11 @@ protected:
                     procedureNames.insert(procedureNames.end(), callsAbstractionMap->at(value).begin(), callsAbstractionMap->at(value).end());
                 }
             }
-            // Add procedureNames to values
-            this->AbstractionStorageMap->at(variable).insert(this->AbstractionStorageMap->at(variable).end(), procedureNames.begin(), procedureNames.end());
+            for (const auto& procedureName : procedureNames) {
+                insertToAbstractionMap(variable, procedureName);
+            }
+            
+            
         }
     }
 };
