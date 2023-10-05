@@ -33,6 +33,10 @@ public:
         string whileStatementNumber = to_string(whileNode->getStatementNumber());
         traverse(statements);
 
+        // Connect the first statement number to the while statement number
+        string firstStatementNumber = to_string(statements.front()->getStatementNumber());
+        insertToAbstractionMap(firstStatementNumber, whileStatementNumber);
+        
         // Connect the last statement number to the while statement number
         string lastStatementNumber = to_string(statements.back()->getStatementNumber());
         insertToAbstractionMap(lastStatementNumber, whileStatementNumber);
