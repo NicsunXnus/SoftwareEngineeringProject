@@ -35,8 +35,8 @@ public:
 
         // Connect the first statement number to the while statement number
         string firstStatementNumber = to_string(statements.front()->getStatementNumber());
-        insertToAbstractionMap(firstStatementNumber, whileStatementNumber);
-        
+        insertToAbstractionMap(whileStatementNumber, firstStatementNumber);
+
         // Connect the last statement number to the while statement number
         string lastStatementNumber = to_string(statements.back()->getStatementNumber());
         insertToAbstractionMap(lastStatementNumber, whileStatementNumber);
