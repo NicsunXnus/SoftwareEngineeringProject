@@ -147,21 +147,22 @@ protected:
     // the vector of values in the AbstractionStorageMap
     void processIndirectProcedureCalls() {
         for (const auto& [variable, values] : *this->AbstractionStorageMap) {
-            std::vector<std::string> procedureNames = vector<string>();
+            std::vector<std::string> procedureNamesToBeAdded = vector<string>();
             for (const auto& value : values) {
+                // If the value is a procedure name, add the vector of procedureNames from the UsesModifiesCallsMap
                 if (this->UsesModifiesCallsMap->find(value) != this->UsesModifiesCallsMap->end()) {
-                    // Add to the vector of procedureNames 
-                    procedureNames.insert(procedureNames.end(), this->UsesModifiesCallsMap->at(value).begin(), this->UsesModifiesCallsMap->at(value).end());
+                    procedureNamesToBeAdded.push_back(value);
+                    procedureNamesToBeAdded.insert(procedureNamesToBeAdded.end(), this->UsesModifiesCallsMap->at(value).begin(), this->UsesModifiesCallsMap->at(value).end());
                 }
             }
-            for (const auto& procedureName : procedureNames) {
+            for (const auto& procedureName : procedureNamesToBeAdded) {
                 insertToAbstractionMap(variable, procedureName);   
                 if (procedureCallLinesMap->find(procedureName) != procedureCallLinesMap->end()) {
-                    // Use a for loop to iterate through the vector of statement numbers
                     for (const auto& statementNumber : procedureCallLinesMap->at(procedureName)) {
                         insertToAbstractionMap(variable, statementNumber);
                     }
                 }
+                
             }
         }
     }
