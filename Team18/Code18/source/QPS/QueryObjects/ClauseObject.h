@@ -31,10 +31,11 @@ public:
 		return argument1;
 	}
 
-	string col1 = "col1";
-	string col2 = "col2";
+	
 	
 };
+inline string col1 = "col1";
+inline string col2 = "col2";
 
 /*
 * This class represents a Query object, for clause Uses with a statement ref as the first argument
@@ -97,6 +98,7 @@ public:
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
 		StringMap PKBdata = dataAccessLayer->getClause(MODIFIES);
 		return make_shared<QueryResultsTable>();
+
 	}
 
 
@@ -186,7 +188,6 @@ public:
 		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override;
-
 
 };
 

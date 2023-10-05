@@ -4,6 +4,7 @@
 #include <vector>
 #include <list>
 #include "QueryResultsTable.h"
+#include "../HelperFunctions.h"
 /**
  * This class represents a ResultsHandler object that processes tuples from the PKB to generate
  * query results
