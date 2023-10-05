@@ -67,13 +67,13 @@ private:
             // if its the last statement, 
             if (statement == statements.back()) {
                 for (const auto& prevStatement : prevStatementNumbers) {
-                    insertToAbstractionMap(prevStatement);
+                    insertKeyToAbstractionMap(prevStatement);
                 }
             }
         }
     }
 
-    void insertToAbstractionMap(string key) {
+    void insertKeyToAbstractionMap(string key) {
         if (this->AbstractionStorageMap->find(key) == this->AbstractionStorageMap->end()) {
             this->AbstractionStorageMap->insert({ key, vector<string>() });
         }
