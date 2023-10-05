@@ -12,6 +12,8 @@ using namespace std;
 #include "UsesAbstractionExtractor.h"
 #include "ParentsAbstractionExtractor.h"
 #include "FollowsAbstractionExtractor.h"
+#include "CallsAbstractionExtractor.h"
+#include "WithExtractor.h"
 #include "../AST/ASTNode.h"
 #include "../PKB.h"
 #include "../PKB/Adapter.h"
@@ -30,11 +32,12 @@ public:
         this->usesExtractor = make_shared<UsesAbstractionExtractor>();
         this->parentsExtractor = make_shared<ParentsAbstractionExtractor>();
         this->followsExtractor = make_shared<FollowsAbstractionExtractor>();
+        this->callsExtractor = make_shared<CallsAbstractionExtractor>();
     }
 
-    // Method to extract all the entities
-    void extractEntities(shared_ptr<ASTNode> astNode) {
-        entityExtractor->extractDesigns(astNode);
+    void extractAndInsertAll(shared_ptr<ASTNode> astNode) {
+        extractAll(astNode);
+        insertAll();
     }
 
     // Method to extract all the abstractions
@@ -43,6 +46,15 @@ public:
         usesExtractor->extractDesigns(astNode);
         parentsExtractor->extractDesigns(astNode);
         followsExtractor->extractDesigns(astNode);
+    }
+
+    // Method to extract all the entities
+    void extractEntities(shared_ptr<ASTNode> astNode) {
+        entityExtractor->extractDesigns(astNode);
+    }
+
+    void extractWith(shared_ptr<ASTNode> astNode) {
+        withExtractor->extractDesigns(astNode);
     }
 
     // Method to get procedure entity
@@ -65,6 +77,28 @@ public:
         return this->entityExtractor->getConstantEntity();
     }
     
+
+private:
+    shared_ptr<EntityExtractor> entityExtractor;
+    shared_ptr<ModifiesAbstractionExtractor> modifiesExtractor;
+    shared_ptr<UsesAbstractionExtractor> usesExtractor;
+    shared_ptr<ParentsAbstractionExtractor> parentsExtractor;
+    shared_ptr<FollowsAbstractionExtractor> followsExtractor;
+    shared_ptr<CallsAbstractionExtractor> callsExtractor;
+    shared_ptr<WithExtractor> withExtractor;
+
+
+    void extractAll(shared_ptr<ASTNode> astNode) {
+        extractEntities(astNode);
+        extractAbstractions(astNode);
+    }
+
+
+    void insertAll() {
+        insertEntities();
+        insertAbstractions();
+    }
+
     // Method to insert the entities into the PKB
     void insertEntities() {
         // Get the entity maps
@@ -95,6 +129,7 @@ public:
         static shared_ptr<StringMap> usesMap = this->usesExtractor->getStorageMap();
         static shared_ptr<StringMap> parentsMap = this->parentsExtractor->getStorageMap();
         static shared_ptr<StringMap> followsMap = this->followsExtractor->getStorageMap();
+        static shared_ptr<StringMap> callMap = this->callsExtractor->getStorageMap();
 
         // Convert the maps to unordered sets
         static shared_ptr<map<string, unordered_set<string>>> modifiesSet = convertVectorToUnorderedSet(modifiesMap);
@@ -103,6 +138,7 @@ public:
         static shared_ptr<map<string, unordered_set<string>>> followsSet = convertParentsFollowsStarToParentsFollows(followsMap);
         static shared_ptr<map<string, unordered_set<string>>> parentsStarSet = convertVectorToUnorderedSet(parentsMap);
         static shared_ptr<map<string, unordered_set<string>>> followsStarSet = convertVectorToUnorderedSet(followsMap);
+        static shared_ptr<map<string, unordered_set<string>>> callSet = convertVectorToUnorderedSet(callMap);
 
         // Insert the abstractions into the PKB
         // TODO: Change to new API
@@ -110,13 +146,6 @@ public:
         PKB::insertor.addAbstraction(usesMap, USES);
         PKB::insertor.addAbstraction(parentsMap, PARENT);
         PKB::insertor.addAbstraction(followsMap, FOLLOWS);
+        PKB::insertor.addAbstraction(callMap, CALLS);
     }
-
-
-private:
-    shared_ptr<EntityExtractor> entityExtractor;
-    shared_ptr<ModifiesAbstractionExtractor> modifiesExtractor;
-    shared_ptr<UsesAbstractionExtractor> usesExtractor;
-    shared_ptr<ParentsAbstractionExtractor> parentsExtractor;
-    shared_ptr<FollowsAbstractionExtractor> followsExtractor;
 };
