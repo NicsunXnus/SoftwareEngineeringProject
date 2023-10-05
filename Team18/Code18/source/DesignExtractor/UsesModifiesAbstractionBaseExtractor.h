@@ -160,13 +160,15 @@ protected:
             newMap->insert({ variableName, vector<string>() });
             this->procedureVariableStorageMap->at(parentProcedure).push_back(newMap);
         }
-        // Step 1: Access the parent procedure's vector
+        // Access the parent procedure's vector
         auto& parentProcedureVector = this->procedureVariableStorageMap->at(parentProcedure);
-
-        // Step 2: Access the last map in the vector
+        // Access the last map in the vector
         auto& lastMap = parentProcedureVector.back();
-
-        // Step 3: Push back the statementNumber to the variableName in the map
+        // Check if the variableName is found in the last map
+        if (lastMap->find(variableName) == lastMap->end()) {
+            lastMap->insert({ variableName, vector<string>() });
+        }
+        // Push back the statementNumber to the variableName in the map
         lastMap->at(variableName).push_back(statementNumber);
 
     }
