@@ -1011,9 +1011,140 @@ namespace UnitTesting
                   Assert::IsTrue(std::find(usesMapRef["z"].begin(), usesMapRef["z"].end(), "testprocedure") != usesMapRef["z"].end());
                   Assert::IsTrue(std::find(usesMapRef["z"].begin(), usesMapRef["z"].end(), "testprocedure2") != usesMapRef["z"].end());
                   Assert::IsTrue(std::find(usesMapRef["z"].begin(), usesMapRef["z"].end(), "testprocedure3") != usesMapRef["z"].end());
-
-
             }
+
+            TEST_METHOD(TestNextAbstractionsExtraction)
+            {
+                  /* The code in mind
+                        procedure testprocedure {
+                              x = 10;
+                              if (x == 10) then {
+                                    x = 20;
+                                    while(y == 10) {
+                                          y = 20;
+                                          if (z == 20) then {
+                                                z = 30;
+                                          } else {
+                                                z = 40;
+                                          }
+                                    }
+                              } else {
+                                    x = 50;
+                              }
+                              call testprocedure1;
+                        }
+                        procedure testprocedure1 {
+                              read y;
+                        }
+                  */
+                  // Create statement nodes
+                  std::shared_ptr<VariableNode> testVariableNode = std::make_shared<VariableNode>("x", 1);
+                  std::shared_ptr<ConstantNode> testConstantNode = std::make_shared<ConstantNode>(10, 1);
+                  std::shared_ptr<AssignNode> testAssignNode = std::make_shared<AssignNode>(1, testVariableNode, testConstantNode);
+
+                  std::shared_ptr<VariableNode> testVariableNode2 = std::make_shared<VariableNode>("x", 2);
+                  std::shared_ptr<ConstantNode> testConstantNode2 = std::make_shared<ConstantNode>(10, 2);
+                  std::shared_ptr<EqualsNode> testEqualNode = std::make_shared<EqualsNode>(testVariableNode2, testConstantNode2);
+
+                  std::shared_ptr<VariableNode> testVariableNode3 = std::make_shared<VariableNode>("x", 3);
+                  std::shared_ptr<ConstantNode> testConstantNode3 = std::make_shared<ConstantNode>(20, 3);
+                  std::shared_ptr<AssignNode> testAssignNode2 = std::make_shared<AssignNode>(3, testVariableNode3, testConstantNode3);
+
+                  std::shared_ptr<VariableNode> testVariableNode4 = std::make_shared<VariableNode>("y", 4);
+                  std::shared_ptr<ConstantNode> testConstantNode4 = std::make_shared<ConstantNode>(10, 4);
+                  std::shared_ptr<EqualsNode> testEqualNode2 = std::make_shared<EqualsNode>(testVariableNode4, testConstantNode4);
+
+                  std::shared_ptr<VariableNode> testVariableNode5 = std::make_shared<VariableNode>("y", 5);
+                  std::shared_ptr<ConstantNode> testConstantNode5 = std::make_shared<ConstantNode>(20, 5);
+                  std::shared_ptr<AssignNode> testAssignNode3 = std::make_shared<AssignNode>(5, testVariableNode5, testConstantNode5);
+
+                  std::shared_ptr<VariableNode> testVariableNode6 = std::make_shared<VariableNode>("z", 6);
+                  std::shared_ptr<ConstantNode> testConstantNode6 = std::make_shared<ConstantNode>(20, 6);
+                  std::shared_ptr<EqualsNode> testEqualNode3 = std::make_shared<EqualsNode>(testVariableNode6, testConstantNode6);
+
+                  std::shared_ptr<VariableNode> testVariableNode7 = std::make_shared<VariableNode>("z", 7);
+                  std::shared_ptr<ConstantNode> testConstantNode7 = std::make_shared<ConstantNode>(30, 7);
+                  std::shared_ptr<AssignNode> testAssignNode4 = std::make_shared<AssignNode>(7, testVariableNode7, testConstantNode7);
+
+                  std::shared_ptr<VariableNode> testVariableNode8 = std::make_shared<VariableNode>("z", 8);
+                  std::shared_ptr<ConstantNode> testConstantNode8 = std::make_shared<ConstantNode>(40, 8);
+                  std::shared_ptr<AssignNode> testAssignNode5 = std::make_shared<AssignNode>(8, testVariableNode8, testConstantNode8);
+
+                  std::vector<std::shared_ptr<StatementNode>> ifStatements = {testAssignNode4};
+                  std::vector<std::shared_ptr<StatementNode>> elseStatements = {testAssignNode5};
+                  std::shared_ptr<IfNode> testIfNode = std::make_shared<IfNode>(6, testEqualNode3, ifStatements, elseStatements);
+
+                  std::vector<std::shared_ptr<StatementNode>> whileStatements = {testAssignNode3, testIfNode};
+                  std::shared_ptr<WhileNode> testWhileNode = std::make_shared<WhileNode>(4, testEqualNode2, whileStatements);
+
+                  std::shared_ptr<VariableNode> testVariableNode9 = std::make_shared<VariableNode>("x", 9);
+                  std::shared_ptr<ConstantNode> testConstantNode9 = std::make_shared<ConstantNode>(50, 9);
+                  std::shared_ptr<AssignNode> testAssignNode6 = std::make_shared<AssignNode>(9, testVariableNode, testConstantNode);
+
+                  std::vector<std::shared_ptr<StatementNode>> ifStatements2 = {testAssignNode2, testWhileNode};
+                  std::vector<std::shared_ptr<StatementNode>> elseStatements2 = {testAssignNode6};
+                  std::shared_ptr<IfNode> testIfNode2 = std::make_shared<IfNode>(2, testEqualNode, ifStatements2, elseStatements2);
+
+                  std::shared_ptr<CallNode> testCallNode = std::make_shared<CallNode>(10, std::make_shared<ProcedureNode>("testprocedure1", std::vector<std::shared_ptr<StatementNode>>{}));
+
+                  std::shared_ptr<VariableNode> testVariableNode10 = std::make_shared<VariableNode>("y", 11);
+                  std::shared_ptr<ReadNode> testReadNode = std::make_shared<ReadNode>(11, testVariableNode10);
+
+                  // Combine the above statement nodes
+                  std::vector<std::shared_ptr<StatementNode>> testStatementNodes = {testAssignNode, testIfNode2, testCallNode};
+                  std::vector<std::shared_ptr<StatementNode>> testStatementNodes1 = {testReadNode};
+
+                  // Create procedure node
+                  std::shared_ptr<ProcedureNode> testProcedureNode = std::make_shared<ProcedureNode>("testprocedure", testStatementNodes);
+                  std::shared_ptr<ProcedureNode> testProcedureNode1 = std::make_shared<ProcedureNode>("testprocedure1", testStatementNodes1);
+
+                  // Create program node
+                  std::shared_ptr<ProgramNode> testProgramNode = std::make_shared<ProgramNode>(std::vector<std::shared_ptr<ProcedureNode>>{testProcedureNode, testProcedureNode1});
+
+                  // Create Abstraction Extractors
+                  std::shared_ptr<NextAbstractionExtractor> testNextAbstraction = std::make_shared<NextAbstractionExtractor>();
+
+                  // Extract abstraction from program node
+                  testNextAbstraction->extractAbstractions(testProgramNode);
+
+                  // Get abstraction maps
+                  std::shared_ptr<map<string, vector<string>>> nextMap = testNextAbstraction->getStorageMap();
+
+                  std::map<std::string, std::vector<std::string>>& nextMapRef = *nextMap;
+
+                  // Check the existence of values in nextMap
+                  //x = 10
+                  Assert::IsTrue(std::find(nextMapRef["1"].begin(), nextMapRef["1"].end(), "2") != nextMapRef["1"].end());
+
+                  // If else statement (x == 10)
+                  Assert::IsTrue(std::find(nextMapRef["2"].begin(), nextMapRef["2"].end(), "3") != nextMapRef["2"].end());
+                  Assert::IsTrue(std::find(nextMapRef["2"].begin(), nextMapRef["2"].end(), "9") != nextMapRef["2"].end());
+
+                  // If statement (x = 20)
+                  Assert::IsTrue(std::find(nextMapRef["3"].begin(), nextMapRef["3"].end(), "4") != nextMapRef["3"].end());
+                  
+                  // While statement (y == 10)
+                  Assert::IsTrue(std::find(nextMapRef["4"].begin(), nextMapRef["4"].end(), "5") != nextMapRef["4"].end());
+                  Assert::IsTrue(std::find(nextMapRef["4"].begin(), nextMapRef["4"].end(), "10") != nextMapRef["4"].end());
+
+                  // y = 20
+                  Assert::IsTrue(std::find(nextMapRef["5"].begin(), nextMapRef["5"].end(), "6") != nextMapRef["5"].end());
+
+                  // If else statement (z == 20)
+                  Assert::IsTrue(std::find(nextMapRef["6"].begin(), nextMapRef["6"].end(), "7") != nextMapRef["6"].end());
+                  Assert::IsTrue(std::find(nextMapRef["6"].begin(), nextMapRef["6"].end(), "8") != nextMapRef["6"].end());
+
+                  // z = 30
+                  Assert::IsTrue(std::find(nextMapRef["7"].begin(), nextMapRef["7"].end(), "4") != nextMapRef["7"].end());
+                  // z = 40
+                  Assert::IsTrue(std::find(nextMapRef["8"].begin(), nextMapRef["8"].end(), "4") != nextMapRef["8"].end());
+
+                  // x = 50
+                  Assert::IsTrue(std::find(nextMapRef["9"].begin(), nextMapRef["9"].end(), "10") != nextMapRef["9"].end());
+
+
+
+
 
     };
 }

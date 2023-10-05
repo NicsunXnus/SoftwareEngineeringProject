@@ -14,7 +14,7 @@ using namespace std;
 /**
  * This class is used to extract the Calls abstraction from the AST.
  */
-class CallsAbstractionExtractor : public AbstractionExtractor {
+class NextAbstractionExtractor : public AbstractionExtractor {
 public:    
     void handleAssign(std::shared_ptr<AssignNode> assignNode) override {}
     void handleCall(std::shared_ptr<CallNode> callNode) override {}
@@ -25,23 +25,73 @@ public:
 
     void handleProcedure(std::shared_ptr<ProcedureNode> procedureNode) override {
         std::vector<std::shared_ptr<StatementNode>> statements = procedureNode->getStatements();
-        string prevStatementNumber;
-        for (const auto& statement : statements) {
-            string statementNumber = to_string(statement->getStatementNumber());
-            if (prevStatementNumber != "") {
-                insertToAbstractionMap(prevStatementNumber, statementNumber);
-            }
-            statementNumber = prevStatementNumber;
-            extractDesigns(statement);
-        }
+        traverse(statements);
     }
 
     void handleWhile(std::shared_ptr<WhileNode> whileNode) override {
-        
+        std::vector<std::shared_ptr<StatementNode>> statements = whileNode->getStatements();
+        string whileStatementNumber = to_string(whileNode->getStatementNumber());
+        traverse(statements);
+
+        // Connect the last statement number to the while statement number
+        string lastStatementNumber = to_string(statements.back()->getStatementNumber());
+        insertToAbstractionMap(lastStatementNumber, whileStatementNumber);
     }
 
     void handleIf(std::shared_ptr<IfNode> ifNode) override {
-        
+        std::vector<std::shared_ptr<StatementNode>> ifStatements = ifNode->getStatements();
+        std::vector<std::shared_ptr<StatementNode>> elseStatements = ifNode->getElseStatements();
+
+        traverse(ifStatements);
+        traverse(elseStatements);
+    }
+
+private:
+    void traverse(std::vector<std::shared_ptr<StatementNode>> statements) {
+        unordered_set<string> prevStatementNumbers = {};
+        for (const auto& statement : statements) {
+            string statementNumber = to_string(statement->getStatementNumber());
+            if (prevStatementNumbers.size() > 0) {
+                for (const auto& prevStatement : prevStatementNumbers) {
+                    insertToAbstractionMap(prevStatement, statementNumber);
+                }
+                prevStatementNumbers.clear();
+            }
+            if (statement->getName() == "if") {
+                prevStatementNumbers = getIfElseLastStatementNumbers(statement);
+                extractDesigns(statement);
+            } else {
+                prevStatementNumbers.insert(statementNumber);
+                extractDesigns(statement);
+            }
+            // if its the last statement, 
+            if (statement == statements.back()) {
+                for (const auto& prevStatement : prevStatementNumbers) {
+                    insertToAbstractionMap(prevStatement);
+                }
+            }
+        }
+    }
+
+    void insertToAbstractionMap(string key) {
+        if (this->AbstractionStorageMap->find(key) == this->AbstractionStorageMap->end()) {
+            this->AbstractionStorageMap->insert({ key, vector<string>() });
+        }
+    }
+
+    unordered_set<string> getIfElseLastStatementNumbers(std::shared_ptr<ASTNode> ifNode) {
+        unordered_set<string> prevStatementNumbers = {};
+        std::vector<std::shared_ptr<StatementNode>> ifStatements = ifNode->getStatements();
+        std::vector<std::shared_ptr<StatementNode>> elseStatements = ifNode->getElseStatements();
+        // Get last value of ifStatements
+        string lastIfStatementNumber = to_string(ifStatements.back()->getStatementNumber());
+        // Get last value of elseStatements
+        string lastElseStatementNumber = to_string(elseStatements.back()->getStatementNumber());
+
+        prevStatementNumbers.insert(lastIfStatementNumber);
+        prevStatementNumbers.insert(lastElseStatementNumber);
+
+        return prevStatementNumbers;
     }
 
 

@@ -124,7 +124,6 @@ public:
     virtual void handleWhile(std::shared_ptr<WhileNode> whileNode) {
         extractDesigns(whileNode->getCondExpr());
         std::vector<std::shared_ptr<StatementNode>> statements = whileNode->getStatements();
-        std::vector<int> nestedStatements = vector<int>();
         for (const auto& statement : statements) {
             extractDesigns(statement);
         }
