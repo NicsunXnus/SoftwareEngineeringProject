@@ -24,7 +24,7 @@ public:
         this->AbstractionStorageMap = std::make_shared<map<string, vector<string>>>();
         this->procedureVariableStorageMap = std::make_shared<map<string, vector<shared_ptr<map<string, vector<string>>>>>>();
     }
-    
+
     // Overriden method to store variable name (no default implmentation)
     void handleVariable(std::shared_ptr<VariableNode> variableNode) override {
         string variableName = variableNode->getValue();
@@ -180,10 +180,12 @@ protected:
             }
             for (const auto& procedureName : procedureNames) {
                 insertToAbstractionMap(variable, procedureName);
-                for (const auto& statementNumber : this->procedureVariableStorageMap->at(procedureName).back()->at(variable)) {
-                    insertToAbstractionMap(variable, statementNumber);
+                // Add the statement numbers of all variables in the procedure to the vector of values
+                for (const auto& [variableName, statementNumbers] : *this->procedureVariableStorageMap->at(procedureName).back()) {
+                    for (const auto& statementNumber : statementNumbers) {
+                        insertToAbstractionMap(variableName, statementNumber);
+                    }
                 }
-            }
         }
     }
 };
