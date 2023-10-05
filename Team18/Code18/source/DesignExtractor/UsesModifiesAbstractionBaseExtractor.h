@@ -89,6 +89,7 @@ public:
 
     void handleCall(std::shared_ptr<CallNode> callNode) override {
         string statementNumber = to_string(callNode->getStatementNumber());
+        string procedureName = getProcedureNameFromStatementNumber(statementNumber);
         string procedureCalledName = callNode->getProc()->getName();
         insertToAbstractionMap(procedureName, statementNumber);
         insertIntoMap(procedureCalledName, statementNumber, procedureCallLinesMap);
@@ -120,7 +121,7 @@ protected:
         }
         // Insert to the vector if the statement number is not found
         if (std::find(map->at(key).begin(), map->at(key).end(), statementNumber) == map->at(procedureName).end()) {
-            map->at(procedurkeyeName).push_back(statementNumber);
+            map->at(key).push_back(statementNumber);
         }
     }
     
