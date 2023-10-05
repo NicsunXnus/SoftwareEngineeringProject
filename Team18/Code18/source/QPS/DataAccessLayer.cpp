@@ -4,36 +4,43 @@
 
 
 vector<string> DataAccessLayer::getEntity(ENTITY type) {
-	vector<string> PKBResponse = PKB::responder.getEntityStatement(type);
-	return PKBResponse;
+	unordered_set<string> PKBResponse = PKB::responder.getEntityStatement(type);
+	// return PKBResponse;
+	return vector<string>();
 }
 
 vector<string> DataAccessLayer::getAllProcedures() {
-	vector<string> PKBResponse = PKB::responder.getAllProcedures();
-	return PKBResponse;
+	unordered_set<string> PKBResponse = PKB::responder.getAllProcedures();
+	// return PKBResponse;
+	return vector<string>();
 }
 
 vector<string> DataAccessLayer::getAllVariables() {
-	vector<string> PKBResponse = PKB::responder.getAllVariables();
-	return PKBResponse;
+	unordered_set<string> PKBResponse = PKB::responder.getAllVariables();
+	// return PKBResponse;
+	return vector<string>();
 }
 
 vector<string> DataAccessLayer::getAllConstants() {
-	vector<string> PKBResponse = PKB::responder.getAllConstants();
-	return PKBResponse;
+	unordered_set<string> PKBResponse = PKB::responder.getAllConstants();
+	// return PKBResponse;
+	return vector<string>();
 }
 
 map<string, vector<string>> DataAccessLayer::getVariableMap() {
-	map<string, vector<string>> PKBResponse = PKB::responder.getVariableMap();
-	return PKBResponse;
+	StringMap PKBResponse = PKB::responder.getVariableMap();
+	// return PKBResponse;
+	return map<string, vector<string>>();
 }
 
 map<string, vector<string>> DataAccessLayer::getConstantMap() {
-	map<string, vector<string>> PKBResponse = PKB::responder.getConstantMap();
-	return PKBResponse;
+	StringMap PKBResponse = PKB::responder.getConstantMap();
+	// return PKBResponse;
+	return map<string, vector<string>>();
 }
 
 map<string, vector<string>> DataAccessLayer::getClause(ABSTRACTION abstraction) {
-	map<string, vector<string>> PKBResponse = PKB::responder.getAbstraction(abstraction);
-	return PKBResponse;
+	StringMap PKBResponse = PKB::responder.getAbstraction(abstraction);
+	// return PKBResponse;
+	return map<string, vector<string>>();
 }

@@ -25,24 +25,24 @@ namespace UnitTesting {
 
 			/*
 			// Create mock data to insert
-			StringMap entityStatementData = { {"call", {"1", "2"}}, {"print", {"4"}} };
-			StringMap variableData = { {"x", {"1", "2"}}, {"y", {"2", "5", "7"}} };
-			StringMap procedureData = { {"proc1", {"1", "2"}}, {"proc2", {"5", "6", "7"}} };
-			StringMap constantData = { {"10", {"1"}}, {"HERE", {"4", "7", "10"}} };
+			map<string, vector<string>> entityStatementData = { {"call", {"1", "2"}}, {"print", {"4"}} };
+			map<string, vector<string>> variableData = { {"x", {"1", "2"}}, {"y", {"2", "5", "7"}} };
+			map<string, vector<string>> procedureData = { {"proc1", {"1", "2"}}, {"proc2", {"5", "6", "7"}} };
+			map<string, vector<string>> constantData = { {"10", {"1"}}, {"HERE", {"4", "7", "10"}} };
 
-			shared_ptr<StringMap> toInsertStatement = make_shared<StringMap>(entityStatementData);
-			shared_ptr<StringMap> toInsertVariable = make_shared<StringMap>(variableData);
-			shared_ptr<StringMap> toInsertProcedure = make_shared<StringMap>(procedureData);
-			shared_ptr<StringMap> toInsertConstant = make_shared<StringMap>(constantData);
+			shared_ptr<map<string, vector<string>>> toInsertStatement = make_shared<map<string, vector<string>>>(entityStatementData);
+			shared_ptr<map<string, vector<string>>> toInsertVariable = make_shared<map<string, vector<string>>>(variableData);
+			shared_ptr<map<string, vector<string>>> toInsertProcedure = make_shared<map<string, vector<string>>>(procedureData);
+			shared_ptr<map<string, vector<string>>> toInsertConstant = make_shared<map<string, vector<string>>>(constantData);
 
 			// Insertion
 			PKB::insertor.addEntity(toInsertStatement);
 			PKB::insertor.addEntity(toInsertConstant, CONSTANT);
 			PKB::insertor.addEntity(toInsertProcedure, PROCEDURE);
 			PKB::insertor.addEntity(toInsertVariable, VARIABLE);
-			StringMap followsStarData = { {"1", {"2", "3", "6", "7"}}, {"2", {"3", "6", "7"}} };
-			StringMap followsData = { {"1", {"2"}}, {"2", {"3"}} };
-			shared_ptr<StringMap> toInsert = make_shared<StringMap>(followsStarData);
+			map<string, vector<string>> followsStarData = { {"1", {"2", "3", "6", "7"}}, {"2", {"3", "6", "7"}} };
+			map<string, vector<string>> followsData = { {"1", {"2"}}, {"2", {"3"}} };
+			shared_ptr<map<string, vector<string>>> toInsert = make_shared<map<string, vector<string>>>(followsStarData);
 
 			// Insertion
 			PKB::insertor.addAbstraction(toInsert, FOLLOWS);

@@ -14,7 +14,7 @@
 #include <algorithm>
 #include <map>
 #include <cassert>
-#include "DesignExtractor/Entity.h"
+#include <unordered_set>
 
 using namespace std;
 
@@ -29,7 +29,19 @@ inline bool compare_vectors(vector<string> v1, vector<string> v2) {
     return temp1 == temp2;
 }
 
-inline bool compare_maps(StringMap m1, StringMap m2) {
+inline bool compare_sets(unordered_set<string> s1, unordered_set<string> s2) {
+    if (s1.size() != s2.size()) {
+        return false;
+    }
+    for (const string& element : s1) {
+        if (s2.find(element) == s2.end()) {
+            return false;
+        }
+    }
+    return true;
+}
+
+inline bool compare_vector_maps(map<string, vector<string>> m1, map<string, vector<string>> m2) {
     if (m1.size() != m2.size()) {
         return false;
     }
@@ -44,16 +56,32 @@ inline bool compare_maps(StringMap m1, StringMap m2) {
     return true;
 }
 
-inline bool compare_vectors_of_maps(vector<StringMap> v1, vector<StringMap> v2) {
+inline bool compare_maps(map<string, unordered_set<string>> m1, map<string, unordered_set<string>> m2) {
+    if (m1.size() != m2.size()) {
+        return false;
+    }
+    for (auto const& [key, value] : m1) {
+        if (m2.find(key) == m2.end()) {
+            return false;
+        }
+        if (!compare_sets(value, m2.at(key))) {
+            return false;
+        }
+    }
+    return true;
+}
+
+
+inline bool compare_vectors_of_maps(vector<map<string, vector<string>>> v1, vector<map<string, vector<string>>> v2) {
     if (v1.size() != v2.size()) {
         return false;
     }
-    vector<StringMap> temp1 = v1;
-    vector<StringMap> temp2 = v2;
+    vector<map<string, vector<string>>> temp1 = v1;
+    vector<map<string, vector<string>>> temp2 = v2;
     sort(temp1.begin(), temp1.end());
     sort(temp2.begin(), temp2.end());
     for (size_t i = 0; i < temp1.size(); ++i) {
-        if (!compare_maps(temp1[i], temp2[i])) {
+        if (!compare_vector_maps(temp1[i], temp2[i])) {
             return false;
         }
     }
