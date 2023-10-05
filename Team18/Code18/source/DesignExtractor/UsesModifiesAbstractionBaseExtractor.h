@@ -81,20 +81,39 @@ public:
         }
     }
 
+    void handleCall(std::shared_ptr<CallNode> callNode) override {
+        string statementNumber = to_string(callNode->getStatementNumber());
+        string procedureCalledName = callNode->getProc()->getName();
+        insertIntoUsesModifiesCallsMap(procedureCalledName, statementNumber);
+    }
+
     void extractAbstractions(shared_ptr<ASTNode> astNode) override {
         // Create CallsAbstractionExtractor to extract the Calls abstraction
         shared_ptr<CallsAbstractionExtractor> callsAbstractionExtractor = make_shared<CallsAbstractionExtractor>();
         callsAbstractionExtractor->extractAbstractions(astNode);
         shared_ptr<map<string, vector<string>>> callsAbstractionMap = callsAbstractionExtractor->getStorageMap();
         shared_ptr<map<string, vector<string>>> usesModifiesCallsMap = createUsesModifiesCallsMap(callsAbstractionMap);
+        setUsesModifiesCallsMap(usesModifiesCallsMap);
         extractDesigns(astNode);
         processIndirectProcedureCalls(usesModifiesCallsMap);
     }
 
 
 protected:
+    shared_ptr<map<string, vector<string>>> UsesModifiesCallsMap;
     virtual void preProcessWhileNode(std::shared_ptr<WhileNode> whileNode) {}
     virtual void preProcessIfNode(std::shared_ptr<IfNode> ifNode) {}
+
+    void setUsesModifiesCallsMap(shared_ptr<map<string, vector<string>>> usesModifiesCallsMap) {
+        this->UsesModifiesCallsMap = usesModifiesCallsMap;
+    }
+
+    void insertIntoUsesModifiesCallsMap(string procedureName, string statementNumber) {
+        if (this->UsesModifiesCallsMap->find(procedureName) == this->UsesModifiesCallsMap->end()) {
+            this->UsesModifiesCallsMap->insert({ procedureName, vector<string>() });
+        }
+        this->UsesModifiesCallsMap->at(procedureName).push_back(statementNumber);
+    }
     
     // Create a new map with the values and keys swapped
     shared_ptr<map<string, vector<string>>> createUsesModifiesCallsMap(shared_ptr<map<string, vector<string>>> callsMap) {
