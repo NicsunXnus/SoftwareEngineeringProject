@@ -58,25 +58,25 @@ public:
 
 private:
     void traverse(std::vector<std::shared_ptr<StatementNode>> statements) {
-        unordered_set<string> prevStatementNumbers = {};
-        for (const auto& statement : statements) {
-            string statementNumber = to_string(statement->getStatementNumber());
-            if (prevStatementNumbers.size() > 0) {
-                for (const auto& prevStatement : prevStatementNumbers) {
-                    insertToAbstractionMap(prevStatement, statementNumber);
-                }
-                prevStatementNumbers.clear();
-            }
-            extractDesigns(statement);
+        // unordered_set<string> prevStatementNumbers = {};
+        // for (const auto& statement : statements) {
+        //     string statementNumber = to_string(statement->getStatementNumber());
+        //     if (prevStatementNumbers.size() > 0) {
+        //         for (const auto& prevStatement : prevStatementNumbers) {
+        //             insertToAbstractionMap(prevStatement, statementNumber);
+        //         }
+        //         prevStatementNumbers.clear();
+        //     }
+        //     extractDesigns(statement);
             
-            // if its the last statement, insert to abstraction map
-            if (statement == statements.back()) {
-                if (whileStatementNumber != 0) {
-                    insertToAbstractionMap(whileStatementNumber, statementNumber);
-                }
-                insertKeyToAbstractionMap(statement->getStatementNumber());
-            }
-        }
+        //     // if its the last statement, insert to abstraction map
+        //     if (statement == statements.back()) {
+        //         if (whileStatementNumber != 0) {
+        //             insertToAbstractionMap(whileStatementNumber, statementNumber);
+        //         }
+        //         insertKeyToAbstractionMap(statement->getStatementNumber());
+        //     }
+        // }
     }
 
     void insertKeyToAbstractionMap(string key) {
