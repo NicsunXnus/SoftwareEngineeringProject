@@ -88,9 +88,7 @@ private:
                 insertKeyToAbstractionMap(statementNumber);
                 return statementNumber;
             }
-            
         }
-        return "Something went wrong with traverse";
     }
 
 
