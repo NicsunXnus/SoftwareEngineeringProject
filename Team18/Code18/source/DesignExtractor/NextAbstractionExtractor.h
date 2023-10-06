@@ -123,59 +123,56 @@ private:
     //     return "SOMETHIGN IS NHOT WORKIGN";
     // }
 
-    void traverse(std::vector<std::shared_ptr<StatementNode>> statements) {
-        std::unordered_set<std::string> prevStatementNumbers = {};
+    string traverse(std::vector<std::shared_ptr<StatementNode>> statements) {
+        unordered_set<string> prevStatementNumbers = {};
+        string lastStatementNumber;
 
-        for (const auto& statement : statements) {
-            std::string statementNumber = std::to_string(statement->getStatementNumber());
+        for (const auto &statement : statements) {
+            string statementNumber = to_string(statement->getStatementNumber());
 
-            if (!prevStatementNumbers.empty()) {
-                // Add all the previous statement numbers to the current statement number
-                for (const auto& prevStatementNumber : prevStatementNumbers) {
-                    // Insert the current statement as a successor of the previous statement
+            if (prevStatementNumbers.size() > 0) {
+                for (const auto &prevStatementNumber : prevStatementNumbers) {
                     insertToAbstractionMap(prevStatementNumber, statementNumber);
                 }
-                // Clear the previous statement numbers
                 prevStatementNumbers.clear();
             }
 
-            if (statement->getName() != "if") {
-                // Insert the statement number into the previous statement numbers
+            if (statement->getName() != "if" && statement->getName() != "while") {
                 prevStatementNumbers.insert(statementNumber);
             }
 
             if (statement->getName() == "while") {
-                // Get the first statement number of the while statement
-                std::string firstStatementNumber = std::to_string(statement->getStatements().front()->getStatementNumber());
-
-                // Connect the first statement number to the while statement number
+                string firstStatementNumber = to_string(statement->getStatements().front()->getStatementNumber());
                 insertToAbstractionMap(statementNumber, firstStatementNumber);
 
-                // Get the last statement number of the while statement
-                std::string lastStatementNumber = traverse(statement->getStatements());
+                string lastInLoop = traverse(statement->getStatements());
+                insertToAbstractionMap(lastInLoop, statementNumber);
 
-                // Connect the last statement number to the while statement number
-                insertToAbstractionMap(statementNumber, lastStatementNumber);
+                prevStatementNumbers.insert(lastInLoop);
+                lastStatementNumber = lastInLoop;
 
             } else if (statement->getName() == "if") {
-                // Get the first statement number of the if/else statement
-                // Connect the first statement number to the if/else statement number
-                std::string firstStatementNumber = std::to_string(statement->getStatements().front()->getStatementNumber());
-                insertToAbstractionMap(statementNumber, firstStatementNumber);
-                firstStatementNumber = std::to_string(statement->getElseStatements().front()->getStatementNumber());
+                string firstStatementNumber = to_string(statement->getStatements().front()->getStatementNumber());
                 insertToAbstractionMap(statementNumber, firstStatementNumber);
 
-                // Get the last statement number of the if/else statement
-                std::string lastStatementNumber = traverse(statement->getStatements());
-                prevStatementNumbers.insert(lastStatementNumber);
-                lastStatementNumber = traverse(statement->getElseStatements());
-                prevStatementNumbers.insert(lastStatementNumber);
+                firstStatementNumber = to_string(statement->getElseStatements().front()->getStatementNumber());
+                insertToAbstractionMap(statementNumber, firstStatementNumber);
+
+                string lastInIf = traverse(statement->getStatements());
+                string lastInElse = traverse(statement->getElseStatements());
+
+                prevStatementNumbers.insert(lastInIf);
+                prevStatementNumbers.insert(lastInElse);
+
+                lastStatementNumber = lastInElse;
             } else if (statement == statements.back()) {
-                // This is the last statement in the sequence
                 insertKeyToAbstractionMap(statementNumber);
+                lastStatementNumber = statementNumber;
             }
         }
-    }
+
+    return lastStatementNumber;
+}
 
     // Replace the values of the keys for IF statemetns in the abstraction map with the values in the ifStorageMap
     // void processIfLines() {
