@@ -1,7 +1,7 @@
 #include "ClauseObject.h"
 
-inline shared_ptr<QueryResultsTable> handleUsesModifies(shared_ptr<ClauseArg> arg1, shared_ptr<ClauseArg> arg2, shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
-	if (arg1->isSynonym() && arg2->isSynonym()) { // arg2 must be a variable synonym
+inline shared_ptr<QueryResultsTable> handleCallsCallsStar(shared_ptr<ClauseArg> arg1, shared_ptr<ClauseArg> arg2, shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
+	if (arg1->isSynonym() && arg2->isSynonym()) {
 		StringMap PKBClauseData = dataAccessLayer->getClause(clause);
 
 		StringMap filteredPKBClauseDataArg1 = filterMapKeyReturnMap(arg1, dataAccessLayer, PKBClauseData);
@@ -22,30 +22,25 @@ inline shared_ptr<QueryResultsTable> handleUsesModifies(shared_ptr<ClauseArg> ar
 		unordered_set<string> filteredPKBClauseDataArg1 = filterSetReturnSet(arg1, dataAccessLayer, filteredPKBClauseDataArg2);
 		return QueryResultsTable::createTable(svToString(arg1->getArgValue()), filteredPKBClauseDataArg1);
 	}
-	else if (arg1->isInteger() && arg2->isSynonym()) {
-		StringMap PKBClauseData = dataAccessLayer->getClause(clause);
-		unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, dataAccessLayer, PKBClauseData);
-		unordered_set<string> filteredPKBClauseDataArg2 = filterSetReturnSet(arg2, dataAccessLayer, filteredPKBClauseDataArg1);
-		return QueryResultsTable::createTable(svToString(arg2->getArgValue()), filteredPKBClauseDataArg2);
+	else if (arg1->isWildcard() && arg2->isSynonym()) {
+		StringMap PKBClauseData = dataAccessLayer->getClauseInverse(clause);
+		StringMap filteredPKBClauseDataArg2 = filterMapKeyReturnMap(arg2, dataAccessLayer, PKBClauseData);
+		unordered_set<string> filteredPKBClauseDataArg1 = removeMapValuesReturnSet(arg1, dataAccessLayer, filteredPKBClauseDataArg2);
+		return QueryResultsTable::createTable(svToString(arg2->getArgValue()), filteredPKBClauseDataArg1);
 	}
-	else if (arg1->isInteger() && arg2->isWildcard()) {
+	else if (arg1->isWildcard() && arg2->isWildcard()) {
 		StringMap PKBClauseData = dataAccessLayer->getClause(clause);
-
-		unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, dataAccessLayer, PKBClauseData);
 		shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>();
-		table->setSignificant(filteredPKBClauseDataArg1.size() > 0);
+		table->setSignificant(PKBClauseData.size() > 0);
 		return table;
 	}
-	else if (arg1->isInteger() && arg2->isIdentifier()) {
-		StringMap PKBClauseData = dataAccessLayer->getClause(clause);
-
-		unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, dataAccessLayer, PKBClauseData);
-		bool filteredPKBClauseDataArg2 = filterSetReturnBool(arg2, dataAccessLayer, filteredPKBClauseDataArg1);
+	else if (arg1->isWildcard() && arg2->isIdentifier()) {
+		StringMap PKBClauseData = dataAccessLayer->getClauseInverse(clause);
+		unordered_set<string> filteredPKBClauseDataArg2 = filterMapKeyReturnSetValues(arg2, dataAccessLayer, PKBClauseData);
 		shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>();
-		table->setSignificant(filteredPKBClauseDataArg2);
+		table->setSignificant(filteredPKBClauseDataArg2.size() > 0);
 		return table;
 	}
-	// ent refs as arg1, for usesP and modifiesP
 	else if (arg1->isIdentifier() && arg2->isSynonym()) {
 		StringMap PKBClauseData = dataAccessLayer->getClause(clause);
 		unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, dataAccessLayer, PKBClauseData);
@@ -73,18 +68,10 @@ inline shared_ptr<QueryResultsTable> handleUsesModifies(shared_ptr<ClauseArg> ar
 	throw SemanticErrorException("Error evaluating clause: " + clause);
 }
 
-shared_ptr<QueryResultsTable> UsesObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) {
-	return handleUsesModifies(getArg1(), getArg2(), dataAccessLayer, USES);
+shared_ptr<QueryResultsTable> CallsObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) {
+	return handleCallsCallsStar(getArg1(), getArg2(), dataAccessLayer, CALLS);
 }
 
-shared_ptr<QueryResultsTable> UsesEntityObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) {
-	return handleUsesModifies(getArg1(), getArg2(), dataAccessLayer, USES);
-}
-
-shared_ptr<QueryResultsTable> ModifiesObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) {
-	return handleUsesModifies(getArg1(), getArg2(), dataAccessLayer, MODIFIES);
-}
-
-shared_ptr<QueryResultsTable> ModifiesEntityObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) {
-	return handleUsesModifies(getArg1(), getArg2(), dataAccessLayer, MODIFIES);
+shared_ptr<QueryResultsTable> CallsStarObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) {
+	return handleCallsCallsStar(getArg1(), getArg2(), dataAccessLayer, CALLSSTAR);
 }

@@ -47,6 +47,9 @@
     <ClCompile Include="..\source\SimpleTokenizer\TokenizedStmtList.cpp">
       <Filter>SimpleTokenizer</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryObjects\CallsObject.cpp">
+      <Filter>QPS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\ApplicationWrapper.h" />
