@@ -145,15 +145,20 @@ private:
                 string firstStatementNumber = to_string(statement->getStatements().front()->getStatementNumber());
                 insertToAbstractionMap(whileStatementNumber, firstStatementNumber);
 
+                unordered_set<string> whileStatements;
+                
+                // Traverse the statements within the while loop
                 unordered_set<string> lastInLoopSet = traverse(statement->getStatements());
-
+                
                 // Make the last statements of the loop reference back to the while loop
                 for (const auto &lastInLoop : lastInLoopSet) {
                     insertToAbstractionMap(lastInLoop, whileStatementNumber);
                 }
+                
+                whileStatements.insert(lastInLoopSet.begin(), lastInLoopSet.end());
 
-                lastStatements.insert(lastInLoopSet.begin(), lastInLoopSet.end());
-
+                // Merge whileStatements into lastStatements
+                lastStatements.insert(whileStatements.begin(), whileStatements.end());
             } else if (statement->getName() == "if") {
                 string firstStatementNumber = to_string(statement->getStatements().front()->getStatementNumber());
                 insertToAbstractionMap(statementNumber, firstStatementNumber);
