@@ -1,7 +1,37 @@
 #include "ClauseObject.h"
 
+// ensure empty table for invalid queries. a query like Select c such that Modifies(c, v), if modifies table has line 1, 2, and
+// program has constants 1, 2, will return non empty table
+inline bool isValidSynonymType(shared_ptr<ClauseArg> arg1, shared_ptr<ClauseArg> arg2, ABSTRACTION clause) {
+	
+	if (clause == MODIFIES) {
+		const unordered_set<ENTITY> validEntitiesArg1{ STMT, READ, ASSIGN, CALL, WHILE, IF, PROCEDURE };
+		const unordered_set<ENTITY> validEntitiesArg2{ VARIABLE };
+		if (arg1->isSynonym() && validEntitiesArg1.find(arg1->getSynonym()->getEntityType()) == validEntitiesArg1.end()) {
+			return false;
+		}
+		if (arg2->isSynonym() && validEntitiesArg2.find(arg2->getSynonym()->getEntityType()) == validEntitiesArg2.end()) {
+			return false;
+		}
+	}
+	if (clause == USES) {
+		const unordered_set<ENTITY> validEntitiesArg1{ STMT, PRINT, ASSIGN, CALL, WHILE, IF, PROCEDURE };
+		const unordered_set<ENTITY> validEntitiesArg2{ VARIABLE };
+		if (arg1->isSynonym() && validEntitiesArg1.find(arg1->getSynonym()->getEntityType()) == validEntitiesArg1.end()) {
+			return false;
+		}
+		if (arg2->isSynonym() && validEntitiesArg2.find(arg2->getSynonym()->getEntityType()) == validEntitiesArg2.end()) {
+			return false;
+		}
+	}
+	return true;
+}
+
 inline shared_ptr<QueryResultsTable> handleUsesModifies(shared_ptr<ClauseArg> arg1, shared_ptr<ClauseArg> arg2, shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
-	if (arg1->isSynonym() && arg2->isSynonym()) { // arg2 must be a variable synonym
+	if (!isValidSynonymType(arg1, arg2, clause)) {  // arg2 must be a variable synonym
+		return make_shared<QueryResultsTable>();
+	}
+	if (arg1->isSynonym() && arg2->isSynonym()) {
 		StringMap PKBClauseData = dataAccessLayer->getClause(clause);
 
 		StringMap filteredPKBClauseDataArg1 = filterMapKeyReturnMap(arg1, dataAccessLayer, PKBClauseData);

@@ -16,7 +16,7 @@ Select a such that Uses(a, v)
 4 - synonym-synonym, right: var, left: read (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select r such that Uses(r, v)
-SemanticError
+
 5000
 5 - synonym-synonym, right: var, left: stmt, select v
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -26,7 +26,7 @@ a, b, c, d, e, f
 6 - synonym-synonym, right: var, left: var (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Uses(v, v)
-SemanticError
+
 5000
 7 - synonym-synonym, right: var, left: print
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -36,7 +36,7 @@ e, f, b
 8 - synonym-synonym, right: var, left: constant (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select c such that Uses(c, v)
-SemanticError
+
 5000
 9 - synonym-synonym, right: var, left: call
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -71,12 +71,12 @@ Select a such that Uses(a, _)
 15 - synonym-wildcard, left: read (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select r such that Uses(r, _)
-SemanticError
+
 5000
 16 - synonym-wildcard, left: var (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Uses(v, _)
-SemanticError
+
 5000
 17 - synonym-wildcard, left: print
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -86,7 +86,7 @@ Select pn such that Uses(pn, _)
 18 - synonym-wildcard, left: constant (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select c such that Uses(c, _)
-SemanticError
+
 5000
 19 - synonym-wildcard, left: call 
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;

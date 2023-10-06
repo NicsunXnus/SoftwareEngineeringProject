@@ -1,6 +1,24 @@
 #include "ClauseObject.h"
 
+inline bool isValidSynonymType(shared_ptr<ClauseArg> arg1, shared_ptr<ClauseArg> arg2, ABSTRACTION clause) {
+
+	if (clause == CALLS) {
+		const unordered_set<ENTITY> validEntitiesArg1{ PROCEDURE };
+		const unordered_set<ENTITY> validEntitiesArg2{ PROCEDURE };
+		if (arg1->isSynonym() && validEntitiesArg1.find(arg1->getSynonym()->getEntityType()) == validEntitiesArg1.end()) {
+			return false;
+		}
+		if (arg2->isSynonym() && validEntitiesArg2.find(arg2->getSynonym()->getEntityType()) == validEntitiesArg2.end()) {
+			return false;
+		}
+	}
+	return true;
+}
+
 inline shared_ptr<QueryResultsTable> handleCallsCallsStar(shared_ptr<ClauseArg> arg1, shared_ptr<ClauseArg> arg2, shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
+	if (!isValidSynonymType(arg1, arg2, clause)) {
+		return make_shared<QueryResultsTable>();
+	}
 	if (arg1->isSynonym() && arg2->isSynonym()) {
 		StringMap PKBClauseData = dataAccessLayer->getClause(clause);
 
@@ -18,6 +36,7 @@ inline shared_ptr<QueryResultsTable> handleCallsCallsStar(shared_ptr<ClauseArg> 
 	}
 	else if (arg1->isSynonym() && arg2->isIdentifier()) {
 		StringMap PKBClauseData = dataAccessLayer->getClauseInverse(clause);
+		StringMap PKBClauseDataTest = dataAccessLayer->getClause(clause);
 		unordered_set<string> filteredPKBClauseDataArg2 = filterMapKeyReturnSetValues(arg2, dataAccessLayer, PKBClauseData);
 		unordered_set<string> filteredPKBClauseDataArg1 = filterSetReturnSet(arg1, dataAccessLayer, filteredPKBClauseDataArg2);
 		return QueryResultsTable::createTable(svToString(arg1->getArgValue()), filteredPKBClauseDataArg1);
