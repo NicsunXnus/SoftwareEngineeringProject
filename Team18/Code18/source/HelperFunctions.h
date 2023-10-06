@@ -5,6 +5,7 @@
 #include <string>
 #include <string_view>
 #include <vector>
+#include <list>
 #include "TokenClasses/Token.h"
 #include "ExceptionMessages.h"
 
@@ -149,5 +150,10 @@ static void debug(std::string debugMessage) {
 static std::string svToString(std::string_view sv) {
     std::string str(sv);
     return str;
+}
+
+static std::list<std::string> vectorToList(std::vector<std::string> vectorOfString) {
+    std::list<std::string> listOfString(vectorOfString.begin(), vectorOfString.end());
+    return listOfString;
 }
 #endif

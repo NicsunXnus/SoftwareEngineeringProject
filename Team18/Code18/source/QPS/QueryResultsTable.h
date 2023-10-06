@@ -23,7 +23,7 @@ public:
     }
 
     //Constructor for empty table creation
-    QueryResultsTable() {}
+    QueryResultsTable() : isSignificant(false) {}
 
     // get number of rows in rable
     int getNumberOfRows() {
@@ -119,69 +119,39 @@ public:
     }
 
     /**
-     * Creates a shared pointer to a QueryResultsTable object representing the intersection between this table and the other table.
-     *
-     * @param other A shared pointer to a QueryResultsTable object representing the other table
-     * @return A sharer pointer to a newly created QueryResultsTable object
-     */
-    shared_ptr<QueryResultsTable> innerJoin(shared_ptr<QueryResultsTable> other) const {
-        vector<map<string, vector<string>>> thisMap = this->columns;
-        vector<map<string, vector<string>>> otherMap = other->columns;
-
+  * Creates a shared pointer to a QueryResultsTable object representing the intersection between this table and the other table.
+  *
+  * @param other A shared pointer to a QueryResultsTable object representing the other table
+  * @return A sharer pointer to a newly created QueryResultsTable object
+  */
+    shared_ptr<QueryResultsTable> innerJoin(shared_ptr<QueryResultsTable> other) {
+        vector<map<string, vector<string>>> thisMap = this->columns, otherMap = other->columns, innerJoined;
+        vector<string> thisHeaders = getHeaders();
         // Get the number of columns and rows in both tables
-        int thisColNums = thisMap.size();
-        int thisRowNums = thisMap[0].begin()->second.size();
-        int otherColNums = otherMap.size();
-        int otherRowNums = otherMap[0].begin()->second.size();
-
+        int thisColNums = getNumberOfCols(), thisRowNums = getNumberOfRows(), otherColNums = other->getNumberOfCols(), otherRowNums = other->getNumberOfRows();
         // Find the columns with the headers in both tables
-        vector<string> thisHeaders;
-        vector<string> otherHeaders;
         vector<tuple<int, int>> sameCols;
-
         for (int thisCol = 0; thisCol < thisColNums; thisCol++) {
-            thisHeaders.emplace_back(thisMap[thisCol].begin()->first);
+            //add headers of thisMap
+            map<string, vector<string>> map = { {thisMap[thisCol].begin()->first, {}} };
+            innerJoined.emplace_back(map);
+            //at the same time, check for similar headers and record down the pairs of column numbers from both tables
             for (int otherCol = 0; otherCol < otherColNums; otherCol++) {
-                auto it = find(thisHeaders.begin(), thisHeaders.end(), otherMap[otherCol].begin()->first);
-                if (it != thisHeaders.end()) {
-                    int index = distance(thisHeaders.begin(), it);
+                if (thisMap[thisCol].begin()->first == otherMap[otherCol].begin()->first) {
                     sameCols.emplace_back((tuple<int, int>({ thisCol, otherCol })));
-                    thisHeaders.erase(thisHeaders.begin() + index);
                 }
             }
         }
-
-        for (int thisCol = 0; thisCol < thisColNums; thisCol++) {
-            thisHeaders.emplace_back(thisMap[thisCol].begin()->first);
-        }
-
-        for (int otherCol = 0; otherCol < otherColNums; otherCol++) {
-            otherHeaders.emplace_back(otherMap[otherCol].begin()->first);
-        }
-        // Perform the inner join
-        vector<map<string, vector<string>>> innerJoined;
-
-        for (int thisCol = 0; thisCol < thisColNums; thisCol++) {
-            string key = thisMap[thisCol].begin()->first;
-            vector<string> values;
-            map<string, vector<string>> map;
-            map.insert({ key, values });
-            innerJoined.emplace_back(map);
-        }
-
         for (int otherCol = 0; otherCol < otherColNums; otherCol++) {
             string key = otherMap[otherCol].begin()->first;
-            auto it = find(thisHeaders.begin(), thisHeaders.end(), key);
-            if (it != thisHeaders.end()) {
+            if (find(thisHeaders.begin(), thisHeaders.end(), key) != thisHeaders.end()) {
                 continue;
             }
-            vector<string> values;
-            map<string, vector<string>> map;
-            map.insert({ key, values });
+            //add headers of otherMap only if header is not in innerJoined
+            map<string, vector<string>> map = { {key, {}} };
             innerJoined.emplace_back(map);
         }
-
-
+        //perform inner join
         for (int thisRow = 0; thisRow < thisRowNums; thisRow++) {
             for (int otherRow = 0; otherRow < otherRowNums; otherRow++) {
                 vector<string> vect1; vector<string> vect2;
@@ -192,38 +162,24 @@ public:
                 //only if we have a intersection of both rows
                 if (vect1 == vect2) {
                     //then do inner join
-
                     int colInner = 0;
                     for (int thisCol = 0; thisCol < thisColNums; thisCol++) {
-                        vector<string> values = thisMap[thisCol].begin()->second;
                         vector<string> valuesInner = innerJoined[colInner].begin()->second;
-                        string keyInner = innerJoined[colInner].begin()->first;
                         map<string, vector<string>> mapInner = innerJoined[colInner];
-
-                        valuesInner.emplace_back(values[thisRow]);
-                        innerJoined[colInner][keyInner] = valuesInner;
+                        valuesInner.emplace_back(thisMap[thisCol].begin()->second[thisRow]);
+                        innerJoined[colInner][innerJoined[colInner].begin()->first] = valuesInner;
                         colInner++;
                     }
-
                     for (int otherCol = 0; otherCol < otherColNums; otherCol++) {
-                        vector<string> values = otherMap[otherCol].begin()->second;
-                        string key = otherMap[otherCol].begin()->first;
-                        auto it = find(thisHeaders.begin(), thisHeaders.end(), key);
-                        if (it != thisHeaders.end()) {
+                        if (find(thisHeaders.begin(), thisHeaders.end(), otherMap[otherCol].begin()->first) != thisHeaders.end()) {
                             continue;
                         }
-
                         vector<string> valuesInner = innerJoined[colInner].begin()->second;
-                        string keyInner = innerJoined[colInner].begin()->first;
                         map<string, vector<string>> mapInner = innerJoined[colInner];
-
-                        valuesInner.emplace_back(values[otherRow]);
-                        innerJoined[colInner][keyInner] = valuesInner;
+                        valuesInner.emplace_back(otherMap[otherCol].begin()->second[otherRow]);
+                        innerJoined[colInner][innerJoined[colInner].begin()->first] = valuesInner;
                         colInner++;
                     }
-                }
-                else {
-                    //else dont do
                 }
             }
         }
@@ -284,6 +240,62 @@ public:
     }
 
     /**
+     * A static method that creates a new QueryResultsTable object with a single column.
+     *
+     * @param header The header of the column, represented as a string.
+     * @param columnValues An unordered set of strings representing the values in the column.
+     *                     The vector should have the same length for all columns in the table.
+     * @return A shared_ptr to the newly created QueryResultsTable object.
+     */
+    static shared_ptr<QueryResultsTable> createTable(string header, unordered_set<string> columnValues) {
+        map<string, vector<string>> column;
+        vector<string> vectorFromSet(columnValues.begin(), columnValues.end());
+        column[header] = vectorFromSet;
+        vector<map<string, vector<string>>> columns;
+        columns.emplace_back(column);
+        shared_ptr<QueryResultsTable> singleColTable = make_shared<QueryResultsTable>(columns);
+        return singleColTable;
+    }
+
+    /**
+     * A static method that flattens a map into a table of two columns, left column representing the key and right column representing the values
+     *
+     * @param headers A vector of strings representing the headers of the table to be created.
+     * @param columnValues A map of a string to a vector of strings representing the unflattened map.
+     * @return A shared pointer to the newly created QueryResultsTable object.
+    */
+    static shared_ptr<QueryResultsTable> createTable(vector<string> headers, map<string, unordered_set<string>> columnValues) {
+        vector<map<string, vector<string>>> columns;
+        map<string, vector<string>> col1;
+        map<string, vector<string>> col2;
+        vector<string> colContent1;
+        vector<string> colContent2;
+        for (const auto& entry : columnValues) {
+            string leftTuple = entry.first;
+            for (string rightTuple : entry.second) {
+                colContent1.emplace_back(leftTuple);
+                colContent2.emplace_back(rightTuple);
+            }
+        }
+        //Start of check for error
+        if (colContent1.size() != colContent2.size()) {
+            cerr << "Table cannot contain columns of different row length!";
+            return make_shared<QueryResultsTable>();
+        }
+        //End of Check for error
+        col1[headers[0]] = colContent1;
+        col2[headers[1]] = colContent2;
+
+        columns.emplace_back(col1);
+        columns.emplace_back(col2);
+
+        shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>(columns);
+        return table;
+    }
+
+    
+
+    /**
      * A static method that creates a new QueryResultsTable object with the provided headers and column values.
      *
      * @param headers A vector of strings representing the headers of the table to be created.
@@ -328,6 +340,10 @@ public:
         auto it = find(headers.begin(), headers.end(), deleteHeader);
         if (it != headers.end()) {
             int index = distance(headers.begin(), it);
+            bool isSignificant = getNumberOfRows() > 0; // table will be "empty" after drop
+            if (getNumberOfCols() < 1) {
+                setSignificant(isSignificant);
+            }
             columns.erase(columns.begin() + index);
         }
         else {
@@ -434,6 +450,20 @@ public:
         return headers;
     }
 
+    //Getter method for data in a column
+    vector<string> getColumnData(string header) {
+        vector<string> data;
+
+        for (map<string, vector<string>> column : this->columns) {
+            if (column.begin()->first == header) {
+                return column.begin()->second;
+            }
+           
+        }
+
+        return data;
+    }
+
     //Prints out the table
     void printTable() {
         // Print the header row
@@ -470,7 +500,8 @@ public:
 
 private:
     vector<map<string, vector<string>>> columns; // column name: values
-    bool isSignificant; // denotes whether a table is significant or not (if uses(_, _) has more than one row, i will drop both columns, but table is NOT empty)
+    bool isSignificant; // denotes whether a table is significant or not (if uses(_, _) has more than one row, will drop both columns, 
+    // but table is NOT empty, and is hence significant), important for constructing final result
 
     //Helper method where (a,b) -> (a,a,b,b)
     vector<string> duplicateEntries(const vector<string>& input, int x) {
