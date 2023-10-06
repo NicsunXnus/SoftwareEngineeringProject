@@ -11,6 +11,9 @@ using namespace std;
 #include "UsesAbstractionExtractor.h"
 #include "ParentsAbstractionExtractor.h"
 #include "FollowsAbstractionExtractor.h"
+#include "CallsAbstractionExtractor.h"
+#include "WithExtractor.h"
+#include "PatternExtractor.h"
 #include "../AST/ASTNode.h"
 #include "../PKB.h"
 #include "../PKB/Adapter.h"
@@ -29,11 +32,14 @@ public:
         this->usesExtractor = make_shared<UsesAbstractionExtractor>();
         this->parentsExtractor = make_shared<ParentsAbstractionExtractor>();
         this->followsExtractor = make_shared<FollowsAbstractionExtractor>();
+        this->callsExtractor = make_shared<CallsAbstractionExtractor>();
+        this->withExtractor = make_shared<WithExtractor>();
+        this->patternExtractor = make_shared<PatternExtractor>();
     }
 
-    // Method to extract all the entities
-    void extractEntities(shared_ptr<ASTNode> astNode) {
-        entityExtractor->extractDesigns(astNode);
+    void extractAndInsertAll(shared_ptr<ASTNode> astNode) {
+        extractAll(astNode);
+        insertAll();
     }
 
     // Method to extract all the abstractions
@@ -42,6 +48,28 @@ public:
         usesExtractor->extractDesigns(astNode);
         parentsExtractor->extractDesigns(astNode);
         followsExtractor->extractDesigns(astNode);
+        callsExtractor->extractDesigns(astNode);
+    }
+
+    // Method to extract all the entities
+    void extractEntities(shared_ptr<ASTNode> astNode) {
+        entityExtractor->extractDesigns(astNode);
+    }
+
+    void extractWith(shared_ptr<ASTNode> astNode) {
+        withExtractor->extractDesigns(astNode);
+    }
+
+    void extractPattern(shared_ptr<ASTNode> astNode) {
+        patternExtractor->extractDesigns(astNode);
+    }
+
+    shared_ptr<WithExtractor> getWithExtractor() {
+        return this->withExtractor;
+    }
+
+    shared_ptr<PatternExtractor> getPatternExtractor() {
+        return this->patternExtractor;
     }
 
     // Method to get procedure entity
@@ -64,6 +92,33 @@ public:
         return this->entityExtractor->getConstantEntity();
     }
     
+
+private:
+    shared_ptr<EntityExtractor> entityExtractor;
+    shared_ptr<ModifiesAbstractionExtractor> modifiesExtractor;
+    shared_ptr<UsesAbstractionExtractor> usesExtractor;
+    shared_ptr<ParentsAbstractionExtractor> parentsExtractor;
+    shared_ptr<FollowsAbstractionExtractor> followsExtractor;
+    shared_ptr<CallsAbstractionExtractor> callsExtractor;
+    shared_ptr<WithExtractor> withExtractor;
+    shared_ptr<PatternExtractor> patternExtractor;
+
+
+    void extractAll(shared_ptr<ASTNode> astNode) {
+        extractEntities(astNode);
+        extractAbstractions(astNode);
+        extractWith(astNode);
+        // extractPattern(astNode);
+    }
+
+
+    void insertAll() {
+        insertEntities();
+        insertAbstractions();
+        insertWiths();
+        // insertPatterns();
+    }
+
     // Method to insert the entities into the PKB
     void insertEntities() {
         // Get the entity maps
@@ -94,14 +149,17 @@ public:
         static shared_ptr<map<string, vector<string>>> usesMap = this->usesExtractor->getStorageMap();
         static shared_ptr<map<string, vector<string>>> parentsMap = this->parentsExtractor->getStorageMap();
         static shared_ptr<map<string, vector<string>>> followsMap = this->followsExtractor->getStorageMap();
+        static shared_ptr<map<string, vector<string>>> callMap = this->callsExtractor->getStorageMap();
 
         // Convert the maps to unordered sets
         static shared_ptr<map<string, unordered_set<string>>> modifiesSet = convertVectorToUnorderedSet(modifiesMap);
         static shared_ptr<map<string, unordered_set<string>>> usesSet = convertVectorToUnorderedSet(usesMap);
-        static shared_ptr<map<string, unordered_set<string>>> parentsSet = convertParentsFollowsStarToParentsFollows(parentsMap);
-        static shared_ptr<map<string, unordered_set<string>>> followsSet = convertParentsFollowsStarToParentsFollows(followsMap);
+        static shared_ptr<map<string, unordered_set<string>>> parentsSet = convertAbstractionStarToAbstraction(parentsMap);
+        static shared_ptr<map<string, unordered_set<string>>> followsSet = convertAbstractionStarToAbstraction(followsMap);
         static shared_ptr<map<string, unordered_set<string>>> parentsStarSet = convertVectorToUnorderedSet(parentsMap);
         static shared_ptr<map<string, unordered_set<string>>> followsStarSet = convertVectorToUnorderedSet(followsMap);
+        static shared_ptr<map<string, unordered_set<string>>> callSet = convertAbstractionStarToAbstraction(callMap);
+        static shared_ptr<map<string, unordered_set<string>>> callStarSet = convertVectorToUnorderedSet(callMap);
 
         // Insert the abstractions into the PKB
         PKB::insertor.addAbstraction(modifiesSet, MODIFIES);
@@ -110,13 +168,23 @@ public:
         PKB::insertor.addAbstraction(followsSet, FOLLOWS);
         PKB::insertor.addAbstraction(parentsStarSet, PARENTSTAR);
         PKB::insertor.addAbstraction(followsStarSet, FOLLOWSSTAR);
+        PKB::insertor.addAbstraction(callSet, CALLS);
+        PKB::insertor.addAbstraction(callStarSet, CALLSSTAR);
     }
 
+    void insertWiths() {
+        // Get the With maps
+        static shared_ptr<map<string, unordered_set<string>>> callProcNameMap = this->withExtractor->getCallProcNameMap();
+        static shared_ptr<map<string, unordered_set<string>>> readVarNameMap = this->withExtractor->getReadVarNameMap();
+        static shared_ptr<map<string, unordered_set<string>>> printVarNameMap = this->withExtractor->getPrintVarNameMap();
 
-private:
-    shared_ptr<EntityExtractor> entityExtractor;
-    shared_ptr<ModifiesAbstractionExtractor> modifiesExtractor;
-    shared_ptr<UsesAbstractionExtractor> usesExtractor;
-    shared_ptr<ParentsAbstractionExtractor> parentsExtractor;
-    shared_ptr<FollowsAbstractionExtractor> followsExtractor;
+        // Insert the Withs into the PKB
+        PKB::insertor.addEntityNames(callProcNameMap, CALL);
+        PKB::insertor.addEntityNames(readVarNameMap, READ);
+        PKB::insertor.addEntityNames(printVarNameMap, PRINT);
+    }
+
+    void insertPatterns() {
+        // TODO
+    }
 };
