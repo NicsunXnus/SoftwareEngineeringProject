@@ -1,46 +1,66 @@
 #pragma once
 #include "DataAccessLayerStub.h"
 #include <list>
-vector<string> entities = { "1", "2", "3", "4"};
-vector<string> procedures = {"main"};
-vector<string> variables = { "a", "b", "c" };
-vector<string> constants = {"100", "300"};
-map<string, vector<string>> constantMap = { {"100", {"1"}}, {"300", {"3", "4"}} };
-map<string, vector<string>> variableMap = { {"a", {"1"}}, {"b", {"2", "3"}}, {"c", {"3"}} };
-map<string, vector<string>> clauses = { {"1", {"2"}}, {"2", {"3", "4"}}, {"3", {"4"}}};
-map<string, vector<string>> clausesEnts = { {"a", {"1"}}, {"b", {"2", "3"}}, {"c", {"3"}}};
+unordered_set<string> entities = { "1", "2", "3", "4"};
+unordered_set<string> procedures = {"main"};
+unordered_set<string> variables = { "a", "b", "c" };
+unordered_set<string> constants = {"100", "300"};
+map<string, unordered_set<string>> constantMap = { {"100", {"1"}}, {"300", {"3", "4"}} };
+map<string, unordered_set<string>> variableMap = { {"a", {"1"}}, {"b", {"2", "3"}}, {"c", {"3"}} };
+
+map<string, unordered_set<string>> clauses = { {"1", {"2"}}, {"2", {"3"}}, {"3", {"4"}}};
+map<string, unordered_set<string>> clausesMult = { {"1", {"2","3"}}, {"2", {"3", "4"}}, {"3", {"4"}}};
+map<string, unordered_set<string>> clausesEnts = { {"1", {"a"}}, {"2", {"b"}}, {"3", {"c", "b"}} };
+
+map<string, unordered_set<string>> clausesInverse = { {"2", {"1"}}, {"3", {"2"}}, {"4", {"3"}} };
+map<string, unordered_set<string>> clausesMultInverse = { {"2", {"1"}}, {"3", {"2", "1"}}, {"4", {"3", "2"}} };
+map<string, unordered_set<string>> clausesEntsInverse = { {"a", {"1"}}, {"b", {"2", "3"}}, {"c", {"3"}} };
 
 
-vector<string> DataAccessLayerStub::getEntity(ENTITY type) {
+
+unordered_set<string> DataAccessLayerStub::getEntity(ENTITY type) {
 	if (type == VARIABLE) {
 		return variables;
 	}
 	return entities;
 }
 
-vector<string> DataAccessLayerStub::getAllProcedures() {
+unordered_set<string> DataAccessLayerStub::getAllProcedures() {
 	return procedures;
 }
 
-vector<string> DataAccessLayerStub::getAllVariables() {
+unordered_set<string> DataAccessLayerStub::getAllVariables() {
 	return variables;
 }
 
-vector<string> DataAccessLayerStub::getAllConstants() {
+unordered_set<string> DataAccessLayerStub::getAllConstants() {
 	return constants;
 }
 
-map<string, vector<string>> DataAccessLayerStub::getVariableMap() {
+map<string, unordered_set<string>> DataAccessLayerStub::getVariableMap() {
 	return variableMap;
 }
 
-map<string, vector<string>> DataAccessLayerStub::getConstantMap() {
+map<string, unordered_set<string>> DataAccessLayerStub::getConstantMap() {
 	return constantMap;
 }
 
-map<string, vector<string>> DataAccessLayerStub::getClause(ABSTRACTION abstraction) {
+map<string, unordered_set<string>> DataAccessLayerStub::getClause(ABSTRACTION abstraction) {
 	if (abstraction == USES || abstraction == MODIFIES) {
 		return clausesEnts;
 	}
+	if (abstraction == FOLLOWSSTAR || abstraction == PARENTSTAR) {
+		return clausesMult;
+	}
 	return clauses;
+}
+
+map<string, unordered_set<string>> DataAccessLayerStub::getClauseInverse(ABSTRACTION abstraction) {
+	if (abstraction == USES || abstraction == MODIFIES) {
+		return clausesEntsInverse;
+	}
+	if (abstraction == FOLLOWSSTAR || abstraction == PARENTSTAR) {
+		return clausesMultInverse;
+	}
+	return clausesInverse;
 }

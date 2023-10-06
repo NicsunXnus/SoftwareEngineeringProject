@@ -6,6 +6,7 @@
 #include "../../Constants/DesignEnums.h"
 #include "../QueryResultsTable.h"
 #include "../../HelperFunctions.h"
+#include "../Errors/SemanticError.h"
 #include <unordered_map>
 
 

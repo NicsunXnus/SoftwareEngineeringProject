@@ -3,6 +3,10 @@
 
 #include<unordered_set>
 
+using namespace std;
+
+typedef map<string, unordered_set<string>> StringMap;
+
 enum ENTITY {
     STMT,
     READ,
@@ -66,6 +70,19 @@ static ABSTRACTION AbstractionStringToEnum(string abstraction) {
         return abstractionMap.at(abstraction);
     }
     throw runtime_error("abstraction is invalid!");
+}
+
+// list of storages that need to be 'flipped' for return.
+// e.g. Parent(x, y) is stored as {y: {x}} in the storage, but we want to return {x: {y}} to follow argument order
+const unordered_set<ABSTRACTION> flippedStorages = {
+    PARENT,
+	PARENTSTAR,
+	USES,
+    MODIFIES
+};
+
+static bool isFlippedStorage(ABSTRACTION abstraction) {
+	return flippedStorages.count(abstraction);
 }
 
 #endif

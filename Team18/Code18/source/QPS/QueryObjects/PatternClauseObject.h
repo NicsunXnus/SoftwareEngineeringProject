@@ -61,23 +61,17 @@ public:
 		shared_ptr<ClauseArg> arg1 = getArg1();
 		shared_ptr<ClauseArg> arg2 = getArg2();
 
-		map<string, vector<string>> PKBModifiesData = dataAccessLayer->getClause(MODIFIES);
-		map<string, vector<string>> PKBUsesData = dataAccessLayer->getClause(USES);
-		vector<string> PKBAssignData = dataAccessLayer->getEntity(ASSIGN);
-		map<string, vector<string>> PKBVarData = dataAccessLayer->getVariableMap();
-		map<string, vector<string>> PKBConstData = dataAccessLayer->getConstantMap();
-
-		//map<string, vector<string>> PKBModifiesData = { {"x", {"main", "2"}}, {"y", {"main", "3"}}};
-		//map<string, vector<string>> PKBUsesData = { {"x", {"main"}}, {"y", {"main", "4"}} };
-		//vector<string> PKBAssignData = { "2", "3" };
-		//map<string, vector<string>> PKBVarData = { {"x", {"main", "1", "2"}}, {"y", {"main", "3", "4"}} };;
-		//map<string, vector<string>> PKBConstData = { {"2", {"2"}}, {"3", {"3"}} };
+		StringMap PKBModifiesData = dataAccessLayer->getClauseInverse(MODIFIES);
+		StringMap PKBUsesData = dataAccessLayer->getClauseInverse(USES);
+		unordered_set<string> PKBAssignData = dataAccessLayer->getEntity(ASSIGN);
+		StringMap PKBVarData = dataAccessLayer->getVariableMap();
+		StringMap PKBConstData = dataAccessLayer->getConstantMap();
 
 		shared_ptr<QueryResultsTable> table;
 
 		bool isSingleColumn = true;
-		vector<string> assignSynonymColumn;
-		map<string, vector<string>> columnValues;
+		unordered_set<string> assignSynonymColumn;
+		StringMap columnValues;
 
 		if (arg1->isWildcard()) {
 			//cout << "arg1 is wildcard" << endl;
@@ -89,7 +83,7 @@ public:
 			// Get all assignment statement numbers that appear in Modifies(n, "x")
 			string identifier = svToString(arg1->getIdentifier());
 			if (PKBModifiesData.count(identifier)) {
-				vector<string> to_intersect = PKBModifiesData.at(identifier);
+				unordered_set<string> to_intersect = PKBModifiesData.at(identifier);
 				assignSynonymColumn = intersection(PKBAssignData, to_intersect);
 			}
 			else {
@@ -105,7 +99,7 @@ public:
 				string variable_key = pair.first;
 				for (const string& val : pair.second) {
 					if (find(PKBAssignData.begin(), PKBAssignData.end(), val) != PKBAssignData.end()) {
-						columnValues[variable_key].push_back(val);
+						columnValues[variable_key].insert(val);
 					}
 				}
 			}
@@ -121,7 +115,7 @@ public:
 				if (isSingleColumn) {
 					// Get all assignment statement numbers that appear in constant database with constant as key
 					if (PKBConstData.count(identifier)) {
-						vector<string> to_intersect = PKBConstData.at(identifier);
+						unordered_set<string> to_intersect = PKBConstData.at(identifier);
 						assignSynonymColumn = intersection(assignSynonymColumn, to_intersect);
 					}
 					else {
@@ -130,10 +124,10 @@ public:
 				}
 				else {
 					if (PKBConstData.count(identifier)) {
-						vector<string> to_intersect = PKBConstData.at(identifier);
+						unordered_set<string> to_intersect = PKBConstData.at(identifier);
 						for (auto pair = columnValues.begin(); pair != columnValues.end();) {
 							string variable_key = pair->first;
-							vector<string> intersect = intersection(columnValues[variable_key], to_intersect);
+							unordered_set<string> intersect = intersection(columnValues[variable_key], to_intersect);
 							if (intersect.size() == 0) {
 								pair = columnValues.erase(pair);
 							}
@@ -153,7 +147,7 @@ public:
 				if (isSingleColumn) {
 					// Get all assignment statement numbers that appear in variable database with variable as key
 					if (PKBVarData.count(identifier)) {
-						vector<string> to_intersect = PKBUsesData.at(identifier);
+						unordered_set<string> to_intersect = PKBUsesData.at(identifier);
 						assignSynonymColumn = intersection(assignSynonymColumn, to_intersect);
 					}
 					else {
@@ -162,10 +156,10 @@ public:
 				}
 				else {
 					if (PKBVarData.count(identifier)) {
-						vector<string> to_intersect = PKBUsesData.at(identifier);
+						unordered_set<string> to_intersect = PKBUsesData.at(identifier);
 						for (auto pair = columnValues.begin(); pair != columnValues.end();) {
 							string variable_key = pair->first;
-							vector<string> intersect = intersection(columnValues[variable_key], to_intersect);
+							unordered_set<string> intersect = intersection(columnValues[variable_key], to_intersect);
 							if (intersect.size() == 0) {
 								pair = columnValues.erase(pair);
 							}
@@ -184,13 +178,11 @@ public:
 
 		if (isSingleColumn) {
 			table = QueryResultsTable::createTable(assignSynonym, assignSynonymColumn);
-			//cout << "FINAL ANSWER:" << endl;
 			//printVectorString(assignSynonymColumn);
 		}
 		else {
 			vector<string> headers = { svToString(arg1->getArg()), assignSynonym };
 			table = QueryResultsTable::createTable(headers, columnValues);
-			//cout << "FINAL ANSWER:" << endl;
 			//printMap(columnValues);
 		}
 		
@@ -200,12 +192,12 @@ public:
 
 
 	// Gets the intersect of two vectors
-	vector<string> intersection(vector<string>& strings1, vector<string>& strings2) {
+	unordered_set<string> intersection(unordered_set<string>& strings1, unordered_set<string>& strings2) {
 		unordered_set<string> m(strings1.begin(), strings1.end());
-		vector<string> res;
+		unordered_set<string> res;
 		for (auto a : strings2)
 			if (m.count(a)) {
-				res.push_back(a);
+				res.insert(a);
 				m.erase(a);
 			}
 		return res;

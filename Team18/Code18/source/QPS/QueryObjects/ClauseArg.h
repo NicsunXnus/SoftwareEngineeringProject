@@ -36,6 +36,13 @@ public:
 		return this->arg;
 	}
 
+	string_view getArgValue() {
+		if (isIdentifier()) {
+			return getIdentifier();
+		}
+		return this->arg;
+	}
+
 	// function to check if argument is an integer
 	bool isInteger() {
 		bool isNum{ true };
