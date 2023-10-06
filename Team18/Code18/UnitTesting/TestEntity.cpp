@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include "../source/DesignExtractor/Entity.h"
+#include "../source/DesignExtractor/DesignExtractor.h"
 #include "../source/AST/ASTNode.h"
 #include <string>
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -317,6 +318,5 @@ namespace UnitTesting
 
                 Assert::IsTrue(std::find(constantMap["40"].begin(), constantMap["40"].end(), std::to_string(9)) != constantMap["40"].end());
         }
-
-	};
+    };
 }
