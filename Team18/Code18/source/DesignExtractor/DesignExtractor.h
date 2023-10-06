@@ -149,7 +149,7 @@ private:
         static shared_ptr<map<string, vector<string>>> usesMap = this->usesExtractor->getStorageMap();
         static shared_ptr<map<string, vector<string>>> parentsMap = this->parentsExtractor->getStorageMap();
         static shared_ptr<map<string, vector<string>>> followsMap = this->followsExtractor->getStorageMap();
-        static shared_ptr<map<string, vector<string>>> callMap = this->followsExtractor->getStorageMap();
+        static shared_ptr<map<string, vector<string>>> callMap = this->callsExtractor->getStorageMap();
 
         // Convert the maps to unordered sets
         static shared_ptr<map<string, unordered_set<string>>> modifiesSet = convertVectorToUnorderedSet(modifiesMap);
@@ -168,7 +168,7 @@ private:
         PKB::insertor.addAbstraction(followsSet, FOLLOWS);
         PKB::insertor.addAbstraction(parentsStarSet, PARENTSTAR);
         PKB::insertor.addAbstraction(followsStarSet, FOLLOWSSTAR);
-        PKB::insertor.addAbstraction(callSet, CALLSSTAR);
+        PKB::insertor.addAbstraction(callSet, CALLS);
         PKB::insertor.addAbstraction(callStarSet, CALLSSTAR);
     }
 
