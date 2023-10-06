@@ -7,12 +7,11 @@
 #include <memory>
 #include <unordered_set>
 
-#include "../TokenClasses/IdentifierToken.h"
-#include "../TokenClasses/KeywordToken.h"
-#include "../TokenClasses/LiteralToken.h"
-#include "../TokenClasses/OperatorToken.h"
-#include "../TokenClasses/SeparatorToken.h"
-#include "../TokenClasses/UnderscoreToken.h"
+#include "../SimpleTokens/IdentifierToken.h"
+#include "../SimpleTokens/KeywordToken.h"
+#include "../SimpleTokens/LiteralToken.h"
+#include "../SimpleTokens/OperatorToken.h"
+#include "../SimpleTokens/SeparatorToken.h"
 #include "../HelperFunctions.h"
 #include "../ExceptionMessages.h"
 
@@ -47,30 +46,6 @@ static const std::unordered_set<std::string> uniqueSimple = {
 	"!="
 };
 
-// Certain keywords or operators that will only be found in PQL
-static const std::unordered_set<std::string> uniquePql = {
-	"select",
-	"stmt",
-	"assign",
-	"variable",
-	"constant",
-	"procedure",
-	"while",
-	"if",
-	//"Follows",
-	//"Follows*",
-	//"Parent",
-	//"Parent*",
-	//"Modifies",
-	//"Uses",
-	//"pattern",
-	"such",
-	"that",
-	"_",
-	"\"",
-	",",
-};
-
 /**
 * Factory class that produces tokens.
 */
@@ -94,9 +69,6 @@ private:
 		}
 		if (tokenName == ")"sv) {
 			return std::make_shared<ParenCloseSepToken>();
-		}
-		if (tokenName == ";"sv) {
-			return std::make_shared<SemicolonSepToken>();
 		}
 		if (tokenName == "+"sv) {
 			return std::make_shared<PlusOpToken>();
@@ -151,71 +123,6 @@ private:
 		std::cerr << ExceptionMessages::invalidToken << std::endl;
 	}
 
-	// Generates a Token with a name that is unique to PQL
-	static std::shared_ptr<Token> generatePqlToken(std::string_view tokenName) {
-		if (tokenName == "select"sv) {
-			return std::make_shared<SelectKeywordToken>();
-		}
-		if (tokenName == "stmt"sv) {
-			return std::make_shared<StmtKeywordToken>();
-		}
-		if (tokenName == "assign"sv) {
-			return std::make_shared<AssignKeywordToken>();
-		}
-		if (tokenName == "variable"sv) {
-			return std::make_shared<VariableKeywordToken>();
-		}
-		if (tokenName == "constant"sv) {
-			return std::make_shared<ConstantKeywordToken>();
-		}
-		if (tokenName == "procedure"sv) {
-			return std::make_shared<ProcedureKeywordToken>();
-		}
-		if (tokenName == "while"sv) {
-			return std::make_shared<WhileKeywordToken>();
-		}
-		if (tokenName == "if"sv) {
-			return std::make_shared<IfKeywordToken>();
-		}
-		//if (tokenName == "Follows"sv) {
-		//	return NULL;// std::make_shared<>();
-		//}
-		//if (tokenName == "Follows*"sv) {
-		//	return NULL;// std::make_shared<>();
-		//}
-		//if (tokenName == "Parent"sv) {
-		//	return NULL;// std::make_shared<>();
-		//}
-		//if (tokenName == "Parent*"sv) {
-		//	return NULL;// std::make_shared<>();
-		//}
-		//if (tokenName == "Modifies"sv) {
-		//	return NULL;// std::make_shared<>();
-		//}
-		//if (tokenName == "Uses"sv) {
-		//	return NULL;// std::make_shared<>();
-		//}
-		//if (tokenName == "pattern"sv) {
-		//	return NULL;// std::make_shared<>();
-		//}
-		if (tokenName == "such"sv) {
-			return std::make_shared<SuchKeywordToken>();
-		}
-		if (tokenName == "that"sv) {
-			return std::make_shared<ThatKeywordToken>();
-		}
-		if (tokenName == "_"sv) {
-			return std::make_shared<UnderscoreToken>();
-		}
-		if (tokenName == "\""sv) {
-			return std::make_shared<DoubleQuoSepToken>();
-		}
-		if (tokenName == ","sv) {
-			return std::make_shared<CommaSepToken>();
-		}
-		std::cerr << ExceptionMessages::invalidToken << std::endl;
-	}
-
 	// Generates a Identifier Token. REMINDER that this does not validate the argument to ensure that it is a valid name
 	static std::shared_ptr<Token> generateIdentifier(std::string_view tokenName) {
 		return std::make_shared<IdentifierToken>(tokenName);
@@ -227,10 +134,10 @@ private:
 	}
 public:
 	/// <summary>
-	/// Generates tokens based on a token name, whether it is for SIMPLE or not (and hence for PQL) and if the
+	/// Generates SIMPLE tokens based on a token name and if the
 	/// token should be forced to be an identifier or not.
 	/// 
-	/// Throws std::invalid_argument exception if anything supplied in the token is invalid.
+	/// Outputs to std err if anything supplied in the token is invalid.
 	/// This can arise due to invalid names for identifiers, or other ways.
 	/// </summary>
 	/// 
@@ -238,9 +145,10 @@ public:
 	/// <param name="forSimple">Whether the string is coming from a SIMPLE program or not</param>
 	/// <param name="forceIdentifier">Whether to force the token to be an IdentifierToken</param>
 	/// <returns>a shared pointer to the generated token</returns>
-	static std::shared_ptr<Token> generateToken(std::string tokenName, bool forSimple, bool forceIdentifier = false) {
+	static std::shared_ptr<Token> generateTokenForSimple(std::string tokenName, bool forceIdentifier = false) {
 		if (tokenName.empty()) {
 			std::cerr << ExceptionMessages::invalidToken << std::endl;
+			return nullptr;
 		}
 		// Prioritises creating an identifier if given tokenName is a valid name
 		if (forceIdentifier && isValidName(tokenName)) {
@@ -249,11 +157,8 @@ public:
 		if (common.count(tokenName) != 0) {
 			return generateCommonToken(tokenName);
 		}
-		if (forSimple && uniqueSimple.count(tokenName) != 0) {
+		if (uniqueSimple.count(tokenName) != 0) {
 			return generateSimpleToken(tokenName);
-		}
-		if (!forSimple && uniquePql.count(tokenName) != 0) {
-			return generatePqlToken(tokenName);
 		}
 		if (isValidName(tokenName)) {
 			return generateIdentifier(tokenName);
@@ -261,15 +166,17 @@ public:
 		if (isNumber(tokenName)) {
 			if (tokenName.size() > 1 && tokenName[0] == '0') {
 				std::cerr << ExceptionMessages::invalidToken << std::endl;
+				return nullptr;
 			}
 			return generateIntLiteral(tokenName);
 		}
 		std::cerr << ExceptionMessages::invalidToken << std::endl;
+		return nullptr;
 	}
 
 	// Overloaded method to take in string views instead
-	static std::shared_ptr<Token> generateToken(std::string_view tokenName, bool forSimple, bool forceIdentifier = false) {
-		return generateToken(std::string(tokenName), forSimple, forceIdentifier);
+	static std::shared_ptr<Token> generateTokenForSimple(std::string_view tokenName, bool forceIdentifier = false) {
+		return generateTokenForSimple(std::string(tokenName), forceIdentifier);
 	}
 
 };

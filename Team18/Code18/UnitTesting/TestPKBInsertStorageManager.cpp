@@ -18,12 +18,13 @@ namespace UnitTesting {
 
 				// Create reference to EntityStorage to check database
 				shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-				shared_ptr<map<ENTITY, vector<string>>> stmt_db = entity_storage->getStatementDatabase();
+				shared_ptr<map<ENTITY, unordered_set<string>>> stmt_db = entity_storage->getStatementDatabase();
 
 				// assert database contains the correct data
-				vector<string> expected_vector = { "1" };
+				unordered_set<string> expected_vector = { "1" };
 
-				Assert::IsTrue(compare_vectors(stmt_db->at(READ), expected_vector));
+				unordered_set<string> sss = stmt_db->at(READ);
+				Assert::IsTrue(compare_sets(stmt_db->at(READ), expected_vector));
 			}
 
 			TEST_METHOD(TestAddInvalidEntityStatementFailure) {
@@ -47,14 +48,14 @@ namespace UnitTesting {
 
 				// Create reference to EntityStorage to check database
 				shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-				shared_ptr<map<ENTITY, vector<string>>> stmt_db = entity_storage->getStatementDatabase();
+				shared_ptr<map<ENTITY, unordered_set<string>>> stmt_db = entity_storage->getStatementDatabase();
 
-				vector<string> expected_vector1 = { "1", "2" };
-				vector<string> expected_vector2 = { "4" };
+				unordered_set<string> expected_vector1 = { "1", "2" };
+				unordered_set<string> expected_vector2 = { "4" };
 
 				// assert database contains the correct data
-				Assert::IsTrue(compare_vectors(stmt_db->at(CALL), expected_vector1));
-				Assert::IsTrue(compare_vectors(stmt_db->at(PRINT), expected_vector2));
+				Assert::IsTrue(compare_sets(stmt_db->at(CALL), expected_vector1));
+				Assert::IsTrue(compare_sets(stmt_db->at(PRINT), expected_vector2));
 
 				// assert database does not contain data that was not inserted
 				Assert::IsTrue(stmt_db->find(READ) == stmt_db->end());
@@ -70,7 +71,7 @@ namespace UnitTesting {
 
 				// Create reference to EntityStorage to check database
 				shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-				shared_ptr<map<ENTITY, vector<string>>> stmt_db = entity_storage->getStatementDatabase();
+				shared_ptr<map<ENTITY, unordered_set<string>>> stmt_db = entity_storage->getStatementDatabase();
 
 				// assert database is empty
 				Assert::IsTrue(stmt_db->empty());
@@ -89,9 +90,9 @@ namespace UnitTesting {
 				shared_ptr<StringMap> procedure_db = entity_storage->getProcedureDatabase();
 
 				// assert database contains the correct data
-				vector<string> expected_vector = { "1" };
+				unordered_set<string> expected_vector = { "1" };
 
-				Assert::IsTrue(compare_vectors(procedure_db->at("proc1"), expected_vector));
+				Assert::IsTrue(compare_sets(procedure_db->at("proc1"), expected_vector));
 			}
 
 			TEST_METHOD(TestAddMultipleProceduresSuccess) {
@@ -106,12 +107,12 @@ namespace UnitTesting {
 				shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
 				shared_ptr<StringMap> procedure_db = entity_storage->getProcedureDatabase();
 
-				vector<string> expected_vector1 = { "1", "2" };
-				vector<string> expected_vector2 = { "5", "6", "7" };
+				unordered_set<string> expected_vector1 = { "1", "2" };
+				unordered_set<string> expected_vector2 = { "5", "6", "7" };
 
 				// assert database contains the correct data
-				Assert::IsTrue(compare_vectors(procedure_db->at("proc1"), expected_vector1));
-				Assert::IsTrue(compare_vectors(procedure_db->at("proc2"), expected_vector2));
+				Assert::IsTrue(compare_sets(procedure_db->at("proc1"), expected_vector1));
+				Assert::IsTrue(compare_sets(procedure_db->at("proc2"), expected_vector2));
 
 				// assert database does not contain data that was not inserted
 				Assert::IsTrue(procedure_db->find("unknown_proc") == procedure_db->end());
@@ -146,9 +147,9 @@ namespace UnitTesting {
 				shared_ptr<StringMap> variable_db = entity_storage->getVariableDatabase();
 
 				// assert database contains the correct data
-				vector<string> expected_vector = { "5" };
+				unordered_set<string> expected_vector = { "5" };
 
-				Assert::IsTrue(compare_vectors(variable_db->at("x"), expected_vector));
+				Assert::IsTrue(compare_sets(variable_db->at("x"), expected_vector));
 			}
 
 			TEST_METHOD(TestAddMultipleVariablesSuccess) {
@@ -163,12 +164,12 @@ namespace UnitTesting {
 				shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
 				shared_ptr<StringMap> variable_db = entity_storage->getVariableDatabase();
 
-				vector<string> expected_vector1 = { "1", "2" };
-				vector<string> expected_vector2 = { "2", "5", "7" };
+				unordered_set<string> expected_vector1 = { "1", "2" };
+				unordered_set<string> expected_vector2 = { "2", "5", "7" };
 
 				// assert database contains the correct data
-				Assert::IsTrue(compare_vectors(variable_db->at("x"), expected_vector1));
-				Assert::IsTrue(compare_vectors(variable_db->at("y"), expected_vector2));
+				Assert::IsTrue(compare_sets(variable_db->at("x"), expected_vector1));
+				Assert::IsTrue(compare_sets(variable_db->at("y"), expected_vector2));
 
 				// assert database does not contain data that was not inserted
 				Assert::IsTrue(variable_db->find("z") == variable_db->end());
@@ -203,9 +204,9 @@ namespace UnitTesting {
 				shared_ptr<StringMap> constant_db = entity_storage->getConstantDatabase();
 
 				// assert database contains the correct data
-				vector<string> expected_vector = { "1" };
+				unordered_set<string> expected_vector = { "1" };
 
-				Assert::IsTrue(compare_vectors(constant_db->at("10"), expected_vector));
+				Assert::IsTrue(compare_sets(constant_db->at("10"), expected_vector));
 			}
 
 			TEST_METHOD(TestAddMultipleConstantsSuccess) {
@@ -220,12 +221,12 @@ namespace UnitTesting {
 				shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
 				shared_ptr<StringMap> constant_db = entity_storage->getConstantDatabase();
 
-				vector<string> expected_vector1 = { "1" };
-				vector<string> expected_vector2 = { "4", "7", "10" };
+				unordered_set<string> expected_vector1 = { "1" };
+				unordered_set<string> expected_vector2 = { "4", "7", "10" };
 
 				// assert database contains the correct data
-				Assert::IsTrue(compare_vectors(constant_db->at("10"), expected_vector1));
-				Assert::IsTrue(compare_vectors(constant_db->at("HERE"), expected_vector2));
+				Assert::IsTrue(compare_sets(constant_db->at("10"), expected_vector1));
+				Assert::IsTrue(compare_sets(constant_db->at("HERE"), expected_vector2));
 
 				// assert database does not contain data that was not inserted
 				Assert::IsTrue(constant_db->find("unknown_const") == constant_db->end());
@@ -328,14 +329,14 @@ namespace UnitTesting {
 				shared_ptr<StringMap> constant_db = entity_storage->getConstantDatabase();
 				shared_ptr<StringMap> procedure_db = entity_storage->getProcedureDatabase();
 				shared_ptr<StringMap> variable_db = entity_storage->getVariableDatabase();
-				shared_ptr<map<ENTITY, vector<string>>> stmt_db = entity_storage->getStatementDatabase();
+				shared_ptr<map<ENTITY, unordered_set<string>>> stmt_db = entity_storage->getStatementDatabase();
 
 				// assert database has correct entries
 				Assert::IsTrue(compare_maps(*variable_db, variableData));
 				Assert::IsTrue(compare_maps(*procedure_db, procedureData));
 				Assert::IsTrue(compare_maps(*constant_db, constantData));
-				Assert::IsTrue(compare_vectors(stmt_db->at(CALL), { "1", "2" }));
-				Assert::IsTrue(compare_vectors(stmt_db->at(PRINT), { "4" }));
+				Assert::IsTrue(compare_sets(stmt_db->at(CALL), { "1", "2" }));
+				Assert::IsTrue(compare_sets(stmt_db->at(PRINT), { "4" }));
 			}
 
 			TEST_METHOD(TestAddUsesAbstractionSuccess) {
@@ -372,16 +373,15 @@ namespace UnitTesting {
 
 			TEST_METHOD(TestAddFollowsAbstractionSuccess) {
 				// Create mock data to insert
-				StringMap followsStarData = { {"1", {"2", "3", "6", "7"}}, {"2", {"3", "6", "7"}}};
 				StringMap followsData = { {"1", {"2"}}, {"2", {"3"}} };
-				shared_ptr<StringMap> toInsert = make_shared<StringMap>(followsStarData);
+				shared_ptr<StringMap> toInsert = make_shared<StringMap>(followsData);
 
 				// Insertion
 				PKB::insertor.addAbstraction(toInsert, FOLLOWS);
 
 				// Create reference to AbstractionStorage to check database
 				shared_ptr<AbstractionStorage> follows_storage = StorageManager::getAbstractionStorage(FOLLOWS);
-				shared_ptr<StringMap> db = follows_storage->getTruncatedDatabase();
+				shared_ptr<StringMap> db = follows_storage->getDatabase();
 
 				// assert database contains the correct data (only first element of vector)
 				Assert::IsTrue(compare_maps(*db, followsData));
@@ -389,19 +389,14 @@ namespace UnitTesting {
 
 			TEST_METHOD(TestAddFollowsStarAbstractionSuccess) {
 				// Create mock data to insert
-				StringMap followsStarData = { {"1", {"2", "4", "5"}} };
+				StringMap followsStarData = { {"1", {"2", "3", "6", "7"}}, {"2", {"3", "6", "7"}} };
 				shared_ptr<StringMap> toInsert = make_shared<StringMap>(followsStarData);
 
 				// Insertion
 				PKB::insertor.addAbstraction(toInsert, FOLLOWSSTAR);
 
 				// Create reference to AbstractionStorage to check database
-				shared_ptr<AbstractionStorage> follows_storage = StorageManager::getAbstractionStorage(FOLLOWS);
 				shared_ptr<AbstractionStorage> followsstar_storage = StorageManager::getAbstractionStorage(FOLLOWSSTAR);
-
-				// assert that same storage (and database) is used for follows and followsstar
-				Assert::IsTrue(follows_storage == followsstar_storage);
-
 				shared_ptr<StringMap> db = followsstar_storage->getDatabase();
 
 				// assert database contains the correct data
@@ -410,16 +405,15 @@ namespace UnitTesting {
 
 			TEST_METHOD(TestAddParentAbstractionSuccess) {
 				// Create mock data to insert
-				StringMap parentStarData = { {"10", {"7", "3", "1"}}, {"6", {"5", "1"}} };
 				StringMap parentData = { {"10", {"7"}}, {"6", {"5"}} };
-				shared_ptr<StringMap> toInsert = make_shared<StringMap>(parentStarData);
+				shared_ptr<StringMap> toInsert = make_shared<StringMap>(parentData);
 
 				// Insertion
 				PKB::insertor.addAbstraction(toInsert, PARENT);
 
 				// Create reference to AbstractionStorage to check database
 				shared_ptr<AbstractionStorage> parent_storage = StorageManager::getAbstractionStorage(PARENT);
-				shared_ptr<StringMap> db = parent_storage->getTruncatedDatabase();
+				shared_ptr<StringMap> db = parent_storage->getDatabase();
 
 				// assert database contains the correct data (only first element of vector)
 				Assert::IsTrue(compare_maps(*db, parentData));
@@ -427,19 +421,14 @@ namespace UnitTesting {
 
 			TEST_METHOD(TestAddParentStarAbstractionSuccess) {
 				// Create mock data to insert
-				StringMap parentStarData = { {"10", {"9", "7", "5"}} };
+				StringMap parentStarData = { {"10", {"7", "3", "1"}}, {"6", {"5", "1"}} };
 				shared_ptr<StringMap> toInsert = make_shared<StringMap>(parentStarData);
 
 				// Insertion
 				PKB::insertor.addAbstraction(toInsert, PARENTSTAR);
 
 				// Create reference to AbstractionStorage to check database
-				shared_ptr<AbstractionStorage> parent_storage = StorageManager::getAbstractionStorage(PARENT);
 				shared_ptr<AbstractionStorage> parentstar_storage = StorageManager::getAbstractionStorage(PARENTSTAR);
-
-				// assert that same storage (and database) is used for follows and followsstar
-				Assert::IsTrue(parent_storage == parentstar_storage);
-
 				shared_ptr<StringMap> db = parentstar_storage->getDatabase();
 
 				// assert database contains the correct data
@@ -448,16 +437,15 @@ namespace UnitTesting {
 
 			TEST_METHOD(TestAddCallsAbstractionSuccess) {
 				// Create mock data to insert
-				StringMap callsStarData = { {"main", {"proc1", "proc2", "proc3"}}, {"proc1", {"proc2", "proc3"}}, {"proc2", {"proc3"}} };
 				StringMap callsData = { {"main", {"proc1"}}, {"proc1", {"proc2"}}, {"proc2", {"proc3"}} };
-				shared_ptr<StringMap> toInsert = make_shared<StringMap>(callsStarData);
+				shared_ptr<StringMap> toInsert = make_shared<StringMap>(callsData);
 
 				// Insertion
 				PKB::insertor.addAbstraction(toInsert, CALLS);
 
 				// Create reference to AbstractionStorage to check database
 				shared_ptr<AbstractionStorage> calls_storage = StorageManager::getAbstractionStorage(CALLS);
-				shared_ptr<StringMap> db = calls_storage->getTruncatedDatabase();
+				shared_ptr<StringMap> db = calls_storage->getDatabase();
 
 				// assert database contains the correct data (only first element of vector)
 				Assert::IsTrue(compare_maps(*db, callsData));
@@ -472,12 +460,7 @@ namespace UnitTesting {
 				PKB::insertor.addAbstraction(toInsert, CALLSSTAR);
 
 				// Create reference to AbstractionStorage to check database
-				shared_ptr<AbstractionStorage> calls_storage = StorageManager::getAbstractionStorage(CALLS);
 				shared_ptr<AbstractionStorage> callsstar_storage = StorageManager::getAbstractionStorage(CALLSSTAR);
-
-				// assert that same storage (and database) is used for follows and followsstar
-				Assert::IsTrue(calls_storage == callsstar_storage);
-
 				shared_ptr<StringMap> db = callsstar_storage->getDatabase();
 
 				// assert database contains the correct data
@@ -515,14 +498,16 @@ namespace UnitTesting {
 
 				// Create reference to AbstractionStorage to check database
 				shared_ptr<AbstractionStorage> parent_storage = StorageManager::getAbstractionStorage(PARENT);
+				shared_ptr<AbstractionStorage> parentstar_storage = StorageManager::getAbstractionStorage(PARENTSTAR);
 				shared_ptr<AbstractionStorage> follows_storage = StorageManager::getAbstractionStorage(FOLLOWS);
+				shared_ptr<AbstractionStorage> followsstar_storage = StorageManager::getAbstractionStorage(FOLLOWSSTAR);
 				shared_ptr<AbstractionStorage> modifies_storage = StorageManager::getAbstractionStorage(MODIFIES);
 				shared_ptr<AbstractionStorage> uses_storage = StorageManager::getAbstractionStorage(USES);	
 
-				shared_ptr<StringMap> parent_db = parent_storage->getTruncatedDatabase();
-				shared_ptr<StringMap> parentstar_db = parent_storage->getDatabase();
-				shared_ptr<StringMap> follows_db = follows_storage->getTruncatedDatabase();
-				shared_ptr<StringMap> followsstar_db = follows_storage->getDatabase();
+				shared_ptr<StringMap> parent_db = parent_storage->getDatabase();
+				shared_ptr<StringMap> parentstar_db = parentstar_storage->getDatabase();
+				shared_ptr<StringMap> follows_db = follows_storage->getDatabase();
+				shared_ptr<StringMap> followsstar_db = followsstar_storage->getDatabase();
 				shared_ptr<StringMap> modifies_db = modifies_storage->getDatabase();
 				shared_ptr<StringMap> uses_db = uses_storage->getDatabase();
 
@@ -546,25 +531,31 @@ namespace UnitTesting {
 			
 				shared_ptr<StringMap> toInsertUses = make_shared<StringMap>(usesData);
 				shared_ptr<StringMap> toInsertModifies = make_shared<StringMap>(modifiesData);
-				shared_ptr<StringMap> toInsertFollows = make_shared<StringMap>(followsStarData);
-				shared_ptr<StringMap> toInsertParent = make_shared<StringMap>(parentStarData);
+				shared_ptr<StringMap> toInsertFollowsStar = make_shared<StringMap>(followsStarData);
+				shared_ptr<StringMap> toInsertFollows = make_shared<StringMap>(followsData);
+				shared_ptr<StringMap> toInsertParentStar = make_shared<StringMap>(parentStarData);
+				shared_ptr<StringMap> toInsertParent = make_shared<StringMap>(parentData);
 			
 				// Insertion
 				PKB::insertor.addAbstraction(toInsertUses, USES);
 				PKB::insertor.addAbstraction(toInsertModifies, MODIFIES);
 				PKB::insertor.addAbstraction(toInsertFollows, FOLLOWS);
+				PKB::insertor.addAbstraction(toInsertFollowsStar, FOLLOWSSTAR);
 				PKB::insertor.addAbstraction(toInsertParent, PARENT);
+				PKB::insertor.addAbstraction(toInsertParentStar, PARENTSTAR);
 			
 				// Create reference to AbstractionStorage to check database
 				shared_ptr<AbstractionStorage> parent_storage = StorageManager::getAbstractionStorage(PARENT);
+				shared_ptr<AbstractionStorage> parentstar_storage = StorageManager::getAbstractionStorage(PARENTSTAR);
 				shared_ptr<AbstractionStorage> follows_storage = StorageManager::getAbstractionStorage(FOLLOWS);
+				shared_ptr<AbstractionStorage> followsstar_storage = StorageManager::getAbstractionStorage(FOLLOWSSTAR);
 				shared_ptr<AbstractionStorage> modifies_storage = StorageManager::getAbstractionStorage(MODIFIES);
 				shared_ptr<AbstractionStorage> uses_storage = StorageManager::getAbstractionStorage(USES);
 			
-				shared_ptr<StringMap> parent_db = parent_storage->getTruncatedDatabase();
-				shared_ptr<StringMap> parentstar_db = parent_storage->getDatabase();
-				shared_ptr<StringMap> follows_db = follows_storage->getTruncatedDatabase();
-				shared_ptr<StringMap> followsstar_db = follows_storage->getDatabase();
+				shared_ptr<StringMap> parent_db = parent_storage->getDatabase();
+				shared_ptr<StringMap> parentstar_db = parentstar_storage->getDatabase();
+				shared_ptr<StringMap> follows_db = follows_storage->getDatabase();
+				shared_ptr<StringMap> followsstar_db = followsstar_storage->getDatabase();
 				shared_ptr<StringMap> modifies_db = modifies_storage->getDatabase();
 				shared_ptr<StringMap> uses_db = uses_storage->getDatabase();
 

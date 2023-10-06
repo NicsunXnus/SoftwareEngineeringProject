@@ -3,37 +3,51 @@
 #include <list>
 
 
-vector<string> DataAccessLayer::getEntity(ENTITY type) {
-	vector<string> PKBResponse = PKB::responder.getEntityStatement(type);
+unordered_set<string> DataAccessLayer::getEntity(ENTITY type) {
+	if (type == CONSTANT) {
+		return getAllConstants();
+	}
+	else if (type == VARIABLE) {
+		return getAllVariables();
+	}
+	else if (type == PROCEDURE) {
+		return getAllProcedures();
+	}
+	unordered_set<string> PKBResponse = PKB::responder.getEntityStatement(type);
 	return PKBResponse;
 }
 
-vector<string> DataAccessLayer::getAllProcedures() {
-	vector<string> PKBResponse = PKB::responder.getAllProcedures();
+unordered_set<string> DataAccessLayer::getAllProcedures() {
+	unordered_set<string> PKBResponse = PKB::responder.getAllProcedures();
 	return PKBResponse;
 }
 
-vector<string> DataAccessLayer::getAllVariables() {
-	vector<string> PKBResponse = PKB::responder.getAllVariables();
+unordered_set<string> DataAccessLayer::getAllVariables() {
+	unordered_set<string> PKBResponse = PKB::responder.getAllVariables();
 	return PKBResponse;
 }
 
-vector<string> DataAccessLayer::getAllConstants() {
-	vector<string> PKBResponse = PKB::responder.getAllConstants();
+unordered_set<string> DataAccessLayer::getAllConstants() {
+	unordered_set<string> PKBResponse = PKB::responder.getAllConstants();
 	return PKBResponse;
 }
 
-map<string, vector<string>> DataAccessLayer::getVariableMap() {
-	map<string, vector<string>> PKBResponse = PKB::responder.getVariableMap();
+map<string, unordered_set<string>> DataAccessLayer::getVariableMap() {
+	StringMap PKBResponse = PKB::responder.getVariableMap();
 	return PKBResponse;
 }
 
-map<string, vector<string>> DataAccessLayer::getConstantMap() {
-	map<string, vector<string>> PKBResponse = PKB::responder.getConstantMap();
+map<string, unordered_set<string>> DataAccessLayer::getConstantMap() {
+	StringMap PKBResponse = PKB::responder.getConstantMap();
 	return PKBResponse;
 }
 
-map<string, vector<string>> DataAccessLayer::getClause(ABSTRACTION abstraction) {
-	map<string, vector<string>> PKBResponse = PKB::responder.getAbstraction(abstraction);
+StringMap DataAccessLayer::getClause(ABSTRACTION abstraction) {
+	StringMap PKBResponse = PKB::responder.getAbstraction(abstraction);
+	return PKBResponse;
+}
+
+StringMap DataAccessLayer::getClauseInverse(ABSTRACTION abstraction) {
+	StringMap PKBResponse = PKB::responder.getAbstraction(abstraction, true);
 	return PKBResponse;
 }

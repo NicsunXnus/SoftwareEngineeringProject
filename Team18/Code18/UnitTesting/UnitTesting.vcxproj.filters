@@ -20,6 +20,7 @@
     <ClCompile Include="TestAST.cpp" />
     <ClCompile Include="TestQPSQueryResultTable.cpp" />
     <ClCompile Include="TestQPSErrorQueries.cpp" />
+    <ClCompile Include="TestAdapter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />

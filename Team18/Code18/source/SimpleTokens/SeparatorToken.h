@@ -35,31 +35,4 @@ public:
 		: SeparatorToken{ "("sv } {};
 };
 
-/**
-* This class represents a '"' symbol.
-*/
-class DoubleQuoSepToken : public SeparatorToken {
-public:
-	DoubleQuoSepToken()
-		: SeparatorToken{ "\""sv } {};
-};
-
-/**
-* This class represents a ";" symbol.
-*/
-class SemicolonSepToken : public SeparatorToken {
-public:
-	SemicolonSepToken()
-		: SeparatorToken{ ";"sv } {};
-};
-
-/**
-* This class represents a "," symbol.
-*/
-class CommaSepToken : public SeparatorToken {
-public:
-	CommaSepToken()
-		: SeparatorToken{ ","sv } {};
-};
-
 #endif

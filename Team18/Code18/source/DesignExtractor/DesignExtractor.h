@@ -6,7 +6,6 @@
 
 using namespace std;
 
-#include "Entity.h"
 #include "EntityExtractor.h"
 #include "ModifiesAbstractionExtractor.h"
 #include "UsesAbstractionExtractor.h"
@@ -14,6 +13,8 @@ using namespace std;
 #include "FollowsAbstractionExtractor.h"
 #include "../AST/ASTNode.h"
 #include "../PKB.h"
+#include "../PKB/Adapter.h"
+
 
 
 /**
@@ -66,31 +67,49 @@ public:
     // Method to insert the entities into the PKB
     void insertEntities() {
         // Get the entity maps
-        static shared_ptr<StringMap> statementMap = getStatementEntity()->getMap();
-        static shared_ptr<StringMap> procedureMap = getProcedureEntity()->getMap();
-        static shared_ptr<StringMap> variableMap = getVariableEntity()->getMap();
-        static shared_ptr<StringMap> constantMap = getConstantEntity()->getMap();
+        static shared_ptr<map<string, vector<string>>> statementMap = getStatementEntity()->getMap();
+        static shared_ptr<map<string, vector<string>>> procedureMap = getProcedureEntity()->getMap();
+        static shared_ptr<map<string, vector<string>>> variableMap = getVariableEntity()->getMap();
+        static shared_ptr<map<string, vector<string>>> constantMap = getConstantEntity()->getMap();
+
+        // Convert the maps to unordered sets
+        static shared_ptr<map<string, unordered_set<string>>> statementSet = convertVectorToUnorderedSet(statementMap);
+        static shared_ptr<map<string, unordered_set<string>>> procedureSet = convertVectorToUnorderedSet(procedureMap);
+        static shared_ptr<map<string, unordered_set<string>>> variableSet = convertVectorToUnorderedSet(variableMap);
+        static shared_ptr<map<string, unordered_set<string>>> constantSet = convertVectorToUnorderedSet(constantMap);
         
         // Insert the entities into the PKB
-        PKB::insertor.addEntity(statementMap);
-        PKB::insertor.addEntity(procedureMap, PROCEDURE);
-        PKB::insertor.addEntity(variableMap, VARIABLE);
-        PKB::insertor.addEntity(constantMap, CONSTANT);  
+        // TODO: Change to new API
+        PKB::insertor.addEntity(statementSet);
+        PKB::insertor.addEntity(procedureSet, PROCEDURE);
+        PKB::insertor.addEntity(variableSet, VARIABLE);
+        PKB::insertor.addEntity(constantSet, CONSTANT);
+
     }
 
     // Method to insert the abstractions into the PKB
     void insertAbstractions() {
         // Get the Abstraction maps
-        static shared_ptr<StringMap> modifiesMap = this->modifiesExtractor->getStorageMap();
-        static shared_ptr<StringMap> usesMap = this->usesExtractor->getStorageMap();
-        static shared_ptr<StringMap> parentsMap = this->parentsExtractor->getStorageMap();
-        static shared_ptr<StringMap> followsMap = this->followsExtractor->getStorageMap();
+        static shared_ptr<map<string, vector<string>>> modifiesMap = this->modifiesExtractor->getStorageMap();
+        static shared_ptr<map<string, vector<string>>> usesMap = this->usesExtractor->getStorageMap();
+        static shared_ptr<map<string, vector<string>>> parentsMap = this->parentsExtractor->getStorageMap();
+        static shared_ptr<map<string, vector<string>>> followsMap = this->followsExtractor->getStorageMap();
+
+        // Convert the maps to unordered sets
+        static shared_ptr<map<string, unordered_set<string>>> modifiesSet = convertVectorToUnorderedSet(modifiesMap);
+        static shared_ptr<map<string, unordered_set<string>>> usesSet = convertVectorToUnorderedSet(usesMap);
+        static shared_ptr<map<string, unordered_set<string>>> parentsSet = convertParentsFollowsStarToParentsFollows(parentsMap);
+        static shared_ptr<map<string, unordered_set<string>>> followsSet = convertParentsFollowsStarToParentsFollows(followsMap);
+        static shared_ptr<map<string, unordered_set<string>>> parentsStarSet = convertVectorToUnorderedSet(parentsMap);
+        static shared_ptr<map<string, unordered_set<string>>> followsStarSet = convertVectorToUnorderedSet(followsMap);
 
         // Insert the abstractions into the PKB
-        PKB::insertor.addAbstraction(modifiesMap, MODIFIES);
-        PKB::insertor.addAbstraction(usesMap, USES);
-        PKB::insertor.addAbstraction(parentsMap, PARENT);
-        PKB::insertor.addAbstraction(followsMap, FOLLOWS);
+        PKB::insertor.addAbstraction(modifiesSet, MODIFIES);
+        PKB::insertor.addAbstraction(usesSet, USES);
+        PKB::insertor.addAbstraction(parentsSet, PARENT);
+        PKB::insertor.addAbstraction(followsSet, FOLLOWS);
+        PKB::insertor.addAbstraction(parentsStarSet, PARENTSTAR);
+        PKB::insertor.addAbstraction(followsStarSet, FOLLOWSSTAR);
     }
 
 

@@ -1,7 +1,7 @@
  #include "stdafx.h"
 #include "CppUnitTest.h"
 #include "../source/QPS/QueryParser.h"
-#include "../source/TokenizerClasses/PQLTokenizer.h"
+#include "../source/PQLTokenizer.h"
 #include "../source/QPS/Errors/QPSError.h"
 #include <cassert>
 
