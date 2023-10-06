@@ -12,13 +12,12 @@ using namespace std;
 #include "AbstractionExtractor.h"
 
 /**
- * This class is used to extract the Calls abstraction from the AST.
  */
 class NextAbstractionExtractor : public AbstractionExtractor {
 public:    
     // Constructor
     NextAbstractionExtractor() {
-        this->ifStorageMap = make_shared<map<string, <vector<string>>>>();
+        this->ifStorageMap = std::make_shared<map<string, vector<string>>>();
     }
 
     void handleAssign(std::shared_ptr<AssignNode> assignNode) override {}
@@ -70,7 +69,7 @@ public:
     }
 
 private:
-    shared_ptr<map<string, <vector<string>>>> ifStorageMap;
+    std::shared_ptr<map<string, vector<string>>> ifStorageMap;
 
     string traverse(std::vector<std::shared_ptr<StatementNode>> statements) {
         unordered_set<string> prevStatementNumbers = {};
