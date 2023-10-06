@@ -123,10 +123,11 @@ private:
     //     return "SOMETHIGN IS NHOT WORKIGN";
     // }
 
-    unordered_set<string> traverse(std::vector<std::shared_ptr<StatementNode>> statements, bool includeInCFG) {
+    unordered_set<string> traverse(std::vector<std::shared_ptr<StatementNode>> statements) {
         unordered_set<string> lastStatements;
 
-        for (const auto &statement : statements) {
+        for (size_t i = 0; i < statements.size(); ++i) {
+            const auto &statement = statements[i];
             string statementNumber = to_string(statement->getStatementNumber());
 
             if (lastStatements.size() > 0) {
@@ -140,12 +141,12 @@ private:
                 lastStatements.insert(statementNumber);
             }
 
-            if (statement->getName() == "while" && includeInCFG) {
-                string whileStatementNumber = statementNumber;
+            if (statement->getName() == "while") {
+                string whileStatementNumber = statementNumber; // Store the while statement number
                 string firstStatementNumber = to_string(statement->getStatements().front()->getStatementNumber());
                 insertToAbstractionMap(whileStatementNumber, firstStatementNumber);
 
-                unordered_set<string> lastInLoopSet = traverse(statement->getStatements(), true);
+                unordered_set<string> lastInLoopSet = traverse(statement->getStatements());
 
                 // Make the last statements of the loop reference back to the while loop
                 for (const auto &lastInLoop : lastInLoopSet) {
@@ -161,14 +162,18 @@ private:
                 string firstStatementNumberElse = to_string(statement->getElseStatements().front()->getStatementNumber());
                 insertToAbstractionMap(statementNumber, firstStatementNumberElse);
 
-                unordered_set<string> lastInIfSet = traverse(statement->getStatements(), true);
-                unordered_set<string> lastInElseSet = traverse(statement->getElseStatements(), true);
+                if (i == statements.size() - 1) {
+                    // If the "if" statement is the last statement, insert its number as the last statement
+                    insertKeyToAbstractionMap(statementNumber);
+                    lastStatements.insert(statementNumber);
+                } else {
+                    // Otherwise, skip inserting the last values of "if" statements
+                    unordered_set<string> lastInIfSet = traverse(statement->getStatements());
+                    unordered_set<string> lastInElseSet = traverse(statement->getElseStatements());
 
-                lastStatements.insert(lastInIfSet.begin(), lastInIfSet.end());
-                lastStatements.insert(lastInElseSet.begin(), lastInElseSet.end());
-            } else if (statement == statements.back()) {
-                insertKeyToAbstractionMap(statementNumber);
-                lastStatements.insert(statementNumber);
+                    lastStatements.insert(lastInIfSet.begin(), lastInIfSet.end());
+                    lastStatements.insert(lastInElseSet.begin(), lastInElseSet.end());
+                }
             }
         }
 
