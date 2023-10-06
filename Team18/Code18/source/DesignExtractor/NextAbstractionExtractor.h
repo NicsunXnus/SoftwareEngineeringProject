@@ -80,7 +80,7 @@ private:
             }
 
             if (statement->getName() != "if") {
-                prevStatementNumber.insert(statementNumber);
+                prevStatementNumber = statementNumber;
             }
 
             if (statement->getName() == "while") {
