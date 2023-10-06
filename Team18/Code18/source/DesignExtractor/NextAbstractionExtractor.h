@@ -25,7 +25,7 @@ public:
 
     void handleProcedure(std::shared_ptr<ProcedureNode> procedureNode) override {
         std::vector<std::shared_ptr<StatementNode>> statements = procedureNode->getStatements();
-        traverse(statements, 0, {});
+        traverse(statements);
     }
 
     void handleWhile(std::shared_ptr<WhileNode> whileNode) override {
@@ -36,7 +36,7 @@ public:
         string firstStatementNumber = to_string(statements.front()->getStatementNumber());
         insertToAbstractionMap(whileStatementNumber, firstStatementNumber);
         
-        traverse(statements, whileStatementNumber, {});
+        traverse(statements);
     }
 
     void handleIf(std::shared_ptr<IfNode> ifNode) override {
