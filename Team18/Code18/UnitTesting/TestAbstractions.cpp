@@ -1115,33 +1115,49 @@ namespace UnitTesting
 
                   // Check the existence of values in nextMap
                   //x = 10
+                  Assert::IsTrue(nextMapRef["1"].size() == 1);
                   Assert::IsTrue(std::find(nextMapRef["1"].begin(), nextMapRef["1"].end(), "2") != nextMapRef["1"].end());
 
                   // If else statement (x == 10)
+                  Assert::IsTrue(nextMapRef["2"].size() == 2);
                   Assert::IsTrue(std::find(nextMapRef["2"].begin(), nextMapRef["2"].end(), "3") != nextMapRef["2"].end());
                   Assert::IsTrue(std::find(nextMapRef["2"].begin(), nextMapRef["2"].end(), "9") != nextMapRef["2"].end());
 
                   // If statement (x = 20)
+                  Assert::IsTrue(nextMapRef["3"].size() == 1);
                   Assert::IsTrue(std::find(nextMapRef["3"].begin(), nextMapRef["3"].end(), "4") != nextMapRef["3"].end());
                   
                   // While statement (y == 10)
+                  Assert::IsTrue(nextMapRef["4"].size() == 2);
                   Assert::IsTrue(std::find(nextMapRef["4"].begin(), nextMapRef["4"].end(), "5") != nextMapRef["4"].end());
                   Assert::IsTrue(std::find(nextMapRef["4"].begin(), nextMapRef["4"].end(), "10") != nextMapRef["4"].end());
 
                   // y = 20
+                  Assert::IsTrue(nextMapRef["5"].size() == 1);
                   Assert::IsTrue(std::find(nextMapRef["5"].begin(), nextMapRef["5"].end(), "6") != nextMapRef["5"].end());
 
                   // If else statement (z == 20)
+                  Assert::IsTrue(nextMapRef["6"].size() == 2);
                   Assert::IsTrue(std::find(nextMapRef["6"].begin(), nextMapRef["6"].end(), "7") != nextMapRef["6"].end());
                   Assert::IsTrue(std::find(nextMapRef["6"].begin(), nextMapRef["6"].end(), "8") != nextMapRef["6"].end());
 
                   // z = 30
+                  Assert::IsTrue(nextMapRef["7"].size() == 1);
                   Assert::IsTrue(std::find(nextMapRef["7"].begin(), nextMapRef["7"].end(), "4") != nextMapRef["7"].end());
                   // z = 40
+
+                  Assert::IsTrue(nextMapRef["8"].size() == 1);
                   Assert::IsTrue(std::find(nextMapRef["8"].begin(), nextMapRef["8"].end(), "4") != nextMapRef["8"].end());
 
                   // x = 50
+                  Assert::IsTrue(nextMapRef["9"].size() == 1);
                   Assert::IsTrue(std::find(nextMapRef["9"].begin(), nextMapRef["9"].end(), "10") != nextMapRef["9"].end());
+
+                  // call testprocedure1
+                  Assert::IsTrue(nextMapRef["10"].size() == 0);
+
+                  // read y
+                  Assert::IsTrue(nextMapRef["11"].size() == 0);
             }
 
     };
