@@ -126,8 +126,7 @@ private:
     unordered_set<string> traverse(std::vector<std::shared_ptr<StatementNode>> statements) {
         unordered_set<string> lastStatements;
 
-        for (size_t i = 0; i < statements.size(); ++i) {
-            const auto &statement = statements[i];
+        for (const auto &statement : statements) {
             string statementNumber = to_string(statement->getStatementNumber());
 
             if (lastStatements.size() > 0) {
@@ -162,18 +161,14 @@ private:
                 string firstStatementNumberElse = to_string(statement->getElseStatements().front()->getStatementNumber());
                 insertToAbstractionMap(statementNumber, firstStatementNumberElse);
 
-                if (i == statements.size() - 1) {
-                    // If the "if" statement is the last statement, insert its number as the last statement
-                    insertKeyToAbstractionMap(statementNumber);
-                    lastStatements.insert(statementNumber);
-                } else {
-                    // Otherwise, skip inserting the last values of "if" statements
-                    unordered_set<string> lastInIfSet = traverse(statement->getStatements());
-                    unordered_set<string> lastInElseSet = traverse(statement->getElseStatements());
+                unordered_set<string> lastInIfSet = traverse(statement->getStatements());
+                unordered_set<string> lastInElseSet = traverse(statement->getElseStatements());
 
-                    lastStatements.insert(lastInIfSet.begin(), lastInIfSet.end());
-                    lastStatements.insert(lastInElseSet.begin(), lastInElseSet.end());
-                }
+                lastStatements.insert(lastInIfSet.begin(), lastInIfSet.end());
+                lastStatements.insert(lastInElseSet.begin(), lastInElseSet.end());
+            } else if (statement == statements.back()) {
+                insertKeyToAbstractionMap(statementNumber);
+                lastStatements.insert(statementNumber);
             }
         }
 
