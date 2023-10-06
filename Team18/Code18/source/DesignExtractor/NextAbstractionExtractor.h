@@ -72,15 +72,21 @@ private:
     // std::shared_ptr<map<string, vector<string>>> ifStorageMap;
 
     string traverse(std::vector<std::shared_ptr<StatementNode>> statements) {
-        string prevStatementNumber = "";
-        for (const auto& statement : statements) {
+        unordered_set<string> prevStatementNumbers = {};
+        for (const auto &statement : statements){
             string statementNumber = to_string(statement->getStatementNumber());
-            if (prevStatementNumber != "") {
-                insertToAbstractionMap(prevStatementNumber, statementNumber);
+            if (prevStatementNumbers.size() > 0) {
+                // Add all the previous statement numbers to the current statement number
+                for (const auto &prevStatementNumber : prevStatementNumbers) {
+                    insertToAbstractionMap(prevStatementNumber, statementNumber);
+                }
+                // Clear the previous statement numbers
+                prevStatementNumbers.clear();
             }
 
+            // Insert the statement number into the previous statement numbers
             if (statement->getName() != "if") {
-                prevStatementNumber = statementNumber;
+                prevStatementNumbers.insert(statementNumber);
             }
 
             if (statement->getName() == "while") {
@@ -91,15 +97,16 @@ private:
             } else if (statement->getName() == "if") {
                 // Get the last statement number of the if statement
                 string lastStatementNumber = traverse(statement->getStatements());
-                insertToAbstractionMap(lastStatementNumber, statementNumber);
+                prevStatementNumbers.insert(lastStatementNumber);
 
                 // Get the last statement number of the else statement
                 lastStatementNumber = traverse(statement->getElseStatements());
-                insertToAbstractionMap(lastStatementNumber, statementNumber);
+                prevStatementNumbers.insert(lastStatementNumber);
             } else if (statement == statements.back()) {
                 return statementNumber;
             }
         }
+        return "SOMETHIGN IS NHOT WORKIGN"
     }
 
 
