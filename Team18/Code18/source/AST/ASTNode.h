@@ -95,9 +95,7 @@ class StatementNode: public ASTNode {
 public:
     StatementNode(std::string name, int statementNumber)
     : ASTNode(std::move(name), statementNumber) {
-
     }
-private:
 };
 
 class AssignNode : public StatementNode {

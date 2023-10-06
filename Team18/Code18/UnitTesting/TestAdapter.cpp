@@ -42,7 +42,7 @@ namespace UnitTesting
             stringMap->insert(make_pair("key2", vector2));
 
             // Act
-            shared_ptr<map<string, unordered_set<string>>> resultSet = convertParentsFollowsStarToParentsFollows(stringMap);
+            shared_ptr<map<string, unordered_set<string>>> resultSet = convertAbstractionStarToAbstraction(stringMap);
 
             // Assert
             Assert::AreEqual(1, (int)resultSet->at("key1").size());

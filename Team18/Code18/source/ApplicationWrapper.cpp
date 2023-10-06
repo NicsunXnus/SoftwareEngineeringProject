@@ -19,10 +19,7 @@ void ApplicationWrapper::directParse(std::string_view sourceCode) {
   std::shared_ptr<ProgramNode> prg = ASTBuilder::parseProgram(tokenizedProgram);
   
   DesignExtractor designExtractor = DesignExtractor();
-  designExtractor.extractEntities(prg);
-  designExtractor.extractAbstractions(prg);
-  designExtractor.insertEntities();
-  designExtractor.insertAbstractions();
+  designExtractor.extractAndInsertAll(prg);
 }
 
 // method to evaluating a query

@@ -56,7 +56,7 @@ private:
         //For each element within equallyNestedStatments, add the element and every other element after it to the FollowsStorageMap
         for (int i = 0; i < equallyNestedStatements.size(); i++) {
             for (int j = i + 1; j < equallyNestedStatements.size(); j++) {
-                insertToMap(to_string(equallyNestedStatements[i]), to_string(equallyNestedStatements[j]));
+                insertToAbstractionMap(to_string(equallyNestedStatements[i]), to_string(equallyNestedStatements[j]));
             }
         }
     }
