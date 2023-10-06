@@ -106,9 +106,8 @@ private:
                 return statementNumber;
             }
         }
-        return "SOMETHIGN IS NHOT WORKIGN"
+        return "SOMETHIGN IS NHOT WORKIGN";
     }
-
 
     // Replace the values of the keys for IF statemetns in the abstraction map with the values in the ifStorageMap
     // void processIfLines() {
