@@ -154,11 +154,8 @@ private:
                 for (const auto &lastInLoop : lastInLoopSet) {
                     insertToAbstractionMap(lastInLoop, whileStatementNumber);
                 }
-                
-                whileStatements.insert(lastInLoopSet.begin(), lastInLoopSet.end());
-
-                // Merge whileStatements into lastStatements
-                lastStatements.insert(whileStatements.begin(), whileStatements.end());
+        
+                lastStatements.insert(whileStatementNumber);
             } else if (statement->getName() == "if") {
                 string firstStatementNumber = to_string(statement->getStatements().front()->getStatementNumber());
                 insertToAbstractionMap(statementNumber, firstStatementNumber);
