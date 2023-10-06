@@ -71,56 +71,110 @@ public:
 private:
     // std::shared_ptr<map<string, vector<string>>> ifStorageMap;
 
-    string traverse(std::vector<std::shared_ptr<StatementNode>> statements) {
-        unordered_set<string> prevStatementNumbers = {};
-        for (const auto &statement : statements){
-            string statementNumber = to_string(statement->getStatementNumber());
-            if (prevStatementNumbers.size() > 0) {
+    // string traverse(std::vector<std::shared_ptr<StatementNode>> statements) {
+    //     unordered_set<string> prevStatementNumbers = {};
+    //     for (const auto &statement : statements){
+    //         string statementNumber = to_string(statement->getStatementNumber());
+    //         if (prevStatementNumbers.size() > 0) {
+    //             // Add all the previous statement numbers to the current statement number
+    //             for (const auto &prevStatementNumber : prevStatementNumbers) {
+    //                 insertToAbstractionMap(prevStatementNumber, statementNumber);
+    //             }
+    //             // Clear the previous statement numbers
+    //             prevStatementNumbers.clear();
+    //         }
+
+    //         // Insert the statement number into the previous statement numbers
+    //         if (statement->getName() != "if") {
+    //             prevStatementNumbers.insert(statementNumber);
+    //         }
+
+    //         if (statement->getName() == "while") {
+    //             // Get the first statement number of the while statement
+    //             string firstStatementNumber = to_string(statement->getStatements().front()->getStatementNumber());
+
+    //             // Connect the first statement number to the while statement number
+    //             insertToAbstractionMap(statementNumber, firstStatementNumber);
+
+    //             // Get the last statement number of the while statement
+    //             string lastStatementNumber = traverse(statement->getStatements());
+    //             insertToAbstractionMap(lastStatementNumber, statementNumber);
+    //             return lastStatementNumber;
+
+    //         } else if (statement->getName() == "if") {
+    //             // Get the first statement number of the if/else statement
+    //             // Connect the first statement number to the if/else statement number
+    //             string firstStatementNumber = to_string(statement->getStatements().front()->getStatementNumber());
+    //             insertToAbstractionMap(statementNumber, firstStatementNumber);
+    //             firstStatementNumber = to_string(statement->getElseStatements().front()->getStatementNumber());
+    //             insertToAbstractionMap(statementNumber, firstStatementNumber);
+                
+    //             // Get the last statement number of the if/else statement
+    //             string lastStatementNumber = traverse(statement->getStatements());
+    //             prevStatementNumbers.insert(lastStatementNumber);
+    //             lastStatementNumber = traverse(statement->getElseStatements());
+    //             prevStatementNumbers.insert(lastStatementNumber);
+    //             return lastStatementNumber;
+    //         } else if (statement == statements.back()) {
+    //             insertKeyToAbstractionMap(statementNumber);
+    //             return statementNumber;
+    //         }
+    //     }
+    //     return "SOMETHIGN IS NHOT WORKIGN";
+    // }
+
+    void traverse(std::vector<std::shared_ptr<StatementNode>> statements) {
+        std::unordered_set<std::string> prevStatementNumbers = {};
+
+        for (const auto& statement : statements) {
+            std::string statementNumber = std::to_string(statement->getStatementNumber());
+
+            if (!prevStatementNumbers.empty()) {
                 // Add all the previous statement numbers to the current statement number
-                for (const auto &prevStatementNumber : prevStatementNumbers) {
+                for (const auto& prevStatementNumber : prevStatementNumbers) {
+                    // Insert the current statement as a successor of the previous statement
                     insertToAbstractionMap(prevStatementNumber, statementNumber);
                 }
                 // Clear the previous statement numbers
                 prevStatementNumbers.clear();
             }
 
-            // Insert the statement number into the previous statement numbers
             if (statement->getName() != "if") {
+                // Insert the statement number into the previous statement numbers
                 prevStatementNumbers.insert(statementNumber);
             }
 
             if (statement->getName() == "while") {
                 // Get the first statement number of the while statement
-                string firstStatementNumber = to_string(statement->getStatements().front()->getStatementNumber());
+                std::string firstStatementNumber = std::to_string(statement->getStatements().front()->getStatementNumber());
 
                 // Connect the first statement number to the while statement number
                 insertToAbstractionMap(statementNumber, firstStatementNumber);
 
                 // Get the last statement number of the while statement
-                string lastStatementNumber = traverse(statement->getStatements());
-                insertToAbstractionMap(lastStatementNumber, statementNumber);
-                return lastStatementNumber;
+                std::string lastStatementNumber = traverse(statement->getStatements());
+
+                // Connect the last statement number to the while statement number
+                insertToAbstractionMap(statementNumber, lastStatementNumber);
 
             } else if (statement->getName() == "if") {
                 // Get the first statement number of the if/else statement
                 // Connect the first statement number to the if/else statement number
-                string firstStatementNumber = to_string(statement->getStatements().front()->getStatementNumber());
+                std::string firstStatementNumber = std::to_string(statement->getStatements().front()->getStatementNumber());
                 insertToAbstractionMap(statementNumber, firstStatementNumber);
-                firstStatementNumber = to_string(statement->getElseStatements().front()->getStatementNumber());
+                firstStatementNumber = std::to_string(statement->getElseStatements().front()->getStatementNumber());
                 insertToAbstractionMap(statementNumber, firstStatementNumber);
-                
+
                 // Get the last statement number of the if/else statement
-                string lastStatementNumber = traverse(statement->getStatements());
+                std::string lastStatementNumber = traverse(statement->getStatements());
                 prevStatementNumbers.insert(lastStatementNumber);
                 lastStatementNumber = traverse(statement->getElseStatements());
                 prevStatementNumbers.insert(lastStatementNumber);
-                return lastStatementNumber;
             } else if (statement == statements.back()) {
+                // This is the last statement in the sequence
                 insertKeyToAbstractionMap(statementNumber);
-                return statementNumber;
             }
         }
-        return "SOMETHIGN IS NHOT WORKIGN";
     }
 
     // Replace the values of the keys for IF statemetns in the abstraction map with the values in the ifStorageMap
