@@ -14,6 +14,7 @@
 #include <algorithm>
 #include <map>
 #include <cassert>
+#include "../source/DesignExtractor/Entity.h"
 #include <unordered_set>
 
 using namespace std;

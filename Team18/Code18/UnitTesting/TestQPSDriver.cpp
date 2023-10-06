@@ -28,11 +28,11 @@ namespace UnitTesting
 
 		TEST_METHOD(TestQPSDriverInvalidQueryThrownSemanticError)
 		{
-			string query = "constant c; Select z"; // synonym not declared
+			string query = "constant c; stmt c; Select z"; // synonym not declared
 			shared_ptr<QueryDriver> driver = make_shared<QueryDriver>(query);
 			list<string> result = driver->execute();
-			shared_ptr<SemanticErrorException> ex = make_shared<SemanticErrorException>("");
-			Assert::IsTrue(ex->getType() == result.back());
+			Assert::IsTrue(result.front() == "SemanticError");
+
 		}
 
 		TEST_METHOD(TestQPSDriverValidQuery)
@@ -40,7 +40,6 @@ namespace UnitTesting
 			string query = "constant c; Select c;"; // synonym not declared
 			shared_ptr<QueryDriver> driver = make_shared<QueryDriver>(query);
 			list<string> result = driver->execute();
-			shared_ptr<SemanticErrorException> ex = make_shared<SemanticErrorException>("");
 		}
 
 

@@ -56,6 +56,21 @@ shared_ptr<QueryObjectFactory> QueryObjectFactory::createFactory(string_view typ
 	else if (type == "Parent*"sv) {
 		return make_shared<ParentStarObjectFactory>();
 	}
+	else if (type == "Calls"sv) {
+		return make_shared<CallsObjectFactory>();
+	}
+	else if (type == "Calls*"sv) {
+		return make_shared<CallsStarObjectFactory>();
+	}
+	else if (type == "Next"sv) {
+		return make_shared<NextObjectFactory>();
+	}
+	else if (type == "Next*"sv) {
+		return make_shared<NextStarObjectFactory>();
+	}
+	else if (type == "Affects"sv) {
+		return make_shared<AffectsObjectFactory>();
+	}
 
 	/* Pattern type */
 	else if (type == "pattern"sv) {
