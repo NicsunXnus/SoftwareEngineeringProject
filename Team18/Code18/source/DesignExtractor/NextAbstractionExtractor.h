@@ -123,56 +123,50 @@ private:
     //     return "SOMETHIGN IS NHOT WORKIGN";
     // }
 
-    string traverse(std::vector<std::shared_ptr<StatementNode>> statements) {
-        unordered_set<string> prevStatementNumbers = {};
-        string lastStatementNumber;
+    unordered_set<string> traverse(std::vector<std::shared_ptr<StatementNode>> statements) {
+        unordered_set<string> lastStatements;
 
         for (const auto &statement : statements) {
             string statementNumber = to_string(statement->getStatementNumber());
 
-            if (prevStatementNumbers.size() > 0) {
-                for (const auto &prevStatementNumber : prevStatementNumbers) {
+            if (lastStatements.size() > 0) {
+                for (const auto &prevStatementNumber : lastStatements) {
                     insertToAbstractionMap(prevStatementNumber, statementNumber);
                 }
-                prevStatementNumbers.clear();
+                lastStatements.clear();
             }
 
             if (statement->getName() != "if" && statement->getName() != "while") {
-                prevStatementNumbers.insert(statementNumber);
+                lastStatements.insert(statementNumber);
             }
 
             if (statement->getName() == "while") {
                 string firstStatementNumber = to_string(statement->getStatements().front()->getStatementNumber());
                 insertToAbstractionMap(statementNumber, firstStatementNumber);
 
-                string lastInLoop = traverse(statement->getStatements());
-                insertToAbstractionMap(lastInLoop, statementNumber);
-
-                prevStatementNumbers.insert(lastInLoop);
-                lastStatementNumber = lastInLoop;
+                unordered_set<string> lastInLoopSet = traverse(statement->getStatements());
+                lastStatements.insert(lastInLoopSet.begin(), lastInLoopSet.end());
 
             } else if (statement->getName() == "if") {
                 string firstStatementNumber = to_string(statement->getStatements().front()->getStatementNumber());
                 insertToAbstractionMap(statementNumber, firstStatementNumber);
 
-                firstStatementNumber = to_string(statement->getElseStatements().front()->getStatementNumber());
-                insertToAbstractionMap(statementNumber, firstStatementNumber);
+                string firstStatementNumberElse = to_string(statement->getElseStatements().front()->getStatementNumber());
+                insertToAbstractionMap(statementNumber, firstStatementNumberElse);
 
-                string lastInIf = traverse(statement->getStatements());
-                string lastInElse = traverse(statement->getElseStatements());
+                unordered_set<string> lastInIfSet = traverse(statement->getStatements());
+                unordered_set<string> lastInElseSet = traverse(statement->getElseStatements());
 
-                prevStatementNumbers.insert(lastInIf);
-                prevStatementNumbers.insert(lastInElse);
-
-                lastStatementNumber = lastInElse;
+                lastStatements.insert(lastInIfSet.begin(), lastInIfSet.end());
+                lastStatements.insert(lastInElseSet.begin(), lastInElseSet.end());
             } else if (statement == statements.back()) {
                 insertKeyToAbstractionMap(statementNumber);
-                lastStatementNumber = statementNumber;
+                lastStatements.insert(statementNumber);
             }
         }
 
-    return lastStatementNumber;
-}
+        return lastStatements;
+    }
 
     // Replace the values of the keys for IF statemetns in the abstraction map with the values in the ifStorageMap
     // void processIfLines() {
