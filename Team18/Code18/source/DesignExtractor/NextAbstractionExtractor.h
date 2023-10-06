@@ -99,7 +99,7 @@ private:
                 // Get the last statement number of the while statement
                 string lastStatementNumber = traverse(statement->getStatements());
                 insertToAbstractionMap(lastStatementNumber, statementNumber);
-                return "";
+                return lastStatementNumber;
 
             } else if (statement->getName() == "if") {
                 // Get the first statement number of the if/else statement
@@ -114,8 +114,9 @@ private:
                 prevStatementNumbers.insert(lastStatementNumber);
                 lastStatementNumber = traverse(statement->getElseStatements());
                 prevStatementNumbers.insert(lastStatementNumber);
-                return "";
+                return lastStatementNumber;
             } else if (statement == statements.back()) {
+                insertKeyToAbstractionMap(statementNumber);
                 return statementNumber;
             }
         }
@@ -131,11 +132,11 @@ private:
     //     }
     // }
 
-    // void insertKeyToAbstractionMap(string key) {
-    //     if (this->AbstractionStorageMap->find(key) == this->AbstractionStorageMap->end()) {
-    //         this->AbstractionStorageMap->insert({ key, vector<string>() });
-    //     }
-    // }
+    void insertKeyToAbstractionMap(string key) {
+        if (this->AbstractionStorageMap->find(key) == this->AbstractionStorageMap->end()) {
+            this->AbstractionStorageMap->insert({ key, vector<string>() });
+        }
+    }
 
     // void insertToIfStorageMap(string key, string lastIfLineNumber, string lastElseLineNumber) {
     //     if (this->ifStorageMap->find(key) == this->ifStorageMap->end()) {
