@@ -25,21 +25,18 @@ public:
 
     void handleProcedure(std::shared_ptr<ProcedureNode> procedureNode) override {
         std::vector<std::shared_ptr<StatementNode>> statements = procedureNode->getStatements();
-        traverse(statements);
+        traverse(statements, 0, {});
     }
 
     void handleWhile(std::shared_ptr<WhileNode> whileNode) override {
         std::vector<std::shared_ptr<StatementNode>> statements = whileNode->getStatements();
         string whileStatementNumber = to_string(whileNode->getStatementNumber());
-        traverse(statements);
-
+        
         // Connect the first statement number to the while statement number
         string firstStatementNumber = to_string(statements.front()->getStatementNumber());
         insertToAbstractionMap(whileStatementNumber, firstStatementNumber);
-
-        // Connect the last statement number to the while statement number
-        string lastStatementNumber = to_string(statements.back()->getStatementNumber());
-        insertToAbstractionMap(lastStatementNumber, whileStatementNumber);
+        
+        traverse(statements, whileStatementNumber, {});
     }
 
     void handleIf(std::shared_ptr<IfNode> ifNode) override {
@@ -60,7 +57,7 @@ public:
     }
 
 private:
-    void traverse(std::vector<std::shared_ptr<StatementNode>> statements) {
+    void traverse(std::vector<std::shared_ptr<StatementNode>> statements, string whileStatementNumber, std::unordered_set<string> if) {
         unordered_set<string> prevStatementNumbers = {};
         for (const auto& statement : statements) {
             string statementNumber = to_string(statement->getStatementNumber());
@@ -70,18 +67,14 @@ private:
                 }
                 prevStatementNumbers.clear();
             }
-            if (statement->getName() == "if") {
-                prevStatementNumbers = getIfElseLastStatementNumbers(statement);
-                extractDesigns(statement);
-            } else {
-                prevStatementNumbers.insert(statementNumber);
-                extractDesigns(statement);
-            }
-            // if its the last statement, 
+            extractDesigns(statement);
+            
+            // if its the last statement, insert to abstraction map
             if (statement == statements.back()) {
-                for (const auto& prevStatement : prevStatementNumbers) {
-                    insertKeyToAbstractionMap(prevStatement);
+                if (whileStatementNumber != 0) {
+                    insertToAbstractionMap(whileStatementNumber, statementNumber);
                 }
+                insertKeyToAbstractionMap(statement->getStatementNumber());
             }
         }
     }
@@ -90,21 +83,6 @@ private:
         if (this->AbstractionStorageMap->find(key) == this->AbstractionStorageMap->end()) {
             this->AbstractionStorageMap->insert({ key, vector<string>() });
         }
-    }
-
-    unordered_set<string> getIfElseLastStatementNumbers(std::shared_ptr<ASTNode> ifNode) {
-        unordered_set<string> prevStatementNumbers = {};
-        std::vector<std::shared_ptr<StatementNode>> ifStatements = ifNode->getStatements();
-        std::vector<std::shared_ptr<StatementNode>> elseStatements = ifNode->getElseStatements();
-        // Get last value of ifStatements
-        string lastIfStatementNumber = to_string(ifStatements.back()->getStatementNumber());
-        // Get last value of elseStatements
-        string lastElseStatementNumber = to_string(elseStatements.back()->getStatementNumber());
-
-        prevStatementNumbers.insert(lastIfStatementNumber);
-        prevStatementNumbers.insert(lastElseStatementNumber);
-
-        return prevStatementNumbers;
     }
 
 
