@@ -57,7 +57,7 @@ public:
     }
 
 private:
-    void traverse(std::vector<std::shared_ptr<StatementNode>> statements, string whileStatementNumber, std::unordered_set<string> if) {
+    void traverse(std::vector<std::shared_ptr<StatementNode>> statements) {
         unordered_set<string> prevStatementNumbers = {};
         for (const auto& statement : statements) {
             string statementNumber = to_string(statement->getStatementNumber());

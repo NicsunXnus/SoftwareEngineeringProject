@@ -108,7 +108,7 @@ private:
         extractEntities(astNode);
         extractAbstractions(astNode);
         extractWith(astNode);
-        extractPattern(astNode);
+        // extractPattern(astNode);
     }
 
 
@@ -116,7 +116,7 @@ private:
         insertEntities();
         insertAbstractions();
         insertWiths();
-        insertPatterns();
+        // insertPatterns();
     }
 
     // Method to insert the entities into the PKB
