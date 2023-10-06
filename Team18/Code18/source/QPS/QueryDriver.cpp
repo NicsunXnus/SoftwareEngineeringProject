@@ -17,20 +17,11 @@ list<string> QueryDriver::execute() {
 
 	try {
 		std::cout << "In Query Driver, starting tokenizer\n";
-
 		vector<std::string> tokens = tokenize(query);
-
 		shared_ptr<QueryParser> parser = make_shared<QueryParser>();
-
 		vector<std::string_view> tokensView{ sToSvVector(tokens) };
 
-		tuple<vector<string_view>, vector<string_view>> declarationQuery = parser->splitDeclarationQuery(tokensView);
-
-		vector<shared_ptr<QueryObject>> declarationParser = parser->validateDeclaration(get<0>(declarationQuery));
-
-		std::cout << "In Query Driver, starting validateQuery\n";
-
-		vector<shared_ptr<QueryObject>> queryObjects = parser->validateQuery(get<1>(declarationQuery));
+		vector<shared_ptr<QueryObject>> queryObjects = parser->parsePQL(tokensView);
 		unordered_map<string_view, shared_ptr<QueryObject>> synonyms = parser->getSynonyms();
 		shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayer>();
 		shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(queryObjects, synonyms, dataAccessLayer);
