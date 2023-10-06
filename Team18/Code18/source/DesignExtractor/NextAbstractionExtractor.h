@@ -90,18 +90,30 @@ private:
             }
 
             if (statement->getName() == "while") {
+                // Get the first statement number of the while statement
+                string firstStatementNumber = to_string(statement->getStatements().front()->getStatementNumber());
+
+                // Connect the first statement number to the while statement number
+                insertToAbstractionMap(statementNumber, firstStatementNumber);
+
                 // Get the last statement number of the while statement
                 string lastStatementNumber = traverse(statement->getStatements());
                 insertToAbstractionMap(lastStatementNumber, statementNumber);
 
             } else if (statement->getName() == "if") {
-                // Get the last statement number of the if statement
+                // Get the first statement number of the if/else statement
+                // Connect the first statement number to the if/else statement number
+                string firstStatementNumber = to_string(statement->getStatements().front()->getStatementNumber());
+                insertToAbstractionMap(statementNumber, firstStatementNumber);
+                firstStatementNumber = to_string(statement->getElseStatements().front()->getStatementNumber());
+                insertToAbstractionMap(statementNumber, firstStatementNumber);
+                
+                // Get the last statement number of the if/else statement
                 string lastStatementNumber = traverse(statement->getStatements());
                 prevStatementNumbers.insert(lastStatementNumber);
-
-                // Get the last statement number of the else statement
                 lastStatementNumber = traverse(statement->getElseStatements());
                 prevStatementNumbers.insert(lastStatementNumber);
+                
             } else if (statement == statements.back()) {
                 return statementNumber;
             }
