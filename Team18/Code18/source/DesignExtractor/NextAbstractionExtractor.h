@@ -96,7 +96,7 @@ private:
                 // Get the last statement number of the else statement
                 lastStatementNumber = traverse(statement->getElseStatements());
                 insertToAbstractionMap(lastStatementNumber, statementNumber);
-            } else if (statement == statements.back() && statement->getName() != "if" && statement->getName() != "while") {
+            } else if (statement == statements.back()) {
                 return statementNumber;
             }
         }
