@@ -141,10 +141,17 @@ private:
             }
 
             if (statement->getName() == "while") {
+                string whileStatementNumber = statementNumber; // Store the while statement number
                 string firstStatementNumber = to_string(statement->getStatements().front()->getStatementNumber());
-                insertToAbstractionMap(statementNumber, firstStatementNumber);
+                insertToAbstractionMap(whileStatementNumber, firstStatementNumber);
 
                 unordered_set<string> lastInLoopSet = traverse(statement->getStatements());
+
+                // Make the last statements of the loop reference back to the while loop
+                for (const auto &lastInLoop : lastInLoopSet) {
+                    insertToAbstractionMap(lastInLoop, whileStatementNumber);
+                }
+
                 lastStatements.insert(lastInLoopSet.begin(), lastInLoopSet.end());
 
             } else if (statement->getName() == "if") {
