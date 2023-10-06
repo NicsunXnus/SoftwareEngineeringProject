@@ -23,7 +23,12 @@
     <ClCompile Include="..\source\QPS\ResultsHandler.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\QueryObjectFactory.cpp" />
     <ClCompile Include="..\source\QPS\QueryParser.cpp" />
-    <ClCompile Include="..\source\TokenizerClasses\TokenizerResults.cpp" />
+    <ClCompile Include="..\source\SimpleTokenizer\TokenizedConditionalStmt.cpp" />
+    <ClCompile Include="..\source\SimpleTokenizer\TokenizedProcedure.cpp" />
+    <ClCompile Include="..\source\SimpleTokenizer\TokenizedProgram.cpp" />
+    <ClCompile Include="..\source\SimpleTokenizer\TokenizedSemicolonStmt.cpp" />
+    <ClCompile Include="..\source\SimpleTokenizer\TokenizedStmt.cpp" />
+    <ClCompile Include="..\source\SimpleTokenizer\TokenizedStmtList.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\QPS\QueryBuilder.h" />
@@ -38,6 +43,7 @@
     <ClInclude Include="..\source\PKB\StorageClasses\AbstractionStorage.h" />
     <ClInclude Include="..\source\PKB\StorageClasses\EntityStorage.h" />
     <ClInclude Include="..\source\PKB\StorageManager.h" />
+    <ClInclude Include="..\source\PQLTokenizer.h" />
     <ClInclude Include="..\source\QPS\DataAccessLayer.h" />
     <ClInclude Include="..\source\QPS\DataAccessLayerStub.h" />
     <ClInclude Include="..\source\QPS\Errors\SemanticError.h" />
@@ -52,19 +58,22 @@
     <ClInclude Include="..\source\QPS\QueryObjects\SynonymObjects.h" />
     <ClInclude Include="..\source\QPS\QueryParser.h" />
     <ClCompile Include="..\source\QPS\ResultsHandler.h" />
-    <ClInclude Include="..\source\TokenClasses\IdentifierToken.h" />
-    <ClInclude Include="..\source\TokenClasses\KeywordToken.h" />
-    <ClInclude Include="..\source\TokenClasses\LiteralToken.h" />
-    <ClInclude Include="..\source\TokenClasses\OperatorToken.h" />
-    <ClInclude Include="..\source\TokenClasses\SeparatorToken.h" />
-    <ClInclude Include="..\source\TokenClasses\Token.h" />
-    <ClInclude Include="..\source\TokenClasses\UnderscoreToken.h" />
-    <ClInclude Include="..\source\TokenizerClasses\PQLTokenizer.h" />
-    <ClInclude Include="..\source\TokenizerClasses\SIMPLETokenizer.h" />
     <ClCompile Include="..\source\AST\**\*.h" />
     <ClCompile Include="..\source\DesignExtractor\*.h" />
-    <ClInclude Include="..\source\TokenizerClasses\TokenFactory.h" />
-    <ClInclude Include="..\source\TokenizerClasses\TokenizerResults.h" />
+    <ClInclude Include="..\source\SimpleTokenizer\SIMPLETokenizer.h" />
+    <ClInclude Include="..\source\SimpleTokenizer\TokenizedConditionalStmt.h" />
+    <ClInclude Include="..\source\SimpleTokenizer\TokenizedProcedure.h" />
+    <ClInclude Include="..\source\SimpleTokenizer\TokenizedProgram.h" />
+    <ClInclude Include="..\source\SimpleTokenizer\TokenizedSemicolonStmt.h" />
+    <ClInclude Include="..\source\SimpleTokenizer\TokenizedStmt.h" />
+    <ClInclude Include="..\source\SimpleTokenizer\TokenizedStmtList.h" />
+    <ClInclude Include="..\source\SimpleTokens\IdentifierToken.h" />
+    <ClInclude Include="..\source\SimpleTokens\KeywordToken.h" />
+    <ClInclude Include="..\source\SimpleTokens\LiteralToken.h" />
+    <ClInclude Include="..\source\SimpleTokens\OperatorToken.h" />
+    <ClInclude Include="..\source\SimpleTokens\SeparatorToken.h" />
+    <ClInclude Include="..\source\SimpleTokens\Token.h" />
+    <ClInclude Include="..\source\SimpleTokens\TokenFactory.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{DC21A1EA-D2C6-4D14-A2B4-E025B64BDE81}</ProjectGuid>

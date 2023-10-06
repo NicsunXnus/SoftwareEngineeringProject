@@ -2,9 +2,12 @@
 #define ASTBUILDER_H
 
 #include "ASTNode.h"
-#include "../TokenizerClasses/TokenFactory.h"
+#include "../SimpleTokens/TokenFactory.h"
 #include "../HelperFunctions.h"
-#include "../TokenizerClasses/TokenizerResults.h"
+#include "../SimpleTokenizer/TokenizedProgram.h"
+#include "../SimpleTokenizer/TokenizedProcedure.h"
+#include "../SimpleTokenizer/TokenizedSemicolonStmt.h"
+#include "../SimpleTokenizer/TokenizedConditionalStmt.h"
 #include "ASTBuilderHelperFunctions.h"
 #include <stack>
 #include <map>
