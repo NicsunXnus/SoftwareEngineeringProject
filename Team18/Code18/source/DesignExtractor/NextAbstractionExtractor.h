@@ -99,6 +99,7 @@ private:
                 // Get the last statement number of the while statement
                 string lastStatementNumber = traverse(statement->getStatements());
                 insertToAbstractionMap(lastStatementNumber, statementNumber);
+                return "";
 
             } else if (statement->getName() == "if") {
                 // Get the first statement number of the if/else statement
@@ -113,7 +114,7 @@ private:
                 prevStatementNumbers.insert(lastStatementNumber);
                 lastStatementNumber = traverse(statement->getElseStatements());
                 prevStatementNumbers.insert(lastStatementNumber);
-                
+                return "";
             } else if (statement == statements.back()) {
                 return statementNumber;
             }
