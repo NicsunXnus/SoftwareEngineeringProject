@@ -111,7 +111,13 @@ private:
 
     void insertToIfStorageMap(string key, string lastIfLineNumber, string lastElseLineNumber) {
         if (this->ifStorageMap->find(key) == this->ifStorageMap->end()) {
-            this->ifStorageMap->insert({ key, vector<string>(lastIfLineNumber, lastElseLineNumber) });
+            this->ifStorageMap->insert({ key, vector<string>() });
+        }
+        if (std::find(this->ifStorageMap->at(key).begin(), this->ifStorageMap->at(key).end(), lastIfLineNumber) == this->ifStorageMap->at(key).end()) {
+            this->ifStorageMap->at(key).push_back(lastIfLineNumber);
+        }
+        if (std::find(this->ifStorageMap->at(key).begin(), this->ifStorageMap->at(key).end(), lastElseLineNumber) == this->ifStorageMap->at(key).end()) {
+            this->ifStorageMap->at(key).push_back(lastElseLineNumber);
         }
     }
 
