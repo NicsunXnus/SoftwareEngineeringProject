@@ -4,10 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-// #include "ExprNode.h"
 
-//PROMPT: Pretend you are a harsh c++ critic who strongly advocates for code efficiency, robust code patterns and no code smells, critic this code fragment written in c++.
-//MEDIUM: PERPLEXITY AI PREMIUM
 class StatementNode;
 class ProcedureNode;
 class ExprNode;
@@ -121,6 +118,9 @@ public:
         : StatementNode(std::move(std::string("call")), statementNumber), proc(proc) {}
     std::shared_ptr<ProcedureNode> getProc() const override {
         return this->proc;
+    }
+    void setProcNode(std::shared_ptr<ProcedureNode> newProcedure) {
+        proc = newProcedure;
     }
 private:
     std::shared_ptr<ProcedureNode> proc;
