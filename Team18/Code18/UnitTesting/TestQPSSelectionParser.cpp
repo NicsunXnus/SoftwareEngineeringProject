@@ -12,7 +12,7 @@ using namespace std;
 namespace UnitTesting
 
 {
-	TEST_CLASS(TestQPSSimpleSelectionParser)
+	TEST_CLASS(TestQPSSelectionParser)
 	{
 	public:
 
@@ -140,7 +140,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectUsesStmtQuery)
 		{
-			vector<string> testS = tokenize("assign a; variable v; Select v such that Uses(a, v)");
+			vector<string> testS = tokenize("call a; variable v; Select v such that Uses(a, v)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -173,7 +173,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectUsesEntQuery)
 		{
-			vector<string> testEntRefSyn = tokenize("call c; variable v; Select v such that Uses(c, v)");
+			vector<string> testEntRefSyn = tokenize("constant c; variable v; Select v such that Uses(c, v)");
 			vector<string_view> testEntRefSynSV{ sToSvVector(testEntRefSyn) };
 			shared_ptr<QueryParser> p1 = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testEntRefSynObj = p1->splitDeclarationQuery(testEntRefSynSV);
@@ -184,8 +184,8 @@ namespace UnitTesting
 			const std::type_info& t2 = typeid(UsesObject);
 
 			Assert::IsTrue(typeid(*qo1[1]) == typeid(UsesEntityObject));
-
 			std::shared_ptr<ClauseObject> co1 = std::static_pointer_cast<UsesEntityObject>(qo1[1]);
+
 			Assert::IsTrue(qo1[0]->getQueryObjectName() == "v"sv);
 			Assert::IsTrue(co1->getQueryObjectName() == "Uses"sv
 				&& co1->getArg1()->getArg() == "c"sv
@@ -217,7 +217,6 @@ namespace UnitTesting
 			try {
 				vector<shared_ptr<QueryObject>> qo1 = p1->validateQuery(std::get<1>(testEntRefSynObj));
 				std::shared_ptr<ClauseObject> co1 = std::static_pointer_cast<UsesObject>(qo1[1]);
-				cout << co1->getArg2() << std::endl;
 			}
 			catch (const QPSError& ex)
 			{
@@ -260,7 +259,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectModifiesEntQuery)
 		{
-			vector<string> testEntRefSyn = tokenize("call c; variable v; Select v such that Modifies(c, v)");
+			vector<string> testEntRefSyn = tokenize("constant c; variable v; Select v such that Modifies(c, v)");
 			vector<string_view> testEntRefSynSV{ sToSvVector(testEntRefSyn) };
 			shared_ptr<QueryParser> p1 = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testEntRefSynObj = p1->splitDeclarationQuery(testEntRefSynSV);
@@ -269,8 +268,8 @@ namespace UnitTesting
 
 
 			Assert::IsTrue(typeid(*qo1[1]) == typeid(ModifiesEntityObject));
-
 			std::shared_ptr<ClauseObject> co1 = std::static_pointer_cast<ModifiesEntityObject>(qo1[1]);
+
 			Assert::IsTrue(qo1[0]->getQueryObjectName() == "v"sv);
 			Assert::IsTrue(co1->getQueryObjectName() == "Modifies"sv
 				&& co1->getArg1()->getArg() == "c"sv
@@ -518,7 +517,133 @@ namespace UnitTesting
 				&& co2->getArg2()->getArg() == "\"1\""sv
 				&& co2->getArg2()->isPartialMatchingExprSpec());
 		}
-		
+
+
+
+		TEST_METHOD(TestModifiesWithPrint1stArg)
+		{
+			vector<string> tokenizer = tokenize("print s; variable v; Select s such that Modifies (s, v)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(testSv);
+			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+
+			Assert::IsTrue(typeid(*qo[1]) == typeid(ModifiesObject));
+			std::shared_ptr<ClauseObject> co1 = std::static_pointer_cast<ModifiesObject>(qo[1]);
+			Assert::IsTrue(co1->getQueryObjectName() == "Modifies"sv
+				&& co1->getArg1()->getArg() == "s"sv
+				&& co1->getArg2()->getArg() == "v"sv);
+		}
+
+		TEST_METHOD(TestUsesWithRead1stArg)
+		{
+			vector<string> tokenizer = tokenize("read s; variable v; Select s such that Uses (s, v)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(testSv);
+			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+
+			Assert::IsTrue(typeid(*qo[1]) == typeid(UsesObject));
+			std::shared_ptr<ClauseObject> co1 = std::static_pointer_cast<UsesObject>(qo[1]);
+			Assert::IsTrue(co1->getQueryObjectName() == "Uses"sv
+				&& co1->getArg1()->getArg() == "s"sv
+				&& co1->getArg2()->getArg() == "v"sv);
+		}
+
+		TEST_METHOD(TestCallsWithRead1stArg)
+		{
+			vector<string> tokenizer = tokenize("read s; variable v; Select s such that Uses (s, v)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(testSv);
+			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+
+			Assert::IsTrue(typeid(*qo[1]) == typeid(UsesObject));
+			std::shared_ptr<ClauseObject> co1 = std::static_pointer_cast<UsesObject>(qo[1]);
+			Assert::IsTrue(co1->getQueryObjectName() == "Uses"sv
+				&& co1->getArg1()->getArg() == "s"sv
+				&& co1->getArg2()->getArg() == "v"sv);
+		}
+
+		TEST_METHOD(TestParentWcWcPatternWcWc)
+		{
+			vector<string> tokenizer = tokenize("stmt n; assign a; Select n such that Parent (_, _) pattern a (_, _)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[1]) == typeid(ParentObject));
+			std::shared_ptr<ClauseObject> co1 = std::static_pointer_cast<ParentObject>(qo[1]);
+			Assert::IsTrue(co1->getQueryObjectName() == "Parent"sv
+				&& co1->getArg1()->getArg() == "_"sv
+				&& co1->getArg2()->getArg() == "_"sv);
+
+			Assert::IsTrue(typeid(*qo[2]) == typeid(PatternObject));
+			std::shared_ptr<PatternObject> co2 = std::static_pointer_cast<PatternObject>(qo[2]);
+			Assert::IsTrue(co2->getQueryObjectName() == "pattern"sv
+				&& co2->getPatternSynonym()->getArg() == "a"sv
+				&& co2->getArg1()->getArg() == "_"sv
+				&& co2->getArg2()->getArg() == "_"sv);
+		}
+
+		TEST_METHOD(TestValidCallsSynWc)
+		{
+			vector<string> tokenizer = tokenize("procedure p1, p2; Select p1 such that Calls (p1, _)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[1]) == typeid(CallsObject));
+			std::shared_ptr<ClauseObject> co1 = std::static_pointer_cast<CallsObject>(qo[1]);
+			Assert::IsTrue(co1->getQueryObjectName() == "Calls"sv
+				&& co1->getArg1()->getArg() == "p1"sv
+				&& co1->getArg2()->getArg() == "_"sv);
+		}
+
+		TEST_METHOD(TestValidCallsWcIdent)
+		{
+			vector<string> tokenizer = tokenize("procedure p1, p2; Select p1 such that Calls (_, \"main\")");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[1]) == typeid(CallsObject));
+			std::shared_ptr<ClauseObject> co1 = std::static_pointer_cast<CallsObject>(qo[1]);
+			Assert::IsTrue(co1->getQueryObjectName() == "Calls"sv
+				&& co1->getArg1()->getArg() == "_"sv
+				&& co1->getArg2()->getArg() == "\"main\""sv);
+		}
+
+		TEST_METHOD(TestValidCallsIdentSyn)
+		{
+			vector<string> tokenizer = tokenize("procedure p1, p2; Select p1 such that Calls (\"main\", p1)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[1]) == typeid(CallsObject));
+			std::shared_ptr<ClauseObject> co1 = std::static_pointer_cast<CallsObject>(qo[1]);
+			Assert::IsTrue(co1->getQueryObjectName() == "Calls"sv
+				&& co1->getArg1()->getArg() == "\"main\""sv
+				&& co1->getArg2()->getArg() == "p1"sv);
+		}
+
+		TEST_METHOD(TestValidCallsConstVar)
+		{
+			vector<string> tokenizer = tokenize("constant c; variable v; Select c such that Calls (c, v)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[1]) == typeid(CallsObject));
+			std::shared_ptr<ClauseObject> co1 = std::static_pointer_cast<CallsObject>(qo[1]);
+			Assert::IsTrue(co1->getQueryObjectName() == "Calls"sv
+				&& co1->getArg1()->getArg() == "c"sv
+				&& co1->getArg2()->getArg() == "v"sv);
+		}
 	};
 
 }
