@@ -46,7 +46,7 @@ Select p such that Calls*(_, "HongKai")
 10 - ident, syn, arg1: ident, arg2: syn, select proc
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
 Select p such that Calls*("First", p)
-Second
+Second, Third
 5000
 11 - ident, syn, arg1: ident, arg2: syn, select proc (invalid ident)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
@@ -91,7 +91,7 @@ Select p such that Calls*(v, p)
 19 - ident, ident, arg1: ident, arg2: ident, select proc (invalid relationship)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
 Select p such that Calls*("First", "Third")
-
+First, Second, Third
 5000
 20 - ident, ident, arg1: ident, arg2: ident, select proc (invalid relationship)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;

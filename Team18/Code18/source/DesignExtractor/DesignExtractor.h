@@ -43,12 +43,12 @@ public:
     }
 
     // Method to extract all the abstractions
-    void extractAbstractions(shared_ptr<ASTNode> astNode) {
-        modifiesExtractor->extractDesigns(astNode);
-        usesExtractor->extractDesigns(astNode);
-        parentsExtractor->extractDesigns(astNode);
-        followsExtractor->extractDesigns(astNode);
-        callsExtractor->extractDesigns(astNode);
+    void extractAllAbstractions(shared_ptr<ASTNode> astNode) {
+        modifiesExtractor->extractAbstractions(astNode);
+        usesExtractor->extractAbstractions(astNode);
+        parentsExtractor->extractAbstractions(astNode);
+        followsExtractor->extractAbstractions(astNode);
+        callsExtractor->extractAbstractions(astNode);
     }
 
     // Method to extract all the entities
@@ -106,7 +106,7 @@ private:
 
     void extractAll(shared_ptr<ASTNode> astNode) {
         extractEntities(astNode);
-        extractAbstractions(astNode);
+        extractAllAbstractions(astNode);
         extractWith(astNode);
         // extractPattern(astNode);
     }

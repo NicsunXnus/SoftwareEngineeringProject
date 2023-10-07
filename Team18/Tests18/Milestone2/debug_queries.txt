@@ -1,0 +1,5 @@
+1 - syn, syn, arg1: proc, arg2: proc, select first arg
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select p1 such that Calls*("testprocedure5", p1)
+testprocedure4, testprocedure3, testprocedure2, testprocedure1
+5000
