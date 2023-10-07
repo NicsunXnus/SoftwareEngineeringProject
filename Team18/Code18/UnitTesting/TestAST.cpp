@@ -223,6 +223,33 @@ namespace UnitTesting
 
 		}
 
+		TEST_METHOD(TestCall) {
+			std::shared_ptr<TokenizedProgram> test = SimpleTokenizer::tokenizeProgram(
+				"procedure p {"
+				"call q; }"
+				"procedure q {"
+				"call z; }"
+				"procedure y {"
+				"call q; }"
+				"procedure z {"
+				"print done; }"
+			);
+
+			std::shared_ptr<ProgramNode> program = ASTBuilder::parseProgram(test);
+
+			std::stringstream output;
+			std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
+
+			//std::shared_ptr<ProcedureNode> proc = program->getProcedures()[0];
+			std::cout << printProgram(program);
+
+			std::cout.rdbuf(oldCoutBuffer);
+
+			Logger::WriteMessage("Output:\n");
+			Logger::WriteMessage(output.str().c_str());
+
+		}
+
 		TEST_METHOD(Invalids) {
 			try {
 				std::shared_ptr<TokenizedProgram> test = SimpleTokenizer::tokenizeProgram(

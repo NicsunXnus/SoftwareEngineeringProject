@@ -147,7 +147,7 @@ static string printStatement(shared_ptr<StatementNode> statement, int nesting) {
         return res;
     }
     else if (callStmt) {
-        return to_string(callStmt->getStatementNumber()) + indent + callStmt->getProc()->getName() + "\n";
+        return to_string(callStmt->getStatementNumber()) + indent + "calls " + callStmt->getProc()->getName() + "\n";
     }
     else if (readStmt) {
         return to_string(readStmt->getStatementNumber()) + indent + readStmt->getName() + " " + readStmt->getVar()->getValue() + "\n";
@@ -182,6 +182,14 @@ static string printProcedure(shared_ptr<ProcedureNode> procNode) {
     }
 
     res += "}\n";
+    return res;
+}
+
+static string printProgram(shared_ptr<ProgramNode> progNode) {
+    string res = "";
+    for (shared_ptr<ProcedureNode> procNode : progNode->getProcedures()) {
+        res += printProcedure(procNode);
+    }
     return res;
 }
 #endif
