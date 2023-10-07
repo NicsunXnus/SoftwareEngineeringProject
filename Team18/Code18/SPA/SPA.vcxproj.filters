@@ -2,6 +2,9 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="..\source\ApplicationWrapper.cpp" />
+	<ClCompile Include="..\source\AST\ASTBuilder.cpp">
+      <Filter>AST</Filter>
+    </ClCompile>
     <ClCompile Include="..\source\QPS\DataAccessLayer.cpp">
       <Filter>QPS</Filter>
     </ClCompile>

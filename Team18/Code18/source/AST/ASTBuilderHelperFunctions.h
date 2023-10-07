@@ -115,6 +115,8 @@ static string printCondExpr(shared_ptr<CondExprNode> condExpr) {
     }
 }
 
+static string callMapper(shared_ptr<CallNode> callnode);
+
 static string printStatement(shared_ptr<StatementNode> statement, int nesting) {
     auto assignStmt = dynamic_pointer_cast<AssignNode>(statement);
     auto ifStmt = dynamic_pointer_cast<IfNode>(statement);
@@ -147,7 +149,7 @@ static string printStatement(shared_ptr<StatementNode> statement, int nesting) {
         return res;
     }
     else if (callStmt) {
-        return to_string(callStmt->getStatementNumber()) + indent + callStmt->getProc()->getName() + "\n";
+        return to_string(callStmt->getStatementNumber()) + indent + "calls " + callStmt->getProc()->getName() + "\n" +callMapper(callStmt);
     }
     else if (readStmt) {
         return to_string(readStmt->getStatementNumber()) + indent + readStmt->getName() + " " + readStmt->getVar()->getValue() + "\n";
@@ -178,10 +180,27 @@ static string printProcedure(shared_ptr<ProcedureNode> procNode) {
     //Body
     vector<shared_ptr<StatementNode>> statements = procNode->getStatements();
     for (shared_ptr<StatementNode> statement : statements) {
-        res += printStatement(statement, 1);
+         res += printStatement(statement, 1);
     }
 
     res += "}\n";
+    return res;
+}
+
+string callMapper(shared_ptr<CallNode> callnode) {
+    shared_ptr<ProcedureNode> procNode = callnode->getProc();
+    string res = "";
+    res += "/////////Inner procedure of " + procNode->getName() + "//////////\n";
+    res += printProcedure(procNode);
+    res += "/////////Endof procedure of " + procNode->getName() + "//////////\n";
+    return res;
+}
+
+static string printProgram(shared_ptr<ProgramNode> progNode) {
+    string res = "";
+    for (shared_ptr<ProcedureNode> procNode : progNode->getProcedures()) {
+        res += printProcedure(procNode);
+    }
     return res;
 }
 #endif
