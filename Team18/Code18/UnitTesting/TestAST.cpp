@@ -250,6 +250,108 @@ namespace UnitTesting
 
 		}
 
+		TEST_METHOD(TestCall2) {
+			//if node after callnode
+			std::shared_ptr<TokenizedProgram> test = SimpleTokenizer::tokenizeProgram(
+				"procedure p { print paper; call q; read book; bioshock = 1 + 2 + infinite;"
+				"if (fruit == pear) then { print true; } else { print false; }"
+				"while (semester != end) { print noSleep; }"
+				"call q; }"
+				//All statements before call node + while node directly before callnode
+				"procedure q { call printSth; call printSth; print paper; read magazine; enterTheGungeon = bullets * chaos;"
+				"if (fruit == pear) then { print true; } else { print false; }"
+				"while (semester != end) { print noSleep; } }"
+				//All statements after callnode + consecutive callnodes in a procedure
+				"procedure y {"
+				"if (game == onSale) then { call checkWallet; } else { print wait; }"
+				"call q; }"
+				//If node directly before callnode + callnode in if statement
+				"procedure checkWallet { call printSth; while (money <= 0 && wallet == empty) { call terminate; }; }"
+				//while node after callnode + callnode in while node
+				"procedure printSth { print Sth; }"
+				"procedure ifNodeAfterCallNode { call printSth;"
+				"if (1 == 2) then { print yes; } else { print no; } }"
+			    //if node after call node
+				"procedure terminate { print done; }"
+			);
+
+			/*
+			Expected output:
+			procedure p {
+			1	print paper
+			2	calls q
+			3	read book
+			4	bioshock = 1 + 2 + infinite
+			5	if (fruit == pear) {
+			6		print true
+				} else {
+			7		print false
+				}
+			8	while (semester != end) {
+			9		print noSleep
+				}
+			10	calls q
+			}
+			procedure q {
+			11	calls printSth
+			12	calls printSth
+			13	print paper
+			14	read magazine
+			15	enterTheGungeon = bullets * chaos
+			16	if (fruit == pear) {
+			17		print true
+				} else {
+			18		print false
+				}
+			19	while (semester != end) {
+			20		print noSleep
+				}
+			}
+			procedure y {
+			21	if (game == onSale) {
+			22		calls checkWallet
+				} else {
+			23		print wait
+				}
+			24	calls q
+			}
+			procedure checkWallet {
+			25	calls printSth
+			26	while ((money <= 0) && (wallet == empty)) {
+			27		calls terminate
+				}
+			}
+			procedure printSth {
+			28	print Sth
+			}
+			procedure ifNodeAfterCallNode {
+			29	calls printSth
+			30	if (1 == 2) {
+			31		print yes
+				} else {
+			32		print no
+				}
+			}
+			procedure terminate {
+			33	print done
+			}
+			*/
+
+			std::shared_ptr<ProgramNode> program = ASTBuilder::parseProgram(test);
+
+			std::stringstream output;
+			std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
+
+			//std::shared_ptr<ProcedureNode> proc = program->getProcedures()[0];
+			std::cout << printProgram(program);
+
+			std::cout.rdbuf(oldCoutBuffer);
+
+			Logger::WriteMessage("Output:\n");
+			Logger::WriteMessage(output.str().c_str());
+
+		}
+
 		TEST_METHOD(Invalids) {
 			try {
 				std::shared_ptr<TokenizedProgram> test = SimpleTokenizer::tokenizeProgram(

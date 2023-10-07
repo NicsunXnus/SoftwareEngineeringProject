@@ -16,7 +16,7 @@ using namespace std;
 class ASTBuilder {
 public:
     //UNLOCK IN MILESTONE 2
-    inline static map<string, shared_ptr<CallNode>> callMap; //Map to store all callNodes calling procedures that have not been parsed
+    inline static multimap<string, shared_ptr<CallNode>> callMap; //Map to store all callNodes calling procedures that have not been parsed
     inline static map<string, shared_ptr<ProcedureNode>> procedureMap; //Map to store all procedureNodes for callNodes reference
 
     static shared_ptr<ProgramNode> parseProgram(shared_ptr<TokenizedProgram> tokenizedProgram);

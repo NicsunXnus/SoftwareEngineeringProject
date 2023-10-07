@@ -204,6 +204,7 @@ static void applyCondExprNodeStackOperation(stack<shared_ptr<CondExprNode>>& con
         if (condValues.empty()) {
             throw runtime_error("Missing conditional operatee.");
         }
+
         shared_ptr<CondExprNode> b = condValues.top(); condValues.pop();
         if (ops.top() == "!") {
             condValues.push(applyBoolOperation(ops.top(), shared_ptr<CondExprNode>(), b));
@@ -243,9 +244,9 @@ shared_ptr<CondExprNode> ASTBuilder::parseCondExpr(vector<shared_ptr<Token>> lis
             while (!ops.empty() && ops.top() != "(") {
                 try {
                     applyCondExprNodeStackOperation(condValues, relValues, ops);
-
                 }
                 catch (const runtime_error& e) {
+                    cerr << e.what() << endl;
                     return nullptr;
                 }
             }
@@ -261,9 +262,9 @@ shared_ptr<CondExprNode> ASTBuilder::parseCondExpr(vector<shared_ptr<Token>> lis
             while (!ops.empty() && precedence(ops.top()) >= precedence(currToken->getName())) {
                 try {
                     applyCondExprNodeStackOperation(condValues, relValues, ops);
-
                 }
                 catch (const runtime_error& e) {
+                    cerr << e.what() << endl;
                     return nullptr;
                 }
             }
@@ -273,9 +274,9 @@ shared_ptr<CondExprNode> ASTBuilder::parseCondExpr(vector<shared_ptr<Token>> lis
     while (!ops.empty()) {
         try {
             applyCondExprNodeStackOperation(condValues, relValues, ops);
-
         }
         catch (const runtime_error& e) {
+            cerr << e.what() << endl;
             return nullptr;
         }
     }
