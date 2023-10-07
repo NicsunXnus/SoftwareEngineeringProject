@@ -3,7 +3,7 @@
 #include "../source/QPS/QueryParser.h"
 #include "../source/QPS/QueryObjects/ClauseObject.h"
 #include "../source/QPS/QueryObjects/PatternClauseObject.h"
-#include "../source/PQLTokenizer.h"
+#include "../source/QPS/PQLTokenizer.h"
 #include <cassert>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -18,7 +18,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectStmtQuery)
 		{
-			vector<string> testS = tokenize("stmt v; Select v");
+			vector<string> testS = PQLTokenizer::tokenize("stmt v; Select v");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -32,7 +32,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectReadQuery)
 		{
-			vector<string> testS = tokenize("variable c; read v; Select v");
+			vector<string> testS = PQLTokenizer::tokenize("variable c; read v; Select v");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -44,7 +44,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectPrintQuery)
 		{
-			vector<string> testS = tokenize("print p, v; Select v");
+			vector<string> testS = PQLTokenizer::tokenize("print p, v; Select v");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -56,7 +56,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectCallQuery)
 		{
-			vector<string> testS = tokenize("call v; Select v");
+			vector<string> testS = PQLTokenizer::tokenize("call v; Select v");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -68,7 +68,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectWhileQuery)
 		{
-			vector<string> testS = tokenize("while v; Select v");
+			vector<string> testS = PQLTokenizer::tokenize("while v; Select v");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -80,7 +80,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectIfQuery)
 		{
-			vector<string> testS = tokenize("if v; Select v");
+			vector<string> testS = PQLTokenizer::tokenize("if v; Select v");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -92,7 +92,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectAssignQuery)
 		{
-			vector<string> testS = tokenize("assign v; Select v");
+			vector<string> testS = PQLTokenizer::tokenize("assign v; Select v");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -104,7 +104,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectVariableQuery)
 		{
-			vector<string> testS = tokenize("variable v; Select v");
+			vector<string> testS = PQLTokenizer::tokenize("variable v; Select v");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -116,7 +116,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectConstantQuery)
 		{
-			vector<string> testS = tokenize("constant v; Select v");
+			vector<string> testS = PQLTokenizer::tokenize("constant v; Select v");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -128,7 +128,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectProcedureQuery)
 		{
-			vector<string> testS = tokenize("procedure v; Select v");
+			vector<string> testS = PQLTokenizer::tokenize("procedure v; Select v");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -140,7 +140,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectUsesStmtQuery)
 		{
-			vector<string> testS = tokenize("call a; variable v; Select v such that Uses(a, v)");
+			vector<string> testS = PQLTokenizer::tokenize("call a; variable v; Select v such that Uses(a, v)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -155,7 +155,7 @@ namespace UnitTesting
 				&& co->getArg1()->getArg() == "a"sv
 				&& co->getArg2()->getArg() == "v"sv);
 
-			vector<string> testSInt = tokenize("variable v; Select v such that Uses(10, v)");
+			vector<string> testSInt = PQLTokenizer::tokenize("variable v; Select v such that Uses(10, v)");
 			vector<string_view> testSIntSV{ sToSvVector(testSInt) };
 			shared_ptr<QueryParser> pInt = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObjInt = pInt->splitDeclarationQuery(testSIntSV);
@@ -173,7 +173,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectUsesEntQuery)
 		{
-			vector<string> testEntRefSyn = tokenize("constant c; variable v; Select v such that Uses(c, v)");
+			vector<string> testEntRefSyn = PQLTokenizer::tokenize("constant c; variable v; Select v such that Uses(c, v)");
 			vector<string_view> testEntRefSynSV{ sToSvVector(testEntRefSyn) };
 			shared_ptr<QueryParser> p1 = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testEntRefSynObj = p1->splitDeclarationQuery(testEntRefSynSV);
@@ -191,7 +191,7 @@ namespace UnitTesting
 				&& co1->getArg1()->getArg() == "c"sv
 				&& co1->getArg2()->getArg() == "v"sv);
 
-			vector<string> testEntRefIdent = tokenize("variable v; Select v such that Uses(\"procName\", v)");
+			vector<string> testEntRefIdent = PQLTokenizer::tokenize("variable v; Select v such that Uses(\"procName\", v)");
 			vector<string_view> testEntRefIdentSV{ sToSvVector(testEntRefIdent) };
 			shared_ptr<QueryParser> p2 = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testEntRefIdentObj = p2->splitDeclarationQuery(testEntRefIdentSV);
@@ -209,7 +209,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestInvalidSelectUsesEntQuery)
 		{
-			vector<string> testEntRefSyn = tokenize("call c; read v; Select v such that Uses(c, v)");
+			vector<string> testEntRefSyn = PQLTokenizer::tokenize("call c; read v; Select v such that Uses(c, v)");
 			vector<string_view> testEntRefSynSV{ sToSvVector(testEntRefSyn) };
 			shared_ptr<QueryParser> p1 = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testEntRefSynObj = p1->splitDeclarationQuery(testEntRefSynSV);
@@ -226,7 +226,7 @@ namespace UnitTesting
 		}
 		TEST_METHOD(TestValidSelectModifiesStmtQuery)
 		{
-			vector<string> testS = tokenize("assign a; variable v; Select v such that Modifies(a, v)");
+			vector<string> testS = PQLTokenizer::tokenize("assign a; variable v; Select v such that Modifies(a, v)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -241,7 +241,7 @@ namespace UnitTesting
 				&& co->getArg1()->getArg() == "a"sv
 				&& co->getArg2()->getArg() == "v"sv);
 
-			vector<string> testSInt = tokenize("variable v; Select v such that Modifies(10, v)");
+			vector<string> testSInt = PQLTokenizer::tokenize("variable v; Select v such that Modifies(10, v)");
 			vector<string_view> testSIntSV{ sToSvVector(testSInt) };
 			shared_ptr<QueryParser> pInt = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObjInt = pInt->splitDeclarationQuery(testSIntSV);
@@ -259,7 +259,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectModifiesEntQuery)
 		{
-			vector<string> testEntRefSyn = tokenize("constant c; variable v; Select v such that Modifies(c, v)");
+			vector<string> testEntRefSyn = PQLTokenizer::tokenize("constant c; variable v; Select v such that Modifies(c, v)");
 			vector<string_view> testEntRefSynSV{ sToSvVector(testEntRefSyn) };
 			shared_ptr<QueryParser> p1 = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testEntRefSynObj = p1->splitDeclarationQuery(testEntRefSynSV);
@@ -275,7 +275,7 @@ namespace UnitTesting
 				&& co1->getArg1()->getArg() == "c"sv
 				&& co1->getArg2()->getArg() == "v"sv);
 
-			vector<string> testEntRefIdent = tokenize("variable v; Select v such that Modifies(\"procName\", v)");
+			vector<string> testEntRefIdent = PQLTokenizer::tokenize("variable v; Select v such that Modifies(\"procName\", v)");
 			vector<string_view> testEntRefIdentSV{ sToSvVector(testEntRefIdent) };
 			shared_ptr<QueryParser> p2 = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testEntRefIdentObj = p2->splitDeclarationQuery(testEntRefIdentSV);
@@ -293,7 +293,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectFollowsStmtQuery)
 		{
-			vector<string> testS = tokenize("assign a; print v; Select v such that Follows(a, v)");
+			vector<string> testS = PQLTokenizer::tokenize("assign a; print v; Select v such that Follows(a, v)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -308,7 +308,7 @@ namespace UnitTesting
 				&& co->getArg1()->getArg() == "a"sv
 				&& co->getArg2()->getArg() == "v"sv);
 
-			vector<string> testSInt = tokenize("while v; Select v such that Follows(10, v)");
+			vector<string> testSInt = PQLTokenizer::tokenize("while v; Select v such that Follows(10, v)");
 			vector<string_view> testSIntSV{ sToSvVector(testSInt) };
 			shared_ptr<QueryParser> pInt = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObjInt = pInt->splitDeclarationQuery(testSIntSV);
@@ -326,7 +326,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectFollowsStarStmtQuery)
 		{
-			vector<string> testS = tokenize("assign a; if v; Select v such that Follows*(a, v)");
+			vector<string> testS = PQLTokenizer::tokenize("assign a; if v; Select v such that Follows*(a, v)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -341,7 +341,7 @@ namespace UnitTesting
 				&& co->getArg1()->getArg() == "a"sv
 				&& co->getArg2()->getArg() == "v"sv);
 
-			vector<string> testSInt = tokenize("stmt v; Select v such that Follows*(10, v)");
+			vector<string> testSInt = PQLTokenizer::tokenize("stmt v; Select v such that Follows*(10, v)");
 			vector<string_view> testSIntSV{ sToSvVector(testSInt) };
 			shared_ptr<QueryParser> pInt = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObjInt = pInt->splitDeclarationQuery(testSIntSV);
@@ -359,7 +359,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectParentStmtQuery)
 		{
-			vector<string> testS = tokenize("stmt a; read v; Select v such that Parent(a, v)");
+			vector<string> testS = PQLTokenizer::tokenize("stmt a; read v; Select v such that Parent(a, v)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -374,7 +374,7 @@ namespace UnitTesting
 				&& co->getArg1()->getArg() == "a"sv
 				&& co->getArg2()->getArg() == "v"sv);
 
-			vector<string> testSInt = tokenize("call v; Select v such that Parent(10, v)");
+			vector<string> testSInt = PQLTokenizer::tokenize("call v; Select v such that Parent(10, v)");
 			vector<string_view> testSIntSV{ sToSvVector(testSInt) };
 			shared_ptr<QueryParser> pInt = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObjInt = pInt->splitDeclarationQuery(testSIntSV);
@@ -392,7 +392,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectParentStarStmtQuery)
 		{
-			vector<string> testS = tokenize("if a; read v; Select v such that Parent*(a, v)");
+			vector<string> testS = PQLTokenizer::tokenize("if a; read v; Select v such that Parent*(a, v)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -407,7 +407,7 @@ namespace UnitTesting
 				&& co->getArg1()->getArg() == "a"sv
 				&& co->getArg2()->getArg() == "v"sv);
 
-			vector<string> testSInt = tokenize("assign v; Select v such that Parent*(10, v)");
+			vector<string> testSInt = PQLTokenizer::tokenize("assign v; Select v such that Parent*(10, v)");
 			vector<string_view> testSIntSV{ sToSvVector(testSInt) };
 			shared_ptr<QueryParser> pInt = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObjInt = pInt->splitDeclarationQuery(testSIntSV);
@@ -425,7 +425,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectLongQuery)
 		{
-			vector<string> testS = tokenize("assign a1, a2, a3; stmt s1, s2, s3; variable v1, v2, v3; Select s1 such that Uses(s3, v1) such that Modifies(s3, \"x\") such that Follows(s1, s2) such that Parent(s3, s1) such that Uses(s2, v1)");
+			vector<string> testS = PQLTokenizer::tokenize("assign a1, a2, a3; stmt s1, s2, s3; variable v1, v2, v3; Select s1 such that Uses(s3, v1) such that Modifies(s3, \"x\") such that Follows(s1, s2) such that Parent(s3, s1) such that Uses(s2, v1)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -443,7 +443,7 @@ namespace UnitTesting
 		
 		TEST_METHOD(TestValidSimplePatternQuery)
 		{
-			vector<string> testS = tokenize("assign a; Select a pattern a (\"x\", _)");
+			vector<string> testS = PQLTokenizer::tokenize("assign a; Select a pattern a (\"x\", _)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -457,7 +457,7 @@ namespace UnitTesting
 			Assert::IsTrue(po->getArg1()->getArg() == "\"x\""sv);
 			Assert::IsTrue(po->getArg2()->getArg() == "_"sv);
 
-			vector<string> testPMS = tokenize("assign a; variable v; Select a pattern a (v, _\"1\"_)");
+			vector<string> testPMS = PQLTokenizer::tokenize("assign a; variable v; Select a pattern a (v, _\"1\"_)");
 			vector<string_view> testPMSV{ sToSvVector(testPMS) };
 			shared_ptr<QueryParser> pPM = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testPMObj = pPM->splitDeclarationQuery(testPMSV);
@@ -474,7 +474,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidPatternSuchThatQuery)
 		{
-			vector<string> testS = tokenize("assign a; variable v; Select a pattern a (\"x\", _\"1\"_) such that Modifies(\"procName\", v)");
+			vector<string> testS = PQLTokenizer::tokenize("assign a; variable v; Select a pattern a (\"x\", _\"1\"_) such that Modifies(\"procName\", v)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -497,7 +497,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSuchThatPatternQuery)
 		{
-			vector<string> testS = tokenize("assign a; stmt s; Select a such that Parent*(10, s) pattern a (_, _\"1\"_)");
+			vector<string> testS = PQLTokenizer::tokenize("assign a; stmt s; Select a such that Parent*(10, s) pattern a (_, _\"1\"_)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -522,7 +522,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestModifiesWithPrint1stArg)
 		{
-			vector<string> tokenizer = tokenize("print s; variable v; Select s such that Modifies (s, v)");
+			vector<string> tokenizer = PQLTokenizer::tokenize("print s; variable v; Select s such that Modifies (s, v)");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(testSv);
@@ -538,7 +538,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestUsesWithRead1stArg)
 		{
-			vector<string> tokenizer = tokenize("read s; variable v; Select s such that Uses (s, v)");
+			vector<string> tokenizer = PQLTokenizer::tokenize("read s; variable v; Select s such that Uses (s, v)");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(testSv);
@@ -554,7 +554,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestCallsWithRead1stArg)
 		{
-			vector<string> tokenizer = tokenize("read s; variable v; Select s such that Uses (s, v)");
+			vector<string> tokenizer = PQLTokenizer::tokenize("read s; variable v; Select s such that Uses (s, v)");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(testSv);
@@ -570,7 +570,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestParentWcWcPatternWcWc)
 		{
-			vector<string> tokenizer = tokenize("stmt n; assign a; Select n such that Parent (_, _) pattern a (_, _)");
+			vector<string> tokenizer = PQLTokenizer::tokenize("stmt n; assign a; Select n such that Parent (_, _) pattern a (_, _)");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
@@ -591,7 +591,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidCallsSynWc)
 		{
-			vector<string> tokenizer = tokenize("procedure p1, p2; Select p1 such that Calls (p1, _)");
+			vector<string> tokenizer = PQLTokenizer::tokenize("procedure p1, p2; Select p1 such that Calls (p1, _)");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
@@ -605,7 +605,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidCallsWcIdent)
 		{
-			vector<string> tokenizer = tokenize("procedure p1, p2; Select p1 such that Calls (_, \"main\")");
+			vector<string> tokenizer = PQLTokenizer::tokenize("procedure p1, p2; Select p1 such that Calls (_, \"main\")");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
@@ -619,7 +619,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidCallsIdentSyn)
 		{
-			vector<string> tokenizer = tokenize("procedure p1, p2; Select p1 such that Calls (\"main\", p1)");
+			vector<string> tokenizer = PQLTokenizer::tokenize("procedure p1, p2; Select p1 such that Calls (\"main\", p1)");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
@@ -633,7 +633,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidCallsConstVar)
 		{
-			vector<string> tokenizer = tokenize("constant c; variable v; Select c such that Calls (c, v)");
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; variable v; Select c such that Calls (c, v)");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);

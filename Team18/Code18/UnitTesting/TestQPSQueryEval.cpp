@@ -2,7 +2,7 @@
 #include "CppUnitTest.h"
 #include "../source/QPS/QueryParser.h"
 #include "../source/QPS/QueryObjects/ClauseObject.h"
-#include "../source/PQLTokenizer.h"
+#include "../source/QPS/PQLTokenizer.h"
 #include "../source/QPS/QueryBuilder.h"
 #include "../source/QPS/DataAccessLayerStub.h"
 #include <QPS/QueryObjects/PatternClauseObject.h>
@@ -16,7 +16,7 @@ namespace UnitTesting {
 	public:
 
 		TEST_METHOD(TestValidFollowsSynSyn) {
-			vector<string> testS = tokenize("assign s, s1; Select s such that Follows(s, s1)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Follows(s, s1)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -36,7 +36,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidFollowsSynSynSameSyn) {
-			vector<string> testS = tokenize("assign s, s1; Select s such that Follows(s, s)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Follows(s, s)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -50,7 +50,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidFollowsIntSyn) {
-			vector<string> testS = tokenize("assign s, s1; Select s such that Follows(2, s)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Follows(2, s)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -66,7 +66,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestInvalidFollowsIntSyn) {
-			vector<string> testS = tokenize("assign s, s1; Select s such that Follows(7, s)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Follows(7, s)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -81,7 +81,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidFollowsSynInt) {
-			vector<string> testS = tokenize("assign s, s1; Select s such that Follows(s, 3)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Follows(s, 3)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -97,7 +97,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestInvalidFollowsSynInt) {
-			vector<string> testS = tokenize("assign s, s1; Select s such that Follows(s, 7)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Follows(s, 7)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -112,7 +112,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidFollowsSynWildcard) {
-			vector<string> testS = tokenize("assign s; Select s such that Follows(s, _)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Follows(s, _)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -129,7 +129,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidFollowsWildCardSyn) {
-			vector<string> testS = tokenize("assign s; Select s such that Follows(_, s)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Follows(_, s)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -146,7 +146,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidFollowsIntWildcard) {
-			vector<string> testS = tokenize("assign s; Select s such that Follows(2, _)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Follows(2, _)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -160,7 +160,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestInvalidFollowsIntWildcard) {
-			vector<string> testS = tokenize("assign s; Select s such that Follows(6, _)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Follows(6, _)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -174,7 +174,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidFollowsWildcardInt) {
-			vector<string> testS = tokenize("assign s; Select s such that Follows(_, 3)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Follows(_, 3)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -188,7 +188,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestInvalidFollowsWildcardInt) {
-			vector<string> testS = tokenize("assign s; Select s such that Follows(_, 7)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Follows(_, 7)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -202,7 +202,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidFollowsWildcardWildcard) {
-			vector<string> testS = tokenize("assign s; Select s such that Follows(_, _)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Follows(_, _)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -216,7 +216,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidFollowsIntInt) {
-			vector<string> testS = tokenize("assign s; Select s such that Follows(2, 3)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Follows(2, 3)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -230,7 +230,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestInvalidFollowsIntInt) {
-			vector<string> testS = tokenize("assign s; Select s such that Follows(3, 2)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Follows(3, 2)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -244,7 +244,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidParentStarSynSyn) {
-			vector<string> testS = tokenize("assign s, s1; Select s such that Parent*(s, s1)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(s, s1)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -263,7 +263,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidParentStarSynSynSameSyn) {
-			vector<string> testS = tokenize("assign s, s1; Select s such that Parent*(s, s)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(s, s)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -277,7 +277,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidParentStarSynInt) {
-			vector<string> testS = tokenize("assign s, s1; Select s such that Parent*(s, 3)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(s, 3)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -293,7 +293,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestInvalidParentStarSynInt) {
-			vector<string> testS = tokenize("assign s, s1; Select s such that Parent*(s, 5)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(s, 5)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -307,7 +307,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidParentStarIntSyn) {
-			vector<string> testS = tokenize("assign s, s1; Select s such that Parent*(1, s)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(1, s)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -323,7 +323,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestInvalidParentStarIntSyn) {
-			vector<string> testS = tokenize("assign s, s1; Select s such that Parent*(9, s)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(9, s)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -337,7 +337,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidParentStarSynWildcard) {
-			vector<string> testS = tokenize("assign s, s1; Select s such that Parent*(s, _)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(s, _)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -354,7 +354,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidParentStarWildcardSyn) {
-			vector<string> testS = tokenize("assign s, s1; Select s such that Parent*(_, s)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(_, s)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -371,7 +371,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidParentStarIntWildcard) {
-			vector<string> testS = tokenize("assign s, s1; Select s such that Parent*(3, _)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(3, _)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -385,7 +385,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestInvalidParentStarIntWildcard) {
-			vector<string> testS = tokenize("assign s, s1; Select s such that Parent*(90, _)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(90, _)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -399,7 +399,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidParentStarWildcardInt) {
-			vector<string> testS = tokenize("assign s, s1; Select s such that Parent*(_, 3)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(_, 3)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -413,7 +413,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestInvalidParentStarWildcardInt) {
-			vector<string> testS = tokenize("assign s, s1; Select s such that Parent*(_, 86)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(_, 86)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -427,7 +427,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidParentStarIntInt) {
-			vector<string> testS = tokenize("assign s, s1; Select s such that Parent*(2, 3)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(2, 3)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -441,7 +441,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestInvalidParentStarIntInt) {
-			vector<string> testS = tokenize("assign s, s1; Select s such that Parent*(9, 3)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(9, 3)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -455,7 +455,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidParentStarWildcardWildcard) {
-			vector<string> testS = tokenize("assign s, s1; Select s such that Parent*(_, _)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(_, _)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -469,7 +469,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidUsesSynSyn) {
-			vector<string> testS = tokenize("assign s, s1; variable v; Select s such that Uses(s, v)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; variable v; Select s such that Uses(s, v)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -487,7 +487,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidUsesSynWildCard) {
-			vector<string> testS = tokenize("assign s, s1; variable v; Select s such that Uses(s, _)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; variable v; Select s such that Uses(s, _)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -504,7 +504,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidUsesSynIdent) {
-			vector<string> testS = tokenize("assign s, s1; variable v; Select s such that Uses(s, \"b\")");
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; variable v; Select s such that Uses(s, \"b\")");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -520,7 +520,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidUsesIntSyn) {
-			vector<string> testS = tokenize("assign s, s1; variable v; Select v such that Uses(2, v)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; variable v; Select v such that Uses(2, v)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -535,7 +535,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidUsesIntWildCard) {
-			vector<string> testS = tokenize("assign s, s1; variable v; Select s such that Uses(2, _)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; variable v; Select s such that Uses(2, _)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -549,7 +549,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidUsesIntIdent) {
-			vector<string> testS = tokenize("assign s, s1; variable v; Select s such that Uses(3, \"c\")");
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; variable v; Select s such that Uses(3, \"c\")");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -564,7 +564,7 @@ namespace UnitTesting {
 		
 
 		TEST_METHOD(TestValidPatternWildcardWildcard) {
-			vector<string> testS = tokenize("assign s; Select s pattern s(_, _)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s pattern s(_, _)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -584,7 +584,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidPatternWildcardPartialConstant) {
-			vector<string> testS = tokenize("assign s; Select s pattern s(_, _\"300\"_)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s pattern s(_, _\"300\"_)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -604,7 +604,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidPatternWildcardPartialVariable) {
-			vector<string> testS = tokenize("assign s; Select s pattern s(_, _\"b\"_)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s pattern s(_, _\"b\"_)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -624,7 +624,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidPatternCharStringWildcard) {
-			vector<string> testS = tokenize("assign s; Select s pattern s(\"b\", _)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s pattern s(\"b\", _)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -644,7 +644,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidPatternCharStringPartialConstant) {
-			vector<string> testS = tokenize("assign s; Select s pattern s(\"c\", _\"300\"_)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s pattern s(\"c\", _\"300\"_)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -663,7 +663,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidPatternCharStringPartialVariable) {
-			vector<string> testS = tokenize("assign s; Select s pattern s(\"c\", _\"b\"_)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s pattern s(\"c\", _\"b\"_)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -682,7 +682,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidPatternVarSynWildcard) {
-			vector<string> testS = tokenize("assign s; variable v; Select s pattern s(v, _)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s; variable v; Select s pattern s(v, _)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -709,7 +709,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidPatternVarSynPartialConstant) {
-			vector<string> testS = tokenize("assign s; variable v; Select s pattern s(v, _\"300\"_)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s; variable v; Select s pattern s(v, _\"300\"_)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -731,7 +731,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidPatternVarSynPartialVariable) {
-			vector<string> testS = tokenize("assign s; variable v; Select s pattern s(v, _\"b\"_)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s; variable v; Select s pattern s(v, _\"b\"_)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -754,7 +754,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidPatternVarSynPartialVariableSuchThatFollowsSynWildcard) {
-			vector<string> testS = tokenize("assign s; variable v; Select s pattern s(v, _\"b\"_) such that Follows(s, _)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s; variable v; Select s pattern s(v, _\"b\"_) such that Follows(s, _)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
@@ -783,7 +783,7 @@ namespace UnitTesting {
 		}
 
 		TEST_METHOD(TestValidSuchThatFollowsWildcardIntPatternWildcardPartialConstant) {
-			vector<string> testS = tokenize("assign s; variable v; Select s such that Uses(s, \"b\") pattern s(_, _\"300\"_)");
+			vector<string> testS = PQLTokenizer::tokenize("assign s; variable v; Select s such that Uses(s, \"b\") pattern s(_, _\"300\"_)");
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);

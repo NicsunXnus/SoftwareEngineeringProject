@@ -9,6 +9,7 @@
 #include <set>
 #include "Errors/QPSError.h"
 #include "../HelperFunctions.h"
+#include "PQLTokenizer.h"
 
 
 using namespace std;
@@ -17,7 +18,7 @@ list<string> QueryDriver::execute() {
 
 	try {
 		std::cout << "In Query Driver, starting tokenizer\n";
-		vector<std::string> tokens = tokenize(query);
+		vector<std::string> tokens = PQLTokenizer::tokenize(query);
 		shared_ptr<QueryParser> parser = make_shared<QueryParser>();
 		vector<std::string_view> tokensView{ sToSvVector(tokens) };
 
