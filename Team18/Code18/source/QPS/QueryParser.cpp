@@ -23,6 +23,8 @@ vector<shared_ptr<QueryObject>> QueryParser::parsePQL(vector<string_view> tokens
 
 	if (static_cast<int>(semanticErrors.size()) > 0) {
 		// throw the first semantic error we encountered
+		shared_ptr<SemanticErrorException> s = semanticErrors[0];
+		std::string se = s->what();
 		throw *semanticErrors[0];
 	}
 
@@ -160,7 +162,7 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 	int selectTupleTokenCount{};
 	// check if is tuple
 	if (isSelectTuple(query, currentWordIndex, selectTupleTokenCount)) {
-		vector<shared_ptr<QueryObject>> selectQueryObjects{ createTupleObjects(query, currentWordIndex, selectTupleTokenCount) };
+		std::vector<shared_ptr<QueryObject>> selectQueryObjects{ createTupleObjects(query, currentWordIndex, selectTupleTokenCount) };
 
 		result.insert(result.end(), selectQueryObjects.begin(), selectQueryObjects.end());
 	}
@@ -168,12 +170,16 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 		if (selectTupleTokenCount == 1 && !isDeclared(query, currentWordIndex)) {
 			storeSemanticError(make_shared<SemanticErrorException>("Synonym not present in select clause, or synonym not declared"));
 			result.push_back(make_shared<StmtObject>("Placeholder query object, synonym not declared"));
+
+			++currentWordIndex;
 		}
 		else if (selectTupleTokenCount == 1) {
 			shared_ptr<QueryObject> selectQuery{ synonyms.find(query[currentWordIndex])->second };
 			result.push_back(selectQuery);
-		}
-		else {
+
+			++currentWordIndex;
+		
+		}else {
 			// TODO: Create a attrRef query object
 		}
 	}
@@ -181,10 +187,7 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 		throw SyntaxErrorException("Invalid syntax for result clause");
 	}
 
-
-	currentWordIndex++;
-
-	// return select query if query size == 2
+	// return select query if query has ended
 	if (query.size() == currentWordIndex) {
 		return result;
 	}
@@ -444,7 +447,7 @@ bool QueryParser::isSelectElem(std::vector<string_view>& query, int index, int& 
 	return true;
 }
 
-vector<shared_ptr<QueryObject>> QueryParser::createTupleObjects(std::vector<string_view>& query, int& index, int tokenCount) {
+std::vector<shared_ptr<QueryObject>> QueryParser::createTupleObjects(std::vector<string_view>& query, int& index, int tokenCount) {
 	// TODO: implement create tuple objects for attr refs. Current iteration only supports tuples of synonyms
 	vector<shared_ptr<QueryObject>> resultClauseObjects;
 
@@ -455,19 +458,34 @@ vector<shared_ptr<QueryObject>> QueryParser::createTupleObjects(std::vector<stri
 	for (int i = 1; i < tokenCount; ++i) {
 		string_view token{ query[index + i] };
 		
-		if (token == "," || token == ">") {
+		if (token == ","sv || token == ">"sv) {
 			if (!isAttrRef) { // element before this token is a synonym
 				if (this->synonyms.find(synonym) == this->synonyms.end()) { // synonym undeclared
 					storeSemanticError(make_shared<SemanticErrorException>("Undeclared synonym in select tuple"));
+					resultClauseObjects.push_back(make_shared<StmtObject>("Placeholder, undeclared synonym in result clause"));
 				}
-
-				resultClauseObjects.emplace_back(synonyms.find(synonym)->second);
+				else {
+					resultClauseObjects.push_back(synonyms.find(synonym)->second);
+				}
 			}
 			else { // element before is a attrRef, create a attrRef queryObject
 				// TODO
+				isAttrRef = false;
 			}
 		}
+		else if (token == "."sv) {
+			isAttrRef = true;
+		}
+		else if (isAttrRef) { // current token is attrName token
+			attrName = token;
+		}
+		else { // current token is a synonym
+			synonym = token;
+		}
 	}
+
+	index += tokenCount;
+	return resultClauseObjects;
 
 }
 

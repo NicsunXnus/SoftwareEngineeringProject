@@ -154,6 +154,7 @@ namespace UnitTesting
 			Assert::IsTrue(test[1] == "<");
 			Assert::IsTrue(test[2] == "a");
 			Assert::IsTrue(test[3] == ">");
+			Assert::IsTrue(static_cast<int>(test.size()) == 4);
 		}
 
 		TEST_METHOD(TestTokenizeSelectMultipleSynTuple)
@@ -221,8 +222,24 @@ namespace UnitTesting
 			Assert::IsTrue(test[2] == "a");
 			Assert::IsTrue(test[3] == ">");
 			Assert::IsTrue(test[4] == "with");
+
 		}
 
-
+		TEST_METHOD(TestTokenizeWholeQueySingleSynTuple)
+		{
+			vector<string> test = PQLTokenizer::tokenize("constant c; variable v; Select <c>");
+			Assert::IsTrue(test[0] == "constant");
+			Assert::IsTrue(test[1] == "c");
+			Assert::IsTrue(test[2] == ";");
+			Assert::IsTrue(test[3] == "variable");
+			Assert::IsTrue(test[4] == "v");
+			Assert::IsTrue(test[5] == ";");
+			Assert::IsTrue(test[6] == "Select");
+			Assert::IsTrue(test[7] == "<");
+			Assert::IsTrue(test[8] == "c");
+			Assert::IsTrue(test[9] == ">");
+			Assert::IsTrue(static_cast<int>(test.size()) == 10);
+		}
+		
 	};
 }

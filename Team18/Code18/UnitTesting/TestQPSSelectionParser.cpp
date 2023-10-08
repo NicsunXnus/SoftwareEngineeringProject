@@ -644,6 +644,17 @@ namespace UnitTesting
 				&& co1->getArg1()->getArg() == "c"sv
 				&& co1->getArg2()->getArg() == "v"sv);
 		}
+
+		TEST_METHOD(TestTupleSingleDeclaredSyn)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; variable v; Select <c>");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[0]) == typeid(ConstantObject));
+			Assert::IsTrue(qo[0]->getQueryObjectName() == "c");
+		}
 	};
 
 }

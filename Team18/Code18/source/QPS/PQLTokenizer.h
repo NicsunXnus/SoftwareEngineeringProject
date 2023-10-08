@@ -38,6 +38,8 @@ public:
 				}
 				std::vector<std::string> tupleTokens{ tokenizeTuple(pql, i) };
 				tokens.insert(tokens.end(), tupleTokens.begin(), tupleTokens.end());
+
+				continue;
 			}
 			else if (!isWithinQuotes && pql[i] == '"') { // opening quotes
 				if (isWord) {
@@ -142,10 +144,6 @@ private:
 
 			// unidentified char encountered. add into tokens, let parser throw the syntax error
 			std::cout << "unidentified char encountered while tokenizing tuples\n";
-			if (isIdent) {
-				tokens.emplace_back(pql.substr(startIndex, index - startIndex));
-				isIdent = false;
-			}
 			tokens.emplace_back(pql.substr(index, 1));
 			++index;
 		}
@@ -157,7 +155,6 @@ private:
 		// pql[index] == '>', at end of tuple
 		if (pql[index] == '>') {
 			tokens.emplace_back(pql.substr(index, 1));
-			++index;
 		}
 
 		return tokens;
