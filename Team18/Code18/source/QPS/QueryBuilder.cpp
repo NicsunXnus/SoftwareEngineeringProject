@@ -6,8 +6,9 @@
 #include "QueryObjects/PatternClauseObject.h"
 using namespace std;
 
-//Takes in a Query object and then returns a vector of QueryResultsTable. This vector will
-//be pased to ResultHandler to process the various tables of the clauses
+//Takes in a vector of Query objects and then returns a vector of QueryResultsTable. This vector will
+//be passed to ResultHandler to process (inner join etc) the various tables of the clauses
+// In the future, optimization of queries, sorting etc will be done here before passing to results handler
 
 vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
 

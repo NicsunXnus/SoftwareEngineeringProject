@@ -1,0 +1,24 @@
+procedure testprocedure {
+      call testprocedure1;
+      call testprocedure2;
+      call testprocedure3;
+      call testprocedure4;
+      call testprocedure5;
+}
+procedure testprocedure1 {
+	read r;
+}
+procedure testprocedure2 {
+      call testprocedure1;
+}
+procedure testprocedure3 {
+      call testprocedure2;
+}
+procedure testprocedure4 {
+      call testprocedure3;
+      call testprocedure2;
+}
+procedure testprocedure5 {
+      call testprocedure4;
+
+}

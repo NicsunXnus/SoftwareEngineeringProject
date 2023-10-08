@@ -109,8 +109,6 @@ inline unordered_set<string> removeMapValuesReturnSet(shared_ptr<ClauseArg> arg,
 	return keySet;
 }
 
-
-
 /*
 * This class represents a Query object, for clause Uses with a statement ref as the first argument
 */
@@ -214,10 +212,7 @@ public:
 	CallsObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
 		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
-	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
-		// TODO
-		return make_shared<QueryResultsTable>();
-	}
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override;
 };
 
 /*
@@ -228,10 +223,7 @@ public:
 	CallsStarObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
 		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
-	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
-		// TODO
-		return make_shared<QueryResultsTable>();
-	}
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override;
 
 };
 
