@@ -31,12 +31,12 @@ public:
 		std::stringstream ss;
 
 		for (int i = 0; i < pql.length(); ++i) {
-			if (pql[i] == '<') {
+			if (pql[i] == '<') { // tokenizing tuple
 				if (isWord) {
 					tokens.push_back(pql.substr(startIndex, i - startIndex));
 					isWord = false;
 				}
-				std::vector tupleTokens{ tokenizeTuple(pql, i) };
+				std::vector<std::string> tupleTokens{ tokenizeTuple(pql, i) };
 				tokens.insert(tokens.end(), tupleTokens.begin(), tupleTokens.end());
 			}
 			else if (!isWithinQuotes && pql[i] == '"') { // opening quotes
@@ -106,7 +106,7 @@ private:
 		tokens.emplace_back(pql.substr(index, 1));
 		++index;
 
-		while (pql[index] != '>' && index < static_cast<int>(pql.size())) {
+		while (index < static_cast<int>(pql.size()) && pql[index] != '>') {
 			// for now, support only tuples of synonyms
 			if (pql[index] == ',') {
 				if (isIdent) {
