@@ -655,6 +655,116 @@ namespace UnitTesting
 			Assert::IsTrue(typeid(*qo[0]) == typeid(ConstantObject));
 			Assert::IsTrue(qo[0]->getQueryObjectName() == "c");
 		}
+
+		TEST_METHOD(TestTupleMultDeclaredSyn)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; variable v; Select <c,v>");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[0]) == typeid(ConstantObject));
+			Assert::IsTrue(qo[0]->getQueryObjectName() == "c");
+			Assert::IsTrue(typeid(*qo[1]) == typeid(VariableObject));
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "v");
+		}
+
+		TEST_METHOD(TestTupleSingleUndeclaredSyn)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("Select <c>");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SemanticError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestTupleMultUndeclaredSyn)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select <c, b>");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SemanticError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestTupleNoCloseBracket)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select <c, b");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestTupleNoOpenBracket)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select c, b>");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestTupleNoBrackets)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select c, b");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestTupleInvalidSymbolsInTuple)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select <c,@ .sd# ,b>");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
 	};
 
 }

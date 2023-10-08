@@ -168,6 +168,7 @@ namespace UnitTesting
 			Assert::IsTrue(test[5] == ",");
 			Assert::IsTrue(test[6] == "b1234");
 			Assert::IsTrue(test[7] == ">");
+			Assert::IsTrue(static_cast<int>(test.size()) == 8);
 		}
 
 		TEST_METHOD(TestTokenizeSelectMultipleSynTupleWithCont)
@@ -222,7 +223,7 @@ namespace UnitTesting
 			Assert::IsTrue(test[2] == "a");
 			Assert::IsTrue(test[3] == ">");
 			Assert::IsTrue(test[4] == "with");
-
+			Assert::IsTrue(static_cast<int>(test.size()) == 5);
 		}
 
 		TEST_METHOD(TestTokenizeWholeQueySingleSynTuple)
