@@ -25,7 +25,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 			Assert::IsTrue(table->getColumns()[0]["s"][0] == "1");
 			Assert::IsTrue(table->getColumns()[0]["s"][1] == "2");
@@ -45,7 +45,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(!table->getSignificant()); // empty table, since s == s is not possible
 		}
 
@@ -59,7 +59,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 			Assert::IsTrue(table->getColumns()[0]["s"][0] == "3");
 			Assert::IsTrue(table->getColumns()[0]["s"].size() == 1);
@@ -75,7 +75,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(!table->getSignificant());
 			Assert::IsTrue(table->getColumns()[0]["s"].size() == 0);
 		}
@@ -90,7 +90,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 			Assert::IsTrue(table->getColumns()[0]["s"][0] == "2");
 			Assert::IsTrue(table->getColumns()[0]["s"].size() == 1);
@@ -106,7 +106,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(!table->getSignificant());
 			Assert::IsTrue(table->getColumns()[0]["s"].size() == 0);
 		}
@@ -121,7 +121,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 			Assert::IsTrue(table->getColumns()[0]["s"][0] == "1");
 			Assert::IsTrue(table->getColumns()[0]["s"][1] == "2");
@@ -138,7 +138,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 			Assert::IsTrue(table->getColumns()[0]["s"][0] == "2");
 			Assert::IsTrue(table->getColumns()[0]["s"][1] == "3");
@@ -155,7 +155,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 		}
 
@@ -169,7 +169,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(!table->getSignificant());
 		}
 
@@ -183,7 +183,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 		}
 
@@ -197,7 +197,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(!table->getSignificant());
 		}
 
@@ -211,7 +211,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 		}
 
@@ -225,7 +225,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 		}
 
@@ -239,7 +239,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(!table->getSignificant());
 		}
 
@@ -253,7 +253,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 			Assert::IsTrue(table->getColumns()[0]["s"][0] == "1" && table->getColumns()[1]["s1"][0] == "2");
 			Assert::IsTrue(table->getColumns()[0]["s"][1] == "1" && table->getColumns()[1]["s1"][1] == "3");
@@ -272,7 +272,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(!table->getSignificant());
 		}
 
@@ -286,7 +286,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 			Assert::IsTrue(table->getColumns()[0]["s"][0] == "2");
 			Assert::IsTrue(table->getColumns()[0]["s"][1] == "1");
@@ -302,7 +302,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(!table->getSignificant());
 		}
 
@@ -316,7 +316,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 			Assert::IsTrue(table->getColumns()[0]["s"][0] == "2");
 			Assert::IsTrue(table->getColumns()[0]["s"][1] == "3");
@@ -332,7 +332,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(!table->getSignificant());
 		}
 
@@ -346,7 +346,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 			Assert::IsTrue(table->getColumns()[0]["s"][0] == "1");
 			Assert::IsTrue(table->getColumns()[0]["s"][1] == "2");
@@ -363,7 +363,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 			Assert::IsTrue(table->getColumns()[0]["s"][0] == "2");
 			Assert::IsTrue(table->getColumns()[0]["s"][1] == "3");
@@ -380,7 +380,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 		}
 
@@ -394,7 +394,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(!table->getSignificant());
 		}
 
@@ -408,7 +408,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 		}
 
@@ -422,7 +422,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(!table->getSignificant());
 		}
 
@@ -436,7 +436,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 		}
 
@@ -450,7 +450,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(!table->getSignificant());
 		}
 
@@ -464,7 +464,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 		}
 
@@ -478,7 +478,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 			Assert::IsTrue(table->getColumns()[0]["s"][0] == "1" && table->getColumns()[1]["v"][0] == "a");
 			Assert::IsTrue(table->getColumns()[0]["s"][1] == "2" && table->getColumns()[1]["v"][1] == "b");
@@ -496,7 +496,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 			Assert::IsTrue(table->getColumns()[0]["s"][0] == "1");
 			Assert::IsTrue(table->getColumns()[0]["s"][1] == "2");
@@ -513,7 +513,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 			Assert::IsTrue(table->getColumns()[0]["s"][0] == "2");
 			Assert::IsTrue(table->getColumns()[0]["s"][1] == "3");
@@ -529,7 +529,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 			Assert::IsTrue(table->getColumns()[0]["v"][0] == "b");
 		}
@@ -544,7 +544,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 		}
 
@@ -558,7 +558,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 		}
 		
@@ -574,13 +574,12 @@ namespace UnitTesting {
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
-			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
+			shared_ptr<QueryResultsTable> tables = qo[1]->callAndProcess(dataAccessLayer);
 
-			Assert::IsTrue(tables[1]->getSignificant());
-			Assert::IsTrue(tables[0]->getColumns()[0]["s"][0] == "1");
-			Assert::IsTrue(tables[1]->getColumns()[0]["s"][0] == "1");
-			Assert::IsTrue(tables[1]->getColumns()[0]["s"][1] == "2");
+			Assert::IsTrue(tables->getSignificant());
+			Assert::IsTrue(tables->getColumns()[0]["s"][0] == "1");
+			Assert::IsTrue(tables->getColumns()[0]["s"][0] == "1");
+			Assert::IsTrue(tables->getColumns()[0]["s"][1] == "2");
 		}
 
 		TEST_METHOD(TestValidPatternWildcardPartialConstant) {
@@ -594,13 +593,12 @@ namespace UnitTesting {
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
-			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
+			shared_ptr<QueryResultsTable> tables = qo[1]->callAndProcess(dataAccessLayer);
 
-			Assert::IsTrue(tables[1]->getSignificant());
-			Assert::IsTrue(tables[0]->getColumns()[0]["s"][0] == "1");
-			Assert::IsTrue(tables[1]->getColumns()[0]["s"][0] == "3");
-			Assert::IsTrue(tables[1]->getColumns()[0]["s"][1] == "4");
+			Assert::IsTrue(tables->getSignificant());
+			Assert::IsTrue(tables->getColumns()[0]["s"][0] == "1");
+			Assert::IsTrue(tables->getColumns()[0]["s"][0] == "3");
+			Assert::IsTrue(tables->getColumns()[0]["s"][1] == "4");
 		}
 
 		TEST_METHOD(TestValidPatternWildcardPartialVariable) {
@@ -614,13 +612,12 @@ namespace UnitTesting {
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
-			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
+			shared_ptr<QueryResultsTable> tables = qo[1]->callAndProcess(dataAccessLayer);
 
-			Assert::IsTrue(tables[1]->getSignificant());
-			Assert::IsTrue(tables[0]->getColumns()[0]["s"][0] == "1");
-			Assert::IsTrue(tables[1]->getColumns()[0]["s"][0] == "2");
-			Assert::IsTrue(tables[1]->getColumns()[0]["s"][1] == "3");
+			Assert::IsTrue(tables->getSignificant());
+			Assert::IsTrue(tables->getColumns()[0]["s"][0] == "1");
+			Assert::IsTrue(tables->getColumns()[0]["s"][0] == "2");
+			Assert::IsTrue(tables->getColumns()[0]["s"][1] == "3");
 		}
 
 		TEST_METHOD(TestValidPatternCharStringWildcard) {
@@ -634,13 +631,12 @@ namespace UnitTesting {
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
-			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
+			shared_ptr<QueryResultsTable> tables = qo[1]->callAndProcess(dataAccessLayer);
 
-			Assert::IsTrue(tables[1]->getSignificant());
-			Assert::IsTrue(tables[0]->getColumns()[0]["s"][0] == "1");
-			Assert::IsTrue(tables[1]->getColumns()[0]["s"][0] == "2");
-			Assert::IsTrue(tables[1]->getColumns()[0]["s"][1] == "3");
+			Assert::IsTrue(tables->getSignificant());
+			Assert::IsTrue(tables->getColumns()[0]["s"][0] == "1");
+			Assert::IsTrue(tables->getColumns()[0]["s"][0] == "2");
+			Assert::IsTrue(tables->getColumns()[0]["s"][1] == "3");
 		}
 
 		TEST_METHOD(TestValidPatternCharStringPartialConstant) {
@@ -654,12 +650,11 @@ namespace UnitTesting {
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
-			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
+			shared_ptr<QueryResultsTable> tables = qo[1]->callAndProcess(dataAccessLayer);
 
-			Assert::IsTrue(tables[1]->getSignificant());
-			Assert::IsTrue(tables[0]->getColumns()[0]["s"][0] == "1");
-			Assert::IsTrue(tables[1]->getColumns()[0]["s"][0] == "3");
+			Assert::IsTrue(tables->getSignificant());
+			Assert::IsTrue(tables->getColumns()[0]["s"][0] == "1");
+			Assert::IsTrue(tables->getColumns()[0]["s"][0] == "3");
 		}
 
 		TEST_METHOD(TestValidPatternCharStringPartialVariable) {
@@ -673,12 +668,11 @@ namespace UnitTesting {
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
-			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
+			shared_ptr<QueryResultsTable> tables = qo[1]->callAndProcess(dataAccessLayer);
 
-			Assert::IsTrue(tables[1]->getSignificant());
-			Assert::IsTrue(tables[0]->getColumns()[0]["s"][0] == "1");
-			Assert::IsTrue(tables[1]->getColumns()[0]["s"][0] == "3");
+			Assert::IsTrue(tables->getSignificant());
+			Assert::IsTrue(tables->getColumns()[0]["s"][0] == "1");
+			Assert::IsTrue(tables->getColumns()[0]["s"][0] == "3");
 		}
 
 		TEST_METHOD(TestValidPatternVarSynWildcard) {
@@ -692,20 +686,19 @@ namespace UnitTesting {
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
-			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
+			shared_ptr<QueryResultsTable> tables = qo[1]->callAndProcess(dataAccessLayer);
 
-			Assert::IsTrue(tables[1]->getSignificant());
-			Assert::IsTrue(tables[0]->getColumns()[0]["s"][0] == "1");
-			Assert::IsTrue(tables[1]->getColumns()[0]["s"][0] == "1");
-			Assert::IsTrue(tables[1]->getColumns()[0]["s"][1] == "2");
-			Assert::IsTrue(tables[1]->getColumns()[0]["s"][2] == "3");
-			Assert::IsTrue(tables[1]->getColumns()[0]["s"][3] == "3");
+			Assert::IsTrue(tables->getSignificant());
+			Assert::IsTrue(tables->getColumns()[0]["s"][0] == "1");
+			Assert::IsTrue(tables->getColumns()[0]["s"][0] == "1");
+			Assert::IsTrue(tables->getColumns()[0]["s"][1] == "2");
+			Assert::IsTrue(tables->getColumns()[0]["s"][2] == "3");
+			Assert::IsTrue(tables->getColumns()[0]["s"][3] == "3");
 
-			Assert::IsTrue(tables[1]->getColumns()[1]["v"][0] == "a");
-			Assert::IsTrue(tables[1]->getColumns()[1]["v"][1] == "b");
-			Assert::IsTrue(tables[1]->getColumns()[1]["v"][2] == "b");
-			Assert::IsTrue(tables[1]->getColumns()[1]["v"][3] == "c");
+			Assert::IsTrue(tables->getColumns()[1]["v"][0] == "a");
+			Assert::IsTrue(tables->getColumns()[1]["v"][1] == "b");
+			Assert::IsTrue(tables->getColumns()[1]["v"][2] == "b");
+			Assert::IsTrue(tables->getColumns()[1]["v"][3] == "c");
 		}
 
 		TEST_METHOD(TestValidPatternVarSynPartialConstant) {
@@ -719,15 +712,14 @@ namespace UnitTesting {
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
-			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
+			shared_ptr<QueryResultsTable> tables = qo[1]->callAndProcess(dataAccessLayer);
 
-			Assert::IsTrue(tables[1]->getSignificant());
-			Assert::IsTrue(tables[0]->getColumns()[0]["s"][0] == "1");
-			Assert::IsTrue(tables[1]->getColumns()[0]["s"][0] == "3");
-			Assert::IsTrue(tables[1]->getColumns()[0]["s"][1] == "3");
-			Assert::IsTrue(tables[1]->getColumns()[1]["v"][0] == "b");
-			Assert::IsTrue(tables[1]->getColumns()[1]["v"][1] == "c");
+			Assert::IsTrue(tables->getSignificant());
+			Assert::IsTrue(tables->getColumns()[0]["s"][0] == "1");
+			Assert::IsTrue(tables->getColumns()[0]["s"][0] == "3");
+			Assert::IsTrue(tables->getColumns()[0]["s"][1] == "3");
+			Assert::IsTrue(tables->getColumns()[1]["v"][0] == "b");
+			Assert::IsTrue(tables->getColumns()[1]["v"][1] == "c");
 		}
 
 		TEST_METHOD(TestValidPatternVarSynPartialVariable) {
@@ -741,16 +733,15 @@ namespace UnitTesting {
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
-			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
+			shared_ptr<QueryResultsTable> tables = qo[1]->callAndProcess(dataAccessLayer);
 
-			Assert::IsTrue(tables[1]->getSignificant());
-			Assert::IsTrue(tables[0]->getColumns()[0]["s"][0] == "1");
-			Assert::IsTrue(tables[1]->getColumns()[0]["s"][0] == "2");
-			Assert::IsTrue(tables[1]->getColumns()[0]["s"][1] == "3");
-			Assert::IsTrue(tables[1]->getColumns()[1]["v"][0] == "b");
-			Assert::IsTrue(tables[1]->getColumns()[1]["v"][1] == "b");
-			Assert::IsTrue(tables[1]->getColumns()[1]["v"][2] == "c");
+			Assert::IsTrue(tables->getSignificant());
+			Assert::IsTrue(tables->getColumns()[0]["s"][0] == "1");
+			Assert::IsTrue(tables->getColumns()[0]["s"][0] == "2");
+			Assert::IsTrue(tables->getColumns()[0]["s"][1] == "3");
+			Assert::IsTrue(tables->getColumns()[1]["v"][0] == "b");
+			Assert::IsTrue(tables->getColumns()[1]["v"][1] == "b");
+			Assert::IsTrue(tables->getColumns()[1]["v"][2] == "c");
 		}
 
 
@@ -765,16 +756,15 @@ namespace UnitTesting {
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(qo, synonyms, dataAccessLayer);
-			vector<shared_ptr<QueryResultsTable>> tables = queryBuilder->buildQuery();
+			shared_ptr<QueryResultsTable> tables = qo[1]->callAndProcess(dataAccessLayer);
 
-			Assert::IsTrue(tables[1]->getSignificant());
-			Assert::IsTrue(tables[0]->getColumns()[0]["s"][0] == "1");
-			Assert::IsTrue(tables[1]->getColumns()[0]["s"][0] == "2");
-			Assert::IsTrue(tables[1]->getColumns()[0]["s"][1] == "3");
-			Assert::IsTrue(tables[2]->getSignificant());
-			Assert::IsTrue(tables[2]->getColumns()[0]["s"][0] == "3");
-			Assert::IsTrue(tables[2]->getColumns()[0]["s"][1] == "4");
+			Assert::IsTrue(tables->getSignificant());
+			Assert::IsTrue(tables->getColumns()[0]["s"][0] == "1");
+			Assert::IsTrue(tables->getColumns()[0]["s"][0] == "2");
+			Assert::IsTrue(tables->getColumns()[0]["s"][1] == "3");
+			Assert::IsTrue(tables->getSignificant());
+			Assert::IsTrue(tables->getColumns()[0]["s"][0] == "3");
+			Assert::IsTrue(tables->getColumns()[0]["s"][1] == "4");
 
 		}
 
@@ -789,7 +779,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 			Assert::IsTrue(table->getColumns()[0]["s"][0] == "a" && table->getColumns()[1]["s1"][0] == "b");
 			Assert::IsTrue(table->getColumns()[0]["s"][1] == "b" && table->getColumns()[1]["s1"][1] == "c");
@@ -808,7 +798,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 			Assert::IsTrue(table->getColumns()[0]["s"][0] == "a");
 			Assert::IsTrue(table->getColumns()[0]["s"][1] == "b");
@@ -825,7 +815,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 			Assert::IsTrue(table->getColumns()[0]["s"][0] == "b");
 		}
@@ -840,7 +830,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 			Assert::IsTrue(table->getColumns()[0]["s"][0] == "b");
 			Assert::IsTrue(table->getColumns()[0]["s"][1] == "c");
@@ -858,7 +848,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 		}
 
@@ -872,7 +862,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 		}
 
@@ -886,7 +876,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 			Assert::IsTrue(table->getColumns()[0]["s"][0] == "d");
 			Assert::IsTrue(table->getColumns()[0]["s"][1] == "e");
@@ -902,7 +892,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 		}
 
@@ -916,7 +906,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(!table->getSignificant());
 		}
 
@@ -930,7 +920,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
 		}
 
@@ -944,7 +934,7 @@ namespace UnitTesting {
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
-			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer, synonyms);
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(!table->getSignificant());
 		}
 	};

@@ -71,18 +71,18 @@ inline shared_ptr<QueryResultsTable> handleFollowsParents(shared_ptr<ClauseArg> 
 	throw SemanticErrorException("Error evaluating clause: " + clause);
 }
 
-shared_ptr<QueryResultsTable> FollowsObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) {
+shared_ptr<QueryResultsTable> FollowsObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) {
 	return handleFollowsParents(getArg1(), getArg2(), dataAccessLayer, FOLLOWS);
 }
 
-shared_ptr<QueryResultsTable> FollowsStarObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) {
+shared_ptr<QueryResultsTable> FollowsStarObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) {
 	return handleFollowsParents(getArg1(), getArg2(), dataAccessLayer, FOLLOWSSTAR);
 }
 
-shared_ptr<QueryResultsTable> ParentObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) {
+shared_ptr<QueryResultsTable> ParentObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) {
 	return handleFollowsParents(getArg1(), getArg2(), dataAccessLayer, PARENT);
 }
 
-shared_ptr<QueryResultsTable> ParentStarObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) {
+shared_ptr<QueryResultsTable> ParentStarObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) {
 	return handleFollowsParents(getArg1(), getArg2(), dataAccessLayer, PARENTSTAR);
 }

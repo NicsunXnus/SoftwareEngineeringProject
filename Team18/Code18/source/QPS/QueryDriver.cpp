@@ -23,13 +23,16 @@ list<string> QueryDriver::execute() {
 		vector<std::string_view> tokensView{ sToSvVector(tokens) };
 
 		vector<shared_ptr<QueryObject>> queryObjects = parser->parsePQL(tokensView);
-		unordered_map<string_view, shared_ptr<QueryObject>> synonyms = parser->getSynonyms();
+		vector<shared_ptr<QueryObject>> selectClauseQueryObjects = parser->getSelectClauseQueryObject(queryObjects);
+		vector<shared_ptr<QueryObject>> nonSelectClauseQueryObjects = parser->getNonSelectClauseQueryObject(queryObjects);
 		shared_ptr<DataAccessLayer> dataAccessLayer = make_shared<DataAccessLayer>();
-		shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(queryObjects, synonyms, dataAccessLayer);
-		
-		vector<shared_ptr<QueryResultsTable>> queryResultsTable = queryBuilder->buildQuery();
+		shared_ptr<QueryBuilder> queryBuilder = make_shared<QueryBuilder>(selectClauseQueryObjects, nonSelectClauseQueryObjects, dataAccessLayer);
+
+		vector<shared_ptr<QueryResultsTable>> queryResultsTableSelectClause = queryBuilder->buildQuerySelectClause();
+		vector<shared_ptr<QueryResultsTable>> queryResultsTableNonSelect = queryBuilder->buildQuery();
+
 		shared_ptr<ResultHandler> resultHandler = make_shared<ResultHandler>();
-		list<string> finalResult = resultHandler->processTables(queryResultsTable);
+		list<string> finalResult = resultHandler->processTables(queryResultsTableSelectClause, queryResultsTableNonSelect);
 
 		set<string> uniqueStrings;
 		for (const string& str : finalResult) {
