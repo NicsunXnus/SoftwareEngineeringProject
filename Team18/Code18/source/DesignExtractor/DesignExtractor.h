@@ -183,7 +183,7 @@ private:
         static shared_ptr<map<string, unordered_set<string>>> parentsStarSet = convertVectorToUnorderedSet(parentsMap);
         static shared_ptr<map<string, unordered_set<string>>> followsStarSet = convertVectorToUnorderedSet(followsMap);
         static shared_ptr<map<string, unordered_set<string>>> callSet = convertVectorToUnorderedSet(callMap);
-        static shared_ptr<map<string, unordered_set<string>>> callStarSet = convertVectorToUnorderedSet(callMap);
+        static shared_ptr<map<string, unordered_set<string>>> callStarSet = convertVectorToUnorderedSet(callStarMap);
         static shared_ptr<map<string, unordered_set<string>>> nextSet = convertVectorToUnorderedSet(nextMap);
 
         // Insert the abstractions into the PKB
