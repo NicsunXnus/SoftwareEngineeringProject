@@ -196,13 +196,14 @@ protected:
     void processNestedIfWhileStatements() {
         preProcessNestedIfWhileStatements();
         for (const auto& [key, values] : *this->AbstractionStorageMap) {
+            vector<string> nestedStatements = vector<string>();
             for (const auto& value : values) {
                 if (this->ifWhileNestedStatementsMap->find(value) != this->ifWhileNestedStatementsMap->end()) {
-                    vector<string> nestedStatements = this->ifWhileNestedStatementsMap->at(value);
-                    for (const auto& nestedStatement : nestedStatements) {
-                        insertToAbstractionMap(key, nestedStatement);
-                    }
+                    nestedStatements = this->ifWhileNestedStatementsMap->at(value);
                 }
+            }
+            for (const auto& nestedStatement : nestedStatements) {
+                insertToAbstractionMap(key, nestedStatement);
             }
         }
         
