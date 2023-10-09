@@ -37,7 +37,7 @@ public:
     void handleProgram(std::shared_ptr<ProgramNode> programNode) {
         std::vector<std::shared_ptr<ProcedureNode>> procedures = programNode->getProcedures();
         for (const auto &procedure : procedures) {
-            insertToAbstractionMap(procedure->getName());
+            // insertToAbstractionMap(procedure->getName());
             extractDesigns(procedure);
         }
     }
