@@ -171,7 +171,8 @@ private:
         static shared_ptr<map<string, vector<string>>> usesMap = this->usesExtractor->getStorageMap();
         static shared_ptr<map<string, vector<string>>> parentsMap = this->parentsExtractor->getStorageMap();
         static shared_ptr<map<string, vector<string>>> followsMap = this->followsExtractor->getStorageMap();
-        static shared_ptr<map<string, vector<string>>> callMap = this->callsExtractor->getStorageMap();
+        static shared_ptr<map<string, vector<string>>> callStarMap = this->callsExtractor->getStorageMap();
+        static shared_ptr<map<string, vector<string>>> callMap = this->callsExtractor->getCallsAbstractionStorageMap();
         static shared_ptr<map<string, vector<string>>> nextMap = this->nextExtractor->getStorageMap();
 
         // Convert the maps to unordered sets
@@ -181,7 +182,7 @@ private:
         static shared_ptr<map<string, unordered_set<string>>> followsSet = convertAbstractionStarToAbstraction(followsMap);
         static shared_ptr<map<string, unordered_set<string>>> parentsStarSet = convertVectorToUnorderedSet(parentsMap);
         static shared_ptr<map<string, unordered_set<string>>> followsStarSet = convertVectorToUnorderedSet(followsMap);
-        static shared_ptr<map<string, unordered_set<string>>> callSet = convertAbstractionStarToAbstraction(callMap);
+        static shared_ptr<map<string, unordered_set<string>>> callSet = convertVectorToUnorderedSet(callMap);
         static shared_ptr<map<string, unordered_set<string>>> callStarSet = convertVectorToUnorderedSet(callMap);
         static shared_ptr<map<string, unordered_set<string>>> nextSet = convertVectorToUnorderedSet(nextMap);
 
