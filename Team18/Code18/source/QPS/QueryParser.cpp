@@ -419,7 +419,7 @@ bool QueryParser::isSelectTuple(std::vector<string_view>& query, int index, int&
 		return false;
 	}
 
-	if (query[index + tokenCount] != ">"sv) { // broke out of loop due to reaching query end, invalid tuple structure
+	if (index + tokenCount == static_cast<int>(query.size())) { // broke out of loop due to reaching query end, invalid tuple structure
 		return false;
 	}
 	else if (tokenCount == 1) { // select tuple is empty. E.g Select <>
@@ -436,6 +436,7 @@ bool QueryParser::isSelectElem(std::vector<string_view>& query, int index, int& 
 	// check if query has only 1 token left
 	if (static_cast<int>(query.size()) < index + ATTR_REF_TOKEN_COUNT) { // query not long enough to contain a attrRef, must be a synonym
 		tokenCount = 1;
+		return true;
 	}
 
 	if (query[index + 1] == "."sv) { // elem is a attrRef
