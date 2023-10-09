@@ -24,6 +24,7 @@ public:
         this->UsesModifiesCallsMap = std::make_shared<map<string, vector<string>>>();
         this->procedureCallLinesMap = std::make_shared<map<string, vector<string>>>();
         this->lineNumberToProcedureNameExtractor = make_shared<LineNumberToProcedureNameExtractor>();
+        this->ifWhileNestedStatementsMap = std::make_shared<map<string, vector<string>>>();
     }
 
     // Overriden method to store variable name (no default implmentation)
