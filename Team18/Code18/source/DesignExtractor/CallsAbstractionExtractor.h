@@ -34,6 +34,14 @@ public:
         insertToAbstractionMap(parentProcedureName, procedureCalledName);
     }
 
+    void handleProgram(std::shared_ptr<ProgramNode> programNode) {
+        std::vector<std::shared_ptr<ProcedureNode>> procedures = programNode->getProcedures();
+        for (const auto &procedure : procedures) {
+            insertToAbstractionMap(procedure->getName());
+            extractDesigns(procedure);
+        }
+    }
+
     void extractAbstractions(shared_ptr<ASTNode> astNode) override {
         // Create LineNumberToProcedureNameExtractor to extract the LineNumberToProcedureName abstraction
         this->lineNumberToProcedureNameExtractor->extractDesigns(astNode);
