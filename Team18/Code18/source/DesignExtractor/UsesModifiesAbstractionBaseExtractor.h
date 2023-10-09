@@ -37,24 +37,11 @@ public:
     void handleWhile(std::shared_ptr<WhileNode> whileNode) override {
         preProcessWhileNode(whileNode);
         std::vector<std::shared_ptr<StatementNode>> statements = whileNode->getStatements();
-        std::vector<int> nestedStatements = vector<int>();
 
         for (const auto& statement : statements) {
             int statementNumber = statement->getStatementNumber();
-
-            // Add the statement number to the vector
-            nestedStatements.push_back(statementNumber);
-
+            insertIntoMap(statementNumber, whileNode->getStatementNumber(), ifWhileNestedStatementsMap);
             extractDesigns(statement);
-        }
-        // if any of the nestedStatement values can be found in the AbstractionStorageMap, add the whileNode statement number to the AbstractionStorageMap
-        for (const auto& nestedStatement : nestedStatements) {
-            for (const auto& [variable, values] : *this->AbstractionStorageMap) {
-                if (std::find(values.begin(), values.end(), to_string(nestedStatement)) != values.end()) {
-                    string statementNumber = to_string(whileNode->getStatementNumber());
-                    addStatementNumberAndProcedureName(variable, statementNumber);
-                }
-            }
         }
     }
 
@@ -64,27 +51,14 @@ public:
         std::vector<std::shared_ptr<StatementNode>> ifStatements = ifNode->getStatements();
         std::vector<std::shared_ptr<StatementNode>> elseStatements = ifNode->getElseStatements();
         std::vector<std::shared_ptr<StatementNode>> statements;
-        std::vector<int> nestedStatements = vector<int>();
 
         statements.insert(statements.end(), ifStatements.begin(), ifStatements.end());
         statements.insert(statements.end(), elseStatements.begin(), elseStatements.end());
         
         for (const auto& statement : statements) {
             int statementNumber = statement->getStatementNumber();
-            
-            // Add the statement number to the vector
-            nestedStatements.push_back(statementNumber);
-            
+            insertIntoMap(statementNumber, ifNode->getStatementNumber(), ifWhileNestedStatementsMap);
             extractDesigns(statement);
-        }
-        // if any of the nestedStatement values can be found in the AbstractionStorageMap, add the ifNode statement number to the AbstractionStorageMap
-        for (const auto& nestedStatement : nestedStatements) {
-            for (const auto& [variable, values] : *this->AbstractionStorageMap) {
-                if (std::find(values.begin(), values.end(), to_string(nestedStatement)) != values.end()) {
-                    string statementNumber = to_string(ifNode->getStatementNumber());
-                    addStatementNumberAndProcedureName(variable, statementNumber);
-                }
-            }
         }
     }
 
@@ -108,12 +82,17 @@ public:
 
         extractDesigns(astNode);
         processIndirectProcedureCalls();
+        processNestedIfWhileStatements();
     }
 
-
 protected:
+    // This map is used to store procedure names as the key and a vector of the procedures names that calls it
     shared_ptr<map<string, vector<string>>> UsesModifiesCallsMap;
+    // This map is used to store procedure names as the key and a vector of the statement numbers that calls it
     shared_ptr<map<string, vector<string>>> procedureCallLinesMap;
+    // This map is used to storeif/while statement number as the key and nested statement numbers as the value 
+    shared_ptr<map<string, vector<string>>> ifWhileNestedStatementsMap;
+    // This extractor contains a map and a method to get the procedure name from a statement number
     shared_ptr<LineNumberToProcedureNameExtractor> lineNumberToProcedureNameExtractor; 
     
 
@@ -154,7 +133,7 @@ protected:
     }
 
     // for all keys in the AbstractionStorageMap, if a value within its vector can be found 
-    // in the UsesModifiesCallsMap, add the vector of values from the UsesModifiesCallsMap to 
+    // in keys of the UsesModifiesCallsMap, add the vector of key's from the UsesModifiesCallsMap to 
     // the vector of values in the AbstractionStorageMap
     void processIndirectProcedureCalls() {
         for (const auto& [variable, values] : *this->AbstractionStorageMap) {
@@ -176,5 +155,55 @@ protected:
                 
             }
         }
+    }
+
+    // This method checks with the ifWhileNestedStatementsMap to see if any of the keys can be found in the values
+    // if it does, add the vector of values to that key's vector of values. This is repeated until no more changes are made
+    void preProcessNestedIfWhileStatements() {
+        for (auto it = ifWhileNestedStatementsMap->begin(); it != ifWhileNestedStatementsMap->end(); ++it) {
+            const string& key = it->first;          // Get the key
+            vector<string>& values = it->second;    // Get the vector of values associated with the key
+            
+            // Check if any of the values can be found in other keys
+            for (auto& value : values) {
+                // Iterate over the map entries again to look for matches
+                for (auto it2 = ifWhileNestedStatementsMap->begin(); it2 != ifWhileNestedStatementsMap->end(); ++it2) {
+                    if (it2 != it) {  // Skip the current key-value pair
+                        vector<string>& otherValues = it2->second;  // Get the vector of values of the other key
+                        
+                        // Check if the value is in the other key's vector
+                        auto found = find(otherValues.begin(), otherValues.end(), value);
+                        
+                        if (found != otherValues.end()) {
+                            // Add the entire vector of values to the key's values
+                            values.insert(values.end(), otherValues.begin(), otherValues.end());
+                            // Remove the other key's entry since its values are merged
+                            ifWhileNestedStatementsMap->erase(it2);
+                            // Restart the iteration to recheck with the newly added values
+                            it = ifWhileNestedStatementsMap->begin();
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // This method checks through the values of AbstractionStorageMap to see if any of the values 
+    // can be found as the key in the ifWhileNestedStatementsMap, if it does, add the vector 
+    // of values of that key
+    void processNestedIfWhileStatements() {
+        preProcessNestedIfWhileStatements();
+        for (const auto& [key, values] : *this->AbstractionStorageMap) {
+            for (const auto& value : values) {
+                if (this->ifWhileNestedStatementsMap->find(value) != this->ifWhileNestedStatementsMap->end()) {
+                    vector<string> nestedStatements = this->ifWhileNestedStatementsMap->at(value);
+                    for (const auto& nestedStatement : nestedStatements) {
+                        insertToAbstractionMap(key, nestedStatement);
+                    }
+                }
+            }
+        }
+        
     }
 };
