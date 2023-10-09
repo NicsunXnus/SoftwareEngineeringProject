@@ -54,6 +54,10 @@ public:
 		return synonyms;
 	}
 
+	int getTupleObjectCount() {
+		return queryObjectsInTuple;
+	}
+
 
 private:
 	// Synonyms declared in the query's declaration statements
@@ -72,6 +76,8 @@ private:
 	int SUCH_THAT_CLAUSE_TOKEN_COUNT{ 6 };
 	int MIN_PATTERN_CLAUSE_TOKEN_COUNT{ 6 };
 	int MAX_PATTERN_CLAUSE_TOKEN_COUNT{ 8 };
+	int ATTR_REF_TOKEN_COUNT{ 3 }; // e.g., 'p', '.', 'procName'
+	int queryObjectsInTuple{ 1 }; // The number of query objects in the select tuple of the query
 
 
 	/*
@@ -102,6 +108,20 @@ private:
 
 	// Creates a pattern clause query object 
 	shared_ptr<QueryObject> createPatternObject(std::vector<string_view>& query, int& index, int tokenCount);
+
+	/*
+	* Helper function to check if select clause is a tuple, and gets the number of tokens until the tuple bracket closes
+	* Does not check for validity of inputs, only checks if there is a correct sequence of tokens for a valid tuple
+	*/ 
+	bool isSelectTuple(std::vector<string_view>& query, int index, int& tokenCount);
+
+	/*
+	* Helper function to check if select clause has the structure of an elem (synonym or attrRef) and gets the respective token counts
+	*/
+	bool isSelectElem(std::vector<string_view>& query, int index, int& tokenCount);
+
+	// Returns a vector of declaration query objects or with clause objects specified in the tuple
+	std::vector<shared_ptr<QueryObject>> createTupleObjects(std::vector<string_view>& query, int& index, int tokenCount);
 
 	// Stores semantic errors to be thrown once syntax validation is complete
 	void storeSemanticError(shared_ptr<SemanticErrorException> semanticError);

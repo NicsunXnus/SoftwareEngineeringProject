@@ -163,4 +163,13 @@ static std::list<std::string> vectorToList(std::vector<std::string> vectorOfStri
     std::list<std::string> listOfString(vectorOfString.begin(), vectorOfString.end());
     return listOfString;
 }
+
+// Converts a vector of strings to a vector of string_views
+static std::vector<std::string_view> sToSvVector(std::vector<std::string>& svVector) {
+    std::vector<std::string_view> v(svVector.size());
+    std::transform(svVector.begin(), svVector.end(), v.begin(), [](const std::string& str) {
+        return std::string_view(str);
+        });
+    return v;
+}
 #endif
