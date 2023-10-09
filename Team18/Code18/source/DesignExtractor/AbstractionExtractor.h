@@ -46,11 +46,4 @@ protected:
         }
     }
 
-    // Inserts a key into the map
-    void insertToAbstractionMap(string key) {
-        if (this->AbstractionStorageMap->find(key) == this->AbstractionStorageMap->end()) {
-            this->AbstractionStorageMap->insert({ key, vector<string>() });
-        }
-    }
-
 };

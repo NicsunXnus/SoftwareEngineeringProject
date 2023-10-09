@@ -167,9 +167,6 @@ namespace UnitTesting
                     Assert::IsTrue(std::find(callsAbstractionMap->at("procedure1").begin(), callsAbstractionMap->at("procedure1").end(), "procedure4") != callsAbstractionMap->at("procedure1").end());
                     Assert::IsTrue(std::find(callsAbstractionMap->at("procedure1").begin(), callsAbstractionMap->at("procedure1").end(), "procedure5") != callsAbstractionMap->at("procedure1").end());
 
-                    // Check the map for the key "procedure2" and that it has no procedures
-                    // Assert::IsTrue(callsAbstractionMap->at("procedure2").size() == 0);
-
                     // Check the map for the key "procedure3" and that it has procedures 2, 4 and 5 individually
                     Assert::IsTrue(std::find(callsAbstractionMap->at("procedure3").begin(), callsAbstractionMap->at("procedure3").end(), "procedure2") != callsAbstractionMap->at("procedure3").end());
                     Assert::IsTrue(std::find(callsAbstractionMap->at("procedure3").begin(), callsAbstractionMap->at("procedure3").end(), "procedure4") != callsAbstractionMap->at("procedure3").end());
