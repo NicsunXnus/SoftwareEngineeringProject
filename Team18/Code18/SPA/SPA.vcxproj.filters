@@ -102,6 +102,9 @@
     <ClInclude Include="..\source\DesignExtractor\UsesModifiesAbstractionBaseExtractor.h">
       <Filter>DesignExtractor</Filter>
     </ClInclude>
+    <ClInclude Include="..\source\DesignExtractor\CallsAbstractionBaseExtractor.h">
+      <Filter>DesignExtractor</Filter>
+    </ClInclude>
     <ClInclude Include="..\source\PKB\Adapter.h">
       <Filter>PKB</Filter>
     </ClInclude>
