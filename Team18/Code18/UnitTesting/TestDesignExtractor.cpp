@@ -103,13 +103,13 @@ namespace UnitTesting
                         "            print z;"
                         "            call procedure2;"
                         "        } else {"
-                        "            call procedure3;" 12
+                        "            call procedure3;" 
                         "        }"
                         "    }"
                         "}"
                         ""
                         "procedure procedure2 {"
-                        "    a = b + c * d / e - f;" 13
+                        "    a = b + c * d / e - f;" 
                         "    print a;"
                         "    read f;"
                         ""
@@ -120,36 +120,36 @@ namespace UnitTesting
                         "    }"
                         ""
                         "    while (f == 0) {"
-                        "        read f;" 20
+                        "        read f;" 
                         "    }"
                         "}"
                         ""
                         "procedure procedure3 {"
-                        "    if (x == 0) then {" 21
+                        "    if (x == 0) then {" 
                         "        call procedure5;"
                         "        x = y;"
                         "    } else {"
                         "        call procedure4;"
-                        "        y = y + 1;" 25
+                        "        y = y + 1;" 
                         "    }"
                         "}"
                         ""
                         "procedure procedure4 {"
-                        "    while (x - 3 >= y) {" 26
+                        "    while (x - 3 >= y) {" 
                         "        call procedure2;"
-                        "        y = 100 + 50 + 100;" 28
+                        "        y = 100 + 50 + 100;" 
                         "    }"
                         "}"
                         ""
                         "procedure procedure5 {"
-                        "    while (x <= 100) {" 29
+                        "    while (x <= 100) {" 
                         "        read x;"
                         "        call procedure4;"
                         "        if (x != 25) then {"
                         "            x = x + 1;"
                         "            call procedure4;"
                         "        } else {"
-                        "            call procedure2;" 35
+                        "            call procedure2;" 
                         "        }"
                         "    }"
                         "}";
