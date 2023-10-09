@@ -47,6 +47,7 @@ public:
             }
         }
         std::cerr << "Error: Statement number not found in procedureStatementStorageMap" << std::endl;
+        return "SOMETHING ISN'T WORKING"
     }
 
     // Get procedureStatementStorageMap
