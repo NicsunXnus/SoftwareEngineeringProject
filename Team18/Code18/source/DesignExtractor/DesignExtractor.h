@@ -69,7 +69,7 @@ public:
     }
 
     void extractCalls(shared_ptr<ASTNode> astNode) {
-        nextExtractor->extractAbstractions(astNode);
+        callsExtractor->extractAbstractions(astNode);
     }
 
     shared_ptr<WithExtractor> getWithExtractor() {
