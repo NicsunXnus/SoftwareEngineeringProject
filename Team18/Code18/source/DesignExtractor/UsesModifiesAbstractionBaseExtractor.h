@@ -197,7 +197,7 @@ protected:
         preProcessNestedIfWhileStatements();
         for (const auto& [statementNumber, parentStatementNumbers] : *this->ifWhileNestedStatementsMap) {
             for (const auto& [variable, values] : *this->AbstractionStorageMap) {
-                if (std::find(values.begin(), values.end(), to_string(statementNumber)) != values.end()) {
+                if (std::find(values.begin(), values.end(), statementNumber) != values.end()) {
                     for (const auto& parentStatementNumber : parentStatementNumbers) {
                         addStatementNumberAndProcedureName(variable, statementNumber);
                     }
