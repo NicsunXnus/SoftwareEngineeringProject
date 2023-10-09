@@ -23,6 +23,7 @@ public:
     UsesModifiesAbstractionBaseExtractor() {
         this->UsesModifiesCallsMap = std::make_shared<map<string, vector<string>>>();
         this->procedureCallLinesMap = std::make_shared<map<string, vector<string>>>();
+        this->lineNumberToProcedureNameExtractor = make_shared<LineNumberToProcedureNameExtractor>();
     }
 
     // Overriden method to store variable name (no default implmentation)
@@ -89,7 +90,7 @@ public:
 
     void handleCall(std::shared_ptr<CallNode> callNode) override {
         string statementNumber = to_string(callNode->getStatementNumber());
-        string procedureName = getProcedureNameFromStatementNumber(statementNumber);
+        string procedureName = this->lineNumberToProcedureNameExtractor->getProcedureNameFromStatementNumber(statementNumber);
         string procedureCalledName = callNode->getProc()->getName();
         insertToAbstractionMap(procedureName, statementNumber);
         insertIntoMap(procedureCalledName, statementNumber, procedureCallLinesMap);
@@ -101,6 +102,10 @@ public:
         callsAbstractionExtractor->extractAbstractions(astNode);
         shared_ptr<map<string, vector<string>>> callsAbstractionMap = callsAbstractionExtractor->getStorageMap();
         createUsesModifiesCallsMap(callsAbstractionMap);
+
+        // Get LineNumberToProcedureNameExtractor from CallsAbstractionExtractor
+        setLineNumberToProcedureNameExtractor(callsAbstractionExtractor->getLineNumberToProcedureNameExtractor());
+
         extractDesigns(astNode);
         processIndirectProcedureCalls();
     }
@@ -109,10 +114,17 @@ public:
 protected:
     shared_ptr<map<string, vector<string>>> UsesModifiesCallsMap;
     shared_ptr<map<string, vector<string>>> procedureCallLinesMap;
+    shared_ptr<LineNumberToProcedureNameExtractor> lineNumberToProcedureNameExtractor; 
     
-    
+
     virtual void preProcessWhileNode(std::shared_ptr<WhileNode> whileNode) {}
     virtual void preProcessIfNode(std::shared_ptr<IfNode> ifNode) {}
+
+    // Set the LineNumberToProcedureNameExtractor
+    void setLineNumberToProcedureNameExtractor(shared_ptr<LineNumberToProcedureNameExtractor> lineNumberToProcedureNameExtractor) {
+        this->lineNumberToProcedureNameExtractor = lineNumberToProcedureNameExtractor;
+    }
+
 
     void insertIntoMap(string key, string statementNumber, shared_ptr<map<string, vector<string>>> map) {
         // Insert to the map if the key is not found
@@ -133,11 +145,10 @@ protected:
             }
         }
     }
-
     
     // Add both statement number and parent procedure to the AbstractionStorageMap
     void addStatementNumberAndProcedureName(string variableName, string statementNumber) {
-        string parentProcedure = getProcedureNameFromStatementNumber(statementNumber);
+        string parentProcedure = this->lineNumberToProcedureNameExtractor->getProcedureNameFromStatementNumber(statementNumber);
         insertToAbstractionMap(variableName, statementNumber);
         insertToAbstractionMap(variableName, parentProcedure);
     }

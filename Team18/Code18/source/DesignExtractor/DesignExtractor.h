@@ -68,12 +68,20 @@ public:
         patternExtractor->extractDesigns(astNode);
     }
 
+    void extractCalls(shared_ptr<ASTNode> astNode) {
+        nextExtractor->extractAbstractions(astNode);
+    }
+
     shared_ptr<WithExtractor> getWithExtractor() {
         return this->withExtractor;
     }
 
     shared_ptr<PatternExtractor> getPatternExtractor() {
         return this->patternExtractor;
+    }
+
+    shared_ptr<CallsAbstractionExtractor> getCallsExtractor() {
+        return this->callsExtractor;
     }
 
     // Method to get procedure entity

@@ -10,12 +10,18 @@ using namespace std;
 
 #include "../AST/ASTNode.h"
 #include "AbstractionExtractor.h"
+#include "LineNumberToProcedureNameExtractor.h"
 
 /**
  * This class is used to extract the Calls abstraction from the AST.
  */
 class CallsAbstractionExtractor : public AbstractionExtractor {
 public:
+    // Constructor
+    CallsAbstractionExtractor() {
+        this->lineNumberToProcedureNameExtractor = make_shared<LineNumberToProcedureNameExtractor>();
+    }
+    
     // Override methods to avoid unnecessary processing
     void handleRead(std::shared_ptr<ReadNode> readNode) override {}
     void handlePrint(std::shared_ptr<PrintNode> printNode) override {}
@@ -23,17 +29,26 @@ public:
     
     void handleCall(std::shared_ptr<CallNode> callNode) override {
         string statementNumber = to_string(callNode->getStatementNumber());
-        string parentProcedureName = getProcedureNameFromStatementNumber(statementNumber);
+        string parentProcedureName = this->lineNumberToProcedureNameExtractor->getProcedureNameFromStatementNumber(statementNumber);
         string procedureCalledName = callNode->getProc()->getName();
         insertToAbstractionMap(parentProcedureName, procedureCalledName);
     }
 
     void extractAbstractions(shared_ptr<ASTNode> astNode) override {
+        // Create LineNumberToProcedureNameExtractor to extract the LineNumberToProcedureName abstraction
+        this->lineNumberToProcedureNameExtractor->extractDesigns(astNode);
         extractDesigns(astNode);
         processProcedureNames();
     }
 
+    shared_ptr<LineNumberToProcedureNameExtractor> getLineNumberToProcedureNameExtractor() {
+        return this->lineNumberToProcedureNameExtractor;
+    }
+
+
 private:
+    shared_ptr<LineNumberToProcedureNameExtractor> lineNumberToProcedureNameExtractor;
+
     // The method adds all procedures called indirectly by the parent procedure
     void processProcedureNames() {
         for (const auto& [parentProcedureName, procedureCalledNames] : *AbstractionStorageMap) {
