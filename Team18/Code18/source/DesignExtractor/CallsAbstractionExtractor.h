@@ -39,7 +39,7 @@ public:
         // Create LineNumberToProcedureNameExtractor to extract the LineNumberToProcedureName abstraction
         this->lineNumberToProcedureNameExtractor->extractDesigns(astNode);
         extractDesigns(astNode);
-        setCallsAbstractionStorageMap(this->CallsAbstractionStorageMap);
+        setCallsAbstractionStorageMap(this->AbstractionStorageMap);
         processProcedureNames();
     }
 
