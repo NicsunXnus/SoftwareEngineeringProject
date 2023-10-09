@@ -67,6 +67,7 @@ private:
             std::vector<std::shared_ptr<StatementNode>> ifStatements = ifNode->getStatements();
             std::vector<std::shared_ptr<StatementNode>> elseStatements = ifNode->getElseStatements();
             statements.insert(statements.end(), ifStatements.begin(), ifStatements.end());
+            statements.insert(statements.end(), elseStatements.begin(), elseStatements.end());
         }
         else if (statement->getName() == "while") {
             shared_ptr<WhileNode> whileNode = static_pointer_cast<WhileNode>(statement);
