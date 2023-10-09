@@ -43,6 +43,7 @@ public:
         for (const auto& statement : statements) {
             string statementNumber = to_string(statement->getStatementNumber());
             nestedStatements.push_back(statementNumber);
+            extractDesigns(statement);
             
             // insertIntoMap(statementNumber, to_string(whileNode->getStatementNumber()), ifWhileNestedStatementsMap);
 
@@ -55,7 +56,7 @@ public:
                     }
                 }
             }
-            extractDesigns(statement);
+            
         }
     }
 
@@ -73,7 +74,7 @@ public:
         for (const auto& statement : statements) {
             string statementNumber = to_string(statement->getStatementNumber());
             nestedStatements.push_back(statementNumber);
-            
+            extractDesigns(statement);
             // insertIntoMap(statementNumber, to_string(ifNode->getStatementNumber()), ifWhileNestedStatementsMap);
             
             for (const auto& nestedStatement : nestedStatements) {
@@ -84,7 +85,6 @@ public:
                     }
                 }
             }
-            extractDesigns(statement);
         }
     }
 
