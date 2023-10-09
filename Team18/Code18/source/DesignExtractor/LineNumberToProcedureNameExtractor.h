@@ -46,7 +46,7 @@ public:
                 return procedureName;
             }
         }
-        return "SOMETHING ISN'T WORKING";
+        // return "SOMETHING ISN'T WORKING";
         std::cerr << "Error: Statement number not found in procedureStatementStorageMap" << std::endl;
         }
 
