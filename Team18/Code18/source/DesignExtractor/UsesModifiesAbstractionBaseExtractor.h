@@ -108,7 +108,7 @@ public:
 
         extractDesigns(astNode);
         processIndirectProcedureCalls();
-        processNestedIfWhileStatements();
+        // processNestedIfWhileStatements();
     }
 
 protected:
