@@ -46,9 +46,9 @@ public:
                 return procedureName;
             }
         }
+        return "SOMETHING ISN'T WORKING";
         std::cerr << "Error: Statement number not found in procedureStatementStorageMap" << std::endl;
-        return "SOMETHING ISN'T WORKING"
-    }
+        }
 
     // Get procedureStatementStorageMap
     std::shared_ptr<map<string, pair<string, string>>> getProcedureStatementStorageMap() {
