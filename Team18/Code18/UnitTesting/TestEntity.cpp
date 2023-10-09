@@ -241,7 +241,7 @@ namespace UnitTesting
                 DesignExtractor testDesignExtractor = DesignExtractor();
 
                 // Extract the entities from the root node of the AST
-                testDesignExtractor.extractEntities(testProgramNode);
+                testDesignExtractor.extractAllEntities(testProgramNode);
 
                 // Get entities from design extractor
                 std::shared_ptr<ProcedureEntity> testProcedureEntity = testDesignExtractor.getProcedureEntity();

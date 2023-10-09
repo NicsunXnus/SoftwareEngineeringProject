@@ -37,7 +37,7 @@ namespace UnitTesting
                     std::shared_ptr<TokenizedProgram> tokenizedProgram = SimpleTokenizer::tokenizeProgram(sourceCode);
                     std::shared_ptr<ProgramNode> prg = ASTBuilder::parseProgram(tokenizedProgram);
                     DesignExtractor designExtractor = DesignExtractor();
-                    designExtractor.extractWith(prg);
+                    designExtractor.extractAllWith(prg);
                     std::shared_ptr<map<string, unordered_set<string>>> callProcNameMap = designExtractor.getWithExtractor()->getCallProcNameMap();
                     std::shared_ptr<map<string, unordered_set<string>>> readVarNameMap = designExtractor.getWithExtractor()->getReadVarNameMap();
                     std::shared_ptr<map<string, unordered_set<string>>> printVarNameMap = designExtractor.getWithExtractor()->getPrintVarNameMap();
