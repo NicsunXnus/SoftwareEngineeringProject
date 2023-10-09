@@ -46,7 +46,7 @@
     <ClInclude Include="..\source\DesignExtractor\ParentsFollowsAbstractionBaseExtractor.h" />
     <ClInclude Include="..\source\DesignExtractor\UsesAbstractionExtractor.h" />
     <ClInclude Include="..\source\DesignExtractor\UsesModifiesAbstractionBaseExtractor.h" />
-    <ClInclude Include="..\source\DesignExtractor\CallsAbstractionBaseExtractor.h" />
+    <ClInclude Include="..\source\DesignExtractor\CallsAbstractionExtractor.h" />
     <ClInclude Include="..\source\ExceptionMessages.h" />
     <ClInclude Include="..\source\HelperFunctions.h" />
     <ClInclude Include="..\source\PKB.h" />
