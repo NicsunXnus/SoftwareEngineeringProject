@@ -86,8 +86,8 @@ namespace UnitTesting
                         Assert::IsTrue(nodeName == "assign" || nodeName == "while" || nodeName == "if");
                     }
             }
-
-            TEST_METHOD(TestAbstractionsExtraction){
+            
+            TEST_METHOD(TestCallsUsesModifiesAbstractionExtraction){
                     std::string sourceCode =
                         "procedure procedure1 {"
                         "    call procedure2;"
@@ -103,13 +103,13 @@ namespace UnitTesting
                         "            print z;"
                         "            call procedure2;"
                         "        } else {"
-                        "            call procedure3;"
+                        "            call procedure3;" 12
                         "        }"
                         "    }"
                         "}"
                         ""
                         "procedure procedure2 {"
-                        "    a = b + c * d / e - f;"
+                        "    a = b + c * d / e - f;" 13
                         "    print a;"
                         "    read f;"
                         ""
@@ -120,36 +120,36 @@ namespace UnitTesting
                         "    }"
                         ""
                         "    while (f == 0) {"
-                        "        read f;"
+                        "        read f;" 20
                         "    }"
                         "}"
                         ""
                         "procedure procedure3 {"
-                        "    if (x == 0) then {"
+                        "    if (x == 0) then {" 21
                         "        call procedure5;"
                         "        x = y;"
                         "    } else {"
                         "        call procedure4;"
-                        "        y = y + 1;"
+                        "        y = y + 1;" 25
                         "    }"
                         "}"
                         ""
                         "procedure procedure4 {"
-                        "    while (x - 3 >= y) {"
+                        "    while (x - 3 >= y) {" 26
                         "        call procedure2;"
-                        "        y = 100 + 50 + 100;"
+                        "        y = 100 + 50 + 100;" 28
                         "    }"
                         "}"
                         ""
                         "procedure procedure5 {"
-                        "    while (x <= 100) {"
+                        "    while (x <= 100) {" 29
                         "        read x;"
                         "        call procedure4;"
                         "        if (x != 25) then {"
                         "            x = x + 1;"
                         "            call procedure4;"
                         "        } else {"
-                        "            call procedure2;"
+                        "            call procedure2;" 35
                         "        }"
                         "    }"
                         "}";
@@ -158,8 +158,9 @@ namespace UnitTesting
                     DesignExtractor designExtractor = DesignExtractor();
                     designExtractor.extractAllAbstractions(prg);
 
-                    // Get the calls abstraction map
-                    std::shared_ptr<map<string, vector<string>>> callsAbstractionMap = designExtractor.getCallsExtractor()->getStorageMap();
+                    std::shared_ptr<map<string, vector<string>>> callsAbstractionMap = designExtractor.getCallsAbstractionMap();
+                    std::shared_ptr<map<string, vector<string>>> usesAbstractionMap = designExtractor.getUsesAbstractionMap();
+                    std::shared_ptr<map<string, vector<string>>> modifiesAbstractionMap = designExtractor.getModifiesAbstractionMap();
 
                     // Check the map for the key "procedure1" and that it has procedures 2,3,4,5 individually
                     Assert::IsTrue(std::find(callsAbstractionMap->at("procedure1").begin(), callsAbstractionMap->at("procedure1").end(), "procedure2") != callsAbstractionMap->at("procedure1").end());
@@ -178,6 +179,44 @@ namespace UnitTesting
                     // Check the map for the key "procedure5" and that it has procedure2 and procedure4 individually
                     Assert::IsTrue(std::find(callsAbstractionMap->at("procedure5").begin(), callsAbstractionMap->at("procedure5").end(), "procedure2") != callsAbstractionMap->at("procedure5").end());
                     Assert::IsTrue(std::find(callsAbstractionMap->at("procedure5").begin(), callsAbstractionMap->at("procedure5").end(), "procedure4") != callsAbstractionMap->at("procedure5").end());
+
+                    // Check useAbstractionMap for the key "x" and that it has values "4", "5", "6", "7", "8", "12", "21", "22", "24", "26" "29", "32", "33", "procedure1", "procedure3", "procedure4" "procedure5"
+                    Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "4") != usesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "5") != usesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "6") != usesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "7") != usesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "8") != usesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "12") != usesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "21") != usesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "22") != usesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "24") != usesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "26") != usesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "29") != usesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "32") != usesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "33") != usesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "procedure1") != usesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "procedure3") != usesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "procedure4") != usesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "procedure5") != usesAbstractionMap->at("x").end());
+                    Assert::AreEqual(17, (int)usesAbstractionMap->at("x").size());
+
+                    // Check modifiesAbstractionMap for the key "x" and that it has values "2", "5", "6", "8", "12", "21", "22", "23", "29", "30", "32", "33", "procedure1", "procedure3", "procedure5"
+                    Assert::IsTrue(std::find(modifiesAbstractionMap->at("x").begin(), modifiesAbstractionMap->at("x").end(), "2") != modifiesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(modifiesAbstractionMap->at("x").begin(), modifiesAbstractionMap->at("x").end(), "5") != modifiesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(modifiesAbstractionMap->at("x").begin(), modifiesAbstractionMap->at("x").end(), "6") != modifiesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(modifiesAbstractionMap->at("x").begin(), modifiesAbstractionMap->at("x").end(), "8") != modifiesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(modifiesAbstractionMap->at("x").begin(), modifiesAbstractionMap->at("x").end(), "12") != modifiesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(modifiesAbstractionMap->at("x").begin(), modifiesAbstractionMap->at("x").end(), "21") != modifiesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(modifiesAbstractionMap->at("x").begin(), modifiesAbstractionMap->at("x").end(), "22") != modifiesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(modifiesAbstractionMap->at("x").begin(), modifiesAbstractionMap->at("x").end(), "23") != modifiesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(modifiesAbstractionMap->at("x").begin(), modifiesAbstractionMap->at("x").end(), "29") != modifiesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(modifiesAbstractionMap->at("x").begin(), modifiesAbstractionMap->at("x").end(), "30") != modifiesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(modifiesAbstractionMap->at("x").begin(), modifiesAbstractionMap->at("x").end(), "32") != modifiesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(modifiesAbstractionMap->at("x").begin(), modifiesAbstractionMap->at("x").end(), "33") != modifiesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(modifiesAbstractionMap->at("x").begin(), modifiesAbstractionMap->at("x").end(), "procedure1") != modifiesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(modifiesAbstractionMap->at("x").begin(), modifiesAbstractionMap->at("x").end(), "procedure3") != modifiesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(modifiesAbstractionMap->at("x").begin(), modifiesAbstractionMap->at("x").end(), "procedure5") != modifiesAbstractionMap->at("x").end());
+                    Assert::AreEqual(15, (int)modifiesAbstractionMap->at("x").size());
             }
 
             

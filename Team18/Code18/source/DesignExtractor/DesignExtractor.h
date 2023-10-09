@@ -80,8 +80,17 @@ public:
         return this->patternExtractor;
     }
 
-    shared_ptr<CallsAbstractionExtractor> getCallsExtractor() {
-        return this->callsExtractor;
+    
+    shared_ptr<map<string, vector<string>>> getCallsAbstractionMap() {
+        return this->callsExtractor->getStorageMap();
+    }
+
+    shared_ptr<map<string, vector<string>>> getModifiesAbstractionMap() {
+        return this->modifiesExtractor->getStorageMap();
+    }
+
+    shared_ptr<map<string, vector<string>>> getUsesAbstractionMap() {
+        return this->usesExtractor->getStorageMap();
     }
 
     // Method to get procedure entity
