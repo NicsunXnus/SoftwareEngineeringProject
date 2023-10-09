@@ -161,8 +161,25 @@ namespace UnitTesting
                     // Get the calls abstraction map
                     std::shared_ptr<map<string, vector<string>>> callsAbstractionMap = designExtractor.getCallsExtractor()->getStorageMap();
 
-                    // Check if the map is not empty
-                    Assert::IsFalse(callsAbstractionMap->empty());
+                    // Check the map for the key "procedure1" and that it has procedures 2,3,4,5 individually
+                    Assert::IsTrue(std::find(callsAbstractionMap->at("procedure1").begin(), callsAbstractionMap->at("procedure1").end(), "procedure2") != callsAbstractionMap->at("procedure1").end());
+                    Assert::IsTrue(std::find(callsAbstractionMap->at("procedure1").begin(), callsAbstractionMap->at("procedure1").end(), "procedure3") != callsAbstractionMap->at("procedure1").end());
+                    Assert::IsTrue(std::find(callsAbstractionMap->at("procedure1").begin(), callsAbstractionMap->at("procedure1").end(), "procedure4") != callsAbstractionMap->at("procedure1").end());
+                    Assert::IsTrue(std::find(callsAbstractionMap->at("procedure1").begin(), callsAbstractionMap->at("procedure1").end(), "procedure5") != callsAbstractionMap->at("procedure1").end());
+
+                    // Check the map for the key "procedure2" and that it has no procedures
+                    Assert::IsTrue(callsAbstractionMap->at("procedure2").size() == 0);
+
+                    // Check the map for the key "procedure3" and that it has procedures 4 and 5 individually
+                    Assert::IsTrue(std::find(callsAbstractionMap->at("procedure3").begin(), callsAbstractionMap->at("procedure3").end(), "procedure4") != callsAbstractionMap->at("procedure3").end());
+                    Assert::IsTrue(std::find(callsAbstractionMap->at("procedure3").begin(), callsAbstractionMap->at("procedure3").end(), "procedure5") != callsAbstractionMap->at("procedure3").end());
+
+                    // Check the map for the key "procedure4" and that it has procedure2 
+                    Assert::IsTrue(std::find(callsAbstractionMap->at("procedure4").begin(), callsAbstractionMap->at("procedure4").end(), "procedure2") != callsAbstractionMap->at("procedure4").end());
+
+                    // Check the map for the key "procedure5" and that it has procedure2 and procedure4 individually
+                    Assert::IsTrue(std::find(callsAbstractionMap->at("procedure5").begin(), callsAbstractionMap->at("procedure5").end(), "procedure2") != callsAbstractionMap->at("procedure5").end());
+                    Assert::IsTrue(std::find(callsAbstractionMap->at("procedure5").begin(), callsAbstractionMap->at("procedure5").end(), "procedure4") != callsAbstractionMap->at("procedure5").end());
             }
 
             
