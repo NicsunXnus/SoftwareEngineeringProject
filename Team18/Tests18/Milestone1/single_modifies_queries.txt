@@ -26,17 +26,17 @@ a, b, c, d, e
 6 - synonym-synonym, right: var, left: var (not in MS1)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Modifies(v, v)
-SemanticError
+
 5000
 7 - synonym-synonym, right: var, left: print (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Modifies(pn, v)
-SemanticError
+
 5000
 8 - synonym-synonym, right: var, left: constant (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select c such that Modifies(c, v)
-SemanticError
+
 5000
 9 - synonym-synonym, right: var, left: call
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -76,17 +76,17 @@ Select r such that Modifies(r, _)
 16 - synonym-wildcard, left: var (not in MS1)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Modifies(v, _)
-SemanticError
+
 5000
 17 - synonym-wildcard, left: print (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Modifies(pn, _)
-SemanticError
+
 5000
 18 - synonym-wildcard, left: constant (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select c such that Modifies(c, _)
-SemanticError
+
 5000
 19 - synonym-wildcard, left: call 
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;

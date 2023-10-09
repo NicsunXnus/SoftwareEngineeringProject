@@ -17,6 +17,7 @@
     <ClCompile Include="..\source\QPS\DataAccessLayerStub.cpp" />
     <ClCompile Include="..\source\QPS\QueryBuilder.cpp" />
     <ClCompile Include="..\source\QPS\QueryDriver.cpp" />
+    <ClCompile Include="..\source\QPS\QueryObjects\CallsObject.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\FollowsParentObject.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\ModifiesUsesObject.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\QueryObjectFactory.cpp" />
