@@ -195,17 +195,14 @@ protected:
     // of values of that key
     void processNestedIfWhileStatements() {
         preProcessNestedIfWhileStatements();
-        for (const auto& [key, values] : *this->AbstractionStorageMap) {
-            vector<string> nestedStatements = vector<string>();
-            for (const auto& value : values) {
-                if (this->ifWhileNestedStatementsMap->find(value) != this->ifWhileNestedStatementsMap->end()) {
-                    nestedStatements = this->ifWhileNestedStatementsMap->at(value);
+        for (const auto& [statementNumber, parentStatementNumbers] : ifWhileNestedStatementsMap) {
+            for (const auto& [variable, values] : *this->AbstractionStorageMap) {
+                if (std::find(values.begin(), values.end(), to_string(statementNumber)) != values.end()) {
+                    for (const auto& parentStatementNumber : parentStatementNumbers) {
+                        addStatementNumberAndProcedureName(variable, statementNumber);
+                    }
                 }
             }
-            for (const auto& nestedStatement : nestedStatements) {
-                insertToAbstractionMap(key, nestedStatement);
-            }
         }
-        
     }
 };
