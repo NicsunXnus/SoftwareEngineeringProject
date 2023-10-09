@@ -40,8 +40,8 @@ public:
         std::vector<std::shared_ptr<StatementNode>> statements = whileNode->getStatements();
 
         for (const auto& statement : statements) {
-            int statementNumber = statement->getStatementNumber();
-            insertIntoMap(statementNumber, whileNode->getStatementNumber(), ifWhileNestedStatementsMap);
+            string statementNumber = to_string(statement->getStatementNumber());
+            insertIntoMap(statementNumber, to_string(whileNode->getStatementNumber()), ifWhileNestedStatementsMap);
             extractDesigns(statement);
         }
     }
@@ -57,8 +57,8 @@ public:
         statements.insert(statements.end(), elseStatements.begin(), elseStatements.end());
         
         for (const auto& statement : statements) {
-            int statementNumber = statement->getStatementNumber();
-            insertIntoMap(statementNumber, ifNode->getStatementNumber(), ifWhileNestedStatementsMap);
+            string statementNumber = to_string(statement->getStatementNumber());
+            insertIntoMap(statementNumber, to_string(ifNode->getStatementNumber()), ifWhileNestedStatementsMap);
             extractDesigns(statement);
         }
     }
