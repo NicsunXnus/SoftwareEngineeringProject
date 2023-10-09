@@ -87,7 +87,7 @@ namespace UnitTesting
                     }
             }
 
-            TEST_METHOD(TestCallsExtraction){
+            TEST_METHOD(TestAbstractionsExtraction){
                     std::string sourceCode =
                         "procedure procedure1 {"
                         "    call procedure2;"
@@ -156,7 +156,7 @@ namespace UnitTesting
                     std::shared_ptr<TokenizedProgram> tokenizedProgram = SimpleTokenizer::tokenizeProgram(sourceCode);
                     std::shared_ptr<ProgramNode> prg = ASTBuilder::parseProgram(tokenizedProgram);
                     DesignExtractor designExtractor = DesignExtractor();
-                    designExtractor.extractCalls(prg);
+                    designExtractor.extractAllAbstractions(prg);
 
                     // Get the calls abstraction map
                     std::shared_ptr<map<string, vector<string>>> callsAbstractionMap = designExtractor.getCallsExtractor()->getStorageMap();
