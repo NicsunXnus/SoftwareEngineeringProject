@@ -180,7 +180,7 @@ namespace UnitTesting
                     Assert::IsTrue(std::find(callsAbstractionMap->at("procedure5").begin(), callsAbstractionMap->at("procedure5").end(), "procedure2") != callsAbstractionMap->at("procedure5").end());
                     Assert::IsTrue(std::find(callsAbstractionMap->at("procedure5").begin(), callsAbstractionMap->at("procedure5").end(), "procedure4") != callsAbstractionMap->at("procedure5").end());
 
-                    // Check useAbstractionMap for the key "x" and that it has values "4", "5", "6", "7", "8", "12", "21", "22", "24", "26" "29", "32", "33", "procedure1", "procedure3", "procedure4" "procedure5"
+                    // Check useAbstractionMap for the key "x" and that it has values "4", "5", "6", "7", "8", "12", "21", "22", "24", "26" "29", "31", "32", "33", "34" "procedure1", "procedure3", "procedure4" "procedure5"
                     Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "4") != usesAbstractionMap->at("x").end());
                     Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "5") != usesAbstractionMap->at("x").end());
                     Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "6") != usesAbstractionMap->at("x").end());
@@ -192,13 +192,15 @@ namespace UnitTesting
                     Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "24") != usesAbstractionMap->at("x").end());
                     Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "26") != usesAbstractionMap->at("x").end());
                     Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "29") != usesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "31") != usesAbstractionMap->at("x").end());
                     Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "32") != usesAbstractionMap->at("x").end());
                     Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "33") != usesAbstractionMap->at("x").end());
+                    Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "34") != usesAbstractionMap->at("x").end());
                     Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "procedure1") != usesAbstractionMap->at("x").end());
                     Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "procedure3") != usesAbstractionMap->at("x").end());
                     Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "procedure4") != usesAbstractionMap->at("x").end());
                     Assert::IsTrue(std::find(usesAbstractionMap->at("x").begin(), usesAbstractionMap->at("x").end(), "procedure5") != usesAbstractionMap->at("x").end());
-                    Assert::AreEqual(17, (int)usesAbstractionMap->at("x").size());
+                    Assert::AreEqual(19, (int)usesAbstractionMap->at("x").size());
 
                     // Check modifiesAbstractionMap for the key "x" and that it has values "2", "5", "6", "8", "12", "21", "22", "23", "29", "30", "32", "33", "procedure1", "procedure3", "procedure5"
                     Assert::IsTrue(std::find(modifiesAbstractionMap->at("x").begin(), modifiesAbstractionMap->at("x").end(), "2") != modifiesAbstractionMap->at("x").end());
