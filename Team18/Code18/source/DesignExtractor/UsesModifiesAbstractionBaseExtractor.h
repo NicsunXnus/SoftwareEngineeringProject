@@ -45,7 +45,7 @@ public:
             // nestedStatements.push_back(statementNumber);
             extractDesigns(statement);
             
-            // insertIntoMap(statementNumber, to_string(whileNode->getStatementNumber()), ifWhileNestedStatementsMap);
+            insertIntoMap(statementNumber, to_string(whileNode->getStatementNumber()), ifWhileNestedStatementsMap);
 
             // if any of the nestedStatement values can be found in the AbstractionStorageMap, add the ifNode statement number to the AbstractionStorageMap
             // for (const auto& nestedStatement : nestedStatements) {
