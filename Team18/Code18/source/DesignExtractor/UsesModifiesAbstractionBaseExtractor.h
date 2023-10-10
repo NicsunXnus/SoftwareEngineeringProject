@@ -38,25 +38,12 @@ public:
     void handleWhile(std::shared_ptr<WhileNode> whileNode) override {
         preProcessWhileNode(whileNode);
         std::vector<std::shared_ptr<StatementNode>> statements = whileNode->getStatements();
-        // std::vector<string> nestedStatements = vector<string>();
 
         for (const auto& statement : statements) {
             string statementNumber = to_string(statement->getStatementNumber());
-            // nestedStatements.push_back(statementNumber);
             extractDesigns(statement);
             
-            insertIntoMap(statementNumber, to_string(whileNode->getStatementNumber()), ifWhileNestedStatementsMap);
-
-            // if any of the nestedStatement values can be found in the AbstractionStorageMap, add the ifNode statement number to the AbstractionStorageMap
-            // for (const auto& nestedStatement : nestedStatements) {
-            //     for (const auto& [variable, values] : *this->AbstractionStorageMap) {
-            //         if (std::find(values.begin(), values.end(), nestedStatement) != values.end()) {
-            //             string statementNumber = to_string(whileNode->getStatementNumber());
-            //             addStatementNumberAndProcedureName(variable, statementNumber);
-            //         }
-            //     }
-            // }
-            
+            insertIntoMap(statementNumber, to_string(whileNode->getStatementNumber()), ifWhileNestedStatementsMap);   
         }
     }
 
@@ -66,25 +53,14 @@ public:
         std::vector<std::shared_ptr<StatementNode>> ifStatements = ifNode->getStatements();
         std::vector<std::shared_ptr<StatementNode>> elseStatements = ifNode->getElseStatements();
         std::vector<std::shared_ptr<StatementNode>> statements;
-        // std::vector<string> nestedStatements = vector<string>();
 
         statements.insert(statements.end(), ifStatements.begin(), ifStatements.end());
         statements.insert(statements.end(), elseStatements.begin(), elseStatements.end());
         
         for (const auto& statement : statements) {
             string statementNumber = to_string(statement->getStatementNumber());
-            // nestedStatements.push_back(statementNumber);
             extractDesigns(statement);
             insertIntoMap(statementNumber, to_string(ifNode->getStatementNumber()), ifWhileNestedStatementsMap);
-            
-            // for (const auto& nestedStatement : nestedStatements) {
-            //     for (const auto& [variable, values] : *this->AbstractionStorageMap) {
-            //         if (std::find(values.begin(), values.end(), nestedStatement) != values.end()) {
-            //             string statementNumber = to_string(ifNode->getStatementNumber());
-            //             addStatementNumberAndProcedureName(variable, statementNumber);
-            //         }
-            //     }
-            // }
         }
     }
 
