@@ -191,7 +191,7 @@ protected:
         for (const auto& [variable, values] : *this->AbstractionStorageMap) {
             shared_ptr<vector<std::string>> statementNumbersToBeAdded = make_shared<vector<string>>();
             for (const auto& value : values) {
-                
+                nestedIfWhileHelper(value, statementNumbersToBeAdded)
             }
             // add statementNumbersToBeAdded to the vector of values in AbstractionStorageMap
             for (const auto& statementNumber : *statementNumbersToBeAdded) {
@@ -200,10 +200,15 @@ protected:
         }
     }
 
-    void nestedIfWhileHelper(string childStatementNumber, string parentStatementNumber, shared_ptr<vector<std::string>> statementNumbersToBeAdded) {
+    void nestedIfWhileHelper(string childStatementNumber, shared_ptr<vector<std::string>> statementNumbersToBeAdded) {
         if (this->ifWhileNestedStatementsMap->find(childStatementNumber) != this->ifWhileNestedStatementsMap->end()) {
-            statementNumbersToBeAdded->insert(statementNumbersToBeAdded->end(), this->ifWhileNestedStatementsMap->at(childStatementNumber).begin(), this->ifWhileNestedStatementsMap->at(childStatementNumber).end());
-            nestedIfWhileHelper()
+            // get the vector of values of the childStatementNumber
+            shared_ptr<vector<std::string>> nestedStatementNumbers = make_shared<vector<string>>(this->ifWhileNestedStatementsMap->at(childStatementNumber));
+            for (const auto& nestedStatementNumber : *nestedStatementNumbers) {
+                statementNumbersToBeAdded->push_back(nestedStatementNumber);
+                // recursively call this method with the nestedStatementNumber as the childStatementNumber
+                nestedIfWhileHelper(nestedStatementNumber, statementNumbersToBeAdded);
+            }
         } 
     }
 };
