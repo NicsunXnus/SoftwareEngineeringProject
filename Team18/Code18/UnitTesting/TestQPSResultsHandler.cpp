@@ -14,6 +14,8 @@ private:
 	vector<string> singleTable = {"1", "2", "3"};
 	vector<string> singleTableVars = { "a", "b", "c" };
 	map<string, vector<string>> twoDTable = { { "4", { "5", "6", "7"}}};
+	map<string, vector<string>> twoDTableEmpty;
+
 public:
 		TEST_METHOD(TestSingleSynonymNoSuchThatClause) {
 			vector<shared_ptr<QueryResultsTable>> selectClauseTable = { QueryResultsTable::createTable("a", singleTable) };
@@ -107,6 +109,17 @@ public:
 			Assert::IsTrue(*l_front == "4 a");
 			advance(l_front, 2);
 			Assert::IsTrue(*l_front == "4 c");
+		}
+
+		TEST_METHOD(TestTupleNonEmptyClauseSharedVarsEmpty2DTable) {
+			vector<shared_ptr<QueryResultsTable>> selectClauseTable = { QueryResultsTable::createTable("a", singleTable), QueryResultsTable::createTable("b", singleTableVars) };
+			vector<shared_ptr<QueryResultsTable>> nonSelectClauseTable = { QueryResultsTable::createTable({"a", "c"}, twoDTableEmpty)};
+			shared_ptr<ResultHandler> resultHandler = make_shared<ResultHandler>();
+			list<string> finalResult = resultHandler->processTables(selectClauseTable, nonSelectClauseTable);
+			auto l_front = finalResult.begin();
+			advance(l_front, 0);
+			Assert::IsTrue(finalResult.size() == 0);
+
 		}
 	};
 }

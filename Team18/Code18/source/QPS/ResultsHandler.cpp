@@ -17,10 +17,6 @@ list<string> ResultHandler::processTables(vector<shared_ptr<QueryResultsTable>> 
 		
 	}
 
-
-	
-
-
 	list<string> empty;
 	return empty;
 }
