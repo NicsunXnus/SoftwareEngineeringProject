@@ -191,7 +191,7 @@ protected:
         for (const auto& [variable, values] : *this->AbstractionStorageMap) {
             shared_ptr<vector<std::string>> statementNumbersToBeAdded = make_shared<vector<string>>();
             for (const auto& value : values) {
-                nestedIfWhileHelper(value, statementNumbersToBeAdded)
+                nestedIfWhileHelper(value, statementNumbersToBeAdded);
             }
             // add statementNumbersToBeAdded to the vector of values in AbstractionStorageMap
             for (const auto& statementNumber : *statementNumbersToBeAdded) {
