@@ -45,11 +45,16 @@ public:
     shared_ptr<QueryResultsTable> crossProduct(shared_ptr<QueryResultsTable> other) {
         vector<map<string, vector<string>>> thisColumns = this->columns;
         vector<map<string, vector<string>>> otherColumns = other->getColumns();
+        int thisColNums = thisColumns.size();
+        int otherColNums = otherColumns.size();
+        if (other->isEmpty() || this->isEmpty()) {
+            return make_shared<QueryResultsTable>();
+        }
 
         // Get the number of columns and rows in both tables
-        int thisColNums = thisColumns.size();
+       
         int thisRowNums = thisColumns[0].begin()->second.size();
-        int otherColNums = otherColumns.size();
+        
         int otherRowNums = otherColumns[0].begin()->second.size();
 
         vector<string> thisHeaders;

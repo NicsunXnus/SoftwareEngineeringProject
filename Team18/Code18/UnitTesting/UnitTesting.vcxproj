@@ -177,6 +177,7 @@
     <ClCompile Include="TestQPSDriver.cpp" />
     <ClCompile Include="TestQPSErrorQueries.cpp" />
     <ClCompile Include="TestQPSQueryEval.cpp" />
+    <ClCompile Include="TestQPSResultsHandler.cpp" />
     <ClCompile Include="TestSimpleTokenizer.cpp" />
     <ClCompile Include="TestToken.cpp" />
     <ClCompile Include="TestTokenFactory.cpp" />
