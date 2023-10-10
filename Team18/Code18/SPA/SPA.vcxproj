@@ -12,7 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\ApplicationWrapper.cpp" />
-	<ClCompile Include="..\source\AST\ASTBuilder.cpp" />
+    <ClCompile Include="..\source\AST\ASTBuilder.cpp" />
     <ClCompile Include="..\source\QPS\DataAccessLayer.cpp" />
     <ClCompile Include="..\source\QPS\DataAccessLayerStub.cpp" />
     <ClCompile Include="..\source\QPS\QueryBuilder.cpp" />
@@ -74,6 +74,8 @@
     <ClInclude Include="..\source\QPS\QueryObjects\QueryObject.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\QueryObjectFactory.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\SynonymObjects.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\WithClauseObject.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\WithClauseObjectFactory.h" />
     <ClInclude Include="..\source\QPS\QueryParser.h" />
     <ClInclude Include="..\source\QPS\QueryResultsTable.h" />
     <ClInclude Include="..\source\QPS\ResultsHandler.h" />

@@ -7,7 +7,7 @@
 #include "ClauseArg.h"
 
 /*
-* This class represents a Query object, for clause entities
+* This class represents a Query object, for such that clause entities
 */
 class ClauseObject : public QueryObject {
 private:
@@ -18,9 +18,6 @@ public:
 	ClauseObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
 		: QueryObject{ clauseName }, argument0{ argument0 }, argument1{ argument1 } {
 	}
-
-	// Constructor for creating an empty clause object, to be used in gracefully handling clauses with errors.
-	ClauseObject(string_view name) : QueryObject{ name } {}
 
 
 	shared_ptr<ClauseArg> getArg1() {

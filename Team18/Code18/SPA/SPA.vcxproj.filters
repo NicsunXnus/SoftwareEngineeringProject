@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="..\source\ApplicationWrapper.cpp" />
-	<ClCompile Include="..\source\AST\ASTBuilder.cpp">
+    <ClCompile Include="..\source\AST\ASTBuilder.cpp">
       <Filter>AST</Filter>
     </ClCompile>
     <ClCompile Include="..\source\QPS\DataAccessLayer.cpp">
@@ -225,6 +225,8 @@
     <ClInclude Include="..\source\SimpleTokens\TokenFactory.h">
       <Filter>SimpleTokens</Filter>
     </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryObjects\WithClauseObject.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\WithClauseObjectFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="AST">

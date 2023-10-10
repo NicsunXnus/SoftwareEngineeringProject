@@ -2,6 +2,7 @@
 #include "DesignObjectsFactory.h"
 #include "ClauseObjectFactory.h"
 #include "PatternClauseObjectFactory.h"
+#include "WithClauseObjectFactory.h"
 #include "../Errors/SyntaxError.h"
 
 shared_ptr<QueryObjectFactory> QueryObjectFactory::createFactory(string_view type) {
@@ -75,6 +76,20 @@ shared_ptr<QueryObjectFactory> QueryObjectFactory::createFactory(string_view typ
 	/* Pattern type */
 	else if (type == "pattern"sv) {
 		return make_shared<PatternClauseObjectFactory>();
+	}
+
+	/* With type */
+	else if (type == "procName"sv) {
+		return make_shared<ProcNameObjectFactory>();
+	}
+	else if (type == "varName"sv) {
+		return make_shared<VarNameObjectFactory>();
+	}
+	else if (type == "value"sv) {
+		return make_shared<ValueObjectFactory>();
+	}
+	else if (type == "stmt#"sv) {
+		return make_shared<StmtNoObjectFactory>();
 	}
 	throw SyntaxErrorException("Invalid string token for design object");
 }
