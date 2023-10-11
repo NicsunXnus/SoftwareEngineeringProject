@@ -23,7 +23,7 @@ public:
 	ProcNameObject(string_view clauseName, shared_ptr<ClauseArg> synonym)
 		: WithObject{ clauseName, synonym } {};
 
-	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {};
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {};
 };
 
 // This class represents the varName attribute reference clause
@@ -33,7 +33,7 @@ public:
 		: WithObject{ clauseName, synonym } {
 	};
 
-	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {};
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {};
 };
 
 // This class represents the value attribute reference clause
@@ -43,7 +43,7 @@ public:
 		: WithObject{ clauseName, synonym } {
 	};
 
-	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {};
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {};
 };
 
 // This class represents the statement number attribute reference clause
@@ -53,7 +53,7 @@ public:
 		: WithObject{ clauseName, synonym } {
 	};
 
-	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {};
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {};
 };
 
 #endif
