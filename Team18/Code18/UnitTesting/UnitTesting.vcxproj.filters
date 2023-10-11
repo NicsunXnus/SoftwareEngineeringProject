@@ -21,6 +21,7 @@
     <ClCompile Include="TestQPSQueryResultTable.cpp" />
     <ClCompile Include="TestQPSErrorQueries.cpp" />
     <ClCompile Include="TestAdapter.cpp" />
+    <ClCompile Include="TestQPSResultsHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />

@@ -13,8 +13,20 @@ using namespace std;
 vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
 
 	vector<shared_ptr<QueryResultsTable>> queryResultsTables;
-	for (shared_ptr<QueryObject> obj : queryObjects) {
-		shared_ptr<QueryResultsTable> table = obj->callAndProcess(dataAccessLayer, synonyms);
+
+	for (shared_ptr<QueryObject> obj : nonSelectClauseQueryObjects) {
+		shared_ptr<QueryResultsTable> table = obj->callAndProcess(dataAccessLayer);
+		queryResultsTables.push_back(table);
+	}
+	// for optimization in future, sort here
+	return queryResultsTables;
+}
+
+vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuerySelectClause() {
+
+	vector<shared_ptr<QueryResultsTable>> queryResultsTables;
+	for (shared_ptr<QueryObject> obj : selectClauseQueryObjects) {
+		shared_ptr<QueryResultsTable> table = obj->callAndProcess(dataAccessLayer);
 		queryResultsTables.push_back(table);
 	}
 	return queryResultsTables;
