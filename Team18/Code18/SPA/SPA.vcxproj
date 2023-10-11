@@ -55,12 +55,12 @@
     <ClInclude Include="..\source\PKB\StorageClasses\AbstractionStorage.h" />
     <ClInclude Include="..\source\PKB\StorageClasses\EntityStorage.h" />
     <ClInclude Include="..\source\PKB\StorageManager.h" />
-    <ClInclude Include="..\source\PQLTokenizer.h" />
     <ClInclude Include="..\source\QPS\DataAccessLayer.h" />
     <ClInclude Include="..\source\QPS\DataAccessLayerStub.h" />
     <ClInclude Include="..\source\QPS\Errors\QPSError.h" />
     <ClInclude Include="..\source\QPS\Errors\SemanticError.h" />
     <ClInclude Include="..\source\QPS\Errors\SyntaxError.h" />
+    <ClInclude Include="..\source\QPS\PQLTokenizer.h" />
     <ClInclude Include="..\source\QPS\QueryBuilder.h" />
     <ClInclude Include="..\source\QPS\QueryDriver.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\ClauseArg.h" />

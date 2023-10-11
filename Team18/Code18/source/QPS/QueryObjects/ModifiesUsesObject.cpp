@@ -103,18 +103,18 @@ inline shared_ptr<QueryResultsTable> handleUsesModifies(shared_ptr<ClauseArg> ar
 	throw SemanticErrorException("Error evaluating clause: " + clause);
 }
 
-shared_ptr<QueryResultsTable> UsesObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) {
+shared_ptr<QueryResultsTable> UsesObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) {
 	return handleUsesModifies(getArg1(), getArg2(), dataAccessLayer, USES);
 }
 
-shared_ptr<QueryResultsTable> UsesEntityObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) {
+shared_ptr<QueryResultsTable> UsesEntityObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) {
 	return handleUsesModifies(getArg1(), getArg2(), dataAccessLayer, USES);
 }
 
-shared_ptr<QueryResultsTable> ModifiesObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) {
+shared_ptr<QueryResultsTable> ModifiesObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) {
 	return handleUsesModifies(getArg1(), getArg2(), dataAccessLayer, MODIFIES);
 }
 
-shared_ptr<QueryResultsTable> ModifiesEntityObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) {
+shared_ptr<QueryResultsTable> ModifiesEntityObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) {
 	return handleUsesModifies(getArg1(), getArg2(), dataAccessLayer, MODIFIES);
 }

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include "../source/QPS/QueryDriver.h"
-#include "../source/PQLTokenizer.h"
+#include "../source/QPS/PQLTokenizer.h"
 #include "../source/QPS/Errors/SyntaxError.h"
 #include "../source/QPS/Errors/SemanticError.h"
 #include <cassert>
