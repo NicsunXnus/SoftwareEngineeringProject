@@ -226,7 +226,7 @@ namespace UnitTesting
 			Assert::IsTrue(static_cast<int>(test.size()) == 5);
 		}
 
-		TEST_METHOD(TestTokenizeWholeQueySingleSynTuple)
+		TEST_METHOD(TestTokenizeWholeQuerySingleSynTuple)
 		{
 			vector<string> test = PQLTokenizer::tokenize("constant c; variable v; Select <c>");
 			Assert::IsTrue(test[0] == "constant");
@@ -241,6 +241,264 @@ namespace UnitTesting
 			Assert::IsTrue(test[9] == ">");
 			Assert::IsTrue(static_cast<int>(test.size()) == 10);
 		}
+
+		TEST_METHOD(TestTokenizeWithprocNameEqualIdent)
+		{
+			vector<string> test = PQLTokenizer::tokenize("Select c.procName with c.procName = \"ident\"");
+			Assert::IsTrue(test[0] == "Select");
+			Assert::IsTrue(test[1] == "c");
+			Assert::IsTrue(test[2] == ".");
+			Assert::IsTrue(test[3] == "procName");
+			Assert::IsTrue(test[4] == "with");
+			Assert::IsTrue(test[5] == "c");
+			Assert::IsTrue(test[6] == ".");
+			Assert::IsTrue(test[7] == "procName");
+			Assert::IsTrue(test[8] == "=");
+			Assert::IsTrue(test[9] == "\"ident\"");
+			Assert::IsTrue(static_cast<int>(test.size()) == 10);
+		}
+
+		TEST_METHOD(TestTokenizeWithvarNameEqualAttrRef)
+		{
+			vector<string> test = PQLTokenizer::tokenize("Select c.procName with c.varName = a.procName");
+			Assert::IsTrue(test[0] == "Select");
+			Assert::IsTrue(test[1] == "c");
+			Assert::IsTrue(test[2] == ".");
+			Assert::IsTrue(test[3] == "procName");
+			Assert::IsTrue(test[4] == "with");
+			Assert::IsTrue(test[5] == "c");
+			Assert::IsTrue(test[6] == ".");
+			Assert::IsTrue(test[7] == "varName");
+			Assert::IsTrue(test[8] == "=");
+			Assert::IsTrue(test[9] == "a");
+			Assert::IsTrue(test[10] == ".");
+			Assert::IsTrue(test[11] == "procName");
+			Assert::IsTrue(static_cast<int>(test.size()) == 12);
+		}
+
+		TEST_METHOD(TestTokenizeWithValueEqualInt)
+		{
+			vector<string> test = PQLTokenizer::tokenize("Select c.value with c.value = 234");
+			Assert::IsTrue(test[0] == "Select");
+			Assert::IsTrue(test[1] == "c");
+			Assert::IsTrue(test[2] == ".");
+			Assert::IsTrue(test[3] == "value");
+			Assert::IsTrue(test[4] == "with");
+			Assert::IsTrue(test[5] == "c");
+			Assert::IsTrue(test[6] == ".");
+			Assert::IsTrue(test[7] == "value");
+			Assert::IsTrue(test[8] == "=");
+			Assert::IsTrue(test[9] == "234");
+			Assert::IsTrue(static_cast<int>(test.size()) == 10);
+		}
+
+		TEST_METHOD(TestTokenizeWithStmtNoEqualInt)
+		{
+			vector<string> test = PQLTokenizer::tokenize("Select c.# with c.stmt# = 234");
+			Assert::IsTrue(test[0] == "Select");
+			Assert::IsTrue(test[1] == "c");
+			Assert::IsTrue(test[2] == ".");
+			Assert::IsTrue(test[3] == "#");
+			Assert::IsTrue(test[4] == "with");
+			Assert::IsTrue(test[5] == "c");
+			Assert::IsTrue(test[6] == ".");
+			Assert::IsTrue(test[7] == "stmt#");
+			Assert::IsTrue(test[8] == "=");
+			Assert::IsTrue(test[9] == "234");
+			Assert::IsTrue(static_cast<int>(test.size()) == 10);
+		}
 		
+		TEST_METHOD(TestTokenizeWithIdentEqualStmtNo)
+		{
+			vector<string> test = PQLTokenizer::tokenize("Select c.whatever123# with \"idnet123\" = c.stmt#");
+			Assert::IsTrue(test[0] == "Select");
+			Assert::IsTrue(test[1] == "c");
+			Assert::IsTrue(test[2] == ".");
+			Assert::IsTrue(test[3] == "whatever123#");
+			Assert::IsTrue(test[4] == "with");
+			Assert::IsTrue(test[5] == "\"idnet123\"");
+			Assert::IsTrue(test[6] == "=");
+			Assert::IsTrue(test[7] == "c");
+			Assert::IsTrue(test[8] == ".");
+			Assert::IsTrue(test[9] == "stmt#");
+			Assert::IsTrue(static_cast<int>(test.size()) == 10);
+		}
+
+		TEST_METHOD(TestTokenizeSelectSingleWithTup)
+		{
+			vector<string> test = PQLTokenizer::tokenize("Select <c.whatever123#>");
+			Assert::IsTrue(test[0] == "Select");
+			Assert::IsTrue(test[1] == "<");
+			Assert::IsTrue(test[2] == "c");
+			Assert::IsTrue(test[3] == ".");
+			Assert::IsTrue(test[4] == "whatever123#");
+			Assert::IsTrue(test[5] == ">");
+			Assert::IsTrue(static_cast<int>(test.size()) == 6);
+		}
+
+		TEST_METHOD(TestTokenizeSelectDoubleWithTup)
+		{
+			vector<string> test = PQLTokenizer::tokenize("Select <c.whatever123#, c.procName>");
+			Assert::IsTrue(test[0] == "Select");
+			Assert::IsTrue(test[1] == "<");
+			Assert::IsTrue(test[2] == "c");
+			Assert::IsTrue(test[3] == ".");
+			Assert::IsTrue(test[4] == "whatever123#");
+			Assert::IsTrue(test[5] == ",");
+			Assert::IsTrue(test[6] == "c");
+			Assert::IsTrue(test[7] == ".");
+			Assert::IsTrue(test[8] == "procName");
+			Assert::IsTrue(test[9] == ">");
+			Assert::IsTrue(static_cast<int>(test.size()) == 10);
+		}
+
+		TEST_METHOD(TestTokenizeSelectWithAndSynTup)
+		{
+			vector<string> test = PQLTokenizer::tokenize("Select <c.whatever123#, c123>");
+			Assert::IsTrue(test[0] == "Select");
+			Assert::IsTrue(test[1] == "<");
+			Assert::IsTrue(test[2] == "c");
+			Assert::IsTrue(test[3] == ".");
+			Assert::IsTrue(test[4] == "whatever123#");
+			Assert::IsTrue(test[5] == ",");
+			Assert::IsTrue(test[6] == "c123");
+			Assert::IsTrue(test[7] == ">");
+			Assert::IsTrue(static_cast<int>(test.size()) == 8);
+		}
+
+		TEST_METHOD(TestTokenizeSelectSynAndWithTup)
+		{
+			vector<string> test = PQLTokenizer::tokenize("Select <c123, c.whatever123#>");
+			Assert::IsTrue(test[0] == "Select");
+			Assert::IsTrue(test[1] == "<");
+			Assert::IsTrue(test[2] == "c123");
+			Assert::IsTrue(test[3] == ",");
+			Assert::IsTrue(test[4] == "c");
+			Assert::IsTrue(test[5] == ".");
+			Assert::IsTrue(test[6] == "whatever123#");
+			Assert::IsTrue(test[7] == ">");
+			Assert::IsTrue(static_cast<int>(test.size()) == 8);
+		}
+
+		TEST_METHOD(TestTokenizeTupWith)
+		{
+			vector<string> test = PQLTokenizer::tokenize("Select <c123, c.whatever123#> with \"ident\" = c.stmt#");
+			Assert::IsTrue(test[0] == "Select");
+			Assert::IsTrue(test[1] == "<");
+			Assert::IsTrue(test[2] == "c123");
+			Assert::IsTrue(test[3] == ",");
+			Assert::IsTrue(test[4] == "c");
+			Assert::IsTrue(test[5] == ".");
+			Assert::IsTrue(test[6] == "whatever123#");
+			Assert::IsTrue(test[7] == ">");
+			Assert::IsTrue(test[8] == "with");
+			Assert::IsTrue(test[9] == "\"ident\"");
+			Assert::IsTrue(test[10] == "=");
+			Assert::IsTrue(test[11] == "c");
+			Assert::IsTrue(test[12] == ".");
+			Assert::IsTrue(test[13] == "stmt#");
+			Assert::IsTrue(static_cast<int>(test.size()) == 14);
+		}
+
+		TEST_METHOD(TestTokenizeSynWith)
+		{
+			vector<string> test = PQLTokenizer::tokenize("Select c123 with \"ident\" = c.stmt#");
+			Assert::IsTrue(test[0] == "Select");
+			Assert::IsTrue(test[1] == "c123");
+			Assert::IsTrue(test[2] == "with");
+			Assert::IsTrue(test[3] == "\"ident\"");
+			Assert::IsTrue(test[4] == "=");
+			Assert::IsTrue(test[5] == "c");
+			Assert::IsTrue(test[6] == ".");
+			Assert::IsTrue(test[7] == "stmt#");
+			Assert::IsTrue(static_cast<int>(test.size()) == 8);
+		}
+
+		TEST_METHOD(TestTokenizeSynSuchThatWith)
+		{
+			vector<string> test = PQLTokenizer::tokenize("Select c123 such that Calls*(a, b) with \"ident\" = c.stmt#");
+			Assert::IsTrue(test[0] == "Select");
+			Assert::IsTrue(test[1] == "c123");
+			Assert::IsTrue(test[2] == "such");
+			Assert::IsTrue(test[3] == "that");
+			Assert::IsTrue(test[4] == "Calls*");
+			Assert::IsTrue(test[5] == "(");
+			Assert::IsTrue(test[6] == "a");
+			Assert::IsTrue(test[7] == ",");
+			Assert::IsTrue(test[8] == "b");
+			Assert::IsTrue(test[9] == ")");
+			Assert::IsTrue(test[10] == "with");
+			Assert::IsTrue(test[11] == "\"ident\"");
+			Assert::IsTrue(test[12] == "=");
+			Assert::IsTrue(test[13] == "c");
+			Assert::IsTrue(test[14] == ".");
+			Assert::IsTrue(test[15] == "stmt#");
+			Assert::IsTrue(static_cast<int>(test.size()) == 16);
+		}
+
+		TEST_METHOD(TestTokenizeSynWithSuchThat)
+		{
+			vector<string> test = PQLTokenizer::tokenize("Select c123 with \"ident\" = c.stmt# such that Calls*(a, b)");
+			Assert::IsTrue(test[0] == "Select");
+			Assert::IsTrue(test[1] == "c123");
+			Assert::IsTrue(test[2] == "with");
+			Assert::IsTrue(test[3] == "\"ident\"");
+			Assert::IsTrue(test[4] == "=");
+			Assert::IsTrue(test[5] == "c");
+			Assert::IsTrue(test[6] == ".");
+			Assert::IsTrue(test[7] == "stmt#");
+			Assert::IsTrue(test[8] == "such");
+			Assert::IsTrue(test[9] == "that");
+			Assert::IsTrue(test[10] == "Calls*");
+			Assert::IsTrue(test[11] == "(");
+			Assert::IsTrue(test[12] == "a");
+			Assert::IsTrue(test[13] == ",");
+			Assert::IsTrue(test[14] == "b");
+			Assert::IsTrue(test[15] == ")");
+			Assert::IsTrue(static_cast<int>(test.size()) == 16);
+		}
+
+		TEST_METHOD(TestTokenizeSynPatternWith)
+		{
+			vector<string> test = PQLTokenizer::tokenize("Select c123 pattern a (13, \"1+3\") with \"ident\" = c.stmt#");
+			Assert::IsTrue(test[0] == "Select");
+			Assert::IsTrue(test[1] == "c123");
+			Assert::IsTrue(test[2] == "pattern");
+			Assert::IsTrue(test[3] == "a");
+			Assert::IsTrue(test[4] == "(");
+			Assert::IsTrue(test[5] == "13");
+			Assert::IsTrue(test[6] == ",");
+			Assert::IsTrue(test[7] == "\"1+3\"");
+			Assert::IsTrue(test[8] == ")");
+			Assert::IsTrue(test[9] == "with");
+			Assert::IsTrue(test[10] == "\"ident\"");
+			Assert::IsTrue(test[11] == "=");
+			Assert::IsTrue(test[12] == "c");
+			Assert::IsTrue(test[13] == ".");
+			Assert::IsTrue(test[14] == "stmt#");
+			Assert::IsTrue(static_cast<int>(test.size()) == 15);
+		}
+
+		TEST_METHOD(TestTokenizeSynWithPattern)
+		{
+			vector<string> test = PQLTokenizer::tokenize("Select c123 with \"ident\" = c.stmt# pattern a (_, \"1+3\")");
+			Assert::IsTrue(test[0] == "Select");
+			Assert::IsTrue(test[1] == "c123");
+			Assert::IsTrue(test[2] == "with");
+			Assert::IsTrue(test[3] == "\"ident\"");
+			Assert::IsTrue(test[4] == "=");
+			Assert::IsTrue(test[5] == "c");
+			Assert::IsTrue(test[6] == ".");
+			Assert::IsTrue(test[7] == "stmt#");
+			Assert::IsTrue(test[8] == "pattern");
+			Assert::IsTrue(test[9] == "a");
+			Assert::IsTrue(test[10] == "(");
+			Assert::IsTrue(test[11] == "_");
+			Assert::IsTrue(test[12] == ",");
+			Assert::IsTrue(test[13] == "\"1+3\"");
+			Assert::IsTrue(test[14] == ")");
+
+			Assert::IsTrue(static_cast<int>(test.size()) == 15);
+		}
 	};
 }
