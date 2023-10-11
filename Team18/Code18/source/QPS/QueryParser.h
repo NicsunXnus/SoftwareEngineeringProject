@@ -137,8 +137,11 @@ private:
 	// Helper function to check if index has the structure of a attrRef
 	bool isAttrRef(std::vector<string_view>& query, int index, int& tokenCount);
 
-	// Creates a attribute reference query object
+	// Creates an attribute reference query object
 	shared_ptr<QueryObject> createAttrRefObject(std::vector<string_view>& query, int& index);
+
+	// Creates an attribute reference query object from when parsing the tuple
+	shared_ptr<QueryObject> createAttrRefObjectInTuple(string_view synonym, string_view attrName);
 
 	// Returns a vector of declaration query objects or with clause objects specified in the tuple
 	std::vector<shared_ptr<QueryObject>> createTupleObjects(std::vector<string_view>& query, int& index, int tokenCount);

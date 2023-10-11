@@ -179,8 +179,10 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 
 			++currentWordIndex;
 		
-		}else {
-			// TODO: Create a attrRef query object
+		} else { // tuple token count is 3, element is a attrRef
+			shared_ptr<QueryObject> attrRefQuery{ createAttrRefObject(query, currentWordIndex) };
+
+			result.push_back(attrRefQuery);
 		}
 	}
 	else {
@@ -475,7 +477,29 @@ shared_ptr<QueryObject> QueryParser::createAttrRefObject(std::vector<string_view
 	shared_ptr<ClauseArg> synonymArg{ make_shared<ClauseArg>(synonymName, synonym) };
 	vector<shared_ptr<ClauseArg>> argVector{ synonymArg };
 
+	// increment index by 3 to move index to next tokens to be parsed
+	index += 3;
+
 	return attrRefFactory->create(attrRef, argVector);
+}
+
+shared_ptr<QueryObject> QueryParser::createAttrRefObjectInTuple(string_view synonymName, string_view attrName) {
+	shared_ptr<QueryObjectFactory> attrRefFactory{ QueryObjectFactory::createFactory(attrName) };
+
+	if (!SynonymObject::isValid(synonymName)) {
+		throw SyntaxErrorException("Invalid synonym grammar syntax in attrRef");
+	}
+
+	if (synonyms.find(synonymName) == synonyms.end()) { // synonym is not declared
+		storeSemanticError(make_shared<SemanticErrorException>("Synonym in attrRef is undeclared"));
+		return make_shared<StmtObject>("Placeholder, synonym in attrRef is undeclared");
+	}
+
+	shared_ptr<SynonymObject> synonym{ make_shared<SynonymObject>(synonymName, synonymToEntity[synonymName]) };
+	shared_ptr<ClauseArg> synonymArg{ make_shared<ClauseArg>(synonymName, synonym) };
+	vector<shared_ptr<ClauseArg>> argVector{ synonymArg };
+
+	return attrRefFactory->create(attrName, argVector);
 }
 
 std::vector<shared_ptr<QueryObject>> QueryParser::createTupleObjects(std::vector<string_view>& query, int& index, int tokenCount) {
@@ -500,11 +524,11 @@ std::vector<shared_ptr<QueryObject>> QueryParser::createTupleObjects(std::vector
 				}
 			}
 			else { // element before is a attrRef, create a attrRef queryObject
-				// TODO
+				createAttrRefObjectInTuple(synonym, attrName);
 				isAttrRef = false;
 			}
 		}
-		else if (token == "."sv) {
+		else if (token == "."sv) { // token before is a synonym, and now we're within a attrRef element
 			isAttrRef = true;
 		}
 		else if (isAttrRef) { // current token is attrName token
