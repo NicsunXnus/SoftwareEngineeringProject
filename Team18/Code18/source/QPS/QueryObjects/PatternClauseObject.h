@@ -28,7 +28,7 @@ public:
 		return arguments[2];
 	}
 
-	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) override {
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {
 		// Currently patterns only supported for assign
 		
 		// assign synonym a, variable synonym v, variables "x" "y", constant "1"

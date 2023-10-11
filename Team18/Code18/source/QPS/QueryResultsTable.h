@@ -45,11 +45,16 @@ public:
     shared_ptr<QueryResultsTable> crossProduct(shared_ptr<QueryResultsTable> other) {
         vector<map<string, vector<string>>> thisColumns = this->columns;
         vector<map<string, vector<string>>> otherColumns = other->getColumns();
+        int thisColNums = thisColumns.size();
+        int otherColNums = otherColumns.size();
+        if (other->isEmpty() || this->isEmpty()) {
+            return make_shared<QueryResultsTable>();
+        }
 
         // Get the number of columns and rows in both tables
-        int thisColNums = thisColumns.size();
+       
         int thisRowNums = thisColumns[0].begin()->second.size();
-        int otherColNums = otherColumns.size();
+        
         int otherRowNums = otherColumns[0].begin()->second.size();
 
         vector<string> thisHeaders;
@@ -184,6 +189,18 @@ public:
             }
         }
         return make_shared<QueryResultsTable>(innerJoined);
+    }
+
+    /**
+     * A static method that creates an empty QueryResultsTable.
+     *
+     * @param header The header of the column, represented as a string.
+     * @param columnValues A vector of strings representing the values in the column.
+     *                     The vector should have the same length for all columns in the table.
+     * @return A shared_ptr to the newly created QueryResultsTable object.
+     */
+    static shared_ptr<QueryResultsTable> createEmptyTable() {
+        return make_shared<QueryResultsTable>();
     }
     
     /**

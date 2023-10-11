@@ -58,6 +58,22 @@ public:
 		return queryObjectsInTuple;
 	}
 
+	vector<shared_ptr<QueryObject>> getSelectClauseQueryObject(vector<shared_ptr<QueryObject>> queryObjects) {
+		auto start = queryObjects.begin();
+		auto end = queryObjects.begin() + queryObjectsInTuple;
+		vector<shared_ptr<QueryObject>> selectClauseQueryObjects(start, end);
+
+		return selectClauseQueryObjects;
+	}
+
+	vector<shared_ptr<QueryObject>> getNonSelectClauseQueryObject(vector<shared_ptr<QueryObject>> queryObjects) {
+		auto start = queryObjects.begin() + queryObjectsInTuple;
+		auto end = queryObjects.end();
+		vector<shared_ptr<QueryObject>> selectClauseQueryObjects(start, end);
+
+		return selectClauseQueryObjects;
+	}
+
 
 private:
 	// Synonyms declared in the query's declaration statements
