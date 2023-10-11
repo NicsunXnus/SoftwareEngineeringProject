@@ -457,7 +457,25 @@ bool QueryParser::isAttrRef(std::vector<string_view>& query, int index, int& tok
 }
 
 shared_ptr<QueryObject> QueryParser::createAttrRefObject(std::vector<string_view>& query, int& index) {
-	return make_shared<StmtObject>("");
+	string_view synonymName{ query[index] };
+	string_view attrRef{ query[index + 2] };
+
+	shared_ptr<QueryObjectFactory> attrRefFactory{ QueryObjectFactory::createFactory(attrRef) };
+
+	if (!SynonymObject::isValid(synonymName)) {
+		throw SyntaxErrorException("Invalid synonym grammar syntax in attrRef");
+	}
+
+	if (synonyms.find(synonymName) == synonyms.end()) { // synonym is not declared
+		storeSemanticError(make_shared<SemanticErrorException>("Synonym in attrRef is undeclared"));
+		return make_shared<StmtObject>("Placeholder, synonym in attrRef is undeclared");
+	}
+	
+	shared_ptr<SynonymObject> synonym{ make_shared<SynonymObject>(synonymName, synonymToEntity[synonymName]) };
+	shared_ptr<ClauseArg> synonymArg{ make_shared<ClauseArg>(synonymName, synonym) };
+	vector<shared_ptr<ClauseArg>> argVector{ synonymArg };
+
+	return attrRefFactory->create(attrRef, argVector);
 }
 
 std::vector<shared_ptr<QueryObject>> QueryParser::createTupleObjects(std::vector<string_view>& query, int& index, int tokenCount) {

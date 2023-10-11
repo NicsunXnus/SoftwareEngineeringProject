@@ -19,7 +19,7 @@ public:
 	ProcNameObjectFactory() {};
 
 	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
-		return make_shared<StmtObject>("");
+		return make_shared<ProcNameObject>(clauseName, arguments[0]);
 	};
 };
 
@@ -29,7 +29,7 @@ public:
 	VarNameObjectFactory() {};
 
 	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
-		return make_shared<StmtObject>("");
+		return make_shared<VarNameObject>(clauseName, arguments[0]);
 	};
 };
 
@@ -40,7 +40,7 @@ public:
 	ValueObjectFactory() {};
 
 	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
-		return make_shared<StmtObject>("");
+		return make_shared<ValueObject>(clauseName, arguments[0]);
 	};
 };
 
@@ -50,7 +50,7 @@ public:
 	StmtNoObjectFactory() {};
 
 	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
-		return make_shared<StmtObject>("");
+		return make_shared<StmtNoObject>(clauseName, arguments[0]);
 	};
 };
 
