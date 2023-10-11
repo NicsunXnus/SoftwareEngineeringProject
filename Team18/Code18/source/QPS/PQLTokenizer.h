@@ -142,12 +142,6 @@ private:
 				continue;
 			}
 
-			/**
-			* // unidentified char encountered. add into tokens, let parser throw the syntax error
-			* std::cout << "unidentified char encountered while tokenizing tuples\n";
-			* tokens.emplace_back(pql.substr(index, 1));
-			* ++index;
-			*/
 		}
 
 		if (isIdent) {
