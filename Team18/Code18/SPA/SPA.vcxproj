@@ -66,6 +66,7 @@
     <ClInclude Include="..\source\QPS\QueryObjects\ClauseArg.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\ClauseObject.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\ClauseObjectFactory.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\ComparisonQueryObject.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\DesignObjects.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\DesignObjectsFactory.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\InvalidQueryObject.h" />

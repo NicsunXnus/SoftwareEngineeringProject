@@ -131,10 +131,14 @@ private:
 	*/ 
 	bool isSelectTuple(std::vector<string_view>& query, int index, int& tokenCount);
 
-	/*
-	* Helper function to check if select clause has the structure of an elem (synonym or attrRef) and gets the respective token counts
-	*/
+	// Helper function to check if select clause has the structure of an elem (synonym or attrRef) and gets the respective token count
 	bool isSelectElem(std::vector<string_view>& query, int index, int& tokenCount);
+
+	// Helper function to check if index has the structure of a attrRef
+	bool isAttrRef(std::vector<string_view>& query, int index, int& tokenCount);
+
+	// Creates a attribute reference query object
+	shared_ptr<QueryObject> createAttrRefObject(std::vector<string_view>& query, int& index);
 
 	// Returns a vector of declaration query objects or with clause objects specified in the tuple
 	std::vector<shared_ptr<QueryObject>> createTupleObjects(std::vector<string_view>& query, int& index, int tokenCount);

@@ -439,13 +439,25 @@ bool QueryParser::isSelectElem(std::vector<string_view>& query, int index, int& 
 		return true;
 	}
 
-	if (query[index + 1] == "."sv) { // elem is a attrRef
-		tokenCount = 3;
+	if (isAttrRef(query, index, tokenCount)) { // elem is a attrRef
+		return true;
 	}
 
 	// elem is a synonym
 	tokenCount = 1;
 	return true;
+}
+
+bool QueryParser::isAttrRef(std::vector<string_view>& query, int index, int& tokenCount) {
+	if (query[index + 1] == "."sv) {
+		tokenCount = 3;
+		return true;
+	}
+	return false;
+}
+
+shared_ptr<QueryObject> QueryParser::createAttrRefObject(std::vector<string_view>& query, int& index) {
+	return make_shared<StmtObject>("");
 }
 
 std::vector<shared_ptr<QueryObject>> QueryParser::createTupleObjects(std::vector<string_view>& query, int& index, int tokenCount) {
