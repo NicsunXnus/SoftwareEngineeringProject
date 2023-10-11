@@ -55,19 +55,19 @@ public:
 	}
 
 	int getTupleObjectCount() {
-		return queryObjectsInTuple;
+		return QUERY_OBJECTS_IN_TUPLE_COUNT;
 	}
 
 	vector<shared_ptr<QueryObject>> getSelectClauseQueryObject(vector<shared_ptr<QueryObject>> queryObjects) {
 		auto start = queryObjects.begin();
-		auto end = queryObjects.begin() + queryObjectsInTuple;
+		auto end = start + QUERY_OBJECTS_IN_TUPLE_COUNT;
 		vector<shared_ptr<QueryObject>> selectClauseQueryObjects(start, end);
 
 		return selectClauseQueryObjects;
 	}
 
 	vector<shared_ptr<QueryObject>> getNonSelectClauseQueryObject(vector<shared_ptr<QueryObject>> queryObjects) {
-		auto start = queryObjects.begin() + queryObjectsInTuple;
+		auto start = queryObjects.begin() + QUERY_OBJECTS_IN_TUPLE_COUNT;
 		auto end = queryObjects.end();
 		vector<shared_ptr<QueryObject>> selectClauseQueryObjects(start, end);
 
@@ -93,7 +93,7 @@ private:
 	int MIN_PATTERN_CLAUSE_TOKEN_COUNT{ 6 };
 	int MAX_PATTERN_CLAUSE_TOKEN_COUNT{ 8 };
 	int ATTR_REF_TOKEN_COUNT{ 3 }; // e.g., 'p', '.', 'procName'
-	int queryObjectsInTuple{ 1 }; // The number of query objects in the select tuple of the query
+	int QUERY_OBJECTS_IN_TUPLE_COUNT{ 1 }; // The number of query objects in the select tuple of the query
 
 
 	/*
