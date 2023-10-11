@@ -33,7 +33,7 @@ shared_ptr<QueryResultsTable> ResultHandler::joinIntermediateTables(vector<share
 				continue; // just keep current table
 			}
 			else { // no need to evaluate the rest of the query
-				return make_shared<QueryResultsTable>();
+				return QueryResultsTable::createEmptyTable();
 			}
 
 		}

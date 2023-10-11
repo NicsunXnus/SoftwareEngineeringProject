@@ -190,6 +190,18 @@ public:
         }
         return make_shared<QueryResultsTable>(innerJoined);
     }
+
+    /**
+     * A static method that creates an empty QueryResultsTable.
+     *
+     * @param header The header of the column, represented as a string.
+     * @param columnValues A vector of strings representing the values in the column.
+     *                     The vector should have the same length for all columns in the table.
+     * @return A shared_ptr to the newly created QueryResultsTable object.
+     */
+    static shared_ptr<QueryResultsTable> createEmptyTable() {
+        return make_shared<QueryResultsTable>();
+    }
     
     /**
      * A static method that creates a new QueryResultsTable object with a single column.

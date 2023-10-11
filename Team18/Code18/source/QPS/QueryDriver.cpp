@@ -33,16 +33,6 @@ list<string> QueryDriver::execute() {
 
 		shared_ptr<ResultHandler> resultHandler = make_shared<ResultHandler>();
 		list<string> finalResult = resultHandler->processTables(queryResultsTableSelectClause, queryResultsTableNonSelect);
-
-		/*set<string> uniqueStrings;
-		for (const string& str : finalResult) {
-			uniqueStrings.insert(str);
-		}
-
-		list<string> stringList;
-		for (const string& str : uniqueStrings) {
-			stringList.push_back(str);
-		}*/
 		
 		return finalResult;
 	}
