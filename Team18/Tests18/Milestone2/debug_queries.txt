@@ -1,5 +1,75 @@
-1 - syn, syn, arg1: proc, arg2: proc, select first arg
+1 - syn, syn
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
-Select p1 such that Calls*("testprocedure5", p1)
-testprocedure4, testprocedure3, testprocedure2, testprocedure1
+Select s1 such that Next(s1, s2)
+1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17
+5000
+2 - int, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select s1 such that Next(9, s1)
+6
+5000
+3 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select w such that Next(9, w)
+6
+5000
+4 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select s1 such that Next(900, s1)
+
+5000
+5 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select w such that Next(w, 7)
+6
+5000
+6 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select i such that Next(_, i)
+10
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select i such that Next*(8, 15)
+10
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select i such that Next*(8, 11)
+10
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select i such that Next*(8, 8)
+10
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select s1 such that Next*(s1, r)
+1
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select s1 such that Next*(s1, r)
+1
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select s1 such that Next*(s1, s2) such that Modifies(s1, "x")
+1, 4, 6, 7, 10, 11
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select s1 such that Next*(s1, s1)
+6,7,8,9
+5000
+7 - syn, syn - loop THIS NEEDS TO BE FIXED AT DE SIDE line 3 should not be in the PKB, inconsistent with other relations
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select s1 such that Next*(s1, _)
+1,2,4,5,6,7,8,9,10,11,12,13,14,16,17
+5000
+7 - syn, syn - loop THIS NEEDS TO BE FIXED AT DE SIDE line 3 should not be in the PKB, inconsistent with other relations
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select s1 such that Next(s1, _)
+1,2,4,5,6,7,8,9,10,11,12,13,14,16,17
 5000
