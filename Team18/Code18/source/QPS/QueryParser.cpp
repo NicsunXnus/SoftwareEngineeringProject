@@ -227,9 +227,9 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 		else if (isWith) {
 			currentWordIndex += 1;
 			int withTokenCount{};
-			bool is1stArgAttrRef{};
+			bool is1stArgAttrRef{ false };
 
-			if (!hasWithClause(query, currentWordIndex, withTokenCount, is1stRefAttrRef)) {
+			if (!hasWithClause(query, currentWordIndex, withTokenCount, is1stArgAttrRef)) {
 				throw SyntaxErrorException("with clause has invalid syntax");
 			}
 
@@ -580,7 +580,7 @@ bool QueryParser::hasWithClause(std::vector<string_view>& query, int index, int&
 		if (index + MIN_WITH_CLAUSE_TOKEN_COUNT + 2 > static_cast<int>(query.size())) {
 			return false;
 		}
-		isFirstRefAttrRef = true;
+		is1stRefAttrRef = true;
 		tokenCount += 2;
 		index += 2;
 	}

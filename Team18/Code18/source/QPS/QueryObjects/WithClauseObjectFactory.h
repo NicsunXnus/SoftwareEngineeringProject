@@ -21,7 +21,7 @@ public:
 	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> synonym{ arguments[0] };
 		
-		if (!synonym->isSynonym) {
+		if (!synonym->isSynonym()) {
 			throw SyntaxErrorException("procName synonym clause arg does not contain a synonym");
 		}
 
@@ -37,7 +37,7 @@ public:
 	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> synonym{ arguments[0] };
 
-		if (!synonym->isSynonym) {
+		if (!synonym->isSynonym()) {
 			throw SyntaxErrorException("varName synonym clause arg does not contain a synonym");
 		}
 
@@ -54,7 +54,7 @@ public:
 	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> synonym{ arguments[0] };
 
-		if (!synonym->isSynonym) {
+		if (!synonym->isSynonym()) {
 			throw SyntaxErrorException("value synonym clause arg does not contain a synonym");
 		}
 
@@ -70,7 +70,7 @@ public:
 	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> synonym{ arguments[0] };
 
-		if (!synonym->isSynonym) {
+		if (!synonym->isSynonym()) {
 			throw SyntaxErrorException("stmt# synonym clause arg does not contain a synonym");
 		}
 

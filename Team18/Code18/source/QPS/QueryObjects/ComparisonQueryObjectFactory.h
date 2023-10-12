@@ -29,8 +29,8 @@ public:
 		shared_ptr<ClauseArg> arg1{ arguments[0] };
 		shared_ptr<ClauseArg> arg2{ arguments[1] };
 
-		bool arg1IsValid{ arg1->isIdentifier || arg1->isInteger };
-		bool arg2IsValid{ arg2->isIdentifier || arg2->isInteger };
+		bool arg1IsValid{ arg1->isIdentifier() || arg1->isInteger() };
+		bool arg2IsValid{ arg2->isIdentifier() || arg2->isInteger() };
 
 		if (!arg1IsValid || !arg2IsValid) {
 			throw SyntaxErrorException("invalid static static comparison arguments");
@@ -57,7 +57,7 @@ public:
 		shared_ptr<ClauseArg> staticValue{ arguments[2] };
 
 		bool isSynonymArgSynonym{ synonymArg->isSynonym() };
-		bool isValidStaticVal{ staticValue->isIdentifier() || staticValue->isInteger };
+		bool isValidStaticVal{ staticValue->isIdentifier() || staticValue->isInteger() };
 		
 		if (!isSynonymArgSynonym || !isValidStaticVal) {
 			throw SyntaxErrorException("Invalid arguments in attrRef static comparison object");
@@ -66,7 +66,7 @@ public:
 		// create attr ref object
 		shared_ptr<QueryObjectFactory> attrRefFactory{ QueryObjectFactory::createFactory(attrName->getArg()) };
 		std::vector<shared_ptr<ClauseArg>> synonymVec{ synonymArg };
-		shared_ptr<WithObject> attrRef{ attrRefFactory->create(attrName->getArg(), synonymVec) };
+		shared_ptr<QueryObject> attrRef{ attrRefFactory->create(attrName->getArg(), synonymVec) };
 
 		return make_shared<StaticAttrRefComparisonQueryObject>(clauseName, attrRef, staticValue);
 	};
@@ -98,12 +98,12 @@ public:
 		// create attr ref 1 object
 		shared_ptr<QueryObjectFactory> attrRefFactory1{ QueryObjectFactory::createFactory(attrName1->getArg()) };
 		std::vector<shared_ptr<ClauseArg>> synonymVec1{ synonymArg1 };
-		shared_ptr<WithObject> attrRef1{ attrRefFactory1->create(attrName1->getArg(), synonymVec1) };
+		shared_ptr<QueryObject> attrRef1{ attrRefFactory1->create(attrName1->getArg(), synonymVec1) };
 
 		// create attr ref 2 object
 		shared_ptr<QueryObjectFactory> attrRefFactory2{ QueryObjectFactory::createFactory(attrName2->getArg()) };
 		std::vector<shared_ptr<ClauseArg>> synonymVec2{ synonymArg2 };
-		shared_ptr<WithObject> attrRef2{ attrRefFactory2->create(attrName2->getArg(), synonymVec2) };
+		shared_ptr<QueryObject> attrRef2{ attrRefFactory2->create(attrName2->getArg(), synonymVec2) };
 
 		return make_shared<AttrRefAttrRefComparisonQueryObject>(clauseName, attrRef1, attrRef2);
 	}
