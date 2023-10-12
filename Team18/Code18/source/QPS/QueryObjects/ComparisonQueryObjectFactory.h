@@ -36,7 +36,7 @@ public:
 			throw SyntaxErrorException("invalid static static comparison arguments");
 		}
 
-		return make_shared<ProcNameObject>(clauseName, synonym);
+		return make_shared<StaticStaticComparisonQueryObject>(clauseName, arg1, arg2);
 	};
 };
 
@@ -56,14 +56,19 @@ public:
 		shared_ptr<ClauseArg> attrName{ arguments[1] };
 		shared_ptr<ClauseArg> staticValue{ arguments[2] };
 
-		bool arg1IsValid{ arg1->isIdentifier || arg1->isInteger };
-		bool arg2IsValid{ arg2->isIdentifier || arg2->isInteger };
-
-		if (!arg1IsValid || !arg2IsValid) {
-			throw SyntaxErrorException("invalid static static comparison arguments");
+		bool isSynonymArgSynonym{ synonymArg->isSynonym() };
+		bool isValidStaticVal{ staticValue->isIdentifier() || staticValue->isInteger };
+		
+		if (!isSynonymArgSynonym || !isValidStaticVal) {
+			throw SyntaxErrorException("Invalid arguments in attrRef static comparison object");
 		}
 
-		return make_shared<ProcNameObject>(clauseName, synonym);
+		// create attr ref object
+		shared_ptr<QueryObjectFactory> attrRefFactory{ QueryObjectFactory::createFactory(attrName->getArg()) };
+		std::vector<shared_ptr<ClauseArg>> synonymVec{ synonymArg };
+		shared_ptr<WithObject> attrRef{ attrRefFactory->create(attrName->getArg(), synonymVec) };
+
+		return make_shared<StaticAttrRefComparisonQueryObject>(clauseName, attrRef, staticValue);
 	};
 };
 
