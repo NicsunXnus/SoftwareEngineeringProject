@@ -94,7 +94,9 @@ private:
 	int MAX_PATTERN_CLAUSE_TOKEN_COUNT{ 8 };
 	int ATTR_REF_TOKEN_COUNT{ 3 }; // e.g., 'p', '.', 'procName'
 	int QUERY_OBJECTS_IN_TUPLE_COUNT{ 1 }; // The number of query objects in the select tuple of the query
-	int MIN_WITH_CLAUSE_TOKEN_COUNT{ 3 };
+	int MIN_WITH_CLAUSE_TOKEN_COUNT{ 3 }; // e.g., '"ident"', '=', '15'
+	int WITH_CLAUSE_ONE_ATTR_REF_TOKEN_COUNT{ 5 }; // e.g., 'a', '.', 'procName', '=', '15'
+	int MAX_WITH_CLAUSE_TOKEN_COUNT{ 7 }; // e.g., 'a', '.', 'procName', '=', 'b', '.', 'varName'
 
 
 	/*
@@ -151,7 +153,11 @@ private:
 	bool QueryParser::hasWith(std::vector<string_view>& query, int index);
 
 	// Check whether a with clause is present
-	bool QueryParser::hasWithClause(std::vector<string_view>& query, int index, int& tokenCount);
+	bool QueryParser::hasWithClause(std::vector<string_view>& query, int index, int& tokenCount, bool& isFirstRefAttrRef);
+
+	// Creates a comparison clause query object
+	shared_ptr<QueryObject> QueryParser::createComparisonObject(std::vector<string_view>& query, 
+		int& index, int tokenCount, bool is1stArgAttrRef);
 
 	// Stores semantic errors to be thrown once syntax validation is complete
 	void storeSemanticError(shared_ptr<SemanticErrorException> semanticError);

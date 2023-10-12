@@ -19,7 +19,13 @@ public:
 	ProcNameObjectFactory() {};
 
 	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
-		return make_shared<ProcNameObject>(clauseName, arguments[0]);
+		shared_ptr<ClauseArg> synonym{ arguments[0] };
+		
+		if (!synonym->isSynonym) {
+			throw SyntaxErrorException("procName synonym clause arg does not contain a synonym");
+		}
+
+		return make_shared<ProcNameObject>(clauseName, synonym);
 	};
 };
 
@@ -29,7 +35,13 @@ public:
 	VarNameObjectFactory() {};
 
 	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
-		return make_shared<VarNameObject>(clauseName, arguments[0]);
+		shared_ptr<ClauseArg> synonym{ arguments[0] };
+
+		if (!synonym->isSynonym) {
+			throw SyntaxErrorException("varName synonym clause arg does not contain a synonym");
+		}
+
+		return make_shared<VarNameObject>(clauseName, synonym);
 	};
 };
 
@@ -40,7 +52,13 @@ public:
 	ValueObjectFactory() {};
 
 	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
-		return make_shared<ValueObject>(clauseName, arguments[0]);
+		shared_ptr<ClauseArg> synonym{ arguments[0] };
+
+		if (!synonym->isSynonym) {
+			throw SyntaxErrorException("value synonym clause arg does not contain a synonym");
+		}
+
+		return make_shared<ValueObject>(clauseName, synonym);
 	};
 };
 
@@ -50,7 +68,13 @@ public:
 	StmtNoObjectFactory() {};
 
 	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
-		return make_shared<StmtNoObject>(clauseName, arguments[0]);
+		shared_ptr<ClauseArg> synonym{ arguments[0] };
+
+		if (!synonym->isSynonym) {
+			throw SyntaxErrorException("stmt# synonym clause arg does not contain a synonym");
+		}
+
+		return make_shared<StmtNoObject>(clauseName, synonym);
 	};
 };
 
