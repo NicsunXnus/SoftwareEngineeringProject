@@ -198,6 +198,7 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 	while (currentWordIndex < static_cast<int>(query.size())) {
 		bool isSuchThat{ hasSuchThat(query, currentWordIndex) }; // checks the current clause is a such that clause
 		bool isPattern{ hasPattern(query, currentWordIndex) }; // checks the current clause is a pattern clause
+		bool isWith{ hasWith(query, currentWordIndex) }; // checks the current clause is a with clause
 		
 		
 		if (isSuchThat) {
@@ -222,6 +223,11 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 			// construct pattern query object
 			shared_ptr<QueryObject> patternClauseObj{ createPatternObject(query, currentWordIndex, patternTokenCount) };
 			result.push_back(patternClauseObj);
+		}
+		else if (isWith) {
+			currentWordIndex += 1;
+
+
 		} else {
 			throw SyntaxErrorException("Unidentifiable clause in query");
 		}
@@ -542,6 +548,45 @@ std::vector<shared_ptr<QueryObject>> QueryParser::createTupleObjects(std::vector
 	index += tokenCount;
 	return resultClauseObjects;
 
+}
+
+bool QueryParser::hasWith(std::vector<string_view>& query, int index) {
+	return index < static_cast<int>(query.size()) && query[index] == "with"sv;
+}
+
+bool QueryParser::hasWithClause(std::vector<string_view>& query, int index, int& tokenCount) {
+	// with clause has a variable number of tokens. General structure: ref = ref
+	// a ref could have 1 or 3 tokens: "1" or "a", ".", "value"
+
+	// check there are at least the minimum number of tokens remaining
+	if (index + MIN_WITH_CLAUSE_TOKEN_COUNT > static_cast<int>(query.size())) {
+		return false;
+	}
+
+	tokenCount = MIN_WITH_CLAUSE_TOKEN_COUNT;
+
+	// check if first ref is attrRef
+	bool isRef1AttrRef{ query[index + 1] == "."sv };
+
+	if (isRef1AttrRef) {
+		if (index + MIN_WITH_CLAUSE_TOKEN_COUNT + 2 > static_cast<int>(query.size())) {
+			return false;
+		}
+		tokenCount += 2;
+		index += 2;
+	}
+
+	bool hasEqualSign{ query[index + 1] == "="sv };
+	bool isRef2AttrRef{ query[index + 3] == "."sv };
+
+	if (isRef2AttrRef) {
+		if (index + MIN_WITH_CLAUSE_TOKEN_COUNT + 2 > static_cast<int>(query.size())) {
+			return false;
+		}
+		tokenCount += 2;
+	}
+
+	return true;
 }
 
 void QueryParser::storeSemanticError(shared_ptr<SemanticErrorException> semanticError) {

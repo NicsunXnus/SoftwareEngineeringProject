@@ -23,7 +23,12 @@ public:
 	ProcNameObject(string_view clauseName, shared_ptr<ClauseArg> synonym)
 		: WithObject{ clauseName, synonym } {};
 
-	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {};
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {
+		// Placeholder code to fix compilation errors. Will be replaced by the correct functionality
+		unordered_set<string> PKBdata = dataAccessLayer->getEntity(STMT);
+		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(svToString(getQueryObjectName()), PKBdata);
+		return table;
+	};
 };
 
 // This class represents the varName attribute reference clause
@@ -33,7 +38,12 @@ public:
 		: WithObject{ clauseName, synonym } {
 	};
 
-	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {};
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {
+		// Placeholder code to fix compilation errors. Will be replaced by the correct functionality
+		unordered_set<string> PKBdata = dataAccessLayer->getEntity(STMT);
+		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(svToString(getQueryObjectName()), PKBdata);
+		return table;
+	};
 };
 
 // This class represents the value attribute reference clause
@@ -43,7 +53,12 @@ public:
 		: WithObject{ clauseName, synonym } {
 	};
 
-	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {};
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {
+		// Placeholder code to fix compilation errors. Will be replaced by the correct functionality
+		unordered_set<string> PKBdata = dataAccessLayer->getEntity(STMT);
+		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(svToString(getQueryObjectName()), PKBdata);
+		return table;
+	};
 };
 
 // This class represents the statement number attribute reference clause
@@ -53,7 +68,12 @@ public:
 		: WithObject{ clauseName, synonym } {
 	};
 
-	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {};
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {
+		// Placeholder code to fix compilation errors. Will be replaced by the correct functionality
+		unordered_set<string> PKBdata = dataAccessLayer->getEntity(STMT);
+		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(svToString(getQueryObjectName()), PKBdata);
+		return table;
+	};
 };
 
 #endif
