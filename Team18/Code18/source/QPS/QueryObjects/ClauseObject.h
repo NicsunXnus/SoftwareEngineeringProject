@@ -45,7 +45,9 @@ inline StringMap filterMapKeyReturnMap(shared_ptr<ClauseArg> arg, shared_ptr<Dat
 		string leftTuple = entry.first;
 		auto it = PKBArg1EntityData.find(leftTuple);
 		if (it != PKBArg1EntityData.end()) {
-			filteredPKBClauseData[entry.first] = entry.second;
+			if (entry.second.size() > 0) {
+				filteredPKBClauseData[entry.first] = entry.second;
+			}
 		}
 	}
 	return filteredPKBClauseData;
