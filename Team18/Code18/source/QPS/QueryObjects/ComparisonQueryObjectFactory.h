@@ -83,7 +83,29 @@ public:
 			throw SyntaxErrorException("invalid argument count for attrRef attrRef comparison object");
 		}
 
+		shared_ptr<ClauseArg> synonymArg1{ arguments[0] };
+		shared_ptr<ClauseArg> attrName1{ arguments[1] };
+		shared_ptr<ClauseArg> synonymArg2{ arguments[2] };
+		shared_ptr<ClauseArg> attrName2{ arguments[3] };
 
+		bool isSynonymArg1Synonym{ synonymArg1->isSynonym() };
+		bool isSynonymArg2Synonym{ synonymArg2->isSynonym() };
+
+		if (!isSynonymArg1Synonym || !isSynonymArg2Synonym) {
+			throw SyntaxErrorException("Invalid synonym args in attrRef attrRef comparison object");
+		}
+
+		// create attr ref 1 object
+		shared_ptr<QueryObjectFactory> attrRefFactory1{ QueryObjectFactory::createFactory(attrName1->getArg()) };
+		std::vector<shared_ptr<ClauseArg>> synonymVec1{ synonymArg1 };
+		shared_ptr<WithObject> attrRef1{ attrRefFactory1->create(attrName1->getArg(), synonymVec1) };
+
+		// create attr ref 2 object
+		shared_ptr<QueryObjectFactory> attrRefFactory2{ QueryObjectFactory::createFactory(attrName2->getArg()) };
+		std::vector<shared_ptr<ClauseArg>> synonymVec2{ synonymArg2 };
+		shared_ptr<WithObject> attrRef2{ attrRefFactory2->create(attrName2->getArg(), synonymVec2) };
+
+		return make_shared<AttrRefAttrRefComparisonQueryObject>(clauseName, attrRef1, attrRef2);
 	}
 };
 

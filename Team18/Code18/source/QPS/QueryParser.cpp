@@ -235,8 +235,7 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 
 			// construct comparison query object
 			shared_ptr<QueryObject> comparisonClauseObj{ createComparisonObject(query, currentWordIndex, withTokenCount, is1stArgAttrRef) };
-
-
+			result.push_back(comparisonClauseObj);
 		} else {
 			throw SyntaxErrorException("Unidentifiable clause in query");
 		}
