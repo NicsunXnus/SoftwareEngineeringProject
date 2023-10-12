@@ -1,0 +1,60 @@
+@startuml
+left to right direction
+' !include ../style.puml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+
+title QPS Overview
+
+package QPS <<Rectangle>> {
+
+    Class QueryResultsTable {
+     
+    }
+    
+    Class QueryDriver {
+       
+    }
+    
+    'Can remove unnecessary info'
+    'Converts the Tokens into Query Object'
+    Class QueryParser {
+      
+    }
+
+    'builds the query based on Query Object (which API calls to make to PKB)'
+    Class QueryBuilder {
+      
+    }
+
+    'Handles return values from PKB'
+    Class ResultsHandler {
+      
+    }
+
+    'Talks to PKB'
+    Class DataAccessLayer {
+       
+    }
+
+    'Holds the info needed to request the PKB'
+    Class QueryObject {
+      
+    }
+
+    Class QueryObjectFactory {
+       
+        
+    }
+
+}
+
+DataAccessLayer <.. QueryDriver
+QueryDriver ..> QueryBuilder
+QueryDriver ..> QueryParser
+QueryDriver ..> ResultsHandler
+QueryParser ..> QueryObjectFactory
+ResultsHandler ..> QueryResultsTable
+QueryBuilder ..> QueryResultsTable
+QueryObjectFactory ..> QueryObject
+@end
