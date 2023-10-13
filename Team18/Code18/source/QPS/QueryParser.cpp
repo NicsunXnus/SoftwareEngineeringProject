@@ -484,6 +484,8 @@ shared_ptr<QueryObject> QueryParser::createAttrRefObject(std::vector<string_view
 
 	if (synonyms.find(synonymName) == synonyms.end()) { // synonym is not declared
 		storeSemanticError(make_shared<SemanticErrorException>("Synonym in attrRef is undeclared"));
+
+		index += 3;
 		return make_shared<StmtObject>("Placeholder, synonym in attrRef is undeclared");
 	}
 	
@@ -538,7 +540,9 @@ std::vector<shared_ptr<QueryObject>> QueryParser::createTupleObjects(std::vector
 				}
 			}
 			else { // element before is a attrRef, create a attrRef queryObject
-				createAttrRefObjectInTuple(synonym, attrName);
+				shared_ptr<QueryObject> attrRefObject{ createAttrRefObjectInTuple(synonym, attrName) };
+				resultClauseObjects.push_back(attrRefObject);
+
 				isAttrRef = false;
 			}
 		}
@@ -569,6 +573,9 @@ bool QueryParser::hasWithClause(std::vector<string_view>& query, int index, int&
 	// check there are at least the minimum number of tokens remaining
 	if (index + MIN_WITH_CLAUSE_TOKEN_COUNT > static_cast<int>(query.size())) {
 		return false;
+	}
+	else if (index + MIN_WITH_CLAUSE_TOKEN_COUNT == static_cast<int>(query.size())) { // with clause is a static = static
+		return true;
 	}
 
 	tokenCount = MIN_WITH_CLAUSE_TOKEN_COUNT;
