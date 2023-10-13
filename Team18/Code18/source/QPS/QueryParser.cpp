@@ -570,6 +570,9 @@ bool QueryParser::hasWithClause(std::vector<string_view>& query, int index, int&
 	// with clause has a variable number of tokens. General structure: ref = ref
 	// a ref could have 1 or 3 tokens: "1" or "a", ".", "value"
 
+	tokenCount = MIN_WITH_CLAUSE_TOKEN_COUNT;
+
+
 	// check there are at least the minimum number of tokens remaining
 	if (index + MIN_WITH_CLAUSE_TOKEN_COUNT > static_cast<int>(query.size())) {
 		return false;
@@ -578,10 +581,8 @@ bool QueryParser::hasWithClause(std::vector<string_view>& query, int index, int&
 		return true;
 	}
 
-	tokenCount = MIN_WITH_CLAUSE_TOKEN_COUNT;
-
 	// check if first ref is attrRef
-	bool isRef1AttrRef{ query[index + 1] == "."sv };
+	bool isRef1AttrRef{ query[index + 1] == "."sv};
 
 	if (isRef1AttrRef) {
 		if (index + MIN_WITH_CLAUSE_TOKEN_COUNT + 2 > static_cast<int>(query.size())) {
@@ -593,20 +594,31 @@ bool QueryParser::hasWithClause(std::vector<string_view>& query, int index, int&
 	}
 
 	bool hasEqualSign{ query[index + 1] == "="sv };
-
 	if (!hasEqualSign) {
 		return false;
 	}
 
-	bool isRef2AttrRef{ query[index + 3] == "."sv };
-
-	if (isRef2AttrRef) {
-		if (index + MIN_WITH_CLAUSE_TOKEN_COUNT + 2 > static_cast<int>(query.size())) {
-			return false;
-		}
-		tokenCount += 2;
+	// check if there are at least the minimum number of tokens remaining for the second ref to be a static value
+	if (index + 3 > static_cast<int>(query.size())) {
+		return false;
+	}
+	else if (index + 3 == static_cast<int>(query.size())) {
+		// second ref is a static value
+		return true;
 	}
 
+	// check if there are at least the minimum number of tokens remaining for the second ref to be a attrRef
+	if (index + 5 > static_cast<int>(query.size())) {
+		return false;
+	}
+
+	bool isRef2AttrRef{ query[index + 3] == "."sv };
+	
+	if (!isRef2AttrRef) {// second ref is neither a static value nor a attrRef
+		return false;
+	}
+
+	tokenCount += 2;
 	return true;
 }
 
@@ -648,6 +660,8 @@ shared_ptr<QueryObject> QueryParser::createComparisonObject(std::vector<string_v
 		}
 		if (synonyms.find(synonymName) == synonyms.end()) { // synonym is not declared
 			storeSemanticError(make_shared<SemanticErrorException>("Synonym in comparison is undeclared"));
+
+			index += tokenCount;
 			return make_shared<StmtObject>("Placeholder, synonym in comparison is undeclared");
 		}
 
@@ -682,6 +696,8 @@ shared_ptr<QueryObject> QueryParser::createComparisonObject(std::vector<string_v
 		}
 		if (synonyms.find(synonymName1) == synonyms.end()) { // synonym is not declared
 			storeSemanticError(make_shared<SemanticErrorException>("Synonym 1 in comparison is undeclared"));
+
+			index += tokenCount;
 			return make_shared<StmtObject>("Placeholder, synonym 1 in comparison is undeclared");
 		}
 

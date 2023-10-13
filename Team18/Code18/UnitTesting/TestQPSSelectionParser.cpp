@@ -1381,8 +1381,8 @@ namespace UnitTesting
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
 
-			Assert::IsTrue(typeid(*qo[0]) == typeid(StaticStaticComparisonQueryObject));
-			Assert::IsTrue(qo[0]->getQueryObjectName() == "Static=Static"sv);
+			Assert::IsTrue(typeid(*qo[1]) == typeid(StaticStaticComparisonQueryObject));
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "Static=Static"sv);
 		}
 
 		TEST_METHOD(TestWithAttrRefEqualIdent)
@@ -1392,8 +1392,19 @@ namespace UnitTesting
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
 
-			Assert::IsTrue(typeid(*qo[0]) == typeid(StaticAttrRefComparisonQueryObject));
-			Assert::IsTrue(qo[0]->getQueryObjectName() == "Static=AttrRef"sv);
+			Assert::IsTrue(typeid(*qo[1]) == typeid(StaticAttrRefComparisonQueryObject));
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "Static=AttrRef"sv);
+		}
+
+		TEST_METHOD(TestWithIdentEqualAttrRef)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; variable v; Select c with \"alpha\" = c.value");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[1]) == typeid(StaticAttrRefComparisonQueryObject));
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "Static=AttrRef"sv);
 		}
 
 		TEST_METHOD(TestWithAttrRefEqualAttrRef)
@@ -1403,8 +1414,356 @@ namespace UnitTesting
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
 
-			Assert::IsTrue(typeid(*qo[0]) == typeid(StaticAttrRefComparisonQueryObject));
-			Assert::IsTrue(qo[0]->getQueryObjectName() == "AttrRef=AttrRef"sv);
+			Assert::IsTrue(typeid(*qo[1]) == typeid(AttrRefAttrRefComparisonQueryObject));
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "AttrRef=AttrRef"sv);
+		}
+
+		TEST_METHOD(TestSelectTupWithAttrRefEqualAttrRef)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; variable v; Select <c.value> with c.value = v.stmt#");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[1]) == typeid(AttrRefAttrRefComparisonQueryObject));
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "AttrRef=AttrRef"sv);
+		}
+
+		TEST_METHOD(TestSelectAttrRefWithAttrRefEqualAttrRef)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; variable v; Select c.value with c.value = v.stmt#");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[1]) == typeid(AttrRefAttrRefComparisonQueryObject));
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "AttrRef=AttrRef"sv);
+		}
+
+		TEST_METHOD(TestWithNoEquals)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; variable v; Select c.value with c.value v.stmt#");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestAdditionalSymbolBeforeWith)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; variable v; Select c.value .with c.value = v.stmt#");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestAdditionalSymbolAfterWith)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; variable v; Select c.value with. c.value = v.stmt#");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+		
+		TEST_METHOD(TestDoubleDotWith)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; variable v; Select c.value with c..value = v.stmt#");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestInvalidIdentifierInWith)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; variable v; Select c.value with \"c.value\" = v.stmt#");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestAdditionalTokenAfterEquals)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; variable v; Select c.value with c.value =. v.stmt#");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestAdditionalTokenAtEndOfWith)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; variable v; Select c.value with c.value = v.stmt#.");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestInvalid1stRef)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; variable v; Select c.value with c = v.stmt#");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestIncompleteAttrRef1stRef)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; variable v; Select c.value with c. = v.stmt#");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestIncompleteIdent1stRef)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; variable v; Select c.value with \"asdf = v.stmt#");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestInvalid2ndRef)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; variable v; Select c.value with 15 = v");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestIncompleteAttrRef2ndRef)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; variable v; Select c.value with 15 = v.");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestIncompleteIdent2ndRef)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; variable v; Select c.value with 15 = \"iden ");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestInvalidAttrName)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; variable v; Select c.value with 15 = v.stmtNo");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestUndeclaredSyn)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select c.value with 15 = d.stmt#");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SemanticError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestWithSTQuery)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select c.value with 15 = c.stmt# such that Follows(1, 2)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[1]) == typeid(StaticAttrRefComparisonQueryObject));
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "Static=AttrRef"sv);
+			Assert::IsTrue(typeid(*qo[2]) == typeid(FollowsObject));
+			Assert::IsTrue(qo[2]->getQueryObjectName() == "Follows"sv);
+		}
+
+		TEST_METHOD(TestSTWithQuery)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select c.value such that Follows(1, 2) with 15 = 14 ");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[1]) == typeid(FollowsObject));
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "Follows"sv);
+			Assert::IsTrue(typeid(*qo[2]) == typeid(StaticStaticComparisonQueryObject));
+			Assert::IsTrue(qo[2]->getQueryObjectName() == "Static=Static"sv);
+		}
+
+		TEST_METHOD(TestInvalidWithSTQuery)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select c.value with 15 = c such that Follows(1, 2)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestIncompleteWithSTQuery)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select c.value with 15 = c. such that Follows(1, 2)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestMissingEqualWithSTQuery)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select c.value with 15  c.stmt# such that Follows(1, 2)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestUndeclaredSynWithSTQuery)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select c.value with 15 = d.stmt# such that Follows(1, 2)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SemanticError", ex.getType());
+			}
 		}
 
 	};
