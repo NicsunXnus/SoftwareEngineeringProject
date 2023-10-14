@@ -537,11 +537,13 @@ std::vector<shared_ptr<QueryObject>> QueryParser::createTupleObjects(std::vector
 				}
 				else {
 					resultClauseObjects.push_back(synonyms.find(synonym)->second);
+					synonyms_in_select++;
 				}
 			}
 			else { // element before is a attrRef, create a attrRef queryObject
 				shared_ptr<QueryObject> attrRefObject{ createAttrRefObjectInTuple(synonym, attrName) };
 				resultClauseObjects.push_back(attrRefObject);
+				synonyms_in_select++;
 
 				isAttrRef = false;
 			}

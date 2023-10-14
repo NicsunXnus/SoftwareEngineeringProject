@@ -55,7 +55,7 @@ public:
 	}
 
 	int getTupleObjectCount() {
-		return QUERY_OBJECTS_IN_TUPLE_COUNT;
+		return synonyms_in_select;
 	}
 
 	vector<shared_ptr<QueryObject>> getSelectClauseQueryObject(vector<shared_ptr<QueryObject>> queryObjects) {
@@ -89,11 +89,13 @@ private:
 	// Is set to true if the query contains a semantic error
 	vector<shared_ptr<SemanticErrorException>> semanticErrors;
 
+	// The number of synonyms in the select tuple of the query
+	int synonyms_in_select{ 1 }; 
+
 	int SUCH_THAT_CLAUSE_TOKEN_COUNT{ 6 };
 	int MIN_PATTERN_CLAUSE_TOKEN_COUNT{ 6 };
 	int MAX_PATTERN_CLAUSE_TOKEN_COUNT{ 8 };
 	int ATTR_REF_TOKEN_COUNT{ 3 }; // e.g., 'p', '.', 'procName'
-	int QUERY_OBJECTS_IN_TUPLE_COUNT{ 1 }; // The number of query objects in the select tuple of the query
 	int MIN_WITH_CLAUSE_TOKEN_COUNT{ 3 }; // e.g., '"ident"', '=', '15'
 	int WITH_CLAUSE_ONE_ATTR_REF_TOKEN_COUNT{ 5 }; // e.g., 'a', '.', 'procName', '=', '15'
 	int MAX_WITH_CLAUSE_TOKEN_COUNT{ 7 }; // e.g., 'a', '.', 'procName', '=', 'b', '.', 'varName'
