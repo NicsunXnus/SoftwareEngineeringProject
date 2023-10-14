@@ -94,6 +94,9 @@ private:
 	int MAX_PATTERN_CLAUSE_TOKEN_COUNT{ 8 };
 	int ATTR_REF_TOKEN_COUNT{ 3 }; // e.g., 'p', '.', 'procName'
 	int QUERY_OBJECTS_IN_TUPLE_COUNT{ 1 }; // The number of query objects in the select tuple of the query
+	int MIN_WITH_CLAUSE_TOKEN_COUNT{ 3 }; // e.g., '"ident"', '=', '15'
+	int WITH_CLAUSE_ONE_ATTR_REF_TOKEN_COUNT{ 5 }; // e.g., 'a', '.', 'procName', '=', '15'
+	int MAX_WITH_CLAUSE_TOKEN_COUNT{ 7 }; // e.g., 'a', '.', 'procName', '=', 'b', '.', 'varName'
 
 
 	/*
@@ -110,7 +113,7 @@ private:
 	// Helper function to check if a synonym is declared
 	bool isDeclared(std::vector<string_view>& query, int index);
 
-	// Helper function to check if such that is present
+	// Helper function to check if the such that keywords are present
 	bool hasSuchThat(std::vector<string_view>& query, int index);
 
 	// Helper function to check if a such that clause is present
@@ -131,13 +134,30 @@ private:
 	*/ 
 	bool isSelectTuple(std::vector<string_view>& query, int index, int& tokenCount);
 
-	/*
-	* Helper function to check if select clause has the structure of an elem (synonym or attrRef) and gets the respective token counts
-	*/
+	// Helper function to check if select clause has the structure of an elem (synonym or attrRef) and gets the respective token count
 	bool isSelectElem(std::vector<string_view>& query, int index, int& tokenCount);
+
+	// Helper function to check if index has the structure of a attrRef
+	bool isAttrRef(std::vector<string_view>& query, int index, int& tokenCount);
+
+	// Creates an attribute reference query object
+	shared_ptr<QueryObject> createAttrRefObject(std::vector<string_view>& query, int& index);
+
+	// Creates an attribute reference query object from when parsing the tuple
+	shared_ptr<QueryObject> createAttrRefObjectInTuple(string_view synonym, string_view attrName);
 
 	// Returns a vector of declaration query objects or with clause objects specified in the tuple
 	std::vector<shared_ptr<QueryObject>> createTupleObjects(std::vector<string_view>& query, int& index, int tokenCount);
+
+	// Checks whether there is a with keyword in the query
+	bool QueryParser::hasWith(std::vector<string_view>& query, int index);
+
+	// Check whether a with clause is present
+	bool QueryParser::hasWithClause(std::vector<string_view>& query, int index, int& tokenCount, bool& isFirstRefAttrRef);
+
+	// Creates a comparison clause query object
+	shared_ptr<QueryObject> QueryParser::createComparisonObject(std::vector<string_view>& query, 
+		int& index, int tokenCount, bool is1stArgAttrRef);
 
 	// Stores semantic errors to be thrown once syntax validation is complete
 	void storeSemanticError(shared_ptr<SemanticErrorException> semanticError);

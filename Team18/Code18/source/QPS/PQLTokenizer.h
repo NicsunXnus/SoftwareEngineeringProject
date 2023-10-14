@@ -10,11 +10,12 @@
 
 using namespace std::string_view_literals;
 
+inline std::unordered_set<char> TOKENIZED_CHARS{ ';', ',', '(', ')', '_', '.' , '='};
+
 /**
 * This class encapsulates a tokenizer that tokenizes PQL queries
 */
 class PQLTokenizer {
-
 public:
 	/**
 	* Splits a pql query into tokens.
@@ -27,7 +28,8 @@ public:
 		int startIndex{ 0 };
 		bool isWord{ false };
 		bool isWithinQuotes{ false };
-		std::unordered_set<char> operators{ '+', '-', '*', '/', '%' };
+		//std::unordered_set<char> operators{ '+', '-', '*', '/', '%' };
+		
 		std::stringstream ss;
 
 		for (int i = 0; i < pql.length(); ++i) {
@@ -65,7 +67,7 @@ public:
 				continue;
 			}
 
-			if (pql[i] == ';' || pql[i] == ',' || pql[i] == '(' || pql[i] == ')' || pql[i] == '_') {
+			if (TOKENIZED_CHARS.find(pql[i]) != TOKENIZED_CHARS.end()) {
 				if (isWord) {
 					tokens.push_back(pql.substr(startIndex, i - startIndex));
 					isWord = false;
@@ -110,7 +112,7 @@ private:
 
 		while (index < static_cast<int>(pql.size()) && pql[index] != '>') {
 			// for now, support only tuples of synonyms
-			if (pql[index] == ',') {
+			if (TOKENIZED_CHARS.find(pql[index]) != TOKENIZED_CHARS.end()) {
 				if (isIdent) {
 					tokens.emplace_back(pql.substr(startIndex, index - startIndex));
 					isIdent = false;
@@ -155,6 +157,8 @@ private:
 
 		return tokens;
 	}
+
+
 };
 
 

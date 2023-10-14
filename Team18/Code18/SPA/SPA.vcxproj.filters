@@ -231,6 +231,9 @@
       <Filter>SimpleTokens</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\PQLTokenizer.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\WithClauseObject.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\WithClauseObjectFactory.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\ComparisonQueryObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="AST">

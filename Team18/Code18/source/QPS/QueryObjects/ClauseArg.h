@@ -26,10 +26,8 @@ private:
 	// indicates if the clauseArg is a partial pattern match
 	bool isPartialMatch;
 
-	bool isNum;
-
 public:
-	ClauseArg(string_view arg, std::shared_ptr<SynonymObject> synonym, bool isPartialMatch=false)
+	ClauseArg(string_view arg, std::shared_ptr<SynonymObject> synonym=nullptr, bool isPartialMatch=false)
 		: arg{ arg }, synonym{ synonym }, isPartialMatch{ isPartialMatch } {};
 
 	string_view getArg() {
