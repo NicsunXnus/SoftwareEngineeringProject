@@ -90,7 +90,7 @@ private:
 	vector<shared_ptr<SemanticErrorException>> semanticErrors;
 
 	// The number of synonyms in the select tuple of the query
-	int synonyms_in_select{ 1 }; 
+	int synonyms_in_select{ 0 }; 
 
 	int SUCH_THAT_CLAUSE_TOKEN_COUNT{ 6 };
 	int MIN_PATTERN_CLAUSE_TOKEN_COUNT{ 6 };

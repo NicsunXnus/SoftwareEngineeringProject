@@ -184,6 +184,8 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 
 			result.push_back(attrRefQuery);
 		}
+
+		synonyms_in_select++;
 	}
 	else {
 		throw SyntaxErrorException("Invalid syntax for result clause");
