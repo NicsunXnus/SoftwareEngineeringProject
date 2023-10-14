@@ -27,6 +27,9 @@ public:
 
     // get number of rows in rable
     int getNumberOfRows() {
+        if (getNumberOfCols() <= 0) {
+            return 0;
+        }
         return columns[0].begin()->second.size();
     }
 
@@ -48,6 +51,12 @@ public:
         int thisColNums = thisColumns.size();
         int otherColNums = otherColumns.size();
         if (other->isEmpty() || this->isEmpty()) {
+            if (other->getSignificant() && other->isEmpty() && this->getSignificant() && !this->isEmpty()) { // TRUE EMPTY X TABLE
+                return make_shared<QueryResultsTable>(thisColumns);
+            }
+            if (this->getSignificant() && this->isEmpty() && other->getSignificant() && !other->isEmpty()) { // TABLE X TRUE EMPTY
+                return other;
+            }
             return make_shared<QueryResultsTable>();
         }
 
@@ -515,10 +524,19 @@ public:
         return getNumberOfCols() == 0 || getNumberOfRows() == 0;
     }
 
+    void setPrimaryKey(string key) {
+        primaryKey = key;
+    }
+
+    string getPrimaryKey() {
+        return primaryKey;
+    }
+
 private:
     vector<map<string, vector<string>>> columns; // column name: values
     bool isSignificant; // denotes whether a table is significant or not (if uses(_, _) has more than one row, will drop both columns, 
     // but table is NOT empty, and is hence significant), important for constructing final result
+    string primaryKey = ""; // primary key of the table, especially important for attributes e.g. constant.value, primary key will be constant, other key will be constant.value
 
     //Helper method where (a,b) -> (a,a,b,b)
     vector<string> duplicateEntries(const vector<string>& input, int x) {

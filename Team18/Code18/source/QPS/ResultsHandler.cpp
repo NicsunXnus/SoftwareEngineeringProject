@@ -52,18 +52,18 @@ shared_ptr<QueryResultsTable> ResultHandler::joinIntermediateTables(vector<share
 list<string> ResultHandler::handleSingleSynonym(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
 	if (nonSelectClauseTables.empty()) { // query has no such that clause
 		shared_ptr<QueryResultsTable> selectTable = selectClauseTables[0];
-		vector<string> columns = selectTable->getColumnData(selectTable->getHeaders()[0]); // only one header
+		vector<string> columns = selectTable->getColumnData(selectTable->getPrimaryKey());
 
 		return vectorToUniqueList(columns);
 	}
-
+	nonSelectClauseTables.insert(nonSelectClauseTables.end(), selectClauseTables.begin(), selectClauseTables.end());
 	shared_ptr<QueryResultsTable> intermediateTable = joinIntermediateTables(nonSelectClauseTables);
 
 	vector<map<string, vector<string>>> thisColumns = intermediateTable->getColumns();
 	if (intermediateTable->isEmpty()) { // empty such that clause tables after joining
 		if (intermediateTable->getSignificant()) {
 			shared_ptr<QueryResultsTable> selectTable = selectClauseTables[0];
-			vector<string> colContents = selectTable->getColumnData(selectTable->getHeaders()[0]);
+			vector<string> colContents = selectTable->getColumnData(selectTable->getPrimaryKey());
 			return vectorToUniqueList(colContents);
 		}
 		else {
@@ -73,8 +73,9 @@ list<string> ResultHandler::handleSingleSynonym(vector<shared_ptr<QueryResultsTa
 
 	}
 
-	string selectVar = selectClauseTables[0]->getHeaders()[0];
 	// non-empty such that clause tables after joining
+	string selectVar = selectClauseTables[0]->getPrimaryKey();
+	
 	for (map<string, vector<string>> column : thisColumns) {
 		string key = column.begin()->first;
 		if (key == selectVar) { // select clause has common headers with tables
@@ -86,7 +87,7 @@ list<string> ResultHandler::handleSingleSynonym(vector<shared_ptr<QueryResultsTa
 
 	if (intermediateTable->getSignificant()) {// select clause has no common headers with tables
 		shared_ptr<QueryResultsTable> selectTable = selectClauseTables[0];
-		vector<string> colContents = selectTable->getColumns()[0].begin()->second;
+		vector<string> colContents = selectTable->getColumnData(selectVar);
 		return vectorToUniqueList(colContents);
 	}
 	list<string> empty;
@@ -106,6 +107,7 @@ list<string> ResultHandler::handleTuples(vector<shared_ptr<QueryResultsTable>> s
 		return vectorToUniqueList(result);
 	}
 
+	nonSelectClauseTables.insert(nonSelectClauseTables.end(), selectClauseTables.begin(), selectClauseTables.end());
 	shared_ptr<QueryResultsTable> intermediateTable = joinIntermediateTables(nonSelectClauseTables);
 	
 	if (intermediateTable->isEmpty()) { // empty such that clause tables after joining
@@ -120,7 +122,7 @@ list<string> ResultHandler::handleTuples(vector<shared_ptr<QueryResultsTable>> s
 	vector<shared_ptr<QueryResultsTable>> tupleTables;
 	for (shared_ptr<QueryResultsTable> selectTable : selectClauseTables) {
 		if (intermediateTable->haveSameHeaders(selectTable)) {
-			string header = selectTable->getHeaders()[0];
+			string header = selectTable->getPrimaryKey();
 			shared_ptr<QueryResultsTable> oneDTable = QueryResultsTable::createTable(header, intermediateTable->getColumnData(header));
 			tupleTables.push_back(oneDTable);
 		}

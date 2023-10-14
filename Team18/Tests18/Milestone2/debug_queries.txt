@@ -1,5 +1,60 @@
+2 - syn, syn, arg1: proc, arg2: proc, select first arg
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select <c, s1>
+0, 5, 2, 1
+5000
 1 - syn, syn, arg1: proc, arg2: proc, select first arg
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
-Select p1 such that Calls*("testprocedure5", p1)
-testprocedure4, testprocedure3, testprocedure2, testprocedure1
+Select cl.procName
+Second, Third
+5000
+2 - syn, syn, arg1: proc, arg2: proc, select first arg
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select cl.procName such that Uses(cl, "x")
+Second
+5000
+2 - syn, syn, arg1: proc, arg2: proc, select first arg
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select cl.procName such that Uses(cl, "gibberish")
+
+5000
+2 - syn, syn, arg1: proc, arg2: proc, select first arg
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select cl.procName such that Uses(cl, "Third")
+Second
+5000
+2 - syn, syn, arg1: proc, arg2: proc, select first arg
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select c.value
+0, 5, 2, 1
+5000
+2 - syn, syn, arg1: proc, arg2: proc, select first arg
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select <c, s1>
+0, 5, 2, 1
+5000
+2 - syn, syn, arg1: proc, arg2: proc, select first arg
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select v.varName
+x, z, i, y, v
+5000
+2 - syn, syn, arg1: proc, arg2: proc, select first arg
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select r.varName
+x, z
+5000
+2 - syn, syn, arg1: proc, arg2: proc, select first arg
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select pn.varName
+v
+5000
+2 - syn, syn, arg1: proc, arg2: proc, select first arg
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select r.varName such that Modifies(r, v)
+x, z
+5000
+2 - syn, syn, arg1: proc, arg2: proc, select first arg
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select c such that Modifies(s1, v) such that Uses(s1, v) such that Modifies(s1 , v)
+x, z
 5000

@@ -94,12 +94,12 @@ namespace SystemTesting
 			std::string queryFilePath = defaultPath + "single_callsStar_queries.txt";
 			assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
 		}
-		/*TEST_METHOD(debugM2)
+		TEST_METHOD(debugM2)
 		{
 			std::string srcFilePath = defaultPath + "debug_source.txt";
 			std::string queryFilePath = defaultPath + "debug_queries.txt";
 			assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
-		}*/
+		}
 
 	};
 }

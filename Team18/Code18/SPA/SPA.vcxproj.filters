@@ -231,9 +231,15 @@
       <Filter>SimpleTokens</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\PQLTokenizer.h" />
-    <ClInclude Include="..\source\QPS\QueryObjects\WithClauseObject.h" />
-    <ClInclude Include="..\source\QPS\QueryObjects\WithClauseObjectFactory.h" />
-    <ClInclude Include="..\source\QPS\QueryObjects\ComparisonQueryObject.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\ComparisonQueryObject.h">
+      <Filter>QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryObjects\WithClauseObject.h">
+      <Filter>QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryObjects\WithClauseObjectFactory.h">
+      <Filter>QPS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="AST">

@@ -33,6 +33,7 @@ namespace UnitTesting {
 			Assert::IsTrue(table->getColumns()[1]["s1"][0] == "2");
 			Assert::IsTrue(table->getColumns()[1]["s1"][1] == "3");
 			Assert::IsTrue(table->getColumns()[1]["s1"][2] == "4");
+			Assert::IsTrue(qo[0]->callAndProcess(dataAccessLayer)->getPrimaryKey() == "s");
 		}
 
 		TEST_METHOD(TestValidFollowsSynSynSameSyn) {
@@ -935,6 +936,160 @@ namespace UnitTesting {
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
+			Assert::IsTrue(!table->getSignificant());
+		}
+
+		TEST_METHOD(TestValidSelectProcProcName) {
+			vector<string> testS = PQLTokenizer::tokenize("procedure s, s1; Select s.procName");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+
+			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
+			Assert::IsTrue(table->getSignificant());
+			Assert::IsTrue(table->getColumns()[1]["s.procName"][0] == "a");
+			Assert::IsTrue(table->getPrimaryKey() == "s.procName");
+		}
+
+		TEST_METHOD(TestValidSelectCallProcName) {
+			vector<string> testS = PQLTokenizer::tokenize("call s, s1; Select s.procName");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+
+			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
+			Assert::IsTrue(table->getSignificant());
+			Assert::IsTrue(table->getColumns()[1]["s.procName"][0] == "a");
+			Assert::IsTrue(table->getPrimaryKey() == "s.procName");
+		}
+
+		TEST_METHOD(TestValidSelectVarVarName) {
+			vector<string> testS = PQLTokenizer::tokenize("variable s, s1; Select s.varName");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+
+			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
+			Assert::IsTrue(table->getSignificant());
+			Assert::IsTrue(table->getColumns()[1]["s.varName"][0] == "a");
+			Assert::IsTrue(table->getPrimaryKey() == "s.varName");
+		}
+
+		TEST_METHOD(TestValidSelectReadVarName) {
+			vector<string> testS = PQLTokenizer::tokenize("read s, s1; Select s.varName");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+
+			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
+			Assert::IsTrue(table->getSignificant());
+			Assert::IsTrue(table->getColumns()[1]["s.varName"][0] == "c");
+			Assert::IsTrue(table->getPrimaryKey() == "s.varName");
+		}
+
+		TEST_METHOD(TestValidSelectPrintVarName) {
+			vector<string> testS = PQLTokenizer::tokenize("print s, s1; Select s.varName");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+
+			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
+			Assert::IsTrue(table->getSignificant());
+			Assert::IsTrue(table->getColumns()[1]["s.varName"][0] == "e");
+			Assert::IsTrue(table->getPrimaryKey() == "s.varName");
+		}
+
+		TEST_METHOD(TestValidSelectConstantValue) {
+			vector<string> testS = PQLTokenizer::tokenize("constant s, s1; Select s.value");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+
+			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
+			Assert::IsTrue(table->getSignificant());
+			Assert::IsTrue(table->getColumns()[1]["s.value"][0] == "100");
+			Assert::IsTrue(table->getPrimaryKey() == "s.value");
+		}
+
+		TEST_METHOD(TestValidSelectStmtStmtNo) {
+			vector<string> testS = PQLTokenizer::tokenize("stmt s, s1; Select s.stmt#");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+
+			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
+			Assert::IsTrue(table->getSignificant());
+			Assert::IsTrue(table->getColumns()[1]["s.stmt#"][0] == "1");
+			Assert::IsTrue(table->getPrimaryKey() == "s.stmt#");
+		}
+
+		TEST_METHOD(TestInvalidSelectProcName) {
+			vector<string> testS = PQLTokenizer::tokenize("stmt s, s1; Select s.procName");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+
+			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
+			Assert::IsTrue(!table->getSignificant());
+		}
+
+		TEST_METHOD(TestInvalidSelectValue) {
+			vector<string> testS = PQLTokenizer::tokenize("stmt s, s1; Select s.value");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+
+			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
+			Assert::IsTrue(!table->getSignificant());
+		}
+
+		TEST_METHOD(TestInvalidSelectStmtNo) {
+			vector<string> testS = PQLTokenizer::tokenize("variable s, s1; Select s.stmt#");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+
+			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(!table->getSignificant());
 		}
 	};

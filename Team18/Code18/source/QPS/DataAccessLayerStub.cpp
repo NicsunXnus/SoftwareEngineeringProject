@@ -7,6 +7,9 @@ unordered_set<string> variables = { "a", "b", "c" };
 unordered_set<string> constants = {"100", "300"};
 map<string, unordered_set<string>> constantMap = { {"100", {"1"}}, {"300", {"3", "4"}} };
 map<string, unordered_set<string>> variableMap = { {"a", {"1"}}, {"b", {"2", "3"}}, {"c", {"3"}} };
+StringMap callProcName = { {"1", {"a"}}, {"2", {"b"}} };
+StringMap readVarName = { {"3", {"c"}}, {"4", {"d"}} };
+StringMap printVarName = { {"1", {"e"}} };
 
 map<string, unordered_set<string>> clauses = { {"1", {"2"}}, {"2", {"3"}}, {"3", {"4"}}};
 map<string, unordered_set<string>> clausesMult = { {"1", {"2","3"}}, {"2", {"3", "4"}}, {"3", {"4"}}};
@@ -26,6 +29,9 @@ unordered_set<string> DataAccessLayerStub::getEntity(ENTITY type) {
 	}
 	if (type == PROCEDURE) {
 		return procedures;
+	}
+	if (type == CONSTANT) {
+		return constants;
 	}
 	return entities;
 }
@@ -74,4 +80,14 @@ map<string, unordered_set<string>> DataAccessLayerStub::getClauseInverse(ABSTRAC
 		return clausesMultInverse;
 	}
 	return clausesInverse;
+}
+
+StringMap DataAccessLayerStub::getCallProcNames() {
+	return callProcName;
+}
+StringMap DataAccessLayerStub::getReadVarNames() {
+	return readVarName;
+}
+StringMap DataAccessLayerStub::getPrintVarNames() {
+	return printVarName;
 }
