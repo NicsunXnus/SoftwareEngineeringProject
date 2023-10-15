@@ -51,9 +51,9 @@ jobs:
     - name: print current directory
       run: |
          dir
-         echo "Current directory: $(pwd)"
          cd build
-         echo "Current directory: $(pwd)"
+         dir
+         cd Team18/Code18
          dir
          #cd Release
          #./Autotester ../Team18/Code18/SystemTesting/no_clauses_source.txt ../Team18/Code18/SystemTesting/no_clauses_queries.txt out.xml

@@ -361,8 +361,3 @@ if(${PROJECT_NAME}_ENABLE_SYSTEM_TESTING)
 	add_subdirectory(${PROJECT_NAME}/Code18/SystemTesting)
 	message(STATUS "Finished building system tests.\n")
 endif()
-
-if (${PROJECT_NAME}_BUILD_AUTOTESTER)
-	add_subdirectory(${PROJECT_NAME}/Code18/AutoTester)
-	message(STATUS "Finished adding autotester.\n")
-endif()
