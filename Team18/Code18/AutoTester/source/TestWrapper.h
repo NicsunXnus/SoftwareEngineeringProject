@@ -7,7 +7,7 @@
 
 // include your other headers here
 #include "AbstractWrapper.h"
-#include "../source/ApplicationWrapper.h"
+#include "../../source/ApplicationWrapper.h"
 
 class TestWrapper : public AbstractWrapper {
 private:
