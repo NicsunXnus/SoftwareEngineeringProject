@@ -26,7 +26,12 @@ set(exe_sources
 	${sources}
 	${headers}
 )
-
+#
+# Set the project standard and warnings
+#
+target_compile_features(AutoTester PRIVATE cxx_std_17)
+include(../../cmake/CompilerWarnings.cmake)
+set_project_warnings(AutoTester)
 add_executable(autotester WIN32)
 target_sources(autotester PRIVATE ${exe_sources} source/AbstractWrapper.h source/TestWrapper.h source/TestWrapper.cpp)
 install(TARGETS autotester)
