@@ -50,6 +50,10 @@ endif()
 # Find all headers and implementation files
 include(cmake/SourcesAndHeaders.cmake)
 
+add_executable(AutoTester WIN32)
+target_sources(AutoTester PRIVATE ${exe_sources} Team18/Code18/Autotester/source/AbstractWrapper.h Team18/Code18/Autotester/source/TestWrapper.h Team18/Code18/Autotester/source/TestWrapper.cpp)
+install(TARGETS Autotester)
+
 if(${PROJECT_NAME}_BUILD_EXECUTABLE)
   add_executable(${PROJECT_NAME} ${exe_sources})
 
@@ -339,7 +343,3 @@ if(${PROJECT_NAME}_ENABLE_SYSTEM_TESTING)
 	add_subdirectory(${PROJECT_NAME}/Code18/SystemTesting)
 	message(STATUS "Finished building system tests.\n")
 endif()
-
-message(STATUS "Build system tests for the project. Tests should always be found in the test folder\n")
-add_subdirectory(${PROJECT_NAME}/Code18/AutoTester)
-message(STATUS "Finished building system tests.\n")
