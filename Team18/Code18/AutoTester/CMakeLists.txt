@@ -1,9 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
 
-#
-# Project details
-#
-
 project(
   "AutoTester"
   LANGUAGES CXX
@@ -31,21 +27,6 @@ set(exe_sources
 	${headers}
 )
 
-#
-# Create library, setup header and source files
-#
-
-# Find all headers and implementation files
-include(cmake/SourcesAndHeaders.cmake)
-
-
 add_executable(autotester WIN32)
 target_sources(autotester PRIVATE ${exe_sources} source/AbstractWrapper.h source/TestWrapper.h source/TestWrapper.cpp)
 install(TARGETS autotester)
-#
-# Set the project standard and warnings
-#
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
-
-include(cmake/CompilerWarnings.cmake)
-set_project_warnings(${PROJECT_NAME})
