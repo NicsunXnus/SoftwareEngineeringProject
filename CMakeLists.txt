@@ -50,14 +50,9 @@ endif()
 # Find all headers and implementation files
 include(cmake/SourcesAndHeaders.cmake)
 
-add_executable(AutoTester WIN32)
-target_sources(AutoTester PRIVATE ${exe_sources} Team18/Code18/AutoTester/source/AbstractWrapper.h Team18/Code18/AutoTester/source/TestWrapper.h Team18/Code18/AutoTester/source/TestWrapper.cpp)
-install(TARGETS AutoTester)
-#add_library(AutoTester_LIB)
-
 if(${PROJECT_NAME}_BUILD_EXECUTABLE)
-  add_executable(${PROJECT_NAME} ${exe_sources})
-
+  add_executable(AutoTester ${exe_sources} Team18/Code18/AutoTester/source/AbstractWrapper.h Team18/Code18/AutoTester/source/TestWrapper.h Team18/Code18/AutoTester/source/TestWrapper.cpp)
+  install(TARGETS AutoTester)
   if(${PROJECT_NAME}_VERBOSE_OUTPUT)
     verbose_message("Found the following sources:")
     foreach(source IN LISTS exe_sources)
