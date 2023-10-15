@@ -361,3 +361,7 @@ if(${PROJECT_NAME}_ENABLE_SYSTEM_TESTING)
 	add_subdirectory(${PROJECT_NAME}/Code18/SystemTesting)
 	message(STATUS "Finished building system tests.\n")
 endif()
+
+message(STATUS "Build system tests for the project. Tests should always be found in the test folder\n")
+add_subdirectory(${PROJECT_NAME}/Code18/AutoTester)
+message(STATUS "Finished building system tests.\n")
