@@ -138,7 +138,11 @@ message(STATUS "Added all header and implementation files.\n")
 #
 # Set the project standard and warnings
 #
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 
+if(${PROJECT_NAME}_BUILD_EXECUTABLE AND ${PROJECT_NAME}_ENABLE_UNIT_TESTING)
+	target_compile_features(${PROJECT_NAME}_LIB PUBLIC cxx_std_17)
+endif()
 include(cmake/CompilerWarnings.cmake)
 set_project_warnings(${PROJECT_NAME})
 
