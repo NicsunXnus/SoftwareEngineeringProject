@@ -1,0 +1,60 @@
+@startuml
+!include ../style.puml
+skinparam ClassFontColor #000000
+
+
+skinparam ClassBorderColor #000000
+box QPS LOGIC_COLOR_T1
+participant ":QueryDriver" as QueryDriver LOGIC_COLOR
+participant ":QueryParser" as QueryParser LOGIC_COLOR
+participant "o:QueryObject" as QueryObject LOGIC_COLOR
+participant ":QueryBuilder" as QueryBuilder LOGIC_COLOR
+participant "t:DataAccessLayer" as DataAccessLayer LOGIC_COLOR
+participant "r:ResultsHandler" as ResultsHandler LOGIC_COLOR
+end box
+
+[-> QueryDriver : execute()
+activate QueryDriver
+
+activate QueryParser
+
+
+QueryDriver -> QueryParser : parse()
+
+QueryParser -> QueryObject : create()
+activate QueryObject
+
+QueryObject --> QueryParser
+
+QueryParser --> QueryDriver : QueryObjects
+deactivate QueryParser
+
+QueryDriver -> DataAccessLayer : DataAccessLayer
+activate DataAccessLayer
+
+DataAccessLayer --> QueryDriver : dataAccessLayer
+
+
+
+QueryDriver -> QueryBuilder : buildQuery()
+activate QueryBuilder
+
+QueryBuilder -> QueryObject : callAndProcess(dataAccessLayer, synonyms)
+
+deactivate QueryObject
+
+deactivate DataAccessLayer
+
+QueryBuilder --> QueryDriver : AllQueryResultTables
+deactivate QueryBuilder
+
+
+QueryDriver -> ResultsHandler : processTables(AllQueryResultTables)
+activate ResultsHandler
+ResultsHandler --> QueryDriver : listOfResults
+deactivate ResultsHandler
+
+[<--QueryDriver : results
+deactivate QueryDriver
+
+@end
