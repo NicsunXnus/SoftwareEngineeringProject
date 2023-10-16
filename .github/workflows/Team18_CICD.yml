@@ -47,11 +47,11 @@ jobs:
             cd Team18/Code18
             dir
      
-      #- name: Restore nuget packages for all solutions
-      #  run: msbuild 'StartupSPASolution.sln' /p:configuration=${{ matrix.configuration }} /p:platform=${{ matrix.platform }} /t:restore
+      - name: Restore nuget packages for all solutions
+        run: msbuild 'Team18/Code18/StartupSPASolution.sln' /p:configuration=${{ matrix.configuration }} /p:platform=${{ matrix.platform }} /t:restore
       
-      #- name: Build all Sample solutions
-      #  run: msbuild 'StartupSPASolution.sln' /p:configuration=${{ matrix.configuration }} /p:platform=${{ matrix.platform }}  
+      - name: Build solution
+        run: msbuild 'Team18/Code18/StartupSPASolution.sln' /p:configuration=${{ matrix.configuration }} /p:platform=${{ matrix.platform }}  
   
   build:
 
