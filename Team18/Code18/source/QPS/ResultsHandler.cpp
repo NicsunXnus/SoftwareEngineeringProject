@@ -99,8 +99,10 @@ list<string> ResultHandler::handleSingleSynonym(vector<shared_ptr<QueryResultsTa
 list<string> ResultHandler::handleTuples(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
 	if (nonSelectClauseTables.empty()) {
 		shared_ptr<QueryResultsTable> intermediateTable = selectClauseTables[0];
+		intermediateTable->getPrimaryKeyOnlyTable();
 		selectClauseTables.erase(selectClauseTables.begin());
 		for (shared_ptr<QueryResultsTable> table : selectClauseTables) {
+			table->getPrimaryKeyOnlyTable();
 			intermediateTable = intermediateTable->crossProduct(table);
 		}
 		vector<string> result = tableToListForTuples(intermediateTable);

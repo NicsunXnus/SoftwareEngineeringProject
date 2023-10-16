@@ -200,6 +200,21 @@ public:
         return make_shared<QueryResultsTable>(innerJoined);
     }
 
+    void getPrimaryKeyOnlyTable() {
+        vector<string> headers = this->getHeaders();
+        auto it = find(headers.begin(), headers.end(), primaryKey);
+        if (it != headers.end()) {
+            int index = distance(headers.begin(), it);
+            map<string, vector<string>> pKeyColumn = columns[index];
+            vector<map<string, vector<string>>> newColumns;
+            newColumns.push_back(pKeyColumn);
+            columns = newColumns;
+        }
+        else {
+            cerr << "Error getting primary key only in table";
+        }
+    }
+
     /**
      * A static method that creates an empty QueryResultsTable.
      *

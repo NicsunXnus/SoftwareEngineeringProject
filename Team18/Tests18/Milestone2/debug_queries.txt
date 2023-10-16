@@ -1,7 +1,17 @@
 2 - syn, syn, arg1: proc, arg2: proc, select first arg
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
-Select <c, s1>
-0, 5, 2, 1
+Select <pn.varName, r.varName>
+v z, v x
+5000
+2 - syn, syn, arg1: proc, arg2: proc, select first arg
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select <p, r.varName> such that Modifies(r, "x")
+First x, Second x,Third x
+5000
+2 - syn, syn, arg1: proc, arg2: proc, select first arg
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select <p, r.varName>
+First x, First z, Second x, Second z, Third x, Third z
 5000
 1 - syn, syn, arg1: proc, arg2: proc, select first arg
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
@@ -26,11 +36,6 @@ Second
 2 - syn, syn, arg1: proc, arg2: proc, select first arg
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
 Select c.value
-0, 5, 2, 1
-5000
-2 - syn, syn, arg1: proc, arg2: proc, select first arg
-stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
-Select <c, s1>
 0, 5, 2, 1
 5000
 2 - syn, syn, arg1: proc, arg2: proc, select first arg
