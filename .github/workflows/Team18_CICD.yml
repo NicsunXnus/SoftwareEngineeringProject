@@ -11,15 +11,17 @@ env:
   INSTALL_LOCATION: ".local"
 
 jobs:
-  formatting-check:
-    name: Format check
-    runs-on: ubuntu-latest
+
+  cpplint:
+    runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Run clang-format style check for C/C++ programs.
-      uses: jidicula/clang-format-action@v4.4.1
-      with: 
-        clang-format-version: '11'
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: 3.x
+    - run: pip install cpplint
+    - run: cpplint --recursive .
+     
   build:
 
     runs-on: windows-latest
