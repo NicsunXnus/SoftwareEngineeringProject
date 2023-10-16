@@ -32,3 +32,11 @@ void TestWrapper::evaluate(std::string query, std::list<std::string>& results) {
   this->appWrap.evaluate(query, results);
   //std::cout << "end" << std::endl << std::flush;
 }
+/*
+int main(int argc, char* argv[]) {
+	TestWrapper tw = TestWrapper();
+	//tw.parse(argv[1]);
+
+	//tw.evaluate(std::string query, std::list<std::string>&results);
+	return 0;
+}*/
