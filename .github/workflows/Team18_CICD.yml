@@ -11,6 +11,15 @@ env:
   INSTALL_LOCATION: ".local"
 
 jobs:
+  formatting-check:
+    name: Format check
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run clang-format style check for C/C++ programs.
+      uses: jidicula/clang-format-action@v4.2.0
+      with:
+        clang-format-version: '13'
   build:
 
     runs-on: windows-latest
@@ -26,16 +35,7 @@ jobs:
         path: ${{env.INSTALL_LOCATION}}
         key: ${{runner.os}}-dependencies
 
-    - name: install GoogleTest
-      if: ${{steps.cache.output.cache-hit != 'true'}}
-      run: |
-        cd ..
-        git clone https://github.com/google/googletest.git --branch release-1.10.0
-        cd googletest
-        cmake -Bbuild -DCMAKE_INSTALL_PREFIX="$HOME/$env:INSTALL_LOCATION" -Dgtest_force_shared_crt=1
-        cmake --build build --config Release
-        cmake --build build --target install --config Release
-        cd ../23s1-win-spa-team-18
+   
 
     - name: configure
       run: cmake -Bbuild -DCMAKE_INSTALL_PREFIX="$HOME/$env:INSTALL_LOCATION"
