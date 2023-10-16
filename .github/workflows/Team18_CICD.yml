@@ -36,8 +36,10 @@ jobs:
       - name: Setup MSBuild.exe
         uses: microsoft/setup-msbuild@v1.0.3
       
-      - name: Use NuGet 5.2.0
+      - name: Use NuGet 6.7.0
         uses: nuget/setup-nuget@v1
+        with: 
+          nuget-version: '6.7.0'
       
       - name: Print current directory
         run: dir
