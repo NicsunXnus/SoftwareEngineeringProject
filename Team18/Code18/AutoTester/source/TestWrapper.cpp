@@ -1,6 +1,7 @@
+#include "TestWrapper.h"
+
 #include <fstream>
 
-#include "TestWrapper.h"
 #include "../../source/SimpleTokenizer/SIMPLETokenizer.h"
 
 // implementation code of WrapperFactory - do NOT modify the next 5 lines
@@ -21,14 +22,14 @@ TestWrapper::TestWrapper() {
 
 // method for parsing the SIMPLE source
 void TestWrapper::parse(std::string filename) {
-  //std::cout << "parsing" << std::endl;
+  // std::cout << "parsing" << std::endl;
   this->appWrap.parse(filename);
-  //std::cout << "parsed" << std::endl;
+  // std::cout << "parsed" << std::endl;
 }
 
 // method to evaluating a query
 void TestWrapper::evaluate(std::string query, std::list<std::string>& results) {
-  //std::cout << "start" << std::endl;
+  // std::cout << "start" << std::endl;
   this->appWrap.evaluate(query, results);
-  //std::cout << "end" << std::endl << std::flush;
+  // std::cout << "end" << std::endl << std::flush;
 }

@@ -50,7 +50,7 @@ jobs:
       - name: Build solution
         run: |
             msbuild 'Team18/Code18/StartupSPASolution.sln' /p:configuration=${{ matrix.configuration }} /p:platform=${{ matrix.platform }}
-            #if (-not (Test-Path Team18/Code18/Tests/out.xml)) { New-Item Team18/Code18/Tests/out.xml -ItemType File }
+            if (-not (Test-Path Team18/Code18/Tests/out.xml)) { New-Item Team18/Code18/Tests/out.xml -ItemType File }
             cd Team18/Code18/Release
             .\AutoTester.exe ..\Tests\single_calls_source.txt ..\Tests\single_calls_queries.txt ..\Tests\out.xml
             #.\AutoTester.exe ..\Tests\Sample_source.txt ..\Tests\Sample_queries.txt ..\Tests\out.xml

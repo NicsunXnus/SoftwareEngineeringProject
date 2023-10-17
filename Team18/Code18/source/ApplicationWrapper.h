@@ -14,8 +14,7 @@
 
 using namespace std::string_view_literals;
 
-class ApplicationWrapper
-{
+class ApplicationWrapper {
  public:
   // a default constructor
   ApplicationWrapper();
@@ -27,19 +26,15 @@ class ApplicationWrapper
   void directParse(std::string_view srcCode);
 
   // method for parsing the SIMPLE source, assuming the input is the filename
-  void parse(std::string filename)
-  {
+  void parse(std::string filename) {
     // call your parser to do the parsing
     std::ifstream simpleStream(filename);
 
     std::string src = "";
-    if (simpleStream.is_open())
-    {
-      while (simpleStream)
-      {
+    if (simpleStream.is_open()) {
+      while (simpleStream) {
         char c = simpleStream.get();
-        if (c == -1)
-        {  // special end of line character
+        if (c == -1) {  // special end of line character
           break;
         }
         src += c;
