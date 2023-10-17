@@ -50,7 +50,7 @@ jobs:
       - name: Build solution
         run: |
             msbuild 'Team18/Code18/StartupSPASolution.sln' /p:configuration=${{ matrix.configuration }} /p:platform=${{ matrix.platform }}
-            IF NOT EXIST Team18/Code18/Tests/out.xml (type nul > Team18/Code18/Tests/out.xml)
+            if [ ! -f Team18/Code18/Tests/out.xml ]; then touch Team18/Code18/Tests/out.xml; fi
             cd Team18/Code18/Release
             .\AutoTester.exe ..\Tests\single_calls_queries.txt ..\Tests\single_calls_source.txt ..\Tests\out.xml
             #.\AutoTester.exe ..\Tests\Sample_source.txt ..\Tests\Sample_queries.txt ..\Tests\out.xml
