@@ -55,7 +55,7 @@ jobs:
             #.\AutoTester.exe ..\Tests\Sample_source.txt ..\Tests\Sample_queries.txt ..\Tests\out.xml
             .\AutoTester.exe ..\Tests\single_calls_source.txt ..\Tests\single_calls_queries.txt ..\Tests\out.xml
       - name: Add out.xml
-        run: git add ..\Tests\out.xml
+        run: git add Team18\Code18\Tests\out.xml
         
       - name: Commit changes
         run: git commit -m "Adding out.xml produced from Workflow"   
