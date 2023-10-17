@@ -33,14 +33,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
-      - name: getting dependencies
-        working-directory: tools
-        run: ./BuildTest.bat
-        
-      - name: set up tools
-        working-directory: tools
-        run: ./Setup.bat
-      
       - name: Setup MSBuild.exe
         uses: microsoft/setup-msbuild@v1.0.3
         
@@ -66,7 +58,7 @@ jobs:
             .\AutoTester.exe ..\Tests\Sample_source.txt ..\Tests\Sample_queries.txt ..\Tests\out.xml
       
       - name: Run Tests
-        working-directory: bin\Release-windows-x64\DareUnitTest
+        working-directory: Team18/Code18\Release
         run: vstest.console.exe UnitTesting.dll
         
      
