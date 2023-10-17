@@ -5,9 +5,6 @@
 #include <vector>
 #include <cassert>
 
-#define CONFIG_CATCH_MAIN
-#include "catch.hpp"
-
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;
 

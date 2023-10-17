@@ -3,19 +3,20 @@
 #define APPLICATIONWRAPPER_H
 
 #include <fstream>
-#include <string>
 #include <iostream>
 #include <list>
+#include <string>
 
-#include "SimpleTokenizer/SIMPLETokenizer.h"
 #include "AST/ASTBuilder.h"
-#include "QPS/QueryDriver.h"
 #include "DesignExtractor/DesignExtractor.h"
+#include "QPS/QueryDriver.h"
+#include "SimpleTokenizer/SIMPLETokenizer.h"
 
 using namespace std::string_view_literals;
 
-class ApplicationWrapper {
-public:
+class ApplicationWrapper
+{
+ public:
   // a default constructor
   ApplicationWrapper();
 
@@ -26,15 +27,19 @@ public:
   void directParse(std::string_view srcCode);
 
   // method for parsing the SIMPLE source, assuming the input is the filename
-  void parse(std::string filename) {
+  void parse(std::string filename)
+  {
     // call your parser to do the parsing
     std::ifstream simpleStream(filename);
 
     std::string src = "";
-    if (simpleStream.is_open()) {
-      while (simpleStream) {
+    if (simpleStream.is_open())
+    {
+      while (simpleStream)
+      {
         char c = simpleStream.get();
-        if (c == -1) { // special end of line character
+        if (c == -1)
+        {  // special end of line character
           break;
         }
         src += c;

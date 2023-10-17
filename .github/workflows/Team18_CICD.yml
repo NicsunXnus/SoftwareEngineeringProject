@@ -32,9 +32,20 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
+      
+      - name: getting dependencies
+        working-directory: tools
+        run: ./BuildTest.bat
+        
+      - name: set up tools
+        working-directory: tools
+        run: ./Setup.bat
+      
       - name: Setup MSBuild.exe
         uses: microsoft/setup-msbuild@v1.0.3
+        
+      - name: SetupVSTestPath
+        usees: darenm/Setup-VSTest@v1
       
       - name: Use NuGet 6.7.0
         uses: nuget/setup-nuget@v1
@@ -53,10 +64,12 @@ jobs:
             dir
             cd ../Release
             .\AutoTester.exe ..\Tests\Sample_source.txt ..\Tests\Sample_queries.txt ..\Tests\out.xml
-            
-                        
-            
-  
+      
+      - name: Run Tests
+        working-directory: bin\Release-windows-x64\DareUnitTest
+        run: vstest.console.exe UnitTesting.dll
+        
+     
   build:
 
     runs-on: windows-latest
@@ -94,13 +107,3 @@ jobs:
       run: |
         cd build
         ctest -C "$env:BUILD_TYPE" -VV
-
-    - name: print current directory
-      run: |
-         dir
-         cd build
-         dir
-         cd Team18/Code18
-         dir
-         #cd Release
-         #./Autotester ../Team18/Code18/SystemTesting/no_clauses_source.txt ../Team18/Code18/SystemTesting/no_clauses_queries.txt out.xml
