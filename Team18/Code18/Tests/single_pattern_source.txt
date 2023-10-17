@@ -1,0 +1,24 @@
+procedure first {
+  read a;
+  read b;
+  c = a + b - 1;
+  d = c * e % c / d;
+  while (c < d) {
+    if (a < b) then {
+      print e;
+      call second;
+    } else {
+      print f;
+      call third;
+    }
+  }
+  e = a + b * c + c / d % e - f;
+}
+procedure second {
+  read a;
+  a = 2;
+}
+procedure third {
+  print b;
+  c = b;
+}
