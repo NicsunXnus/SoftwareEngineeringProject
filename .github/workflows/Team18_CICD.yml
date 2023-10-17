@@ -53,6 +53,10 @@ jobs:
             if (-not (Test-Path Team18/Code18/Tests/out.xml)) { New-Item Team18/Code18/Tests/out.xml -ItemType File }
             cd Team18/Code18/Release
             .\AutoTester.exe ..\Tests\single_calls_source.txt ..\Tests\single_calls_queries.txt ..\Tests\out.xml
+            git add ..\Tests\out.xml
+            git commit -m "Adding out.xml produced from Workflow"
+            git fetch origin Sprint4-CICD
+            git push origin HEAD:Sprint4-CICD
             #.\AutoTester.exe ..\Tests\Sample_source.txt ..\Tests\Sample_queries.txt ..\Tests\out.xml
       
       - name: Run Tests
