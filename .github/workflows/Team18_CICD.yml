@@ -58,10 +58,10 @@ jobs:
         run: |
             git config --global user.name "NicsunXnus"
             git config --global user.email "e0543645@u.nus.edu"
+            git checkout Sprint4-CICD
             git add -f Team18\Code18\Tests\out.xml
             git commit -m "Adding out.xml produced from Workflow"
             git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-            git pull origin Sprint4-CICD
             git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
