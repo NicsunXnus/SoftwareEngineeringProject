@@ -76,7 +76,7 @@ jobs:
       if: ${{steps.cache.output.cache-hit != 'true'}}
       run: |
         cd ..
-        git clone https://github.com/catchorg/Catch2.git --branch release-3.4.0
+        git clone https://github.com/catchorg/Catch2.git
         cd Catch2
         cmake -Bbuild -DCMAKE_INSTALL_PREFIX="$HOME/$env:INSTALL_LOCATION" -Dgtest_force_shared_crt=1
         cmake --build build --config Release
