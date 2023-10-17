@@ -592,6 +592,7 @@ bool QueryParser::hasWithClause(std::vector<string_view>& query, int index, int&
 		if (index + MIN_WITH_CLAUSE_TOKEN_COUNT + 2 > static_cast<int>(query.size())) {
 			return false;
 		}
+		is1stRefAttrRef = true;
 		tokenCount += 2;
 		index += 2;
 	}
@@ -605,20 +606,19 @@ bool QueryParser::hasWithClause(std::vector<string_view>& query, int index, int&
 	if (index + 3 > static_cast<int>(query.size())) {
 		return false;
 	}
-	else if (index + 3 == static_cast<int>(query.size())) {
-		// second ref is a static value
-		return true;
-	}
 
 	// check if there are at least the minimum number of tokens remaining for the second ref to be a attrRef
 	if (index + 5 > static_cast<int>(query.size())) {
-		return false;
+		// has to be a static value
+		return true;
 	}
 
+	// could be static or attrRef at this point
+	
 	bool isRef2AttrRef{ query[index + 3] == "."sv };
 	
-	if (!isRef2AttrRef) {// second ref is neither a static value nor a attrRef
-		return false;
+	if (!isRef2AttrRef) {// second ref is a static value
+		return true;
 	}
 
 	tokenCount += 2;
