@@ -28,3 +28,8 @@ stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant
 Select v such that Uses(a, v) pattern a (v, _)
 error
 5000
+7 - M1 crash
+stmt n; assign a; 
+Select n such that Parent (_, _) pattern a (_, _)
+
+5000

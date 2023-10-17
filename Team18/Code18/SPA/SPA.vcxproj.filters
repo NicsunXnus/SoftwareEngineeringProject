@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="..\source\ApplicationWrapper.cpp" />
-	<ClCompile Include="..\source\AST\ASTBuilder.cpp">
+    <ClCompile Include="..\source\AST\ASTBuilder.cpp">
       <Filter>AST</Filter>
     </ClCompile>
     <ClCompile Include="..\source\QPS\DataAccessLayer.cpp">
@@ -59,7 +59,6 @@
     <ClInclude Include="..\source\ExceptionMessages.h" />
     <ClInclude Include="..\source\HelperFunctions.h" />
     <ClInclude Include="..\source\PKB.h" />
-    <ClInclude Include="..\source\PQLTokenizer.h" />
     <ClInclude Include="..\source\AST\ASTBuilder.h">
       <Filter>AST</Filter>
     </ClInclude>
@@ -100,6 +99,12 @@
       <Filter>DesignExtractor</Filter>
     </ClInclude>
     <ClInclude Include="..\source\DesignExtractor\UsesModifiesAbstractionBaseExtractor.h">
+      <Filter>DesignExtractor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\DesignExtractor\CallsAbstractionExtractor.h">
+      <Filter>DesignExtractor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\DesignExtractor\NextAbstractionExtractor.h">
       <Filter>DesignExtractor</Filter>
     </ClInclude>
     <ClInclude Include="..\source\PKB\Adapter.h">
@@ -225,6 +230,7 @@
     <ClInclude Include="..\source\SimpleTokens\TokenFactory.h">
       <Filter>SimpleTokens</Filter>
     </ClInclude>
+    <ClInclude Include="..\source\QPS\PQLTokenizer.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="AST">

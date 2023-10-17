@@ -23,6 +23,8 @@ public:
     UsesModifiesAbstractionBaseExtractor() {
         this->UsesModifiesCallsMap = std::make_shared<map<string, vector<string>>>();
         this->procedureCallLinesMap = std::make_shared<map<string, vector<string>>>();
+        this->lineNumberToProcedureNameExtractor = make_shared<LineNumberToProcedureNameExtractor>();
+        this->ifWhileNestedStatementsMap = std::make_shared<map<string, vector<string>>>();
     }
 
     // Overriden method to store variable name (no default implmentation)
@@ -36,24 +38,12 @@ public:
     void handleWhile(std::shared_ptr<WhileNode> whileNode) override {
         preProcessWhileNode(whileNode);
         std::vector<std::shared_ptr<StatementNode>> statements = whileNode->getStatements();
-        std::vector<int> nestedStatements = vector<int>();
 
         for (const auto& statement : statements) {
-            int statementNumber = statement->getStatementNumber();
-
-            // Add the statement number to the vector
-            nestedStatements.push_back(statementNumber);
-
+            string statementNumber = to_string(statement->getStatementNumber());
             extractDesigns(statement);
-        }
-        // if any of the nestedStatement values can be found in the AbstractionStorageMap, add the whileNode statement number to the AbstractionStorageMap
-        for (const auto& nestedStatement : nestedStatements) {
-            for (const auto& [variable, values] : *this->AbstractionStorageMap) {
-                if (std::find(values.begin(), values.end(), to_string(nestedStatement)) != values.end()) {
-                    string statementNumber = to_string(whileNode->getStatementNumber());
-                    addStatementNumberAndProcedureName(variable, statementNumber);
-                }
-            }
+            
+            insertIntoMap(statementNumber, to_string(whileNode->getStatementNumber()), ifWhileNestedStatementsMap);   
         }
     }
 
@@ -63,33 +53,20 @@ public:
         std::vector<std::shared_ptr<StatementNode>> ifStatements = ifNode->getStatements();
         std::vector<std::shared_ptr<StatementNode>> elseStatements = ifNode->getElseStatements();
         std::vector<std::shared_ptr<StatementNode>> statements;
-        std::vector<int> nestedStatements = vector<int>();
 
         statements.insert(statements.end(), ifStatements.begin(), ifStatements.end());
         statements.insert(statements.end(), elseStatements.begin(), elseStatements.end());
         
         for (const auto& statement : statements) {
-            int statementNumber = statement->getStatementNumber();
-            
-            // Add the statement number to the vector
-            nestedStatements.push_back(statementNumber);
-            
+            string statementNumber = to_string(statement->getStatementNumber());
             extractDesigns(statement);
-        }
-        // if any of the nestedStatement values can be found in the AbstractionStorageMap, add the ifNode statement number to the AbstractionStorageMap
-        for (const auto& nestedStatement : nestedStatements) {
-            for (const auto& [variable, values] : *this->AbstractionStorageMap) {
-                if (std::find(values.begin(), values.end(), to_string(nestedStatement)) != values.end()) {
-                    string statementNumber = to_string(ifNode->getStatementNumber());
-                    addStatementNumberAndProcedureName(variable, statementNumber);
-                }
-            }
+            insertIntoMap(statementNumber, to_string(ifNode->getStatementNumber()), ifWhileNestedStatementsMap);
         }
     }
 
     void handleCall(std::shared_ptr<CallNode> callNode) override {
         string statementNumber = to_string(callNode->getStatementNumber());
-        string procedureName = getProcedureNameFromStatementNumber(statementNumber);
+        string procedureName = this->lineNumberToProcedureNameExtractor->getProcedureNameFromStatementNumber(statementNumber);
         string procedureCalledName = callNode->getProc()->getName();
         insertToAbstractionMap(procedureName, statementNumber);
         insertIntoMap(procedureCalledName, statementNumber, procedureCallLinesMap);
@@ -101,18 +78,34 @@ public:
         callsAbstractionExtractor->extractAbstractions(astNode);
         shared_ptr<map<string, vector<string>>> callsAbstractionMap = callsAbstractionExtractor->getStorageMap();
         createUsesModifiesCallsMap(callsAbstractionMap);
+
+        // Get LineNumberToProcedureNameExtractor from CallsAbstractionExtractor
+        setLineNumberToProcedureNameExtractor(callsAbstractionExtractor->getLineNumberToProcedureNameExtractor());
+
         extractDesigns(astNode);
         processIndirectProcedureCalls();
+        processNestedIfWhileStatements();
     }
 
-
 protected:
+    // This map is used to store procedure names as the key and a vector of the procedures names that calls it
     shared_ptr<map<string, vector<string>>> UsesModifiesCallsMap;
+    // This map is used to store procedure names as the key and a vector of the statement numbers that calls it
     shared_ptr<map<string, vector<string>>> procedureCallLinesMap;
+    // This map is used to storeif/while statement number as the key and nested statement numbers as the value 
+    shared_ptr<map<string, vector<string>>> ifWhileNestedStatementsMap;
+    // This extractor contains a map and a method to get the procedure name from a statement number
+    shared_ptr<LineNumberToProcedureNameExtractor> lineNumberToProcedureNameExtractor; 
     
-    
+
     virtual void preProcessWhileNode(std::shared_ptr<WhileNode> whileNode) {}
     virtual void preProcessIfNode(std::shared_ptr<IfNode> ifNode) {}
+
+    // Set the LineNumberToProcedureNameExtractor
+    void setLineNumberToProcedureNameExtractor(shared_ptr<LineNumberToProcedureNameExtractor> lineNumberToProcedureNameExtractor) {
+        this->lineNumberToProcedureNameExtractor = lineNumberToProcedureNameExtractor;
+    }
+
 
     void insertIntoMap(string key, string statementNumber, shared_ptr<map<string, vector<string>>> map) {
         // Insert to the map if the key is not found
@@ -133,17 +126,16 @@ protected:
             }
         }
     }
-
     
     // Add both statement number and parent procedure to the AbstractionStorageMap
     void addStatementNumberAndProcedureName(string variableName, string statementNumber) {
-        string parentProcedure = getProcedureNameFromStatementNumber(statementNumber);
+        string parentProcedure = this->lineNumberToProcedureNameExtractor->getProcedureNameFromStatementNumber(statementNumber);
         insertToAbstractionMap(variableName, statementNumber);
         insertToAbstractionMap(variableName, parentProcedure);
     }
 
     // for all keys in the AbstractionStorageMap, if a value within its vector can be found 
-    // in the UsesModifiesCallsMap, add the vector of values from the UsesModifiesCallsMap to 
+    // in keys of the UsesModifiesCallsMap, add the vector of key's from the UsesModifiesCallsMap to 
     // the vector of values in the AbstractionStorageMap
     void processIndirectProcedureCalls() {
         for (const auto& [variable, values] : *this->AbstractionStorageMap) {
@@ -165,5 +157,34 @@ protected:
                 
             }
         }
+    }
+
+    // This method checks through the values of AbstractionStorageMap to see if any of the values 
+    // can be found as the key in the ifWhileNestedStatementsMap, if it does, add the vector 
+    // of values of that key
+    void processNestedIfWhileStatements() {
+        // for all values in AbstractionStorageMap
+        for (const auto& [variable, values] : *this->AbstractionStorageMap) {
+            shared_ptr<vector<std::string>> statementNumbersToBeAdded = make_shared<vector<string>>();
+            for (const auto& value : values) {
+                nestedIfWhileHelper(value, statementNumbersToBeAdded);
+            }
+            // add statementNumbersToBeAdded to the vector of values in AbstractionStorageMap
+            for (const auto& statementNumber : *statementNumbersToBeAdded) {
+                insertToAbstractionMap(variable, statementNumber);
+            }
+        }
+    }
+
+    void nestedIfWhileHelper(string childStatementNumber, shared_ptr<vector<std::string>> statementNumbersToBeAdded) {
+        if (this->ifWhileNestedStatementsMap->find(childStatementNumber) != this->ifWhileNestedStatementsMap->end()) {
+            // get the vector of values of the childStatementNumber
+            shared_ptr<vector<std::string>> nestedStatementNumbers = make_shared<vector<string>>(this->ifWhileNestedStatementsMap->at(childStatementNumber));
+            for (const auto& nestedStatementNumber : *nestedStatementNumbers) {
+                statementNumbersToBeAdded->push_back(nestedStatementNumber);
+                // recursively call this method with the nestedStatementNumber as the childStatementNumber
+                nestedIfWhileHelper(nestedStatementNumber, statementNumbersToBeAdded);
+            }
+        } 
     }
 };

@@ -87,10 +87,10 @@ inline shared_ptr<QueryResultsTable> handleCallsCallsStar(shared_ptr<ClauseArg> 
 	throw SemanticErrorException("Error evaluating clause: " + clause);
 }
 
-shared_ptr<QueryResultsTable> CallsObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) {
+shared_ptr<QueryResultsTable> CallsObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) {
 	return handleCallsCallsStar(getArg1(), getArg2(), dataAccessLayer, CALLS);
 }
 
-shared_ptr<QueryResultsTable> CallsStarObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) {
+shared_ptr<QueryResultsTable> CallsStarObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) {
 	return handleCallsCallsStar(getArg1(), getArg2(), dataAccessLayer, CALLSSTAR);
 }

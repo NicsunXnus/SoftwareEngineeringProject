@@ -6,6 +6,7 @@
 #include <string_view>
 #include <vector>
 #include <list>
+#include <set>
 #include "SimpleTokens/Token.h"
 #include "ExceptionMessages.h"
 
@@ -162,5 +163,28 @@ static std::string svToString(std::string_view sv) {
 static std::list<std::string> vectorToList(std::vector<std::string> vectorOfString) {
     std::list<std::string> listOfString(vectorOfString.begin(), vectorOfString.end());
     return listOfString;
+}
+
+static std::list<std::string> vectorToUniqueList(std::vector<std::string> vectorOfString) {
+    std::list<std::string> listOfString(vectorOfString.begin(), vectorOfString.end());
+    std::set<std::string> uniqueStrings;
+    for (std::string str : listOfString) {
+        uniqueStrings.insert(str);
+    }
+
+    std::list<std::string> uniqueStringList;
+    for (std::string str : uniqueStrings) {
+        uniqueStringList.push_back(str);
+    }
+    return uniqueStringList;
+}
+
+// Converts a vector of strings to a vector of string_views
+static std::vector<std::string_view> sToSvVector(std::vector<std::string>& svVector) {
+    std::vector<std::string_view> v(svVector.size());
+    std::transform(svVector.begin(), svVector.end(), v.begin(), [](const std::string& str) {
+        return std::string_view(str);
+        });
+    return v;
 }
 #endif

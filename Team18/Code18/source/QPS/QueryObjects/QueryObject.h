@@ -30,7 +30,7 @@ public:
 	}
 
 	// pure virtual function, for getting the data from PKB and processing it into a results table by filtering and remove columns
-	virtual shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer, unordered_map<string_view, shared_ptr<QueryObject>> synonyms) = 0;
+	virtual shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) = 0;
 	// Filters the Table for the specific synonym / IDENT / _ / others (PKB gives entire table, e.g. entire Follows Table)
 	// synonyms comes from QueryParser, will be passed in QueryBuilder from QueryDriver
 
