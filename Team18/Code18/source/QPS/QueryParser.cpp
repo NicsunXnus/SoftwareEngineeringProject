@@ -592,7 +592,6 @@ bool QueryParser::hasWithClause(std::vector<string_view>& query, int index, int&
 		if (index + MIN_WITH_CLAUSE_TOKEN_COUNT + 2 > static_cast<int>(query.size())) {
 			return false;
 		}
-		is1stRefAttrRef = true;
 		tokenCount += 2;
 		index += 2;
 	}
