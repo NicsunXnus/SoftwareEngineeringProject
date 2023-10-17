@@ -55,7 +55,6 @@ jobs:
             #.\AutoTester.exe ..\Tests\Sample_source.txt ..\Tests\Sample_queries.txt ..\Tests\out.xml
             .\AutoTester.exe ..\Tests\single_calls_source.txt ..\Tests\single_calls_queries.txt ..\Tests\out.xml      
       - name: Add out.xml
-        uses: actions/checkout@v3
         run: |
             git config --global user.name "NicsunXnus"
             git config --global user.email "e0543645@u.nus.edu"
