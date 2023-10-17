@@ -20,6 +20,13 @@ public:
 	}
 };
 
+inline shared_ptr<QueryResultsTable> returnWithTable(string_view argName, string attrName, StringMap attrMap) {
+	vector<string> headers({ svToString(argName), svToString(argName) + attrName }); // p, p.procName
+	shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, attrMap);
+	table->setPrimaryKey(svToString(argName) + attrName);
+	return table;
+}
+
 // This class represent the procName attribute reference clause
 class ProcNameObject : public WithObject {
 private:
@@ -40,18 +47,12 @@ public:
 
 			string_view argName = getObjectSynonym()->getArgValue();
 
-			vector<string> headers({svToString(argName), svToString(argName) + attrName}); // p, p.procName
-			shared_ptr<QueryResultsTable> table =  QueryResultsTable::createTable(headers, attrMap);
-			table->setPrimaryKey(svToString(argName) + attrName);
-			return table;
+			return returnWithTable(argName, attrName, attrMap);
 		}
 		else if (type == CALL) {
 			StringMap PKBdata = dataAccessLayer->getCallProcNames();
 			string_view argName = getObjectSynonym()->getArgValue();
-			vector<string> headers({ svToString(argName), svToString(argName) + attrName });
-			shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
-			table->setPrimaryKey(svToString(argName) + attrName);
-			return table;
+			return returnWithTable(argName, attrName, PKBdata);
 		}
 
 		return QueryResultsTable::createEmptyTable();
@@ -79,26 +80,17 @@ public:
 
 			string_view argName = getObjectSynonym()->getArgValue();
 
-			vector<string> headers({ svToString(argName), svToString(argName) + attrName }); // p, p.procName
-			shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, attrMap);
-			table->setPrimaryKey(svToString(argName) + attrName);
-			return table;
+			return returnWithTable(argName, attrName, attrMap);
 		}
 		else if (type == READ) {
 			StringMap PKBdata = dataAccessLayer->getReadVarNames();
 			string_view argName = getObjectSynonym()->getArgValue();
-			vector<string> headers({ svToString(argName), svToString(argName) + attrName });
-			shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
-			table->setPrimaryKey(svToString(argName) + attrName);
-			return table;
+			return returnWithTable(argName, attrName, PKBdata);
 		}
 		else if (type == PRINT) {
 			StringMap PKBdata = dataAccessLayer->getPrintVarNames();
 			string_view argName = getObjectSynonym()->getArgValue();
-			vector<string> headers({ svToString(argName), svToString(argName) + attrName });
-			shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, PKBdata);
-			table->setPrimaryKey(svToString(argName) + attrName);
-			return table;
+			return returnWithTable(argName, attrName, PKBdata);
 		}
 
 		return QueryResultsTable::createEmptyTable();
@@ -126,10 +118,7 @@ public:
 
 			string_view argName = getObjectSynonym()->getArgValue();
 
-			vector<string> headers({ svToString(argName), svToString(argName) + attrName }); // p, p.procName
-			shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, attrMap);
-			table->setPrimaryKey(svToString(argName) + attrName);
-			return table;
+			return returnWithTable(argName, attrName, attrMap);
 		}
 
 
@@ -157,10 +146,7 @@ public:
 
 			string_view argName = getObjectSynonym()->getArgValue();
 
-			vector<string> headers({ svToString(argName), svToString(argName) + attrName }); // p, p.procName
-			shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, attrMap);
-			table->setPrimaryKey(svToString(argName) + attrName);
-			return table;
+			return returnWithTable(argName, attrName, attrMap);
 		}
 		return QueryResultsTable::createEmptyTable();
 	};

@@ -200,6 +200,8 @@ public:
         return make_shared<QueryResultsTable>(innerJoined);
     }
 
+    
+
     void getPrimaryKeyOnlyTable() {
         vector<string> headers = this->getHeaders();
         auto it = find(headers.begin(), headers.end(), primaryKey);
@@ -423,6 +425,11 @@ public:
      * representing the old table but only containing rows having only values of the "targets" of the column with header "key"
     */
     shared_ptr<QueryResultsTable> filter(string key, vector<string> targets) { //assuming there is no spacing/wrong capitalisation in key & there is no duplicates in targets
+        if (isEmpty()) {
+            shared_ptr<QueryResultsTable> table = createEmptyTable();
+            table->setSignificant(getSignificant());
+            return table;
+        }
         shared_ptr<QueryResultsTable> filteredTable;
         vector<string> headers = this->getHeaders();
         vector<map<string, vector<string>>> filteredTableColumns = this->createColumnsWithHeaders(headers);
@@ -447,6 +454,42 @@ public:
             //return empty table if target not in headers
             return filteredTable;
         }
+    }
+
+    /**
+     * Creates a new QueryResultsTable object that represents the filtered table.
+     *
+     * @param key The header of the target column represented by a string
+     * @param targets A vector of strings representing the values the column should only have.
+     * @return A shared pointer to the newly created QueryResultsTable object
+     * representing the old table but only containing rows having only values where col1 = col2
+    */
+    shared_ptr<QueryResultsTable> filter(string header1, string header2) { 
+        if (isEmpty()) {
+            shared_ptr<QueryResultsTable> table = createEmptyTable();
+            table->setSignificant(getSignificant());
+            return table;
+        }
+        shared_ptr<QueryResultsTable> filteredTable;
+        vector<string> headers = this->getHeaders();
+        auto it1 = find(headers.begin(), headers.end(), header1);
+        auto it2 = find(headers.begin(), headers.end(), header2);
+        int dist1 = distance(headers.begin(), it1); // index of header1
+        int dist2 = distance(headers.begin(), it2); // index of header2
+
+        vector<map<string, vector<string>>> thisColumns = this->columns;
+        vector<map<string, vector<string>>> filteredTableColumns = this->createColumnsWithHeaders(headers);
+
+        int totalRows = this->getNumberOfRows();
+        for (int row = 0; row < totalRows; row++) {
+            if (thisColumns[dist1].begin()->second[row] == thisColumns[dist2].begin()->second[row]) {
+                for (int col = 0; col < headers.size(); col++) {
+                    filteredTableColumns[col].begin()->second.emplace_back(this->columns[col].begin()->second[row]);
+                }
+            }
+        }
+        return make_shared<QueryResultsTable>(filteredTableColumns);
+
     }
 
     /**
