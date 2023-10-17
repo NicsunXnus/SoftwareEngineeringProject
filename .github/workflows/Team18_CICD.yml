@@ -64,7 +64,7 @@ jobs:
             git pull origin Sprint4-CICD
             git push
         env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                        
       - name: Run Tests
         working-directory: Team18/Code18\Release
