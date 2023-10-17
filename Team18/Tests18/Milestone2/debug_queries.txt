@@ -1,3 +1,18 @@
+2 - syn, syn, arg1: proc, arg2: proc, select first arg need hk to fix DE
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select cl.procName such that Uses(cl, "Second")
+
+5000
+2 - syn, syn, arg1: proc, arg2: proc, select first arg
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select cl such that Uses(cl, "Third")
+
+5000
+2 - syn, syn, arg1: proc, arg2: proc, select first arg
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
+Select <r.varName, r.varName>
+x x, z z
+5000
 2 - syn, syn, arg1: proc, arg2: proc, select first arg
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
 Select <pn.varName, r.varName>
@@ -30,8 +45,8 @@ Select cl.procName such that Uses(cl, "gibberish")
 5000
 2 - syn, syn, arg1: proc, arg2: proc, select first arg
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
-Select cl.procName such that Uses(cl, "Third")
-Second
+Select cl.procName such that Uses(cl, "gibberish")
+
 5000
 2 - syn, syn, arg1: proc, arg2: proc, select first arg
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;

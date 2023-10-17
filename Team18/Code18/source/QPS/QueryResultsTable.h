@@ -474,6 +474,31 @@ public:
         }
         return false;
     }
+
+    /**
+    * Checks this header exists in the table
+    *
+    * @param target header
+    * @return A boolean value, with a true value representing same headers for both, and a false value for otherwise.
+   */
+    bool hasHeader(string header) {
+        vector<string> headers = getHeaders();
+
+        auto it = find(headers.begin(), headers.end(), header);
+        
+        return it != headers.end();
+    }
+
+    void duplicateColumns(string columnName) {
+        vector<string> headers = getHeaders();
+        auto it = find(headers.begin(), headers.end(), columnName);
+        if (it != headers.end()) {
+            // found similar header
+            int index = distance(headers.begin(), it);
+            columns.push_back(columns[index]);
+        }
+
+    }
     
     //Getter method for columns
     vector<map<string, vector<string>>> getColumns() {

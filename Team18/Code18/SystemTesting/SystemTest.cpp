@@ -69,8 +69,8 @@ namespace SystemTesting
 		}
 		TEST_METHOD(debug)
 		{
-			std::string srcFilePath = defaultPath + "single_follows_source.txt";
-			std::string queryFilePath = defaultPath + "single_follows_queries.txt";
+			std::string srcFilePath = defaultPath + "single_modifies_source.txt";
+			std::string queryFilePath = defaultPath + "single_modifies_queries.txt";
 			assert(SystemTestWrapper::run(srcFilePath, queryFilePath, true));
 		}
 

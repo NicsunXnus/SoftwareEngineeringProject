@@ -23,7 +23,7 @@ private:
 		return selectClause.size() < 1;
 	}
 
-	vector<string> tableToListForTuples(shared_ptr<QueryResultsTable> table) {
+	vector<string> tableToVectorForTuples(shared_ptr<QueryResultsTable> table) {
 		vector<string> result;
 		vector<string> headers = table->getHeaders();
 		int totalRow = table->getNumberOfRows();
@@ -44,10 +44,11 @@ private:
 		return result;
 	}
 	shared_ptr<QueryResultsTable> joinIntermediateTables(vector<shared_ptr<QueryResultsTable>> tables);
+	list<string> returnTuples(vector<shared_ptr<QueryResultsTable>> selectClauseTables);
 
-	list<string> ResultHandler::handleSingleSynonym(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables);
-	list<string> ResultHandler::handleTuples(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables);
-	//list<string> ResultHandler::handleBoolean(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables);
+	list<string> handleSingleSynonym(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables);
+	list<string> handleTuples(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables);
+	//list<string> handleBoolean(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables);
 
 public:
 	/**
