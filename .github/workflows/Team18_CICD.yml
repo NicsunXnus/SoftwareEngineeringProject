@@ -54,6 +54,9 @@ jobs:
             cd Team18/Code18/Release
             #.\AutoTester.exe ..\Tests\Sample_source.txt ..\Tests\Sample_queries.txt ..\Tests\out.xml
             .\AutoTester.exe ..\Tests\single_calls_source.txt ..\Tests\single_calls_queries.txt ..\Tests\out.xml
+      - name: switching from https to ssh
+        run: git remote set-url origin ${{ secrets.ssh }}
+      
       - name: Add out.xml
         run: git add -f Team18\Code18\Tests\out.xml
         
