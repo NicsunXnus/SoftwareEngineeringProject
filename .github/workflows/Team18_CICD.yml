@@ -60,8 +60,7 @@ jobs:
             git config --global user.name "NicsunXnus"
             git config --global user.email "e0543645@u.nus.edu"
             git commit -m "Adding out.xml produced from Workflow"
-            git fetch origin Sprint4-CICD
-            git pull
+            git pull origin HEAD:Sprint4-CICD
             git push origin HEAD:Sprint4-CICD            
                        
       - name: Run Tests
