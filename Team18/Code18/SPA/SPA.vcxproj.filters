@@ -53,6 +53,9 @@
     <ClCompile Include="..\source\QPS\QueryObjects\CallsObject.cpp">
       <Filter>QPS</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryObjects\NextObjects.cpp">
+      <Filter>QPS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\ApplicationWrapper.h" />

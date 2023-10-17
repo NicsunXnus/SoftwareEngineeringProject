@@ -74,16 +74,31 @@ TEST_CLASS(Milestone2) {
     assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
   }
 
-  TEST_METHOD(single_callsStar_clause) {
-    std::string srcFilePath = defaultPath + "single_callsStar_source.txt";
-    std::string queryFilePath = defaultPath + "single_callsStar_queries.txt";
-    assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
-  }
-  /*TEST_METHOD(debugM2)
-  {
-          std::string srcFilePath = defaultPath + "debug_source.txt";
-          std::string queryFilePath = defaultPath + "debug_queries.txt";
-          assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
-  }*/
-};
-}  // namespace SystemTesting
+		TEST_METHOD(single_callsStar_clause)
+		{
+			std::string srcFilePath = defaultPath + "single_callsStar_source.txt";
+			std::string queryFilePath = defaultPath + "single_callsStar_queries.txt";
+			assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+		}
+		TEST_METHOD(sprint3_test)
+		{
+			std::string srcFilePath = defaultPath + "sprint3_source.txt";
+			std::string queryFilePath = defaultPath + "sprint3_queries.txt";
+			assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+		}
+
+		TEST_METHOD(single_next_clause)
+		{
+			std::string srcFilePath = defaultPath + "single_next_source.txt";
+			std::string queryFilePath = defaultPath + "single_next_queries.txt";
+			assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+		}
+		TEST_METHOD(debugM2)
+		{
+			std::string srcFilePath = defaultPath + "debug_source.txt";
+			std::string queryFilePath = defaultPath + "debug_queries.txt";
+			assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+		}
+
+	};
+}
