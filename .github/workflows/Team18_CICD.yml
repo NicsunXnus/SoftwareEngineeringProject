@@ -22,7 +22,7 @@ jobs:
     - run: pip install cpplint
     - run: cpplint --recursive .
   
-  build StartupSPASolution and then run AutoTester:
+  build_StartupSPASolution_then_run_AutoTester:
     runs-on: windows-2022
 
     strategy:
