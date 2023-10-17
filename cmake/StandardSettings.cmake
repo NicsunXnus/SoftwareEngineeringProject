@@ -19,20 +19,21 @@ option(${PROJECT_NAME}_WARNINGS_AS_ERRORS "Treat compiler warnings as errors." O
 option(${PROJECT_NAME}_ENABLE_UNIT_TESTING "Enable unit tests." ON)
 option(${PROJECT_NAME}_ENABLE_SYSTEM_TESTING "Enable system tests." OFF)
 
-option(${PROJECT_NAME}_USE_GTEST "Use the GoogleTest project for creating unit tests." ON)
+option(${PROJECT_NAME}_USE_GTEST "Use the GoogleTest project for creating unit tests." OFF)
+option(${PROJECT_NAME}_USE_CATCH2 "Use the Catch2 project for creating unit tests." ON)
 #
 # Static analyzers
 #
 # Currently supporting: Clang-Tidy, Cppcheck.
 
-option(${PROJECT_NAME}_ENABLE_CLANG_TIDY "Enable static analysis with Clang-Tidy." OFF)
+option(${PROJECT_NAME}_ENABLE_CLANG_TIDY "Enable static analysis with Clang-Tidy." ON)
 option(${PROJECT_NAME}_ENABLE_CPPCHECK "Enable static analysis with Cppcheck." OFF)
 
 #
 # Code coverage
 #
 
-option(${PROJECT_NAME}_ENABLE_CODE_COVERAGE "Enable code coverage through GCC." OFF)
+option(${PROJECT_NAME}_ENABLE_CODE_COVERAGE "Enable code coverage through GCC." ON)
 
 #
 # Miscelanious options

@@ -5,7 +5,7 @@ file(GLOB AUTOTESTER "Team18/Code18/AutoTester/source/*.cpp")
 file(GLOB HDR_DIR "Team18/Code18/source/**/*.h")
 file(GLOB HDR_DIR_2 "Team18/Code18/source/*.h")
 file(GLOB HDR_DIR_3 "Team18/Code18/source/**/**/*.h")
-file(GLOB UNIT_TEST_SOURCES "Team18/Code18/GoogleTestUnit/UnitTestMain.cpp")
+file(GLOB UNIT_TEST_SOURCES "Team18/Code18/UnitTesting/TestPQLTokenizer.cpp")
 file(GLOB SYSTEM_TEST_SOURCES "Team18/Code18/SystemTesting/SystemTestMain.cpp")
 file(GLOB SYSTEM_TEST_FILES "Team18/Tests18/Milestone1/*.txt")
 
