@@ -52,13 +52,21 @@ jobs:
             msbuild 'Team18/Code18/StartupSPASolution.sln' /p:configuration=${{ matrix.configuration }} /p:platform=${{ matrix.platform }}
             if (-not (Test-Path Team18/Code18/Tests/out.xml)) { New-Item Team18/Code18/Tests/out.xml -ItemType File }
             cd Team18/Code18/Release
+            #.\AutoTester.exe ..\Tests\Sample_source.txt ..\Tests\Sample_queries.txt ..\Tests\out.xml
             .\AutoTester.exe ..\Tests\single_calls_source.txt ..\Tests\single_calls_queries.txt ..\Tests\out.xml
-            git add ..\Tests\out.xml
-            git commit -m "Adding out.xml produced from Workflow"
+      - name: Add out.xml
+        run: git add ..\Tests\out.xml
+        
+      - name: Commit changes
+        run: git commit -m "Adding out.xml produced from Workflow"   
+
+      - name: Push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
             git fetch origin Sprint4-CICD
             git push origin HEAD:Sprint4-CICD
-            #.\AutoTester.exe ..\Tests\Sample_source.txt ..\Tests\Sample_queries.txt ..\Tests\out.xml
-      
+                       
       - name: Run Tests
         working-directory: Team18/Code18\Release
         run: vstest.console.exe UnitTesting.dll
