@@ -45,7 +45,7 @@ jobs:
         uses: microsoft/setup-msbuild@v1.0.3
         
       - name: SetupVSTestPath
-        usees: darenm/Setup-VSTest@v1
+        uses: darenm/Setup-VSTest@v1
       
       - name: Use NuGet 6.7.0
         uses: nuget/setup-nuget@v1
