@@ -200,7 +200,7 @@ verbose_message("Project is now aliased as ${PROJECT_NAME}::${PROJECT_NAME}.\n")
 # Format the project using the `clang-format` target (i.e: cmake --build build --target clang-format)
 #
 
-add_clang_format_target()
+#add_clang_format_target()
 
 #
 # Install library for easy downstream inclusion
@@ -319,7 +319,7 @@ message(STATUS "Finished building requirements for installing the package.\n")
 if(${PROJECT_NAME}_ENABLE_UNIT_TESTING)
   enable_testing()
   message(STATUS "Build unit tests for the project. Tests should always be found in the test folder\n")
-  add_subdirectory(${PROJECT_NAME}/Code18/UnitTesting)
+  add_subdirectory(${PROJECT_NAME}/Code18/GoogleTestUnit)
   message(STATUS "Finished building unit tests.\n")
 endif()
 
