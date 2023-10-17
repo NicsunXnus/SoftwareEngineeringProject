@@ -40,20 +40,22 @@ jobs:
         uses: nuget/setup-nuget@v1
         with: 
           nuget-version: '6.7.0'
-      
-      - name: Print current directory
-        run: dir
-      
-      - name: Change directory
-        run: |
-            cd Team18/Code18
-            dir
      
       - name: Restore nuget packages for all solutions
         run: msbuild 'Team18/Code18/StartupSPASolution.sln' /p:configuration=${{ matrix.configuration }} /p:platform=${{ matrix.platform }} /t:restore
       
       - name: Build solution
-        run: msbuild 'Team18/Code18/StartupSPASolution.sln' /p:configuration=${{ matrix.configuration }} /p:platform=${{ matrix.platform }}  
+        run: |
+            msbuild 'Team18/Code18/StartupSPASolution.sln' /p:configuration=${{ matrix.configuration }} /p:platform=${{ matrix.platform }}
+            cd Team18/Code18/Release
+            dir
+            cd ../Tests
+            dir
+            cd ../Release
+            .\AutoTester.exe ..\Tests\Sample_source.txt ..\Tests\Sample_queries.txt ..\Tests\out.xml
+            
+                        
+            
   
   build:
 
