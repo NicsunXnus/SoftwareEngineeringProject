@@ -45,7 +45,9 @@ inline StringMap filterMapKeyReturnMap(shared_ptr<ClauseArg> arg, shared_ptr<Dat
 		string leftTuple = entry.first;
 		auto it = PKBArg1EntityData.find(leftTuple);
 		if (it != PKBArg1EntityData.end()) {
-			filteredPKBClauseData[entry.first] = entry.second;
+			if (entry.second.size() > 0) {
+				filteredPKBClauseData[entry.first] = entry.second;
+			}
 		}
 	}
 	return filteredPKBClauseData;
@@ -73,7 +75,7 @@ inline unordered_set<string> filterSetReturnSet(shared_ptr<ClauseArg> arg, share
 	ENTITY typeArg2 = arg->getSynonym()->getEntityType();
 	unordered_set<string> PKBArg2EntityData = dataAccessLayer->getEntity(typeArg2);
 	unordered_set<string> filteredPKBClauseData;
-	for (const std::string& element : PKBClauseData) {
+	for (const string& element : PKBClauseData) {
 		if (PKBArg2EntityData.find(element) != PKBArg2EntityData.end()) {
 			filteredPKBClauseData.insert(element);
 		}
@@ -89,6 +91,16 @@ inline unordered_set<string> filterMapKeyReturnSetValues(shared_ptr<ClauseArg> a
 	}
 	return filteredPKBClauseData;
 }
+
+inline unordered_set<string> filterMapKeyReturnSetValues(string arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
+	unordered_set<string> filteredPKBClauseData;
+	auto it = PKBClauseData.find(arg);
+	if (it != PKBClauseData.end()) {
+		return PKBClauseData[arg];
+	}
+	return filteredPKBClauseData;
+}
+
 
 inline bool filterSetReturnBool(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, unordered_set<string> PKBClauseData) {
 	auto it = PKBClauseData.find(svToString(arg->getArgValue()));
@@ -235,10 +247,7 @@ public:
 	NextObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
 		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
-	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		// TODO
-		return make_shared<QueryResultsTable>();
-	}
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override;
 
 };
 
@@ -250,10 +259,7 @@ public:
 	NextStarObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
 		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
-	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		// TODO
-		return make_shared<QueryResultsTable>();
-	}
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override;
 
 };
 
