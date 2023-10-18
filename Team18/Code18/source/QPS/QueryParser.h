@@ -6,6 +6,7 @@
 #include <iostream>
 #include <unordered_map>
 #include <unordered_set>
+#include "QueryValidator.h"
 #include "QueryObjects/QueryObject.h"
 #include "QueryObjects/DesignObjects.h"
 #include "QueryObjects/QueryObjectFactory.h"

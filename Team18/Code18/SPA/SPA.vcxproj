@@ -22,6 +22,7 @@
     <ClCompile Include="..\source\QPS\QueryObjects\ModifiesUsesObject.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\QueryObjectFactory.cpp" />
     <ClCompile Include="..\source\QPS\QueryParser.cpp" />
+    <ClCompile Include="..\source\QPS\QueryValidator.cpp" />
     <ClCompile Include="..\source\QPS\ResultsHandler.cpp" />
     <ClCompile Include="..\source\SimpleTokenizer\TokenizedConditionalStmt.cpp" />
     <ClCompile Include="..\source\SimpleTokenizer\TokenizedProcedure.cpp" />
@@ -79,6 +80,7 @@
     <ClInclude Include="..\source\QPS\QueryObjects\WithClauseObjectFactory.h" />
     <ClInclude Include="..\source\QPS\QueryParser.h" />
     <ClInclude Include="..\source\QPS\QueryResultsTable.h" />
+    <ClInclude Include="..\source\QPS\QueryValidator.h" />
     <ClInclude Include="..\source\QPS\ResultsHandler.h" />
     <ClInclude Include="..\source\SimpleTokenizer\SIMPLETokenizer.h" />
     <ClInclude Include="..\source\SimpleTokenizer\TokenizedConditionalStmt.h" />

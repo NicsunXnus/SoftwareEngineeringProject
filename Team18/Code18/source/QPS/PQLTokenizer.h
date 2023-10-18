@@ -28,7 +28,6 @@ public:
 		int startIndex{ 0 };
 		bool isWord{ false };
 		bool isWithinQuotes{ false };
-		//std::unordered_set<char> operators{ '+', '-', '*', '/', '%' };
 		
 		std::stringstream ss;
 

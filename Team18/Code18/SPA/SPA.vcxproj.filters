@@ -53,6 +53,9 @@
     <ClCompile Include="..\source\QPS\QueryObjects\CallsObject.cpp">
       <Filter>QPS</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryValidator.cpp">
+      <Filter>QPS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\ApplicationWrapper.h" />
@@ -228,6 +231,9 @@
     <ClInclude Include="..\source\QPS\QueryObjects\WithClauseObject.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\WithClauseObjectFactory.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\ComparisonQueryObject.h" />
+    <ClInclude Include="..\source\QPS\QueryValidator.h">
+      <Filter>QPS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="AST">
