@@ -5,7 +5,8 @@ bool TokenizedConditionalStmt::equalsTo(TokenizedConditionalStmt& rhs) {
     return false;
   }
   for (int i = 0; i < this->conditionalExp.size(); i++) {
-    if (!Token::checkEquality(this->conditionalExp[i], rhs.conditionalExp[i])) return false;
+    if (!Token::checkEquality(this->conditionalExp[i], rhs.conditionalExp[i]))
+      return false;
   }
   auto castedThis = static_cast<TokenizedStmt&>(*this);
   auto castedThat = static_cast<TokenizedStmt&>(rhs);
