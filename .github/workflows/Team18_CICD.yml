@@ -58,7 +58,7 @@ jobs:
         uses: actions-js/push@master
         with:
            github_token: ${{ secrets.GITHUB_TOKEN }}
-           message: 'Adding out.xml from Workflow'
+           message: 'Adding out.xml from Workflow - $(date +"%Y-%m-%d %H:%M:%S")'
            branch: 'output'
            force: true   
                        
