@@ -1,7 +1,6 @@
-<<<<<<< HEAD
 2 - syn, syn, arg1: proc, arg2: proc
 stmt s1, s2; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p, q;
-Select p such that Calls ("Second", p) such that Parent (w, c) with c.procName = p.procName
+Select p such that Calls ("Second", p) with c.procName = p.procName such that Parent (w, c) 
 Third
 5000
 2 - syn, syn, arg1: proc, arg2: proc
@@ -26,7 +25,7 @@ Select v with "a"=v.varName
 5000
 2 - syn, syn, arg1: proc, arg2: proc
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
-Select v.stmt#
+Select v.stmt# such that Uses(s1, v)
 
 5000
 2 - syn, syn, arg1: proc, arg2: proc,
@@ -34,7 +33,7 @@ stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; con
 Select p with p.procName = r.varName
 Third
 5000
-2 - syn, syn, arg1: proc, arg2: proc, select first arg need hk to fix DE
+2 - syn, syn, arg1: proc, arg2: proc, select first arg need hk to fix DE, invalid uses map
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
 Select cl.procName such that Uses(cl, "Second")
 
@@ -112,12 +111,12 @@ x, z, Third
 2 - syn, syn, arg1: proc, arg2: proc, select first arg
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
 Select c such that Modifies(s1, v) such that Uses(s1, v) such that Modifies(s1 , v)
-x, z
-=======
+0,1,2,5
+5000
 1 - syn, syn
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
 Select s1 such that Next(s1, s2)
-1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17
+1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17,18
 5000
 2 - int, syn - loop
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
@@ -162,12 +161,12 @@ Select i such that Next*(8, 8)
 7 - syn, syn - loop
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
 Select s1 such that Next*(s1, r)
-1
+1, 16, 17, 18
 5000
 7 - syn, syn - loop
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
 Select s1 such that Next*(s1, r)
-1
+1, 16, 17, 18
 5000
 7 - syn, syn - loop
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
@@ -182,16 +181,15 @@ Select s1 such that Next*(s1, s1)
 7 - syn, syn - loop THIS NEEDS TO BE FIXED AT DE SIDE line 3 should not be in the PKB, inconsistent with other relations
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
 Select s1 such that Next*(s1, _)
-1,2,4,5,6,7,8,9,10,11,12,13,14,16,17
+1,2,4,5,6,7,8,9,10,11,12,13,14,16,17,18
 5000
 7 - syn, syn - loop THIS NEEDS TO BE FIXED AT DE SIDE line 3 should not be in the PKB, inconsistent with other relations
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
 Select s1 such that Next(s1, _)
-1,2,4,5,6,7,8,9,10,11,12,13,14,16,17
+1,2,4,5,6,7,8,9,10,11,12,13,14,16,17,18
 5000
 7 - syn, syn - loop
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
 Select a such that Next*(a, a1)
 4,5,7,9,11,12,13,14,16
->>>>>>> master
 5000

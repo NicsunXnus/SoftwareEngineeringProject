@@ -75,9 +75,11 @@ inline shared_ptr<QueryResultsTable> handleNext(shared_ptr<ClauseArg> arg1, shar
 	throw SemanticErrorException("Error evaluating clause: NEXT");
 }
 
+// DFS, the idea is to start from the first integer, then traverse until we hit the other integer node and return an empty, but significant table
+// If node is not found, return an empty table
 inline shared_ptr<QueryResultsTable> handleNextStarIntInt(shared_ptr<ClauseArg> arg1, shared_ptr<ClauseArg> arg2, shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
 	StringMap PKBClauseData = dataAccessLayer->getClause(clause);
-	stack<NextStackElement> nextStack;
+	stack<NextStackElement> nextStack; // parent, set of childs
 	unordered_set<string> visited;
 	unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, dataAccessLayer, PKBClauseData);
 	
@@ -112,9 +114,9 @@ inline shared_ptr<QueryResultsTable> handleNextStarIntInt(shared_ptr<ClauseArg> 
 	
 }
 
-inline shared_ptr<QueryResultsTable> handleNextStarIntSyn(shared_ptr<ClauseArg> arg1, shared_ptr<ClauseArg> arg2, shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
-	StringMap PKBClauseData = dataAccessLayer->getClause(clause);
-	stack<NextStackElement> nextStack;
+// DFS, the idea is to start from the first integer, then traverse and add each node visited to a set. This set represents the visited nodes
+inline shared_ptr<QueryResultsTable> handleNextStarIntSynCombination(shared_ptr<ClauseArg> arg1, shared_ptr<ClauseArg> arg2, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData, ABSTRACTION clause) {
+	stack<NextStackElement> nextStack; // parent, set of childs
 	unordered_set<string> visited;
 	unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, dataAccessLayer, PKBClauseData);
 
@@ -146,42 +148,7 @@ inline shared_ptr<QueryResultsTable> handleNextStarIntSyn(shared_ptr<ClauseArg> 
 
 }
 
-inline shared_ptr<QueryResultsTable> handleNextStarSynInt(shared_ptr<ClauseArg> arg1, shared_ptr<ClauseArg> arg2, shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
-	StringMap PKBClauseData = dataAccessLayer->getClauseInverse(clause);
-	stack<NextStackElement> nextStack;
-	unordered_set<string> visited;
-	unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg2, dataAccessLayer, PKBClauseData);
-
-	if (filteredPKBClauseDataArg1.empty()) {
-		return QueryResultsTable::createTable(svToString(arg1->getArgValue()), visited);
-	}
-	nextStack.push(make_tuple(svToString(arg2->getArgValue()), filteredPKBClauseDataArg1));
-
-	while (!nextStack.empty())
-	{
-		NextStackElement curr = nextStack.top();
-		nextStack.pop();
-		string parent = get<0>(curr);
-		unordered_set<string> children = get<1>(curr);
-
-		for (string child : children) {
-			auto it = visited.find(child);
-			if (it == visited.end()) {
-				visited.insert(child); // add here to ensure that Next* does not add back intial node, unless it really can be reached via a loop
-				unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, dataAccessLayer, PKBClauseData);
-				nextStack.push(make_tuple(child, nextChildren));
-			}
-
-		}
-	}
-	unordered_set<string> filteredPKBClauseDataArg2 = filterSetReturnSet(arg1, dataAccessLayer, visited); // visited set is all the children nodes
-	return QueryResultsTable::createTable(svToString(arg1->getArgValue()), filteredPKBClauseDataArg2);
-
-
-}
-
-// DFS from each node? large runtime
-
+// DFS from each node: large runtime
 inline shared_ptr<QueryResultsTable> handleNextStarSynSyn(shared_ptr<ClauseArg> arg1, shared_ptr<ClauseArg> arg2, shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
 	StringMap PKBClauseDataArg1 = dataAccessLayer->getClause(clause);
 	StringMap filteredPKBClauseDataArg1 = filterMapKeyReturnMap(arg1, dataAccessLayer, PKBClauseDataArg1);
@@ -197,9 +164,9 @@ inline shared_ptr<QueryResultsTable> handleNextStarSynSyn(shared_ptr<ClauseArg> 
 		return QueryResultsTable::createTable(headers, empty);
 	}
 	
-	StringMap nextStarTable;
+	StringMap nextStarTable; // stores all results, key = parent, value = children
 	for (string parent : filteredPKBClauseDataKeepArg1) {
-		stack<NextStackElement> nextStack;
+		stack<NextStackElement> nextStack; // parent, set of childs
 		unordered_set<string> visited;
 	    nextStack.push(make_tuple(parent, PKBClauseDataArg1[parent]));
 
@@ -219,14 +186,14 @@ inline shared_ptr<QueryResultsTable> handleNextStarSynSyn(shared_ptr<ClauseArg> 
 					nextStack.push(make_tuple(child, nextChildren));
 				}
 				auto arg2It = filteredPKBClauseDataKeepArg2.find(child);
-				if (arg2It != filteredPKBClauseDataKeepArg2.end()) {
+				if (arg2It != filteredPKBClauseDataKeepArg2.end()) {  // current node is syn2, an answer we want
 					resultSet.insert(child);
 				}
 
 			}
 		}
 		if (resultSet.size() > 0) {
-			if (arg1->getArgValue() == arg2->getArgValue()) { // edge case
+			if (arg1->getArgValue() == arg2->getArgValue()) { // edge case where syn = syn e.g. Next*(s, s)
 				auto it = resultSet.find(parent);
 				if (it != resultSet.end()) {
 					unordered_set<string> arg2Set = {parent};
@@ -245,8 +212,6 @@ inline shared_ptr<QueryResultsTable> handleNextStarSynSyn(shared_ptr<ClauseArg> 
 
 }
 
-
-// BEWARE OF LOOPS
 // Traverse map using depth first search, and keep a visited set, helper methods are for those that require DFS
 inline shared_ptr<QueryResultsTable> handleNextStar(shared_ptr<ClauseArg> arg1, shared_ptr<ClauseArg> arg2, shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
 	if (arg1->isSynonym() && arg2->isSynonym()) {
@@ -260,10 +225,12 @@ inline shared_ptr<QueryResultsTable> handleNextStar(shared_ptr<ClauseArg> arg1, 
 		return QueryResultsTable::createTable(svToString(arg1->getArgValue()), filteredPKBClauseDataArg2);
 	}
 	else if (arg1->isSynonym() && arg2->isInteger()) {
-		return handleNextStarSynInt(arg1, arg2, dataAccessLayer, clause);
+		StringMap PKBClauseData = dataAccessLayer->getClauseInverse(clause);
+		return handleNextStarIntSynCombination(arg2, arg1, dataAccessLayer, PKBClauseData, clause);
 	}
 	else if (arg1->isInteger() && arg2->isSynonym()) {
-		return handleNextStarIntSyn(arg1, arg2, dataAccessLayer, clause);
+		StringMap PKBClauseData = dataAccessLayer->getClause(clause);
+		return handleNextStarIntSynCombination(arg1, arg2, dataAccessLayer, PKBClauseData, clause);
 	}
 	else if (arg1->isInteger() && arg2->isWildcard()) {
 		StringMap PKBClauseData = dataAccessLayer->getClause(clause);

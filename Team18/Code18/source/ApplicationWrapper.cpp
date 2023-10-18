@@ -15,11 +15,12 @@ ApplicationWrapper::~ApplicationWrapper() {
 // method for parsing the SIMPLE source code
 void ApplicationWrapper::directParse(std::string_view sourceCode) {
   std::shared_ptr<TokenizedProgram> tokenizedProgram = SimpleTokenizer::tokenizeProgram(sourceCode);
-
+  cout << "In AppWrapper, tokenized\n";
   std::shared_ptr<ProgramNode> prg = ASTBuilder::parseProgram(tokenizedProgram);
-  
+  cout << "In AppWrapper, parsed\n";
   DesignExtractor designExtractor = DesignExtractor();
   designExtractor.extractAndInsertAll(prg);
+  cout << "In AppWrapper, inserted\n";
 }
 
 // method to evaluating a query

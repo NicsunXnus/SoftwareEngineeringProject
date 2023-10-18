@@ -7,6 +7,7 @@
 
 /*
 * This class represents a With clause object
+* For invalid attributes, e.g. proc.stmt#, return empty table
 */
 class WithObject : public QueryObject {
 private:

@@ -59,7 +59,7 @@ shared_ptr<QueryResultsTable> ResultHandler::joinIntermediateTables(vector<share
 * 2.1.2 Such that clause is not significant
 * return empty
 * 2.2: Such that clause is not empty (means significant)
-* join with select clause
+* join with select clause only if has common headers
 * 2.2.1 select the header and return
 * 2.3 Return empty by default (unhandled case?)
 */
@@ -92,13 +92,16 @@ list<string> ResultHandler::handleSingleSynonym(vector<shared_ptr<QueryResultsTa
 	vector<shared_ptr<QueryResultsTable>> mergeTable = { intermediateTable };
 	mergeTable.insert(mergeTable.end(), selectClauseTables.begin(), selectClauseTables.end());
 	// case 2.2
-	intermediateTable = joinIntermediateTables(mergeTable);
-	
-	
-	if (intermediateTable->hasHeader(selectVar)) { // case 2.2.1
+	if (selectClauseTables[0]->haveSameHeaders(intermediateTable)) {
+		intermediateTable = joinIntermediateTables(mergeTable);
 		vector<string> colContents = intermediateTable->getColumnData(selectVar);
 		return vectorToUniqueList(colContents);
 	}
+	else {
+		vector<string> colContents = selectClauseTables[0]->getColumnData(selectVar);
+		return vectorToUniqueList(colContents);
+	}
+	
 
 	list<string> empty;
 	return empty;

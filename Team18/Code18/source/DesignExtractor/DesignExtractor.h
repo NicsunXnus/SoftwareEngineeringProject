@@ -127,8 +127,11 @@ private:
 
 
     void extractAll(shared_ptr<ASTNode> astNode) {
+        cout << "In DE, extracting ents\n";
         extractAllEntities(astNode);
+        cout << "In DE, extracting abstractions\n";
         extractAllAbstractions(astNode);
+        cout << "In DE, extracting withs\n";
         extractAllWith(astNode);
         // extractPattern(astNode);
     }
