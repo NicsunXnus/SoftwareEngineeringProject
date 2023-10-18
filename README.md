@@ -1,4 +1,7 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/n7-IFnfM)
+
+[![Team18_CICD](https://github.com/nus-cs3203/23s1-win-spa-team-18/actions/workflows/Team18_CICD.yml/badge.svg?event=pull_request)](https://github.com/nus-cs3203/23s1-win-spa-team-18/actions/workflows/Team18_CICD.yml)
+
 # Team 18
 
 > Please fill in this Readme with the required information, and delete this box.
@@ -36,6 +39,3 @@ Ryan Tian Jun | xxxx9254 | e0543846@u.nus.edu | Windows / Github Issues
 Chua Hao Jie Marcus | xxxx6040 | e0543666@u.nus.edu | Windows / Github Issues
 Nicholas Sun Jun Yang | xxxx2050 | e0543645@u.nus.edu | Windows / Github Issues
 Jan Alfenson Tan | xxxx7640 | e0543952@u.nus.edu | Windows / Github Issues
-
-# Workflow Status Badge
-[![Team18_CICD](https://github.com/nus-cs3203/23s1-win-spa-team-18/actions/workflows/Team18_CICD.yml/badge.svg?event=pull_request)](https://github.com/nus-cs3203/23s1-win-spa-team-18/actions/workflows/Team18_CICD.yml)
