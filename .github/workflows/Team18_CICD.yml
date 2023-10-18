@@ -62,7 +62,8 @@ jobs:
             git add -f Team18\Code18\Tests\out.xml
             git commit -m "Adding out.xml produced from Workflow"
             git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-            git push origin HEAD:Sprint4-CICD
+            git pull origin Sprint4-CICD
+            #git push --force origin HEAD:Sprint4-CICD
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                        
