@@ -36,3 +36,6 @@ Ryan Tian Jun | xxxx9254 | e0543846@u.nus.edu | Windows / Github Issues
 Chua Hao Jie Marcus | xxxx6040 | e0543666@u.nus.edu | Windows / Github Issues
 Nicholas Sun Jun Yang | xxxx2050 | e0543645@u.nus.edu | Windows / Github Issues
 Jan Alfenson Tan | xxxx7640 | e0543952@u.nus.edu | Windows / Github Issues
+
+# Workflow Status Badge
+[![Team18_CICD](https://github.com/nus-cs3203/23s1-win-spa-team-18/actions/workflows/Team18_CICD.yml/badge.svg?event=pull_request)](https://github.com/nus-cs3203/23s1-win-spa-team-18/actions/workflows/Team18_CICD.yml)
