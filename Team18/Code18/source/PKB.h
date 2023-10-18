@@ -3,7 +3,7 @@
 #include "PKB/Adapter.h"
 #include "PKB/Insertor.h"
 #include "PKB/Responder.h"
-#include "PKB/StorageManager.h"
+
 
 /**
  * This class represents the PKB component.

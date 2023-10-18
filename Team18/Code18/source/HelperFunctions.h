@@ -1,21 +1,63 @@
-#ifndef TOKENIZERFUNCTIONS_H
-#define TOKENIZERFUNCTIONS_H
+#ifndef HELPERFUNCTIONS_H
+#define HELPERFUNCTIONS_H
 
+#include <string>
+#include <string_view>
+#include <vector>
 #include <list>
+#include <iostream>
 #include <regex>
 #include <set>
 #include <string>
 #include <string_view>
 #include <vector>
+#include <stack>
+#include <list>
+#include <set>
 
 #include "ExceptionMessages.h"
-#include "SimpleTokens/Token.h"
 
 using namespace std::string_view_literals;
 
 const std::string whitespaces = " \t\f\v\n\r\b";
-const std::string arithmeticOpsWithWhitespace = "([()+\\-/*%\\s])";
-const std::string relationalOps = "([><]=?|==|!=)";
+const std::string arithmeticOpsWithWhitespaceRegex = "([()+-/*%]|\\s+)";
+const std::string relationalOpsRegex = "([><]=?|==|!=)";
+
+static enum Separator {
+  BRACKET,
+  CURLY
+};
+
+// Detects outermost separators like "{}" and "()".
+// Throws an exception if there are any mismatching separators, including within inner scopes.
+// Returns a vector of pair<int, int> pointers. Each pair represents the indexes of a matching "{" and "}" respectively.
+static std::vector<std::shared_ptr<std::pair<int, int>>> outermostSepDetector(std::string input, Separator sepType) {
+  // stack keeps track of the indexes of the open curly
+  std::stack<int> scopeTracker;
+  std::vector<std::shared_ptr<std::pair<int, int>>> output;
+  char open = sepType == Separator::BRACKET ? '(' : '{';
+  char close = sepType == Separator::BRACKET ? ')' : '}';
+  for (int i = 0; i < input.size(); i++) {
+    char thisChar = input[i];
+    if (thisChar == open) {
+      scopeTracker.push(i);
+    }
+    if (thisChar == close) {
+      if (scopeTracker.empty()) {
+        throw std::invalid_argument(ExceptionMessages::extraCloseSep); 
+      }
+      int lastSeen = scopeTracker.top();
+      scopeTracker.pop();
+      if (scopeTracker.empty()) {
+        output.push_back(std::make_shared<std::pair<int, int>>(lastSeen, i));
+      }
+    }
+  }
+  if (!scopeTracker.empty()) {
+    throw std::invalid_argument(ExceptionMessages::extraOpenSep);
+  }
+  return output;
+}
 
 // Checks if a given input string are all numbers
 // Does NOT check if it is a valid integer literal (ie leading 0)
@@ -27,6 +69,7 @@ static bool isNumber(std::string input) {
   }
   return true;
 }
+
 // Checks if a given input string is alphanumeric.
 static bool isAlphanumeric(std::string input) {
   for (char const& ch : input) {
@@ -141,11 +184,10 @@ static std::string trimWhitespaces(std::string str) {
 /// Returns a continuous substring based on indices provided.
 ///
 /// </summary>
-/// <param name="str">the original string</param>
-/// <param name="startIndex">the start index. If negative indexes provided,
-/// defaults to 0</param> <param name="endIndex">the end index. if index larger
-/// than string size provided, defaults to string size</param> <returns>The
-/// substring</returns>
+/// <param name="str">the original string</param> 
+/// <param name="startIndex">the start index. If negative indexes provided, defaults to 0</param> 
+/// <param name="endIndex">the end index. if index larger than string size provided, defaults to last index == string size - 1</param> 
+/// <returns>The substring</returns>
 static std::string substring(std::string str, int startIndex, int endIndex) {
   if (endIndex < startIndex) {
     std::cerr << ExceptionMessages::endIndexLarger << std::endl;
@@ -161,21 +203,21 @@ static std::string substring(std::string str, int startIndex, int endIndex) {
 
 // prints to console, toggle here to turn on / off for development / production
 static void debug(std::string debugMessage) {
-  bool DEBUG_MODE = true;  // toggle this
+  bool DEBUG_MODE = true; // toggle this
   if (DEBUG_MODE) {
     std::cout << debugMessage + "\n" << std::endl;
   }
 }
 
+// Converts string views to strings
 static std::string svToString(std::string_view sv) {
   std::string str(sv);
   return str;
 }
 
-static std::list<std::string> vectorToList(
-    std::vector<std::string> vectorOfString) {
-  std::list<std::string> listOfString(vectorOfString.begin(),
-                                      vectorOfString.end());
+// Converts vectors of strings into lists of strings
+static std::list<std::string> vectorToList(std::vector<std::string> vectorOfString) {
+  std::list<std::string> listOfString(vectorOfString.begin(), vectorOfString.end());
   return listOfString;
 }
 

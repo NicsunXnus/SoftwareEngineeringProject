@@ -7,10 +7,8 @@
 #include <list>
 #include <string>
 
-#include "AST/ASTBuilder.h"
-#include "DesignExtractor/DesignExtractor.h"
+#include "SP/SimpleProcessor/SimpleProcessor.h"
 #include "QPS/QueryDriver.h"
-#include "SimpleTokenizer/SIMPLETokenizer.h"
 
 using namespace std::string_view_literals;
 

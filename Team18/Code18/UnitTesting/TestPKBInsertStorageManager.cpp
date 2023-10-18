@@ -4,9 +4,42 @@
 #include <PKB.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+using namespace std;
 
 namespace UnitTesting {
 	TEST_CLASS(TestPKBInsertStorageManager) {
+		private:
+			int statementNum1 = 5;
+			vector<shared_ptr<Node>> empty1 = {};
+			vector<shared_ptr<Node>> plusChildren = {
+				make_shared<Node>(statementNum1, "a", empty1),
+				make_shared<Node>(statementNum1, "b", empty1)
+			};
+			Node minus = Node(statementNum1, "-", {
+				make_shared<Node>(statementNum1, "+", plusChildren),
+				make_shared<Node>(statementNum1, "3", empty1)
+				});
+			shared_ptr<Node> arithmetic_node_ptr = make_shared<Node>(minus);
+
+			int statementNum2 = 1;
+			vector<shared_ptr<Node>> empty2 = {};
+			vector<shared_ptr<Node>> moreThanChildren = {
+				make_shared<Node>(statementNum2, "a", empty2),
+				make_shared<Node>(statementNum2, "b", empty2)
+			};
+			vector<shared_ptr<Node>> not1 = { make_shared<Node>(statementNum2, ">", moreThanChildren) };
+			vector<shared_ptr<Node>> not2 = { make_shared<Node>(statementNum2, "!", not1) };
+			vector<shared_ptr<Node>> lessThanChildren = {
+				make_shared<Node>(statementNum2, "c", empty2),
+				make_shared<Node>(statementNum2, "1", empty2)
+			};
+			vector<shared_ptr<Node>> orChildren = {
+			  make_shared<Node>(statementNum2, "!", not2),
+			  make_shared<Node>(statementNum2, "<", lessThanChildren)
+			};
+			Node equality = Node(statementNum2, "||", orChildren);
+			shared_ptr<Node> conditional_node_ptr = make_shared<Node>(equality);
+
 		public:
 			TEST_METHOD(TestAddSingleEntityStatementSuccess) {
 				// Create mock data to insert
@@ -20,10 +53,8 @@ namespace UnitTesting {
 				shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
 				shared_ptr<map<ENTITY, unordered_set<string>>> stmt_db = entity_storage->getStatementDatabase();
 
-				// assert database contains the correct data
 				unordered_set<string> expected_vector = { "1" };
 
-				unordered_set<string> sss = stmt_db->at(READ);
 				Assert::IsTrue(compare_sets(stmt_db->at(READ), expected_vector));
 			}
 
@@ -53,7 +84,6 @@ namespace UnitTesting {
 				unordered_set<string> expected_vector1 = { "1", "2" };
 				unordered_set<string> expected_vector2 = { "4" };
 
-				// assert database contains the correct data
 				Assert::IsTrue(compare_sets(stmt_db->at(CALL), expected_vector1));
 				Assert::IsTrue(compare_sets(stmt_db->at(PRINT), expected_vector2));
 
@@ -89,7 +119,6 @@ namespace UnitTesting {
 				shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
 				shared_ptr<StringMap> procedure_db = entity_storage->getProcedureDatabase();
 
-				// assert database contains the correct data
 				unordered_set<string> expected_vector = { "1" };
 
 				Assert::IsTrue(compare_sets(procedure_db->at("proc1"), expected_vector));
@@ -110,7 +139,6 @@ namespace UnitTesting {
 				unordered_set<string> expected_vector1 = { "1", "2" };
 				unordered_set<string> expected_vector2 = { "5", "6", "7" };
 
-				// assert database contains the correct data
 				Assert::IsTrue(compare_sets(procedure_db->at("proc1"), expected_vector1));
 				Assert::IsTrue(compare_sets(procedure_db->at("proc2"), expected_vector2));
 
@@ -146,7 +174,6 @@ namespace UnitTesting {
 				shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
 				shared_ptr<StringMap> variable_db = entity_storage->getVariableDatabase();
 
-				// assert database contains the correct data
 				unordered_set<string> expected_vector = { "5" };
 
 				Assert::IsTrue(compare_sets(variable_db->at("x"), expected_vector));
@@ -167,7 +194,6 @@ namespace UnitTesting {
 				unordered_set<string> expected_vector1 = { "1", "2" };
 				unordered_set<string> expected_vector2 = { "2", "5", "7" };
 
-				// assert database contains the correct data
 				Assert::IsTrue(compare_sets(variable_db->at("x"), expected_vector1));
 				Assert::IsTrue(compare_sets(variable_db->at("y"), expected_vector2));
 
@@ -203,7 +229,6 @@ namespace UnitTesting {
 				shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
 				shared_ptr<StringMap> constant_db = entity_storage->getConstantDatabase();
 
-				// assert database contains the correct data
 				unordered_set<string> expected_vector = { "1" };
 
 				Assert::IsTrue(compare_sets(constant_db->at("10"), expected_vector));
@@ -224,7 +249,6 @@ namespace UnitTesting {
 				unordered_set<string> expected_vector1 = { "1" };
 				unordered_set<string> expected_vector2 = { "4", "7", "10" };
 
-				// assert database contains the correct data
 				Assert::IsTrue(compare_sets(constant_db->at("10"), expected_vector1));
 				Assert::IsTrue(compare_sets(constant_db->at("HERE"), expected_vector2));
 
@@ -248,70 +272,12 @@ namespace UnitTesting {
 				Assert::IsTrue(constant_db->empty());
 			}
 
-			TEST_METHOD(TestAddCallProcNameSuccess) {
-				// Create mock data to insert
-				StringMap callProcNameData = { {"2", {"proc1"}}, {"4", {"proc2"}}, {"11", {"proc3"}} };
-				shared_ptr<StringMap> toInsert = make_shared<StringMap>(callProcNameData);
-
-				// Insertion
-				PKB::insertor.addEntityNames(toInsert, CALL);
-
-				// Create reference to EntityStorage to check database
-				shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-				shared_ptr<StringMap> call_procname_db = entity_storage->getCallProcnameDatabase();
-
-				// assert database contains the correct data
-				Assert::IsTrue(compare_maps(*call_procname_db, callProcNameData));
-			}
-
-			TEST_METHOD(TestAddReadVarNameSuccess) {
-				// Create mock data to insert
-				StringMap readVarNameData = { {"4", {"x"}}, {"13", {"y"}}, {"21", {"z"}} };
-				shared_ptr<StringMap> toInsert = make_shared<StringMap>(readVarNameData);
-
-				// Insertion
-				PKB::insertor.addEntityNames(toInsert, READ);
-
-				// Create reference to EntityStorage to check database
-				shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-				shared_ptr<StringMap> read_varname_db = entity_storage->getReadVarnameDatabase();
-
-				// assert database contains the correct data
-				Assert::IsTrue(compare_maps(*read_varname_db, readVarNameData));
-			}
-
-			TEST_METHOD(TestAddPrintVarNameSuccess) {
-				// Create mock data to insert
-				StringMap printVarNameData = { {"3", {"x"}}, {"7", {"y"}}, {"19", {"z"}} };
-				shared_ptr<StringMap> toInsert = make_shared<StringMap>(printVarNameData);
-
-				// Insertion
-				PKB::insertor.addEntityNames(toInsert, PRINT);
-
-				// Create reference to EntityStorage to check database
-				shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-				shared_ptr<StringMap> print_varname_db = entity_storage->getPrintVarnameDatabase();
-
-				// assert database contains the correct data
-				Assert::IsTrue(compare_maps(*print_varname_db, printVarNameData));
-			}
-
-			TEST_METHOD(TestAddInvalidEntityNameFailure) {
-				// Create mock data to insert
-				StringMap dummyNameData = { {"3", {"x"}}, {"7", {"y"}}, {"19", {"z"}} };
-				shared_ptr<StringMap> toInsert = make_shared<StringMap>(dummyNameData);
-
-				Assert::ExpectException<runtime_error>([toInsert] {
-					PKB::insertor.addEntityNames(toInsert, STMT);
-				});
-			}
-
 			TEST_METHOD(TestAddMultipleEntitiesSuccess) {
 				// Create mock data to insert
 				StringMap entityStatementData = { {"call", {"1", "2"}}, {"print", {"4"}} };
 				StringMap variableData = { {"x", {"1", "2"}}, {"y", {"2", "5", "7"}} };
-				StringMap procedureData = { {"proc1", {"1", "2"}}, {"proc2", {"5", "6", "7"}}};
-				StringMap constantData = { {"10", {"1"}}, {"HERE", {"4", "7", "10"}}};
+				StringMap procedureData = { {"proc1", {"1", "2"}}, {"proc2", {"5", "6", "7"}} };
+				StringMap constantData = { {"10", {"1"}}, {"HERE", {"4", "7", "10"}} };
 
 				shared_ptr<StringMap> toInsertStatement = make_shared<StringMap>(entityStatementData);
 				shared_ptr<StringMap> toInsertVariable = make_shared<StringMap>(variableData);
@@ -339,6 +305,119 @@ namespace UnitTesting {
 				Assert::IsTrue(compare_sets(stmt_db->at(PRINT), { "4" }));
 			}
 
+			TEST_METHOD(TestAddCallProcNameSuccess) {
+				// Create mock data to insert
+				StringMap callProcNameData = { {"2", {"proc1"}}, {"4", {"proc2"}}, {"11", {"proc3"}} };
+				shared_ptr<StringMap> toInsert = make_shared<StringMap>(callProcNameData);
+
+				// Insertion
+				PKB::insertor.addEntityNames(toInsert, CALL);
+
+				// Create reference to EntityStorage to check database
+				shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
+				shared_ptr<StringMap> call_procname_db = entity_storage->getCallProcnameDatabase();
+				
+				Assert::IsTrue(compare_maps(*call_procname_db, callProcNameData));
+			}
+
+			TEST_METHOD(TestAddReadVarNameSuccess) {
+				// Create mock data to insert
+				StringMap readVarNameData = { {"4", {"x"}}, {"13", {"y"}}, {"21", {"z"}} };
+				shared_ptr<StringMap> toInsert = make_shared<StringMap>(readVarNameData);
+
+				// Insertion
+				PKB::insertor.addEntityNames(toInsert, READ);
+
+				// Create reference to EntityStorage to check database
+				shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
+				shared_ptr<StringMap> read_varname_db = entity_storage->getReadVarnameDatabase();
+
+				Assert::IsTrue(compare_maps(*read_varname_db, readVarNameData));
+			}
+
+			TEST_METHOD(TestAddPrintVarNameSuccess) {
+				// Create mock data to insert
+				StringMap printVarNameData = { {"3", {"x"}}, {"7", {"y"}}, {"19", {"z"}} };
+				shared_ptr<StringMap> toInsert = make_shared<StringMap>(printVarNameData);
+
+				// Insertion
+				PKB::insertor.addEntityNames(toInsert, PRINT);
+
+				// Create reference to EntityStorage to check database
+				shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
+				shared_ptr<StringMap> print_varname_db = entity_storage->getPrintVarnameDatabase();
+
+				Assert::IsTrue(compare_maps(*print_varname_db, printVarNameData));
+			}
+
+			TEST_METHOD(TestAddInvalidEntityNameFailure) {
+				// Create mock data to insert
+				StringMap dummyNameData = { {"3", {"x"}}, {"7", {"y"}}, {"19", {"z"}} };
+				shared_ptr<StringMap> toInsert = make_shared<StringMap>(dummyNameData);
+
+				Assert::ExpectException<runtime_error>([toInsert] {
+					PKB::insertor.addEntityNames(toInsert, STMT);
+				});
+			}
+
+			TEST_METHOD(TestAddSingleArithmeticPatternSuccess) {
+				map<string, shared_ptr<Node>> patternData = { {"5", arithmetic_node_ptr } };
+				shared_ptr<map<string, shared_ptr<Node>>> toInsert = make_shared<map<string, shared_ptr<Node>>>(patternData);
+
+				// Insertion
+				PKB::insertor.addPatterns(toInsert);
+
+				// Create reference to EntityStorage to check database
+				shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
+				shared_ptr<map<string, shared_ptr<Node>>> pattern_db = entity_storage->getPatternDatabase();
+
+				Assert::IsTrue((pattern_db->at("5")->isIdentical(arithmetic_node_ptr, true)));
+			}
+
+			TEST_METHOD(TestAddSingleConditionalPatternSuccess) {
+				map<string, shared_ptr<Node>> patternData = { {"1", conditional_node_ptr } };
+				shared_ptr<map<string, shared_ptr<Node>>> toInsert = make_shared<map<string, shared_ptr<Node>>>(patternData);
+
+				// Insertion
+				PKB::insertor.addPatterns(toInsert);
+
+				// Create reference to EntityStorage to check database
+				shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
+				shared_ptr<map<string, shared_ptr<Node>>> pattern_db = entity_storage->getPatternDatabase();
+
+				Assert::IsTrue((pattern_db->at("1")->isIdentical(conditional_node_ptr, true)));
+			}
+
+			TEST_METHOD(TestAddMultiplePatternsSuccess) {
+				map<string, shared_ptr<Node>> patternData = { {"5", arithmetic_node_ptr }, { "1", conditional_node_ptr } };
+				shared_ptr<map<string, shared_ptr<Node>>> toInsert = make_shared<map<string, shared_ptr<Node>>>(patternData);
+
+				// Insertion
+				PKB::insertor.addPatterns(toInsert);
+
+				// Create reference to EntityStorage to check database
+				shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
+				shared_ptr<map<string, shared_ptr<Node>>> pattern_db = entity_storage->getPatternDatabase();
+
+				Assert::IsTrue((pattern_db->at("5")->isIdentical(arithmetic_node_ptr, true)));
+				Assert::IsTrue((pattern_db->at("1")->isIdentical(conditional_node_ptr, true)));
+			}
+
+			TEST_METHOD(TestAddZeroPatternSuccess) {
+				// Create mock data to insert
+				map<string, shared_ptr<Node>> patternData = { };
+				shared_ptr<map<string, shared_ptr<Node>>> toInsert = make_shared<map<string, shared_ptr<Node>>>(patternData);
+
+				// Insertion
+				PKB::insertor.addPatterns(toInsert);
+
+				// Create reference to EntityStorage to check database
+				shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
+				shared_ptr<map<string, shared_ptr<Node>>> pattern_db = entity_storage->getPatternDatabase();
+
+				Assert::IsTrue(pattern_db->empty());
+			}
+
 			TEST_METHOD(TestAddUsesAbstractionSuccess) {
 				// Create mock data to insert
 				StringMap usesData = { {"x", {"main", "3", "6"}}};
@@ -351,7 +430,6 @@ namespace UnitTesting {
 				shared_ptr<AbstractionStorage> uses_storage = StorageManager::getAbstractionStorage(USES);
 				shared_ptr<StringMap> db = uses_storage->getDatabase();
 
-				// assert database contains the correct data
 				Assert::IsTrue(compare_maps(*db, usesData));
 			}
 
@@ -366,8 +444,7 @@ namespace UnitTesting {
 				// Create reference to AbstractionStorage to check database
 				shared_ptr<AbstractionStorage> modifies_storage = StorageManager::getAbstractionStorage(MODIFIES);
 				shared_ptr<StringMap> db = modifies_storage->getDatabase();
-
-				// assert database contains the correct data
+				
 				Assert::IsTrue(compare_maps(*db, modifiesData));
 			}
 
@@ -383,7 +460,6 @@ namespace UnitTesting {
 				shared_ptr<AbstractionStorage> follows_storage = StorageManager::getAbstractionStorage(FOLLOWS);
 				shared_ptr<StringMap> db = follows_storage->getDatabase();
 
-				// assert database contains the correct data (only first element of vector)
 				Assert::IsTrue(compare_maps(*db, followsData));
 			}
 
@@ -399,7 +475,6 @@ namespace UnitTesting {
 				shared_ptr<AbstractionStorage> followsstar_storage = StorageManager::getAbstractionStorage(FOLLOWSSTAR);
 				shared_ptr<StringMap> db = followsstar_storage->getDatabase();
 
-				// assert database contains the correct data
 				Assert::IsTrue(compare_maps(*db, followsStarData));
 			}
 
@@ -415,7 +490,6 @@ namespace UnitTesting {
 				shared_ptr<AbstractionStorage> parent_storage = StorageManager::getAbstractionStorage(PARENT);
 				shared_ptr<StringMap> db = parent_storage->getDatabase();
 
-				// assert database contains the correct data (only first element of vector)
 				Assert::IsTrue(compare_maps(*db, parentData));
 			}
 
@@ -431,7 +505,7 @@ namespace UnitTesting {
 				shared_ptr<AbstractionStorage> parentstar_storage = StorageManager::getAbstractionStorage(PARENTSTAR);
 				shared_ptr<StringMap> db = parentstar_storage->getDatabase();
 
-				// assert database contains the correct data
+				
 				Assert::IsTrue(compare_maps(*db, parentStarData));
 			}
 
@@ -447,7 +521,6 @@ namespace UnitTesting {
 				shared_ptr<AbstractionStorage> calls_storage = StorageManager::getAbstractionStorage(CALLS);
 				shared_ptr<StringMap> db = calls_storage->getDatabase();
 
-				// assert database contains the correct data (only first element of vector)
 				Assert::IsTrue(compare_maps(*db, callsData));
 			}
 
@@ -463,7 +536,7 @@ namespace UnitTesting {
 				shared_ptr<AbstractionStorage> callsstar_storage = StorageManager::getAbstractionStorage(CALLSSTAR);
 				shared_ptr<StringMap> db = callsstar_storage->getDatabase();
 
-				// assert database contains the correct data
+				
 				Assert::IsTrue(compare_maps(*db, callsStarData));
 			}
 
@@ -479,7 +552,7 @@ namespace UnitTesting {
 				shared_ptr<AbstractionStorage> next_storage = StorageManager::getAbstractionStorage(NEXT);
 				shared_ptr<StringMap> db = next_storage->getDatabase();
 
-				// assert database contains the correct data
+				
 				Assert::IsTrue(compare_maps(*db, nextDataValid));
 			}
 			

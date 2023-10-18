@@ -1,7 +1,6 @@
-#include "../source/ApplicationWrapper.h"
-#include "CppUnitTest.h"
-#include "SystemTestWrapper.h"
 #include "stdafx.h"
+#include "SystemTestWrapper.h"
+
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

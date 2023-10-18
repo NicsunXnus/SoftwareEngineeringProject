@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 
-#include "../source/SimpleTokens/TokenFactory.h"
+#include "../source/SP/SimpleTokens/TokenFactory.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std::string_view_literals;
@@ -25,8 +25,15 @@ std::shared_ptr<Token>(*genToken) (std::string, bool) = TokenFactory::generateTo
 
 template <typename T>
 std::vector<bool> permutateForceIdentifier(std::string tokenName, T expected) {
-	std::shared_ptr<Token> result_normal = genToken(tokenName, true);
-	std::shared_ptr<Token> result_inverted = genToken(tokenName, false);
+	std::shared_ptr<Token> result_normal;
+	std::shared_ptr<Token> result_inverted;
+	try {
+		result_normal = genToken(tokenName, true);
+		result_inverted = genToken(tokenName, false);
+	}
+	catch (std::invalid_argument e) {
+		return std::vector<bool>(false);
+	}
 
 	std::vector<bool> output;
 	output.push_back(Token::checkEquality(result_normal, expected));
