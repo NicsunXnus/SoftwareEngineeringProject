@@ -1,0 +1,162 @@
+<?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
+<test_results>
+<info>
+<name>Release</name><parsing_time_taken>2.000000</parsing_time_taken>
+</info>
+<queries>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="syn, syn, arg1: proc, arg2: proc, select first arg">1</id><querystr><![CDATA[stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1; Select p such that Calls(p, p1)]]></querystr>
+<stuans>First,Second</stuans>
+<correct>First,Second</correct>
+<time_taken>1.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="syn, syn, arg1: proc, arg2: proc, select second arg">2</id><querystr><![CDATA[stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1; Select p1 such that Calls(p, p1)]]></querystr>
+<stuans>Second,Third</stuans>
+<correct>Second,Third</correct>
+<time_taken>1.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="syn, wildcard, arg1: proc, arg2: wildcard, select first arg">3</id><querystr><![CDATA[stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1; Select p such that Calls(p, _)]]></querystr>
+<stuans>First,Second</stuans>
+<correct>First,Second</correct>
+<time_taken>0.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="syn, ident, arg1: proc, arg2: ident, select first arg">4</id><querystr><![CDATA[stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1; Select p such that Calls(p, "Third")]]></querystr>
+<stuans>Second</stuans>
+<correct>Second</correct>
+<time_taken>0.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="syn, ident, arg1: proc, arg2: ident, select first arg (empty)">5</id><querystr><![CDATA[stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1; Select p such that Calls(p, "First")]]></querystr>
+<stuans></stuans>
+<correct></correct>
+<time_taken>0.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="wildcard, syn, arg1: wildcard, arg2: proc, select second arg">6</id><querystr><![CDATA[stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1; Select p such that Calls(_, p)]]></querystr>
+<stuans>Second,Third</stuans>
+<correct>Second,Third</correct>
+<time_taken>0.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" UnnamedVar="2" SuchThat="1" CondNum="5" RelNum="1" comment="wildcard, wildcard, arg1: wildcard, arg2: wildcard, select proc">7</id><querystr><![CDATA[stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1; Select p such that Calls(_, _)]]></querystr>
+<stuans>First,Second,Third</stuans>
+<correct>First,Second,Third</correct>
+<time_taken>0.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="wildcard, ident, arg1: wildcard, arg2: ident, select proc">8</id><querystr><![CDATA[stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1; Select p such that Calls(_, "Second")]]></querystr>
+<stuans>First,Second,Third</stuans>
+<correct>First,Second,Third</correct>
+<time_taken>0.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="wildcard, ident, arg1: wildcard, arg2: ident, select proc (invalid call)">9</id><querystr><![CDATA[stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1; Select p such that Calls(_, "HongKai")]]></querystr>
+<stuans></stuans>
+<correct></correct>
+<time_taken>0.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="ident, syn, arg1: ident, arg2: syn, select proc">10</id><querystr><![CDATA[stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1; Select p such that Calls("First", p)]]></querystr>
+<stuans>Second</stuans>
+<correct>Second</correct>
+<time_taken>1.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="ident, syn, arg1: ident, arg2: syn, select proc (invalid ident)">11</id><querystr><![CDATA[stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1; Select p such that Calls("Marcus", p)]]></querystr>
+<stuans></stuans>
+<correct></correct>
+<time_taken>1.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="ident, wildcard, arg1: ident, arg2: wildcard, select proc">12</id><querystr><![CDATA[stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1; Select p such that Calls("First", _)]]></querystr>
+<stuans>First,Second,Third</stuans>
+<correct>First,Second,Third</correct>
+<time_taken>1.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" UnnamedVar="1" SuchThat="1" CondNum="4" RelNum="1" comment="ident, wildcard, arg1: ident, arg2: wildcard, select proc (invalid ident)">13</id><querystr><![CDATA[stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1; Select p such that Calls("HanYang", _)]]></querystr>
+<stuans></stuans>
+<correct></correct>
+<time_taken>1.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="ident, ident, arg1: ident, arg2: ident, select proc">14</id><querystr><![CDATA[stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1; Select p such that Calls("First", "Second")]]></querystr>
+<stuans>First,Second,Third</stuans>
+<correct>First,Second,Third</correct>
+<time_taken>1.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="ident, ident, arg1: ident, arg2: ident, select proc (invalid call)">15</id><querystr><![CDATA[stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1; Select p such that Calls("Jan", "Nic")]]></querystr>
+<stuans></stuans>
+<correct></correct>
+<time_taken>1.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="syn, syn, arg1: syn, arg2: syn, select proc (invalid syn type)">16</id><querystr><![CDATA[stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1; Select p such that Calls(pn, p)]]></querystr>
+<stuans>SemanticError</stuans>
+<correct>SemanticError</correct>
+<time_taken>1.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="syn, syn, arg1: syn, arg2: syn, select proc (invalid syn type, but valid entref)">17</id><querystr><![CDATA[stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1; Select p such that Calls(c, p)]]></querystr>
+<stuans></stuans>
+<correct></correct>
+<time_taken>1.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="syn, syn, arg1: syn, arg2: syn, select proc (invalid syn type, but valid entref)">18</id><querystr><![CDATA[stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1; Select p such that Calls(v, p)]]></querystr>
+<stuans></stuans>
+<correct></correct>
+<time_taken>1.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="ident, ident, arg1: ident, arg2: ident, select proc (invalid relationship)">19</id><querystr><![CDATA[stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1; Select p such that Calls("First", "Third")]]></querystr>
+<stuans></stuans>
+<correct></correct>
+<time_taken>1.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="ident, ident, arg1: ident, arg2: ident, select proc (invalid relationship)">20</id><querystr><![CDATA[stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1; Select p such that Calls("Second", "First")]]></querystr>
+<stuans></stuans>
+<correct></correct>
+<time_taken>1.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="int, ident, arg1: int, arg2: ident, select proc (invalid arg)">21</id><querystr><![CDATA[stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1; Select p such that Calls(96, "First")]]></querystr>
+<stuans>SyntaxError</stuans>
+<correct>SyntaxError</correct>
+<time_taken>1.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Calls="1" SuchThat="1" CondNum="3" RelNum="1" comment="int, ident, arg1: int, arg2: ident, select proc (invalid arg)">22</id><querystr><![CDATA[stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1; Select p such that Calls("96", "First")]]></querystr>
+<stuans>SyntaxError</stuans>
+<correct>SyntaxError</correct>
+<time_taken>1.000000</time_taken>
+<passed/>
+</query>
+</queries>
+</test_results>
