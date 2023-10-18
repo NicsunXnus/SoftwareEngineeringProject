@@ -2,6 +2,8 @@
 #define DESIGNENUMS_H
 
 #include<unordered_set>
+#include<map>
+#include<stdexcept>
 
 using namespace std;
 
