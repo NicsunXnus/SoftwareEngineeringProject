@@ -54,6 +54,9 @@
       <Filter>QPS</Filter>
     </ClCompile>
     <ClCompile Include="..\source\QPS\QueryObjects\ComparisonQueryObject.cpp">
+	  <Filter>QPS</Filter>
+	</ClCompile>
+    <ClCompile Include="..\source\QPS\QueryObjects\NextObjects.cpp">
       <Filter>QPS</Filter>
     </ClCompile>
   </ItemGroup>

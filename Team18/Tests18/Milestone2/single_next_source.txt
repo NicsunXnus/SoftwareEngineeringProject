@@ -19,9 +19,4 @@ procedure First {
       procedure Third {
           z = 5;
           v = z;
-<<<<<<< HEAD
-          print v;
-	read Third;}
-=======
           print v; }
->>>>>>> master
