@@ -1766,6 +1766,19 @@ namespace UnitTesting
 			}
 		}
 
+		TEST_METHOD(TestWithSTModifiesQuery)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("procedure p, q; constant c; Select p with q.procName = \"Third\" such that Modifies (p, \"i\") ");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[1]) == typeid(StaticAttrRefComparisonQueryObject));
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "Static=AttrRef"sv);
+			Assert::IsTrue(typeid(*qo[2]) == typeid(ModifiesEntityObject));
+			Assert::IsTrue(qo[2]->getQueryObjectName() == "Modifies"sv);
+		}
+
 	};
 
 }

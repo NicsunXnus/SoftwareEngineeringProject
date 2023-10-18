@@ -60,14 +60,14 @@ public:
 
 	vector<shared_ptr<QueryObject>> getSelectClauseQueryObject(vector<shared_ptr<QueryObject>> queryObjects) {
 		auto start = queryObjects.begin();
-		auto end = start + QUERY_OBJECTS_IN_TUPLE_COUNT;
+		auto end = start + synonyms_in_select;
 		vector<shared_ptr<QueryObject>> selectClauseQueryObjects(start, end);
 
 		return selectClauseQueryObjects;
 	}
 
 	vector<shared_ptr<QueryObject>> getNonSelectClauseQueryObject(vector<shared_ptr<QueryObject>> queryObjects) {
-		auto start = queryObjects.begin() + QUERY_OBJECTS_IN_TUPLE_COUNT;
+		auto start = queryObjects.begin() + synonyms_in_select;
 		auto end = queryObjects.end();
 		vector<shared_ptr<QueryObject>> selectClauseQueryObjects(start, end);
 
