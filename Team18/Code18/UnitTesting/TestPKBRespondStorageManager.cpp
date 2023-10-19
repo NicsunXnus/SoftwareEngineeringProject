@@ -30,6 +30,20 @@ TEST_CLASS(TestPKBRespondStorageManager) {
   shared_ptr<StringMap> printVarNameMap =
       make_shared<StringMap>(printVarNameData);
 
+  ExpressionProcessor ep = ExpressionProcessor();
+  shared_ptr<Node> node_ptr1 = ep.nodifyArithmeticExpression("a * b / 3 % 5");
+  shared_ptr<Node> node_ptr2 =
+      ep.nodifyArithmeticExpression("((a + (b * 3))) + (((5)))");
+  shared_ptr<Node> node_ptr3 =
+      ep.nodifyArithmeticExpression("((a + b) * 3 + 5)");
+  shared_ptr<Node> node_ptr4 = ep.nodifyConditionalExpression("a > 1");
+  map<string, shared_ptr<Node>> patternData = {{"17", node_ptr1},
+                                               {"21", node_ptr2},
+                                               {"6", node_ptr3},
+                                               {"33", node_ptr4}};
+  shared_ptr<map<string, shared_ptr<Node>>> patternMap =
+      make_shared<map<string, shared_ptr<Node>>>(patternData);
+
   StringMap usesData = {{"x", {"main", "3", "6"}}};
   StringMap usesDataInverse = {{"main", {"x"}}, {"3", {"x"}}, {"6", {"x"}}};
   StringMap modifiesData = {{"y", {"main", "8", "proc1", "2"}}};
@@ -124,21 +138,6 @@ TEST_CLASS(TestPKBRespondStorageManager) {
   }
 
   TEST_METHOD(TestGetPatterns) {
-    ExpressionProcessor ep = ExpressionProcessor();
-    shared_ptr<Node> node_ptr1 = ep.nodifyArithmeticExpression("a * b / 3 % 5");
-    shared_ptr<Node> node_ptr2 =
-        ep.nodifyArithmeticExpression("((a + (b * 3))) + (((5)))");
-    shared_ptr<Node> node_ptr3 =
-        ep.nodifyArithmeticExpression("((a + b) * 3 + 5)");
-    shared_ptr<Node> node_ptr4 =
-        ep.nodifyConditionalExpression("a > 1");
-    map<string, shared_ptr<Node>> patternData = {{"17", node_ptr1},
-                                                 {"21", node_ptr2},
-                                                 {"6", node_ptr3},
-                                                 {"33", node_ptr4}};
-    shared_ptr<map<string, shared_ptr<Node>>> patternMap =
-        make_shared<map<string, shared_ptr<Node>>>(patternData);
-
     PKB::insertor.addPatterns(patternMap);
 
     Assert::IsTrue(
