@@ -8,6 +8,7 @@
 #include "../../Constants/DesignEnums.h"
 
 
+
 using namespace std::string_view_literals;
 /*
 * This class represents a Query argument, which represents the query arguments in a clause
@@ -75,19 +76,19 @@ public:
 		return (arg[0] == '"') && (arg.back() == '"') && (SynonymObject::isValid(identifierName));
 	}
 
-	// returns the identifier without "
+	// returns the argument without "
 	string_view getIdentifier() {
 		string_view identifierName = arg.substr(1, arg.size() - 2);
 		return identifierName;
 	}
 
-	// used for validation of pattern clauses
+	// checks for open close quotes in argument
 	bool isExpr() {
 		if (static_cast<int>(arg.size()) <= IDENTIFIER_MIN_CHARS) {
 			return false;
 		}
 		string_view expr = arg.substr(1, arg.size() - 2);
-		return (arg[0] == '"') && (arg.back() == '"') && (SynonymObject::isValid(expr) || isNumber(std::string(expr)));
+		return (arg[0] == '"') && (arg.back() == '"');
 	}
 
 	// function to check if clauseArg is a partial matching expression-spec

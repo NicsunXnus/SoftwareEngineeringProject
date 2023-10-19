@@ -50,7 +50,6 @@ public:
 
 				continue;
 			}
-		
 
 			if (pql[i] == ';' || pql[i] == ',' || pql[i] == '(' || pql[i] == ')' || pql[i] == '_') {
 				if (isWord) {
@@ -112,7 +111,6 @@ private:
 
 		// add the closing quotes
 		ss << pql[index];
-		index++;
 
 		return ss.str();
 	}

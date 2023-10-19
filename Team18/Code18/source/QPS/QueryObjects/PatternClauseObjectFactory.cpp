@@ -1,4 +1,5 @@
 #include "PatternClauseObjectFactory.h"
+#include "../../SP/SimpleProcessor/ExpressionProcessor.h"
 
 shared_ptr<QueryObject> PatternClauseObjectFactory::create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) {
 	if (static_cast<int>(arguments.size()) == IF_PATTERN_ARGUMENT_COUNT) {
@@ -22,7 +23,19 @@ shared_ptr<QueryObject> PatternClauseObjectFactory::create(string_view clauseNam
 
 	bool isArg2Wildcard{ arg2->isWildcard() };
 	bool isArg2PartialMatching{ arg2->isPartialMatchingExprSpec() };
-	bool isArg2ValidExprSpec{ isArg2Wildcard || isArg2PartialMatching};
+	bool isArg2ExactExpr{ arg2->isExpr() };
+	bool isSyntacticallyCorrectExpr{ false };
+	if (isArg2PartialMatching || isArg2ExactExpr) {
+		try {
+			ExpressionProcessor ep = ExpressionProcessor();
+			std::shared_ptr<Node> patternTree = ep.nodifyArithmeticExpression(svToString(arg2->getIdentifier()));
+			isSyntacticallyCorrectExpr = true;
+		}
+		catch (invalid_argument e) {
+			throw SyntaxErrorException("Syntax error: invalid syntax in assign pattern expression-spec");
+		}
+	}
+	bool isArg2ValidExprSpec{ isArg2Wildcard || isSyntacticallyCorrectExpr };
 
 
 	if (isArg0ValidSynonymWhile && isArg1ValidEntRef && isArg2Wildcard) {
