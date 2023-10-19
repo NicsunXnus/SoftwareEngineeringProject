@@ -66,6 +66,31 @@ bool Node::isSubtreeOf(Node* other, bool isStrict) {
   return false;
 }
 
+unordered_set<string> Node::getTerminalVariables() {
+  return this->getTerminalVariablesHelper(this);
+}
+
+unordered_set<string> Node::getTerminalVariablesHelper(shared_ptr<Node> node) {
+  Node* node_ptr = &(*node);
+  return this->getTerminalVariablesHelper(node_ptr);
+}
+
+unordered_set<string> Node::getTerminalVariablesHelper(Node* node) {
+  unordered_set<string> values;
+  if (!node->hasChildren()) {  // Terminal node. Check if variable node
+    VariableNode* variableNode = dynamic_cast<VariableNode*>(node);
+    if (variableNode) {
+      values.insert(node->getValue());
+    }
+  } else {
+    for (const auto& child : node->getChildren()) {
+      const auto childValues = getTerminalVariablesHelper(child);
+      values.insert(childValues.begin(), childValues.end());
+    }
+  }
+  return values;
+}
+
 std::vector<std::shared_ptr<Node>> OpNode::validate(std::vector<std::shared_ptr<Node>> children) {
   if (children.size() == 0 || children.size() > 2) {
     throw std::invalid_argument(ExceptionMessages::wrongNumberChildren);
