@@ -18,8 +18,8 @@ QueryParser::QueryParser() {};
 
 vector<shared_ptr<QueryObject>> QueryParser::parsePQL(vector<string_view> tokens) {
 	tuple<vector<string_view>, vector<string_view>> declarationQuery = splitDeclarationQuery(tokens);
-	vector<shared_ptr<QueryObject>> declarationParser = validateDeclaration(get<0>(declarationQuery));
-	vector<shared_ptr<QueryObject>> queryObjects = validateQuery(get<1>(declarationQuery));
+	vector<shared_ptr<QueryObject>> declarationParser = parseDeclaration(get<0>(declarationQuery));
+	vector<shared_ptr<QueryObject>> queryObjects = parseQuery(get<1>(declarationQuery));
 
 	if (static_cast<int>(semanticErrors.size()) > 0) {
 		// throw the first semantic error we encountered
@@ -89,7 +89,7 @@ vector<vector<string_view>> QueryParser::splitDeclarations(vector<string_view> d
 * This function validates and converts the string tokens to QueryObjects
 * declaration : design-entity synonym (',' synonym)* ';'
 */
-vector<shared_ptr<QueryObject>> QueryParser::validateDeclaration(vector<string_view> declarations) {
+vector<shared_ptr<QueryObject>> QueryParser::parseDeclaration(vector<string_view> declarations) {
 	vector<shared_ptr<QueryObject>> converted;
 	vector<vector<string_view>> splittedDeclarations = splitDeclarations(declarations);
 	int totalDeclarations = splittedDeclarations.size();
@@ -144,7 +144,7 @@ vector<shared_ptr<QueryObject>> QueryParser::validateDeclaration(vector<string_v
 
 }
 
-vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> query) {
+vector<shared_ptr<QueryObject>> QueryParser::parseQuery(vector<string_view> query) {
 	vector<shared_ptr<QueryObject>> result;
 
 	int currentWordIndex = 0;
@@ -161,12 +161,12 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 
 	int selectTupleTokenCount{};
 	// check if is tuple
-	if (isSelectTuple(query, currentWordIndex, selectTupleTokenCount)) {
+	if (validator->isSelectTuple(query, currentWordIndex, selectTupleTokenCount)) {
 		std::vector<shared_ptr<QueryObject>> selectQueryObjects{ createTupleObjects(query, currentWordIndex, selectTupleTokenCount) };
 
 		result.insert(result.end(), selectQueryObjects.begin(), selectQueryObjects.end());
 	}
-	else if (isSelectElem(query, currentWordIndex, selectTupleTokenCount)) {
+	else if (validator->isSelectElem(query, currentWordIndex, selectTupleTokenCount)) {
 		if (selectTupleTokenCount == 1 && !isDeclared(query, currentWordIndex)) {
 			storeSemanticError(make_shared<SemanticErrorException>("Synonym not present in select clause, or synonym not declared"));
 			result.push_back(make_shared<StmtObject>("Placeholder query object, synonym not declared"));
@@ -206,7 +206,7 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 		if (isSuchThat) {
 			currentWordIndex += 2;
 
-			if (!hasRelationalReference(query, currentWordIndex)) {
+			if (!validator->hasRelationalReference(query, currentWordIndex)) {
 				throw SyntaxErrorException("such that clause has invalid syntax");
 			}
 
@@ -218,7 +218,7 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 			currentWordIndex += 1;
 			int patternTokenCount {}; // tracks the number of tokens the clause has if it was a pattern clause
 
-			if (!hasPatternClause(query, currentWordIndex, patternTokenCount)) {
+			if (!validator->hasPatternClause(query, currentWordIndex, patternTokenCount)) {
 				throw SyntaxErrorException("such that clause has invalid syntax");
 			}
 
@@ -231,7 +231,7 @@ vector<shared_ptr<QueryObject>> QueryParser::validateQuery(vector<string_view> q
 			int withTokenCount{};
 			bool is1stArgAttrRef{ false };
 
-			if (!hasWithClause(query, currentWordIndex, withTokenCount, is1stArgAttrRef)) {
+			if (!validator->hasWithClause(query, currentWordIndex, withTokenCount, is1stArgAttrRef)) {
 				throw SyntaxErrorException("with clause has invalid syntax");
 			}
 
@@ -267,21 +267,6 @@ bool QueryParser::hasPattern(std::vector<string_view>& query, int index) {
 
 bool QueryParser::hasSuchThat(std::vector<string_view>& query, int index) {
 	return index < static_cast<int>(query.size() - 1) && query[index] == "such"sv && query[index+1] == "that"sv;
-}
-
-bool QueryParser::hasRelationalReference(std::vector<string_view>& query, int index) {
-	// Eg., "Uses" "(" "a" "," "b" ")"
-	if (index > static_cast<int>(query.size()) - SUCH_THAT_CLAUSE_TOKEN_COUNT) {
-		return false;
-	}
-
-	bool hasRelationalKeyword{ this->relationalReferences.find(query[index]) != this->relationalReferences.end()};
-	bool hasOpenBracket{ query[index + 1] == "("sv };
-	bool hasComma{ query[index + 3] == ","sv };
-	bool hasCloseBracket{ query[index + 5] == ")"sv };
-
-	bool hasRR{ hasRelationalKeyword && hasOpenBracket && hasComma && hasCloseBracket };
-	return hasRR;
 }
 
 shared_ptr<QueryObject> QueryParser::createClauseObj(std::vector<string_view>& query, int& index) {
@@ -321,35 +306,6 @@ shared_ptr<QueryObject> QueryParser::createClauseObj(std::vector<string_view>& q
 		storeSemanticError(make_shared<SemanticErrorException>(ex));
 		return make_shared<StmtObject>("Clause object has semantic error, query not evaluated");
 	}
-}
-
-bool QueryParser::hasPatternClause(std::vector<string_view>& query, int index, int& tokenCount) {
-	// pattern clause has a variable number of tokens
-	// E.g., "a", "(", "_", ",", "_", "x", "_", ")": a(_,_"x"_)has 8
-	// "a", "(", "_", ",", "_", ")": a(_,_) has 6
-
-	if (index > (static_cast<int>(query.size()) - MIN_PATTERN_CLAUSE_TOKEN_COUNT)) {
-		return false;
-	}
-
-	bool isSynonym{ SynonymObject::isValid(query[index]) };
-	bool hasOpenBracket{ query[index + 1] == "("sv };
-	bool hasComma{ query[index + 3] == ","sv };
-	bool hasCloseBracket{ false };
-	if (query[index + 5] == ")"sv) { // pattern is looking for an exact match
-		tokenCount = MIN_PATTERN_CLAUSE_TOKEN_COUNT;
-		hasCloseBracket = true;
-	} else { // pattern is looking for partial match
-		if (index > (static_cast<int>(query.size()) - MAX_PATTERN_CLAUSE_TOKEN_COUNT)) {
-			return false;
-		}
-
-		tokenCount = MAX_PATTERN_CLAUSE_TOKEN_COUNT;
-		hasCloseBracket = query[index + 7] == ")"sv;
-	}
-	
-	bool hasPC{ isSynonym && hasOpenBracket && hasComma && hasCloseBracket };
-	return hasPC;
 }
 
 shared_ptr<QueryObject> QueryParser::createPatternObject(std::vector<string_view>& query, int& index, int tokenCount) {
@@ -397,81 +353,6 @@ shared_ptr<QueryObject> QueryParser::createPatternObject(std::vector<string_view
 		storeSemanticError(make_shared<SemanticErrorException>(ex));
 		return make_shared<StmtObject>("Pattern clause has semantic error, query not evaluated");
 	}
-}
-
-bool QueryParser::isSelectTuple(std::vector<string_view>& query, int index, int& tokenCount) {
-	bool hasOpenBracket{ query[index] == "<"sv };
-	tokenCount = 0;
-
-	if (!hasOpenBracket) {
-		return false;
-	}
-
-	++tokenCount;
-
-	bool isSynonymOrAttrName{ true };
-	bool isDotOrComma{ false };
-
-	while (index + tokenCount < static_cast<int>(query.size()) && query[index + tokenCount] != ">"sv) {
-		string_view token{ query[index + tokenCount] };
-		
-		if (isSynonymOrAttrName) {
-			++tokenCount;
-			isDotOrComma = true;
-			isSynonymOrAttrName = false;
-			continue;
-		}
-		else if (isDotOrComma && (token == "."sv || token == ","sv)) {
-			++tokenCount;
-			isSynonymOrAttrName = true;
-			isDotOrComma = false;
-			continue;
-		} 
-		else {
-			// invalid tuple structure
-			return false;
-		}
-	}
-
-	if (isSynonymOrAttrName) { // expecting a word as prev token was , or . However we ended the loop. Thus invalid structure
-		return false;
-	}
-
-	if (index + tokenCount == static_cast<int>(query.size())) { // broke out of loop due to reaching query end, invalid tuple structure
-		return false;
-	}
-	else if (tokenCount == 1) { // select tuple is empty. E.g Select <>
-		return false;
-	}
-
-	// include ">" in tokenCount
-	++tokenCount;
-
-	return true;
-}
-
-bool QueryParser::isSelectElem(std::vector<string_view>& query, int index, int& tokenCount) {
-	// check if query has only 1 token left
-	if (static_cast<int>(query.size()) < index + ATTR_REF_TOKEN_COUNT) { // query not long enough to contain a attrRef, must be a synonym
-		tokenCount = 1;
-		return true;
-	}
-
-	if (isAttrRef(query, index, tokenCount)) { // elem is a attrRef
-		return true;
-	}
-
-	// elem is a synonym
-	tokenCount = 1;
-	return true;
-}
-
-bool QueryParser::isAttrRef(std::vector<string_view>& query, int index, int& tokenCount) {
-	if (query[index + 1] == "."sv) {
-		tokenCount = 3;
-		return true;
-	}
-	return false;
 }
 
 shared_ptr<QueryObject> QueryParser::createAttrRefObject(std::vector<string_view>& query, int& index) {
@@ -570,60 +451,6 @@ bool QueryParser::hasWith(std::vector<string_view>& query, int index) {
 	return index < static_cast<int>(query.size()) && query[index] == "with"sv;
 }
 
-bool QueryParser::hasWithClause(std::vector<string_view>& query, int index, int& tokenCount, bool& is1stRefAttrRef) {
-	// with clause has a variable number of tokens. General structure: ref = ref
-	// a ref could have 1 or 3 tokens: "1" or "a", ".", "value"
-
-	tokenCount = MIN_WITH_CLAUSE_TOKEN_COUNT;
-
-
-	// check there are at least the minimum number of tokens remaining
-	if (index + MIN_WITH_CLAUSE_TOKEN_COUNT > static_cast<int>(query.size())) {
-		return false;
-	}
-	else if (index + MIN_WITH_CLAUSE_TOKEN_COUNT == static_cast<int>(query.size())) { // with clause is a static = static
-		return true;
-	}
-
-	// check if first ref is attrRef
-	bool isRef1AttrRef{ query[index + 1] == "."sv};
-
-	if (isRef1AttrRef) {
-		if (index + MIN_WITH_CLAUSE_TOKEN_COUNT + 2 > static_cast<int>(query.size())) {
-			return false;
-		}
-		is1stRefAttrRef = true;
-		tokenCount += 2;
-		index += 2;
-	}
-
-	bool hasEqualSign{ query[index + 1] == "="sv };
-	if (!hasEqualSign) {
-		return false;
-	}
-
-	// check if there are at least the minimum number of tokens remaining for the second ref to be a static value
-	if (index + 3 > static_cast<int>(query.size())) {
-		return false;
-	}
-
-	// check if there are at least the minimum number of tokens remaining for the second ref to be a attrRef
-	if (index + 5 > static_cast<int>(query.size())) {
-		// has to be a static value
-		return true;
-	}
-
-	// could be static or attrRef at this point
-	
-	bool isRef2AttrRef{ query[index + 3] == "."sv };
-	
-	if (!isRef2AttrRef) {// second ref is a static value
-		return true;
-	}
-
-	tokenCount += 2;
-	return true;
-}
 
 shared_ptr<QueryObject> QueryParser::createComparisonObject(std::vector<string_view>& query, 
 	int& index, int tokenCount, bool is1stArgAttrRef) {

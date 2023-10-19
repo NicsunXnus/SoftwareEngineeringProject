@@ -25,8 +25,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -46,8 +46,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -60,8 +60,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -76,8 +76,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -91,8 +91,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -107,8 +107,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -122,8 +122,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -139,8 +139,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -156,8 +156,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -170,8 +170,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -184,8 +184,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -198,8 +198,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -212,8 +212,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -226,8 +226,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -240,8 +240,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -254,8 +254,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -273,8 +273,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -287,8 +287,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -303,8 +303,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -317,8 +317,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -333,8 +333,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -347,8 +347,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -364,8 +364,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -381,8 +381,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -395,8 +395,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -409,8 +409,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -423,8 +423,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -437,8 +437,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -451,8 +451,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -465,8 +465,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -479,8 +479,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -497,8 +497,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -514,8 +514,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -530,8 +530,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -545,8 +545,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -559,8 +559,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -574,8 +574,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
@@ -593,8 +593,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
@@ -612,8 +612,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
@@ -631,8 +631,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
@@ -651,8 +651,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
@@ -669,8 +669,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
@@ -688,8 +688,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
@@ -714,8 +714,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
@@ -735,8 +735,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
@@ -758,8 +758,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
@@ -782,8 +782,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -801,8 +801,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -818,8 +818,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -833,8 +833,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -851,8 +851,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -865,8 +865,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -879,8 +879,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -895,8 +895,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -909,8 +909,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -923,8 +923,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -937,8 +937,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -951,8 +951,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -971,8 +971,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -985,8 +985,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1001,8 +1001,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1016,8 +1016,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1032,8 +1032,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1047,8 +1047,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1064,8 +1064,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1081,8 +1081,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1095,8 +1095,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1109,8 +1109,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1123,8 +1123,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1137,8 +1137,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1151,8 +1151,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1165,8 +1165,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1179,8 +1179,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1193,8 +1193,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1207,8 +1207,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1221,8 +1221,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1235,8 +1235,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1249,8 +1249,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1265,8 +1265,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1281,8 +1281,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1297,8 +1297,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1313,8 +1313,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1329,8 +1329,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1345,8 +1345,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1361,8 +1361,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1377,8 +1377,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1393,8 +1393,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1409,8 +1409,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1425,8 +1425,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1441,8 +1441,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1455,8 +1455,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1469,8 +1469,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1483,8 +1483,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
@@ -1497,8 +1497,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
@@ -1511,8 +1511,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
@@ -1525,8 +1525,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
@@ -1539,8 +1539,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
@@ -1554,8 +1554,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
@@ -1569,8 +1569,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
@@ -1585,8 +1585,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
@@ -1602,8 +1602,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
@@ -1619,8 +1619,8 @@ namespace UnitTesting {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);

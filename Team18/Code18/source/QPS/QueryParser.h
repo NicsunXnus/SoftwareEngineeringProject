@@ -19,7 +19,7 @@ using namespace std;
 * IDEA:
 * 1. Split string into individual 'tokens'
 * 2. Split into declaration and query clause, assume that input query is valid up till this point, can do semantic checks (absence of either clause)
-* 3. Within the declaration and query clause, check for validity. If both are valid, input query must be valid
+* 3. Parse the declaration and query clauses. Sends these to a Query Validator object to validate the queries
 * 4. Convert to query object
 */
 class QueryParser  {
@@ -41,15 +41,15 @@ public:
 
 
 	/*
-	* This function validates the declaration clause
+	* This function parses the declaration clause
 	*/
-	vector<shared_ptr<QueryObject>> validateDeclaration(vector<string_view> declarations);
+	vector<shared_ptr<QueryObject>> parseDeclaration(vector<string_view> declarations);
 
 
 	/*
 	* This function validates the query clause
 	*/
-	vector<shared_ptr<QueryObject>> validateQuery(vector<string_view> query);
+	vector<shared_ptr<QueryObject>> parseQuery(vector<string_view> query);
 
 	unordered_map<string_view, shared_ptr<QueryObject>> getSynonyms() {
 		return synonyms;
@@ -77,6 +77,9 @@ public:
 
 
 private:
+	// A query validator object
+	std::shared_ptr<QueryValidator> validator{ make_shared<QueryValidator>() };
+
 	// Synonyms declared in the query's declaration statements
 	unordered_map<string_view, shared_ptr<QueryObject>> synonyms;
 
@@ -119,29 +122,11 @@ private:
 	// Helper function to check if the such that keywords are present
 	bool hasSuchThat(std::vector<string_view>& query, int index);
 
-	// Helper function to check if a such that clause is present
-	bool hasRelationalReference(std::vector<string_view>& query, int index);
-
 	// Creates a such that clause query object, and increments the index by the number of tokens the clause has
 	shared_ptr<QueryObject> createClauseObj(std::vector<string_view>& query, int& index);
 
-	// Helper function to check if a pattern clause is present
-	bool hasPatternClause(std::vector<string_view>& query, int index, int& tokenCount);
-
 	// Creates a pattern clause query object 
 	shared_ptr<QueryObject> createPatternObject(std::vector<string_view>& query, int& index, int tokenCount);
-
-	/*
-	* Helper function to check if select clause is a tuple, and gets the number of tokens until the tuple bracket closes
-	* Does not check for validity of inputs, only checks if there is a correct sequence of tokens for a valid tuple
-	*/ 
-	bool isSelectTuple(std::vector<string_view>& query, int index, int& tokenCount);
-
-	// Helper function to check if select clause has the structure of an elem (synonym or attrRef) and gets the respective token count
-	bool isSelectElem(std::vector<string_view>& query, int index, int& tokenCount);
-
-	// Helper function to check if index has the structure of a attrRef
-	bool isAttrRef(std::vector<string_view>& query, int index, int& tokenCount);
 
 	// Creates an attribute reference query object
 	shared_ptr<QueryObject> createAttrRefObject(std::vector<string_view>& query, int& index);
@@ -154,9 +139,6 @@ private:
 
 	// Checks whether there is a with keyword in the query
 	bool QueryParser::hasWith(std::vector<string_view>& query, int index);
-
-	// Check whether a with clause is present
-	bool QueryParser::hasWithClause(std::vector<string_view>& query, int index, int& tokenCount, bool& isFirstRefAttrRef);
 
 	// Creates a comparison clause query object
 	shared_ptr<QueryObject> QueryParser::createComparisonObject(std::vector<string_view>& query, 

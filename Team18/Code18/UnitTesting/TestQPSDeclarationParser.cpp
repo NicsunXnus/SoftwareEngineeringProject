@@ -65,7 +65,7 @@ namespace UnitTesting
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(testSv);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(declarationQuery));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(declarationQuery));
 		}
 
 		TEST_METHOD(TestValidateDeclarationInvalidSynonym)
@@ -75,7 +75,7 @@ namespace UnitTesting
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(testSv);
 			try {
-				vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(declarationQuery));
+				vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(declarationQuery));
 			}
 			catch (const QPSError& ex)
 			{
@@ -92,7 +92,7 @@ namespace UnitTesting
 			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(testSv);
 
 			try {
-				vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(declarationQuery));
+				vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(declarationQuery));
 			}
 			catch (const QPSError& ex)
 			{
@@ -110,7 +110,7 @@ namespace UnitTesting
 			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(testSv);
 
 			try {
-				vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(declarationQuery));
+				vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(declarationQuery));
 				Assert::Fail();
 			}
 			catch (const QPSError& ex)
@@ -128,7 +128,7 @@ namespace UnitTesting
 			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(testSv);
 		
 			try {
-				vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(declarationQuery));
+				vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(declarationQuery));
 				Assert::Fail();
 			}
 			catch (const QPSError& ex)
@@ -146,7 +146,7 @@ namespace UnitTesting
 			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(testSv);
 			
 			try {
-				vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(declarationQuery));
+				vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(declarationQuery));
 				Assert::Fail();
 			}
 			catch (const QPSError& ex)
@@ -164,7 +164,7 @@ namespace UnitTesting
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(testSv);
 
-			vector<shared_ptr<QueryObject>> declarations = p->validateDeclaration(get<0>(declarationQuery));
+			vector<shared_ptr<QueryObject>> declarations = p->parseDeclaration(get<0>(declarationQuery));
 			
 			Assert::IsTrue(declarations[0]->getQueryObjectName() == "a");
 			Assert::IsTrue(declarations[1]->getQueryObjectName() == "variable");
@@ -179,7 +179,7 @@ namespace UnitTesting
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(testSv);
 
-			vector<shared_ptr<QueryObject>> declarations = p->validateDeclaration(get<0>(declarationQuery));
+			vector<shared_ptr<QueryObject>> declarations = p->parseDeclaration(get<0>(declarationQuery));
 			Assert::IsTrue(declarations[0]->getQueryObjectName() == "a");
 			Assert::IsTrue(declarations[1]->getQueryObjectName() == "a1");
 			
@@ -192,7 +192,7 @@ namespace UnitTesting
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(testSv);
 
-			vector<shared_ptr<QueryObject>> declarations = p->validateDeclaration(get<0>(declarationQuery));
+			vector<shared_ptr<QueryObject>> declarations = p->parseDeclaration(get<0>(declarationQuery));
 			Assert::IsTrue(declarations[0]->getQueryObjectName() == "a");
 			Assert::IsTrue(declarations[1]->getQueryObjectName() == "a1");
 
@@ -205,7 +205,7 @@ namespace UnitTesting
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(testSv);
 
-			vector<shared_ptr<QueryObject>> declarations = p->validateDeclaration(get<0>(declarationQuery));
+			vector<shared_ptr<QueryObject>> declarations = p->parseDeclaration(get<0>(declarationQuery));
 			Assert::IsTrue(declarations[0]->getQueryObjectName() == "a");
 			Assert::IsTrue(declarations[1]->getQueryObjectName() == "a1");
 
@@ -218,7 +218,7 @@ namespace UnitTesting
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(testSv);
 
-			vector<shared_ptr<QueryObject>> declarations = p->validateDeclaration(get<0>(declarationQuery));
+			vector<shared_ptr<QueryObject>> declarations = p->parseDeclaration(get<0>(declarationQuery));
 			Assert::IsTrue(declarations[0]->getQueryObjectName() == "a");
 			Assert::IsTrue(declarations[1]->getQueryObjectName() == "a1");
 
@@ -231,7 +231,7 @@ namespace UnitTesting
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(testSv);
 
-			vector<shared_ptr<QueryObject>> declarations = p->validateDeclaration(get<0>(declarationQuery));
+			vector<shared_ptr<QueryObject>> declarations = p->parseDeclaration(get<0>(declarationQuery));
 			Assert::IsTrue(declarations[0]->getQueryObjectName() == "a");
 			Assert::IsTrue(declarations[1]->getQueryObjectName() == "a1");
 
@@ -244,7 +244,7 @@ namespace UnitTesting
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(testSv);
 
-			vector<shared_ptr<QueryObject>> declarations = p->validateDeclaration(get<0>(declarationQuery));
+			vector<shared_ptr<QueryObject>> declarations = p->parseDeclaration(get<0>(declarationQuery));
 			Assert::IsTrue(declarations[0]->getQueryObjectName() == "a");
 			Assert::IsTrue(declarations[1]->getQueryObjectName() == "a1");
 
@@ -257,7 +257,7 @@ namespace UnitTesting
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(testSv);
 
-			vector<shared_ptr<QueryObject>> declarations = p->validateDeclaration(get<0>(declarationQuery));
+			vector<shared_ptr<QueryObject>> declarations = p->parseDeclaration(get<0>(declarationQuery));
 			Assert::IsTrue(declarations[0]->getQueryObjectName() == "a");
 			Assert::IsTrue(declarations[1]->getQueryObjectName() == "a1");
 
@@ -270,7 +270,7 @@ namespace UnitTesting
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(testSv);
 
-			vector<shared_ptr<QueryObject>> declarations = p->validateDeclaration(get<0>(declarationQuery));
+			vector<shared_ptr<QueryObject>> declarations = p->parseDeclaration(get<0>(declarationQuery));
 			Assert::IsTrue(declarations[0]->getQueryObjectName() == "a");
 			Assert::IsTrue(declarations[1]->getQueryObjectName() == "a1");
 
@@ -283,7 +283,7 @@ namespace UnitTesting
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(testSv);
 
-			vector<shared_ptr<QueryObject>> declarations = p->validateDeclaration(get<0>(declarationQuery));
+			vector<shared_ptr<QueryObject>> declarations = p->parseDeclaration(get<0>(declarationQuery));
 			Assert::IsTrue(declarations[0]->getQueryObjectName() == "a");
 			Assert::IsTrue(declarations[1]->getQueryObjectName() == "a1");
 
@@ -296,7 +296,7 @@ namespace UnitTesting
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(testSv);
 
-			vector<shared_ptr<QueryObject>> declarations = p->validateDeclaration(get<0>(declarationQuery));
+			vector<shared_ptr<QueryObject>> declarations = p->parseDeclaration(get<0>(declarationQuery));
 			Assert::IsTrue(declarations[0]->getQueryObjectName() == "a");
 			Assert::IsTrue(declarations[1]->getQueryObjectName() == "a1");
 
@@ -309,7 +309,7 @@ namespace UnitTesting
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> declarationQuery = p->splitDeclarationQuery(testSv);
 
-			vector<shared_ptr<QueryObject>> declarations = p->validateDeclaration(get<0>(declarationQuery));
+			vector<shared_ptr<QueryObject>> declarations = p->parseDeclaration(get<0>(declarationQuery));
 			unordered_map<string_view, shared_ptr<QueryObject>> syn = p->getSynonyms();
 			shared_ptr<QueryObject> obj1 = syn.at("a"sv);
 			shared_ptr<QueryObject> obj2 = syn.at("a1"sv);
