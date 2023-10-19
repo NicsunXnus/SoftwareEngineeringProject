@@ -4,12 +4,34 @@
 
 shared_ptr<QueryResultsTable> AssignPatternObject::callAndProcess(
     shared_ptr<DataAccessLayer> dataAccessLayer) {
-  // Currently patterns only supported for assign
-
-  // assign synonym a, variable synonym v, variables "x" "y", constant "1"
   // 9 possible cases.
-  // First arg: variable synonym | character string | wildcard
-  // Second arg: variable string partial | constant string partial | wildcard
+  // 1. pattern a(_, _)
+  // Return a: for all a in assignments
+  // 2. pattern a (_, "x+1")
+  // Return a: for all a in assignments and "x+1" is identical to pattern tree
+  // of this a
+  // 3. pattern a (_, _"x+1"_)
+  // Return a: for all a in assignments and "x+1" is subtree of pattern tree of
+  // this a
+  // 4. pattern a("x", _)
+  // Return empty one column table if "x" not in variable list
+  // Return a: for all a in Modifies(a, "x") that are also in assignments
+  // 5. pattern a("x", "x+1")
+  // Return empty one column table if "x" not in variable list
+  // Return a: for all a in Modifies(a, "x") that are also in assignments and
+  // "x+1" is identical to pattern tree of this a
+  // 6. pattern a("x", _"x+1"_)
+  // Return empty one column table if "x" not in variable list
+  // Return a: for all a in Modifies(a, "x") that are also in assignments and
+  // "x+1" is subtree of pattern tree of this a
+  // 7. pattern a(v, _)
+  // Return a, v: for all a in Modifies(a, v) that are also in assignments
+  // 8. pattern a(v, "x+1")
+  // Return a, v: for all a in Modifies(a, v) that are also in assignments and
+  // "x+1" is identical to pattern tree of this a
+  // 9. pattern a(v, _"x+1"_)
+  // Return a, v: for all a in Modifies(a, v) that are also in assignments and
+  // "x+1" is subtree of pattern tree of this a
 
   // QueryResultsTable will always have column for assign synonym, and
   // optionally column for variable synonym.
@@ -74,7 +96,7 @@ shared_ptr<QueryResultsTable> AssignPatternObject::callAndProcess(
     shared_ptr<Node> patternTree;
     try {
       ExpressionProcessor ep = ExpressionProcessor();
-      patternTree = ep.nodifyArithmeticExpression("a * b / 3 % 5");
+      patternTree = ep.nodifyArithmeticExpression(expression);
     } catch (invalid_argument e) {
       synonymColumn = {};
       table = QueryResultsTable::createTable(synonym, synonymColumn);
@@ -84,39 +106,76 @@ shared_ptr<QueryResultsTable> AssignPatternObject::callAndProcess(
     unordered_set<string> to_intersect = {};
     // compare pattern tree with pattern tree of each assignment statement
     if (arg2->isPartialMatchingExprSpec()) {
-      // for each assignment statement, check if pattern tree is subtree of
-      // pattern tree of this assignment
-      for (const string& lineNum : synonymColumn) {
-        shared_ptr<Node> lineTree = dataAccessLayer->getPatternTree(lineNum);
-        if (patternTree->isSubtreeOf(lineTree)) {
-          to_intersect.insert(lineNum);
+      if (isSingleColumn) {
+        // for each assignment statement, check if pattern tree is subtree of
+        // pattern tree of this assignment
+        for (const string& lineNum : synonymColumn) {
+          shared_ptr<Node> lineTree = dataAccessLayer->getPatternTree(lineNum);
+          if (patternTree->isSubtreeOf(lineTree)) {
+            to_intersect.insert(lineNum);
+          }
+        }
+        synonymColumn = get_intersection(synonymColumn, to_intersect);
+      } else {
+        // for each assignment statement, check if pattern tree is subtree of
+        // pattern tree of this assignment
+        for (const string& lineNum :
+             PKBAssignData) {  // note: check against all assign statements
+          shared_ptr<Node> lineTree = dataAccessLayer->getPatternTree(lineNum);
+          if (patternTree->isSubtreeOf(lineTree)) {
+            to_intersect.insert(lineNum);
+          }
+        }
+        // now, to_intersect contains all assign statements with the pattern
+        // match
+        for (auto pair = columnValues.begin();
+             pair != columnValues.end();) {  // loop through variable keys
+          string variable_key = pair->first;
+          unordered_set<string> intersect =
+              get_intersection(columnValues[variable_key], to_intersect);
+          if (intersect.size() == 0) {
+            pair = columnValues.erase(pair);
+          } else {
+            columnValues[variable_key] = intersect;
+            ++pair;
+          }
         }
       }
-    } else {  // full match
-      // for each assignment statement, check if pattern tree is identical to
-      // pattern tree of this assignment
-      for (const string& lineNum : synonymColumn) {
-        shared_ptr<Node> lineTree = dataAccessLayer->getPatternTree(lineNum);
-        if (patternTree->isIdentical(lineTree)) {
-          to_intersect.insert(lineNum);
-        }
-      }
-    }
 
-    // updating single column and double column tables
-    if (isSingleColumn) {
-      synonymColumn = get_intersection(synonymColumn, to_intersect);
-    } else {
-      for (auto pair = columnValues.begin();
-           pair != columnValues.end();) {  // loop through variable keys
-        string variable_key = pair->first;
-        unordered_set<string> intersect =
-            get_intersection(columnValues[variable_key], to_intersect);
-        if (intersect.size() == 0) {
-          pair = columnValues.erase(pair);
-        } else {
-          columnValues[variable_key] = intersect;
-          ++pair;
+    } else {  // full match
+      if (isSingleColumn) {
+        // for each assignment statement, check if pattern tree is identical to
+        // pattern tree of this assignment
+        for (const string& lineNum : synonymColumn) {
+          shared_ptr<Node> lineTree = dataAccessLayer->getPatternTree(lineNum);
+          if (patternTree->isIdentical(lineTree)) {
+            to_intersect.insert(lineNum);
+          }
+        }
+        synonymColumn = get_intersection(synonymColumn, to_intersect);
+      } else {
+        // for each assignment statement, check if pattern tree is subtree of
+        // pattern tree of this assignment
+        for (const string& lineNum :
+             PKBAssignData) {  // note: check against all assign statements
+          shared_ptr<Node> lineTree = dataAccessLayer->getPatternTree(lineNum);
+          if (patternTree->isIdentical(lineTree)) {
+            to_intersect.insert(lineNum);
+          }
+        }
+        // now, to_intersect contains all assign statements with the pattern
+        // match
+        for (auto pair = columnValues.begin();
+             pair != columnValues.end();) {  // loop through variable keys
+          string variable_key = pair->first;
+          unordered_set<string> intersect =
+              get_intersection(columnValues[variable_key], to_intersect);
+          if (intersect.size() == 0) {
+            pair = columnValues.erase(pair);
+          } else {
+            columnValues[variable_key] = intersect;
+            ++pair;
+          }
         }
       }
     }
@@ -137,7 +196,7 @@ shared_ptr<QueryResultsTable> AssignPatternObject::callAndProcess(
 
 inline shared_ptr<QueryResultsTable> callAndProcessIfWhile(
     shared_ptr<DataAccessLayer> dataAccessLayer, std::string synonym,
-    shared_ptr<ClauseArg> arg1) {
+    shared_ptr<ClauseArg> arg1, int num_args) {
   // If/While
   // 1. pattern ifs(_, _, _)
   // Return if: for all if in ifs
@@ -159,12 +218,10 @@ inline shared_ptr<QueryResultsTable> callAndProcessIfWhile(
   unordered_set<string> PKBVarData = dataAccessLayer->getAllVariables();
 
   // Determine if the synonym is if or while
-  if (PKBIfData.count(synonym)) {
-    cout << "synonym is if" << endl;
+  if (num_args == 3) {
     // Get all if statement numbers
     synonymColumn = PKBIfData;
-  } else if (PKBWhileData.count(synonym)) {
-    cout << "synonym is while" << endl;
+  } else if (num_args == 2) {
     // Get all while statement numbers
     synonymColumn = PKBWhileData;
   } else {
@@ -230,12 +287,12 @@ shared_ptr<QueryResultsTable> IfPatternObject::callAndProcess(
     shared_ptr<DataAccessLayer> dataAccessLayer) {
   string synonym = svToString(getPatternSynonym()->getArg());
   shared_ptr<ClauseArg> arg1 = getArg1();
-  return callAndProcessIfWhile(dataAccessLayer, synonym, arg1);
+  return callAndProcessIfWhile(dataAccessLayer, synonym, arg1, 3);
 }
 
 shared_ptr<QueryResultsTable> WhilePatternObject::callAndProcess(
     shared_ptr<DataAccessLayer> dataAccessLayer) {
   string synonym = svToString(getPatternSynonym()->getArg());
   shared_ptr<ClauseArg> arg1 = getArg1();
-  return callAndProcessIfWhile(dataAccessLayer, synonym, arg1);
+  return callAndProcessIfWhile(dataAccessLayer, synonym, arg1, 2);
 }

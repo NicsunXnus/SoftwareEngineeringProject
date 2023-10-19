@@ -42,6 +42,8 @@ public:
 
 	map<string, unordered_set<string>> getConstantMap() override;
 
+	shared_ptr<Node> getPatternTree(string statement_number) override;
+
 	map<string, unordered_set<string>> getClause(ABSTRACTION abstraction) override;
 
 	map<string, unordered_set<string>> getClauseInverse(ABSTRACTION abstraction) override;
