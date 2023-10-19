@@ -22,7 +22,7 @@ shared_ptr<QueryObject> PatternClauseObjectFactory::create(string_view clauseNam
 
 	bool isArg2Wildcard{ arg2->isWildcard() };
 	bool isArg2PartialMatching{ arg2->isPartialMatchingExprSpec() };
-	bool isArg2ValidExprSpec{ isArg2Wildcard || isArg2PartialMatching };
+	bool isArg2ValidExprSpec{ isArg2Wildcard || isArg2PartialMatching};
 
 
 	if (isArg0ValidSynonymWhile && isArg1ValidEntRef && isArg2Wildcard) {
