@@ -85,7 +85,7 @@ public:
 			// Get all assignment statement numbers that appear in Modifies(n, "x")
 			if (PKBModifiesData.count(identifier)) {
 				unordered_set<string> to_intersect = PKBModifiesData.at(identifier);
-				synonymColumn = get_intersection(PKBAssignData, to_intersect);
+				assignSynonymColumn = get_intersection(PKBAssignData, to_intersect);
 			}
 			else {
 				synonymColumn = {};
@@ -105,57 +105,72 @@ public:
 			}
 		}
 
-		if (arg2->isWildcard()) {}  // no further filtering
-		else if (arg2->isExpr()) {  // partial or full match.
-			// build pattern tree
-			string expression = svToString(arg2->getIdentifier());
-			vector<shared_ptr<Token>> tokens = SimpleTokenizer::tokenizeArithmeticExpression(expression);
-			TreeBuilder tb = TreeBuilder();
-			shared_ptr<Node> patternTree;
-			try {
-				patternTree = tb.buildTree(tokens, false);
-			}
-			catch (invalid_argument e) {
-				synonymColumn = {};
-				table = QueryResultsTable::createTable(synonym, synonymColumn);
-				// printVectorString(synonymColumn);
-				return table;
-			}
-			unordered_set<string> to_intersect = {};
-			// compare pattern tree with pattern tree of each assignment statement
-			if (arg2->isPartialMatchingExprSpec()) {
-				// for each assignment statement, check if pattern tree is subtree of pattern tree of this assignment
-				for (const string& lineNum : synonymColumn) {
-					shared_ptr<Node> lineTree = dataAccessLayer->getPatternTree(lineNum);
-					if (patternTree->isSubtreeOf(lineTree)) {
-						to_intersect.insert(lineNum);
-					}
-				}
-			}
-			else {  // full match
-				// for each assignment statement, check if pattern tree is identical to pattern tree of this assignment
-				for (const string& lineNum : synonymColumn) {
-					shared_ptr<Node> lineTree = dataAccessLayer->getPatternTree(lineNum);
-					if (patternTree->isIdentical(lineTree)) {
-						to_intersect.insert(lineNum);
-					}
-				}
-			}
+		if (arg2->isWildcard()) {}
+		else if (arg2->isExpr()) {
+			// differentiate between constant and variable
+			string identifier = svToString(arg2->getIdentifier());
 
-			// updating single column and double column tables
-			if (isSingleColumn) {
-				synonymColumn = get_intersection(synonymColumn, to_intersect);
-			}
-			else {
-				for (auto pair = columnValues.begin(); pair != columnValues.end();) {  // loop through variable keys
-					string variable_key = pair->first;
-					unordered_set<string> intersect = get_intersection(columnValues[variable_key], to_intersect);
-					if (intersect.size() == 0) {
-						pair = columnValues.erase(pair);
+			if (isNumber(identifier)) {  // constant
+				//cout << "arg2 is constant" << endl;
+				if (isSingleColumn) {
+					// Get all assignment statement numbers that appear in constant database with constant as key
+					if (PKBConstData.count(identifier)) {
+						unordered_set<string> to_intersect = PKBConstData.at(identifier);
+						assignSynonymColumn = get_intersection(assignSynonymColumn, to_intersect);
 					}
 					else {
-						columnValues[variable_key] = intersect;
-						++pair;
+						assignSynonymColumn = {};
+					}
+				}
+				else {
+					if (PKBConstData.count(identifier)) {
+						unordered_set<string> to_intersect = PKBConstData.at(identifier);
+						for (auto pair = columnValues.begin(); pair != columnValues.end();) {
+							string variable_key = pair->first;
+							unordered_set<string> intersect = get_intersection(columnValues[variable_key], to_intersect);
+							if (intersect.size() == 0) {
+								pair = columnValues.erase(pair);
+							}
+							else {
+								columnValues[variable_key] = intersect;
+								++pair;
+							}
+						}
+					}
+					else {
+						columnValues = {};
+					}
+				}
+			}
+			else {  // variable
+				//cout << "arg2 is variable" << endl;
+				if (isSingleColumn) {
+					// Get all assignment statement numbers that appear in variable database with variable as key
+					if (PKBVarData.count(identifier)) {
+						unordered_set<string> to_intersect = PKBUsesData.at(identifier);
+						assignSynonymColumn = get_intersection(assignSynonymColumn, to_intersect);
+					}
+					else {
+						assignSynonymColumn = {};
+					}
+				}
+				else {
+					if (PKBVarData.count(identifier)) {
+						unordered_set<string> to_intersect = PKBUsesData.at(identifier);
+						for (auto pair = columnValues.begin(); pair != columnValues.end();) {
+							string variable_key = pair->first;
+							unordered_set<string> intersect = get_intersection(columnValues[variable_key], to_intersect);
+							if (intersect.size() == 0) {
+								pair = columnValues.erase(pair);
+							}
+							else {
+								columnValues[variable_key] = intersect;
+								++pair;
+							}
+						}
+					}
+					else {
+						columnValues = {};
 					}
 				}
 			}
