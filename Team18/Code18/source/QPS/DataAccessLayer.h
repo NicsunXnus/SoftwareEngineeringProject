@@ -35,9 +35,10 @@ public:
 	virtual unordered_set<string> getAllVariables();
 	virtual unordered_set<string> getAllConstants();
 
-	/* For Patterns (Milestone 1) */
+	/* For Patterns */
 	virtual map<string, unordered_set<string>> getVariableMap();
 	virtual map<string, unordered_set<string>> getConstantMap();
+    virtual shared_ptr<Node> getPatternTree(string statement_number);
 
 	/* For Design Abstractions / Clauses */
 	virtual StringMap DataAccessLayer::getClause(ABSTRACTION abstraction);
