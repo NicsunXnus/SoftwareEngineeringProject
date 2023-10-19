@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 
-#include "../source/SimpleTokens/Token.h"
-#include "../source/SimpleTokens/LiteralToken.h"
+#include "../source/SP/SimpleTokens/Token.h"
+#include "../source/SP/SimpleTokens/LiteralToken.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std::string_view_literals;

@@ -47,6 +47,11 @@ public:
 		}
 	}
 
+	void Insertor::addPatterns(shared_ptr<map<string, shared_ptr<Node>>> pattern_map) {
+		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
+		(*entity_storage).setPatternDatabase(pattern_map);
+	}
+
 	// keys are the first argument for abstractions. include variable names or line numbers.
 	void Insertor::addAbstraction(shared_ptr<StringMap> abstraction_map, ABSTRACTION abstraction_type) {
 		shared_ptr<AbstractionStorage> abstraction_storage = StorageManager::getAbstractionStorage(abstraction_type);

@@ -1,0 +1,67 @@
+name: Team18_CICD
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  BUILD_TYPE: Release
+  INSTALL_LOCATION: ".local"
+
+jobs:
+
+  cpplint:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: 3.x
+    - run: pip install cpplint
+    - run: cpplint --recursive .
+  
+  build_StartupSPASolution_then_run_AutoTester_then_run_tests:
+    runs-on: windows-2022
+
+    strategy:
+      matrix:
+        configuration: [Release]
+        platform: [x64]
+
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Setup MSBuild.exe
+        uses: microsoft/setup-msbuild@v1.0.3
+        
+      - name: SetupVSTestPath
+        uses: darenm/Setup-VSTest@v1
+      
+      - name: Use NuGet 6.7.0
+        uses: nuget/setup-nuget@v1
+        with: 
+          nuget-version: '6.7.0'
+     
+      - name: Restore nuget packages for all solutions
+        run: msbuild 'Team18/Code18/StartupSPASolution.sln' /p:configuration=${{ matrix.configuration }} /p:platform=${{ matrix.platform }} /t:restore
+      
+      - name: Build solution
+        run: |
+            msbuild 'Team18/Code18/StartupSPASolution.sln' /p:configuration=${{ matrix.configuration }} /p:platform=${{ matrix.platform }}
+            if (-not (Test-Path Team18/Code18/Tests/out.xml)) { New-Item Team18/Code18/Tests/out.xml -ItemType File }
+            cd Team18/Code18/Release
+            #.\AutoTester.exe ..\..\Tests18\Sample_source.txt ..\..\Tests18\Sample_queries.txt ..\Tests\out.xml
+            .\AutoTester.exe ..\..\Tests18\Milestone2\single_calls_source.txt ..\..\Tests18\Milestone2\single_calls_queries.txt ..\Tests\out.xml      
+      - name: Add out.xml
+        uses: actions-js/push@master
+        with:
+           github_token: ${{ secrets.GITHUB_TOKEN }}
+           message: 'Adding out.xml from Workflow - $(date +"%Y-%m-%d %H:%M:%S")'
+           branch: 'output'
+           force: true   
+                       
+      - name: Run Tests
+        working-directory: Team18/Code18\Release
+        run: vstest.console.exe UnitTesting.dll

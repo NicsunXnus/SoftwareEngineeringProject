@@ -12,6 +12,7 @@ using namespace std;
 #include "ParentsAbstractionExtractor.h"
 #include "FollowsAbstractionExtractor.h"
 #include "CallsAbstractionExtractor.h"
+#include "NextAbstractionExtractor.h"
 #include "WithExtractor.h"
 #include "PatternExtractor.h"
 #include "../AST/ASTNode.h"
@@ -35,6 +36,8 @@ public:
         this->callsExtractor = make_shared<CallsAbstractionExtractor>();
         this->withExtractor = make_shared<WithExtractor>();
         this->patternExtractor = make_shared<PatternExtractor>();
+        this->nextExtractor = make_shared<NextAbstractionExtractor>();
+
     }
 
     void extractAndInsertAll(shared_ptr<ASTNode> astNode) {
@@ -49,19 +52,24 @@ public:
         parentsExtractor->extractAbstractions(astNode);
         followsExtractor->extractAbstractions(astNode);
         callsExtractor->extractAbstractions(astNode);
+        nextExtractor->extractAbstractions(astNode);
     }
 
     // Method to extract all the entities
-    void extractEntities(shared_ptr<ASTNode> astNode) {
+    void extractAllEntities(shared_ptr<ASTNode> astNode) {
         entityExtractor->extractDesigns(astNode);
     }
 
-    void extractWith(shared_ptr<ASTNode> astNode) {
+    void extractAllWith(shared_ptr<ASTNode> astNode) {
         withExtractor->extractDesigns(astNode);
     }
 
     void extractPattern(shared_ptr<ASTNode> astNode) {
         patternExtractor->extractDesigns(astNode);
+    }
+
+    void extractCalls(shared_ptr<ASTNode> astNode) {
+        callsExtractor->extractAbstractions(astNode);
     }
 
     shared_ptr<WithExtractor> getWithExtractor() {
@@ -70,6 +78,19 @@ public:
 
     shared_ptr<PatternExtractor> getPatternExtractor() {
         return this->patternExtractor;
+    }
+
+    
+    shared_ptr<map<string, vector<string>>> getCallsAbstractionMap() {
+        return this->callsExtractor->getStorageMap();
+    }
+
+    shared_ptr<map<string, vector<string>>> getModifiesAbstractionMap() {
+        return this->modifiesExtractor->getStorageMap();
+    }
+
+    shared_ptr<map<string, vector<string>>> getUsesAbstractionMap() {
+        return this->usesExtractor->getStorageMap();
     }
 
     // Method to get procedure entity
@@ -102,12 +123,16 @@ private:
     shared_ptr<CallsAbstractionExtractor> callsExtractor;
     shared_ptr<WithExtractor> withExtractor;
     shared_ptr<PatternExtractor> patternExtractor;
+    shared_ptr<NextAbstractionExtractor> nextExtractor;
 
 
     void extractAll(shared_ptr<ASTNode> astNode) {
-        extractEntities(astNode);
+        cout << "In DE, extracting ents\n";
+        extractAllEntities(astNode);
+        cout << "In DE, extracting abstractions\n";
         extractAllAbstractions(astNode);
-        extractWith(astNode);
+        cout << "In DE, extracting withs\n";
+        extractAllWith(astNode);
         // extractPattern(astNode);
     }
 
@@ -149,7 +174,9 @@ private:
         static shared_ptr<map<string, vector<string>>> usesMap = this->usesExtractor->getStorageMap();
         static shared_ptr<map<string, vector<string>>> parentsMap = this->parentsExtractor->getStorageMap();
         static shared_ptr<map<string, vector<string>>> followsMap = this->followsExtractor->getStorageMap();
-        static shared_ptr<map<string, vector<string>>> callMap = this->callsExtractor->getStorageMap();
+        static shared_ptr<map<string, vector<string>>> callStarMap = this->callsExtractor->getStorageMap();
+        static shared_ptr<map<string, vector<string>>> callMap = this->callsExtractor->getCallsAbstractionStorageMap();
+        static shared_ptr<map<string, vector<string>>> nextMap = this->nextExtractor->getStorageMap();
 
         // Convert the maps to unordered sets
         static shared_ptr<map<string, unordered_set<string>>> modifiesSet = convertVectorToUnorderedSet(modifiesMap);
@@ -158,8 +185,9 @@ private:
         static shared_ptr<map<string, unordered_set<string>>> followsSet = convertAbstractionStarToAbstraction(followsMap);
         static shared_ptr<map<string, unordered_set<string>>> parentsStarSet = convertVectorToUnorderedSet(parentsMap);
         static shared_ptr<map<string, unordered_set<string>>> followsStarSet = convertVectorToUnorderedSet(followsMap);
-        static shared_ptr<map<string, unordered_set<string>>> callSet = convertAbstractionStarToAbstraction(callMap);
-        static shared_ptr<map<string, unordered_set<string>>> callStarSet = convertVectorToUnorderedSet(callMap);
+        static shared_ptr<map<string, unordered_set<string>>> callSet = convertVectorToUnorderedSet(callMap);
+        static shared_ptr<map<string, unordered_set<string>>> callStarSet = convertVectorToUnorderedSet(callStarMap);
+        static shared_ptr<map<string, unordered_set<string>>> nextSet = convertVectorToUnorderedSet(nextMap);
 
         // Insert the abstractions into the PKB
         PKB::insertor.addAbstraction(modifiesSet, MODIFIES);
@@ -170,6 +198,7 @@ private:
         PKB::insertor.addAbstraction(followsStarSet, FOLLOWSSTAR);
         PKB::insertor.addAbstraction(callSet, CALLS);
         PKB::insertor.addAbstraction(callStarSet, CALLSSTAR);
+        PKB::insertor.addAbstraction(nextSet, NEXT);
     }
 
     void insertWiths() {

@@ -8,6 +8,108 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace HelperFunctions_Test
 {
+	TEST_CLASS(outermostSepDetector_Test) {
+	private:
+		bool checkWrapper(std::vector<std::shared_ptr<pair<int, int>>> result, std::vector<std::shared_ptr<pair<int, int>>> expected) {
+			int resultSize = result.size();
+			int expectedSize = expected.size();
+			if (resultSize != expectedSize) {
+				return false;
+			}
+			for (int i = 0; i < resultSize; i++) {
+				pair<int, int> currRes = *(result[0]);
+				pair<int, int> currExp = *(expected[0]);
+				if (currRes != currExp) {
+					return false;
+				}
+			}
+			return true;
+		}
+	public:
+		TEST_METHOD(blank_success) {
+			std::string input = "";
+			std::vector<std::shared_ptr<pair<int, int>>> output = outermostSepDetector(input, Separator::BRACKET);
+			std::vector<std::shared_ptr<pair<int, int>>> expected = {
+			};
+			bool result = checkWrapper(output, expected);
+			assert(result);
+		}
+
+		TEST_METHOD(oneBracket_success) {
+			std::string input = "(abc)";
+			std::vector<std::shared_ptr<pair<int, int>>> output = outermostSepDetector(input, Separator::BRACKET);
+			std::vector<std::shared_ptr<pair<int, int>>> expected = {
+				std::make_shared<pair<int,int>>(0, 4)
+			};
+			bool result = checkWrapper(output, expected);
+			assert(result);
+		}
+
+		TEST_METHOD(oneCurly_success) {
+			std::string input = "{abc}";
+			std::vector<std::shared_ptr<pair<int, int>>> output = outermostSepDetector(input, Separator::CURLY);
+			std::vector<std::shared_ptr<pair<int, int>>> expected = {
+				std::make_shared<pair<int,int>>(0, 4)
+			};
+			bool result = checkWrapper(output, expected);
+			assert(result);
+		}
+
+		TEST_METHOD(innerBrackets_success) {
+			std::string input = "((((abc))))";
+			std::vector<std::shared_ptr<pair<int, int>>> output = outermostSepDetector(input, Separator::BRACKET);
+			std::vector<std::shared_ptr<pair<int, int>>> expected = {
+				std::make_shared<pair<int,int>>(0, 10)
+			};
+			bool result = checkWrapper(output, expected);
+			assert(result);
+		}
+
+		TEST_METHOD(manyOuter_success) {
+			std::string input = " (a)  (b) (c)";
+			std::vector<std::shared_ptr<pair<int, int>>> output = outermostSepDetector(input, Separator::BRACKET);
+			std::vector<std::shared_ptr<pair<int, int>>> expected = {
+				std::make_shared<pair<int,int>>(1, 3),
+				std::make_shared<pair<int,int>>(6, 8),
+				std::make_shared<pair<int,int>>(10, 12)
+			};
+			bool result = checkWrapper(output, expected);
+			assert(result);
+		}
+
+		TEST_METHOD(wrongType_success) {
+			std::string input = " (a)  (b) (c)";
+			std::vector<std::shared_ptr<pair<int, int>>> output = outermostSepDetector(input, Separator::CURLY);
+			std::vector<std::shared_ptr<pair<int, int>>> expected = {
+			};
+			bool result = checkWrapper(output, expected);
+			assert(result);
+		}
+
+		TEST_METHOD(unclosed_failure) {
+			std::string input = " {aaa";
+			try {
+				std::vector<std::shared_ptr<pair<int, int>>> output = outermostSepDetector(input, Separator::CURLY);
+			}
+			catch (std::invalid_argument e) {
+				assert(true);
+				return;
+			}
+			assert(false);
+		}
+
+		TEST_METHOD(mixedTypeUnclosed_failure) {
+			std::string input = " (a)  (b} (c}";
+			try {
+				std::vector<std::shared_ptr<pair<int, int>>> output = outermostSepDetector(input, Separator::CURLY);
+			}
+			catch (std::invalid_argument e) {
+				assert(true);
+				return;
+			}
+			assert(false);
+		}
+	};
 	TEST_CLASS(isNumber_Test) {
 	public:
 		TEST_METHOD(numbers_success) {

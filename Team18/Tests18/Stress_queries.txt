@@ -1,0 +1,10 @@
+2 - syn, syn, arg1: proc, arg2: proc
+stmt s1, s2; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p, q;
+Select p
+Y, Ar, r, x, VT, Aw, o, y, NG, G0gm , IO, M59, U, u, VcqT68
+5000
+2 - syn, syn, arg1: proc, arg2: proc
+stmt s1, s2; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p, q;
+Select p
+Y, Ar, r, x, VT, Aw, o, y, NG, G0gm , IO, M59, U, u, VcqT68
+5000
