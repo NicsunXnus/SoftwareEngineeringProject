@@ -8,12 +8,9 @@
 #include <iostream>
 #include <regex>
 #include <set>
-#include <string>
-#include <string_view>
-#include <vector>
 #include <stack>
-#include <list>
-#include <set>
+#include <unordered_set>
+#include <map>
 
 #include "ExceptionMessages.h"
 
@@ -244,5 +241,37 @@ static std::vector<std::string_view> sToSvVector(
   std::transform(svVector.begin(), svVector.end(), v.begin(),
                  [](const std::string& str) { return std::string_view(str); });
   return v;
+}
+
+// Gets the intersect of two vectors
+static std::unordered_set<std::string> get_intersection(
+    std::unordered_set<std::string>& strings1,
+    std::unordered_set<std::string>& strings2) {
+  std::unordered_set<std::string> m(strings1.begin(), strings1.end());
+  std::unordered_set<std::string> res;
+  for (auto a : strings2)
+    if (m.count(a)) {
+      res.insert(a);
+      m.erase(a);
+    }
+  return res;
+}
+
+// debugging
+static void printVectorString(std::vector<std::string> v) {
+  for (const std::string& element : v) {
+    std::cout << element << std::endl;
+  }
+}
+
+// debugging
+static void printMap(std::map<std::string, std::vector<std::string>> m) {
+  for (const auto& pair : m) {
+    std::string result;
+    for (const std::string& num : pair.second) {
+      result += num;
+    }
+    std::cout << "Key: " << pair.first << ", Value: " << result << std::endl;
+  }
 }
 #endif

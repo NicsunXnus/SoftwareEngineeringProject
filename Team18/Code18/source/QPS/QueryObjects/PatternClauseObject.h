@@ -84,7 +84,7 @@ public:
 			string identifier = svToString(arg1->getIdentifier());
 			if (PKBModifiesData.count(identifier)) {
 				unordered_set<string> to_intersect = PKBModifiesData.at(identifier);
-				assignSynonymColumn = intersection(PKBAssignData, to_intersect);
+				assignSynonymColumn = get_intersection(PKBAssignData, to_intersect);
 			}
 			else {
 				assignSynonymColumn = {};
@@ -116,7 +116,7 @@ public:
 					// Get all assignment statement numbers that appear in constant database with constant as key
 					if (PKBConstData.count(identifier)) {
 						unordered_set<string> to_intersect = PKBConstData.at(identifier);
-						assignSynonymColumn = intersection(assignSynonymColumn, to_intersect);
+						assignSynonymColumn = get_intersection(assignSynonymColumn, to_intersect);
 					}
 					else {
 						assignSynonymColumn = {};
@@ -127,7 +127,7 @@ public:
 						unordered_set<string> to_intersect = PKBConstData.at(identifier);
 						for (auto pair = columnValues.begin(); pair != columnValues.end();) {
 							string variable_key = pair->first;
-							unordered_set<string> intersect = intersection(columnValues[variable_key], to_intersect);
+							unordered_set<string> intersect = get_intersection(columnValues[variable_key], to_intersect);
 							if (intersect.size() == 0) {
 								pair = columnValues.erase(pair);
 							}
@@ -148,7 +148,7 @@ public:
 					// Get all assignment statement numbers that appear in variable database with variable as key
 					if (PKBVarData.count(identifier)) {
 						unordered_set<string> to_intersect = PKBUsesData.at(identifier);
-						assignSynonymColumn = intersection(assignSynonymColumn, to_intersect);
+						assignSynonymColumn = get_intersection(assignSynonymColumn, to_intersect);
 					}
 					else {
 						assignSynonymColumn = {};
@@ -159,7 +159,7 @@ public:
 						unordered_set<string> to_intersect = PKBUsesData.at(identifier);
 						for (auto pair = columnValues.begin(); pair != columnValues.end();) {
 							string variable_key = pair->first;
-							unordered_set<string> intersect = intersection(columnValues[variable_key], to_intersect);
+							unordered_set<string> intersect = get_intersection(columnValues[variable_key], to_intersect);
 							if (intersect.size() == 0) {
 								pair = columnValues.erase(pair);
 							}
@@ -187,38 +187,6 @@ public:
 		}
 		
 		return table;
-	}
-
-
-
-	// Gets the intersect of two vectors
-	unordered_set<string> intersection(unordered_set<string>& strings1, unordered_set<string>& strings2) {
-		unordered_set<string> m(strings1.begin(), strings1.end());
-		unordered_set<string> res;
-		for (auto a : strings2)
-			if (m.count(a)) {
-				res.insert(a);
-				m.erase(a);
-			}
-		return res;
-	}
-
-	// debugging
-	void printVectorString(vector<string> v) {
-		for (const string& element : v) {
-			cout << element << endl;
-		}
-	}
-
-	// debugging
-	void printMap(map<string, vector<string>> m) {
-		for (const auto& pair : m) {
-			string result;
-			for (const string& num : pair.second) {
-				result += num;
-			}
-			cout << "Key: " << pair.first << ", Value: " << result << endl;
-		}
 	}
 };
 #endif
