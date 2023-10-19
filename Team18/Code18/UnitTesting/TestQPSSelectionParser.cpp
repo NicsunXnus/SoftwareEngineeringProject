@@ -450,7 +450,7 @@ namespace UnitTesting
 			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
 			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
 
-			Assert::IsTrue(typeid(*qo[1]) == typeid(PatternObject));
+			Assert::IsTrue(typeid(*qo[1]) == typeid(AssignPatternObject));
 			
 			std::shared_ptr<PatternObject> po = std::static_pointer_cast<PatternObject>(qo[1]);
 			Assert::IsTrue(po->getPatternSynonym()->getArg() == "a"sv);
@@ -464,7 +464,7 @@ namespace UnitTesting
 			vector<shared_ptr<QueryObject>> currPM = pPM->validateDeclaration(get<0>(testPMObj));
 			vector<shared_ptr<QueryObject>> qoPM = pPM->validateQuery(std::get<1>(testPMObj));
 
-			Assert::IsTrue(typeid(*qoPM[1]) == typeid(PatternObject));
+			Assert::IsTrue(typeid(*qoPM[1]) == typeid(AssignPatternObject));
 
 			std::shared_ptr<PatternObject> poPM = std::static_pointer_cast<PatternObject>(qoPM[1]);
 			Assert::IsTrue(poPM->getPatternSynonym()->getArg() == "a"sv);
@@ -481,7 +481,7 @@ namespace UnitTesting
 			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
 			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
 
-			Assert::IsTrue(typeid(*qo[1]) == typeid(PatternObject));
+			Assert::IsTrue(typeid(*qo[1]) == typeid(AssignPatternObject));
 			std::shared_ptr<PatternObject> co1 = std::static_pointer_cast<PatternObject>(qo[1]);
 			Assert::IsTrue(co1->getQueryObjectName() == "pattern"sv
 				&& co1->getArg1()->getArg() == "\"x\""sv
@@ -510,7 +510,7 @@ namespace UnitTesting
 				&& co1->getArg1()->getArg() == "10"sv
 				&& co1->getArg2()->getArg() == "s"sv);
 
-			Assert::IsTrue(typeid(*qo[2]) == typeid(PatternObject));
+			Assert::IsTrue(typeid(*qo[2]) == typeid(AssignPatternObject));
 			std::shared_ptr<PatternObject> co2 = std::static_pointer_cast<PatternObject>(qo[2]);
 			Assert::IsTrue(co2->getQueryObjectName() == "pattern"sv
 				&& co2->getArg1()->getArg() == "_"sv
@@ -581,7 +581,7 @@ namespace UnitTesting
 				&& co1->getArg1()->getArg() == "_"sv
 				&& co1->getArg2()->getArg() == "_"sv);
 
-			Assert::IsTrue(typeid(*qo[2]) == typeid(PatternObject));
+			Assert::IsTrue(typeid(*qo[2]) == typeid(AssignPatternObject));
 			std::shared_ptr<PatternObject> co2 = std::static_pointer_cast<PatternObject>(qo[2]);
 			Assert::IsTrue(co2->getQueryObjectName() == "pattern"sv
 				&& co2->getPatternSynonym()->getArg() == "a"sv
@@ -859,6 +859,47 @@ namespace UnitTesting
 			{
 				Assert::AreEqual("SyntaxError", ex.getType());
 			}
+		}
+
+		TEST_METHOD(TestSimpleIfPattern)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("variable v; if i; while w; Select i pattern i (v,_,_)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[0]) == typeid(IfObject));
+			Assert::IsTrue(qo[0]->getQueryObjectName() == "i");
+			Assert::IsTrue(typeid(*qo[1]) == typeid(IfPatternObject));
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "patternIf");
+		}
+
+		TEST_METHOD(TestSimpleWhilePattern)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("variable v; if i; while w; Select i pattern w (_,_)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[0]) == typeid(IfObject));
+			Assert::IsTrue(qo[0]->getQueryObjectName() == "i");
+			Assert::IsTrue(typeid(*qo[1]) == typeid(WhilePatternObject));
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "patternWhile");
+		}
+
+		TEST_METHOD(TestIfWhilePattern)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("variable v; if i; while w; Select i pattern i (\"v2\",_,_) pattern w (v,_)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[0]) == typeid(IfObject));
+			Assert::IsTrue(qo[0]->getQueryObjectName() == "i");
+			Assert::IsTrue(typeid(*qo[1]) == typeid(IfPatternObject));
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "patternIf");
+			Assert::IsTrue(typeid(*qo[2]) == typeid(WhilePatternObject));
+			Assert::IsTrue(qo[2]->getQueryObjectName() == "patternWhile");
 		}
 
 	};

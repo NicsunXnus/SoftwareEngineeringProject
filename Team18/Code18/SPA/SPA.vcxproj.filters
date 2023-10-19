@@ -140,6 +140,12 @@
     <ClCompile Include="..\source\QPS\QueryObjects\NextObjects.cpp">
       <Filter>QPS</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryObjects\PatternClauseObject.cpp">
+      <Filter>QPS\QueryObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryObjects\PatternClauseObjectFactory.cpp">
+      <Filter>QPS\QueryObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\ApplicationWrapper.h" />

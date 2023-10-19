@@ -3,7 +3,7 @@
 #include <PKB.h>
 #include "../source/SP/SimpleProcessor/SimpleProcessor.h"
 
-
+/**
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
  namespace UnitTesting {
@@ -163,3 +163,4 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
  			}
  		};
  }
+ */

@@ -21,13 +21,13 @@ using namespace std;
 * 3. Within the declaration and query clause, check for validity. If both are valid, input query must be valid
 * 4. Convert to query object
 */
-class QueryParser  {
+class QueryParser {
 public:
 	QueryParser();
 
 	/*
 	* This function executes the entire parsing process for a pql query
-	* 
+	*
 	* @param tokens A tokenized pql query
 	* @return A vector of query objects in the select portion of the pql query
 	*/
@@ -84,7 +84,7 @@ private:
 
 	// Valid relational references
 	std::unordered_set<string_view> relationalReferences
-		{"Follows"sv, "Follows*"sv, "Parent"sv, "Parent*"sv, "Uses"sv, "Modifies"sv, "Calls"sv, "Calls*"sv, "Next"sv, "Next*"sv, "Affects"sv};
+	{ "Follows"sv, "Follows*"sv, "Parent"sv, "Parent*"sv, "Uses"sv, "Modifies"sv, "Calls"sv, "Calls*"sv, "Next"sv, "Next*"sv, "Affects"sv };
 
 	// Is set to true if the query contains a semantic error
 	vector<shared_ptr<SemanticErrorException>> semanticErrors;
@@ -120,15 +120,15 @@ private:
 	shared_ptr<QueryObject> createClauseObj(std::vector<string_view>& query, int& index);
 
 	// Helper function to check if a pattern clause is present
-	bool hasPatternClause(std::vector<string_view>& query, int index, int& tokenCount);
+	bool hasPatternClause(std::vector<string_view>& query, int index, int& tokenCount, bool& isIfPattern);
 
 	// Creates a pattern clause query object 
-	shared_ptr<QueryObject> createPatternObject(std::vector<string_view>& query, int& index, int tokenCount);
+	shared_ptr<QueryObject> createPatternObject(std::vector<string_view>& query, int& index, int tokenCount, bool isIfPattern);
 
 	/*
 	* Helper function to check if select clause is a tuple, and gets the number of tokens until the tuple bracket closes
 	* Does not check for validity of inputs, only checks if there is a correct sequence of tokens for a valid tuple
-	*/ 
+	*/
 	bool isSelectTuple(std::vector<string_view>& query, int index, int& tokenCount);
 
 	/*
