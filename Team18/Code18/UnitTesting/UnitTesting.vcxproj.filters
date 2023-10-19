@@ -2,26 +2,26 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="TestHelperFunctions.cpp" />
-    <ClCompile Include="TestPKBInsertStorageManager.cpp" />
-    <ClCompile Include="TestPKBRespondStorageManager.cpp" />
-    <ClCompile Include="TestQPSDriver.cpp" />
-    <ClCompile Include="TestQPSQueryEval.cpp" />
-    <ClCompile Include="TestSimpleTokenizer.cpp" />
+    <ClCompile Include="TestQPSQueryResultTable.cpp" />
+    <ClCompile Include="TestQPSResultsHandler.cpp" />
+    <ClCompile Include="TestQPSSelectionParser.cpp" />
+    <ClCompile Include="TestSimpleProcessor.cpp" />
     <ClCompile Include="TestToken.cpp" />
     <ClCompile Include="TestTokenFactory.cpp" />
-    <ClCompile Include="TestEntity.cpp" />
+    <ClCompile Include="TestTreeBuilder.cpp" />
+    <ClCompile Include="TestAbstractions.cpp" />
+    <ClCompile Include="TestDesignExtractor.cpp" />
+    <ClCompile Include="TestExpressionProcessor.cpp" />
+    <ClCompile Include="TestHelperFunctions.cpp" />
+    <ClCompile Include="TestNodes.cpp" />
+    <ClCompile Include="TestPKBInsertStorageManager.cpp" />
+    <ClCompile Include="TestPKBRespondStorageManager.cpp" />
     <ClCompile Include="TestPQLTokenizer.cpp" />
     <ClCompile Include="TestQPS.cpp" />
     <ClCompile Include="TestQPSDeclarationParser.cpp" />
-    <ClCompile Include="TestQPSSelectionParser.cpp" />
-    <ClCompile Include="TestDesignExtractor.cpp" />
-    <ClCompile Include="TestAbstractions.cpp" />
-    <ClCompile Include="TestAST.cpp" />
-    <ClCompile Include="TestQPSQueryResultTable.cpp" />
+    <ClCompile Include="TestQPSDriver.cpp" />
     <ClCompile Include="TestQPSErrorQueries.cpp" />
-    <ClCompile Include="TestAdapter.cpp" />
-    <ClCompile Include="TestQPSResultsHandler.cpp" />
+    <ClCompile Include="TestQPSQueryEval.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />

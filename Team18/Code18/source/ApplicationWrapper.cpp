@@ -1,5 +1,6 @@
 #pragma once
 #include "ApplicationWrapper.h"
+#include "SP/DesignExtractor/DesignExtractor.h"
 
 // a default constructor
 ApplicationWrapper::ApplicationWrapper() {
@@ -14,13 +15,9 @@ ApplicationWrapper::~ApplicationWrapper() {
 
 // method for parsing the SIMPLE source code
 void ApplicationWrapper::directParse(std::string_view sourceCode) {
-  std::shared_ptr<TokenizedProgram> tokenizedProgram = SimpleTokenizer::tokenizeProgram(sourceCode);
-  cout << "In AppWrapper, tokenized\n";
-  std::shared_ptr<ProgramNode> prg = ASTBuilder::parseProgram(tokenizedProgram);
-  cout << "In AppWrapper, parsed\n";
+  std::shared_ptr<ProcessedProgram> processedProgram = SimpleProcessor::processProgram(sourceCode);
   DesignExtractor designExtractor = DesignExtractor();
-  designExtractor.extractAndInsertAll(prg);
-  cout << "In AppWrapper, inserted\n";
+  designExtractor.extractAndInsertAll(processedProgram);
 }
 
 // method to evaluating a query

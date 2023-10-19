@@ -6,23 +6,28 @@
 #include <unordered_set>
 
 #include "../../Constants/DesignEnums.h"
+#include "../../SP/AST/Node.h"
 
 using namespace std;
 
 /**
 * This class is for the storage of entities.
-* Database stores map of entity names to list of line numbers
 */
 class EntityStorage {
 public:
     EntityStorage() {
+        // statement entities
         this->statement_database = make_shared<map<ENTITY, unordered_set<string>>>();
+        // non-statement entities
         this->procedure_database = make_shared<StringMap>();
         this->variable_database = make_shared<StringMap>();
         this->constant_database = make_shared<StringMap>();
+        // attributes
         this->call_procname_database = make_shared<StringMap>();
         this->read_varname_database = make_shared<StringMap>();
         this->print_varname_database = make_shared<StringMap>();
+        // patterns
+        this->pattern_database = make_shared<map<string, shared_ptr<Node>>>();
     }
 
     ~EntityStorage() {}
@@ -84,6 +89,14 @@ public:
         return this->print_varname_database;
     }
 
+    shared_ptr<map<string, shared_ptr<Node>>> EntityStorage::getPatternDatabase() {
+		if (!(this->pattern_database)) {
+			cerr << "pattern_database is null" << endl;
+			return nullptr;
+		}
+		return this->pattern_database;
+	}
+
     void EntityStorage::setStatementDatabase(shared_ptr<StringMap> database) {
         static map<ENTITY, unordered_set<string>> statement_db;
         this->statement_database = make_shared<map<ENTITY, unordered_set<string>>>(statement_db);
@@ -140,6 +153,14 @@ public:
 		}
 	}
 
+    void EntityStorage::setPatternDatabase(shared_ptr<map<string, shared_ptr<Node>>> database) {
+		static map<string, shared_ptr<Node>> pattern_db;
+		this->pattern_database = make_shared<map<string, shared_ptr<Node>>>(pattern_db);
+		for (auto const& [varName, node] : *database) {
+			(*(this->pattern_database))[varName] = node;
+		}
+	}
+
     void EntityStorage::printDatabase() const {
         for (const auto& pair : *statement_database) {
             string result;
@@ -158,4 +179,5 @@ private:
     static inline shared_ptr<StringMap> call_procname_database;
     static inline shared_ptr<StringMap> read_varname_database;
     static inline shared_ptr<StringMap> print_varname_database;
+    static inline shared_ptr<map<string, shared_ptr<Node>>> pattern_database;
 };

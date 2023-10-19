@@ -86,6 +86,22 @@ public:
 		return *print_varname_database;
 	}
 
+	map<string, shared_ptr<Node>> Responder::getAllPatterns() const {
+		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
+		shared_ptr<map<string, shared_ptr<Node>>> pattern_database = entity_storage->getPatternDatabase();
+		return *pattern_database;
+	}
+
+	shared_ptr<Node> Responder::getPattern(string statement_number) const {
+		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
+		shared_ptr<map<string, shared_ptr<Node>>> pattern_database = entity_storage->getPatternDatabase();
+		// check if pattern exists
+		if (pattern_database->find(statement_number) == pattern_database->end()) {
+			return nullptr;
+		}
+		return (*pattern_database).at(statement_number);
+	}
+
 	StringMap Responder::getAbstraction(ABSTRACTION abstraction, bool inverse = false) const {
 		shared_ptr<AbstractionStorage> abstraction_storage = StorageManager::getAbstractionStorage(abstraction);
 		if (inverse ^ isFlippedStorage(abstraction)) {
