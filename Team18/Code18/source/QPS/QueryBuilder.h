@@ -9,7 +9,7 @@
 #include "DataAccessLayer.h"
 
 /**
-* This class a query builder object
+* This class builds the query by calling the PKB and splitting the query into the select clause, and non-select clauses
 */
 using namespace std;
 

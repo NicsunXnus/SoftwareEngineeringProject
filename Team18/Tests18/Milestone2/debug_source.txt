@@ -19,4 +19,5 @@ procedure First {
       procedure Third {
           z = 5;
           v = z;
-          print v; }
+          print v;
+	read Third;}
