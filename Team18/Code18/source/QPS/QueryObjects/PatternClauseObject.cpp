@@ -88,9 +88,8 @@ shared_ptr<QueryResultsTable> AssignPatternObject::callAndProcess(
     }
   }
 
-  if (arg2->isWildcard()) {
-  }                           // no further filtering
-  else if (arg2->isExpr()) {  // partial or full match.
+  // if arg2->isWildcard(), no further filtering
+  if (arg2->isExpr()) {  // partial or full match.
     // build pattern tree
     string expression = svToString(arg2->getIdentifier());
     shared_ptr<Node> patternTree;
@@ -232,9 +231,8 @@ inline shared_ptr<QueryResultsTable> callAndProcessIfWhile(
   }
 
   // Only refer to arg1
-  if (arg1->isWildcard()) {
-  }                           // no further filtering
-  else if (arg1->isExpr()) {  // variable name in quotes
+  // if arg1->isWildcard(), no further filtering
+  if (arg1->isExpr()) {  // variable name in quotes
     string identifier = svToString(arg1->getIdentifier());
 
     // Return empty one column table if "x" not in variable list (early
