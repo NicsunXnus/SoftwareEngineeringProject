@@ -22,13 +22,13 @@ using namespace std;
 * 3. Parse the declaration and query clauses. Sends these to a Query Validator object to validate the queries
 * 4. Convert to query object
 */
-class QueryParser  {
+class QueryParser {
 public:
 	QueryParser();
 
 	/*
 	* This function executes the entire parsing process for a pql query
-	* 
+	*
 	* @param tokens A tokenized pql query
 	* @return A vector of query objects in the select portion of the pql query
 	*/
@@ -88,7 +88,7 @@ private:
 
 	// Valid relational references
 	std::unordered_set<string_view> relationalReferences
-		{"Follows"sv, "Follows*"sv, "Parent"sv, "Parent*"sv, "Uses"sv, "Modifies"sv, "Calls"sv, "Calls*"sv, "Next"sv, "Next*"sv, "Affects"sv};
+	{ "Follows"sv, "Follows*"sv, "Parent"sv, "Parent*"sv, "Uses"sv, "Modifies"sv, "Calls"sv, "Calls*"sv, "Next"sv, "Next*"sv, "Affects"sv };
 
 	// Is set to true if the query contains a semantic error
 	vector<shared_ptr<SemanticErrorException>> semanticErrors;
@@ -125,8 +125,11 @@ private:
 	// Creates a such that clause query object, and increments the index by the number of tokens the clause has
 	shared_ptr<QueryObject> createClauseObj(std::vector<string_view>& query, int& index);
 
+	// Helper function to check if a pattern clause is present
+	bool hasPatternClause(std::vector<string_view>& query, int index, int& tokenCount, bool& isIfPattern);
+
 	// Creates a pattern clause query object 
-	shared_ptr<QueryObject> createPatternObject(std::vector<string_view>& query, int& index, int tokenCount);
+	shared_ptr<QueryObject> createPatternObject(std::vector<string_view>& query, int& index, int tokenCount, bool isIfPattern);
 
 	// Creates an attribute reference query object
 	shared_ptr<QueryObject> createAttrRefObject(std::vector<string_view>& query, int& index);

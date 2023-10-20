@@ -31,6 +31,7 @@ public:
 		
 		std::stringstream ss;
 
+
 		for (int i = 0; i < pql.length(); ++i) {
 			if (pql[i] == '<') { // tokenizing tuple
 				if (isWord) {
@@ -42,27 +43,14 @@ public:
 
 				continue;
 			}
-			else if (!isWithinQuotes && pql[i] == '"') { // opening quotes
+			else if (pql[i] == '"') { // opening quotes
 				if (isWord) {
 					tokens.push_back(pql.substr(startIndex, i - startIndex));
 					isWord = false;
 				}
-				ss.str(std::string()); // empties the stream
-				ss << pql[i];
-				isWithinQuotes = true;
-				continue;
-			}
-			else if (isWithinQuotes) {
-				if (pql[i] == '"') { // closing quotes
-					ss << pql[i];
-					std::string s = ss.str();
-					tokens.push_back(s);
-					isWithinQuotes = false;
-				}
-				else if (!isspace(pql[i]) && pql[i] != '\b') {
-					ss << pql[i];
-				}
-				startIndex = i;
+				std::string quoteToken{ tokenizeQuotes(pql, i) };
+				tokens.emplace_back(quoteToken);
+
 				continue;
 			}
 
@@ -100,6 +88,36 @@ public:
 	}
 
 private:
+	// removes whitespace within quotes
+	static std::string tokenizeQuotes(std::string pql, int& index) {
+		if (pql[index] != '"') {
+			throw std::runtime_error("This should not be called");
+		}
+		std::stringstream ss;
+
+		ss.str(std::string()); // empties the stream
+		ss << pql[index];
+		index++;
+		
+		while (index < pql.size() && pql[index] != '"') {
+			if (!isspace(pql[index]) && pql[index] != '\b') {
+				ss << pql[index];
+			}
+			index++;
+		}
+
+		if (index == pql.size()) {
+			// reached end of pql without finding closing quotes
+			// invalid argument, just return incomplete quote
+			return ss.str();
+		}
+
+		// add the closing quotes
+		ss << pql[index];
+
+		return ss.str();
+	}
+
 	static std::vector<std::string> tokenizeTuple(std::string pql, int& index) {
 		std::vector<std::string> tokens;
 		int startIndex{ 0 };
