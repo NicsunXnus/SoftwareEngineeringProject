@@ -5,6 +5,7 @@
 #include<map>
 #include<string>
 #include<unordered_map>
+#include<stdexcept>
 
 using namespace std;
 

@@ -96,10 +96,11 @@ bool QueryValidator::hasRelationalReference(std::vector<std::string_view>& query
 }
 
 // Checks if the query has a pattern clause starting at the specified index
-bool QueryValidator::hasPatternClause(std::vector<std::string_view>& query, int index, int& tokenCount) {
+bool QueryValidator::hasPatternClause(std::vector<string_view>& query, int index, int& tokenCount, bool& isIfPattern) {
 	// pattern clause has a variable number of tokens
 	// E.g., "a", "(", "_", ",", "_", "x", "_", ")": a(_,_"x"_)has 8
 	// "a", "(", "_", ",", "_", ")": a(_,_) has 6
+	// "a", "(", "_", ",", "_", ",", "_", ")": a(_,_,_) has 8
 
 	if (index > (static_cast<int>(query.size()) - MIN_PATTERN_CLAUSE_TOKEN_COUNT)) {
 		return false;
@@ -112,18 +113,31 @@ bool QueryValidator::hasPatternClause(std::vector<std::string_view>& query, int 
 	if (query[index + 5] == ")"sv) { // pattern is looking for an exact match
 		tokenCount = MIN_PATTERN_CLAUSE_TOKEN_COUNT;
 		hasCloseBracket = true;
+		return true;
 	}
-	else { // pattern is looking for partial match
-		if (index > (static_cast<int>(query.size()) - MAX_PATTERN_CLAUSE_TOKEN_COUNT)) {
-			return false;
-		}
 
+	if (index > (static_cast<int>(query.size()) - MAX_PATTERN_CLAUSE_TOKEN_COUNT)) {
+		return false;
+	}
+
+	// pattern might be an if pattern or partial match
+	// check if tokens remaining: _ , _ )
+	if (query[index + 4] == "_"sv && query[index + 5] == ","sv && query[index + 6] == "_"sv && query[index + 7] == ")"sv) {
+		// is if pattern
+		isIfPattern = true;
 		tokenCount = MAX_PATTERN_CLAUSE_TOKEN_COUNT;
-		hasCloseBracket = query[index + 7] == ")"sv;
+		return true;
 	}
 
-	bool hasPC{ isSynonym && hasOpenBracket && hasComma && hasCloseBracket };
-	return hasPC;
+	// check if tokens remaining: _ "blabla" _ )
+	if (query[index + 4] == "_"sv && query[index + 6] == "_"sv && query[index + 7] == ")"sv) {
+		// pattern is partial match
+		tokenCount = MAX_PATTERN_CLAUSE_TOKEN_COUNT;
+		return true;
+	}
+
+	// not a pattern clause
+	return false;
 }
 
 // Checks if the query has a with clause starting at the specified index

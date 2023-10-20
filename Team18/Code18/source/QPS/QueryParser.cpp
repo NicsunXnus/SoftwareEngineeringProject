@@ -221,7 +221,7 @@ vector<shared_ptr<QueryObject>> QueryParser::parseQuery(vector<string_view> quer
 			int patternTokenCount{}; // tracks the number of tokens the clause has if it was a pattern clause
 			bool isIfPattern{ false };
 
-			if (!validator->hasPatternClause(query, currentWordIndex, patternTokenCount)) {
+			if (!validator->hasPatternClause(query, currentWordIndex, patternTokenCount, isIfPattern)) {
 				throw SyntaxErrorException("such that clause has invalid syntax");
 			}
 
@@ -310,48 +310,6 @@ shared_ptr<QueryObject> QueryParser::createClauseObj(std::vector<string_view>& q
 		storeSemanticError(make_shared<SemanticErrorException>(ex));
 		return make_shared<StmtObject>("Clause object has semantic error, query not evaluated");
 	}
-}
-
-bool QueryParser::hasPatternClause(std::vector<string_view>& query, int index, int& tokenCount, bool& isIfPattern) {
-	// pattern clause has a variable number of tokens
-	// E.g., "a", "(", "_", ",", "_", "x", "_", ")": a(_,_"x"_)has 8
-	// "a", "(", "_", ",", "_", ")": a(_,_) has 6
-	// "a", "(", "_", ",", "_", ",", "_", ")": a(_,_,_) has 8
-
-	if (index > (static_cast<int>(query.size()) - MIN_PATTERN_CLAUSE_TOKEN_COUNT)) {
-		return false;
-	}
-
-	bool isSynonym{ SynonymObject::isValid(query[index]) };
-	bool hasOpenBracket{ query[index + 1] == "("sv };
-	bool hasComma{ query[index + 3] == ","sv };
-	bool hasCloseBracket{ false };
-	if (query[index + 5] == ")"sv) { // pattern is looking for an exact match
-		tokenCount = MIN_PATTERN_CLAUSE_TOKEN_COUNT;
-		hasCloseBracket = true;
-		return true;
-	}
-
-	if (index > (static_cast<int>(query.size()) - MAX_PATTERN_CLAUSE_TOKEN_COUNT)) {
-		return false;
-	}
-
-	// pattern might be an if pattern or partial match
-	if (query[index + 4] == "_"sv && query[index + 5] == ","sv && query[index + 6] == "_"sv && query[index + 7] == ")"sv) {
-		// is if pattern
-		isIfPattern = true;
-		tokenCount = MAX_PATTERN_CLAUSE_TOKEN_COUNT;
-		return true;
-	}
-
-	if (query[index + 4] == "_"sv && query[index + 6] == "_"sv && query[index + 7] == ")"sv) {
-		// pattern is partial match
-		tokenCount = MAX_PATTERN_CLAUSE_TOKEN_COUNT;
-		return true;
-	}
-
-	// not a pattern clause
-	return false;
 }
 
 shared_ptr<QueryObject> QueryParser::createPatternObject(std::vector<string_view>& query, int& index, int tokenCount, bool isIfPattern) {

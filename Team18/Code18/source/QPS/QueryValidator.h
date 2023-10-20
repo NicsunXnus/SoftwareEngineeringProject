@@ -37,7 +37,7 @@ public:
 	bool hasRelationalReference(std::vector<std::string_view>& query, int index);
 
 	// Checks if the query has a pattern clause starting at the specified index
-	bool hasPatternClause(std::vector<std::string_view>& query, int index, int& tokenCount);
+	bool hasPatternClause(std::vector<std::string_view>& query, int index, int& tokenCount, bool& isIfPattern);
 
 	// Checks if the query has a with clause starting at the specified index
 	bool hasWithClause(std::vector<std::string_view>& query, int index, int& tokenCount, bool& is1stRefAttrRef);

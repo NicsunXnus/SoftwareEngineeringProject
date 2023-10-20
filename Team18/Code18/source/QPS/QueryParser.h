@@ -125,9 +125,6 @@ private:
 	// Creates a such that clause query object, and increments the index by the number of tokens the clause has
 	shared_ptr<QueryObject> createClauseObj(std::vector<string_view>& query, int& index);
 
-	// Helper function to check if a pattern clause is present
-	bool hasPatternClause(std::vector<string_view>& query, int index, int& tokenCount, bool& isIfPattern);
-
 	// Creates a pattern clause query object 
 	shared_ptr<QueryObject> createPatternObject(std::vector<string_view>& query, int& index, int tokenCount, bool isIfPattern);
 
