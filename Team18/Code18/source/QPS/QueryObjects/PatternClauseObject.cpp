@@ -55,7 +55,7 @@ shared_ptr<QueryResultsTable> AssignPatternObject::callAndProcess(
     // Get all assignment statement numbers
     synonymColumn = PKBAssignData;
   } else if (arg1->isExpr()) {
-    string identifier = svToString(arg1->getIdentifier());
+    string identifier = svToString(arg1->getArgValue());
 
     // Return empty one column table if "x" not in variable list (early
     // termination)
@@ -91,7 +91,7 @@ shared_ptr<QueryResultsTable> AssignPatternObject::callAndProcess(
   // if arg2->isWildcard(), no further filtering
   if (arg2->isExpr()) {  // partial or full match.
     // build pattern tree
-    string expression = svToString(arg2->getIdentifier());
+    string expression = svToString(arg2->getArgValue());
     shared_ptr<Node> patternTree;
     try {
       ExpressionProcessor ep = ExpressionProcessor();
@@ -233,7 +233,7 @@ inline shared_ptr<QueryResultsTable> callAndProcessIfWhile(
   // Only refer to arg1
   // if arg1->isWildcard(), no further filtering
   if (arg1->isExpr()) {  // variable name in quotes
-    string identifier = svToString(arg1->getIdentifier());
+    string identifier = svToString(arg1->getArgValue());
 
     // Return empty one column table if "x" not in variable list (early
     // termination)

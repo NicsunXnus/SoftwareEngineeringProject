@@ -36,8 +36,8 @@ public:
 	}
 
 	string_view getArgValue() {
-		if (isIdentifier()) {
-			return getIdentifier();
+		if (isIdentifier() || isExpr()) {
+			return getQuotesContent();
 		}
 		return this->arg;
 	}
@@ -75,7 +75,7 @@ public:
 	}
 
 	// returns the argument without "
-	string_view getIdentifier() {
+	string_view getQuotesContent() {
 		string_view identifierName = arg.substr(1, arg.size() - 2);
 		return identifierName;
 	}

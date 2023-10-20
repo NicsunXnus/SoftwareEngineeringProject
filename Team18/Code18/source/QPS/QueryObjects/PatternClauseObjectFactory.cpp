@@ -28,7 +28,7 @@ shared_ptr<QueryObject> PatternClauseObjectFactory::create(string_view clauseNam
 	if (isArg2PartialMatching || isArg2ExactExpr) {
 		try {
 			ExpressionProcessor ep = ExpressionProcessor();
-			std::shared_ptr<Node> patternTree = ep.nodifyArithmeticExpression(svToString(arg2->getIdentifier()));
+			std::shared_ptr<Node> patternTree = ep.nodifyArithmeticExpression(svToString(arg2->getArgValue()));
 			isSyntacticallyCorrectExpr = true;
 		}
 		catch (invalid_argument e) {
