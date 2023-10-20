@@ -9,34 +9,29 @@ unordered_set<string> entities = {"1", "2", "3", "4"};
 unordered_set<string> procedures = {"a", "b", "c", "d", "e"};
 unordered_set<string> variables = {"a", "b", "c"};
 unordered_set<string> constants = {"100", "300"};
-map<string, unordered_set<string>> constantMap = {{"100", {"1"}},
-                                                  {"300", {"3", "4"}}};
-map<string, unordered_set<string>> variableMap = {
-    {"a", {"1"}}, {"b", {"2", "3"}}, {"c", {"3"}}};
+StringMap constantMap = {{"100", {"1"}}, {"300", {"3", "4"}}};
+StringMap variableMap = {{"a", {"1"}}, {"b", {"2", "3"}}, {"c", {"3"}}};
+StringMap callProcName = {{"1", {"a"}}, {"2", {"b"}}};
+StringMap readVarName = {{"3", {"c"}}, {"4", {"d"}}};
+StringMap printVarName = {{"1", {"e"}}};
 
-map<string, unordered_set<string>> clauses = {
-    {"1", {"2"}}, {"2", {"3"}}, {"3", {"4"}}};
-map<string, unordered_set<string>> clausesMult = {
-    {"1", {"2", "3"}}, {"2", {"3", "4"}}, {"3", {"4"}}};
-map<string, unordered_set<string>> clausesEnts = {
-    {"1", {"a"}}, {"2", {"b"}}, {"3", {"c", "b"}}};
-map<string, unordered_set<string>> clausesProc = {
-    {"a", {"b"}}, {"b", {"c"}}, {"c", {"d", "e"}}};
-map<string, unordered_set<string>> nextMap = {
-    {"1", {"2"}},      {"2", {"3", "5"}}, {"3", {"4"}}, {"4", {"2"}},
-    {"5", {"6", "7"}}, {"6", {"8"}},      {"7", {"8"}}};
+StringMap clauses = {{"1", {"2"}}, {"2", {"3"}}, {"3", {"4"}}};
+StringMap clausesMult = {{"1", {"2", "3"}}, {"2", {"3", "4"}}, {"3", {"4"}}};
+StringMap clausesEnts = {{"1", {"a"}}, {"2", {"b"}}, {"3", {"c", "b"}}};
+StringMap clausesProc = {{"a", {"b"}}, {"b", {"c"}}, {"c", {"d", "e"}}};
+StringMap nextMap = {{"1", {"2"}}, {"2", {"3", "5"}}, {"3", {"4"}},
+                     {"4", {"2"}}, {"5", {"6", "7"}}, {"6", {"8"}},
+                     {"7", {"8"}}};
 
-map<string, unordered_set<string>> clausesInverse = {
-    {"2", {"1"}}, {"3", {"2"}}, {"4", {"3"}}};
-map<string, unordered_set<string>> clausesMultInverse = {
+StringMap clausesInverse = {{"2", {"1"}}, {"3", {"2"}}, {"4", {"3"}}};
+StringMap clausesMultInverse = {
     {"2", {"1"}}, {"3", {"2", "1"}}, {"4", {"3", "2"}}};
-map<string, unordered_set<string>> clausesEntsInverse = {
-    {"a", {"1"}}, {"b", {"2", "3"}}, {"c", {"3"}}};
-map<string, unordered_set<string>> clausesProcInverse = {
+StringMap clausesEntsInverse = {{"a", {"1"}}, {"b", {"2", "3"}}, {"c", {"3"}}};
+StringMap clausesProcInverse = {
     {"b", {"a"}}, {"c", {"b"}}, {"d", {"c"}}, {"e", {"c"}}};
-map<string, unordered_set<string>> nextMapInverse = {
-    {"2", {"1", "4"}}, {"3", {"2"}}, {"5", {"2"}},     {"4", {"3"}},
-    {"6", {"5"}},      {"7", {"5"}}, {"8", {"6", "7"}}};
+StringMap nextMapInverse = {{"2", {"1", "4"}}, {"3", {"2"}}, {"5", {"2"}},
+                            {"4", {"3"}},      {"6", {"5"}}, {"7", {"5"}},
+                            {"8", {"6", "7"}}};
 
 unordered_set<string> DataAccessLayerStub::getEntity(ENTITY type) {
   if (type == VARIABLE) {
@@ -44,6 +39,9 @@ unordered_set<string> DataAccessLayerStub::getEntity(ENTITY type) {
   }
   if (type == PROCEDURE) {
     return procedures;
+  }
+  if (type == CONSTANT) {
+    return constants;
   }
   return entities;
 }
@@ -60,13 +58,9 @@ unordered_set<string> DataAccessLayerStub::getAllConstants() {
   return constants;
 }
 
-map<string, unordered_set<string>> DataAccessLayerStub::getVariableMap() {
-  return variableMap;
-}
+StringMap DataAccessLayerStub::getVariableMap() { return variableMap; }
 
-map<string, unordered_set<string>> DataAccessLayerStub::getConstantMap() {
-  return constantMap;
-}
+StringMap DataAccessLayerStub::getConstantMap() { return constantMap; }
 
 shared_ptr<Node> DataAccessLayerStub::getPatternTree(string statement_number) {
   ExpressionProcessor ep = ExpressionProcessor();
@@ -80,8 +74,7 @@ shared_ptr<Node> DataAccessLayerStub::getPatternTree(string statement_number) {
   return patternTree.at(statement_number);
 }
 
-map<string, unordered_set<string>> DataAccessLayerStub::getClause(
-    ABSTRACTION abstraction) {
+StringMap DataAccessLayerStub::getClause(ABSTRACTION abstraction) {
   if (abstraction == USES || abstraction == MODIFIES) {
     return clausesEnts;
   }
@@ -97,8 +90,7 @@ map<string, unordered_set<string>> DataAccessLayerStub::getClause(
   return clauses;
 }
 
-map<string, unordered_set<string>> DataAccessLayerStub::getClauseInverse(
-    ABSTRACTION abstraction) {
+StringMap DataAccessLayerStub::getClauseInverse(ABSTRACTION abstraction) {
   if (abstraction == USES || abstraction == MODIFIES) {
     return clausesEntsInverse;
   }
@@ -113,3 +105,7 @@ map<string, unordered_set<string>> DataAccessLayerStub::getClauseInverse(
   }
   return clausesInverse;
 }
+
+StringMap DataAccessLayerStub::getCallProcNames() { return callProcName; }
+StringMap DataAccessLayerStub::getReadVarNames() { return readVarName; }
+StringMap DataAccessLayerStub::getPrintVarNames() { return printVarName; }

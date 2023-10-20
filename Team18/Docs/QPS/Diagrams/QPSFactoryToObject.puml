@@ -1,0 +1,38 @@
+@startuml
+left to right direction
+' !include ../style.puml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+
+title QPS
+
+package <<Example Factory>> {
+    'Holds the info needed to request the PKB'
+    Class StmtObject {
+        ptr<QueryResultsTable> callAndProcess(dataAccessLayer)
+    }
+
+    Class FollowsObject {
+        ptr<QueryResultsTable> callAndProcess(dataAccessLayer)
+    }
+
+    Class QueryObjectFactory {
+        + {static} ptr<QueryObjectFactory> createFactory(str_v type)
+        + virtual ptr<QueryObject> create(str_v str, vector<> args)
+    } 
+
+    Class StmtObjectFactory {
+        + ptr<QueryObject> create(str_v str, vector<> args)
+    }
+
+    Class FollowsObjectFactory {
+        + ptr<QueryObject> create(str_v str, vector<> args)
+    }
+
+}
+
+QueryObjectFactory ..> StmtObjectFactory
+QueryObjectFactory ..> FollowsObjectFactory
+StmtObjectFactory ..> StmtObject
+FollowsObjectFactory ..> FollowsObject
+@end

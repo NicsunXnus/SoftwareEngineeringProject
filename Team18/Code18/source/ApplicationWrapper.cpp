@@ -16,7 +16,6 @@ ApplicationWrapper::~ApplicationWrapper() {
 // method for parsing the SIMPLE source code
 void ApplicationWrapper::directParse(std::string_view sourceCode) {
   std::shared_ptr<ProcessedProgram> processedProgram = SimpleProcessor::processProgram(sourceCode);
-    
   DesignExtractor designExtractor = DesignExtractor();
   designExtractor.extractAndInsertAll(processedProgram);
 }

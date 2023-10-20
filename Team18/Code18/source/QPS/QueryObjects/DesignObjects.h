@@ -31,6 +31,7 @@ public:
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {
 		unordered_set<string> PKBdata = dataAccessLayer->getEntity(STMT);
 		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(svToString(getQueryObjectName()), PKBdata);
+		table->setPrimaryKey(svToString(getQueryObjectName()));
 		return table;
 	}
 
@@ -49,6 +50,7 @@ public:
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {
 		unordered_set<string> PKBdata = dataAccessLayer->getEntity(READ);
 		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(svToString(getQueryObjectName()), PKBdata);
+		table->setPrimaryKey(svToString(getQueryObjectName()));
 		return table;
 	}
 };
@@ -64,6 +66,7 @@ public:
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {
 		unordered_set<string> PKBdata = dataAccessLayer->getEntity(PRINT);
 		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(svToString(getQueryObjectName()), PKBdata);
+		table->setPrimaryKey(svToString(getQueryObjectName()));
 		return table;
 	}
 };
@@ -79,6 +82,7 @@ public:
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {
 		unordered_set<string> PKBdata = dataAccessLayer->getEntity(CALL);
 		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(svToString(getQueryObjectName()), PKBdata);
+		table->setPrimaryKey(svToString(getQueryObjectName()));
 		return table;
 	}
 };
@@ -94,6 +98,7 @@ public:
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {
 		unordered_set<string> PKBdata = dataAccessLayer->getEntity(WHILE);
 		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(svToString(getQueryObjectName()), PKBdata);
+		table->setPrimaryKey(svToString(getQueryObjectName()));
 		return table;
 	}
 };
@@ -109,6 +114,7 @@ public:
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {
 		unordered_set<string> PKBdata = dataAccessLayer->getEntity(IF);
 		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(svToString(getQueryObjectName()), PKBdata);
+		table->setPrimaryKey(svToString(getQueryObjectName()));
 		return table;
 	}
 };
@@ -124,6 +130,7 @@ public:
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {
 		unordered_set<string> PKBdata = dataAccessLayer->getEntity(ASSIGN);
 		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(svToString(getQueryObjectName()), PKBdata);
+		table->setPrimaryKey(svToString(getQueryObjectName()));
 		return table;
 	}
 };
@@ -139,6 +146,7 @@ public:
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {
 		unordered_set<string> PKBdata = dataAccessLayer->getAllVariables();
 		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(svToString(getQueryObjectName()), PKBdata);
+		table->setPrimaryKey(svToString(getQueryObjectName()));
 		return table;
 	}
 };
@@ -154,6 +162,7 @@ public:
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {
 		unordered_set<string> PKBdata = dataAccessLayer->getAllConstants();
 		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(svToString(getQueryObjectName()), PKBdata);
+		table->setPrimaryKey(svToString(getQueryObjectName()));
 		return table;
 	}
 };
@@ -169,6 +178,7 @@ public:
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {
 		unordered_set<string> PKBdata = dataAccessLayer->getAllProcedures();
 		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(svToString(getQueryObjectName()), PKBdata);
+		table->setPrimaryKey(svToString(getQueryObjectName()));
 		return table;
 	}
 };

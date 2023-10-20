@@ -48,6 +48,10 @@ public:
 
 	map<string, unordered_set<string>> getClauseInverse(ABSTRACTION abstraction) override;
 
+	StringMap getCallProcNames() override;
+	StringMap getReadVarNames() override;
+	StringMap getPrintVarNames() override;
+
 
 };
 #endif

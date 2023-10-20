@@ -43,5 +43,10 @@ public:
 	/* For Design Abstractions / Clauses */
 	virtual StringMap DataAccessLayer::getClause(ABSTRACTION abstraction);
 	virtual StringMap DataAccessLayer::getClauseInverse(ABSTRACTION abstraction);
+
+	/* Attributes */
+	virtual StringMap DataAccessLayer::getCallProcNames();
+	virtual StringMap DataAccessLayer::getReadVarNames();
+	virtual StringMap DataAccessLayer::getPrintVarNames();
 };
 #endif

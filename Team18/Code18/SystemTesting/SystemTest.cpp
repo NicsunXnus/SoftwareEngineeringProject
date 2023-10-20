@@ -79,6 +79,7 @@ TEST_CLASS(Milestone2) {
 			std::string queryFilePath = defaultPath + "single_callsStar_queries.txt";
 			assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
 		}
+
 		TEST_METHOD(sprint3_test)
 		{
 			std::string srcFilePath = defaultPath + "sprint3_source.txt";
@@ -91,11 +92,25 @@ TEST_CLASS(Milestone2) {
 			std::string srcFilePath = defaultPath + "single_next_source.txt";
 			std::string queryFilePath = defaultPath + "single_next_queries.txt";
 			assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+
 		}
 		TEST_METHOD(debugM2)
 		{
 			std::string srcFilePath = defaultPath + "debug_source.txt";
 			std::string queryFilePath = defaultPath + "debug_queries.txt";
+			assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+		}
+
+	};
+
+	TEST_CLASS(Misc) {
+	private:
+		static inline const std::string defaultPath = "../../Tests18/";
+	public:
+		TEST_METHOD(StressTest)
+		{
+			std::string srcFilePath = defaultPath + "Stress_source.txt";
+			std::string queryFilePath = defaultPath + "Stress_queries.txt";
 			assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
 		}
 

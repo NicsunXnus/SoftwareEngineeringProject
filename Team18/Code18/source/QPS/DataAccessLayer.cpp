@@ -56,3 +56,18 @@ StringMap DataAccessLayer::getClauseInverse(ABSTRACTION abstraction) {
 	StringMap PKBResponse = PKB::responder.getAbstraction(abstraction, true);
 	return PKBResponse;
 }
+
+StringMap DataAccessLayer::getCallProcNames() {
+	StringMap PKBResponse = PKB::responder.getCallProcNameMap();
+	return PKBResponse;
+}
+
+StringMap DataAccessLayer::getReadVarNames() {
+	StringMap PKBResponse = PKB::responder.getReadVarNameMap();
+	return PKBResponse;
+}
+
+StringMap DataAccessLayer::getPrintVarNames() {
+	StringMap PKBResponse = PKB::responder.getPrintVarNameMap();
+	return PKBResponse;
+}

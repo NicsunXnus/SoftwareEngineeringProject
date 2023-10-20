@@ -27,6 +27,9 @@ public:
 
     // get number of rows in rable
     int getNumberOfRows() {
+        if (getNumberOfCols() <= 0) {
+            return 0;
+        }
         return columns[0].begin()->second.size();
     }
 
@@ -48,6 +51,12 @@ public:
         int thisColNums = thisColumns.size();
         int otherColNums = otherColumns.size();
         if (other->isEmpty() || this->isEmpty()) {
+            if (other->getSignificant() && other->isEmpty() && this->getSignificant() && !this->isEmpty()) { // TRUE EMPTY X TABLE
+                return make_shared<QueryResultsTable>(thisColumns);
+            }
+            if (this->getSignificant() && this->isEmpty() && other->getSignificant() && !other->isEmpty()) { // TABLE X TRUE EMPTY
+                return other;
+            }
             return make_shared<QueryResultsTable>();
         }
 
@@ -189,6 +198,23 @@ public:
             }
         }
         return make_shared<QueryResultsTable>(innerJoined);
+    }
+
+    
+
+    void getPrimaryKeyOnlyTable() {
+        vector<string> headers = this->getHeaders();
+        auto it = find(headers.begin(), headers.end(), primaryKey);
+        if (it != headers.end()) {
+            int index = distance(headers.begin(), it);
+            map<string, vector<string>> pKeyColumn = columns[index];
+            vector<map<string, vector<string>>> newColumns;
+            newColumns.push_back(pKeyColumn);
+            columns = newColumns;
+        }
+        else {
+            cerr << "Error getting primary key only in table";
+        }
     }
 
     /**
@@ -399,6 +425,11 @@ public:
      * representing the old table but only containing rows having only values of the "targets" of the column with header "key"
     */
     shared_ptr<QueryResultsTable> filter(string key, vector<string> targets) { //assuming there is no spacing/wrong capitalisation in key & there is no duplicates in targets
+        if (isEmpty()) {
+            shared_ptr<QueryResultsTable> table = createEmptyTable();
+            table->setSignificant(getSignificant());
+            return table;
+        }
         shared_ptr<QueryResultsTable> filteredTable;
         vector<string> headers = this->getHeaders();
         vector<map<string, vector<string>>> filteredTableColumns = this->createColumnsWithHeaders(headers);
@@ -426,6 +457,42 @@ public:
     }
 
     /**
+     * Creates a new QueryResultsTable object that represents the filtered table.
+     *
+     * @param key The header of the target column represented by a string
+     * @param targets A vector of strings representing the values the column should only have.
+     * @return A shared pointer to the newly created QueryResultsTable object
+     * representing the old table but only containing rows having only values where col1 = col2
+    */
+    shared_ptr<QueryResultsTable> filter(string header1, string header2) { 
+        if (isEmpty()) {
+            shared_ptr<QueryResultsTable> table = createEmptyTable();
+            table->setSignificant(getSignificant());
+            return table;
+        }
+        shared_ptr<QueryResultsTable> filteredTable;
+        vector<string> headers = this->getHeaders();
+        auto it1 = find(headers.begin(), headers.end(), header1);
+        auto it2 = find(headers.begin(), headers.end(), header2);
+        int dist1 = distance(headers.begin(), it1); // index of header1
+        int dist2 = distance(headers.begin(), it2); // index of header2
+
+        vector<map<string, vector<string>>> thisColumns = this->columns;
+        vector<map<string, vector<string>>> filteredTableColumns = this->createColumnsWithHeaders(headers);
+
+        int totalRows = this->getNumberOfRows();
+        for (int row = 0; row < totalRows; row++) {
+            if (thisColumns[dist1].begin()->second[row] == thisColumns[dist2].begin()->second[row]) {
+                for (int col = 0; col < headers.size(); col++) {
+                    filteredTableColumns[col].begin()->second.emplace_back(this->columns[col].begin()->second[row]);
+                }
+            }
+        }
+        return make_shared<QueryResultsTable>(filteredTableColumns);
+
+    }
+
+    /**
      * Checks whether this table and other table contains the same headers.
      *
      * @param other A shared pointer to a QueryResultsTable object representing the other table
@@ -449,6 +516,31 @@ public:
             }
         }
         return false;
+    }
+
+    /**
+    * Checks this header exists in the table
+    *
+    * @param target header
+    * @return A boolean value, with a true value representing same headers for both, and a false value for otherwise.
+   */
+    bool hasHeader(string header) {
+        vector<string> headers = getHeaders();
+
+        auto it = find(headers.begin(), headers.end(), header);
+        
+        return it != headers.end();
+    }
+
+    void duplicateColumns(string columnName) {
+        vector<string> headers = getHeaders();
+        auto it = find(headers.begin(), headers.end(), columnName);
+        if (it != headers.end()) {
+            // found similar header
+            int index = distance(headers.begin(), it);
+            columns.push_back(columns[index]);
+        }
+
     }
     
     //Getter method for columns
@@ -515,10 +607,22 @@ public:
         return getNumberOfCols() == 0 || getNumberOfRows() == 0;
     }
 
+    void setPrimaryKey(string key) {
+        primaryKey = key;
+    }
+
+    string getPrimaryKey() {
+        return primaryKey;
+    }
+
 private:
     vector<map<string, vector<string>>> columns; // column name: values
-    bool isSignificant; // denotes whether a table is significant or not (if uses(_, _) has more than one row, will drop both columns, 
-    // but table is NOT empty, and is hence significant), important for constructing final result
+    bool isSignificant; 
+    // denotes whether a table is significant or not. 
+    // A significant table represents the boolean "true", regardless if the table is empty or not
+    // This is especially important for queries that involve booleans, such as with clause: "this" = "this"
+    string primaryKey = ""; // primary key of the table, especially important for selecting attributes 
+    // e.g. Select constant.value, primary key will be constant.value, other key will be constant
 
     //Helper method where (a,b) -> (a,a,b,b)
     vector<string> duplicateEntries(const vector<string>& input, int x) {

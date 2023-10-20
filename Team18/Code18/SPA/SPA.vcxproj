@@ -17,6 +17,7 @@
     <ClCompile Include="..\source\QPS\QueryBuilder.cpp" />
     <ClCompile Include="..\source\QPS\QueryDriver.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\CallsObject.cpp" />
+    <ClCompile Include="..\source\QPS\QueryObjects\ComparisonQueryObject.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\FollowsParentObject.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\ModifiesUsesObject.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\NextObjects.cpp" />
@@ -64,9 +65,11 @@
   <ItemGroup>
     <ClInclude Include="..\source\ApplicationWrapper.h" />
     <ClInclude Include="..\source\Constants\DesignEnums.h" />
+    <ClInclude Include="..\source\DesignExtractor\DesignExtractor.h" />
     <ClInclude Include="..\source\ExceptionMessages.h" />
     <ClInclude Include="..\source\HelperFunctions.h" />
     <ClInclude Include="..\source\PKB.h" />
+    <ClInclude Include="..\source\PKB\Adapter.h" />
     <ClInclude Include="..\source\PKB\Insertor.h" />
     <ClInclude Include="..\source\PKB\Responder.h" />
     <ClInclude Include="..\source\PKB\StorageClasses\AbstractionStorage.h" />
@@ -83,6 +86,8 @@
     <ClInclude Include="..\source\QPS\QueryObjects\ClauseArg.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\ClauseObject.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\ClauseObjectFactory.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\ComparisonQueryObject.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\ComparisonQueryObjectFactory.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\DesignObjects.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\DesignObjectsFactory.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\InvalidQueryObject.h" />
@@ -91,6 +96,8 @@
     <ClInclude Include="..\source\QPS\QueryObjects\QueryObject.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\QueryObjectFactory.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\SynonymObjects.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\WithClauseObject.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\WithClauseObjectFactory.h" />
     <ClInclude Include="..\source\QPS\QueryParser.h" />
     <ClInclude Include="..\source\QPS\QueryResultsTable.h" />
     <ClInclude Include="..\source\QPS\ResultsHandler.h" />
