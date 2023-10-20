@@ -1,6 +1,7 @@
 #include "Node.h"
 #include "../DesignExtractor/EntityExtractor.h"
 #include "../DesignExtractor/UsesExtractor.h"
+#include "../../HelperFunctions.h"
 
 int Node::getStatementNumber() {
   return this->statementNumber;
@@ -77,10 +78,13 @@ unordered_set<string> Node::getTerminalVariablesHelper(shared_ptr<Node> node) {
 
 unordered_set<string> Node::getTerminalVariablesHelper(Node* node) {
   unordered_set<string> values;
-  if (!node->hasChildren()) {  // Terminal node. Check if variable node
-    VariableNode* variableNode = dynamic_cast<VariableNode*>(node);
-    if (variableNode) {
-      values.insert(node->getValue());
+  if (!node->hasChildren()) {  // Terminal node.
+    // Check if variable node
+
+    // VariableNode* variableNode = dynamic_cast<VariableNode*>(node);
+    string val = node->getValue();
+    if (isValidName(val)) {
+      values.insert(val);
     }
   } else {
     for (const auto& child : node->getChildren()) {

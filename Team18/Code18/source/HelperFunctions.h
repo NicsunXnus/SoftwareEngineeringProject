@@ -243,7 +243,7 @@ static std::vector<std::string_view> sToSvVector(
   return v;
 }
 
-// Gets the intersect of two vectors
+// Gets the intersect of two sets
 static std::unordered_set<std::string> get_intersection(
     std::unordered_set<std::string>& strings1,
     std::unordered_set<std::string>& strings2) {
