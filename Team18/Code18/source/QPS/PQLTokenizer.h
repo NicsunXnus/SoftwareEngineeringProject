@@ -88,7 +88,7 @@ private:
 	// removes whitespace within quotes
 	static std::string tokenizeQuotes(std::string pql, int& index) {
 		if (pql[index] != '"') {
-			throw runtime_error("This should not be called");
+			throw std::runtime_error("This should not be called");
 		}
 		std::stringstream ss;
 
