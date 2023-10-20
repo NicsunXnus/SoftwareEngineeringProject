@@ -617,9 +617,12 @@ public:
 
 private:
     vector<map<string, vector<string>>> columns; // column name: values
-    bool isSignificant; // denotes whether a table is significant or not (if uses(_, _) has more than one row, will drop both columns, 
-    // but table is NOT empty, and is hence significant), important for constructing final result
-    string primaryKey = ""; // primary key of the table, especially important for attributes e.g. constant.value, primary key will be constant, other key will be constant.value
+    bool isSignificant; 
+    // denotes whether a table is significant or not. 
+    // A significant table represents the boolean "true", regardless if the table is empty or not
+    // This is especially important for queries that involve booleans, such as with clause: "this" = "this"
+    string primaryKey = ""; // primary key of the table, especially important for selecting attributes 
+    // e.g. Select constant.value, primary key will be constant.value, other key will be constant
 
     //Helper method where (a,b) -> (a,a,b,b)
     vector<string> duplicateEntries(const vector<string>& input, int x) {

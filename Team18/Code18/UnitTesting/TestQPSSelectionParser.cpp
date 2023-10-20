@@ -1003,6 +1003,38 @@ namespace UnitTesting
 			}
 		}
 
+		TEST_METHOD(TestSelectSynCasing)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select c.PrOcNaME");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestSelectSynCasingTuple)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select <c.PrOcNaME>");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
 		TEST_METHOD(TestSelectSingleProcNameTuple)
 		{
 			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select <c.procName>");

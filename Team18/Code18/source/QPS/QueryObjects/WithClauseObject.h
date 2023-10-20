@@ -138,7 +138,8 @@ public:
 
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {
 		ENTITY type = getObjectSynonym()->getSynonym()->getEntityType();
-		if (type == STMT || type == READ || type == PRINT || type == CALL || type == WHILE || type == IF || type == ASSIGN) {
+		unordered_set<ENTITY> validStmtEntities{ STMT, READ, PRINT, ASSIGN, CALL, WHILE, IF };
+		if (validStmtEntities.find(type) != validStmtEntities.end()) {
 			unordered_set<string> PKBdata = dataAccessLayer->getEntity(type);
 			StringMap attrMap;
 			for (string procName : PKBdata) {
