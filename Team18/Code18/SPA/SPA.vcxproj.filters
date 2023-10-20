@@ -186,6 +186,12 @@
     <ClCompile Include="..\source\QPS\QueryObjects\QueryObjectFactory.cpp">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryObjects\PatternClauseObject.cpp">
+      <Filter>QPS\QueryObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryObjects\PatternClauseObjectFactory.cpp">
+      <Filter>QPS\QueryObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\ApplicationWrapper.h">

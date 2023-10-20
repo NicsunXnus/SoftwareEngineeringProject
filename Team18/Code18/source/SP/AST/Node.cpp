@@ -1,6 +1,7 @@
 #include "Node.h"
 #include "../DesignExtractor/EntityExtractor.h"
 #include "../DesignExtractor/UsesExtractor.h"
+#include "../../HelperFunctions.h"
 
 int Node::getStatementNumber() {
   return this->statementNumber;
@@ -64,6 +65,34 @@ bool Node::isSubtreeOf(Node* other, bool isStrict) {
     if (childIdentical) return true;
   }
   return false;
+}
+
+unordered_set<string> Node::getTerminalVariables() {
+  return this->getTerminalVariablesHelper(this);
+}
+
+unordered_set<string> Node::getTerminalVariablesHelper(shared_ptr<Node> node) {
+  Node* node_ptr = &(*node);
+  return this->getTerminalVariablesHelper(node_ptr);
+}
+
+unordered_set<string> Node::getTerminalVariablesHelper(Node* node) {
+  unordered_set<string> values;
+  if (!node->hasChildren()) {  // Terminal node.
+    // Check if variable node
+
+    // VariableNode* variableNode = dynamic_cast<VariableNode*>(node);
+    string val = node->getValue();
+    if (isValidName(val)) {
+      values.insert(val);
+    }
+  } else {
+    for (const auto& child : node->getChildren()) {
+      const auto childValues = getTerminalVariablesHelper(child);
+      values.insert(childValues.begin(), childValues.end());
+    }
+  }
+  return values;
 }
 
 std::vector<std::shared_ptr<Node>> OpNode::validate(std::vector<std::shared_ptr<Node>> children) {

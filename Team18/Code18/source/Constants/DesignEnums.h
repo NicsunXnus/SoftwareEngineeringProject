@@ -2,6 +2,9 @@
 #define DESIGNENUMS_H
 
 #include<unordered_set>
+#include<map>
+#include<string>
+#include<unordered_map>
 
 using namespace std;
 

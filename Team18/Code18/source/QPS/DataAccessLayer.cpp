@@ -42,6 +42,11 @@ map<string, unordered_set<string>> DataAccessLayer::getConstantMap() {
 	return PKBResponse;
 }
 
+shared_ptr<Node> DataAccessLayer::getPatternTree(string statement_number) {
+    shared_ptr<Node> PKBResponse = PKB::responder.getPattern(statement_number);
+    return PKBResponse;
+}
+
 StringMap DataAccessLayer::getClause(ABSTRACTION abstraction) {
 	StringMap PKBResponse = PKB::responder.getAbstraction(abstraction);
 	return PKBResponse;

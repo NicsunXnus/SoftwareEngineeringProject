@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include <stdexcept>
+#include <unordered_set>
 
 #include "../../ExceptionMessages.h"
 
@@ -50,6 +51,16 @@ public:
   bool isSubtreeOf(std::shared_ptr<Node> other, bool isStrict = false);
   // Overloaded method to take in Node* instead of shared_ptr<Node>
   bool isSubtreeOf(Node* other, bool isStrict);
+
+  unordered_set<string> getTerminalVariablesHelper(shared_ptr<Node> node);
+
+  unordered_set<string> getTerminalVariablesHelper(Node* node);
+
+  /// <summary>
+  /// Gets all the terminal nodes of this subtree that are variable nodes
+  /// </summary>
+  /// <returns>A set of all the terminal variable nodes</returns>
+  unordered_set<string> getTerminalVariables();
 
   virtual void accept(std::shared_ptr<Extractor> extractor) {};
 };
