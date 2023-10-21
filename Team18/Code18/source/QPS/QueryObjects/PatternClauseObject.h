@@ -41,6 +41,11 @@ class AssignPatternObject : public PatternObject {
 
   shared_ptr<QueryResultsTable> callAndProcess(
       shared_ptr<DataAccessLayer> dataAccessLayer) override;
+
+  unordered_set<string> findPatternTreeMatch(
+      bool isPartialMatch, unordered_set<string> stmtsToCheck,
+      shared_ptr<Node> patternTree,
+      shared_ptr<DataAccessLayer> dataAccessLayer);
 };
 
 /*

@@ -1,10 +1,11 @@
+#include "stdafx.h"
+#include <SP/AST/TerminalNode.h>
+
 #include <cassert>
 
 #include "../source/SP/AST/Node.h"
 #include "../source/SP/SimpleProcessor/SimpleProcessor.h"
 #include "CppUnitTest.h"
-#include "stdafx.h"
-#include <SP/AST/TerminalNode.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;
@@ -198,7 +199,7 @@ TEST_METHOD(nestedChildren_failure) {
 TEST_CLASS(getTerminalVariables_Test){
   public : TEST_METHOD(no_children_success){int statementNum = 1;
 std::vector<std::shared_ptr<Node>> children = {};
-auto root = Node(statementNum, "root", children);
+auto root = Node(statementNum, "1", children);
 unordered_set<string> s = root.getTerminalVariables();
 Assert::IsTrue(s.empty());
 }
@@ -211,7 +212,7 @@ TEST_METHOD(is_var_success) {
 
 TEST_METHOD(is_not_var_success) {
   int statementNum = 1;
-  auto root = ConstantNode(statementNum, "child");
+  auto root = ConstantNode(statementNum, "1");
   unordered_set<string> s = root.getTerminalVariables();
   Assert::IsTrue(s.empty());
 }
@@ -236,7 +237,7 @@ TEST_METHOD(single_layer_const_var_child_success) {
   int statementNum = 1;
   std::vector<std::shared_ptr<Node>> children = {
       {std::make_shared<VariableNode>(statementNum, "child1")},
-      {std::make_shared<ConstantNode>(statementNum, "child2")}};
+      {std::make_shared<ConstantNode>(statementNum, "2")}};
   auto root = Node(statementNum, "root", children);
   unordered_set<string> s = root.getTerminalVariables();
   Assert::IsTrue(compare_sets(s, {"child1"}));
@@ -262,12 +263,12 @@ TEST_METHOD(multiple_layer_const_var_child_success) {
       Node(statementNum, "root",
            {std::make_shared<Node>(
                 Node(statementNum, "left",
-                     {std::make_shared<ConstantNode>(statementNum, "child1"),
+                     {std::make_shared<ConstantNode>(statementNum, "1"),
                       std::make_shared<VariableNode>(statementNum, "child2")})),
-            std::make_shared<Node>(Node(
-                statementNum, "right",
-                {std::make_shared<VariableNode>(statementNum, "child3"),
-                 std::make_shared<ConstantNode>(statementNum, "child4")}))});
+            std::make_shared<Node>(
+                Node(statementNum, "right",
+                     {std::make_shared<VariableNode>(statementNum, "child3"),
+                      std::make_shared<ConstantNode>(statementNum, "4")}))});
   unordered_set<string> s = root.getTerminalVariables();
   Assert::IsTrue(compare_sets(s, {"child2", "child3"}));
 }
@@ -277,10 +278,10 @@ TEST_METHOD(staggered_layer_const_var_child_success) {
       Node(statementNum, "root",
            {std::make_shared<Node>(
                 Node(statementNum, "left",
-                     {std::make_shared<ConstantNode>(statementNum, "child1"),
+                     {std::make_shared<ConstantNode>(statementNum, "1"),
                       std::make_shared<VariableNode>(statementNum, "child2")})),
             std::make_shared<VariableNode>(statementNum, "child3"),
-            std::make_shared<ConstantNode>(statementNum, "child4")});
+            std::make_shared<ConstantNode>(statementNum, "4")});
   unordered_set<string> s = root.getTerminalVariables();
   Assert::IsTrue(compare_sets(s, {"child2", "child3"}));
 }

@@ -57,27 +57,21 @@ shared_ptr<QueryResultsTable> AssignPatternObject::callAndProcess(
   } else if (arg1->isExpr()) {
     string identifier = svToString(arg1->getArgValue());
 
-    // Return empty one column table if "x" not in variable list (early
-    // termination)
-    if (PKBVarData.count(identifier) == 0) {
-      synonymColumn = {};
-      table = QueryResultsTable::createTable(synonym, synonymColumn);
-      // printVectorString(synonymColumn);
-      return table;
+    // Return empty table if "x" not in variable list (early termination)
+    if (!PKBVarData.count(identifier)) {
+      return QueryResultsTable::createTable(synonym, synonymColumn);
     }
 
     // Get all assignment statement numbers that appear in Modifies(n, "x")
     if (PKBModifiesData.count(identifier)) {
       unordered_set<string> to_intersect = PKBModifiesData.at(identifier);
       synonymColumn = get_intersection(PKBAssignData, to_intersect);
-    } else {
-      synonymColumn = {};
     }
+
   } else if (arg1->isSynonym()) {
     isSingleColumn = false;
-    // search Modifies database for all keys, find line numbers in the value
-    // (value=lineNum) for each key=variable_key. if these line numbers appear
-    // in assignment database, add (v=variable_key, a=lineNum)
+    // search Modifies database. find (value=lineNum) for each key=variable_key.
+    // if these line nums appear in assign database, add (v=var_key, a=lineNum)
     for (const auto& pair : PKBModifiesData) {
       string variable_key = pair.first;
       for (const string& lineNum : pair.second) {
@@ -88,7 +82,7 @@ shared_ptr<QueryResultsTable> AssignPatternObject::callAndProcess(
     }
   }
 
-  // if arg2->isWildcard(), no further filtering
+  // if arg2 is wildcard, no further filtering
   if (arg2->isExpr()) {  // partial or full match.
     // build pattern tree
     string expression = svToString(arg2->getArgValue());
@@ -98,83 +92,31 @@ shared_ptr<QueryResultsTable> AssignPatternObject::callAndProcess(
       patternTree = ep.nodifyArithmeticExpression(expression);
     } catch (invalid_argument e) {
       synonymColumn = {};
-      table = QueryResultsTable::createTable(synonym, synonymColumn);
-      // printVectorString(synonymColumn);
-      return table;
+      return QueryResultsTable::createTable(synonym, synonymColumn);
     }
+
+    // to_intersect will contain all assign statements with the pattern match
     unordered_set<string> to_intersect = {};
     // compare pattern tree with pattern tree of each assignment statement
-    if (arg2->isPartialMatchingExprSpec()) {
-      if (isSingleColumn) {
-        // for each assignment statement, check if pattern tree is subtree of
-        // pattern tree of this assignment
-        for (const string& lineNum : synonymColumn) {
-          shared_ptr<Node> lineTree = dataAccessLayer->getPatternTree(lineNum);
-          if (patternTree->isSubtreeOf(lineTree)) {
-            to_intersect.insert(lineNum);
-          }
-        }
-        synonymColumn = get_intersection(synonymColumn, to_intersect);
-      } else {
-        // for each assignment statement, check if pattern tree is subtree of
-        // pattern tree of this assignment
-        for (const string& lineNum :
-             PKBAssignData) {  // note: check against all assign statements
-          shared_ptr<Node> lineTree = dataAccessLayer->getPatternTree(lineNum);
-          if (patternTree->isSubtreeOf(lineTree)) {
-            to_intersect.insert(lineNum);
-          }
-        }
-        // now, to_intersect contains all assign statements with the pattern
-        // match
-        for (auto pair = columnValues.begin();
-             pair != columnValues.end();) {  // loop through variable keys
-          string variable_key = pair->first;
-          unordered_set<string> intersect =
-              get_intersection(columnValues[variable_key], to_intersect);
-          if (intersect.size() == 0) {
-            pair = columnValues.erase(pair);
-          } else {
-            columnValues[variable_key] = intersect;
-            ++pair;
-          }
-        }
-      }
+    bool isPartialMatch = arg2->isPartialMatchingExprSpec();
+    if (isSingleColumn) {
+      to_intersect = findPatternTreeMatch(isPartialMatch, synonymColumn,
+                                          patternTree, dataAccessLayer);
+      synonymColumn = get_intersection(synonymColumn, to_intersect);
+    } else {
+      to_intersect = findPatternTreeMatch(
+          isPartialMatch, PKBAssignData, patternTree,
+          dataAccessLayer);  // note: check against all assign statements
 
-    } else {  // full match
-      if (isSingleColumn) {
-        // for each assignment statement, check if pattern tree is identical to
-        // pattern tree of this assignment
-        for (const string& lineNum : synonymColumn) {
-          shared_ptr<Node> lineTree = dataAccessLayer->getPatternTree(lineNum);
-          if (patternTree->isIdentical(lineTree)) {
-            to_intersect.insert(lineNum);
-          }
-        }
-        synonymColumn = get_intersection(synonymColumn, to_intersect);
-      } else {
-        // for each assignment statement, check if pattern tree is subtree of
-        // pattern tree of this assignment
-        for (const string& lineNum :
-             PKBAssignData) {  // note: check against all assign statements
-          shared_ptr<Node> lineTree = dataAccessLayer->getPatternTree(lineNum);
-          if (patternTree->isIdentical(lineTree)) {
-            to_intersect.insert(lineNum);
-          }
-        }
-        // now, to_intersect contains all assign statements with the pattern
-        // match
-        for (auto pair = columnValues.begin();
-             pair != columnValues.end();) {  // loop through variable keys
-          string variable_key = pair->first;
-          unordered_set<string> intersect =
-              get_intersection(columnValues[variable_key], to_intersect);
-          if (intersect.size() == 0) {
-            pair = columnValues.erase(pair);
-          } else {
-            columnValues[variable_key] = intersect;
-            ++pair;
-          }
+      for (auto pair = columnValues.begin(); pair != columnValues.end();) {
+        string variable_key = pair->first;
+        unordered_set<string> intersect =
+            get_intersection(columnValues[variable_key], to_intersect);
+        if (intersect.size() == 0) {
+          pair = columnValues.erase(pair);
+        } else {
+          columnValues[variable_key] = intersect;
+          ++pair;
         }
       }
     }
@@ -182,19 +124,36 @@ shared_ptr<QueryResultsTable> AssignPatternObject::callAndProcess(
 
   if (isSingleColumn) {
     table = QueryResultsTable::createTable(synonym, synonymColumn);
-    // printVectorString(synonymColumn);
   } else {
     // arg1 is variable synonym, arg2 is assign line number
     vector<string> headers = {svToString(arg1->getArg()), synonym};
     table = QueryResultsTable::createTable(headers, columnValues);
-    // printMap(columnValues);
   }
 
   return table;
 }
 
+unordered_set<string> AssignPatternObject::findPatternTreeMatch(
+    bool isPartialMatch, unordered_set<string> stmtsToCheck,
+    shared_ptr<Node> patternTree, shared_ptr<DataAccessLayer> dataAccessLayer) {
+  unordered_set<string> to_intersect = {};
+  for (const string& lineNum : stmtsToCheck) {
+    shared_ptr<Node> lineTree = dataAccessLayer->getPatternTree(lineNum);
+    if (isPartialMatch) {
+      if (patternTree->isSubtreeOf(lineTree)) {
+        to_intersect.insert(lineNum);
+      }
+    } else {
+      if (patternTree->isIdentical(lineTree)) {
+        to_intersect.insert(lineNum);
+      }
+    }
+  }
+  return to_intersect;
+}
+
 inline shared_ptr<QueryResultsTable> callAndProcessIfWhile(
-    shared_ptr<DataAccessLayer> dataAccessLayer, std::string synonym,
+    shared_ptr<DataAccessLayer> dataAccessLayer, string synonym,
     shared_ptr<ClauseArg> arg1, int num_args) {
   // If/While
   // 1. pattern ifs(_, _, _)
