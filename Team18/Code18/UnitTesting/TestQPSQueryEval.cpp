@@ -12,21 +12,21 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;
 
 namespace UnitTesting {
-TEST_CLASS(TestQPSQueryEval){private : unordered_set<string> vectorToSet(
-    vector<string> in){unordered_set<string> out(in.begin(), in.end());
-return out;
-}  // namespace UnitTesting
-public:
-TEST_METHOD(TestValidFollowsSynSyn) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s, s1; Select s such that Follows(s, s1)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+	TEST_CLASS(TestQPSQueryEval) {
+	private:
+		unordered_set<string> vectorToSet(vector<string> in) {
+			unordered_set<string> out(in.begin(), in.end());
+			return out;
+		}
+	public:
+
+		TEST_METHOD(TestValidFollowsSynSyn) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Follows(s, s1)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -41,16 +41,13 @@ TEST_METHOD(TestValidFollowsSynSyn) {
 			Assert::IsTrue(qo[0]->callAndProcess(dataAccessLayer)->getPrimaryKey() == "s");
 		}
 
-TEST_METHOD(TestValidFollowsSynSynSameSyn) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s, s1; Select s such that Follows(s, s)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidFollowsSynSynSameSyn) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Follows(s, s)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -61,16 +58,13 @@ TEST_METHOD(TestValidFollowsSynSynSameSyn) {
       !table->getSignificant());  // empty table, since s == s is not possible
 }
 
-TEST_METHOD(TestValidFollowsIntSyn) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s, s1; Select s such that Follows(2, s)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidFollowsIntSyn) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Follows(2, s)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -82,16 +76,13 @@ TEST_METHOD(TestValidFollowsIntSyn) {
   Assert::IsTrue(table->getColumns()[0]["s"].size() == 1);
 }
 
-TEST_METHOD(TestInvalidFollowsIntSyn) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s, s1; Select s such that Follows(7, s)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestInvalidFollowsIntSyn) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Follows(7, s)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -102,16 +93,13 @@ TEST_METHOD(TestInvalidFollowsIntSyn) {
   Assert::IsTrue(table->getColumns()[0]["s"].size() == 0);
 }
 
-TEST_METHOD(TestValidFollowsSynInt) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s, s1; Select s such that Follows(s, 3)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidFollowsSynInt) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Follows(s, 3)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -123,16 +111,13 @@ TEST_METHOD(TestValidFollowsSynInt) {
   Assert::IsTrue(table->getColumns()[0]["s"].size() == 1);
 }
 
-TEST_METHOD(TestInvalidFollowsSynInt) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s, s1; Select s such that Follows(s, 7)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestInvalidFollowsSynInt) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Follows(s, 7)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -143,16 +128,13 @@ TEST_METHOD(TestInvalidFollowsSynInt) {
   Assert::IsTrue(table->getColumns()[0]["s"].size() == 0);
 }
 
-TEST_METHOD(TestValidFollowsSynWildcard) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Follows(s, _)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidFollowsSynWildcard) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Follows(s, _)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -165,16 +147,13 @@ TEST_METHOD(TestValidFollowsSynWildcard) {
   Assert::IsTrue(table->getColumns()[0]["s"][2] == "3");
 }
 
-TEST_METHOD(TestValidFollowsWildCardSyn) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Follows(_, s)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidFollowsWildCardSyn) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Follows(_, s)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -187,16 +166,13 @@ TEST_METHOD(TestValidFollowsWildCardSyn) {
   Assert::IsTrue(table->getColumns()[0]["s"][2] == "4");
 }
 
-TEST_METHOD(TestValidFollowsIntWildcard) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Follows(2, _)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidFollowsIntWildcard) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Follows(2, _)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -206,16 +182,13 @@ TEST_METHOD(TestValidFollowsIntWildcard) {
   Assert::IsTrue(table->getSignificant());
 }
 
-TEST_METHOD(TestInvalidFollowsIntWildcard) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Follows(6, _)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestInvalidFollowsIntWildcard) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Follows(6, _)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -225,16 +198,13 @@ TEST_METHOD(TestInvalidFollowsIntWildcard) {
   Assert::IsTrue(!table->getSignificant());
 }
 
-TEST_METHOD(TestValidFollowsWildcardInt) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Follows(_, 3)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidFollowsWildcardInt) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Follows(_, 3)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -244,16 +214,13 @@ TEST_METHOD(TestValidFollowsWildcardInt) {
   Assert::IsTrue(table->getSignificant());
 }
 
-TEST_METHOD(TestInvalidFollowsWildcardInt) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Follows(_, 7)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestInvalidFollowsWildcardInt) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Follows(_, 7)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -263,16 +230,13 @@ TEST_METHOD(TestInvalidFollowsWildcardInt) {
   Assert::IsTrue(!table->getSignificant());
 }
 
-TEST_METHOD(TestValidFollowsWildcardWildcard) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Follows(_, _)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidFollowsWildcardWildcard) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Follows(_, _)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -282,16 +246,13 @@ TEST_METHOD(TestValidFollowsWildcardWildcard) {
   Assert::IsTrue(table->getSignificant());
 }
 
-TEST_METHOD(TestValidFollowsIntInt) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Follows(2, 3)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidFollowsIntInt) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Follows(2, 3)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -301,16 +262,13 @@ TEST_METHOD(TestValidFollowsIntInt) {
   Assert::IsTrue(table->getSignificant());
 }
 
-TEST_METHOD(TestInvalidFollowsIntInt) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Follows(3, 2)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestInvalidFollowsIntInt) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Follows(3, 2)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -320,16 +278,13 @@ TEST_METHOD(TestInvalidFollowsIntInt) {
   Assert::IsTrue(!table->getSignificant());
 }
 
-TEST_METHOD(TestValidParentStarSynSyn) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(s, s1)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidParentStarSynSyn) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(s, s1)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -349,16 +304,13 @@ TEST_METHOD(TestValidParentStarSynSyn) {
                  table->getColumns()[1]["s1"][4] == "4");
 }
 
-TEST_METHOD(TestValidParentStarSynSynSameSyn) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(s, s)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidParentStarSynSynSameSyn) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(s, s)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -368,16 +320,13 @@ TEST_METHOD(TestValidParentStarSynSynSameSyn) {
   Assert::IsTrue(!table->getSignificant());
 }
 
-TEST_METHOD(TestValidParentStarSynInt) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(s, 3)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidParentStarSynInt) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(s, 3)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -389,16 +338,13 @@ TEST_METHOD(TestValidParentStarSynInt) {
   Assert::IsTrue(table->getColumns()[0]["s"][1] == "1");
 }
 
-TEST_METHOD(TestInvalidParentStarSynInt) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(s, 5)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestInvalidParentStarSynInt) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(s, 5)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -408,16 +354,13 @@ TEST_METHOD(TestInvalidParentStarSynInt) {
   Assert::IsTrue(!table->getSignificant());
 }
 
-TEST_METHOD(TestValidParentStarIntSyn) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(1, s)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidParentStarIntSyn) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(1, s)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -429,16 +372,13 @@ TEST_METHOD(TestValidParentStarIntSyn) {
   Assert::IsTrue(table->getColumns()[0]["s"][1] == "3");
 }
 
-TEST_METHOD(TestInvalidParentStarIntSyn) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(9, s)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestInvalidParentStarIntSyn) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(9, s)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -448,16 +388,13 @@ TEST_METHOD(TestInvalidParentStarIntSyn) {
   Assert::IsTrue(!table->getSignificant());
 }
 
-TEST_METHOD(TestValidParentStarSynWildcard) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(s, _)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidParentStarSynWildcard) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(s, _)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -470,16 +407,13 @@ TEST_METHOD(TestValidParentStarSynWildcard) {
   Assert::IsTrue(table->getColumns()[0]["s"][2] == "3");
 }
 
-TEST_METHOD(TestValidParentStarWildcardSyn) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(_, s)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidParentStarWildcardSyn) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(_, s)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -492,16 +426,13 @@ TEST_METHOD(TestValidParentStarWildcardSyn) {
   Assert::IsTrue(table->getColumns()[0]["s"][2] == "4");
 }
 
-TEST_METHOD(TestValidParentStarIntWildcard) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(3, _)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidParentStarIntWildcard) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(3, _)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -511,16 +442,13 @@ TEST_METHOD(TestValidParentStarIntWildcard) {
   Assert::IsTrue(table->getSignificant());
 }
 
-TEST_METHOD(TestInvalidParentStarIntWildcard) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(90, _)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestInvalidParentStarIntWildcard) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(90, _)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -530,16 +458,13 @@ TEST_METHOD(TestInvalidParentStarIntWildcard) {
   Assert::IsTrue(!table->getSignificant());
 }
 
-TEST_METHOD(TestValidParentStarWildcardInt) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(_, 3)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidParentStarWildcardInt) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(_, 3)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -549,16 +474,13 @@ TEST_METHOD(TestValidParentStarWildcardInt) {
   Assert::IsTrue(table->getSignificant());
 }
 
-TEST_METHOD(TestInvalidParentStarWildcardInt) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(_, 86)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestInvalidParentStarWildcardInt) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(_, 86)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -568,16 +490,13 @@ TEST_METHOD(TestInvalidParentStarWildcardInt) {
   Assert::IsTrue(!table->getSignificant());
 }
 
-TEST_METHOD(TestValidParentStarIntInt) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(2, 3)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidParentStarIntInt) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(2, 3)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -587,16 +506,13 @@ TEST_METHOD(TestValidParentStarIntInt) {
   Assert::IsTrue(table->getSignificant());
 }
 
-TEST_METHOD(TestInvalidParentStarIntInt) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(9, 3)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestInvalidParentStarIntInt) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(9, 3)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -606,16 +522,13 @@ TEST_METHOD(TestInvalidParentStarIntInt) {
   Assert::IsTrue(!table->getSignificant());
 }
 
-TEST_METHOD(TestValidParentStarWildcardWildcard) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(_, _)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidParentStarWildcardWildcard) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Parent*(_, _)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -625,16 +538,13 @@ TEST_METHOD(TestValidParentStarWildcardWildcard) {
   Assert::IsTrue(table->getSignificant());
 }
 
-TEST_METHOD(TestValidUsesSynSyn) {
-  vector<string> testS = PQLTokenizer::tokenize(
-      "assign s, s1; variable v; Select s such that Uses(s, v)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidUsesSynSyn) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; variable v; Select s such that Uses(s, v)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -652,16 +562,13 @@ TEST_METHOD(TestValidUsesSynSyn) {
                  table->getColumns()[1]["v"][3] == "b");
 }
 
-TEST_METHOD(TestValidUsesSynWildCard) {
-  vector<string> testS = PQLTokenizer::tokenize(
-      "assign s, s1; variable v; Select s such that Uses(s, _)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidUsesSynWildCard) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; variable v; Select s such that Uses(s, _)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -674,16 +581,13 @@ TEST_METHOD(TestValidUsesSynWildCard) {
   Assert::IsTrue(table->getColumns()[0]["s"][2] == "3");
 }
 
-TEST_METHOD(TestValidUsesSynIdent) {
-  vector<string> testS = PQLTokenizer::tokenize(
-      "assign s, s1; variable v; Select s such that Uses(s, \"b\")");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidUsesSynIdent) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; variable v; Select s such that Uses(s, \"b\")");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -695,16 +599,13 @@ TEST_METHOD(TestValidUsesSynIdent) {
   Assert::IsTrue(table->getColumns()[0]["s"][1] == "3");
 }
 
-TEST_METHOD(TestValidUsesIntSyn) {
-  vector<string> testS = PQLTokenizer::tokenize(
-      "assign s, s1; variable v; Select v such that Uses(2, v)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidUsesIntSyn) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; variable v; Select v such that Uses(2, v)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -715,16 +616,13 @@ TEST_METHOD(TestValidUsesIntSyn) {
   Assert::IsTrue(table->getColumns()[0]["v"][0] == "b");
 }
 
-TEST_METHOD(TestValidUsesIntWildCard) {
-  vector<string> testS = PQLTokenizer::tokenize(
-      "assign s, s1; variable v; Select s such that Uses(2, _)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidUsesIntWildCard) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; variable v; Select s such that Uses(2, _)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -734,35 +632,28 @@ TEST_METHOD(TestValidUsesIntWildCard) {
   Assert::IsTrue(table->getSignificant());
 }
 
-TEST_METHOD(TestValidUsesIntIdent) {
-  vector<string> testS = PQLTokenizer::tokenize(
-      "assign s, s1; variable v; Select s such that Uses(3, \"c\")");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidUsesIntIdent) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; variable v; Select s such that Uses(3, \"c\")");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
-  unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
-      p->getSynonyms();
-  shared_ptr<DataAccessLayerStub> dataAccessLayer =
-      make_shared<DataAccessLayerStub>();
-  shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
-  Assert::IsTrue(table->getSignificant());
-}
+			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
+			Assert::IsTrue(table->getSignificant());
+		}
+		
 
-TEST_METHOD(TestValidAssignPatternWildcardWildcard) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s pattern s(_, _)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidPatternWildcardWildcard) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s pattern s(_, _)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
@@ -786,8 +677,8 @@ TEST_METHOD(TestValidAssignPatternWildcardPartialMatch) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
@@ -809,8 +700,8 @@ TEST_METHOD(TestValidAssignPatternWildcardExactMatch) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
@@ -831,8 +722,8 @@ TEST_METHOD(TestValidAssignPatternCharStringWildcard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
@@ -854,8 +745,8 @@ TEST_METHOD(TestInvalidAssignPatternCharStringWildcard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
@@ -876,8 +767,8 @@ TEST_METHOD(TestValidAssignPatternCharStringPartialMatch) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
@@ -898,8 +789,8 @@ TEST_METHOD(TestValidAssignPatternCharStringExactMatch) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
@@ -912,16 +803,13 @@ TEST_METHOD(TestValidAssignPatternCharStringExactMatch) {
   Assert::IsTrue(tables->getColumns()[0]["s"][0] == "3");
 }
 
-TEST_METHOD(TestValidAssignPatternVarSynWildcard) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s; variable v; Select s pattern s(v, _)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidPatternVarSynWildcard) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s; variable v; Select s pattern s(v, _)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
@@ -950,8 +838,8 @@ TEST_METHOD(TestValidAssignPatternVarSynPartialMatch) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
@@ -975,8 +863,8 @@ TEST_METHOD(TestValidAssignPatternVarSynExactMatch) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
@@ -1000,8 +888,8 @@ TEST_METHOD(TestValidIfPatternWildcard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
@@ -1025,8 +913,8 @@ TEST_METHOD(TestValidIfPatternVarSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
@@ -1058,8 +946,8 @@ TEST_METHOD(TestValidIfPatternVarString) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
@@ -1081,8 +969,8 @@ TEST_METHOD(TestInvalidIfPatternVarString) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
@@ -1103,8 +991,8 @@ TEST_METHOD(TestValidWhilePatternWildcard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
@@ -1128,8 +1016,8 @@ TEST_METHOD(TestValidWhilePatternVarSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
@@ -1161,8 +1049,8 @@ TEST_METHOD(TestValidWhilePatternVarString) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
@@ -1184,8 +1072,8 @@ TEST_METHOD(TestInvalidWhilePatternVarString) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
@@ -1207,8 +1095,8 @@ TEST_METHOD(TestValidAssignPatternVarSynPartialVariableSuchThatFollowsSynWildcar
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
@@ -1231,8 +1119,8 @@ TEST_METHOD(TestValidSuchThatFollowsWildcardIntAssignPatternWildcardPartialConst
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1260,8 +1148,8 @@ TEST_METHOD(TestValidCallsSynWildCard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1282,8 +1170,8 @@ TEST_METHOD(TestValidCallsSynIdent) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1302,8 +1190,8 @@ TEST_METHOD(TestValidCallsWildcardSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1325,8 +1213,8 @@ TEST_METHOD(TestValidCallsWildcardWildcard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1344,8 +1232,8 @@ TEST_METHOD(TestValidCallsWildcardIdent) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1363,8 +1251,8 @@ TEST_METHOD(TestValidCallsIdentSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1384,8 +1272,8 @@ TEST_METHOD(TestValidCallsIdentWildCard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1403,8 +1291,8 @@ TEST_METHOD(TestInvalidCallsIdentWildCard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1422,8 +1310,8 @@ TEST_METHOD(TestValidCallsIdentIdent) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1441,8 +1329,8 @@ TEST_METHOD(TestInvalidCallsIdentIdent) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1460,8 +1348,8 @@ TEST_METHOD(TestValidNextSynSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1485,8 +1373,8 @@ TEST_METHOD(TestValidNextSynSynSameSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1505,8 +1393,8 @@ TEST_METHOD(TestValidNextIntSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1526,8 +1414,8 @@ TEST_METHOD(TestInvalidNextIntSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1546,8 +1434,8 @@ TEST_METHOD(TestValidNextSynInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1567,8 +1455,8 @@ TEST_METHOD(TestInvalidNextSynInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1587,8 +1475,8 @@ TEST_METHOD(TestValidNextSynWildcard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+      p->parseDeclaration(get<0>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1601,16 +1489,13 @@ TEST_METHOD(TestValidNextSynWildcard) {
   Assert::IsTrue(table->getColumns()[0]["s"][2] == "3");
 }
 
-TEST_METHOD(TestValidNextWildCardSyn) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Next(_, s)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidNextWildCardSyn) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Next(_, s)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1623,16 +1508,13 @@ TEST_METHOD(TestValidNextWildCardSyn) {
   Assert::IsTrue(table->getColumns()[0]["s"][2] == "4");
 }
 
-TEST_METHOD(TestValidNextIntWildcard) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Next(2, _)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidNextIntWildcard) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Next(2, _)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1642,16 +1524,13 @@ TEST_METHOD(TestValidNextIntWildcard) {
   Assert::IsTrue(table->getSignificant());
 }
 
-TEST_METHOD(TestInvalidNextIntWildcard) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Next(86, _)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestInvalidNextIntWildcard) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Next(86, _)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1661,16 +1540,13 @@ TEST_METHOD(TestInvalidNextIntWildcard) {
   Assert::IsTrue(!table->getSignificant());
 }
 
-TEST_METHOD(TestValidNextWildcardInt) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Next(_, 3)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidNextWildcardInt) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Next(_, 3)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1680,16 +1556,13 @@ TEST_METHOD(TestValidNextWildcardInt) {
   Assert::IsTrue(table->getSignificant());
 }
 
-TEST_METHOD(TestInvalidNextWildcardInt) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Next(_, 96)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestInvalidNextWildcardInt) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Next(_, 96)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1699,16 +1572,13 @@ TEST_METHOD(TestInvalidNextWildcardInt) {
   Assert::IsTrue(!table->getSignificant());
 }
 
-TEST_METHOD(TestValidNextWildcardWildcard) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Next(_, _)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidNextWildcardWildcard) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Next(_, _)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1718,16 +1588,13 @@ TEST_METHOD(TestValidNextWildcardWildcard) {
   Assert::IsTrue(table->getSignificant());
 }
 
-TEST_METHOD(TestValidNextIntInt) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Next(2, 3)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidNextIntInt) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Next(2, 3)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1737,16 +1604,13 @@ TEST_METHOD(TestValidNextIntInt) {
   Assert::IsTrue(table->getSignificant());
 }
 
-TEST_METHOD(TestInvalidNextIntInt) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Next(3, 2)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestInvalidNextIntInt) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Next(3, 2)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1756,16 +1620,13 @@ TEST_METHOD(TestInvalidNextIntInt) {
   Assert::IsTrue(!table->getSignificant());
 }
 
-TEST_METHOD(TestValidNextStarIntIntNormal) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Next*(2, 3)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidNextStarIntIntNormal) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Next*(2, 3)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1775,16 +1636,13 @@ TEST_METHOD(TestValidNextStarIntIntNormal) {
   Assert::IsTrue(table->getSignificant());
 }
 
-TEST_METHOD(TestValidNextStarIntIntForLoop) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Next*(3, 2)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidNextStarIntIntForLoop) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Next*(3, 2)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1794,16 +1652,13 @@ TEST_METHOD(TestValidNextStarIntIntForLoop) {
   Assert::IsTrue(table->getSignificant());
 }
 
-TEST_METHOD(TestValidNextStarIntIntForLoopSame) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Next*(3, 3)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidNextStarIntIntForLoopSame) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Next*(3, 3)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1813,16 +1668,13 @@ TEST_METHOD(TestValidNextStarIntIntForLoopSame) {
   Assert::IsTrue(table->getSignificant());
 }
 
-TEST_METHOD(TestInvalidNextStarIntInt) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Next*(96, 3)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestInvalidNextStarIntInt) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Next*(96, 3)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1832,16 +1684,13 @@ TEST_METHOD(TestInvalidNextStarIntInt) {
   Assert::IsTrue(!table->getSignificant());
 }
 
-TEST_METHOD(TestInvalidNextStarIntIntInvalidFirst) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Next*(3, 96)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestInvalidNextStarIntIntInvalidFirst) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Next*(3, 96)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1851,16 +1700,13 @@ TEST_METHOD(TestInvalidNextStarIntIntInvalidFirst) {
   Assert::IsTrue(!table->getSignificant());
 }
 
-TEST_METHOD(TestValidNextStarIntSyn) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Next*(2, s)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidNextStarIntSyn) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Next*(2, s)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1873,16 +1719,13 @@ TEST_METHOD(TestValidNextStarIntSyn) {
   Assert::IsTrue(vectorToSet(table->getColumns()[0]["s"]) == expected);
 }
 
-TEST_METHOD(TestInvalidNextStarIntSynBigInt) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Next*(100, s)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestInvalidNextStarIntSynBigInt) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Next*(100, s)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1894,16 +1737,13 @@ TEST_METHOD(TestInvalidNextStarIntSynBigInt) {
   Assert::IsTrue(vectorToSet(table->getColumns()[0]["s"]) == expected);
 }
 
-TEST_METHOD(TestValidNextStarSynInt) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Next*(s, 6)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidNextStarSynInt) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Next*(s, 6)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1915,16 +1755,13 @@ TEST_METHOD(TestValidNextStarSynInt) {
   Assert::IsTrue(vectorToSet(table->getColumns()[0]["s"]) == expected);
 }
 
-TEST_METHOD(TestValidNextStarSynSyn) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s, s1; Select s such that Next*(s, s1)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidNextStarSynSyn) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Next*(s, s1)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1936,16 +1773,13 @@ TEST_METHOD(TestValidNextStarSynSyn) {
   Assert::IsTrue(vectorToSet(table->getColumns()[0]["s"]) == expected);
 }
 
-TEST_METHOD(TestValidNextStarSynSynSameSyn) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s, s1; Select s such that Next*(s, s)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr =
-      p->validateDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+		TEST_METHOD(TestValidNextStarSynSynSameSyn) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Next*(s, s)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1960,8 +1794,8 @@ TEST_METHOD(TestValidNextStarSynSynSameSyn) {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1976,8 +1810,8 @@ TEST_METHOD(TestValidNextStarSynSynSameSyn) {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -1992,8 +1826,8 @@ TEST_METHOD(TestValidNextStarSynSynSameSyn) {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -2008,8 +1842,8 @@ TEST_METHOD(TestValidNextStarSynSynSameSyn) {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -2024,8 +1858,8 @@ TEST_METHOD(TestValidNextStarSynSynSameSyn) {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -2040,8 +1874,8 @@ TEST_METHOD(TestValidNextStarSynSynSameSyn) {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -2056,8 +1890,8 @@ TEST_METHOD(TestValidNextStarSynSynSameSyn) {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -2072,8 +1906,8 @@ TEST_METHOD(TestValidNextStarSynSynSameSyn) {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -2086,8 +1920,8 @@ TEST_METHOD(TestValidNextStarSynSynSameSyn) {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -2100,8 +1934,8 @@ TEST_METHOD(TestValidNextStarSynSynSameSyn) {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			unordered_map<string_view, shared_ptr<QueryObject>> synonyms = p->getSynonyms();
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
@@ -2114,8 +1948,8 @@ TEST_METHOD(TestValidNextStarSynSynSameSyn) {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
@@ -2128,8 +1962,8 @@ TEST_METHOD(TestValidNextStarSynSynSameSyn) {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
@@ -2142,8 +1976,8 @@ TEST_METHOD(TestValidNextStarSynSynSameSyn) {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
@@ -2156,8 +1990,8 @@ TEST_METHOD(TestValidNextStarSynSynSameSyn) {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
@@ -2170,8 +2004,8 @@ TEST_METHOD(TestValidNextStarSynSynSameSyn) {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
@@ -2185,8 +2019,8 @@ TEST_METHOD(TestValidNextStarSynSynSameSyn) {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
@@ -2200,8 +2034,8 @@ TEST_METHOD(TestValidNextStarSynSynSameSyn) {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
@@ -2216,8 +2050,8 @@ TEST_METHOD(TestValidNextStarSynSynSameSyn) {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
@@ -2233,8 +2067,8 @@ TEST_METHOD(TestValidNextStarSynSynSameSyn) {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
@@ -2250,8 +2084,8 @@ TEST_METHOD(TestValidNextStarSynSynSameSyn) {
 			vector<string_view> test{ sToSvVector(testS) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
-			vector<shared_ptr<QueryObject>> curr = p->validateDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->validateQuery(std::get<1>(testObj));
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
 			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
 			shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
