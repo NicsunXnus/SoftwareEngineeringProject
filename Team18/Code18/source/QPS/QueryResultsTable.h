@@ -639,9 +639,11 @@ private:
     vector<string> repeatEntries(vector<string> input, int repetition) {
         vector<string> result(input);
         vector<string> copied(input);
+        // ai-gen start (GPT4 & Claude2,1)
         for (int i = 1; i < repetition; i++) {
             copied.insert(copied.end(), result.begin(), result.end());
         }
+        // ai-gen end
         return copied;
     }
 
