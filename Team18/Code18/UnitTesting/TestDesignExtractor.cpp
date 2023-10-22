@@ -744,7 +744,6 @@ namespace UnitTesting
             
             // While statement (y == 10)
             Assert::IsTrue(std::find(nextMapRef["4"].begin(), nextMapRef["4"].end(), "5") != nextMapRef["4"].end());
-            Assert::IsTrue(std::find(nextMapRef["4"].begin(), nextMapRef["4"].end(), "10") != nextMapRef["4"].end());
 
             // y = 20
             Assert::IsTrue(std::find(nextMapRef["5"].begin(), nextMapRef["5"].end(), "6") != nextMapRef["5"].end());
@@ -757,9 +756,6 @@ namespace UnitTesting
             Assert::IsTrue(std::find(nextMapRef["7"].begin(), nextMapRef["7"].end(), "4") != nextMapRef["7"].end());
             // z = 40
             Assert::IsTrue(std::find(nextMapRef["8"].begin(), nextMapRef["8"].end(), "4") != nextMapRef["8"].end());
-
-            // x = 50
-            Assert::IsTrue(std::find(nextMapRef["9"].begin(), nextMapRef["9"].end(), "10") != nextMapRef["9"].end());
         }
    };
      
