@@ -589,7 +589,7 @@ namespace UnitTesting
             std::map<std::string, unordered_set<std::string>> usesMapRef = *(designExtractor.getUsesMap());
             std::map<std::string, unordered_set<std::string>> followsMapRef = *(designExtractor.getFollowsMap());
             std::map<std::string, unordered_set<std::string>> followsStarMapRef = *(designExtractor.getFollowsStarMap());
-            std::map<std::string, unordered_set<std::string>> parentMapRef = *(designExtractor.getParentMap());
+            std::map<std::string, unordered_set<std::string>> parentsMapRef = *(designExtractor.getParentMap());
             std::map<std::string, unordered_set<std::string>> parentStarMapRef = *(designExtractor.getParentStarMap());
             std::map<std::string, unordered_set<std::string>> nextMapRef = *(designExtractor.getNextMap());
 
@@ -669,44 +669,44 @@ namespace UnitTesting
             Assert::IsTrue(parentStarMapRef["2"].empty());
 
             
-            Assert::AreEqual(parentsMapRef["3"], 1);
-            Assert::AreEqual(parentStarMapRef["3"], 1);
+            Assert::AreEqual(parentsMapRef["3"].size(), 1);
+            Assert::AreEqual(parentStarMapRef["3"].size(), 1);
             Assert::IsTrue(std::find(parentMapRef["3"].begin(), parentMapRef["3"].end(), std::string("2")) != parentMapRef["3"].end());
             Assert::IsTrue(std::find(parentStarMapRef["3"].begin(), parentStarMapRef["3"].end(), std::string("2")) != parentStarMapRef["3"].end());
 
-            Assert::AreEqual(parentsMapRef["4"], 1);
-            Assert::AreEqual(parentStarMapRef["4"], 1);
+            Assert::AreEqual(parentsMapRef["4"].size(), 1);
+            Assert::AreEqual(parentStarMapRef["4"].size(), 1);
             Assert::IsTrue(std::find(parentMapRef["4"].begin(), parentMapRef["4"].end(), std::string("3")) != parentMapRef["4"].end());
             Assert::IsTrue(std::find(parentStarMapRef["4"].begin(), parentStarMapRef["4"].end(), std::string("3")) != parentStarMapRef["4"].end());
 
-            Assert::AreEqual(parentsMapRef["5"], 1);
-            Assert::AreEqual(parentStarMapRef["5"], 2);
+            Assert::AreEqual(parentsMapRef["5"].size(), 1);
+            Assert::AreEqual(parentStarMapRef["5"].size(), 2);
             Assert::IsTrue(std::find(parentMapRef["5"].begin(), parentMapRef["5"].end(), std::string("4")) != parentMapRef["5"].end());
             Assert::IsTrue(std::find(parentStarMapRef["5"].begin(), parentStarMapRef["5"].end(), std::string("4")) != parentStarMapRef["5"].end());
             Assert::IsTrue(std::find(parentStarMapRef["5"].begin(), parentStarMapRef["5"].end(), std::string("2")) != parentStarMapRef["5"].end());
 
-            Assert::AreEqual(parentsMapRef["6"], 1);
-            Assert::AreEqual(parentStarMapRef["6"], 2);
+            Assert::AreEqual(parentsMapRef["6"].size(), 1);
+            Assert::AreEqual(parentStarMapRef["6"].size(), 2);
             Assert::IsTrue(std::find(parentMapRef["6"].begin(), parentMapRef["6"].end(), std::string("4")) != parentMapRef["6"].end());
             Assert::IsTrue(std::find(parentStarMapRef["6"].begin(), parentStarMapRef["6"].end(), std::string("4")) != parentStarMapRef["6"].end());
             Assert::IsTrue(std::find(parentStarMapRef["6"].begin(), parentStarMapRef["6"].end(), std::string("2")) != parentStarMapRef["6"].end());
 
-            Assert::AreEqual(parentsMapRef["7"], 1);
-            Assert::AreEqual(parentStarMapRef["7"], 3);
+            Assert::AreEqual(parentsMapRef["7"].size(), 1);
+            Assert::AreEqual(parentStarMapRef["7"].size(), 3);
             Assert::IsTrue(std::find(parentMapRef["7"].begin(), parentMapRef["7"].end(), std::string("6")) != parentMapRef["7"].end());
             Assert::IsTrue(std::find(parentStarMapRef["7"].begin(), parentStarMapRef["7"].end(), std::string("6")) != parentStarMapRef["7"].end());
             Assert::IsTrue(std::find(parentStarMapRef["7"].begin(), parentStarMapRef["7"].end(), std::string("4")) != parentStarMapRef["7"].end());
             Assert::IsTrue(std::find(parentStarMapRef["7"].begin(), parentStarMapRef["7"].end(), std::string("2")) != parentStarMapRef["7"].end());
 
-            Assert::AreEqual(parentsMapRef["8"], 1);
-            Assert::AreEqual(parentStarMapRef["8"], 3);
+            Assert::AreEqual(parentsMapRef["8"].size(), 1);
+            Assert::AreEqual(parentStarMapRef["8"].size(), 3);
             Assert::IsTrue(std::find(parentMapRef["8"].begin(), parentMapRef["8"].end(), std::string("6")) != parentMapRef["8"].end());
             Assert::IsTrue(std::find(parentStarMapRef["8"].begin(), parentStarMapRef["8"].end(), std::string("6")) != parentStarMapRef["8"].end());
             Assert::IsTrue(std::find(parentStarMapRef["8"].begin(), parentStarMapRef["8"].end(), std::string("4")) != parentStarMapRef["8"].end());
             Assert::IsTrue(std::find(parentStarMapRef["8"].begin(), parentStarMapRef["8"].end(), std::string("2")) != parentStarMapRef["8"].end());
 
-            Assert::AreEqual(parentsMapRef["9"], 1);
-            Assert::AreEqual(parentStarMapRef["9"], 1);
+            Assert::AreEqual(parentsMapRef["9"].size(), 1);
+            Assert::AreEqual(parentStarMapRef["9"].size(), 1);
             Assert::IsTrue(std::find(parentMapRef["9"].begin(), parentMapRef["9"].end(), std::string("2")) != parentMapRef["9"].end());
             Assert::IsTrue(std::find(parentStarMapRef["9"].begin(), parentStarMapRef["9"].end(), std::string("2")) != parentStarMapRef["9"].end());
 
