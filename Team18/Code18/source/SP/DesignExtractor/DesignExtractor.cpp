@@ -1,5 +1,6 @@
 #include "DesignExtractor.h"
 
+// ai-gen start (copilot, 2)
 void DesignExtractor::extractEntities(shared_ptr<ProcessedProgram> processedProgram) {
     this->entityExtractor->extract(processedProgram);
     this->procedureLineNumberExtractor->extract(processedProgram);
@@ -141,3 +142,4 @@ void DesignExtractor::insertAbstractions() {
     PKB::insertor.addAbstraction(nextSet, NEXT);
 
 }
+// ai-gen end

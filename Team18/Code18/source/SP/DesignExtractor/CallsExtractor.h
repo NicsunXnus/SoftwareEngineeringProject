@@ -15,6 +15,7 @@ class ProcessedCallStmt;
 
 using namespace std;
 
+// This class is used to extract the calls abstraction from the AST
 class CallsExtractor : public AbstractionStarExtractor {
 public:
     // Constructor
