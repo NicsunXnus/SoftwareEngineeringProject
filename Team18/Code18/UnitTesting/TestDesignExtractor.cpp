@@ -676,8 +676,8 @@ namespace UnitTesting
 
             Assert::AreEqual((int)parentMapRef["4"].size(), 1);
             Assert::AreEqual((int)parentStarMapRef["4"].size(), 1);
-            Assert::IsTrue(std::find(parentMapRef["4"].begin(), parentMapRef["4"].end(), std::string("3")) != parentMapRef["4"].end());
-            Assert::IsTrue(std::find(parentStarMapRef["4"].begin(), parentStarMapRef["4"].end(), std::string("3")) != parentStarMapRef["4"].end());
+            Assert::IsTrue(std::find(parentMapRef["4"].begin(), parentMapRef["4"].end(), std::string("2")) != parentMapRef["4"].end());
+            Assert::IsTrue(std::find(parentStarMapRef["4"].begin(), parentStarMapRef["4"].end(), std::string("2")) != parentStarMapRef["4"].end());
 
             Assert::AreEqual((int)parentMapRef["5"].size(), 1);
             Assert::AreEqual((int)parentStarMapRef["5"].size(), 2);
