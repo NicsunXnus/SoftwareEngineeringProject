@@ -148,9 +148,9 @@ stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant
 Select v such that Uses(99999, v)
 
 5000
-31 - integer-synonym, right: variable, stmt number is 0
+31 - integer-synonym, right: variable, stmt number out of bounds
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select v such that Uses(0, v)
+Select v such that Uses(50, v)
 
 5000
 32 - integer-wildcard

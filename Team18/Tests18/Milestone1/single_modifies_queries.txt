@@ -1,8 +1,3 @@
-8 - synonym-synonym, right: var, left: constant (invalid)
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select c such that Modifies(c, v)
-
-5000
 1 - synonym-synonym, right: stmt (non-var)
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s1 such that Modifies(s1, s2)
@@ -36,6 +31,11 @@ Select v such that Modifies(v, v)
 7 - synonym-synonym, right: var, left: print (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Modifies(pn, v)
+
+5000
+8 - synonym-synonym, right: var, left: constant (invalid)
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select c such that Modifies(c, v)
 
 5000
 9 - synonym-synonym, right: var, left: call
@@ -148,9 +148,9 @@ stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant
 Select v such that Modifies(99999, v)
 
 5000
-31 - integer-synonym, right: variable, stmt number is 0
+31 - integer-synonym, right: variable, stmt number out of bounds
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select v such that Modifies(0, v)
+Select v such that Modifies(50, v)
 
 5000
 32 - integer-wildcard

@@ -1824,6 +1824,79 @@ namespace UnitTesting
 			Assert::IsTrue(qo[2]->getQueryObjectName() == "Modifies"sv);
 		}
 
+		TEST_METHOD(TestIntegerStartWith0Follows)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select c such that Follows(01, 2)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestIntegerStartWith0FollowsStar)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select c such that Follows*(1, 02)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestIntegerStartWith0Parent)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select c such that Parent(1, 02)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestIntegerStartWith0ParentStar)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select c such that Parent*(01, 2)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestFollowsWhiteSpacesGalore)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("stmt s    ;    read    r  ;    print   pn   ;    call  cl; while w; if i; assign a; variable v; constant c; procedure p;         Select    \t\f\v\n\r\b           pn                     such                     that               Follows                                     (                1      ,     2     )       ");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[0]) == typeid(PrintObject));
+			Assert::IsTrue(qo[0]->getQueryObjectName() == "pn"sv);
+			Assert::IsTrue(typeid(*qo[1]) == typeid(FollowsObject));
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "Follows"sv);
+		}
+
 	};
 
 }

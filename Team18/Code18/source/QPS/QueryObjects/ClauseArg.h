@@ -44,11 +44,15 @@ public:
 
 	// function to check if argument is an integer
 	bool isInteger() {
-		bool isNum{ true };
 		for (int i = 0; i < static_cast<int>(arg.size()); ++i) {
-			isNum = isNum && isdigit(arg[i]);
+			if (i == 0 && arg[i] == '0' && static_cast<int>(arg.size()) != 1) { // number has a leading 0
+				return false;
+			}
+			if (!isdigit(arg[i])) { // number has a non digit
+				return false;
+			}
 		}
-		return isNum;
+		return true;
 	}
 
 	// function to check if clauseArg is a wildcard

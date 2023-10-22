@@ -8,6 +8,8 @@
 #include <sstream>
 #include <unordered_set>
 
+#include "../HelperFunctions.h"
+
 using namespace std::string_view_literals;
 
 inline std::unordered_set<char> TOKENIZED_CHARS{ ';', ',', '(', ')', '_', '.' , '='};
@@ -33,6 +35,7 @@ public:
 
 
 		for (int i = 0; i < pql.length(); ++i) {
+			char c = pql[i];
 			if (pql[i] == '<') { // tokenizing tuple
 				if (isWord) {
 					tokens.push_back(pql.substr(startIndex, i - startIndex));
@@ -88,7 +91,6 @@ public:
 	}
 
 private:
-	// removes whitespace within quotes
 	static std::string tokenizeQuotes(std::string pql, int& index) {
 		if (pql[index] != '"') {
 			throw std::runtime_error("This should not be called");
@@ -98,19 +100,25 @@ private:
 		ss.str(std::string()); // empties the stream
 		ss << pql[index];
 		index++;
-		
+
+		int startIndexChar{ index };
+		int quoteContentLen{ 0 };
+
 		while (index < pql.size() && pql[index] != '"') {
-			if (!isspace(pql[index]) && pql[index] != '\b') {
-				ss << pql[index];
-			}
-			index++;
+			++quoteContentLen;
+			++index;
 		}
 
 		if (index == pql.size()) {
 			// reached end of pql without finding closing quotes
 			// invalid argument, just return incomplete quote
+
+			ss << pql.substr(startIndexChar, quoteContentLen);
 			return ss.str();
 		}
+
+		// trim leading and trailing whitespaces and push into stream
+		ss << trimWhitespaces(pql.substr(startIndexChar, quoteContentLen));
 
 		// add the closing quotes
 		ss << pql[index];

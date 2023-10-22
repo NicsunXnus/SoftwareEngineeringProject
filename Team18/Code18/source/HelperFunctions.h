@@ -16,7 +16,7 @@
 
 using namespace std::string_view_literals;
 
-const std::string whitespaces = " \t\f\v\n\r\b";
+const std::string whitespaces = " \t\f\v\n\r\b 	 ааа  ";
 const std::string arithmeticOpsWithWhitespaceRegex = "([()+-/*%]|\\s+)";
 const std::string relationalOpsRegex = "([><]=?|==|!=)";
 

@@ -18,6 +18,8 @@ list<string> QueryDriver::execute() {
 
 	try {
 		std::cout << "In Query Driver, starting tokenizer\n";
+		std::cout << "Query: " << query << '\n';
+
 		vector<std::string> tokens = PQLTokenizer::tokenize(query);
 		shared_ptr<QueryParser> parser = make_shared<QueryParser>();
 		vector<std::string_view> tokensView{ sToSvVector(tokens) };

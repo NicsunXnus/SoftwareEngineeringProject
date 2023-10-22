@@ -1,6 +1,6 @@
 procedure SPA {simple = 100;
 	query = 25;
-	sp = error;
+	sp = SyntaxError;
 	pkb = 2;
 	qps = 3;
 	read SP;
@@ -10,16 +10,16 @@ procedure SPA {simple = 100;
 		qps = milestone1;
 		read qps;
 		if (qps > 25) then {
-			error = sp * pkb * qps + error;
-			print error;
-		} else { read error; }}
+			SyntaxError = sp * pkb * qps + SyntaxError;
+			print SyntaxError;
+		} else { read SyntaxError; }}
 	if (sp + pkb + qps > 9 - 3) then {
 		moreThan6People = 1;
 		while (1 > 0) {
 			while (2 > 1) {
-				print error;}}
+				print SyntaxError;}}
 		if (1 > 0) then {
 			read a;
-		} else { read error; }
-	} else { read error; }
+		} else { read SyntaxError; }
+	} else { read SyntaxError; }
 	read read;}

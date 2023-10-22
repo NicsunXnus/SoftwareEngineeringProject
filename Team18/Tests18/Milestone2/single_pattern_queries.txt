@@ -1,175 +1,290 @@
 1 - invalid pattern selection - stmt
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s pattern s (_, _)
-semantic error
+SemanticError
 5000
-2 - invalid pattern selection - read
+2 - invalid pattern selection - variables
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select r pattern r (_, _)
-semantic error
+Select s pattern v (_, _)
+SemanticError
 5000
-3 - invalid pattern selection - print
+3 - invalid pattern selection - undeclared
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select pn pattern pn (_, _)
-semantic error
+Select s pattern assnt (_, _)
+SemanticError
 5000
-4 - invalid pattern selection - call
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select cl pattern cl (_, _)
-semantic error
+4 - assign pattern - wildcard-wildcard
+assign a; variable v; constant c; print pn;
+Select pn pattern a (_, _)
+3,18,19,27,48
 5000
-5 - invalid pattern selection - variable
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select v pattern v (_, _)
-semantic error
+5 - assign pattern - wildcard-partial (single char) | success
+assign a; variable v; constant c;
+Select a pattern a (_, _"2"_)
+2, 9, 10, 11, 21
 5000
-6 - invalid pattern selection - constant
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select c pattern c (_, _)
-semantic error
+6 - assign pattern - wildcard-partial (multi char) | success
+assign a; variable v; constant c;
+Select a pattern a (_, _"student / 3"_)
+2
 5000
-7 - invalid pattern selection - procedure
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select p pattern p (_, _)
-semantic error
+7 - assign pattern - wildcard-partial (multi char) | failure
+assign a; variable v; constant c;
+Select a pattern a (_, _"3 % 2"_)
+
 5000
-8 - invalid pattern selection - unknown
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select s pattern whatever (_, _)
-semantic error
+8 - assign pattern - wildcard-partial empty
+assign a; variable v; constant c;
+Select a pattern a (_, _""_)
+SyntaxError
 5000
-9 - double wildcard, select a
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a (_, _)
-3, 4, 11, 13, 15
+9 - assign pattern - wildcard-partial bad syntax
+assign a; variable v; constant c;
+Select a pattern a (_, _"2")
+SyntaxError
 5000
-10 - double wildcard, mismatch select p
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select p pattern a (_, _)
-first, second, third
+10 - assign pattern - wildcard-partial bad syntax
+assign a; variable v; constant c;
+Select a pattern a (_, "_2_")
+SyntaxError
 5000
-11 - synonym-wildcard, syn: assignment invalid
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a (a, _)
-semantic error
+11 - assign pattern - wildcard-partial bad syntax
+assign a; variable v; constant c;
+Select a pattern a (__, _"2"_)
+SyntaxError
 5000
-12 - synonym-wildcard, syn: print invalid
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a (pn, _)
-semantic error
+12 - assign pattern - wildcard-partial bad syntax
+assign a; variable v; constant c;
+Select a pattern aa (_, -"2"-)
+SyntaxError
 5000
-13 - synonym-wildcard, syn: read invalid
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a (r, _)
-semantic error
+13 - assign pattern - wildcard-partial bad syntax
+assign a; variable v; constant c;
+Select a pattern a (_, _'2'_)
+SyntaxError
 5000
-14 - synonym-wildcard, syn: statement invalid
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a (s, _)
-semantic error
+14 - assign pattern - wildcard-exact (exists)
+assign a; variable v; constant c;
+Select a pattern a (_, "student / 3 % 2")
+2
 5000
-15 - synonym-wildcard, syn: call invalid
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a (c, _)
-semantic error
+15 - assign pattern - wildcard-exact with brackets and whitespaces (exists)
+assign       a;    variable     v;    constant    c;    
+   Select     a    pattern a    (   _  , "    ((  ((            ((((          ((((((student   )))))   ))))) / (  3))   )))    %     (((  ((     2)))  ))")
+2
 5000
-16 - synonym-wildcard, syn: while invalid
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a (w, _)
-semantic error
+16 - assign pattern - wildcard-exact (mispelled)
+assign a; variable v; constant c;
+Select a pattern a (_, "Student / 3 % 2")
+
 5000
-17 - synonym-wildcard, syn: if invalid
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a (i, _)
-semantic error
-5000
-18 - synonym-wildcard, syn: constant invalid
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a (c, _)
-semantic error
-5000
-19 - synonym-wildcard, syn: procedure invalid
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a (p, _)
-semantic error
-5000
-20 - synonym-wildcard, syn: variable valid
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+17 - assign pattern - variable-wildcard
+assign a; variable v; constant c;
 Select a pattern a (v, _)
-3, 4, 11, 13, 15
+1,2,5,7,9,10,11,21,23,39,40,41,42,43
 5000
-21 - synonym-wildcard, syn: variable valid
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a (v, _)
-3, 4, 11, 13, 15
+18 - assign pattern - variable-wildcard bad syntax
+assign a; variable v; constant c;
+Select a pattern a (_v, _)
+SyntaxError
 5000
-22 - synonym-exact match line 3 
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a (v, "a+b-1")
-3
+19 - assign pattern - variable-wildcard bad syntax
+assign a; variable v; constant c;
+Select a such that pattern a (v, _)
+SyntaxError
 5000
-23 - synonym-exact match line 13 
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a (v, "2")
-13
+20 - assign pattern - variable-wildcard bad syntax
+assign a; variable v; constant c;
+Select a pattern a (V, _)
+SemanticError
 5000
-24 - synonym-exact match line 15
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a (v, "b")
-15
+21 - assign pattern - string-wildcard success
+assign a; variable v; constant c;
+Select a pattern a ("professor", _)
+2, 7, 23
 5000
-25 - synonym-partial match 1
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a (v, _"b"_)
-3, 11, 15
+22 - assign pattern - string-wildcard bad syntax
+assign a; variable v; constant c;
+Select a pattern a ("prof"_, _)
+SyntaxError
 5000
-26 - synonym-partial match 2
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a (v, _"a+b"_)
-3
-5000
-27 - synonym-partial match 3
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a (v, _"c / d"_)
-11
-5000
-28 - char string-wildcard, does not exist but in prg
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a ("b", _)
+23 - assign pattern - string-wildcard no match
+assign a; variable v; constant c;
+Select a pattern a ("professoR", _)
 
 5000
-29 - char string-wildcard, exists
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a ("c", _)
-3, 15
+24 - assign pattern - string-wildcard syntax error
+assign a; variable v; constant c;
+Select a pattern a (1, _)
+SyntaxError
 5000
-30 - char string-wildcard, does not exist in prg
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a ("x", _)
+25 - assign pattern - string-wildcard syntax error
+assign a; variable v; constant c;
+Select a pattern a ("1", _)
+SyntaxError
+5000
+26 - assign pattern - string-wildcard syntax error
+assign a; variable v; constant c;
+Select a pattern a ("0module", _)
+SyntaxError
+5000
+27 - assign pattern - string-wildcard syntax error
+assign a; variable v; constant c;
+Select a pattern a ("_", _)
+SyntaxError
+5000
+28 - while pattern - variable
+while w; variable v; constant c;
+Select w pattern w (v, _)
+6,14,15,31,46
+5000
+29 - while pattern - undefined behaviour
+while w; variable v; constant c;
+Select w pattern w (c, _)
+SemanticError
+5000
+30 - while pattern - wildcard
+while w; variable v; constant c;
+Select w pattern w (_, _)
+6,12,13,14,15,31,46
+5000
+31 - while pattern - quotes
+while w; variable v; constant c;
+Select w pattern w ("student", _)
+6
+5000
+32 - while pattern - quotes invalid syntax
+while w; variable v; constant c;
+Select w pattern w ("0student", _)
+SyntaxError
+5000
+33 - while pattern - quotes invalid syntax
+while w; variable v; constant c;
+Select w pattern w ("_", _)
+SyntaxError
+5000
+34 - while pattern - quotes invalid syntax
+while w; variable v; constant c;
+Select w pattern w ("0", _)
+SyntaxError
+5000
+35 - while pattern - quotes no match
+while w; variable v; constant c;
+Select w pattern w ("variable", _)
 
 5000
-31 - char string-wildcard, capitalised, does not exist
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a ("C", _)
+36 - while pattern - quotes invalid syntax
+while w; variable v; constant c;
+Select w pattern w ('professor', _)
+SyntaxError
+5000
+37 - while pattern - quotes invalid syntax
+while w; variable v; constant c;
+Select w pattern w ("professor', _)
+SyntaxError
+5000
+38 - while pattern - quotes invalid syntax
+while w; variable v; constant c;
+Select w pattern w ('professor", _)
+SyntaxError
+5000
+39 - while pattern - quotes invalid syntax
+while w; variable v; constant c;
+Select w pattern w (professor"", _)
+SyntaxError
+5000
+40 - while pattern - quotes invalid syntax
+while w; variable v; constant c;
+Select w pattern w (professor"professor", _)
+SyntaxError
+5000
+41 - while pattern - quotes invalid syntax
+while w; variable v; constant c;
+Select w pattern w ("professor", __)
+SyntaxError
+5000
+42 - while pattern - quotes invalid syntax
+while w; variable v; constant c;
+Select w pattern w ("(professor)", _)
+SyntaxError
+5000
+43 - while pattern - quotes empty
+while w; variable v; constant c;
+Select w pattern w ("", _)
+SyntaxError
+5000
+44 - if pattern - wildcard
+if i; variable v; constant c;
+Select i pattern i (_,_,_)
+8,17,22,32,35,36,37,38
+5000
+45 - if pattern - wildcard bad syntax
+if i; variable v; constant c;
+Select i pattern i (__,_,_)
+SyntaxError
+5000
+46 - if pattern - variable
+if i; variable v; constant c;
+Select i pattern i (v,_,_)
+8,22,32,35,36,37,38
+5000
+47 - if pattern - invalid entref
+if i; variable v; constant c;
+Select i pattern i (c,_,_)
+SemanticError
+5000
+48 - if pattern - invalid first
+if i; variable v; constant c;
+Select i pattern i (0,_,_)
+SyntaxError
+5000
+49 - if pattern - quotes empty
+if i; variable v; constant c;
+Select i pattern i ("",_,_)
+SyntaxError
+5000
+50 - if pattern - quotes invalid
+if i; variable v; constant c;
+Select i pattern i ("0",_,_)
+SyntaxError
+5000
+51 - if pattern - quotes invalid
+if i; variable v; constant c;
+Select i pattern i ("_",_,_)
+SyntaxError
+5000
+52 - if pattern - quotes valid
+if i; variable v; constant c;
+Select i pattern i ("true",_,_)
+35,36
+5000
+53 - if pattern - quotes no match
+if i; variable v; constant c;
+Select i pattern i ("True",_,_)
 
 5000
-32 - char string-exact match, exists 
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a ("c", "b")
-15
+54 - if pattern - quotes bad syntax
+if i; variable v; constant c;
+Select i pattern i ("true",__,_)
+SyntaxError
 5000
-33 - char string-exact match, does not exist
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a ("c", "a+b")
-
+55 - if pattern - quotes bad syntax
+if i; variable v; constant c;
+Select i pattern i ("tr ue",_,_)
+SyntaxError
 5000
-34 - char string-partial match, exists
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a ("c", _"a+b"_)
-3
+56 - if pattern - quotes invalid character
+if i; variable v; constant c;
+Select i pattern i ("Ś",_,_)
+SyntaxError
 5000
-35 - char string-partial match, does not exist
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select a pattern a ("c", _"b - 1"_)
-
+57 - if pattern - quotes invalid character
+if i; variable v; constant c;
+Select i pattern i ("文",_,_)
+SyntaxError
+5000
+58 - assign pattern - wildcard-partial (everything) | success
+assign a; variable v; constant c;
+Select a pattern a (_, _"student / 3 % 2"_)
+2
 5000

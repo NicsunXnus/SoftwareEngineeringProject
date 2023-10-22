@@ -1,0 +1,95 @@
+1 - all statements
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s
+1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48
+5000
+2 - all reads
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select r
+4,24,25,30,34,44,47
+5000
+3 - all prints
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select pn
+3,18,19,27,48
+5000
+4 - all calls
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select cl
+16,20,26,28,29,33,45
+5000
+5 - all whiles
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select w
+6,12,13,14,15,31,46
+5000
+6 - all ifs
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select i
+8,17,22,32,35,36,37,38
+5000
+7 - all assigns
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select a
+1,2,5,7,9,10,11,21,23,39,40,41,42,43
+5000
+8 - all variables
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select v
+student, professor, classes, module, exception, true, false, error
+5000
+9 - all constants
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select c
+0, 1, 2, 3, 4, 5, 6
+5000
+10 - all procedures
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select p
+NUS, exception, classes, error
+5000
+11 - missing declaration
+stmt S;
+Select s
+SemanticError
+5000
+12 - Select keyword
+constant BOOLEAN;
+Select BOOLEAN
+0, 1, 2, 3, 4, 5, 6
+5000
+13 - Invalid character
+stmt s;
+Śelect s
+SyntaxError
+5000
+14 - Invalid character
+variable 文;
+Select 文
+SyntaxError
+5000
+15 - wrong capitalisation
+Variable r;
+Select r
+SyntaxError
+5000
+16 - wrong capitalisation
+variable r;
+select r
+SyntaxError
+5000
+17 - wrong capitalisation
+variable r;
+SElect r
+SyntaxError
+5000
+18 - Select keyword
+constant Select;
+Select Select
+0, 1, 2, 3, 4, 5, 6
+5000
+19 - Select keyword
+constant constant;
+Select constant
+0, 1, 2, 3, 4, 5, 6
+5000

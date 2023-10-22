@@ -134,7 +134,7 @@ namespace UnitTesting
 			Assert::IsTrue(test[3] == "\"v1\"");
 			Assert::IsTrue(test[4] == ",");
 			Assert::IsTrue(test[5] == "_");
-			Assert::IsTrue(test[6] == "\"1+2\"");
+			Assert::IsTrue(test[6] == "\"1 + 2\"");
 			Assert::IsTrue(test[7] == "_");
 			Assert::IsTrue(test[8] == ")");
 			Assert::IsTrue(test[9] == "and");
@@ -143,7 +143,7 @@ namespace UnitTesting
 			Assert::IsTrue(test[12] == "(");
 			Assert::IsTrue(test[13] == "\"!@#$\"");
 			Assert::IsTrue(test[14] == ",");
-			Assert::IsTrue(test[15] == "\"a123/3\"");
+			Assert::IsTrue(test[15] == "\"a123 / 3\"");
 			Assert::IsTrue(test[16] == ")");
 		}
 
@@ -500,5 +500,71 @@ namespace UnitTesting
 
 			Assert::IsTrue(static_cast<int>(test.size()) == 15);
 		}
+
+
+
+
+			TEST_METHOD(TestTokenizeValidQueryWhiteSpaces)
+		{
+			vector<string> test = PQLTokenizer::tokenize("stmt s    ;    read    r  ;    print   pn   ;    call  cl; while w; if i; assign a; variable v; constant c; procedure p;         Select    \t\f\v\n\r\b           pn                     such                     that               Follows                                     (                1      ,     2     )       ");
+			Assert::IsTrue(test[0] == "stmt");
+			Assert::IsTrue(test[1] == "s");
+			Assert::IsTrue(test[2] == ";");
+			Assert::IsTrue(test[3] == "read");
+			Assert::IsTrue(test[4] == "r");
+			Assert::IsTrue(test[5] == ";");
+			Assert::IsTrue(test[6] == "print");
+			Assert::IsTrue(test[7] == "pn");
+			Assert::IsTrue(test[8] == ";");
+			Assert::IsTrue(test[9] == "call");
+			Assert::IsTrue(test[10] == "cl");
+			Assert::IsTrue(test[11] == ";");
+			Assert::IsTrue(test[12] == "while");
+			Assert::IsTrue(test[13] == "w");
+			Assert::IsTrue(test[14] == ";");
+			Assert::IsTrue(test[15] == "if");
+			Assert::IsTrue(test[16] == "i");
+			Assert::IsTrue(test[17] == ";");
+			Assert::IsTrue(test[18] == "assign");
+			Assert::IsTrue(test[19] == "a");
+			Assert::IsTrue(test[20] == ";");
+			Assert::IsTrue(test[21] == "variable");
+			Assert::IsTrue(test[22] == "v");
+			Assert::IsTrue(test[23] == ";");
+			Assert::IsTrue(test[24] == "constant");
+			Assert::IsTrue(test[25] == "c");
+			Assert::IsTrue(test[26] == ";");
+			Assert::IsTrue(test[27] == "procedure");
+			Assert::IsTrue(test[28] == "p");
+			Assert::IsTrue(test[29] == ";");
+			Assert::IsTrue(test[30] == "Select");
+			Assert::IsTrue(test[31] == "pn");
+			Assert::IsTrue(test[32] == "such");
+			Assert::IsTrue(test[33] == "that");
+			Assert::IsTrue(test[34] == "Follows");
+			Assert::IsTrue(test[35] == "(");
+			Assert::IsTrue(test[36] == "1");
+			Assert::IsTrue(test[37] == ",");
+			Assert::IsTrue(test[38] == "2");
+			Assert::IsTrue(test[39] == ")");
+
+			Assert::IsTrue(static_cast<int>(test.size()) == 40);
+		}
+
+		TEST_METHOD(TestTokenizePatternSpaceInIdent)
+			{
+				vector<string> test = PQLTokenizer::tokenize("Select a pattern a (\"te st\",_)");
+				Assert::IsTrue(test[0] == "Select");
+				Assert::IsTrue(test[1] == "a");
+				Assert::IsTrue(test[2] == "pattern");
+				Assert::IsTrue(test[3] == "a");
+				Assert::IsTrue(test[4] == "(");
+				Assert::IsTrue(test[5] == "\"te st\"");
+				Assert::IsTrue(test[6] == ",");
+				Assert::IsTrue(test[7] == "_");
+				Assert::IsTrue(test[8] == ")");
+
+				Assert::IsTrue(static_cast<int>(test.size()) == 9);
+			}
 	};
 }
