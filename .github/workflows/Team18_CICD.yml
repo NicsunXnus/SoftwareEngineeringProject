@@ -56,20 +56,15 @@ jobs:
             cd Team18/Code18/Release
             #.\AutoTester.exe ..\..\Tests18\Sample_source.txt ..\..\Tests18\Sample_queries.txt ..\Tests\out.xml
             .\AutoTester.exe ..\..\Tests18\Milestone2\single_calls_source.txt ..\..\Tests18\Milestone2\single_calls_queries.txt ..\Tests\out.xml
-      - name: Current directory
-        run: |
-            cd Team18/Code18/Tests
-            dir
       - name: Add out.xml commit
         run: |
           git add -f Team18\Code18\Tests\out.xml
-          #git commit -m "Adding out.xml from Workflow"
       - name: Push out.xml to master
         uses: actions-js/push@master
         with:
            github_token: ${{ secrets.GITHUB_TOKEN }}
-           message: 'Adding out.xml from Workflow - $(date +"%Y-%m-%d %H:%M:%S")'
-           branch: 'output'
+           message: 'Adding out.xml from Workflow'
+           branch: 'master'
            force: true             
       - name: Run Tests
         working-directory: Team18/Code18\Release
