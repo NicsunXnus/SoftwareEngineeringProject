@@ -54,8 +54,8 @@ jobs:
             msbuild 'Team18/Code18/StartupSPASolution.sln' /p:configuration=${{ matrix.configuration }} /p:platform=${{ matrix.platform }}
             if (-not (Test-Path Team18/Code18/Tests/out.xml)) { New-Item Team18/Code18/Tests/out.xml -ItemType File }
             cd Team18/Code18/Release
-            .\AutoTester.exe ..\..\Tests18\Sample_source.txt ..\..\Tests18\Sample_queries.txt ..\Tests\out.xml
-            #.\AutoTester.exe ..\..\Tests18\Milestone2\single_calls_source.txt ..\..\Tests18\Milestone2\single_calls_queries.txt ..\Tests\out.xml
+            #.\AutoTester.exe ..\..\Tests18\Sample_source.txt ..\..\Tests18\Sample_queries.txt ..\Tests\out.xml
+            .\AutoTester.exe ..\..\Tests18\Milestone2\single_calls_source.txt ..\..\Tests18\Milestone2\single_calls_queries.txt ..\Tests\out.xml
       - name: Add out.xml commit
         run: |
           git add -f Team18\Code18\Tests\out.xml
