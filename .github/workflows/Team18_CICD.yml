@@ -50,10 +50,19 @@ jobs:
       - name: Build solution
         run: |
             msbuild 'Team18/Code18/StartupSPASolution.sln' /p:configuration=${{ matrix.configuration }} /p:platform=${{ matrix.platform }}
+            cd Team18/Code18/Tests
+            dir
+            
             if (-not (Test-Path Team18/Code18/Tests/out.xml)) { New-Item Team18/Code18/Tests/out.xml -ItemType File }
+            dir
+            cat out.xml
+            echo "Done"
+            cd ../../..
             cd Team18/Code18/Release
             #.\AutoTester.exe ..\..\Tests18\Sample_source.txt ..\..\Tests18\Sample_queries.txt ..\Tests\out.xml
-            .\AutoTester.exe ..\..\Tests18\Milestone2\single_calls_source.txt ..\..\Tests18\Milestone2\single_calls_queries.txt ..\Tests\out.xml      
+            .\AutoTester.exe ..\..\Tests18\Milestone2\single_calls_source.txt ..\..\Tests18\Milestone2\single_calls_queries.txt ..\Tests\out.xml
+            cat ../Tests/out.xml
+            echo "Commit"
       - name: Add out.xml
         uses: actions-js/push@master
         with:
