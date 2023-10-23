@@ -53,14 +53,17 @@ jobs:
             cd Team18/Code18/Tests
             dir
             cd ../../..
+            echo "Before creating out.xml"
             if (-not (Test-Path Team18/Code18/Tests/out.xml)) { New-Item Team18/Code18/Tests/out.xml -ItemType File }
             cd Team18/Code18/Tests
             dir
+            echo "After creating out.xml"
             cd ../../..
             cd Team18/Code18/Release
             #.\AutoTester.exe ..\..\Tests18\Sample_source.txt ..\..\Tests18\Sample_queries.txt ..\Tests\out.xml
             .\AutoTester.exe ..\..\Tests18\Milestone2\single_calls_source.txt ..\..\Tests18\Milestone2\single_calls_queries.txt ..\Tests\out.xml
             cd ../Tests
+            echo "After running AutoTester"
             dir
       - name: Add out.xml
         uses: actions-js/push@master
