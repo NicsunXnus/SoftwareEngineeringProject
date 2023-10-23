@@ -60,15 +60,17 @@ jobs:
         run: |
             cd Team18/Code18/Tests
             dir
-      - name: Add out.xml
+      - name: Add out.xml commit
+        run: |
+          git add -f Team18\Code18\Tests\out.xml
+          #git commit -m "Adding out.xml from Workflow"
+      - name: Push out.xml to master
         uses: actions-js/push@master
         with:
            github_token: ${{ secrets.GITHUB_TOKEN }}
-           message: 'Adding out.xml from Workflow'
-           branch: 'master'
-           directory: 'Team18/Code18/Tests'
-           force: true   
-                       
+           message: 'Adding out.xml from Workflow - $(date +"%Y-%m-%d %H:%M:%S")'
+           branch: 'output'
+           force: true             
       - name: Run Tests
         working-directory: Team18/Code18\Release
         run: vstest.console.exe UnitTesting.dll
