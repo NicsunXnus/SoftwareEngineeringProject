@@ -50,22 +50,23 @@ jobs:
       - name: Build solution
         run: |
             msbuild 'Team18/Code18/StartupSPASolution.sln' /p:configuration=${{ matrix.configuration }} /p:platform=${{ matrix.platform }}
+            cd Team18/Code18/Tests
+            dir
+            cd ../../..
             if (-not (Test-Path Team18/Code18/Tests/out.xml)) { New-Item Team18/Code18/Tests/out.xml -ItemType File }
             cd Team18/Code18/Tests
             dir
-            cat out.xml
-            echo "Done"
             cd ../../..
             cd Team18/Code18/Release
             #.\AutoTester.exe ..\..\Tests18\Sample_source.txt ..\..\Tests18\Sample_queries.txt ..\Tests\out.xml
             .\AutoTester.exe ..\..\Tests18\Milestone2\single_calls_source.txt ..\..\Tests18\Milestone2\single_calls_queries.txt ..\Tests\out.xml
-            cat ../Tests/out.xml
-            echo "Commit"
+            cd ../Tests
+            dir
       - name: Add out.xml
         uses: actions-js/push@master
         with:
            github_token: ${{ secrets.GITHUB_TOKEN }}
-           message: 'Adding out.xml from Workflow - $(date +"%Y-%m-%d %H:%M:%S")'
+           message: 'Adding out.xml from Workflow'
            branch: 'master'
            force: true   
                        
