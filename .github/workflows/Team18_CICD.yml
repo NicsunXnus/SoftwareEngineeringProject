@@ -71,4 +71,4 @@ jobs:
         run: vstest.console.exe UnitTesting.dll
       - name: Run System Tests
         working-directory: Team18/Code18/Release
-        run: vstest console.exe SystemTesting.dll
+        run: vstest.console.exe SystemTesting.dll
