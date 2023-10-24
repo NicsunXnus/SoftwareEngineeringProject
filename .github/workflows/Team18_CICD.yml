@@ -66,6 +66,9 @@ jobs:
            message: 'Adding out.xml from Workflow'
            branch: 'output'
            force: true             
-      - name: Run Tests
+      - name: Run Unit Tests
         working-directory: Team18/Code18\Release
         run: vstest.console.exe UnitTesting.dll
+      - name: Run System Tests
+        working-directory: Team18/Code18/Release
+        run: vstest console.exe SystemTesting.dll
