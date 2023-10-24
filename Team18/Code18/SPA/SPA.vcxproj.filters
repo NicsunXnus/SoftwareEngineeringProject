@@ -192,6 +192,9 @@
     <ClCompile Include="..\source\QPS\QueryObjects\ClauseTableFilter.cpp">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryObjects\NextStarFilter.cpp">
+      <Filter>Source Files\QPS\QueryObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\ApplicationWrapper.h">
@@ -433,6 +436,9 @@
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\QueryObjects\ClauseTableFilter.h">
+      <Filter>Source Files\QPS\QueryObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryObjects\NextStarFilter.h">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClInclude>
   </ItemGroup>

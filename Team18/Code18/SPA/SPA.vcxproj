@@ -22,6 +22,7 @@
     <ClCompile Include="..\source\QPS\QueryObjects\FollowsParentObject.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\ModifiesUsesObject.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\NextObjects.cpp" />
+    <ClCompile Include="..\source\QPS\QueryObjects\NextStarFilter.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\PatternClauseObject.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\PatternClauseObjectFactory.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\QueryObjectFactory.cpp" />
@@ -94,6 +95,7 @@
     <ClInclude Include="..\source\QPS\QueryObjects\DesignObjects.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\DesignObjectsFactory.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\InvalidQueryObject.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\NextStarFilter.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\PatternClauseObject.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\PatternClauseObjectFactory.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\QueryEval.h" />

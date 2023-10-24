@@ -7,7 +7,7 @@ shared_ptr<QueryResultsTable> ClauseObject::handleCallsCallsStar(shared_ptr<Data
 	if (!isValidSynonymType(validEntitiesArg1, validEntitiesArg2)) {
 		return QueryResultsTable::createEmptyTable();
 	}
-	shared_ptr<ClauseFilterHandler> clauseHandler = ClauseFilterFactory::create(getArg1(), getArg2());
+	shared_ptr<QueryEval> clauseHandler = ClauseFilterFactory::create(getArg1(), getArg2());
 	shared_ptr<QueryResultsTable> result = clauseHandler->evaluate(dataAccessLayer, clause);
 	return result;
 }

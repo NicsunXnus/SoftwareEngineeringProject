@@ -43,6 +43,7 @@ protected:
 	shared_ptr<QueryResultsTable> handleModifies(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause);
 	shared_ptr<QueryResultsTable> handleFollowsParents(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause);
 	shared_ptr<QueryResultsTable> handleNext(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause);
+	shared_ptr<QueryResultsTable> handleNextStar(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause);
 };
 
 /*

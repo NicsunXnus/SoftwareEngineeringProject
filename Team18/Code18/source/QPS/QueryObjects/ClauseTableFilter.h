@@ -18,7 +18,6 @@ public:
 	ClauseFilterHandler(shared_ptr<ClauseArg> argument1, shared_ptr<ClauseArg> argument2) : arg1(argument1), arg2(argument2) {
 
 	}
-	virtual shared_ptr<QueryResultsTable> evaluate(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) = 0;
 };
 
 /*
@@ -210,36 +209,7 @@ inline unordered_set<string> removeMapValuesReturnSet(shared_ptr<ClauseArg> arg,
 */
 class ClauseFilterFactory {
 public:
-	static shared_ptr<ClauseFilterHandler> create(shared_ptr<ClauseArg> argument1, shared_ptr<ClauseArg> argument2) {
-		if (argument1->isSynonym() && argument2->isSynonym()) {
-			return make_shared<ClauseSynSyn>(argument1, argument2);
-		}
-		else if (argument1->isSynonym() && argument2->isWildcard()) {
-			return make_shared<ClauseSynWildcard>(argument1, argument2);
-		}
-		else if (argument1->isSynonym() && (argument2->isInteger() || argument2->isIdentifier())) {
-			return make_shared<ClauseSynIntOrIdent>(argument1, argument2);
-		}
-		else if ((argument1->isInteger() || argument1->isIdentifier()) && argument2->isSynonym()) {
-			return make_shared<ClauseIntOrIdentSyn>(argument1, argument2);
-		}
-		else if ((argument1->isInteger() || argument1->isIdentifier()) && argument2->isWildcard()) {
-			return make_shared<ClauseIntOrIdentWildcard>(argument1, argument2);
-		}
-		else if ((argument1->isInteger() || argument1->isIdentifier()) && (argument2->isInteger() || argument2->isIdentifier())) {
-			return make_shared<ClauseIntOrIdentIntOrIdent>(argument1, argument2);
-		}
-		else if (argument1->isWildcard() && argument2->isSynonym()) {
-			return make_shared<ClauseWildcardSyn>(argument1, argument2);
-		}
-		else if (argument1->isWildcard() && argument2->isWildcard()) {
-			return make_shared<ClauseWildcardWildcard>(argument1, argument2);
-		}
-		else if (argument1->isWildcard() && (argument2->isInteger() || argument2->isIdentifier())) {
-			return make_shared<ClauseWildcardIntOrIdent>(argument1, argument2);
-		}
-		throw SemanticErrorException("Error in clause filter factory, invalid argument combination");
-	}
+	static shared_ptr<QueryEval> create(shared_ptr<ClauseArg> argument1, shared_ptr<ClauseArg> argument2);
 };
 
 

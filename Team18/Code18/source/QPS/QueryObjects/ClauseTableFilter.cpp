@@ -74,3 +74,34 @@ shared_ptr<QueryResultsTable> ClauseWildcardWildcard::evaluate(shared_ptr<DataAc
 	table->setSignificant(PKBClauseData.size() > 0);
 	return table;
 }
+
+shared_ptr<QueryEval> ClauseFilterFactory::create(shared_ptr<ClauseArg> argument1, shared_ptr<ClauseArg> argument2) {
+	if (argument1->isSynonym() && argument2->isSynonym()) {
+		return make_shared<ClauseSynSyn>(argument1, argument2);
+	}
+	else if (argument1->isSynonym() && argument2->isWildcard()) {
+		return make_shared<ClauseSynWildcard>(argument1, argument2);
+	}
+	else if (argument1->isSynonym() && (argument2->isInteger() || argument2->isIdentifier())) {
+		return make_shared<ClauseSynIntOrIdent>(argument1, argument2);
+	}
+	else if ((argument1->isInteger() || argument1->isIdentifier()) && argument2->isSynonym()) {
+		return make_shared<ClauseIntOrIdentSyn>(argument1, argument2);
+	}
+	else if ((argument1->isInteger() || argument1->isIdentifier()) && argument2->isWildcard()) {
+		return make_shared<ClauseIntOrIdentWildcard>(argument1, argument2);
+	}
+	else if ((argument1->isInteger() || argument1->isIdentifier()) && (argument2->isInteger() || argument2->isIdentifier())) {
+		return make_shared<ClauseIntOrIdentIntOrIdent>(argument1, argument2);
+	}
+	else if (argument1->isWildcard() && argument2->isSynonym()) {
+		return make_shared<ClauseWildcardSyn>(argument1, argument2);
+	}
+	else if (argument1->isWildcard() && argument2->isWildcard()) {
+		return make_shared<ClauseWildcardWildcard>(argument1, argument2);
+	}
+	else if (argument1->isWildcard() && (argument2->isInteger() || argument2->isIdentifier())) {
+		return make_shared<ClauseWildcardIntOrIdent>(argument1, argument2);
+	}
+	throw SemanticErrorException("Error in clause filter factory, invalid argument combination");
+}

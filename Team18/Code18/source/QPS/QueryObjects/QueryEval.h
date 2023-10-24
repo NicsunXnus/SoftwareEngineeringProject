@@ -14,7 +14,7 @@ using namespace std;
 */
 class QueryEval {
 public:
-	
+	virtual shared_ptr<QueryResultsTable> evaluate(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) = 0;
 };
 
 

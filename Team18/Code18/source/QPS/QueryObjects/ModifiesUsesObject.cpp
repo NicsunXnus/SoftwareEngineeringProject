@@ -7,7 +7,7 @@ shared_ptr<QueryResultsTable> ClauseObject::handleUses(shared_ptr<DataAccessLaye
 	if (!isValidSynonymType(validEntitiesArg1, validEntitiesArg2)) {
 		return QueryResultsTable::createEmptyTable();
 	}
-	shared_ptr<ClauseFilterHandler> clauseHandler = ClauseFilterFactory::create(getArg1(), getArg2());
+	shared_ptr<QueryEval> clauseHandler = ClauseFilterFactory::create(getArg1(), getArg2());
 	shared_ptr<QueryResultsTable> result = clauseHandler->evaluate(dataAccessLayer, clause);
 	return result;
 }
@@ -18,7 +18,7 @@ shared_ptr<QueryResultsTable> ClauseObject::handleModifies(shared_ptr<DataAccess
 	if (!isValidSynonymType(validEntitiesArg1, validEntitiesArg2)) {
 		return QueryResultsTable::createEmptyTable();
 	}
-	shared_ptr<ClauseFilterHandler> clauseHandler = ClauseFilterFactory::create(getArg1(), getArg2());
+	shared_ptr<QueryEval> clauseHandler = ClauseFilterFactory::create(getArg1(), getArg2());
 	shared_ptr<QueryResultsTable> result = clauseHandler->evaluate(dataAccessLayer, clause);
 	return result;
 }
