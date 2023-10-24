@@ -37,12 +37,13 @@ protected:
 		}
 		return true;
 	}
-	
-	
+
+	shared_ptr<QueryResultsTable> handleCallsCallsStar(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause);
+	shared_ptr<QueryResultsTable> handleUses(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause);
+	shared_ptr<QueryResultsTable> handleModifies(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause);
+	shared_ptr<QueryResultsTable> handleFollowsParents(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause);
+	shared_ptr<QueryResultsTable> handleNext(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause);
 };
-
-
-
 
 /*
 * This class represents a Query object, for clause Uses with a statement ref as the first argument

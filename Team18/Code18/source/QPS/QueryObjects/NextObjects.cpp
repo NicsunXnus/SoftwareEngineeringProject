@@ -5,8 +5,8 @@
 
 typedef tuple<string, unordered_set<string>> NextStackElement; // parent, set of childs
 
-inline shared_ptr<QueryResultsTable> handleNext(shared_ptr<ClauseArg> arg1, shared_ptr<ClauseArg> arg2, shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
-	shared_ptr<ClauseFilterHandler> clauseHandler = ClauseFilterFactory::create(arg1, arg2);
+shared_ptr<QueryResultsTable> ClauseObject::handleNext(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
+	shared_ptr<ClauseFilterHandler> clauseHandler = ClauseFilterFactory::create(getArg1(), getArg2());
 	shared_ptr<QueryResultsTable> result = clauseHandler->evaluate(dataAccessLayer, clause);
 	return result;
 }
@@ -50,7 +50,7 @@ inline shared_ptr<QueryResultsTable> handleNextStarIntInt(shared_ptr<ClauseArg> 
 	
 }
 
-// DFS, the idea is to start from the first integer, then traverse and add each node visited to a set. This set represents the visited nodes
+// DFS, the idea is to start from the integer, then traverse and add each node visited to a set. This set represents the visited nodes
 inline shared_ptr<QueryResultsTable> handleNextStarIntSynCombination(shared_ptr<ClauseArg> arg1, shared_ptr<ClauseArg> arg2, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
 	stack<NextStackElement> nextStack; // parent, set of childs
 	unordered_set<string> visited;
@@ -78,7 +78,7 @@ inline shared_ptr<QueryResultsTable> handleNextStarIntSynCombination(shared_ptr<
 			
 		}
 	}
-	unordered_set<string> filteredPKBClauseDataArg2 = filterSetReturnSet(arg2, dataAccessLayer, visited); // visited set is all the children nodes
+	unordered_set<string> filteredPKBClauseDataArg2 = filterSetReturnSet(arg2, dataAccessLayer, visited); // visited set is all the children nodes, filter out the relevant synonyms
 	return QueryResultsTable::createTable(svToString(arg2->getArgValue()), filteredPKBClauseDataArg2);
 
 
@@ -205,7 +205,7 @@ inline shared_ptr<QueryResultsTable> handleNextStar(shared_ptr<ClauseArg> arg1, 
 }
 
 shared_ptr<QueryResultsTable> NextObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) {
-	return handleNext(getArg1(), getArg2(), dataAccessLayer, NEXT);
+	return handleNext(dataAccessLayer, NEXT);
 }
 
 shared_ptr<QueryResultsTable> NextStarObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) {

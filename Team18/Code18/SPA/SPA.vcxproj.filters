@@ -189,9 +189,6 @@
     <ClCompile Include="..\source\QPS\QueryObjects\PatternClauseObject.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\PatternClauseObjectFactory.cpp" />
     <ClCompile Include="..\source\QPS\QueryValidator.cpp" />
-    <ClCompile Include="..\source\QPS\QueryObjects\QueryEval.cpp">
-      <Filter>Source Files\QPS\QueryObjects</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\QPS\QueryObjects\ClauseTableFilter.cpp">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClCompile>

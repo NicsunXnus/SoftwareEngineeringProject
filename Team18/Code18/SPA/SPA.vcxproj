@@ -24,7 +24,6 @@
     <ClCompile Include="..\source\QPS\QueryObjects\NextObjects.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\PatternClauseObject.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\PatternClauseObjectFactory.cpp" />
-    <ClCompile Include="..\source\QPS\QueryObjects\QueryEval.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\QueryObjectFactory.cpp" />
     <ClCompile Include="..\source\QPS\QueryParser.cpp" />
     <ClCompile Include="..\source\QPS\QueryValidator.cpp" />

@@ -7,7 +7,7 @@
 
 
 /*
-* This class encapsulates the logic handler for clauses (follows(*), modifies(P), uses, parent(*), next, calls(*) only)
+* This class encapsulates the logic handler for clauses (follows(*), modifies(P), uses(P), parent(*), next, calls(*) only)
 * Only for clauses that pull data from the PKB and convert it to a table through FILTERING the PKB data
 */
 class ClauseFilterHandler : public QueryEval {
@@ -120,6 +120,7 @@ public:
 	shared_ptr<QueryResultsTable> evaluate(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) override;
 };
 
+/* HELPER FUNCTIONS */
 inline StringMap filterMapKeyReturnMap(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
 	ENTITY typeArg1 = arg->getSynonym()->getEntityType();
 	unordered_set<string> PKBArg1EntityData = dataAccessLayer->getEntity(typeArg1);

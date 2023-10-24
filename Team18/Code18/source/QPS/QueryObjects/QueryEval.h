@@ -10,7 +10,7 @@ using namespace std;
 #include "../Errors/SemanticError.h"
 
 /*
-* This class encapsulates the logic handler for query objects
+* This abstract class encapsulates the logic handler for query objects
 */
 class QueryEval {
 public:
