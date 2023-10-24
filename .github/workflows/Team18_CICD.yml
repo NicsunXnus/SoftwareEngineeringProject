@@ -59,7 +59,7 @@ jobs:
       - name: Add out.xml commit
         run: |
           git add -f Team18\Code18\Tests\out.xml
-      - name: Push out.xml to master
+      - name: Push out.xml to output branch
         uses: actions-js/push@master
         with:
            github_token: ${{ secrets.GITHUB_TOKEN }}
