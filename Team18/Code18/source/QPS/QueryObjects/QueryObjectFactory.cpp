@@ -4,6 +4,7 @@
 #include "PatternClauseObjectFactory.h"
 #include "WithClauseObjectFactory.h"
 #include "ComparisonQueryObjectFactory.h"
+#include "BooleanObjectFactory.h"
 #include "../Errors/SyntaxError.h"
 
 shared_ptr<QueryObjectFactory> QueryObjectFactory::createFactory(string_view type) {
@@ -102,6 +103,11 @@ shared_ptr<QueryObjectFactory> QueryObjectFactory::createFactory(string_view typ
 	}
 	else if (type == "AttrRef=AttrRef"sv) {
 		return make_shared<AttrRefAttrRefComparisonFactory>();
+	}
+
+	/* Bool */
+	else if (type == "BOOLEAN"sv) {
+		return make_shared<BooleanObjectFactory>();
 	}
 
 	throw SyntaxErrorException("Invalid string token for design object");

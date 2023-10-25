@@ -5,6 +5,7 @@
 #include "../source/QPS/QueryObjects/PatternClauseObject.h"
 #include "../source/QPS/QueryObjects/WithClauseObject.h"
 #include "../source/QPS/QueryObjects/ComparisonQueryObject.h"
+#include "../source/QPS/QueryObjects/BooleanQueryObject.h"
 #include "../source/QPS/PQLTokenizer.h"
 #include <cassert>
 
@@ -1953,6 +1954,30 @@ namespace UnitTesting
 			Assert::IsTrue(qo[1]->getQueryObjectName() == "Static=AttrRef"sv);
 			Assert::IsTrue(typeid(*qo[2]) == typeid(AffectsObject));
 			Assert::IsTrue(qo[2]->getQueryObjectName() == "Affects"sv);
+		}
+
+		TEST_METHOD(TestSelectBOOL)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("stmt s; if i; Select BOOLEAN");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[0]) == typeid(BooleanQueryObject));
+			Assert::IsTrue(qo[0]->getQueryObjectName() == "BOOLEAN"sv);
+
+		}
+
+		TEST_METHOD(TestSelectBOOLSynonym)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("stmt BOOLEAN; Select BOOLEAN");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[0]) == typeid(StmtObject));
+			Assert::IsTrue(qo[0]->getQueryObjectName() == "BOOLEAN"sv);
+
 		}
 
 	};

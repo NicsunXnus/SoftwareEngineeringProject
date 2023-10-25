@@ -18,7 +18,7 @@ public:
 
 	// shouldn't be called, since a boolean object does not require PKB access
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) {
-		return null_ptr;
+		return nullptr;
 	}
 
 };

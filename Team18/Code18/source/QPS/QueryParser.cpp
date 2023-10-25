@@ -282,13 +282,14 @@ bool QueryParser::hasSuchThat(std::vector<string_view>& query, int index) {
 
 shared_ptr<QueryObject> QueryParser::createBooleanObject(std::vector<string_view>& query, int& index) {
 	string_view booleanStr = query[index];
+
+	++index;
+
 	if (isDeclared(booleanStr)) {
 		return this->synonyms[booleanStr];
 	}
-
 	shared_ptr<QueryObjectFactory> factory{ QueryObjectFactory::createFactory(booleanStr) };
 
-	++index;
 	return factory->create(booleanStr);
 }
 
