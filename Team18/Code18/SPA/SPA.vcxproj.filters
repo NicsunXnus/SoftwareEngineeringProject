@@ -187,10 +187,13 @@
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClCompile>
     <ClCompile Include="..\source\QPS\QueryObjects\PatternClauseObject.cpp">
-      <Filter>QPS\QueryObjects</Filter>
+      <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClCompile>
     <ClCompile Include="..\source\QPS\QueryObjects\PatternClauseObjectFactory.cpp">
-      <Filter>QPS\QueryObjects</Filter>
+      <Filter>Source Files\QPS\QueryObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryValidator.cpp">
+      <Filter>Source Files\QPS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -198,9 +201,6 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\source\ExceptionMessages.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\HelperFunctions.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\source\PKB.h">
@@ -427,6 +427,18 @@
     </ClInclude>
     <ClInclude Include="..\source\PKB\StorageClasses\EntityStorage.h">
       <Filter>Source Files\PKB\StorageClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\HelperFunctions.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryValidator.h">
+      <Filter>Source Files\QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryObjects\BooleanObjectFactory.h">
+      <Filter>Source Files\QPS\QueryObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryObjects\BooleanQueryObject.h">
+      <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
