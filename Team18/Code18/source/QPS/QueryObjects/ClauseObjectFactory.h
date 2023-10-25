@@ -397,7 +397,7 @@ public:
 
 
 		if (isArg1ValidStmtRef && isArg2ValidStmtRef) {
-			return make_shared<ParentStarObject>(clauseName, arg1, arg2);
+			return make_shared<AffectsObject>(clauseName, arg1, arg2);
 		}
 		else {
 			if (arg1->isSynonym() && !isArg1ValidStmtRef) {

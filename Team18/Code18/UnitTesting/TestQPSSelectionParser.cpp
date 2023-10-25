@@ -1897,6 +1897,64 @@ namespace UnitTesting
 			Assert::IsTrue(qo[1]->getQueryObjectName() == "Follows"sv);
 		}
 
+		TEST_METHOD(TestSingleAffects)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("stmt s;Select s such that Affects(1, 2)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[0]) == typeid(StmtObject));
+			Assert::IsTrue(qo[0]->getQueryObjectName() == "s"sv);
+			Assert::IsTrue(typeid(*qo[1]) == typeid(AffectsObject));
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "Affects"sv);
+		}
+
+		TEST_METHOD(TestAffectsIntSynAffectsSynWc)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("stmt s;Select s such that Affects(1,s) such that Affects(s, _)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[0]) == typeid(StmtObject));
+			Assert::IsTrue(qo[0]->getQueryObjectName() == "s"sv);
+			Assert::IsTrue(typeid(*qo[1]) == typeid(AffectsObject));
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "Affects"sv);
+			Assert::IsTrue(typeid(*qo[2]) == typeid(AffectsObject));
+			Assert::IsTrue(qo[2]->getQueryObjectName() == "Affects"sv);
+		}
+
+		TEST_METHOD(TestPatternIfAffectsWcWc)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("stmt s; if i;Select s pattern i (\"x\",_,_) such that Affects(_, _)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[0]) == typeid(StmtObject));
+			Assert::IsTrue(qo[0]->getQueryObjectName() == "s"sv);
+			Assert::IsTrue(typeid(*qo[1]) == typeid(IfPatternObject));
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "patternIf"sv);
+			Assert::IsTrue(typeid(*qo[2]) == typeid(AffectsObject));
+			Assert::IsTrue(qo[2]->getQueryObjectName() == "Affects"sv);
+		}
+
+		TEST_METHOD(TestWithProcNameNameAffectsSynSyn)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("stmt s; if i; procedure p; Select p.procName with p.procName = \"test\" such that Affects(_, _)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[0]) == typeid(ProcNameObject));
+			Assert::IsTrue(qo[0]->getQueryObjectName() == "procName"sv);
+			Assert::IsTrue(typeid(*qo[1]) == typeid(StaticAttrRefComparisonQueryObject));
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "Static=AttrRef"sv);
+			Assert::IsTrue(typeid(*qo[2]) == typeid(AffectsObject));
+			Assert::IsTrue(qo[2]->getQueryObjectName() == "Affects"sv);
+		}
+
 	};
 
 }
