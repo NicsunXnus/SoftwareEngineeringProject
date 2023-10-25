@@ -1,4 +1,6 @@
 #include "DesignExtractor.h"
+#include <memory>
+#include <thread>
 
 void DesignExtractor::extractEntities(shared_ptr<ProcessedProgram> processedProgram) {
     this->entityExtractor->extract(processedProgram);
@@ -6,12 +8,46 @@ void DesignExtractor::extractEntities(shared_ptr<ProcessedProgram> processedProg
 }
 
 void DesignExtractor::extractAbstractions(shared_ptr<ProcessedProgram> processedProgram) {
-    this->parentsExtractor->extractAbstractions(processedProgram);
-    this->followsExtractor->extractAbstractions(processedProgram);
-    this->callsExtractor->extractAbstractions(processedProgram);
-    this->usesExtractor->extractAbstractions(processedProgram);
-    this->modifiesExtractor->extractAbstractions(processedProgram);
-    this->nextExtractor->extractAbstractions(processedProgram);
+    // Create a list of threads
+    std::vector<std::thread> threads;
+
+    // Define lambda functions for each abstraction
+    auto parentsThread = [&] {
+        this->parentsExtractor->extractAbstractions(processedProgram);
+    };
+
+    auto followsThread = [&] {
+        this->followsExtractor->extractAbstractions(processedProgram);
+    };
+
+    auto callsThread = [&] {
+        this->callsExtractor->extractAbstractions(processedProgram);
+    };
+
+    auto usesThread = [&] {
+        this->usesExtractor->extractAbstractions(processedProgram);
+    };
+
+    auto modifiesThread = [&] {
+        this->modifiesExtractor->extractAbstractions(processedProgram);
+    };
+
+    auto nextThread = [&] {
+        this->nextExtractor->extractAbstractions(processedProgram);
+    };
+
+    // Start each abstraction in a separate thread
+    threads.emplace_back(parentsThread);
+    threads.emplace_back(followsThread);
+    threads.emplace_back(callsThread);
+    threads.emplace_back(usesThread);
+    threads.emplace_back(modifiesThread);
+    threads.emplace_back(nextThread);
+
+    // Join all threads to wait for them to complete
+    for (auto& thread : threads) {
+        thread.join();
+    }
 }
 
 void DesignExtractor::extractParents(shared_ptr<ProcessedProgram> processedProgram) {
@@ -141,3 +177,4 @@ void DesignExtractor::insertAbstractions() {
     PKB::insertor.addAbstraction(nextSet, NEXT);
 
 }
+
