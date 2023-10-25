@@ -161,14 +161,18 @@ vector<shared_ptr<QueryObject>> QueryParser::parseQuery(vector<string_view> quer
 	}
 
 	int selectTupleTokenCount{};
-	// check if is tuple
-	if (validator->isSelectTuple(query, currentWordIndex, selectTupleTokenCount)) {
+	if (isBoolean(query, currentWordIndex)) {
+		shared_ptr<QueryObject> booleanObject{ createBooleanObject(query, currentWordIndex) };
+
+		result.push_back(booleanObject);
+	}
+	else if (validator->isSelectTuple(query, currentWordIndex, selectTupleTokenCount)) { // check if is tuple
 		std::vector<shared_ptr<QueryObject>> selectQueryObjects{ createTupleObjects(query, currentWordIndex, selectTupleTokenCount) };
 
 		result.insert(result.end(), selectQueryObjects.begin(), selectQueryObjects.end());
 	}
 	else if (validator->isSelectElem(query, currentWordIndex, selectTupleTokenCount)) {
-		if (selectTupleTokenCount == 1 && !isDeclared(query, currentWordIndex)) {
+		if (selectTupleTokenCount == 1 && !isDeclared(query[currentWordIndex])) {
 			storeSemanticError(make_shared<SemanticErrorException>("Synonym not present in select clause, or synonym not declared"));
 			result.push_back(make_shared<StmtObject>("Placeholder query object, synonym not declared"));
 
@@ -248,11 +252,15 @@ vector<shared_ptr<QueryObject>> QueryParser::parseQuery(vector<string_view> quer
 	return result;
 }
 
-bool QueryParser::isDeclared(std::vector<string_view>& query, int index) {
+bool QueryParser::isBoolean(std::vector<string_view>& query, int index) {
 	if (index >= static_cast<int>(query.size())) {
 		return false;
 	}
-	string_view synonym = query[index];
+
+	return query[index] == "BOOLEAN"sv;
+}
+
+bool QueryParser::isDeclared(std::string_view synonym) {
 	return this->synonyms.find(synonym) != this->synonyms.end();
 }
 
@@ -272,6 +280,18 @@ bool QueryParser::hasSuchThat(std::vector<string_view>& query, int index) {
 	return index < static_cast<int>(query.size() - 1) && query[index] == "such"sv && query[index + 1] == "that"sv;
 }
 
+shared_ptr<QueryObject> QueryParser::createBooleanObject(std::vector<string_view>& query, int& index) {
+	string_view booleanStr = query[index];
+	if (isDeclared(booleanStr)) {
+		return this->synonyms[booleanStr];
+	}
+
+	shared_ptr<QueryObjectFactory> factory{ QueryObjectFactory::createFactory(booleanStr) };
+
+	++index;
+	return factory->create(booleanStr);
+}
+
 shared_ptr<QueryObject> QueryParser::createClauseObj(std::vector<string_view>& query, int& index) {
 	string_view relationalReference{ query[index] };
 
@@ -284,7 +304,7 @@ shared_ptr<QueryObject> QueryParser::createClauseObj(std::vector<string_view>& q
 	string_view arg1Name{ query[index + 2] };
 	shared_ptr<SynonymObject> synonym1;
 	if (SynonymObject::isValid(arg1Name)) {
-		if (synonyms.find(arg1Name) == synonyms.end()) { // argument is an undeclared synonym
+		if (!isDeclared(arg1Name)) { // argument is an undeclared synonym
 			storeSemanticError(make_shared<SemanticErrorException>("Semantic error: Synonym in clause is undeclared"));
 		}
 		synonym1 = make_shared<SynonymObject>(arg1Name, synonymToEntity[arg1Name]);
@@ -295,7 +315,7 @@ shared_ptr<QueryObject> QueryParser::createClauseObj(std::vector<string_view>& q
 	string_view arg2Name{ query[index + 4] };
 	shared_ptr<SynonymObject> synonym2;
 	if (SynonymObject::isValid(arg2Name)) {
-		if (synonyms.find(arg2Name) == synonyms.end()) { // argument is an undeclared synonym
+		if (!isDeclared(arg2Name)) { // argument is an undeclared synonym
 			storeSemanticError(make_shared<SemanticErrorException>("Semantic error: Synonym in clause is undeclared"));
 		}
 		synonym2 = make_shared<SynonymObject>(arg2Name, synonymToEntity[arg2Name]);
@@ -322,7 +342,7 @@ shared_ptr<QueryObject> QueryParser::createPatternObject(std::vector<string_view
 	if (!SynonymObject::isValid(patternSynonymArg)) {
 		throw SyntaxErrorException("Syntax error: Pattern synonym is not syntactically correct");
 	}
-	else if (synonyms.find(patternSynonymArg) == synonyms.end()) { // synonym is undeclared
+	else if (!isDeclared(patternSynonymArg)) { // synonym is undeclared
 		storeSemanticError(make_shared<SemanticErrorException>("Semantic error: Pattern synonym is undeclared"));
 	}
 	shared_ptr<SynonymObject> patternSynonymObj{ make_shared<SynonymObject>(patternSynonymArg, synonymToEntity[patternSynonymArg]) };
@@ -333,7 +353,7 @@ shared_ptr<QueryObject> QueryParser::createPatternObject(std::vector<string_view
 	string_view arg1Name{ query[index + 2] };
 	shared_ptr<SynonymObject> synonym1{};
 	if (SynonymObject::isValid(arg1Name)) {
-		if (synonyms.find(arg1Name) == synonyms.end()) { // argument is an undeclared synonym
+		if (!isDeclared(arg1Name)) { // argument is an undeclared synonym
 			storeSemanticError(make_shared<SemanticErrorException>("Semantic error: Pattern synonym is undeclared"));
 		}
 		synonym1 = make_shared<SynonymObject>(arg1Name, synonymToEntity[arg1Name]);
@@ -383,7 +403,7 @@ shared_ptr<QueryObject> QueryParser::createAttrRefObject(std::vector<string_view
 		throw SyntaxErrorException("Invalid synonym grammar syntax in attrRef");
 	}
 
-	if (synonyms.find(synonymName) == synonyms.end()) { // synonym is not declared
+	if (!isDeclared(synonymName)) { // synonym is not declared
 		storeSemanticError(make_shared<SemanticErrorException>("Synonym in attrRef is undeclared"));
 
 		index += 3;
@@ -407,7 +427,7 @@ shared_ptr<QueryObject> QueryParser::createAttrRefObjectInTuple(string_view syno
 		throw SyntaxErrorException("Invalid synonym grammar syntax in attrRef");
 	}
 
-	if (synonyms.find(synonymName) == synonyms.end()) { // synonym is not declared
+	if (!isDeclared(synonymName)) { // synonym is not declared
 		storeSemanticError(make_shared<SemanticErrorException>("Synonym in attrRef is undeclared"));
 		return make_shared<StmtObject>("Placeholder, synonym in attrRef is undeclared");
 	}
@@ -505,7 +525,7 @@ shared_ptr<QueryObject> QueryParser::createComparisonObject(std::vector<string_v
 		if (!SynonymObject::isValid(synonymName)) {
 			throw SyntaxErrorException("Invalid synonym grammar syntax in comparison");
 		}
-		if (synonyms.find(synonymName) == synonyms.end()) { // synonym is not declared
+		if (!isDeclared(synonymName)) { // synonym is not declared
 			storeSemanticError(make_shared<SemanticErrorException>("Synonym in comparison is undeclared"));
 
 			index += tokenCount;
@@ -541,7 +561,7 @@ shared_ptr<QueryObject> QueryParser::createComparisonObject(std::vector<string_v
 		if (!SynonymObject::isValid(synonymName1)) {
 			throw SyntaxErrorException("Invalid synonym 1 grammar syntax in comparison");
 		}
-		if (synonyms.find(synonymName1) == synonyms.end()) { // synonym is not declared
+		if (!isDeclared(synonymName1)) { // synonym is not declared
 			storeSemanticError(make_shared<SemanticErrorException>("Synonym 1 in comparison is undeclared"));
 
 			index += tokenCount;
@@ -560,7 +580,7 @@ shared_ptr<QueryObject> QueryParser::createComparisonObject(std::vector<string_v
 		if (!SynonymObject::isValid(synonymName2)) {
 			throw SyntaxErrorException("Invalid synonym 2 grammar syntax in comparison");
 		}
-		if (synonyms.find(synonymName2) == synonyms.end()) { // synonym is not declared
+		if (!isDeclared(synonymName2)) { // synonym is not declared
 			storeSemanticError(make_shared<SemanticErrorException>("Synonym 2 in comparison is undeclared"));
 			return make_shared<StmtObject>("Placeholder, synonym 2 in comparison is undeclared");
 		}

@@ -113,14 +113,20 @@ private:
 	// Helper function to check if Select keyword is present
 	bool hasSelect(std::vector<string_view>& query, int& index);
 
+	// Helper function to check if the token is a BOOLEAN word
+	bool isBoolean(std::vector<string_view>& query, int index);
+
 	// Helper function to check if pattern keyword is present
 	bool hasPattern(std::vector<string_view>& query, int index);
 
 	// Helper function to check if a synonym is declared
-	bool isDeclared(std::vector<string_view>& query, int index);
+	bool isDeclared(std::string_view synonym);
 
 	// Helper function to check if the such that keywords are present
 	bool hasSuchThat(std::vector<string_view>& query, int index);
+
+	// Creates a boolean object if there hasn't been a synonym named BOOLEAN declared. Return the synonym object otherwise
+	shared_ptr<QueryObject> createBooleanObject(std::vector<string_view>& query, int& index);
 
 	// Creates a such that clause query object, and increments the index by the number of tokens the clause has
 	shared_ptr<QueryObject> createClauseObj(std::vector<string_view>& query, int& index);
