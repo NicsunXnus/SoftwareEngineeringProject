@@ -4,7 +4,7 @@
 
 list<string> ResultHandler::processTables(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
 	//for now we do brute force left to right execution, optimisation can come in the future
-	
+	optimiseStepA(selectClauseTables, nonSelectClauseTables);
 
 	if (isSingleSynonym(selectClauseTables)) {
 		return handleSingleSynonym(selectClauseTables, nonSelectClauseTables);
@@ -18,6 +18,16 @@ list<string> ResultHandler::processTables(vector<shared_ptr<QueryResultsTable>> 
 
 	list<string> empty;
 	return empty;
+}
+
+// 1. Add all empty tables to the beginning
+// 2. Removes columns that the select clauses do not ask for
+void optimiseStepA(vector<shared_ptr<QueryResultsTable>>& selectClauseTables, vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables) {
+
+}
+
+vector< vector<shared_ptr<QueryResultsTable>> > optimiseStepB(vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
+	return {};
 }
 
 // tables must be non-empty

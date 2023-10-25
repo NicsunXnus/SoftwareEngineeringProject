@@ -80,7 +80,7 @@ inline unordered_set<string> filterSetReturnSet(shared_ptr<ClauseArg> arg, share
 	return filteredPKBClauseData;
 }
 
-inline unordered_set<string> filterMapKeyReturnSetValues(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
+inline unordered_set<string> filterMapKeyReturnSetValues(shared_ptr<ClauseArg> arg, StringMap PKBClauseData) {
 	unordered_set<string> filteredPKBClauseData;
 	auto it = PKBClauseData.find(svToString(arg->getArgValue()));
 	if (it != PKBClauseData.end()) {
@@ -89,7 +89,7 @@ inline unordered_set<string> filterMapKeyReturnSetValues(shared_ptr<ClauseArg> a
 	return filteredPKBClauseData;
 }
 
-inline unordered_set<string> filterMapKeyReturnSetValues(string arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
+inline unordered_set<string> filterMapKeyReturnSetValues(string arg, StringMap PKBClauseData) {
 	unordered_set<string> filteredPKBClauseData;
 	auto it = PKBClauseData.find(arg);
 	if (it != PKBClauseData.end()) {
@@ -99,16 +99,15 @@ inline unordered_set<string> filterMapKeyReturnSetValues(string arg, shared_ptr<
 }
 
 
-inline bool filterSetReturnBool(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, unordered_set<string> PKBClauseData) {
+inline bool filterSetReturnBool(shared_ptr<ClauseArg> arg, unordered_set<string> PKBClauseData) {
 	auto it = PKBClauseData.find(svToString(arg->getArgValue()));
 	if (it != PKBClauseData.end()) {
 		return true;
 	}
-
 	return false;
 }
 
-inline unordered_set<string> removeMapValuesReturnSet(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
+inline unordered_set<string> removeMapValuesReturnSet(shared_ptr<ClauseArg> arg, StringMap PKBClauseData) {
 	unordered_set<string> keySet;
 
 	// Extract keys from the map and insert them into the set
