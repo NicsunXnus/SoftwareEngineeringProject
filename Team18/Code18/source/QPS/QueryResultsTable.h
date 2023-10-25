@@ -557,6 +557,11 @@ public:
         return headers;
     }
 
+    //Setter method for columns
+    void setColumns(vector<map<string, vector<string>>> newColumns) {
+        this->columns = newColumns;
+    }
+
     //Getter method for data in a column
     vector<string> getColumnData(string header) {
         vector<string> data;

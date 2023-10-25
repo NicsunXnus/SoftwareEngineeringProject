@@ -20,11 +20,49 @@ list<string> ResultHandler::processTables(vector<shared_ptr<QueryResultsTable>> 
 	return empty;
 }
 
+// A set to contain only unique select clauses
+set<string> getHeadersOfTableAsSet(vector<shared_ptr<QueryResultsTable>> selectClauseTables) {
+	set<string> result;
+	for (shared_ptr<QueryResultsTable> table : selectClauseTables) {
+		result.insert(table->getHeaders()[0]);
+	}
+	return result;
+}
+
 // 1. Add all empty tables to the beginning
 // 2. Removes columns that the select clauses do not ask for
-void optimiseStepA(vector<shared_ptr<QueryResultsTable>>& selectClauseTables, vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables) {
+void optimiseStepA(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables) {
+	vector<shared_ptr<QueryResultsTable>> emptyTables;
+	for (shared_ptr<QueryResultsTable> table : nonSelectClauseTables) {
+		if (table->isEmpty()) {
+			emptyTables.emplace_back(table);
+			//nonSelectClauseTables.erase(nonSelectClauseTables.begin() + index);
+		}
+	}
+	vector<shared_ptr<QueryResultsTable>> result;
+	// Get non empty tables by taking the opposite of an intersection between the emptyTables and nonSelectClauseTables
+	std::set_symmetric_difference(emptyTables.begin(), emptyTables.end(), nonSelectClauseTables.begin(), nonSelectClauseTables.end(), std::inserter(result, nonEmptyTables.begin()));
+	result.insert(result.begin(), emptyTables.begin(), emptyTables.end());
+	nonSelectClauseTables = result;
+	//End of step 1
 
+	set<string> selectClauses = getHeadersOfTableAsSet(selectClauseTables);
+
+	for (shared_ptr<QueryResultsTable>& table : nonSelectClauseTables) {
+		if (!table->isEmpty()) {
+			vector< map<string, vector<string>> > columns = table->getColumns();
+			vector< map<string, vector<string>> > result;
+			for (map<string, vector<string>> column : columns) {
+				if (find(selectClauses.begin(), selectClauses.end(), column.begin()->first) != selectClauses.end()) {
+					result.emplace_back(column);
+				}
+			}
+			table->setColumns(result);
+		}
+	}
 }
+
+
 
 vector< vector<shared_ptr<QueryResultsTable>> > optimiseStepB(vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
 	return {};
