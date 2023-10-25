@@ -16,8 +16,6 @@ public:
     //It is assumed that there are no duplicate headers in the table.
     //A table is always sorted by headers.
 
-    //Tested using: https://www.onlinegdb.com/online_c++_compiler#
-
     QueryResultsTable(vector<map<string, vector<string>>> _columns) : columns(_columns), isSignificant(getNumberOfCols() > 0 && getNumberOfRows() > 0) {
         sort(columns.begin(), columns.end());
     }
@@ -25,7 +23,7 @@ public:
     //Constructor for empty table creation
     QueryResultsTable() : isSignificant(false) {}
 
-    // get number of rows in rable
+    // get number of rows in table
     int getNumberOfRows() {
         if (getNumberOfCols() <= 0) {
             return 0;
@@ -33,7 +31,7 @@ public:
         return columns[0].begin()->second.size();
     }
 
-    // get number of cols in rable
+    // get number of cols in table
     int getNumberOfCols() {
         return columns.size();
     }
