@@ -31,20 +31,20 @@ inline shared_ptr<QueryResultsTable> handleCallsCallsStar(shared_ptr<ClauseArg> 
 	else if (arg1->isSynonym() && arg2->isWildcard()) {
 		StringMap PKBClauseData = dataAccessLayer->getClause(clause);
 		StringMap filteredPKBClauseDataArg1 = filterMapKeyReturnMap(arg1, dataAccessLayer, PKBClauseData);
-		unordered_set<string> filteredPKBClauseDataArg2 = removeMapValuesReturnSet(arg2, dataAccessLayer, filteredPKBClauseDataArg1);
+		unordered_set<string> filteredPKBClauseDataArg2 = removeMapValuesReturnSet(arg2, filteredPKBClauseDataArg1);
 		return QueryResultsTable::createTable(svToString(arg1->getArgValue()), filteredPKBClauseDataArg2);
 	}
 	else if (arg1->isSynonym() && arg2->isIdentifier()) {
 		StringMap PKBClauseData = dataAccessLayer->getClauseInverse(clause);
 		StringMap PKBClauseDataTest = dataAccessLayer->getClause(clause);
-		unordered_set<string> filteredPKBClauseDataArg2 = filterMapKeyReturnSetValues(arg2, dataAccessLayer, PKBClauseData);
+		unordered_set<string> filteredPKBClauseDataArg2 = filterMapKeyReturnSetValues(arg2, PKBClauseData);
 		unordered_set<string> filteredPKBClauseDataArg1 = filterSetReturnSet(arg1, dataAccessLayer, filteredPKBClauseDataArg2);
 		return QueryResultsTable::createTable(svToString(arg1->getArgValue()), filteredPKBClauseDataArg1);
 	}
 	else if (arg1->isWildcard() && arg2->isSynonym()) {
 		StringMap PKBClauseData = dataAccessLayer->getClauseInverse(clause);
 		StringMap filteredPKBClauseDataArg2 = filterMapKeyReturnMap(arg2, dataAccessLayer, PKBClauseData);
-		unordered_set<string> filteredPKBClauseDataArg1 = removeMapValuesReturnSet(arg1, dataAccessLayer, filteredPKBClauseDataArg2);
+		unordered_set<string> filteredPKBClauseDataArg1 = removeMapValuesReturnSet(arg1,  filteredPKBClauseDataArg2);
 		return QueryResultsTable::createTable(svToString(arg2->getArgValue()), filteredPKBClauseDataArg1);
 	}
 	else if (arg1->isWildcard() && arg2->isWildcard()) {
@@ -55,14 +55,14 @@ inline shared_ptr<QueryResultsTable> handleCallsCallsStar(shared_ptr<ClauseArg> 
 	}
 	else if (arg1->isWildcard() && arg2->isIdentifier()) {
 		StringMap PKBClauseData = dataAccessLayer->getClauseInverse(clause);
-		unordered_set<string> filteredPKBClauseDataArg2 = filterMapKeyReturnSetValues(arg2, dataAccessLayer, PKBClauseData);
+		unordered_set<string> filteredPKBClauseDataArg2 = filterMapKeyReturnSetValues(arg2,  PKBClauseData);
 		shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>();
 		table->setSignificant(filteredPKBClauseDataArg2.size() > 0);
 		return table;
 	}
 	else if (arg1->isIdentifier() && arg2->isSynonym()) {
 		StringMap PKBClauseData = dataAccessLayer->getClause(clause);
-		unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, dataAccessLayer, PKBClauseData);
+		unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1,  PKBClauseData);
 		unordered_set<string> filteredPKBClauseDataArg2 = filterSetReturnSet(arg2, dataAccessLayer, filteredPKBClauseDataArg1);
 		return QueryResultsTable::createTable(svToString(arg2->getArgValue()), filteredPKBClauseDataArg2);
 
@@ -70,7 +70,7 @@ inline shared_ptr<QueryResultsTable> handleCallsCallsStar(shared_ptr<ClauseArg> 
 	else if (arg1->isIdentifier() && arg2->isWildcard()) {
 		StringMap PKBClauseData = dataAccessLayer->getClause(clause);
 
-		unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, dataAccessLayer, PKBClauseData);
+		unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, PKBClauseData);
 		shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>();
 		table->setSignificant(filteredPKBClauseDataArg1.size() > 0);
 		return table;
@@ -78,8 +78,8 @@ inline shared_ptr<QueryResultsTable> handleCallsCallsStar(shared_ptr<ClauseArg> 
 	else if (arg1->isIdentifier() && arg2->isIdentifier()) {
 		StringMap PKBClauseData = dataAccessLayer->getClause(clause);
 
-		unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, dataAccessLayer, PKBClauseData);
-		bool filteredPKBClauseDataArg2 = filterSetReturnBool(arg2, dataAccessLayer, filteredPKBClauseDataArg1);
+		unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, PKBClauseData);
+		bool filteredPKBClauseDataArg2 = filterSetReturnBool(arg2, filteredPKBClauseDataArg1);
 		shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>();
 		table->setSignificant(filteredPKBClauseDataArg2);
 		return table;

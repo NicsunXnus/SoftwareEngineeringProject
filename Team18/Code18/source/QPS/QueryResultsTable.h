@@ -343,7 +343,7 @@ public:
      * @param columnValues A vector of a vector of strings representing the column values.
      * @return A shared pointer to the newly created QueryResultsTable object.
     */
-    static shared_ptr<QueryResultsTable> createTable(vector<string> headers, vector<vector<string>> columnValues) {
+    static shared_ptr<QueryResultsTable> create2DTable(vector<string> headers, vector<vector<string>> columnValues) {
         vector<map<string, vector<string>>> columns;
 
         //Start of check for error

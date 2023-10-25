@@ -20,25 +20,25 @@ inline shared_ptr<QueryResultsTable> handleNext(shared_ptr<ClauseArg> arg1, shar
 	else if (arg1->isSynonym() && arg2->isWildcard()) {
 		StringMap PKBClauseData = dataAccessLayer->getClause(clause);
 		StringMap filteredPKBClauseDataArg1 = filterMapKeyReturnMap(arg1, dataAccessLayer, PKBClauseData);
-		unordered_set<string> filteredPKBClauseDataArg2 = removeMapValuesReturnSet(arg2, dataAccessLayer, filteredPKBClauseDataArg1);
+		unordered_set<string> filteredPKBClauseDataArg2 = removeMapValuesReturnSet(arg2, filteredPKBClauseDataArg1);
 		return QueryResultsTable::createTable(svToString(arg1->getArgValue()), filteredPKBClauseDataArg2);
 	}
 	else if (arg1->isSynonym() && arg2->isInteger()) {
 		StringMap PKBClauseData = dataAccessLayer->getClauseInverse(clause);
-		unordered_set<string> filteredPKBClauseDataArg2 = filterMapKeyReturnSetValues(arg2, dataAccessLayer, PKBClauseData);
+		unordered_set<string> filteredPKBClauseDataArg2 = filterMapKeyReturnSetValues(arg2, PKBClauseData);
 		unordered_set<string> filteredPKBClauseDataArg1 = filterSetReturnSet(arg1, dataAccessLayer, filteredPKBClauseDataArg2);
 		return QueryResultsTable::createTable(svToString(arg1->getArgValue()), filteredPKBClauseDataArg1);
 	}
 	else if (arg1->isInteger() && arg2->isSynonym()) {
 		StringMap PKBClauseData = dataAccessLayer->getClause(clause);
-		unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, dataAccessLayer, PKBClauseData);
+		unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, PKBClauseData);
 		unordered_set<string> filteredPKBClauseDataArg2 = filterSetReturnSet(arg2, dataAccessLayer, filteredPKBClauseDataArg1);
 		return QueryResultsTable::createTable(svToString(arg2->getArgValue()), filteredPKBClauseDataArg2);
 	}
 	else if (arg1->isInteger() && arg2->isWildcard()) {
 		StringMap PKBClauseData = dataAccessLayer->getClause(clause);
 
-		unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, dataAccessLayer, PKBClauseData);
+		unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, PKBClauseData);
 		shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>();
 		table->setSignificant(filteredPKBClauseDataArg1.size() > 0);
 		return table;
@@ -46,8 +46,8 @@ inline shared_ptr<QueryResultsTable> handleNext(shared_ptr<ClauseArg> arg1, shar
 	else if (arg1->isInteger() && arg2->isInteger()) {
 		StringMap PKBClauseData = dataAccessLayer->getClause(clause);
 
-		unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, dataAccessLayer, PKBClauseData);
-		bool filteredPKBClauseDataArg2 = filterSetReturnBool(arg2, dataAccessLayer, filteredPKBClauseDataArg1);
+		unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, PKBClauseData);
+		bool filteredPKBClauseDataArg2 = filterSetReturnBool(arg2, filteredPKBClauseDataArg1);
 		shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>();
 		table->setSignificant(filteredPKBClauseDataArg2);
 		return table;
@@ -55,7 +55,7 @@ inline shared_ptr<QueryResultsTable> handleNext(shared_ptr<ClauseArg> arg1, shar
 	else if (arg1->isWildcard() && arg2->isSynonym()) {
 		StringMap PKBClauseData = dataAccessLayer->getClauseInverse(clause);
 		StringMap filteredPKBClauseDataArg2 = filterMapKeyReturnMap(arg2, dataAccessLayer, PKBClauseData);
-		unordered_set<string> filteredPKBClauseDataArg1 = removeMapValuesReturnSet(arg1, dataAccessLayer, filteredPKBClauseDataArg2);
+		unordered_set<string> filteredPKBClauseDataArg1 = removeMapValuesReturnSet(arg1, filteredPKBClauseDataArg2);
 		return QueryResultsTable::createTable(svToString(arg2->getArgValue()), filteredPKBClauseDataArg1);
 	}
 	else if (arg1->isWildcard() && arg2->isWildcard()) {
@@ -66,7 +66,7 @@ inline shared_ptr<QueryResultsTable> handleNext(shared_ptr<ClauseArg> arg1, shar
 	}
 	else if (arg1->isWildcard() && arg2->isInteger()) {
 		StringMap PKBClauseData = dataAccessLayer->getClauseInverse(clause);
-		unordered_set<string> filteredPKBClauseDataArg2 = filterMapKeyReturnSetValues(arg2, dataAccessLayer, PKBClauseData);
+		unordered_set<string> filteredPKBClauseDataArg2 = filterMapKeyReturnSetValues(arg2, PKBClauseData);
 		shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>();
 		table->setSignificant(filteredPKBClauseDataArg2.size() > 0);
 		return table;
@@ -81,7 +81,7 @@ inline shared_ptr<QueryResultsTable> handleNextStarIntInt(shared_ptr<ClauseArg> 
 	StringMap PKBClauseData = dataAccessLayer->getClause(clause);
 	stack<NextStackElement> nextStack; // parent, set of childs
 	unordered_set<string> visited;
-	unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, dataAccessLayer, PKBClauseData);
+	unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, PKBClauseData);
 	
 	if (filteredPKBClauseDataArg1.empty()) {
 		return QueryResultsTable::createEmptyTable();
@@ -99,7 +99,7 @@ inline shared_ptr<QueryResultsTable> handleNextStarIntInt(shared_ptr<ClauseArg> 
 		for (string child : children) {
 			auto it = visited.find(child);
 			if (it == visited.end()) {
-				unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, dataAccessLayer, PKBClauseData);
+				unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, PKBClauseData);
 				nextStack.push(make_tuple(child, nextChildren));
 			}
 			if (child == target) {
@@ -118,7 +118,7 @@ inline shared_ptr<QueryResultsTable> handleNextStarIntInt(shared_ptr<ClauseArg> 
 inline shared_ptr<QueryResultsTable> handleNextStarIntSynCombination(shared_ptr<ClauseArg> arg1, shared_ptr<ClauseArg> arg2, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
 	stack<NextStackElement> nextStack; // parent, set of childs
 	unordered_set<string> visited;
-	unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, dataAccessLayer, PKBClauseData);
+	unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, PKBClauseData);
 
 	if (filteredPKBClauseDataArg1.empty()) {
 		return QueryResultsTable::createTable(svToString(arg2->getArgValue()), visited);
@@ -136,7 +136,7 @@ inline shared_ptr<QueryResultsTable> handleNextStarIntSynCombination(shared_ptr<
 			auto it = visited.find(child);
 			if (it == visited.end()) {
 				visited.insert(child); // add here to ensure that Next* does not add back intial node, unless it really can be reached via a loop
-				unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, dataAccessLayer, PKBClauseData);
+				unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, PKBClauseData);
 				nextStack.push(make_tuple(child, nextChildren));
 			}
 			
@@ -152,11 +152,11 @@ inline shared_ptr<QueryResultsTable> handleNextStarIntSynCombination(shared_ptr<
 inline shared_ptr<QueryResultsTable> handleNextStarSynSyn(shared_ptr<ClauseArg> arg1, shared_ptr<ClauseArg> arg2, shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
 	StringMap PKBClauseDataArg1 = dataAccessLayer->getClause(clause);
 	StringMap filteredPKBClauseDataArg1 = filterMapKeyReturnMap(arg1, dataAccessLayer, PKBClauseDataArg1);
-	unordered_set<string> filteredPKBClauseDataKeepArg1 = removeMapValuesReturnSet(arg2, dataAccessLayer, filteredPKBClauseDataArg1); // nodes that have children
+	unordered_set<string> filteredPKBClauseDataKeepArg1 = removeMapValuesReturnSet(arg2, filteredPKBClauseDataArg1); // nodes that have children
 
 	StringMap PKBClauseDataArg2 = dataAccessLayer->getClauseInverse(clause);
 	StringMap filteredPKBClauseDataArg2 = filterMapKeyReturnMap(arg2, dataAccessLayer, PKBClauseDataArg2);
-	unordered_set<string> filteredPKBClauseDataKeepArg2 = removeMapValuesReturnSet(arg1, dataAccessLayer, filteredPKBClauseDataArg2); // nodes that have parent
+	unordered_set<string> filteredPKBClauseDataKeepArg2 = removeMapValuesReturnSet(arg1,filteredPKBClauseDataArg2); // nodes that have parent
 
 	if (filteredPKBClauseDataKeepArg1.empty() || filteredPKBClauseDataKeepArg2.empty()) {
 		StringMap empty;
@@ -182,7 +182,7 @@ inline shared_ptr<QueryResultsTable> handleNextStarSynSyn(shared_ptr<ClauseArg> 
 				auto visitedIt = visited.find(child);
 				if (visitedIt == visited.end()) {
 					visited.insert(child); // add here to ensure that Next* does not add back intial node, unless it really can be reached via a loop
-					unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, dataAccessLayer, PKBClauseDataArg1);
+					unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, PKBClauseDataArg1);
 					nextStack.push(make_tuple(child, nextChildren));
 				}
 				auto arg2It = filteredPKBClauseDataKeepArg2.find(child);
@@ -221,7 +221,7 @@ inline shared_ptr<QueryResultsTable> handleNextStar(shared_ptr<ClauseArg> arg1, 
 		// same as next?? possible logical error, but next(s, _) seems to == next*(s, _)
 		StringMap PKBClauseData = dataAccessLayer->getClause(clause);
 		StringMap filteredPKBClauseDataArg1 = filterMapKeyReturnMap(arg1, dataAccessLayer, PKBClauseData);
-		unordered_set<string> filteredPKBClauseDataArg2 = removeMapValuesReturnSet(arg2, dataAccessLayer, filteredPKBClauseDataArg1);
+		unordered_set<string> filteredPKBClauseDataArg2 = removeMapValuesReturnSet(arg2, filteredPKBClauseDataArg1);
 		return QueryResultsTable::createTable(svToString(arg1->getArgValue()), filteredPKBClauseDataArg2);
 	}
 	else if (arg1->isSynonym() && arg2->isInteger()) {
@@ -235,7 +235,7 @@ inline shared_ptr<QueryResultsTable> handleNextStar(shared_ptr<ClauseArg> arg1, 
 	else if (arg1->isInteger() && arg2->isWildcard()) {
 		StringMap PKBClauseData = dataAccessLayer->getClause(clause);
 
-		unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, dataAccessLayer, PKBClauseData);
+		unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, PKBClauseData);
 		shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>();
 		table->setSignificant(filteredPKBClauseDataArg1.size() > 0);
 		return table;
@@ -248,7 +248,7 @@ inline shared_ptr<QueryResultsTable> handleNextStar(shared_ptr<ClauseArg> arg1, 
 		// same as next?? possible logical error, but next(_, s) seems to == next*(_, s)
 		StringMap PKBClauseData = dataAccessLayer->getClauseInverse(clause);
 		StringMap filteredPKBClauseDataArg2 = filterMapKeyReturnMap(arg2, dataAccessLayer, PKBClauseData);
-		unordered_set<string> filteredPKBClauseDataArg1 = removeMapValuesReturnSet(arg1, dataAccessLayer, filteredPKBClauseDataArg2);
+		unordered_set<string> filteredPKBClauseDataArg1 = removeMapValuesReturnSet(arg1, filteredPKBClauseDataArg2);
 		return QueryResultsTable::createTable(svToString(arg2->getArgValue()), filteredPKBClauseDataArg1);
 	}
 	else if (arg1->isWildcard() && arg2->isWildcard()) {
@@ -259,7 +259,7 @@ inline shared_ptr<QueryResultsTable> handleNextStar(shared_ptr<ClauseArg> arg1, 
 	}
 	else if (arg1->isWildcard() && arg2->isInteger()) {
 		StringMap PKBClauseData = dataAccessLayer->getClauseInverse(clause);
-		unordered_set<string> filteredPKBClauseDataArg2 = filterMapKeyReturnSetValues(arg2, dataAccessLayer, PKBClauseData);
+		unordered_set<string> filteredPKBClauseDataArg2 = filterMapKeyReturnSetValues(arg2, PKBClauseData);
 		shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>();
 		table->setSignificant(filteredPKBClauseDataArg2.size() > 0);
 		return table;

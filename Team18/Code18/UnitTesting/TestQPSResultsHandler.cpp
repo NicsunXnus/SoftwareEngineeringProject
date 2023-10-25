@@ -247,4 +247,87 @@ public:
 
 		}
 	};
+	TEST_CLASS(TestOptimisation) {
+		unordered_set<string> values = { "a","b" };
+		vector<string> valuesA = { "x","y" };
+		vector<string> valuesB = { "1","2" };
+		shared_ptr<QueryResultsTable> singleSelectClauses = QueryResultsTable::createTable("s1", values);
+		vector< shared_ptr<QueryResultsTable>> tupleSelectClauses = { QueryResultsTable::createTable("s1", values), QueryResultsTable::createTable("s1", values)};
+		vector< shared_ptr<QueryResultsTable>> nonSelectClauses = { QueryResultsTable::create2DTable({"v1","v2"}, {valuesA, valuesB}), QueryResultsTable::createEmptyTable(), QueryResultsTable::create2DTable({"s1","s2"}, {valuesA, valuesB})};
+		
+		// A set to contain only unique select clauses
+		set<string> getHeadersOfTableAsSet(vector<shared_ptr<QueryResultsTable>> selectClauseTables) {
+			set<string> result;
+			for (shared_ptr<QueryResultsTable> table : selectClauseTables) {
+				result.insert(table->getHeaders()[0]);
+			}
+			return result;
+		}
+
+		// 1. Add all empty tables to the beginning
+		// 2. Removes columns that the select clauses do not ask for
+		void optimiseStepA(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables) {
+			vector<shared_ptr<QueryResultsTable>> emptyTables;
+			for (shared_ptr<QueryResultsTable> table : nonSelectClauseTables) {
+				if (table->isEmpty()) {
+					emptyTables.emplace_back(table);
+					//nonSelectClauseTables.erase(nonSelectClauseTables.begin() + index);
+				}
+			}
+			vector<shared_ptr<QueryResultsTable>> result;
+			// Get non empty tables by taking the opposite of an intersection between the emptyTables and nonSelectClauseTables
+			std::set_symmetric_difference(emptyTables.begin(), emptyTables.end(), nonSelectClauseTables.begin(), nonSelectClauseTables.end(), std::inserter(result, result.begin()));
+			result.insert(result.begin(), emptyTables.begin(), emptyTables.end());
+			nonSelectClauseTables = result;
+			//End of step 1
+
+			set<string> selectClauses = getHeadersOfTableAsSet(selectClauseTables);
+
+			for (shared_ptr<QueryResultsTable>& table : nonSelectClauseTables) {
+				if (!table->isEmpty()) {
+					vector< map<string, vector<string>> > columns = table->getColumns();
+					vector< map<string, vector<string>> > result;
+					for (map<string, vector<string>> column : columns) {
+						if (find(selectClauses.begin(), selectClauses.end(), column.begin()->first) != selectClauses.end()) {
+							result.emplace_back(column);
+						}
+					}
+					table->setColumns(result);
+				}
+			}
+		}
+
+		TEST_METHOD(Test_Step_A_SingleSelect) {
+			vector< shared_ptr<QueryResultsTable>> expected_result = { QueryResultsTable::createEmptyTable(), QueryResultsTable::createTable("s1", values) };
+			optimiseStepA({ singleSelectClauses }, nonSelectClauses);
+			bool isSame = false;
+			int size = nonSelectClauses.size();
+			if (nonSelectClauses.size() != expected_result.size()) {
+				
+			}
+			else {
+				if (!nonSelectClauses[0]->isEmpty()) {
+					assert(false);
+				}
+				bool isSame = compare_vectors_of_maps(nonSelectClauses[1]->getColumns(), expected_result[1]->getColumns());
+			}
+			assert(isSame);
+		}
+
+		TEST_METHOD(Test_Step_A_TuplesSelect) {
+			vector< shared_ptr<QueryResultsTable>> expected_result = { QueryResultsTable::createEmptyTable(), QueryResultsTable::createTable("s1", values) };
+			optimiseStepA(tupleSelectClauses, nonSelectClauses);
+			bool isSame = false;
+			if (nonSelectClauses.size() != expected_result.size()) {
+				
+			}
+			else {
+				if (!nonSelectClauses[0]->isEmpty()) {
+					assert(false);
+				}
+				bool isSame = compare_vectors_of_maps(nonSelectClauses[1]->getColumns(), expected_result[1]->getColumns());
+			}
+			assert(isSame);
+		}
+	};
 }

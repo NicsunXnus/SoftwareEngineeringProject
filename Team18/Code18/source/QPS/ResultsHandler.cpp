@@ -1,6 +1,6 @@
 #include "ResultsHandler.h"
 
-
+void optimiseStepA(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables);
 
 list<string> ResultHandler::processTables(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
 	//for now we do brute force left to right execution, optimisation can come in the future
@@ -41,7 +41,7 @@ void optimiseStepA(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vec
 	}
 	vector<shared_ptr<QueryResultsTable>> result;
 	// Get non empty tables by taking the opposite of an intersection between the emptyTables and nonSelectClauseTables
-	std::set_symmetric_difference(emptyTables.begin(), emptyTables.end(), nonSelectClauseTables.begin(), nonSelectClauseTables.end(), std::inserter(result, nonEmptyTables.begin()));
+	std::set_symmetric_difference(emptyTables.begin(), emptyTables.end(), nonSelectClauseTables.begin(), nonSelectClauseTables.end(), std::inserter(result, result.begin()));
 	result.insert(result.begin(), emptyTables.begin(), emptyTables.end());
 	nonSelectClauseTables = result;
 	//End of step 1
