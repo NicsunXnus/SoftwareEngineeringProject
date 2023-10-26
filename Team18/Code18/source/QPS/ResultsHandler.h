@@ -13,6 +13,9 @@ using namespace std;
  */
 class ResultHandler {
 private:
+	// Stores the count of the header in a group of clauses
+	static map<string, int> countHeadersStore;
+	// The "switch" to activate the opimisation of the processing of the tables
 	bool isOptimised = false;
 
 	bool isTuples(vector<shared_ptr<QueryResultsTable>> selectClause) {
@@ -64,6 +67,8 @@ public:
 	 */
 	~ResultHandler() {};
 	
+	// The QueryResultTables of the clauses are processed, and through a series of cross-products and/or inner joins, the final result
+	// of the PQL is obtained.
 	list<string> processTables(vector<shared_ptr<QueryResultsTable>> selectClause, vector<shared_ptr<QueryResultsTable>> nonSelectClause);
 
 	void setOptimiseSwitch() {
@@ -72,6 +77,18 @@ public:
 
 	bool getOptimisedSwitch() {
 		return isOptimised;
+	}
+
+	static void updateCountHeaderStore(string header) {
+		countHeadersStore[header]++;
+	}
+
+	static void resetCountHeaderStore() {
+		countHeadersStore.clear();
+	}
+
+	int static getCount(string header) {
+		return countHeadersStore[header];
 	}
 };
 #endif

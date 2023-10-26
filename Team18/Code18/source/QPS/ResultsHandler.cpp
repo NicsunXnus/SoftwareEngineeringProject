@@ -2,6 +2,7 @@
 
 void optimiseStepA(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables);
 vector<shared_ptr<QueryResultsTable>> optimiseStepB(vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables);
+void optimiseStepC(vector< vector<shared_ptr<QueryResultsTable>> >& groups);
 vector<shared_ptr<QueryResultsTable>> flatten2DArray(vector< vector<shared_ptr<QueryResultsTable>> > v2d);
 
 list<string> ResultHandler::processTables(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
@@ -66,7 +67,10 @@ void optimiseStepA(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vec
 	//End of step 2			
 }
 
-//Group the clauses
+// Group the clauses
+// A group of clauses is guaranteed to have a continuous link between all clauses.
+// However the order of the clauses is not guaranteed such that any two neighboring clauses
+// will share a common header.
 vector<shared_ptr<QueryResultsTable>> optimiseStepB(vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
 	vector< vector<shared_ptr<QueryResultsTable>> > groups;
 	vector<shared_ptr<QueryResultsTable>> emptyTables;
@@ -120,9 +124,47 @@ vector<shared_ptr<QueryResultsTable>> optimiseStepB(vector<shared_ptr<QueryResul
 	else {
 		groups.emplace_back(nonEmptyTables);
 	}
+	optimiseStepC(groups);
 	return flatten2DArray(groups);
 }
 
+// An auxiliary function to aid in the comparison within the data structure of vector<shared_ptr<QueryResultsTable>>
+// The table containing the more common header in the group of clauses will be sorted before the other.
+bool compare(const std::shared_ptr<QueryResultsTable>& a, const std::shared_ptr<QueryResultsTable>& b) {
+	int maxValueA, maxValueB = 0;
+	vector<string> headersA = a->getHeaders();
+	vector<string> headersB = b->getHeaders();
+	for (string header : headersA) {
+		if (ResultHandler::getCount(header) > maxValueA) {
+			maxValueA = ResultHandler::getCount(header);
+		}
+	}
+	for (string header : headersB) {
+		if (ResultHandler::getCount(header) > maxValueB) {
+			maxValueB = ResultHandler::getCount(header);
+		}
+	}
+	return maxValueA > maxValueB;
+}
+
+// Rearrange the clauses in the group such that the clauses with the most common headers are arranged at the front.
+// This means a higher chance of "mutual friends" already forming at the beginning, so more likely that an inner join
+// will occur than a cross product.
+void optimiseStepC(vector< vector<shared_ptr<QueryResultsTable>> >& groups) {
+	for (vector<shared_ptr<QueryResultsTable>>& group : groups) {
+		if (group[0]->isEmpty()) continue; //skip for empty table groups
+		for (shared_ptr<QueryResultsTable> table : group) {
+			vector<string> headers = table->getHeaders();
+			for (string header : headers) {
+				ResultHandler::updateCountHeaderStore(header);
+			}	
+		}
+		sort(group.begin(), group.end(), compare);
+		ResultHandler::resetCountHeaderStore();
+	}
+}
+
+// An auxiliary function to flatten vector< vector<shared_ptr<QueryResultsTable>> >
 vector<shared_ptr<QueryResultsTable>> flatten2DArray(vector< vector<shared_ptr<QueryResultsTable>> > v2d) {
 	vector<shared_ptr<QueryResultsTable>> v1d;
 	for (const auto& row : v2d) {
