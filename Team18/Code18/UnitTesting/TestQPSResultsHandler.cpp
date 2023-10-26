@@ -4,7 +4,6 @@
 #include "../source/QPS/QueryResultsTable.h"
 #include "../source/QPS/ResultsHandler.h"
 
-
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;
 
@@ -248,86 +247,142 @@ public:
 		}
 	};
 	TEST_CLASS(TestOptimisation) {
-		unordered_set<string> values = { "a","b" };
-		vector<string> valuesA = { "x","y" };
-		vector<string> valuesB = { "1","2" };
-		shared_ptr<QueryResultsTable> singleSelectClauses = QueryResultsTable::createTable("s1", values);
-		vector< shared_ptr<QueryResultsTable>> tupleSelectClauses = { QueryResultsTable::createTable("s1", values), QueryResultsTable::createTable("s1", values)};
-		vector< shared_ptr<QueryResultsTable>> nonSelectClauses = { QueryResultsTable::create2DTable({"v1","v2"}, {valuesA, valuesB}), QueryResultsTable::createEmptyTable(), QueryResultsTable::create2DTable({"s1","s2"}, {valuesA, valuesB})};
-		
-		// A set to contain only unique select clauses
-		set<string> getHeadersOfTableAsSet(vector<shared_ptr<QueryResultsTable>> selectClauseTables) {
-			set<string> result;
-			for (shared_ptr<QueryResultsTable> table : selectClauseTables) {
-				result.insert(table->getHeaders()[0]);
-			}
-			return result;
+private:
+	unordered_set<string> values = { "a","b" };
+	vector<string> valuesA = { "x","y" };
+	vector<string> valuesB = { "1","2" };
+	shared_ptr<QueryResultsTable> singleSelectClausesA = QueryResultsTable::createTable("s1", values);
+	shared_ptr<QueryResultsTable> singleSelectClausesB = QueryResultsTable::createTable("s2", values);
+	shared_ptr<QueryResultsTable> singleSelectClausesC = QueryResultsTable::createTable("v1", values);
+	shared_ptr<QueryResultsTable> singleSelectClausesD = QueryResultsTable::createTable("v2", values);
+
+	// A set to contain only unique select clauses
+	set<string> getHeadersOfTableAsSet(vector<shared_ptr<QueryResultsTable>> selectClauseTables) {
+		set<string> result;
+		for (shared_ptr<QueryResultsTable> table : selectClauseTables) {
+			result.insert(table->getHeaders()[0]);
 		}
+		return result;
+	}
 
-		// 1. Add all empty tables to the beginning
-		// 2. Removes columns that the select clauses do not ask for
-		void optimiseStepA(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables) {
-			vector<shared_ptr<QueryResultsTable>> emptyTables;
-			for (shared_ptr<QueryResultsTable> table : nonSelectClauseTables) {
-				if (table->isEmpty()) {
-					emptyTables.emplace_back(table);
-					//nonSelectClauseTables.erase(nonSelectClauseTables.begin() + index);
-				}
-			}
-			vector<shared_ptr<QueryResultsTable>> result;
-			// Get non empty tables by taking the opposite of an intersection between the emptyTables and nonSelectClauseTables
-			std::set_symmetric_difference(emptyTables.begin(), emptyTables.end(), nonSelectClauseTables.begin(), nonSelectClauseTables.end(), std::inserter(result, result.begin()));
-			result.insert(result.begin(), emptyTables.begin(), emptyTables.end());
-			nonSelectClauseTables = result;
-			//End of step 1
-
-			set<string> selectClauses = getHeadersOfTableAsSet(selectClauseTables);
-
-			for (shared_ptr<QueryResultsTable>& table : nonSelectClauseTables) {
-				if (!table->isEmpty()) {
-					vector< map<string, vector<string>> > columns = table->getColumns();
-					vector< map<string, vector<string>> > result;
-					for (map<string, vector<string>> column : columns) {
-						if (find(selectClauses.begin(), selectClauses.end(), column.begin()->first) != selectClauses.end()) {
-							result.emplace_back(column);
-						}
+	// 1. Removes columns that the select clauses do not ask for
+	// 2. Add all empty tables to the beginning
+	void optimiseStepA(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables) {
+		set<string> selectClauses = getHeadersOfTableAsSet(selectClauseTables);
+		for (shared_ptr<QueryResultsTable> table : nonSelectClauseTables) {
+			if (!table->isEmpty()) {
+				vector< map<string, vector<string>> > columns = table->getColumns();
+				vector< map<string, vector<string>> > result;
+				for (map<string, vector<string>> column : columns) {
+					if (find(selectClauses.begin(), selectClauses.end(), column.begin()->first) != selectClauses.end()) {
+						result.emplace_back(column);
 					}
-					table->setColumns(result);
 				}
+				table->setColumns(result);
 			}
 		}
+		//end of step 1	
+		vector<shared_ptr<QueryResultsTable>> emptyTables;
+		for (shared_ptr<QueryResultsTable> table : nonSelectClauseTables) {
+			if (table->isEmpty()) {
+				emptyTables.emplace_back(table);
+				//nonSelectClauseTables.erase(nonSelectClauseTables.begin() + index);
+			}
+		}
+		vector<shared_ptr<QueryResultsTable>> result;
+		// Get non empty tables by taking the opposite of an intersection between the emptyTables and nonSelectClauseTables
+		std::set_symmetric_difference(emptyTables.begin(), emptyTables.end(), nonSelectClauseTables.begin(), nonSelectClauseTables.end(), std::inserter(result, result.begin()));
+		result.insert(result.begin(), emptyTables.begin(), emptyTables.end());
+		nonSelectClauseTables = result;
+		//End of step 2		
+	}
+public:
+	TEST_METHOD(Test_Step_A_SingleSelect) {
+		vector< shared_ptr<QueryResultsTable>> nonSelectClauses;
+		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "v1","v2" }, { valuesA, valuesB }));
+		nonSelectClauses.emplace_back(QueryResultsTable::createEmptyTable());
+		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "s1","s2" }, { valuesA, valuesB }));
+		vector< shared_ptr<QueryResultsTable>> selectClauses;
+		selectClauses.emplace_back(singleSelectClausesA);
+		vector< shared_ptr<QueryResultsTable>> expected_result;
+		expected_result.emplace_back(QueryResultsTable::createEmptyTable());
+		expected_result.emplace_back(QueryResultsTable::createEmptyTable());
+		expected_result.emplace_back(QueryResultsTable::createTable("s1", valuesA));
+		
+		optimiseStepA(selectClauses, nonSelectClauses);
+		bool isSame = false;
+		int size = nonSelectClauses.size();
+		if (nonSelectClauses.size() == expected_result.size()) {
+			if (!nonSelectClauses[0]->isEmpty() || !nonSelectClauses[1]->isEmpty()) {
+				Assert::Fail();
+			}
+			isSame = compare_vectors_of_maps(nonSelectClauses[0]->getColumns(), expected_result[0]->getColumns()) && 
+				compare_vectors_of_maps(nonSelectClauses[1]->getColumns(), expected_result[1]->getColumns()) &&
+				compare_vectors_of_maps(nonSelectClauses[2]->getColumns(), expected_result[2]->getColumns());
+			
+			Assert::AreEqual(true, isSame);
+		}
+		else {
+			Assert::Fail();
+		}	
+	}
 
-		TEST_METHOD(Test_Step_A_SingleSelect) {
-			vector< shared_ptr<QueryResultsTable>> expected_result = { QueryResultsTable::createEmptyTable(), QueryResultsTable::createTable("s1", values) };
-			optimiseStepA({ singleSelectClauses }, nonSelectClauses);
-			bool isSame = false;
-			int size = nonSelectClauses.size();
-			if (nonSelectClauses.size() != expected_result.size()) {
-				
+	TEST_METHOD(Test_Step_A_TuplesSelectA) {
+		vector< shared_ptr<QueryResultsTable>> expected_result;
+		expected_result.emplace_back(QueryResultsTable::createEmptyTable());
+		expected_result.emplace_back(QueryResultsTable::createEmptyTable());
+		expected_result.emplace_back(QueryResultsTable::create2DTable({ "s1","s2" }, { valuesA, valuesB }));
+		vector< shared_ptr<QueryResultsTable> > tupleSelectClauses;
+		tupleSelectClauses.emplace_back(singleSelectClausesA);
+		tupleSelectClauses.emplace_back(singleSelectClausesB);
+		vector< shared_ptr<QueryResultsTable>> nonSelectClauses;
+		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "v1","v2" }, { valuesA, valuesB }));
+		nonSelectClauses.emplace_back(QueryResultsTable::createEmptyTable());
+		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "s1","s2" }, { valuesA, valuesB }));
+		optimiseStepA(tupleSelectClauses, nonSelectClauses);
+		bool isSame = false;
+		if (nonSelectClauses.size() == expected_result.size()) {
+			if (!nonSelectClauses[0]->isEmpty() && !nonSelectClauses[1]->isEmpty()) {
+				Assert::Fail();
 			}
-			else {
-				if (!nonSelectClauses[0]->isEmpty()) {
-					assert(false);
-				}
-				bool isSame = compare_vectors_of_maps(nonSelectClauses[1]->getColumns(), expected_result[1]->getColumns());
-			}
-			assert(isSame);
-		}
+			isSame = compare_vectors_of_maps(nonSelectClauses[0]->getColumns(), expected_result[0]->getColumns()) &&
+				compare_vectors_of_maps(nonSelectClauses[1]->getColumns(), expected_result[1]->getColumns()) &&
+				compare_vectors_of_maps(nonSelectClauses[2]->getColumns(), expected_result[2]->getColumns());
 
-		TEST_METHOD(Test_Step_A_TuplesSelect) {
-			vector< shared_ptr<QueryResultsTable>> expected_result = { QueryResultsTable::createEmptyTable(), QueryResultsTable::createTable("s1", values) };
-			optimiseStepA(tupleSelectClauses, nonSelectClauses);
-			bool isSame = false;
-			if (nonSelectClauses.size() != expected_result.size()) {
-				
-			}
-			else {
-				if (!nonSelectClauses[0]->isEmpty()) {
-					assert(false);
-				}
-				bool isSame = compare_vectors_of_maps(nonSelectClauses[1]->getColumns(), expected_result[1]->getColumns());
-			}
-			assert(isSame);
+			Assert::AreEqual(true, isSame);
 		}
+		else {
+			Assert::Fail();
+		}
+	}
+
+	TEST_METHOD(Test_Step_A_TuplesSelectB) {
+		vector< shared_ptr<QueryResultsTable>> expected_result;
+		expected_result.emplace_back(QueryResultsTable::createEmptyTable());
+		expected_result.emplace_back(QueryResultsTable::createTable("v1", valuesA));
+		expected_result.emplace_back(QueryResultsTable::createTable("s1", valuesA));
+		vector< shared_ptr<QueryResultsTable> > tupleSelectClauses;
+		tupleSelectClauses.emplace_back(singleSelectClausesA);
+		tupleSelectClauses.emplace_back(singleSelectClausesC);
+		vector< shared_ptr<QueryResultsTable>> nonSelectClauses;
+		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "v1","v2" }, { valuesA, valuesB }));
+		nonSelectClauses.emplace_back(QueryResultsTable::createEmptyTable());
+		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "s1","s2" }, { valuesA, valuesB }));
+		optimiseStepA(tupleSelectClauses, nonSelectClauses);
+		bool isSame = false;
+		if (nonSelectClauses.size() == expected_result.size()) {
+			if (!nonSelectClauses[0]->isEmpty()) {
+				Assert::Fail();
+			}
+			isSame = compare_vectors_of_maps(nonSelectClauses[0]->getColumns(), expected_result[0]->getColumns()) &&
+				compare_vectors_of_maps(nonSelectClauses[1]->getColumns(), expected_result[1]->getColumns()) &&
+				compare_vectors_of_maps(nonSelectClauses[2]->getColumns(), expected_result[2]->getColumns());
+
+			Assert::AreEqual(true, isSame);
+		}
+		else {
+			Assert::Fail();
+		}
+	}
 	};
 }

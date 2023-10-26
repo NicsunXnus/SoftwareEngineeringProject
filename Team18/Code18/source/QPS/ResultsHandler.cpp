@@ -4,7 +4,7 @@ void optimiseStepA(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vec
 
 list<string> ResultHandler::processTables(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
 	//for now we do brute force left to right execution, optimisation can come in the future
-	optimiseStepA(selectClauseTables, nonSelectClauseTables);
+	//optimiseStepA(selectClauseTables, nonSelectClauseTables);
 
 	if (isSingleSynonym(selectClauseTables)) {
 		return handleSingleSynonym(selectClauseTables, nonSelectClauseTables);
@@ -29,26 +29,11 @@ set<string> getHeadersOfTableAsSet(vector<shared_ptr<QueryResultsTable>> selectC
 	return result;
 }
 
-// 1. Add all empty tables to the beginning
-// 2. Removes columns that the select clauses do not ask for
+// 1. Removes columns that the select clauses do not ask for
+// 2. Add all empty tables to the beginning
 void optimiseStepA(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables) {
-	vector<shared_ptr<QueryResultsTable>> emptyTables;
-	for (shared_ptr<QueryResultsTable> table : nonSelectClauseTables) {
-		if (table->isEmpty()) {
-			emptyTables.emplace_back(table);
-			//nonSelectClauseTables.erase(nonSelectClauseTables.begin() + index);
-		}
-	}
-	vector<shared_ptr<QueryResultsTable>> result;
-	// Get non empty tables by taking the opposite of an intersection between the emptyTables and nonSelectClauseTables
-	std::set_symmetric_difference(emptyTables.begin(), emptyTables.end(), nonSelectClauseTables.begin(), nonSelectClauseTables.end(), std::inserter(result, result.begin()));
-	result.insert(result.begin(), emptyTables.begin(), emptyTables.end());
-	nonSelectClauseTables = result;
-	//End of step 1
-
 	set<string> selectClauses = getHeadersOfTableAsSet(selectClauseTables);
-
-	for (shared_ptr<QueryResultsTable>& table : nonSelectClauseTables) {
+	for (shared_ptr<QueryResultsTable> table : nonSelectClauseTables) {
 		if (!table->isEmpty()) {
 			vector< map<string, vector<string>> > columns = table->getColumns();
 			vector< map<string, vector<string>> > result;
@@ -60,8 +45,20 @@ void optimiseStepA(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vec
 			table->setColumns(result);
 		}
 	}
+	//End of step 1
+	vector<shared_ptr<QueryResultsTable>> emptyTables;
+	for (shared_ptr<QueryResultsTable> table : nonSelectClauseTables) {
+		if (table->isEmpty()) {
+			emptyTables.emplace_back(table);
+		}
+	}
+	vector<shared_ptr<QueryResultsTable>> result;
+	// Get non empty tables by taking the opposite of an intersection between the emptyTables and nonSelectClauseTables
+	std::set_symmetric_difference(emptyTables.begin(), emptyTables.end(), nonSelectClauseTables.begin(), nonSelectClauseTables.end(), std::inserter(result, result.begin()));
+	result.insert(result.begin(), emptyTables.begin(), emptyTables.end());
+	nonSelectClauseTables = result;
+	//End of step 2			
 }
-
 
 
 vector< vector<shared_ptr<QueryResultsTable>> > optimiseStepB(vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
