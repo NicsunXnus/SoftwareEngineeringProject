@@ -444,7 +444,7 @@ shared_ptr<QueryObject> QueryParser::createAttrRefObjectInTuple(string_view syno
 	vector<shared_ptr<ClauseArg>> argVector{ synonymArg };
 
 	try {
-		return attrRefFactory->create(attrRef, argVector);
+		return attrRefFactory->create(attrName, argVector);
 	}
 	catch (const SemanticErrorException& ex) {
 		storeSemanticError(make_shared<SemanticErrorException>(ex));

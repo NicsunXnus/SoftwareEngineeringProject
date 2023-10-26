@@ -838,7 +838,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestSelectProcName)
 		{
-			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select c.procName");
+			vector<string> tokenizer = PQLTokenizer::tokenize("call c; Select c.procName");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
@@ -849,7 +849,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestSelectVarName)
 		{
-			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select c.varName");
+			vector<string> tokenizer = PQLTokenizer::tokenize("print c; Select c.varName");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
@@ -871,7 +871,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestSelectStmtNo)
 		{
-			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select c.stmt#");
+			vector<string> tokenizer = PQLTokenizer::tokenize("assign c; Select c.stmt#");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
@@ -1010,7 +1010,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestSelectSingleProcNameTuple)
 		{
-			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select <c.procName>");
+			vector<string> tokenizer = PQLTokenizer::tokenize("procedure c; Select <c.procName>");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
@@ -1021,7 +1021,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestSelectSingleVarNameTuple)
 		{
-			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select <c.varName>");
+			vector<string> tokenizer = PQLTokenizer::tokenize("variable c; Select <c.varName>");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
@@ -1043,7 +1043,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestSelectSingleStmtNoTuple)
 		{
-			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select <c.stmt#>");
+			vector<string> tokenizer = PQLTokenizer::tokenize("if c; Select <c.stmt#>");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
@@ -1054,7 +1054,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestSelectDoubleStmtNoTuple)
 		{
-			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select <c.stmt#, c.stmt#>");
+			vector<string> tokenizer = PQLTokenizer::tokenize("call c; while w; Select <c.stmt#, w.stmt#>");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
@@ -1067,25 +1067,25 @@ namespace UnitTesting
 
 		TEST_METHOD(TestSelectStmtNoSynTuple)
 		{
-			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select <c.stmt#, c>");
+			vector<string> tokenizer = PQLTokenizer::tokenize("stmt c; Select <c.stmt#, c>");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
 
 			Assert::IsTrue(typeid(*qo[0]) == typeid(StmtNoObject));
 			Assert::IsTrue(qo[0]->getQueryObjectName() == "stmt#");
-			Assert::IsTrue(typeid(*qo[1]) == typeid(ConstantObject));
+			Assert::IsTrue(typeid(*qo[1]) == typeid(StmtObject));
 			Assert::IsTrue(qo[1]->getQueryObjectName() == "c");
 		}
 
 		TEST_METHOD(TestSelectSynStmtNoTuple)
 		{
-			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select <c, c.stmt#>");
+			vector<string> tokenizer = PQLTokenizer::tokenize("read c; Select <c, c.stmt#>");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
 
-			Assert::IsTrue(typeid(*qo[0]) == typeid(ConstantObject));
+			Assert::IsTrue(typeid(*qo[0]) == typeid(ReadObject));
 			Assert::IsTrue(qo[0]->getQueryObjectName() == "c");
 			Assert::IsTrue(typeid(*qo[1]) == typeid(StmtNoObject));
 			Assert::IsTrue(qo[1]->getQueryObjectName() == "stmt#");
@@ -1093,7 +1093,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestSelectSingleProcNameTupNoOpenBracket)
 		{
-			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select c.procName>");
+			vector<string> tokenizer = PQLTokenizer::tokenize("procedure c; Select c.procName>");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 
@@ -1414,7 +1414,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestWithAttrRefEqualAttrRef)
 		{
-			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; variable v; Select c with c.value = v.stmt#");
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; print v; Select c with c.value = v.stmt#");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
@@ -1425,7 +1425,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestSelectTupWithAttrRefEqualAttrRef)
 		{
-			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; variable v; Select <c.value> with c.value = v.stmt#");
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; read v; Select <c.value> with c.value = v.stmt#");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
@@ -1436,7 +1436,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestSelectAttrRefWithAttrRefEqualAttrRef)
 		{
-			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; variable v; Select c.value with c.value = v.stmt#");
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; stmt v; Select c.value with c.value = v.stmt#");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
@@ -1728,7 +1728,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestWithSTQuery)
 		{
-			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; Select c.value with 15 = c.stmt# such that Follows(1, 2)");
+			vector<string> tokenizer = PQLTokenizer::tokenize("read c; Select c.value with 15 = c.stmt# such that Follows(1, 2)");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
@@ -1978,6 +1978,70 @@ namespace UnitTesting
 			Assert::IsTrue(typeid(*qo[0]) == typeid(StmtObject));
 			Assert::IsTrue(qo[0]->getQueryObjectName() == "BOOLEAN"sv);
 
+		}
+
+		TEST_METHOD(TestInvalidSynProcName)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("stmt s; Select s.procName");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SemanticError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestInvalidSynVarName)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("stmt s; Select s.varName");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SemanticError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestInvalidSynValue)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("stmt s; Select s.value");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SemanticError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestInvalidSynStmtNo)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("procedure s; Select s.stmt#");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SemanticError", ex.getType());
+			}
 		}
 
 	};
