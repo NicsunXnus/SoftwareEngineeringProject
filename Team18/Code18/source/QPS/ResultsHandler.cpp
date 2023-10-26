@@ -72,8 +72,76 @@ vector< vector<shared_ptr<QueryResultsTable>> > optimiseStepB(vector<shared_ptr<
 		else
 			break;
 	}
+	groups.emplace_back(emptyTables);
+	vector<shared_ptr<QueryResultsTable>> nonEmptyTables;
+	// Get non empty tables by taking the opposite of an intersection between the emptyTables and nonSelectClauseTables
+	std::set_symmetric_difference(emptyTables.begin(), emptyTables.end(), nonSelectClauseTables.begin(), nonSelectClauseTables.end(), std::inserter(nonEmptyTables, nonEmptyTables.begin()));
+	if (nonEmptyTables.size() > 1) {
+		vector<string> headers = nonEmptyTables[0]->getHeaders();
+		set<string> firstHeaders;
+		copy(
 
-	return {};
+			// The pointer to the beginning
+			// of the source container 
+			firstHeaders.begin(),
+
+			// The pointer to the end
+			// of the source container 
+			firstHeaders.end(),
+
+			// Method of copying 
+			inserter(headers, headers.end()));
+		vector<set<string> > groupNames;
+		groupNames.emplace_back(firstHeaders);
+		vector<shared_ptr<QueryResultsTable>> newGroup;
+		newGroup.emplace_back(nonEmptyTables[0]);
+		groups.emplace_back(newGroup);
+		nonEmptyTables.erase(nonEmptyTables.begin());
+		
+		for (shared_ptr<QueryResultsTable> table : nonEmptyTables) {
+			vector<string> thisHeaders = table->getHeaders();
+			int index = 0;
+			bool isFound = false;
+			for (set<string>& group : groupNames) {
+				set<string> intersection;
+				set_intersection(group.begin(), group.end(), thisHeaders.begin(), thisHeaders.end(),
+					std::back_inserter(intersection));
+				if (intersection.size() > 0) {
+					groups[index].emplace_back(table);
+					std::set_union(thisHeaders.cbegin(), thisHeaders.cend(),
+						group.cbegin(), group.cend(),
+						std::back_inserter(group));
+					isFound = true;
+					break;
+				}
+				index++;
+			}
+			if (!isFound) {
+				set<string> newHeaders;
+				copy(
+
+					// The pointer to the beginning
+					// of the source container 
+					newHeaders.begin(),
+
+					// The pointer to the end
+					// of the source container 
+					newHeaders.end(),
+
+					// Method of copying 
+					inserter(thisHeaders, thisHeaders.end()));
+				groupNames.emplace_back(newHeaders);
+				vector<shared_ptr<QueryResultsTable>> group;
+				group.emplace_back(table);
+				groups.emplace_back(group);
+			}
+		}
+		return groups;
+	}
+	else {
+		groups.emplace_back(nonEmptyTables);
+		return groups;
+	}
 }
 
 // tables must be non-empty
