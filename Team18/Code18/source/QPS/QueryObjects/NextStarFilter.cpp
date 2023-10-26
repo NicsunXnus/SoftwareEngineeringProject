@@ -66,7 +66,8 @@ shared_ptr<QueryResultsTable> NextStarSynSyn::evaluate(shared_ptr<DataAccessLaye
 }
 
 // DFS, the idea is to start from the integer, then traverse and add each node visited to a set. This set represents the visited nodes
-inline shared_ptr<QueryResultsTable> handleNextStarIntSynCombination(shared_ptr<ClauseArg> arg1, shared_ptr<ClauseArg> arg2, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
+inline shared_ptr<QueryResultsTable> handleNextStarIntSynCombination(shared_ptr<ClauseArg> arg1, shared_ptr<ClauseArg> arg2, 
+	shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
 	stack<NextStackElement> nextStack; // parent, set of childs
 	unordered_set<string> visited;
 	unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, dataAccessLayer, PKBClauseData);
