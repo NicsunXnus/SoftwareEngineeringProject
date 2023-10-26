@@ -418,7 +418,13 @@ shared_ptr<QueryObject> QueryParser::createAttrRefObject(std::vector<string_view
 	// increment index by 3 to move index to next tokens to be parsed
 	index += 3;
 
-	return attrRefFactory->create(attrRef, argVector);
+	try {
+		return attrRefFactory->create(attrRef, argVector);
+	}
+	catch (const SemanticErrorException& ex) {
+		storeSemanticError(make_shared<SemanticErrorException>(ex));
+		return make_shared<StmtObject>("Attr ref object has semantic error, query not evaluated");
+	}
 }
 
 shared_ptr<QueryObject> QueryParser::createAttrRefObjectInTuple(string_view synonymName, string_view attrName) {
@@ -437,7 +443,13 @@ shared_ptr<QueryObject> QueryParser::createAttrRefObjectInTuple(string_view syno
 	shared_ptr<ClauseArg> synonymArg{ make_shared<ClauseArg>(synonymName, synonym) };
 	vector<shared_ptr<ClauseArg>> argVector{ synonymArg };
 
-	return attrRefFactory->create(attrName, argVector);
+	try {
+		return attrRefFactory->create(attrRef, argVector);
+	}
+	catch (const SemanticErrorException& ex) {
+		storeSemanticError(make_shared<SemanticErrorException>(ex));
+		return make_shared<StmtObject>("Attr ref object has semantic error, query not evaluated");
+	}
 }
 
 std::vector<shared_ptr<QueryObject>> QueryParser::createTupleObjects(std::vector<string_view>& query, int& index, int tokenCount) {
@@ -503,7 +515,14 @@ shared_ptr<QueryObject> QueryParser::createComparisonObject(std::vector<string_v
 		argVector.emplace_back(make_shared<ClauseArg>(arg2));
 
 		index += tokenCount;
-		return staticStaticFactory->create("Static=Static"sv, argVector);
+
+		try {
+			return staticStaticFactory->create("Static=Static"sv, argVector);
+		}
+		catch (const SemanticErrorException& ex) {
+			storeSemanticError(make_shared<SemanticErrorException>(ex));
+			return make_shared<StmtObject>("With clause has semantic error, query not evaluated");
+		}
 	}
 	else if (tokenCount == WITH_CLAUSE_ONE_ATTR_REF_TOKEN_COUNT) { // Comparison is made between 1 static arg and 1 attrRef
 		shared_ptr<QueryObjectFactory> staticAttrRefFactory{ QueryObjectFactory::createFactory("Static=AttrRef"sv) };
@@ -545,7 +564,14 @@ shared_ptr<QueryObject> QueryParser::createComparisonObject(std::vector<string_v
 		argVector.emplace_back(make_shared<ClauseArg>(staticArg));
 
 		index += tokenCount;
-		return staticAttrRefFactory->create("Static=AttrRef"sv, argVector);
+
+		try {
+			return staticAttrRefFactory->create("Static=AttrRef"sv, argVector);
+		}
+		catch (const SemanticErrorException& ex) {
+			storeSemanticError(make_shared<SemanticErrorException>(ex));
+			return make_shared<StmtObject>("With clause has semantic error, query not evaluated");
+		}
 	}
 	else if (tokenCount == MAX_WITH_CLAUSE_TOKEN_COUNT) { // Comparison is made between 2 attrRefs
 		// e.g., 'a', '.', 'procName', '=', 'b', '.', 'stmt#'
@@ -595,7 +621,14 @@ shared_ptr<QueryObject> QueryParser::createComparisonObject(std::vector<string_v
 		argVector.emplace_back(make_shared<ClauseArg>(attrName2));
 
 		index += tokenCount;
-		return attrRefAttrRefFactory->create("AttrRef=AttrRef"sv, argVector);
+
+		try {
+			return attrRefAttrRefFactory->create("AttrRef=AttrRef"sv, argVector);
+		}
+		catch (const SemanticErrorException& ex) {
+			storeSemanticError(make_shared<SemanticErrorException>(ex));
+			return make_shared<StmtObject>("With clause has semantic error, query not evaluated");
+		}
 	}
 
 	throw SyntaxErrorException("Error creating comparison object, invalid token count passed");
