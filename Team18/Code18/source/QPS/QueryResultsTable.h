@@ -434,17 +434,25 @@ public:
         
         auto it = find(headers.begin(), headers.end(), key);
         if (it != headers.end()) {
+            vector<int> matchingRows;
             int headerIndex = distance(headers.begin(), it);
             vector<string> targetColumn = this->columns[headerIndex].begin()->second;
             for (string target : targets) { // Time taken = O(t x r x c)
                 for (int row = 0; row < targetColumn.size(); row++) {
-                    if (targetColumn[row] == target) {
+                    /*if (targetColumn[row] == target) {
+                        matchingRows.emplace_back(row);
                         for (int col = 0; col < headers.size(); col++) {
                             filteredTableColumns[col].begin()->second.emplace_back(this->columns[col].begin()->second[row]);
                         }
-                    }
+                    }*/
                 }
             }
+            for (int matchedRow : matchingRows) {
+                for (int col = 0; col < headers.size(); col++) {
+                    filteredTableColumns[col].begin()->second.emplace_back(this->columns[col].begin()->second[matchedRow]);
+                }
+            }
+
             filteredTable = make_shared<QueryResultsTable>(filteredTableColumns);
             return filteredTable;
         }
@@ -457,12 +465,12 @@ public:
     /**
      * Creates a new QueryResultsTable object that represents the filtered table.
      *
-     * @param key The header of the target column represented by a string
-     * @param targets A vector of strings representing the values the column should only have.
+     * @param header1 The header of a column represented by a string
+     * @param header2 The header of another column represented by a string
      * @return A shared pointer to the newly created QueryResultsTable object
      * representing the old table but only containing rows having only values where col1 = col2
     */
-    shared_ptr<QueryResultsTable> filter(string header1, string header2) { 
+    shared_ptr<QueryResultsTable> innerJoinOnTwoColumns(string header1, string header2) { 
         if (isEmpty()) {
             shared_ptr<QueryResultsTable> table = createEmptyTable();
             table->setSignificant(getSignificant());
@@ -509,11 +517,11 @@ public:
         for (map<string, vector<string>> otherColumn : otherColumns) {
             string header = otherColumn.begin()->first;
             auto it = find(thisHeaders.begin(), thisHeaders.end(), header);
-            if (it != thisHeaders.end()) {
-                return true;
+            if (it == thisHeaders.end()) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     /**

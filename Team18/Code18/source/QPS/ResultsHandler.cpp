@@ -60,7 +60,7 @@ void optimiseStepA(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vec
 	//End of step 2			
 }
 
-
+//Group the clauses
 vector< vector<shared_ptr<QueryResultsTable>> > optimiseStepB(vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
 	return {};
 }
