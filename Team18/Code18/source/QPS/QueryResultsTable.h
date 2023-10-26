@@ -396,7 +396,7 @@ public:
      * Renames a column indicated by the header given with the new header provided.
      *
      * @param newName The new header to be changed to, represented as a string.
-     * @param oldName The old header to be renamed, repersented as a string.
+     * @param oldName The old header to be renamed, represented as a string.
     */
     void renameColumn(string newName, string oldName) {
         vector<string> headers = this->getHeaders();
@@ -434,20 +434,21 @@ public:
         
         auto it = find(headers.begin(), headers.end(), key);
         if (it != headers.end()) {
-            vector<int> matchingRows;
+            set<int> matchingRows;
             int headerIndex = distance(headers.begin(), it);
             vector<string> targetColumn = this->columns[headerIndex].begin()->second;
-            for (string target : targets) { // Time taken = O(t x r x c)
+            for (string target : targets) { // Time taken = O(t x r)
                 for (int row = 0; row < targetColumn.size(); row++) {
-                    /*if (targetColumn[row] == target) {
-                        matchingRows.emplace_back(row);
-                        for (int col = 0; col < headers.size(); col++) {
-                            filteredTableColumns[col].begin()->second.emplace_back(this->columns[col].begin()->second[row]);
-                        }
-                    }*/
+                    if (targetColumn[row] == target) {
+                        matchingRows.insert(row);
+                    //    for (int col = 0; col < headers.size(); col++) {
+                    //       filteredTableColumns[col].begin()->second.emplace_back(this->columns[col].begin()->second[row]);
+                    //    }
+                    }
                 }
             }
-            for (int matchedRow : matchingRows) {
+
+            for (int matchedRow : matchingRows) { // O(r x c)
                 for (int col = 0; col < headers.size(); col++) {
                     filteredTableColumns[col].begin()->second.emplace_back(this->columns[col].begin()->second[matchedRow]);
                 }

@@ -13,6 +13,8 @@ using namespace std;
  */
 class ResultHandler {
 private:
+	bool isOptimised = false;
+
 	bool isTuples(vector<shared_ptr<QueryResultsTable>> selectClause) {
 		return selectClause.size() > 1;
 	}
@@ -64,6 +66,12 @@ public:
 	
 	list<string> processTables(vector<shared_ptr<QueryResultsTable>> selectClause, vector<shared_ptr<QueryResultsTable>> nonSelectClause);
 
+	void setOptimiseSwitch() {
+		isOptimised = !isOptimised;
+	}
 
+	bool getOptimisedSwitch() {
+		return isOptimised;
+	}
 };
 #endif

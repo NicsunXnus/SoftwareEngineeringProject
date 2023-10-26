@@ -4,8 +4,10 @@ void optimiseStepA(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vec
 
 list<string> ResultHandler::processTables(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
 	//for now we do brute force left to right execution, optimisation can come in the future
-	//optimiseStepA(selectClauseTables, nonSelectClauseTables);
-
+	//ResultHandler::setOptimiseSwitch(); //trigger optimisation
+	if (ResultHandler::getOptimisedSwitch()) { //perform optimised processing of tables in this branch
+		optimiseStepA(selectClauseTables, nonSelectClauseTables);
+	}
 	if (isSingleSynonym(selectClauseTables)) {
 		return handleSingleSynonym(selectClauseTables, nonSelectClauseTables);
 	}
@@ -62,6 +64,15 @@ void optimiseStepA(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vec
 
 //Group the clauses
 vector< vector<shared_ptr<QueryResultsTable>> > optimiseStepB(vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
+	vector< vector<shared_ptr<QueryResultsTable>> > groups;
+	vector<shared_ptr<QueryResultsTable>> emptyTables;
+	for (shared_ptr<QueryResultsTable> table : nonSelectClauseTables) {
+		if (table->isEmpty())
+			emptyTables.emplace_back(table);
+		else
+			break;
+	}
+
 	return {};
 }
 
