@@ -1381,7 +1381,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestWithIdentEqualValue)
 		{
-			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; variable v; Select c with \"alpha\" = 15");
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; variable v; Select c with \"alpha\" = \"beta\"");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
@@ -1392,7 +1392,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestWithAttrRefEqualIdent)
 		{
-			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; variable v; Select c with c.value = \"alpha\"");
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; variable v; Select c with v.varName = \"alpha\"");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
@@ -1403,7 +1403,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestWithIdentEqualAttrRef)
 		{
-			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; variable v; Select c with \"alpha\" = c.value");
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; read v; Select c with \"alpha\" = v.varName");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
@@ -1728,7 +1728,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestWithSTQuery)
 		{
-			vector<string> tokenizer = PQLTokenizer::tokenize("read c; Select c.value with 15 = c.stmt# such that Follows(1, 2)");
+			vector<string> tokenizer = PQLTokenizer::tokenize("read c; variable v; Select v.varName with 15 = c.stmt# such that Follows(1, 2)");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
