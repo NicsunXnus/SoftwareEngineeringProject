@@ -469,7 +469,6 @@ bool QueryParser::hasWith(std::vector<string_view>& query, int index) {
 	return index < static_cast<int>(query.size()) && query[index] == "with"sv;
 }
 
-
 shared_ptr<QueryObject> QueryParser::createComparisonObject(std::vector<string_view>& query, 
 	int& index, int tokenCount, bool is1stArgAttrRef) {
 	if (tokenCount == MIN_WITH_CLAUSE_TOKEN_COUNT) { // Comparison is made between 2 static args
