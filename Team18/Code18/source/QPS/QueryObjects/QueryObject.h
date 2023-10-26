@@ -20,7 +20,6 @@ using namespace std;
 class QueryObject {
 private:
 	string_view data; // stores information about the queryObject, such as its name, or arguments for clauses
-	shared_ptr<QueryResultsTable> table;
 public:
 	QueryObject(string_view data)
 		: data{ data } {};
