@@ -244,7 +244,39 @@ public:
 			auto l_front = finalResult.begin();
 			advance(l_front, 0);
 			Assert::IsTrue(finalResult.size() == 0);
+		}
 
+		TEST_METHOD(TestBooleanNoSuchThat) {
+			vector<shared_ptr<QueryResultsTable>> selectClauseTable = {  };
+			vector<shared_ptr<QueryResultsTable>> nonSelectClauseTable = {  };
+			shared_ptr<ResultHandler> resultHandler = make_shared<ResultHandler>();
+			list<string> finalResult = resultHandler->processTables(selectClauseTable, nonSelectClauseTable);
+			auto l_front = finalResult.begin();
+			advance(l_front, 0);
+			Assert::IsTrue(finalResult.size() == 1);
+			Assert::IsTrue(*l_front == "FALSE");
+		}
+
+		TEST_METHOD(TestBooleanEmptySuchThat) {
+			vector<shared_ptr<QueryResultsTable>> selectClauseTable = {  };
+			vector<shared_ptr<QueryResultsTable>> nonSelectClauseTable = { QueryResultsTable::createEmptyTable()};
+			shared_ptr<ResultHandler> resultHandler = make_shared<ResultHandler>();
+			list<string> finalResult = resultHandler->processTables(selectClauseTable, nonSelectClauseTable);
+			auto l_front = finalResult.begin();
+			advance(l_front, 0);
+			Assert::IsTrue(finalResult.size() == 1);
+			Assert::IsTrue(*l_front == "FALSE");
+		}
+
+		TEST_METHOD(TestBooleanNonEmptySuchThat) {
+			vector<shared_ptr<QueryResultsTable>> selectClauseTable = {  };
+			vector<shared_ptr<QueryResultsTable>> nonSelectClauseTable = { QueryResultsTable::createTable({"a", "c"}, twoDTable) };
+			shared_ptr<ResultHandler> resultHandler = make_shared<ResultHandler>();
+			list<string> finalResult = resultHandler->processTables(selectClauseTable, nonSelectClauseTable);
+			auto l_front = finalResult.begin();
+			advance(l_front, 0);
+			Assert::IsTrue(finalResult.size() == 1);
+			Assert::IsTrue(*l_front == "TRUE");
 		}
 	};
 }
