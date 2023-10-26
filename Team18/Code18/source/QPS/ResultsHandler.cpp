@@ -1,12 +1,16 @@
 #include "ResultsHandler.h"
 
 void optimiseStepA(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables);
+vector<shared_ptr<QueryResultsTable>> optimiseStepB(vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables);
+vector<shared_ptr<QueryResultsTable>> flatten2DArray(vector< vector<shared_ptr<QueryResultsTable>> > v2d);
 
 list<string> ResultHandler::processTables(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
 	//for now we do brute force left to right execution, optimisation can come in the future
 	//ResultHandler::setOptimiseSwitch(); //trigger optimisation
 	if (ResultHandler::getOptimisedSwitch()) { //perform optimised processing of tables in this branch
 		optimiseStepA(selectClauseTables, nonSelectClauseTables);
+		vector<shared_ptr<QueryResultsTable>> groups = optimiseStepB(nonSelectClauseTables);
+		nonSelectClauseTables = groups;
 	}
 	if (isSingleSynonym(selectClauseTables)) {
 		return handleSingleSynonym(selectClauseTables, nonSelectClauseTables);
@@ -63,14 +67,12 @@ void optimiseStepA(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vec
 }
 
 //Group the clauses
-vector< vector<shared_ptr<QueryResultsTable>> > optimiseStepB(vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
+vector<shared_ptr<QueryResultsTable>> optimiseStepB(vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
 	vector< vector<shared_ptr<QueryResultsTable>> > groups;
 	vector<shared_ptr<QueryResultsTable>> emptyTables;
 	for (shared_ptr<QueryResultsTable> table : nonSelectClauseTables) {
-		if (table->isEmpty())
-			emptyTables.emplace_back(table);
-		else
-			break;
+		if (table->isEmpty()) emptyTables.emplace_back(table);
+		else break;
 	}
 	groups.emplace_back(emptyTables);
 	vector<shared_ptr<QueryResultsTable>> nonEmptyTables;
@@ -79,18 +81,7 @@ vector< vector<shared_ptr<QueryResultsTable>> > optimiseStepB(vector<shared_ptr<
 	if (nonEmptyTables.size() > 1) {
 		vector<string> headers = nonEmptyTables[0]->getHeaders();
 		set<string> firstHeaders;
-		copy(
-
-			// The pointer to the beginning
-			// of the source container 
-			firstHeaders.begin(),
-
-			// The pointer to the end
-			// of the source container 
-			firstHeaders.end(),
-
-			// Method of copying 
-			inserter(headers, headers.end()));
+		copy(firstHeaders.begin(), firstHeaders.end(), inserter(headers, headers.end()));
 		vector<set<string> > groupNames;
 		groupNames.emplace_back(firstHeaders);
 		vector<shared_ptr<QueryResultsTable>> newGroup;
@@ -118,30 +109,26 @@ vector< vector<shared_ptr<QueryResultsTable>> > optimiseStepB(vector<shared_ptr<
 			}
 			if (!isFound) {
 				set<string> newHeaders;
-				copy(
-
-					// The pointer to the beginning
-					// of the source container 
-					newHeaders.begin(),
-
-					// The pointer to the end
-					// of the source container 
-					newHeaders.end(),
-
-					// Method of copying 
-					inserter(thisHeaders, thisHeaders.end()));
+				copy(newHeaders.begin(),newHeaders.end(),inserter(thisHeaders, thisHeaders.end()));
 				groupNames.emplace_back(newHeaders);
 				vector<shared_ptr<QueryResultsTable>> group;
 				group.emplace_back(table);
 				groups.emplace_back(group);
 			}
 		}
-		return groups;
 	}
 	else {
 		groups.emplace_back(nonEmptyTables);
-		return groups;
 	}
+	return flatten2DArray(groups);
+}
+
+vector<shared_ptr<QueryResultsTable>> flatten2DArray(vector< vector<shared_ptr<QueryResultsTable>> > v2d) {
+	vector<shared_ptr<QueryResultsTable>> v1d;
+	for (const auto& row : v2d) {
+		v1d.insert(v1d.end(), row.begin(), row.end());
+	}
+	return v1d;
 }
 
 // tables must be non-empty
