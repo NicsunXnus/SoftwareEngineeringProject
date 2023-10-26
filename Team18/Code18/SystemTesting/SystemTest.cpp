@@ -67,18 +67,18 @@ TEST_CLASS(Milestone2) {
   static inline const std::string defaultPath = "../../Tests18/Milestone2/";
 
  public:
-  //TEST_METHOD(single_calls_clause) {
-  //  std::string srcFilePath = defaultPath + "single_calls_source.txt";
-  //  std::string queryFilePath = defaultPath + "single_calls_queries.txt";
-  //  assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
-  //}
+      TEST_METHOD(single_calls_clause) {
+        std::string srcFilePath = defaultPath + "single_calls_source.txt";
+        std::string queryFilePath = defaultPath + "single_calls_queries.txt";
+        assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+      }
 
-		//TEST_METHOD(single_callsStar_clause)
-		//{
-		//	std::string srcFilePath = defaultPath + "single_callsStar_source.txt";
-		//	std::string queryFilePath = defaultPath + "single_callsStar_queries.txt";
-		//	assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
-		//}
+	TEST_METHOD(single_callsStar_clause)
+	{
+		std::string srcFilePath = defaultPath + "single_callsStar_source.txt";
+		std::string queryFilePath = defaultPath + "single_callsStar_queries.txt";
+		assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+	}
 
 		//TEST_METHOD(sprint3_test)
 		//{
@@ -87,12 +87,12 @@ TEST_CLASS(Milestone2) {
 		//	assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
 		//}
 
-		//TEST_METHOD(single_next_clause)
-		//{
-		//	std::string srcFilePath = defaultPath + "single_next_source.txt";
-		//	std::string queryFilePath = defaultPath + "single_next_queries.txt";
-		//	assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
-		//}
+		TEST_METHOD(single_next_clause)
+		{
+			std::string srcFilePath = defaultPath + "single_next_source.txt";
+			std::string queryFilePath = defaultPath + "single_next_queries.txt";
+			assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+		}
     TEST_METHOD(no_clauses) {
       std::string srcFilePath = defaultPath + "no_clause_source.txt";
       std::string queryFilePath = defaultPath + "no_clause_queries.txt";

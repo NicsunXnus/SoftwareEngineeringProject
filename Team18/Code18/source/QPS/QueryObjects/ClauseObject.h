@@ -11,112 +11,40 @@
 */
 class ClauseObject : public QueryObject {
 private:
-	shared_ptr<ClauseArg> argument0;
 	shared_ptr<ClauseArg> argument1;
+	shared_ptr<ClauseArg> argument2;
 
 public:
-	ClauseObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
-		: QueryObject{ clauseName }, argument0{ argument0 }, argument1{ argument1 } {
+	ClauseObject(string_view clauseName, shared_ptr<ClauseArg> argument1, shared_ptr<ClauseArg> argument2)
+		: QueryObject{ clauseName }, argument1{ argument1 }, argument2{ argument2 } {
 	}
 
 
 	shared_ptr<ClauseArg> getArg1() {
-		return argument0;
-	}
-
-	shared_ptr<ClauseArg> getArg2() {
 		return argument1;
 	}
 
-	
-	
-};
-inline string col1 = "col1";
-inline string col2 = "col2";
-
-inline StringMap filterMapKeyReturnMap(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
-	ENTITY typeArg1 = arg->getSynonym()->getEntityType();
-	unordered_set<string> PKBArg1EntityData = dataAccessLayer->getEntity(typeArg1);
-	StringMap filteredPKBClauseData;
-	for (const auto& entry : PKBClauseData) {
-		string leftTuple = entry.first;
-		auto it = PKBArg1EntityData.find(leftTuple);
-		if (it != PKBArg1EntityData.end()) {
-			if (entry.second.size() > 0) {
-				filteredPKBClauseData[entry.first] = entry.second;
-			}
+	shared_ptr<ClauseArg> getArg2() {
+		return argument2;
+	}
+protected:
+	bool isValidSynonymType(unordered_set<ENTITY> validEntitiesArg1, unordered_set<ENTITY> validEntitiesArg2) {
+		if (argument1->isSynonym() && validEntitiesArg1.find(argument1->getSynonym()->getEntityType()) == validEntitiesArg1.end()) {
+			return false;
 		}
-	}
-	return filteredPKBClauseData;
-}
-
-inline StringMap filterMapValueReturnMap(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
-	ENTITY typeArg2 = arg->getSynonym()->getEntityType();
-	unordered_set<string> PKBArg2EntityData = dataAccessLayer->getEntity(typeArg2);
-	StringMap filteredPKBClauseData;
-	for (const auto& entry : PKBClauseData) {
-		unordered_set<string> intersection;
-		unordered_set<string> rightTuple = entry.second;
-		for (const string& element : rightTuple) {
-			if (PKBArg2EntityData.find(element) != PKBArg2EntityData.end()) {
-				intersection.insert(element);
-			}
+		if (argument2->isSynonym() && validEntitiesArg2.find(argument2->getSynonym()->getEntityType()) == validEntitiesArg2.end()) {
+			return false;
 		}
-		filteredPKBClauseData[entry.first] = intersection;
-	}
-	return filteredPKBClauseData;
-}
-
-
-inline unordered_set<string> filterSetReturnSet(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, unordered_set<string> PKBClauseData) {
-	ENTITY typeArg2 = arg->getSynonym()->getEntityType();
-	unordered_set<string> PKBArg2EntityData = dataAccessLayer->getEntity(typeArg2);
-	unordered_set<string> filteredPKBClauseData;
-	for (const string& element : PKBClauseData) {
-		if (PKBArg2EntityData.find(element) != PKBArg2EntityData.end()) {
-			filteredPKBClauseData.insert(element);
-		}
-	}
-	return filteredPKBClauseData;
-}
-
-inline unordered_set<string> filterMapKeyReturnSetValues(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
-	unordered_set<string> filteredPKBClauseData;
-	auto it = PKBClauseData.find(svToString(arg->getArgValue()));
-	if (it != PKBClauseData.end()) {
-		return PKBClauseData[svToString(arg->getArgValue())];
-	}
-	return filteredPKBClauseData;
-}
-
-inline unordered_set<string> filterMapKeyReturnSetValues(string arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
-	unordered_set<string> filteredPKBClauseData;
-	auto it = PKBClauseData.find(arg);
-	if (it != PKBClauseData.end()) {
-		return PKBClauseData[arg];
-	}
-	return filteredPKBClauseData;
-}
-
-
-inline bool filterSetReturnBool(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, unordered_set<string> PKBClauseData) {
-	auto it = PKBClauseData.find(svToString(arg->getArgValue()));
-	if (it != PKBClauseData.end()) {
 		return true;
 	}
 
-	return false;
-}
-
-inline unordered_set<string> removeMapValuesReturnSet(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
-	unordered_set<string> keySet;
-
-	// Extract keys from the map and insert them into the set
-	for (const auto& pair : PKBClauseData) {
-		keySet.insert(pair.first);
-	}
-	return keySet;
-}
+	shared_ptr<QueryResultsTable> handleCallsCallsStar(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause);
+	shared_ptr<QueryResultsTable> handleUses(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause);
+	shared_ptr<QueryResultsTable> handleModifies(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause);
+	shared_ptr<QueryResultsTable> handleFollowsParents(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause);
+	shared_ptr<QueryResultsTable> handleNext(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause);
+	shared_ptr<QueryResultsTable> handleNextStar(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause);
+};
 
 /*
 * This class represents a Query object, for clause Uses with a statement ref as the first argument
