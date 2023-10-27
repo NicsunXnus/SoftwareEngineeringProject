@@ -1,14 +1,8 @@
-#include "ResultsHandler.h"
+#include "ResultsHandlerStub.h"
 
-void optimiseStepA(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables);
-vector<shared_ptr<QueryResultsTable>> optimiseStepB(vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables);
-void optimiseStepC(vector< vector<shared_ptr<QueryResultsTable>> >& groups);
-vector<shared_ptr<QueryResultsTable>> flatten2DArray(vector< vector<shared_ptr<QueryResultsTable>> > v2d);
-
-list<string> ResultHandler::processTables(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
-	//for now we do brute force left to right execution, optimisation can come in the future
-	//ResultHandler::setOptimiseSwitch(); //trigger optimisation
-	if (ResultHandler::getOptimisedSwitch()) { //perform optimised processing of tables in this branch
+list<string> ResultsHandlerStub::processTables(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
+	ResultsHandlerStub::setOptimiseSwitch(); //trigger optimisation
+	if (ResultsHandlerStub::getOptimisedSwitch()) { //perform optimised processing of tables in this branch
 		optimiseStepA(selectClauseTables, nonSelectClauseTables);
 		vector<shared_ptr<QueryResultsTable>> groups = optimiseStepB(nonSelectClauseTables);
 		nonSelectClauseTables = groups;
@@ -20,7 +14,7 @@ list<string> ResultHandler::processTables(vector<shared_ptr<QueryResultsTable>> 
 		return handleTuples(selectClauseTables, nonSelectClauseTables);
 	}
 	else { // BOOLEAN
-		
+
 	}
 
 	list<string> empty;
@@ -28,7 +22,7 @@ list<string> ResultHandler::processTables(vector<shared_ptr<QueryResultsTable>> 
 }
 
 // A set to contain only unique select clauses
-set<string> getHeadersOfTableAsSet(vector<shared_ptr<QueryResultsTable>> selectClauseTables) {
+set<string> ResultsHandlerStub::getHeadersOfTableAsSet(vector<shared_ptr<QueryResultsTable>> selectClauseTables) {
 	set<string> result;
 	for (shared_ptr<QueryResultsTable> table : selectClauseTables) {
 		result.insert(table->getHeaders()[0]);
@@ -38,7 +32,7 @@ set<string> getHeadersOfTableAsSet(vector<shared_ptr<QueryResultsTable>> selectC
 
 // 1. Removes columns that the select clauses do not ask for
 // 2. Add all empty tables to the beginning
-void optimiseStepA(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables) {
+void ResultsHandlerStub::optimiseStepA(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables) {
 	set<string> selectClauses = getHeadersOfTableAsSet(selectClauseTables);
 	for (shared_ptr<QueryResultsTable> table : nonSelectClauseTables) {
 		if (!table->isEmpty()) {
@@ -71,7 +65,7 @@ void optimiseStepA(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vec
 // A group of clauses is guaranteed to have a continuous link between all clauses.
 // However the order of the clauses is not guaranteed such that any two neighboring clauses
 // will share a common header.
-vector<shared_ptr<QueryResultsTable>> optimiseStepB(vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
+vector<shared_ptr<QueryResultsTable>> ResultsHandlerStub::optimiseStepB(vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
 	vector< vector<shared_ptr<QueryResultsTable>> > groups;
 	vector<shared_ptr<QueryResultsTable>> emptyTables;
 	for (shared_ptr<QueryResultsTable> table : nonSelectClauseTables) {
@@ -92,7 +86,7 @@ vector<shared_ptr<QueryResultsTable>> optimiseStepB(vector<shared_ptr<QueryResul
 		newGroup.emplace_back(nonEmptyTables[0]);
 		groups.emplace_back(newGroup);
 		nonEmptyTables.erase(nonEmptyTables.begin());
-		
+
 		for (shared_ptr<QueryResultsTable> table : nonEmptyTables) {
 			vector<string> thisHeaders = table->getHeaders();
 			int index = 0;
@@ -113,7 +107,7 @@ vector<shared_ptr<QueryResultsTable>> optimiseStepB(vector<shared_ptr<QueryResul
 			}
 			if (!isFound) {
 				set<string> newHeaders;
-				copy(newHeaders.begin(),newHeaders.end(),inserter(thisHeaders, thisHeaders.end()));
+				copy(newHeaders.begin(), newHeaders.end(), inserter(thisHeaders, thisHeaders.end()));
 				groupNames.emplace_back(newHeaders);
 				vector<shared_ptr<QueryResultsTable>> group;
 				group.emplace_back(table);
@@ -130,18 +124,19 @@ vector<shared_ptr<QueryResultsTable>> optimiseStepB(vector<shared_ptr<QueryResul
 
 // An auxiliary function to aid in the comparison within the data structure of vector<shared_ptr<QueryResultsTable>>
 // The table containing the more common header in the group of clauses will be sorted before the other.
-bool compare(const std::shared_ptr<QueryResultsTable>& a, const std::shared_ptr<QueryResultsTable>& b) {
-	int maxValueA, maxValueB = 0;
+bool compareStub(const std::shared_ptr<QueryResultsTable>& a, const std::shared_ptr<QueryResultsTable>& b) {
+	int maxValueA = 0;
+	int maxValueB = 0;
 	vector<string> headersA = a->getHeaders();
 	vector<string> headersB = b->getHeaders();
 	for (string header : headersA) {
-		if (ResultHandler::getCount(header) > maxValueA) {
-			maxValueA = ResultHandler::getCount(header);
+		if (ResultsHandlerStub::getCount(header) > maxValueA) {
+			maxValueA = ResultsHandlerStub::getCount(header);
 		}
 	}
 	for (string header : headersB) {
-		if (ResultHandler::getCount(header) > maxValueB) {
-			maxValueB = ResultHandler::getCount(header);
+		if (ResultsHandlerStub::getCount(header) > maxValueB) {
+			maxValueB = ResultsHandlerStub::getCount(header);
 		}
 	}
 	return maxValueA > maxValueB;
@@ -150,22 +145,22 @@ bool compare(const std::shared_ptr<QueryResultsTable>& a, const std::shared_ptr<
 // Rearrange the clauses in the group such that the clauses with the most common headers are arranged at the front.
 // This means a higher chance of "mutual friends" already forming at the beginning, so more likely that an inner join
 // will occur than a cross product.
-void optimiseStepC(vector< vector<shared_ptr<QueryResultsTable>> >& groups) {
+void ResultsHandlerStub::optimiseStepC(vector< vector<shared_ptr<QueryResultsTable>> >& groups) {
 	for (vector<shared_ptr<QueryResultsTable>>& group : groups) {
 		if (group[0]->isEmpty()) continue; //skip for empty table groups
 		for (shared_ptr<QueryResultsTable> table : group) {
 			vector<string> headers = table->getHeaders();
 			for (string header : headers) {
-				ResultHandler::updateCountHeaderStore(header);
-			}	
+				ResultsHandlerStub::updateCountHeaderStore(header);
+			}
 		}
-		sort(group.begin(), group.end(), compare);
-		ResultHandler::resetCountHeaderStore();
+		sort(group.begin(), group.end(), compareStub);
+		ResultsHandlerStub::resetCountHeaderStore();
 	}
 }
 
 // An auxiliary function to flatten vector< vector<shared_ptr<QueryResultsTable>> >
-vector<shared_ptr<QueryResultsTable>> flatten2DArray(vector< vector<shared_ptr<QueryResultsTable>> > v2d) {
+vector<shared_ptr<QueryResultsTable>> ResultsHandlerStub::flatten2DArray(vector< vector<shared_ptr<QueryResultsTable>> > v2d) {
 	vector<shared_ptr<QueryResultsTable>> v1d;
 	for (const auto& row : v2d) {
 		v1d.insert(v1d.end(), row.begin(), row.end());
@@ -174,7 +169,7 @@ vector<shared_ptr<QueryResultsTable>> flatten2DArray(vector< vector<shared_ptr<Q
 }
 
 // tables must be non-empty
-shared_ptr<QueryResultsTable> ResultHandler::joinIntermediateTables(vector<shared_ptr<QueryResultsTable>> tables) {
+shared_ptr<QueryResultsTable> ResultsHandlerStub::joinIntermediateTables(vector<shared_ptr<QueryResultsTable>> tables) {
 	shared_ptr<QueryResultsTable> intermediateTable = tables[0];
 	tables.erase(tables.begin());
 	shared_ptr<QueryResultsTable> currTable;
@@ -217,14 +212,14 @@ shared_ptr<QueryResultsTable> ResultHandler::joinIntermediateTables(vector<share
 * 2.3 Return empty by default (unhandled case?)
 */
 
-list<string> ResultHandler::handleSingleSynonym(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
+list<string> ResultsHandlerStub::handleSingleSynonym(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
 	if (nonSelectClauseTables.empty()) { // case 1
 		shared_ptr<QueryResultsTable> selectTable = selectClauseTables[0]; // guaranteed to exist, by conditional check prior
 		vector<string> columns = selectTable->getColumnData(selectTable->getPrimaryKey());
 
 		return vectorToUniqueList(columns);
 	}
-	
+
 	shared_ptr<QueryResultsTable> intermediateTable = joinIntermediateTables(nonSelectClauseTables);
 
 	string selectVar = selectClauseTables[0]->getPrimaryKey();
@@ -254,7 +249,7 @@ list<string> ResultHandler::handleSingleSynonym(vector<shared_ptr<QueryResultsTa
 		vector<string> colContents = selectClauseTables[0]->getColumnData(selectVar);
 		return vectorToUniqueList(colContents);
 	}
-	
+
 
 	list<string> empty;
 	return empty;
@@ -262,7 +257,7 @@ list<string> ResultHandler::handleSingleSynonym(vector<shared_ptr<QueryResultsTa
 
 }
 
-list<string> ResultHandler::returnTuples(vector<shared_ptr<QueryResultsTable>> selectClauseTables) {
+list<string> ResultsHandlerStub::returnTuples(vector<shared_ptr<QueryResultsTable>> selectClauseTables) {
 	shared_ptr<QueryResultsTable> intermediateTable = selectClauseTables[0];
 	intermediateTable->getPrimaryKeyOnlyTable();
 	selectClauseTables.erase(selectClauseTables.begin());
@@ -279,7 +274,7 @@ list<string> ResultHandler::returnTuples(vector<shared_ptr<QueryResultsTable>> s
 	return vectorToUniqueList(result);
 }
 
-list<string> ResultHandler::handleTuples(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
+list<string> ResultsHandlerStub::handleTuples(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
 	if (nonSelectClauseTables.empty()) { // case 1
 		return returnTuples(selectClauseTables);
 	}
@@ -296,8 +291,8 @@ list<string> ResultHandler::handleTuples(vector<shared_ptr<QueryResultsTable>> s
 		}
 
 	}
-	
-	
+
+
 	// case 2.2
 	// join select clause tables
 	vector<string> selectClauseHeaders;
@@ -315,8 +310,8 @@ list<string> ResultHandler::handleTuples(vector<shared_ptr<QueryResultsTable>> s
 		}
 	}
 
-	
-	vector<shared_ptr<QueryResultsTable>> mergeTable = { intermediateTable }; 
+
+	vector<shared_ptr<QueryResultsTable>> mergeTable = { intermediateTable };
 	mergeTable.insert(mergeTable.end(), selectClausesInIntermediateTable.begin(), selectClausesInIntermediateTable.end());
 	intermediateTable = joinIntermediateTables(mergeTable);
 
@@ -331,6 +326,6 @@ list<string> ResultHandler::handleTuples(vector<shared_ptr<QueryResultsTable>> s
 			tupleTables.push_back(selectClausesNotInIntermediateTable[header]);
 		}
 	}
-	
+
 	return returnTuples(tupleTables);
 }

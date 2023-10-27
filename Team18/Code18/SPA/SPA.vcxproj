@@ -27,6 +27,7 @@
     <ClCompile Include="..\source\QPS\QueryParser.cpp" />
     <ClCompile Include="..\source\QPS\QueryValidator.cpp" />
     <ClCompile Include="..\source\QPS\ResultsHandler.cpp" />
+	<ClCompile Include="..\source\QPS\ResultsHandlerStub.cpp" />
     <ClCompile Include="..\source\SP\AST\BinaryOpNode.cpp" />
     <ClCompile Include="..\source\SP\AST\Node.cpp" />
     <ClCompile Include="..\source\SP\AST\TerminalNode.cpp" />
@@ -103,6 +104,7 @@
     <ClInclude Include="..\source\QPS\QueryResultsTable.h" />
     <ClInclude Include="..\source\QPS\QueryValidator.h" />
     <ClInclude Include="..\source\QPS\ResultsHandler.h" />
+	<ClInclude Include="..\source\QPS\ResultsHandlerStub.h" />
     <ClInclude Include="..\source\SP\AST\BinaryOpNode.h" />
     <ClInclude Include="..\source\SP\AST\Node.h" />
     <ClInclude Include="..\source\SP\AST\TerminalNode.h" />

@@ -3,10 +3,10 @@
 
 #include "../source/QPS/QueryResultsTable.h"
 #include "../source/QPS/ResultsHandler.h"
-
+#include"../source/QPS/ResultsHandlerStub.h"
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;
-
+#include <random>
 namespace UnitTesting {
 	TEST_CLASS(TestQPSResultsHandler) {
 private:
@@ -248,68 +248,57 @@ public:
 	};
 	TEST_CLASS(TestOptimisation) {
 private:
-	unordered_set<string> values = { "a","b" };
-	vector<string> valuesA = { "x","y" };
-	vector<string> valuesB = { "1","2" };
-	shared_ptr<QueryResultsTable> singleSelectClausesA = QueryResultsTable::createTable("s1", values);
-	shared_ptr<QueryResultsTable> singleSelectClausesB = QueryResultsTable::createTable("s2", values);
-	shared_ptr<QueryResultsTable> singleSelectClausesC = QueryResultsTable::createTable("v1", values);
-	shared_ptr<QueryResultsTable> singleSelectClausesD = QueryResultsTable::createTable("v2", values);
 
-	// A set to contain only unique select clauses
-	set<string> getHeadersOfTableAsSet(vector<shared_ptr<QueryResultsTable>> selectClauseTables) {
-		set<string> result;
-		for (shared_ptr<QueryResultsTable> table : selectClauseTables) {
-			result.insert(table->getHeaders()[0]);
-		}
-		return result;
-	}
-
-	// 1. Removes columns that the select clauses do not ask for
-	// 2. Add all empty tables to the beginning
-	void optimiseStepA(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables) {
-		set<string> selectClauses = getHeadersOfTableAsSet(selectClauseTables);
-		for (shared_ptr<QueryResultsTable> table : nonSelectClauseTables) {
-			if (!table->isEmpty()) {
-				vector< map<string, vector<string>> > columns = table->getColumns();
-				vector< map<string, vector<string>> > result;
-				for (map<string, vector<string>> column : columns) {
-					if (find(selectClauses.begin(), selectClauses.end(), column.begin()->first) != selectClauses.end()) {
-						result.emplace_back(column);
-					}
-				}
-				table->setColumns(result);
+	// PROMPT: GIVE ME A FUNCTION THAT RANDOMLY GENERATES A PAIR OF STRINGS WHERE EACH STRING IS EITHER A NUMBER FROM 0 TO 9 OR AN ALPHABET
+	// ai-gen start 0
+	vector<std::string> generateRandomPair() {
+		std::string alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		std::string numbers = "0123456789";
+		std::random_device rd;
+		std::mt19937 gen(rd());
+		std::uniform_int_distribution<> dis(0, 1);
+		std::uniform_int_distribution<> alphaDis(0, alphabet.size() - 1);
+		std::uniform_int_distribution<> numDis(0, numbers.size() - 1);
+		std::string first, second;
+		for (int i = 0; i < 2; ++i) {
+			if (dis(gen) == 0) {
+				first += alphabet[alphaDis(gen)];
+			}
+			else {
+				first += numbers[numDis(gen)];
+			}
+			if (dis(gen) == 0) {
+				second += alphabet[alphaDis(gen)];
+			}
+			else {
+				second += numbers[numDis(gen)];
 			}
 		}
-		//end of step 1	
-		vector<shared_ptr<QueryResultsTable>> emptyTables;
-		for (shared_ptr<QueryResultsTable> table : nonSelectClauseTables) {
-			if (table->isEmpty()) {
-				emptyTables.emplace_back(table);
-				//nonSelectClauseTables.erase(nonSelectClauseTables.begin() + index);
-			}
-		}
-		vector<shared_ptr<QueryResultsTable>> result;
-		// Get non empty tables by taking the opposite of an intersection between the emptyTables and nonSelectClauseTables
-		std::set_symmetric_difference(emptyTables.begin(), emptyTables.end(), nonSelectClauseTables.begin(), nonSelectClauseTables.end(), std::inserter(result, result.begin()));
-		result.insert(result.begin(), emptyTables.begin(), emptyTables.end());
-		nonSelectClauseTables = result;
-		//End of step 2		
+		return { first, second };
 	}
+	// ai-gen end
+
+	shared_ptr<QueryResultsTable> singleSelectClausesS1 = QueryResultsTable::createTable("s1", generateRandomPair());
+	shared_ptr<QueryResultsTable> singleSelectClausesS2 = QueryResultsTable::createTable("s2", generateRandomPair());
+	shared_ptr<QueryResultsTable> singleSelectClausesV1 = QueryResultsTable::createTable("v1", generateRandomPair());
+	shared_ptr<QueryResultsTable> singleSelectClausesV2 = QueryResultsTable::createTable("v2", generateRandomPair());
+	shared_ptr<QueryResultsTable> singleSelectClausesA1 = QueryResultsTable::createTable("a1", generateRandomPair());
+	shared_ptr<QueryResultsTable> singleSelectClausesA = QueryResultsTable::createTable("a", generateRandomPair());
+
 public:
 	TEST_METHOD(Test_Step_A_SingleSelect) {
 		vector< shared_ptr<QueryResultsTable>> nonSelectClauses;
-		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "v1","v2" }, { valuesA, valuesB }));
+		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "v1","v2" }, { generateRandomPair(), generateRandomPair() }));
 		nonSelectClauses.emplace_back(QueryResultsTable::createEmptyTable());
-		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "s1","s2" }, { valuesA, valuesB }));
+		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "s1","s2" }, { generateRandomPair(), generateRandomPair() }));
 		vector< shared_ptr<QueryResultsTable>> selectClauses;
-		selectClauses.emplace_back(singleSelectClausesA);
+		selectClauses.emplace_back(singleSelectClausesS1);
 		vector< shared_ptr<QueryResultsTable>> expected_result;
 		expected_result.emplace_back(QueryResultsTable::createEmptyTable());
 		expected_result.emplace_back(QueryResultsTable::createEmptyTable());
-		expected_result.emplace_back(QueryResultsTable::createTable("s1", valuesA));
+		expected_result.emplace_back(QueryResultsTable::createTable("s1", generateRandomPair()));
 		
-		optimiseStepA(selectClauses, nonSelectClauses);
+		ResultsHandlerStub::optimiseStepA(selectClauses, nonSelectClauses);
 		bool isSame = false;
 		int size = nonSelectClauses.size();
 		if (nonSelectClauses.size() == expected_result.size()) {
@@ -331,15 +320,15 @@ public:
 		vector< shared_ptr<QueryResultsTable>> expected_result;
 		expected_result.emplace_back(QueryResultsTable::createEmptyTable());
 		expected_result.emplace_back(QueryResultsTable::createEmptyTable());
-		expected_result.emplace_back(QueryResultsTable::create2DTable({ "s1","s2" }, { valuesA, valuesB }));
+		expected_result.emplace_back(QueryResultsTable::create2DTable({ "s1","s2" }, { generateRandomPair(), generateRandomPair() }));
 		vector< shared_ptr<QueryResultsTable> > tupleSelectClauses;
-		tupleSelectClauses.emplace_back(singleSelectClausesA);
-		tupleSelectClauses.emplace_back(singleSelectClausesB);
+		tupleSelectClauses.emplace_back(singleSelectClausesS1);
+		tupleSelectClauses.emplace_back(singleSelectClausesS2);
 		vector< shared_ptr<QueryResultsTable>> nonSelectClauses;
-		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "v1","v2" }, { valuesA, valuesB }));
+		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "v1","v2" }, { generateRandomPair(), generateRandomPair() }));
 		nonSelectClauses.emplace_back(QueryResultsTable::createEmptyTable());
-		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "s1","s2" }, { valuesA, valuesB }));
-		optimiseStepA(tupleSelectClauses, nonSelectClauses);
+		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "s1","s2" }, { generateRandomPair(), generateRandomPair() }));
+		ResultsHandlerStub::optimiseStepA(tupleSelectClauses, nonSelectClauses);
 		bool isSame = false;
 		if (nonSelectClauses.size() == expected_result.size()) {
 			if (!nonSelectClauses[0]->isEmpty() && !nonSelectClauses[1]->isEmpty()) {
@@ -359,16 +348,16 @@ public:
 	TEST_METHOD(Test_Step_A_TuplesSelectB) {
 		vector< shared_ptr<QueryResultsTable>> expected_result;
 		expected_result.emplace_back(QueryResultsTable::createEmptyTable());
-		expected_result.emplace_back(QueryResultsTable::createTable("v1", valuesA));
-		expected_result.emplace_back(QueryResultsTable::createTable("s1", valuesA));
+		expected_result.emplace_back(QueryResultsTable::createTable("v1", generateRandomPair()));
+		expected_result.emplace_back(QueryResultsTable::createTable("s1", generateRandomPair()));
 		vector< shared_ptr<QueryResultsTable> > tupleSelectClauses;
-		tupleSelectClauses.emplace_back(singleSelectClausesA);
-		tupleSelectClauses.emplace_back(singleSelectClausesC);
+		tupleSelectClauses.emplace_back(singleSelectClausesS1);
+		tupleSelectClauses.emplace_back(singleSelectClausesV1);
 		vector< shared_ptr<QueryResultsTable>> nonSelectClauses;
-		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "v1","v2" }, { valuesA, valuesB }));
+		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "v1","v2" }, { generateRandomPair(), generateRandomPair() }));
 		nonSelectClauses.emplace_back(QueryResultsTable::createEmptyTable());
-		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "s1","s2" }, { valuesA, valuesB }));
-		optimiseStepA(tupleSelectClauses, nonSelectClauses);
+		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "s1","s2" }, { generateRandomPair(), generateRandomPair() }));
+		ResultsHandlerStub::optimiseStepA(tupleSelectClauses, nonSelectClauses);
 		bool isSame = false;
 		if (nonSelectClauses.size() == expected_result.size()) {
 			if (!nonSelectClauses[0]->isEmpty()) {
@@ -383,6 +372,80 @@ public:
 		else {
 			Assert::Fail();
 		}
+	}
+
+	TEST_METHOD(Test_Visualise) {
+		//Reference to CS3203 Optimisation Slides Slide 19
+		/*
+		assign a, a1, a2; stmt s1, s2, s3; variable v1, v2;
+		 Select <s1, a, a1, v2> 
+			 such that Uses (s1, v1) and Uses (5, "y")
+			 Affects (a1, a2) and Modifies (6 , "x")
+			 with a1.stmt = 20 
+			 such that Parent (s1, s2) 
+			 such that Next (s2, s3) and 
+			 Modifies (s1, "x") and 
+			 Modifies (a, v2) 
+		*/
+		vector< shared_ptr<QueryResultsTable> > tupleSelectClauses;
+		tupleSelectClauses.emplace_back(singleSelectClausesS1);
+		tupleSelectClauses.emplace_back(singleSelectClausesA);
+		tupleSelectClauses.emplace_back(singleSelectClausesA1);
+		tupleSelectClauses.emplace_back(singleSelectClausesV2);
+		vector< shared_ptr<QueryResultsTable>> nonSelectClauses;
+		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "s1","v1" }, { generateRandomPair(), generateRandomPair() })); // Uses (s1,v1)
+		nonSelectClauses.emplace_back(QueryResultsTable::createEmptyTable()); // Uses(5,"y")
+		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "a1","a2" }, { generateRandomPair(), generateRandomPair() })); // Affects (a1, a2) with a1.stmt = 20 
+		nonSelectClauses.emplace_back(QueryResultsTable::createEmptyTable()); // Modifies (6 , "x")
+		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "s1","s2" }, { generateRandomPair(), generateRandomPair() })); //such that Parent (s1, s2)
+		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "s2","s3" }, { generateRandomPair(), generateRandomPair() })); //such that Next (s2, s3)
+		nonSelectClauses.emplace_back(QueryResultsTable::createTable("s1", generateRandomPair())); //Modifies (s1, "x")
+		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "a","v2" }, { generateRandomPair(), generateRandomPair() })); //Modifies (s1, "x")
+		std::stringstream output;
+		std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
+		int index = 0;
+		for (shared_ptr<QueryResultsTable> table : nonSelectClauses) {
+			table->setId(index); index++;
+			cout << "Table " + to_string(table->getId()) << endl;
+			table->printTable();
+			cout << endl;
+		}
+
+		std::cout.rdbuf(oldCoutBuffer);
+
+		Logger::WriteMessage("Order of tables BEFORE STEP A:\n");
+		Logger::WriteMessage(output.str().c_str());
+
+		ResultsHandlerStub::optimiseStepA(tupleSelectClauses, nonSelectClauses);
+
+		std::stringstream outputA;
+		std::streambuf* oldCoutBufferA = std::cout.rdbuf(outputA.rdbuf());
+
+		for (shared_ptr<QueryResultsTable> table : nonSelectClauses) {
+			cout << "Table " + to_string(table->getId()) << endl;
+			table->printTable();
+			cout << endl;
+		}
+
+		std::cout.rdbuf(oldCoutBufferA);
+
+		Logger::WriteMessage("Order of tables AFTER STEP A:\n");
+		Logger::WriteMessage(outputA.str().c_str());
+
+		nonSelectClauses = ResultsHandlerStub::optimiseStepB(nonSelectClauses);
+
+		std::stringstream outputB;
+		std::streambuf* oldCoutBufferB = std::cout.rdbuf(outputB.rdbuf());
+		for (shared_ptr<QueryResultsTable> table : nonSelectClauses) {
+			cout << "Table " + to_string(table->getId()) << endl;
+			table->printTable();
+			cout << endl;
+		}
+
+		std::cout.rdbuf(oldCoutBufferB);
+
+		Logger::WriteMessage("Order of tables AFTER STEP B AND C:\n");
+		Logger::WriteMessage(outputB.str().c_str());
 	}
 	};
 }

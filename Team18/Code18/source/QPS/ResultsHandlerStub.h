@@ -1,17 +1,12 @@
-#ifndef RESULTSHANDLER_H
-#define RESULTSHANDLER_H
-
+#pragma once
 #include <vector>
 #include <list>
 #include "QueryResultsTable.h"
 #include "../HelperFunctions.h"
 
 using namespace std;
-/**
- * This class represents a ResultsHandler object that processes tuples from the PKB to generate
- * query results
- */
-class ResultHandler {
+class ResultsHandlerStub
+{
 private:
 	// Stores the count of the header in a group of clauses
 	inline static map<string, int> countHeadersStore;
@@ -58,15 +53,17 @@ private:
 
 public:
 	/**
-	 * Constructor for the ResultHandler object
+	 * Constructor for the ResultHandlerStub object
 	 */
-	ResultHandler() {};
+	ResultsHandlerStub() {
+		
+	};
 
 	/**
-	 * Destructor for the ResultHandler object
+	 * Destructor for the ResultHandlerStub object
 	 */
-	~ResultHandler() {};
-	
+	~ResultsHandlerStub() {};
+
 	// The QueryResultTables of the clauses are processed, and through a series of cross-products and/or inner joins, the final result
 	// of the PQL is obtained.
 	list<string> processTables(vector<shared_ptr<QueryResultsTable>> selectClause, vector<shared_ptr<QueryResultsTable>> nonSelectClause);
@@ -90,5 +87,11 @@ public:
 	int static getCount(string header) {
 		return countHeadersStore[header];
 	}
+
+	static set<string> getHeadersOfTableAsSet(vector<shared_ptr<QueryResultsTable>> selectClauseTables);
+	static void optimiseStepA(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables);
+	static vector<shared_ptr<QueryResultsTable>> optimiseStepB(vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables);
+	static void optimiseStepC(vector< vector<shared_ptr<QueryResultsTable>> >& groups);
+	static vector<shared_ptr<QueryResultsTable>> flatten2DArray(vector< vector<shared_ptr<QueryResultsTable>> > v2d);
 };
-#endif
+

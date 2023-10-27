@@ -205,7 +205,7 @@ namespace UnitTesting
 
             vector<map<string, vector<string>>> columnsUses = { map1,map2,map3, map4 };
             shared_ptr<QueryResultsTable> tab1 = make_shared<QueryResultsTable>(columnsUses);
-            shared_ptr<QueryResultsTable> tab2 = tab1->filter("v1", "v2");
+            shared_ptr<QueryResultsTable> tab2 = tab1->innerJoinOnTwoColumns("v1", "v2");
             
             tab2->getColumnData("v2");
             Assert::IsTrue(tab2->getColumnData("v1") == tab2->getColumnData("v2"));
@@ -214,7 +214,7 @@ namespace UnitTesting
 
         TEST_METHOD(TestFilterCol1Col2Empty) {
             shared_ptr<QueryResultsTable> tab1 = make_shared<QueryResultsTable>();
-            shared_ptr<QueryResultsTable> tab2 = tab1->filter("v1", "v2");
+            shared_ptr<QueryResultsTable> tab2 = tab1->innerJoinOnTwoColumns("v1", "v2");
 
             tab2->getColumnData("v2");
             Assert::IsTrue(tab2->getColumnData("v1") == tab2->getColumnData("v2"));
