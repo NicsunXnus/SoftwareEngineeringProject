@@ -1,7 +1,6 @@
 #include "ResultsHandler.h"
 
 list<string> ResultHandler::processTables(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
-	//for now we do brute force left to right execution, optimisation can come in the future
 	if (isSingleSynonym(selectClauseTables)) {
 		return handleSingleSynonym(selectClauseTables, nonSelectClauseTables);
 	}
