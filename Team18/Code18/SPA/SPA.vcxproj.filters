@@ -171,7 +171,7 @@
     <ClCompile Include="..\source\QPS\ResultsHandler.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
-	<ClCompile Include="..\source\QPS\ResultsHandlerStub.cpp">
+	<ClCompile Include="..\source\QPS\OptimisedFunctionsStub.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
     <ClCompile Include="..\source\QPS\QueryObjects\CallsObject.cpp">
@@ -365,7 +365,7 @@
     <ClInclude Include="..\source\QPS\ResultsHandler.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
-	    <ClInclude Include="..\source\QPS\ResultsHandlerStub.h">
+	<ClInclude Include="..\source\QPS\OptimisedFunctionsStub.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\Errors\QPSError.h">
