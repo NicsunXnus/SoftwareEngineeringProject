@@ -107,6 +107,16 @@ void optimiseStepB(vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables)
 	groups.emplace_back(emptyTables);
 	vector<shared_ptr<QueryResultsTable>> nonEmptyTables(nonSelectClauseTables.begin() + indexNonEmpty, nonSelectClauseTables.end());
 	if (nonEmptyTables.size() > 1) {
+		// sort the most table with the most common headers at the start
+		for (shared_ptr<QueryResultsTable> table : nonEmptyTables) {
+			vector<string> headers = table->getHeaders();
+			for (string header : headers) {
+				QueryBuilder::updateCountHeaderStore(header);
+			}
+		}
+		sort(nonEmptyTables.begin(), nonEmptyTables.end(), sortMostCommonHeaderFirst);
+		QueryBuilder::resetCountHeaderStore();
+
 		vector<string> headers = nonEmptyTables[0]->getHeaders();
 
 		set<string> firstHeaders;

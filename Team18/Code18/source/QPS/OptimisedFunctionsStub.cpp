@@ -15,6 +15,26 @@ bool sortEmptyFirstStub(const std::shared_ptr<QueryResultsTable>& a, const std::
 	return true;
 }
 
+// An auxiliary function to aid in the comparison within the data structure of vector<shared_ptr<QueryResultsTable>>
+// The table containing the more common header in the group of clauses will be sorted before the other.
+bool sortMostCommonHeaderFirstStub(const std::shared_ptr<QueryResultsTable>& a, const std::shared_ptr<QueryResultsTable>& b) {
+	int maxValueA = 0;
+	int maxValueB = 0;
+	vector<string> headersA = a->getHeaders();
+	vector<string> headersB = b->getHeaders();
+	for (string header : headersA) {
+		if (OptimisedFunctionsStub::getCount(header) > maxValueA) {
+			maxValueA = OptimisedFunctionsStub::getCount(header);
+		}
+	}
+	for (string header : headersB) {
+		if (OptimisedFunctionsStub::getCount(header) > maxValueB) {
+			maxValueB = OptimisedFunctionsStub::getCount(header);
+		}
+	}
+	return maxValueA > maxValueB;
+}
+
 // 1. Removes columns that the select clauses do not ask for
 // 2. Add all empty tables to the beginning
 void OptimisedFunctionsStub::optimiseStepA(vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables) {
@@ -52,6 +72,16 @@ void OptimisedFunctionsStub::optimiseStepB(vector<shared_ptr<QueryResultsTable>>
 	groups.emplace_back(emptyTables);
 	vector<shared_ptr<QueryResultsTable>> nonEmptyTables(nonSelectClauseTables.begin() + indexNonEmpty, nonSelectClauseTables.end());
 	if (nonEmptyTables.size() > 1) {
+		// sort the most table with the most common headers at the start
+		for (shared_ptr<QueryResultsTable> table : nonEmptyTables) {
+			vector<string> headers = table->getHeaders();
+			for (string header : headers) {
+				OptimisedFunctionsStub::updateCountHeaderStore(header);
+			}
+		}
+		sort(nonEmptyTables.begin(), nonEmptyTables.end(), sortMostCommonHeaderFirstStub);
+		OptimisedFunctionsStub::resetCountHeaderStore();
+
 		vector<string> headers = nonEmptyTables[0]->getHeaders();
 		
 		set<string> firstHeaders;
@@ -100,26 +130,6 @@ void OptimisedFunctionsStub::optimiseStepB(vector<shared_ptr<QueryResultsTable>>
 	nonSelectClauseTables = flatten2DArray(groups);
 }
 
-// An auxiliary function to aid in the comparison within the data structure of vector<shared_ptr<QueryResultsTable>>
-// The table containing the more common header in the group of clauses will be sorted before the other.
-bool sortMostCommonHeaderFirstStub(const std::shared_ptr<QueryResultsTable>& a, const std::shared_ptr<QueryResultsTable>& b) {
-	int maxValueA = 0;
-	int maxValueB = 0;
-	vector<string> headersA = a->getHeaders();
-	vector<string> headersB = b->getHeaders();
-	for (string header : headersA) {
-		if (OptimisedFunctionsStub::getCount(header) > maxValueA) {
-			maxValueA = OptimisedFunctionsStub::getCount(header);
-		}
-	}
-	for (string header : headersB) {
-		if (OptimisedFunctionsStub::getCount(header) > maxValueB) {
-			maxValueB = OptimisedFunctionsStub::getCount(header);
-		}
-	}
-	return maxValueA > maxValueB;
-}
-
 // Rearrange the clauses in the group such that the clauses with the most common headers are arranged at the front.
 // This means a higher chance of "mutual friends" already forming at the beginning, so more likely that an inner join
 // will occur than a cross product.
@@ -135,6 +145,8 @@ void OptimisedFunctionsStub::optimiseStepC(vector< vector<shared_ptr<QueryResult
 		sort(group.begin(), group.end(), sortMostCommonHeaderFirstStub);
 		OptimisedFunctionsStub::resetCountHeaderStore();
 	}
+
+
 }
 
 // An auxiliary function to flatten vector< vector<shared_ptr<QueryResultsTable>> >
