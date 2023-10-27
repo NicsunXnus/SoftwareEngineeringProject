@@ -16,6 +16,8 @@
     <ClCompile Include="..\source\QPS\DataAccessLayerStub.cpp" />
     <ClCompile Include="..\source\QPS\QueryBuilder.cpp" />
     <ClCompile Include="..\source\QPS\QueryDriver.cpp" />
+    <ClCompile Include="..\source\QPS\QueryObjects\AffectsFilter.cpp" />
+    <ClCompile Include="..\source\QPS\QueryObjects\AffectsObject.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\CallsObject.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\ClauseTableFilter.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\ComparisonQueryObject.cpp" />
@@ -86,6 +88,7 @@
     <ClInclude Include="..\source\QPS\PQLTokenizer.h" />
     <ClInclude Include="..\source\QPS\QueryBuilder.h" />
     <ClInclude Include="..\source\QPS\QueryDriver.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\AffectsFilter.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\BooleanObjectFactory.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\BooleanQueryObject.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\ClauseArg.h" />

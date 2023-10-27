@@ -68,6 +68,13 @@ public:
 	}
 
 	vector<shared_ptr<QueryObject>> getNonSelectClauseQueryObject(vector<shared_ptr<QueryObject>> queryObjects) {
+		if (synonyms_in_select <= 0) {
+			auto start = queryObjects.begin() + 1; // ignore the boolean object
+			auto end = queryObjects.end();
+			vector<shared_ptr<QueryObject>> selectClauseQueryObjects(start, end);
+
+			return selectClauseQueryObjects;
+		}
 		auto start = queryObjects.begin() + synonyms_in_select;
 		auto end = queryObjects.end();
 		vector<shared_ptr<QueryObject>> selectClauseQueryObjects(start, end);

@@ -44,6 +44,7 @@ protected:
 	shared_ptr<QueryResultsTable> handleFollowsParents(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause);
 	shared_ptr<QueryResultsTable> handleNext(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause);
 	shared_ptr<QueryResultsTable> handleNextStar(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause);
+	shared_ptr<QueryResultsTable> handleAffects(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause);
 };
 
 /*
@@ -196,10 +197,7 @@ public:
 	AffectsObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
 		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
-	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		// TODO
-		return make_shared<QueryResultsTable>();
-	}
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override;
 
 };
 #endif

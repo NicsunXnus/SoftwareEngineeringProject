@@ -1,3 +1,113 @@
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select BOOLEAN such that Affects(a,s1)
+FALSE
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select a1 such that Affects(a,a1)
+7, 9, 11, 13, 14, 15,17
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select a such that Affects(a,a1)
+4,5,7,9,11, 12,13,14,16
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select a such that Affects(a,a)
+7, 9
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select BOOLEAN such that Affects(_,7)
+TRUE
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select BOOLEAN such that Affects(_,6)
+FALSE
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select BOOLEAN such that Affects(_,3)
+FALSE
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select BOOLEAN such that Affects(_,_)
+TRUE
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select a1 such that Affects(_,a1)
+7, 9, 11, 13, 14, 15,17
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select BOOLEAN such that Affects(19,_)
+FALSE
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select BOOLEAN such that Affects(9,_)
+TRUE
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select BOOLEAN such that Affects(4,_)
+TRUE
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select BOOLEAN such that Affects(3,_)
+FALSE
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select a such that Affects(a,_)
+4,5,7,9,11, 12,13,14,16
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select a such that Affects(a,13)
+4,5,7,9,11, 12
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select a such that Affects(a,5)
+
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select a such that Affects(a,9)
+5, 9
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select a such that Affects(15,a)
+
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select BOOLEAN such that Next(6,10)
+TRUE
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select a such that Affects(5,a)
+9,13
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select s1 such that Affects(5,s1)
+
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select BOOLEAN such that Affects(5,9)
+TRUE
+5000
 2 - syn, syn, arg1: proc, arg2: proc
 stmt s1, s2; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p, q;
 Select p such that Calls ("Second", p) with c.procName = p.procName such that Parent (w, c) 
@@ -257,4 +367,69 @@ Select pn such that Next*(_,_)
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
 Select pn such that Next*(_,_)
 18
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select BOOLEAN such that Affects(9,9)
+TRUE
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select BOOLEAN such that Affects(7,11)
+TRUE
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select BOOLEAN such that Affects(7,13)
+TRUE
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select BOOLEAN such that Affects(4,7)
+TRUE
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select BOOLEAN such that Affects(4,11)
+TRUE
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select BOOLEAN such that Affects(4,13)
+TRUE
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select BOOLEAN such that Affects(4,15)
+TRUE
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select BOOLEAN such that Affects(5, 13)
+TRUE
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select BOOLEAN such that Affects(12,13)
+TRUE
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select BOOLEAN such that Affects(12,14)
+FALSE
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select BOOLEAN such that Affects(12,15)
+FALSE
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select BOOLEAN such that Affects(5,6)
+FALSE
+5000
+7 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select BOOLEAN such that Affects(12,9)
+FALSE
 5000

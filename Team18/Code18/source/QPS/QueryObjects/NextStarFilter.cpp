@@ -14,6 +14,9 @@ shared_ptr<QueryResultsTable> NextStarSynSyn::evaluate(shared_ptr<DataAccessLaye
 	unordered_set<string> filteredPKBClauseDataKeepArg2 = removeMapValuesReturnSet(arg1, dataAccessLayer, filteredPKBClauseDataArg2); // nodes that have parent
 
 	if (filteredPKBClauseDataKeepArg1.empty() || filteredPKBClauseDataKeepArg2.empty()) {
+		if (arg1->getArgValue() == arg2->getArgValue()) {
+			return QueryResultsTable::createEmptyTableWithHeader(svToString(arg1->getArgValue()));
+		}
 		StringMap empty;
 		vector<string> headers({ svToString(arg1->getArgValue()), svToString(arg2->getArgValue()) });
 		return QueryResultsTable::createTable(headers, empty);

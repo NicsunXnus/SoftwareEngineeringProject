@@ -7,7 +7,7 @@
 
 
 /*
-* This class encapsulates the logic handler for Next*
+* This class encapsulates the logic handler for Next*, filtering the PKB data
 * Reuses some classes from ClauseTableFilter for certain argument combinations
 */
 class NextStarFilter : public QueryEval {

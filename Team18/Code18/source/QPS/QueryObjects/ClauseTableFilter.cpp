@@ -2,7 +2,7 @@
 
 shared_ptr<QueryResultsTable> ClauseSynSyn::evaluate(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
 	if (arg1->getArgValue() == arg2->getArgValue()) {
-		return QueryResultsTable::createEmptyTable();
+		return QueryResultsTable::createEmptyTableWithHeader(svToString(arg1->getArgValue()));
 	}
 	StringMap PKBClauseData = dataAccessLayer->getClause(clause);
 

@@ -218,6 +218,45 @@ static std::list<std::string> vectorToList(std::vector<std::string> vectorOfStri
   return listOfString;
 }
 
+// Check if set of string contains the string
+static bool setHasString(std::unordered_set<std::string> stringSet, std::string target) {
+    return stringSet.find(target) != stringSet.end();
+}
+
+// Check if two sets have a non-empty intersection
+static bool hasIntersection(std::unordered_set<std::string> stringSet, std::unordered_set<std::string> targets) {
+    for (std::string str : stringSet) {
+        // Check if the value in the set is in the unordered_set
+        if (targets.find(str) != targets.end()) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// Check if map of string contains the string
+static bool mapHasString(std::map<std::string, std::unordered_set<std::string>> stringMap, std::string target) {
+    return stringMap.find(target) != stringMap.end();
+}
+
+// Check if map of string contains any of target strings
+static bool mapHasString(std::map<std::string, std::unordered_set<std::string>> stringMap, std::unordered_set<std::string> targets) {
+    for (const auto& pair : stringMap) {
+        // Check if the value in the map is in the unordered_set
+        if (targets.find(pair.first) != targets.end()) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// returns element in an unordered set, use only if set has one element, else random element from set is returned
+static std::string returnSingleElementFromSet(std::unordered_set<std::string> stringSet) {
+    auto it = stringSet.begin();
+    std::string onlyElement = *it;
+    return onlyElement;
+}
+
 static std::list<std::string> vectorToUniqueList(
     std::vector<std::string> vectorOfString) {
   std::list<std::string> listOfString(vectorOfString.begin(),
