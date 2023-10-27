@@ -79,7 +79,7 @@ void optimiseStepA(vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables)
 // will occur than a cross product.
 void optimiseStepC(vector< vector<shared_ptr<QueryResultsTable>> >& groups) {
 	for (vector<shared_ptr<QueryResultsTable>>& group : groups) {
-		if (group[0]->isEmpty()) continue; //skip for empty table groups
+		if (group.size() == 0 || group[0]->isEmpty()) continue; //skip for empty table groups
 		for (shared_ptr<QueryResultsTable> table : group) {
 			vector<string> headers = table->getHeaders();
 			for (string header : headers) {
@@ -179,10 +179,10 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
 	}
 	//// for optimization in future, sort here
 	// Activate Optimisation
-	//QueryBuilder::setOptimisedSwitch();
+	QueryBuilder::setOptimisedSwitch();
 	if (QueryBuilder::getOptimisedSwitch()) {
-		optimiseStepA(queryResultsTables);
-		optimiseStepB(queryResultsTables);
+		//optimiseStepA(queryResultsTables);
+		//optimiseStepB(queryResultsTables);
 	}
 	return queryResultsTables;
 }

@@ -12,7 +12,7 @@ using namespace std;
 class QueryResultsTable {
 public:
     //A table can be represented by an array of ordered columns.
-    //Each column is reprsented by a map, key being header and value being its contents
+    //Each column is represented by a map, key being header and value being its contents
     //It is assumed that there are no duplicate headers in the table.
     //A table is always sorted by headers.
 
@@ -437,17 +437,17 @@ public:
             set<int> matchingRows;
             int headerIndex = distance(headers.begin(), it);
             vector<string> targetColumn = this->columns[headerIndex].begin()->second;
-            /*for (string target : targets) { // Time taken = O(t x r)
+            /* for (string target : targets) { // Time taken = O(t x r)
                 for (int row = 0; row < targetColumn.size(); row++) {
                     if (targetColumn[row] == target) {
-                        matchingRows.insert(row);
-                    //    for (int col = 0; col < headers.size(); col++) {
-                    //       filteredTableColumns[col].begin()->second.emplace_back(this->columns[col].begin()->second[row]);
-                    //    }
+                        //matchingRows.insert(row);
+                        for (int col = 0; col < headers.size(); col++) {
+                           filteredTableColumns[col].begin()->second.emplace_back(this->columns[col].begin()->second[row]);
+                        }
                     }
                 }
             }*/
-
+            
             for (int row = 0; row < targetColumn.size(); row++) {
                 if (find(targets.begin(), targets.end(), targetColumn[row]) != targets.end()) matchingRows.insert(row);
             }
@@ -504,7 +504,7 @@ public:
     }
 
     /**
-     * Checks whether this table and other table contains the same headers.
+     * Checks whether this table and other table contains at least one same header.
      *
      * @param other A shared pointer to a QueryResultsTable object representing the other table
      * @return A boolean value, with a true value representing same headers for both, and a false value for otherwise.
@@ -522,11 +522,11 @@ public:
         for (map<string, vector<string>> otherColumn : otherColumns) {
             string header = otherColumn.begin()->first;
             auto it = find(thisHeaders.begin(), thisHeaders.end(), header);
-            if (it == thisHeaders.end()) {
-                return false;
+            if (it != thisHeaders.end()) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     /**
@@ -686,5 +686,5 @@ private:
     }
 
     //FOR DEBUGGING
-    int id;
+    inline static int id;
 };
