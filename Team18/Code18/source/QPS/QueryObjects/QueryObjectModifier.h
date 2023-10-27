@@ -21,7 +21,7 @@ public:
 	/*
 	* This function modifies a QueryObject and returns a modified QueryObject
 	*/
-	virtual inline shared_ptr<QueryObject> modify(shared_ptr<QueryObject> queryObject, shared_ptr<vector<QueryObject>> synonymDesignObjects = {}) = 0;
+	virtual inline shared_ptr<QueryObject> modify(shared_ptr<QueryObject> queryObject, vector<shared_ptr<QueryObject>> synonymDesignObjects = {}) = 0;
 
 	/*
 	* This function creates the factory for each type (design entities, clauses etc.)
@@ -42,7 +42,7 @@ public:
 	/*
 	* Modifies a query object and returns a negated version of the query object
 	*/
-	shared_ptr<QueryObject> modify(shared_ptr<QueryObject> queryObject, shared_ptr<vector<QueryObject>> synonymDesignObjects) override;
+	shared_ptr<QueryObject> modify(shared_ptr<QueryObject> queryObject, vector<shared_ptr<QueryObject>> synonymDesignObjects) override;
 };
 
 #endif

@@ -14,10 +14,10 @@ private:
 	* Contains the synonym query objects found inside the original query object.
 	* Excludes duplicated synonyms. E.g., not Follows(s, s) will only have 1 "s" query object in this vector.
 	*/
-	shared_ptr<vector<QueryObject>> synonyms;
+	vector<shared_ptr<QueryObject>> synonyms;
 
 public:
-	NotQueryObject(string_view data, shared_ptr<QueryObject> originalQueryObject, shared_ptr<vector<QueryObject>> synonyms)
+	NotQueryObject(string_view data, shared_ptr<QueryObject> originalQueryObject, vector<shared_ptr<QueryObject>> synonyms)
 		: QueryObject(data), originalQueryObject{ originalQueryObject }, synonyms{ synonyms }  {};
 
 
