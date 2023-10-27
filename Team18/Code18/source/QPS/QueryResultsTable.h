@@ -437,16 +437,6 @@ public:
             set<int> matchingRows;
             int headerIndex = distance(headers.begin(), it);
             vector<string> targetColumn = this->columns[headerIndex].begin()->second;
-            /* for (string target : targets) { // Time taken = O(t x r)
-                for (int row = 0; row < targetColumn.size(); row++) {
-                    if (targetColumn[row] == target) {
-                        //matchingRows.insert(row);
-                        for (int col = 0; col < headers.size(); col++) {
-                           filteredTableColumns[col].begin()->second.emplace_back(this->columns[col].begin()->second[row]);
-                        }
-                    }
-                }
-            }*/
             
             for (int row = 0; row < targetColumn.size(); row++) {
                 if (find(targets.begin(), targets.end(), targetColumn[row]) != targets.end()) matchingRows.insert(row);
