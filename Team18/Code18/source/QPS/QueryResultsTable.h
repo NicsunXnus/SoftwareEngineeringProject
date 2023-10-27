@@ -600,14 +600,16 @@ public:
         cout << endl;
 
         // Print the data rows
-        int numRows = columns[0].begin()->second.size();
-        for (int i = 0; i < numRows; i++) {
-            for (const auto& m : columns) {
-                for (const auto& p : m) {
-                    cout << p.second[i] << " | ";
+        if (getNumberOfCols() > 0 && getNumberOfRows() > 0) {
+            int numRows = columns[0].begin()->second.size();
+            for (int i = 0; i < numRows; i++) {
+                for (const auto& m : columns) {
+                    for (const auto& p : m) {
+                        cout << p.second[i] << " | ";
+                    }
                 }
+                cout << endl;
             }
-            cout << endl;
         }
     }
 
@@ -631,6 +633,14 @@ public:
         return primaryKey;
     }
 
+    //FOR DEBUGGING
+    int getId() {
+        return id;
+    }
+    //FOR DEBUGGING
+    void setId(int _id) {
+        id = _id;
+    }
 private:
     vector<map<string, vector<string>>> columns; // column name: values
     bool isSignificant; 
@@ -674,4 +684,7 @@ private:
         }
         return columns;
     }
+
+    //FOR DEBUGGING
+    int id;
 };
