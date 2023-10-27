@@ -30,7 +30,7 @@ shared_ptr<QueryResultsTable> AttrRefAttrRefComparisonQueryObject::callAndProces
 
 	shared_ptr<QueryResultsTable> crossProductTables = attRef1Table->crossProduct(attRef2Table);
 
-	shared_ptr<QueryResultsTable> filteredTable = crossProductTables->filter(attRef1Table->getPrimaryKey(), attRef2Table->getPrimaryKey());
+	shared_ptr<QueryResultsTable> filteredTable = crossProductTables->innerJoinOnTwoColumns(attRef1Table->getPrimaryKey(), attRef2Table->getPrimaryKey());
 	
 	return filteredTable;
 }
