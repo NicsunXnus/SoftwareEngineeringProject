@@ -136,7 +136,7 @@ Select v with "a"=v.varName
 2 - syn, syn, arg1: proc, arg2: proc
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
 Select v.stmt# such that Uses(s1, v)
-
+SemanticError
 5000
 2 - syn, syn, arg1: proc, arg2: proc,
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;

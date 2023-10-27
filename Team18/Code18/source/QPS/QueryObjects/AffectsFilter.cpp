@@ -56,14 +56,14 @@ shared_ptr<QueryResultsTable> AffectsSynSyn::evaluate(shared_ptr<DataAccessLayer
 				}
 				unordered_set<string> uses = usesMap[child]; // variables used at child node
 				if (setHasString(assignments, child) && setHasString(uses, modifiedVar)) { // is a valid affects
-					if (mapHasString(results, assignment)) {
+					// if affects(a, a)
+					if (arg1->getArgValue() == arg2->getArgValue() && assignment == child) {
 						results[assignment].insert(child);
 					}
 					else {
-						unordered_set<string> newSet;
-						newSet.insert(child);
-						results[assignment] = newSet;
+						results[assignment].insert(child);
 					}
+
 				}
 			}
 
