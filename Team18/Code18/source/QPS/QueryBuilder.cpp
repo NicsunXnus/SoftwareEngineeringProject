@@ -179,7 +179,7 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
 	}
 	//// for optimization in future, sort here
 	// Activate Optimisation
-	QueryBuilder::setOptimisedSwitch();
+	//QueryBuilder::setOptimisedSwitch();
 	if (QueryBuilder::getOptimisedSwitch()) {
 		optimiseStepA(queryResultsTables);
 		optimiseStepB(queryResultsTables);
