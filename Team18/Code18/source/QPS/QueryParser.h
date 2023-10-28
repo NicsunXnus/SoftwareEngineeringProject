@@ -166,8 +166,7 @@ private:
 		int& index, int tokenCount, bool is1stArgAttrRef);
 
 	// Modifies a query object such that it becomes a not version of itself
-	shared_ptr<QueryObject> modifyToNot(shared_ptr<QueryObject> originalQueryObject, 
-		vector<shared_ptr<QueryObject>> synonymQueryObjects);
+	shared_ptr<QueryObject> modifyToNot(vector<shared_ptr<QueryObject>> queryObjects);
 
 	// Stores semantic errors to be thrown once syntax validation is complete
 	void storeSemanticError(shared_ptr<SemanticErrorException> semanticError);
