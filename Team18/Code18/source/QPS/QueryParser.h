@@ -122,6 +122,9 @@ private:
 	// Helper function to check if a synonym is declared
 	bool isDeclared(std::string_view synonym);
 
+	// Helper function to get a synonym query object given the synonym name
+	shared_ptr<QueryObject> getSynonymQueryObject(std::string_view synonymName);
+
 	// Helper function to check if the such that keywords are present
 	bool hasSuchThat(std::vector<string_view>& query, int index);
 
@@ -147,14 +150,15 @@ private:
 	std::vector<shared_ptr<QueryObject>> createTupleObjects(std::vector<string_view>& query, int& index, int tokenCount);
 
 	// Checks whether there is a with keyword in the query
-	bool QueryParser::hasWith(std::vector<string_view>& query, int index);
+	bool hasWith(std::vector<string_view>& query, int index);
 
 	// Creates a comparison clause query object
-	vector<shared_ptr<QueryObject>> QueryParser::processComparisonClause(std::vector<string_view>& query,
+	vector<shared_ptr<QueryObject>> processComparisonClause(std::vector<string_view>& query,
 		int& index, int tokenCount, bool is1stArgAttrRef);
 
 	// Modifies a query object such that it becomes a not version of itself
-	// shared_ptr<QueryObject> QueryParser::modifyToNot();
+	shared_ptr<QueryObject> modifyToNot(shared_ptr<QueryObject> originalQueryObject, 
+		vector<shared_ptr<QueryObject>> synonymQueryObjects);
 
 	// Stores semantic errors to be thrown once syntax validation is complete
 	void storeSemanticError(shared_ptr<SemanticErrorException> semanticError);
