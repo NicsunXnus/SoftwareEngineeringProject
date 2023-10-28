@@ -254,6 +254,14 @@ vector<shared_ptr<QueryObject>> QueryParser::parseQuery(vector<string_view> quer
 			if (!isNot) {
 				result.push_back(patternClauseObjVector.at(0));
 			}
+			else {
+				shared_ptr<QueryObject> patternObject{ patternClauseObjVector.at(0) };
+				vector<shared_ptr<QueryObject>>::iterator patternObjectsStart{ patternClauseObjVector.begin() + 1 };
+				vector<shared_ptr<QueryObject>>::iterator patternObjectsEnd{ patternClauseObjVector.end() };
+				vector<shared_ptr<QueryObject>> synonymObjects(patternObjectsStart, patternObjectsEnd);
+
+				result.push_back(modifyToNot(patternObject, synonymObjects));
+			}
 			
 		}
 		else if (isWith) {
@@ -348,9 +356,12 @@ vector<shared_ptr<QueryObject>> QueryParser::processSuchThatClause(std::vector<s
 		if (!isDeclared(arg1Name)) { // argument is an undeclared synonym
 			storeSemanticError(make_shared<SemanticErrorException>("Semantic error: Synonym in clause is undeclared"));
 		}
+		else {
+			synonymQueryObjects.push_back(getSynonymQueryObject(arg1Name));
+		}
 		synonym1 = make_shared<SynonymObject>(arg1Name, synonymToEntity[arg1Name]);
 
-		synonymQueryObjects.push_back(getSynonymQueryObject(arg1Name));
+		
 	}
 	argVector.push_back(make_shared<ClauseArg>(arg1Name, synonym1));
 
@@ -361,9 +372,12 @@ vector<shared_ptr<QueryObject>> QueryParser::processSuchThatClause(std::vector<s
 		if (!isDeclared(arg2Name)) { // argument is an undeclared synonym
 			storeSemanticError(make_shared<SemanticErrorException>("Semantic error: Synonym in clause is undeclared"));
 		}
+		else {
+			synonymQueryObjects.push_back(getSynonymQueryObject(arg2Name));
+		}
 		synonym2 = make_shared<SynonymObject>(arg2Name, synonymToEntity[arg2Name]);
 
-		synonymQueryObjects.push_back(getSynonymQueryObject(arg2Name));
+		
 	}
 	argVector.push_back(make_shared<ClauseArg>(arg2Name, synonym2));
 
@@ -386,6 +400,7 @@ vector<shared_ptr<QueryObject>> QueryParser::processSuchThatClause(std::vector<s
 vector<shared_ptr<QueryObject>> QueryParser::processPatternClause(std::vector<string_view>& query, int& index, int tokenCount, bool isIfPattern) {
 	shared_ptr<QueryObjectFactory> patternFactory{ QueryObjectFactory::createFactory("pattern"sv) };
 	vector<shared_ptr<QueryObject>> queryObjects;
+	vector<shared_ptr<QueryObject>> synonymQueryObjects;
 
 	vector<shared_ptr<ClauseArg>> argVector;
 
@@ -397,8 +412,12 @@ vector<shared_ptr<QueryObject>> QueryParser::processPatternClause(std::vector<st
 	else if (!isDeclared(patternSynonymArg)) { // synonym is undeclared
 		storeSemanticError(make_shared<SemanticErrorException>("Semantic error: Pattern synonym is undeclared"));
 	}
+	else {
+		synonymQueryObjects.push_back(getSynonymQueryObject(patternSynonymArg));
+	}
 	shared_ptr<SynonymObject> patternSynonymObj{ make_shared<SynonymObject>(patternSynonymArg, synonymToEntity[patternSynonymArg]) };
 	shared_ptr<ClauseArg> patternSynonym{ make_shared<ClauseArg>(patternSynonymArg, patternSynonymObj) };
+	
 	argVector.push_back(patternSynonym);
 
 	// create ClauseArg for arg 1 of pattern clause
@@ -407,6 +426,9 @@ vector<shared_ptr<QueryObject>> QueryParser::processPatternClause(std::vector<st
 	if (SynonymObject::isValid(arg1Name)) {
 		if (!isDeclared(arg1Name)) { // argument is an undeclared synonym
 			storeSemanticError(make_shared<SemanticErrorException>("Semantic error: Pattern synonym is undeclared"));
+		}
+		else {
+			synonymQueryObjects.push_back(getSynonymQueryObject(arg1Name));
 		}
 		synonym1 = make_shared<SynonymObject>(arg1Name, synonymToEntity[arg1Name]);
 	}
@@ -438,6 +460,7 @@ vector<shared_ptr<QueryObject>> QueryParser::processPatternClause(std::vector<st
 	index += tokenCount;
 	try {
 		queryObjects.push_back(patternFactory->create("pattern"sv, argVector));
+		queryObjects.insert(queryObjects.end(), synonymQueryObjects.begin(), synonymQueryObjects.end());
 
 		return queryObjects;
 	}
@@ -612,6 +635,9 @@ vector<shared_ptr<QueryObject>> QueryParser::processComparisonClause(std::vector
 			index += tokenCount;
 			queryObjects.push_back(make_shared<StmtObject>("Placeholder, synonym in comparison is undeclared"));
 			return queryObjects;
+		}
+		else {
+			queryObjects.push_back(getSynonymQueryObject(synonymName));
 		}
 
 		// add synonym clause arg
