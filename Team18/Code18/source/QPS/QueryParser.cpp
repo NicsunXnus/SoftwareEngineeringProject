@@ -583,6 +583,7 @@ bool QueryParser::hasWith(std::vector<string_view>& query, int index) {
 vector<shared_ptr<QueryObject>> QueryParser::processComparisonClause(std::vector<string_view>& query,
 	int& index, int tokenCount, bool is1stArgAttrRef) {
 	vector<shared_ptr<QueryObject>> queryObjects;
+	vector<shared_ptr<QueryObject>> synonymQueryObjects;
 
 	if (tokenCount == MIN_WITH_CLAUSE_TOKEN_COUNT) { // Comparison is made between 2 static args
 		shared_ptr<QueryObjectFactory> staticStaticFactory{ QueryObjectFactory::createFactory("Static=Static"sv) };
@@ -637,7 +638,7 @@ vector<shared_ptr<QueryObject>> QueryParser::processComparisonClause(std::vector
 			return queryObjects;
 		}
 		else {
-			queryObjects.push_back(getSynonymQueryObject(synonymName));
+			synonymQueryObjects.push_back(getSynonymQueryObject(synonymName));
 		}
 
 		// add synonym clause arg

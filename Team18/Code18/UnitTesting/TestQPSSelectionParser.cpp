@@ -2058,6 +2058,19 @@ namespace UnitTesting
 			Assert::IsTrue(qo[1]->getQueryObjectName() == "not"sv);
 		}
 
+		TEST_METHOD(TestSingleNotPattern)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("assign a; variable v; Select a pattern not a (v,_)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[0]) == typeid(AssignObject));
+			Assert::IsTrue(qo[0]->getQueryObjectName() == "a"sv);
+			Assert::IsTrue(typeid(*qo[1]) == typeid(NotQueryObject));
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "not"sv);
+		}
+
 	};
 
 }
