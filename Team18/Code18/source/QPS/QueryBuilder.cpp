@@ -55,26 +55,9 @@ vector<shared_ptr<QueryResultsTable>> flatten2DArray(vector< vector<shared_ptr<Q
 	return v1d;
 }
 
-// 1. Removes columns that the select clauses do not ask for
-// 2. Add all empty tables to the beginning
-//void optimiseStepA(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables) {
+// Add all empty tables to the beginning
 void optimiseStepA(vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables) {
-	/*set<string> selectClauses = getHeadersOfTableAsSet(selectClauseTables);
-	for (shared_ptr<QueryResultsTable> table : nonSelectClauseTables) {
-		if (!table->isEmpty()) {
-			vector< map<string, vector<string>> > columns = table->getColumns();
-			vector< map<string, vector<string>> > result;
-			for (map<string, vector<string>> column : columns) {
-				if (find(selectClauses.begin(), selectClauses.end(), column.begin()->first) != selectClauses.end()) {
-					result.emplace_back(column);
-				}
-			}
-			table->setColumns(result);
-		}
-	}*/
-	//End of step 1
-	sort(nonSelectClauseTables.begin(), nonSelectClauseTables.end(), sortEmptyFirst);
-	//End of step 2			
+	sort(nonSelectClauseTables.begin(), nonSelectClauseTables.end(), sortEmptyFirst);		
 }
 
 // Rearrange the clauses in the group such that the clauses with the most common headers are arranged at the front.

@@ -14,24 +14,16 @@ private:
 
 public:
 	/**
-	 * Constructor for the ResultHandlerStub object
+	 * Constructor for the OptimisedFunctionsStub object
 	 */
 	OptimisedFunctionsStub() {
 		
 	};
 
 	/**
-	 * Destructor for the ResultHandlerStub object
+	 * Destructor for the OptimisedFunctionsStub object
 	 */
 	~OptimisedFunctionsStub() {};
-
-	void setOptimiseSwitch() {
-		isOptimised = !isOptimised;
-	}
-
-	bool getOptimisedSwitch() {
-		return isOptimised;
-	}
 
 	static void updateCountHeaderStore(string header) {
 		countHeadersStore[header]++;
