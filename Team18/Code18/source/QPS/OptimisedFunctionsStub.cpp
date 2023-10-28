@@ -10,9 +10,15 @@ set<string> OptimisedFunctionsStub::getHeadersOfTableAsSet(vector<shared_ptr<Que
 }
 
 bool sortEmptyFirstStub(const std::shared_ptr<QueryResultsTable>& a, const std::shared_ptr<QueryResultsTable>& b) {
-	if (b->isEmpty() && !a->isEmpty())
+	/*if (b->isEmpty() && !a->isEmpty())
 		return false;
-	return true;
+	return true;*/
+	int priorityA = -1;
+	int priorityB = 0;
+	if (a->isEmpty() && !b->isEmpty()) {
+		priorityA = 1;
+	}
+	return priorityA > priorityB;
 }
 
 // An auxiliary function to aid in the comparison within the data structure of vector<shared_ptr<QueryResultsTable>>

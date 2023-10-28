@@ -18,9 +18,12 @@ set<string> getHeadersOfTableAsSet(vector<shared_ptr<QueryResultsTable>> selectC
 // An auxiliary function that aids in the comparison of QueryResultsTable(s) in a vector.
 // Empty tables are given higher priority and sorted before non-empty tables.
 bool sortEmptyFirst(const std::shared_ptr<QueryResultsTable>& a, const std::shared_ptr<QueryResultsTable>& b) {
-	if (b->isEmpty() && !a->isEmpty())
-		return false;
-	return true;
+	int priorityA = -1;
+	int priorityB = 0;
+	if (a->isEmpty() && !b->isEmpty()) {
+		priorityA = 1;
+	}
+	return priorityA > priorityB;
 }
 
 // An auxiliary function to aid in the comparison within the data structure of QueryResultsTable(s) in a vector.
@@ -179,10 +182,10 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
 	}
 	//// for optimization in future, sort here
 	// Activate Optimisation
-	QueryBuilder::setOptimisedSwitch();
+	//QueryBuilder::setOptimisedSwitch();
 	if (QueryBuilder::getOptimisedSwitch()) {
-		//optimiseStepA(queryResultsTables);
-		//optimiseStepB(queryResultsTables);
+		optimiseStepA(queryResultsTables);
+		optimiseStepB(queryResultsTables);
 	}
 	return queryResultsTables;
 }

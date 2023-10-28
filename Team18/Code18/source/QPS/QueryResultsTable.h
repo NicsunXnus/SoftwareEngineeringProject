@@ -623,14 +623,15 @@ public:
         return primaryKey;
     }
 
-    //FOR DEBUGGING
-    int getId() {
-        return id;
-    }
-    //FOR DEBUGGING
+    //BELOW TWO FUNCTIONS USED FOR DEBUGGING
     void setId(int _id) {
         id = _id;
     }
+
+    int getId() {
+        return id;
+    }
+
 private:
     vector<map<string, vector<string>>> columns; // column name: values
     bool isSignificant; 
@@ -676,5 +677,5 @@ private:
     }
 
     //FOR DEBUGGING
-    inline static int id;
+    int id;
 };
