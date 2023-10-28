@@ -131,13 +131,22 @@ private:
 	// Helper function to check if the not keyword is present
 	bool hasNot(std::vector<string_view>& query, int index);
 
-	// Creates a boolean object if there hasn't been a synonym named BOOLEAN declared. Return the synonym object otherwise
+	/*
+	* Creates a boolean object if there hasn't been a synonym named BOOLEAN declared, and increments the index by 1
+	* Returns a boolean object if the synonym has not been declared. Return the synonym query object otherwise
+	*/
 	shared_ptr<QueryObject> createBooleanObject(std::vector<string_view>& query, int& index);
 
-	// Creates a such that clause query object, and increments the index by the number of tokens the clause has
+	/*
+	* Creates a such that clause query object, and increments the index by the number of tokens the clause has
+	* Returns a vector of query objects, where the first object is the such that and subsequent ones are the synonyms
+	*/
 	vector<shared_ptr<QueryObject>> processSuchThatClause(std::vector<string_view>& query, int& index);
 
-	// Creates a pattern clause query object 
+	/*
+	* Creates a pattern clause query object, and increments the index by the number of tokens the clause has
+	* Returns a vector of query objects, where the first object is the pattern and subsequent ones are the synonyms
+	*/
 	vector<shared_ptr<QueryObject>> processPatternClause(std::vector<string_view>& query, int& index, int tokenCount, bool isIfPattern);
 
 	// Creates an attribute reference query object
