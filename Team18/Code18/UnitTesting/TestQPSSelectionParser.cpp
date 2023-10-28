@@ -2056,6 +2056,8 @@ namespace UnitTesting
 			Assert::IsTrue(qo[0]->getQueryObjectName() == "s"sv);
 			Assert::IsTrue(typeid(*qo[1]) == typeid(NotQueryObject));
 			Assert::IsTrue(qo[1]->getQueryObjectName() == "not"sv);
+			shared_ptr<NotQueryObject> nqo{ dynamic_pointer_cast<NotQueryObject>(qo[1]) };
+			Assert::IsTrue(nqo->getSynonymCount() == 1);
 		}
 
 		TEST_METHOD(TestSingleNotPattern)
@@ -2069,6 +2071,126 @@ namespace UnitTesting
 			Assert::IsTrue(qo[0]->getQueryObjectName() == "a"sv);
 			Assert::IsTrue(typeid(*qo[1]) == typeid(NotQueryObject));
 			Assert::IsTrue(qo[1]->getQueryObjectName() == "not"sv);
+			shared_ptr<NotQueryObject> nqo{ dynamic_pointer_cast<NotQueryObject>(qo[1]) };
+			Assert::IsTrue(nqo->getSynonymCount() == 2);
+			
+		}
+
+		TEST_METHOD(TestSingleNotComparison)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("assign a; constant v; Select a with not a.stmt# = v.value");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[0]) == typeid(AssignObject));
+			Assert::IsTrue(qo[0]->getQueryObjectName() == "a"sv);
+			Assert::IsTrue(typeid(*qo[1]) == typeid(NotQueryObject));
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "not"sv);
+			shared_ptr<NotQueryObject> nqo{ dynamic_pointer_cast<NotQueryObject>(qo[1]) };
+			Assert::IsTrue(nqo->getSynonymCount() == 2);
+		}
+
+		TEST_METHOD(TestSingleNotComparison1Syn)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("assign a; constant v; Select a with not a.stmt# = 13");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[0]) == typeid(AssignObject));
+			Assert::IsTrue(qo[0]->getQueryObjectName() == "a"sv);
+			Assert::IsTrue(typeid(*qo[1]) == typeid(NotQueryObject));
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "not"sv);
+			shared_ptr<NotQueryObject> nqo{ dynamic_pointer_cast<NotQueryObject>(qo[1]) };
+			Assert::IsTrue(nqo->getSynonymCount() == 1);
+		}
+
+		TEST_METHOD(TestNotSuchThatNotPattern)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("stmt s; if i; Select s such that not Follows(_, 3) pattern not i (_,_,_)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[0]) == typeid(StmtObject));
+			Assert::IsTrue(qo[0]->getQueryObjectName() == "s"sv);
+			Assert::IsTrue(typeid(*qo[1]) == typeid(NotQueryObject));
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "not"sv);
+			shared_ptr<NotQueryObject> nqo{ dynamic_pointer_cast<NotQueryObject>(qo[1]) };
+			Assert::IsTrue(nqo->getSynonymCount() == 0);
+			Assert::IsTrue(typeid(*qo[2]) == typeid(NotQueryObject));
+			Assert::IsTrue(qo[2]->getQueryObjectName() == "not"sv);
+			shared_ptr<NotQueryObject> nqo2{ dynamic_pointer_cast<NotQueryObject>(qo[2]) };
+			Assert::IsTrue(nqo2->getSynonymCount() == 1);
+		}
+
+		TEST_METHOD(TestNotSuchThatSuchThat)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("stmt s; Select s such that not Follows(s, 3) such that Affects(4, 5)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[0]) == typeid(StmtObject));
+			Assert::IsTrue(qo[0]->getQueryObjectName() == "s"sv);
+			Assert::IsTrue(typeid(*qo[1]) == typeid(NotQueryObject));
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "not"sv);
+			shared_ptr<NotQueryObject> nqo{ dynamic_pointer_cast<NotQueryObject>(qo[1]) };
+			Assert::IsTrue(nqo->getSynonymCount() == 1);
+			Assert::IsTrue(typeid(*qo[2]) == typeid(AffectsObject));
+			Assert::IsTrue(qo[2]->getQueryObjectName() == "Affects"sv);
+		}
+
+		TEST_METHOD(TestWhilePatternNotPattern)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("while w; Select w pattern w (\"x\",_) pattern not w(_,_)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[0]) == typeid(WhileObject));
+			Assert::IsTrue(qo[0]->getQueryObjectName() == "w"sv);
+			Assert::IsTrue(typeid(*qo[1]) == typeid(WhilePatternObject));
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "patternWhile"sv);
+			Assert::IsTrue(typeid(*qo[2]) == typeid(NotQueryObject));
+			Assert::IsTrue(qo[2]->getQueryObjectName() == "not"sv);
+			shared_ptr<NotQueryObject> nqo{ dynamic_pointer_cast<NotQueryObject>(qo[2]) };
+			Assert::IsTrue(nqo->getSynonymCount() == 1);
+		}
+
+		TEST_METHOD(TestWhilePatternNotCompare)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("while w; Select w pattern w (\"x\",_) with not 1=2");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[0]) == typeid(WhileObject));
+			Assert::IsTrue(qo[0]->getQueryObjectName() == "w"sv);
+			Assert::IsTrue(typeid(*qo[1]) == typeid(WhilePatternObject));
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "patternWhile"sv);
+			Assert::IsTrue(typeid(*qo[2]) == typeid(NotQueryObject));
+			Assert::IsTrue(qo[2]->getQueryObjectName() == "not"sv);
+			shared_ptr<NotQueryObject> nqo{ dynamic_pointer_cast<NotQueryObject>(qo[2]) };
+			Assert::IsTrue(nqo->getSynonymCount() == 0);
+		}
+
+		TEST_METHOD(TestNotCompareSuchThat)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("while w; Select w with not 123=w.stmt# such that Next*(w, 5)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[0]) == typeid(WhileObject));
+			Assert::IsTrue(qo[0]->getQueryObjectName() == "w"sv);
+			Assert::IsTrue(typeid(*qo[1]) == typeid(NotQueryObject));
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "not"sv);
+			shared_ptr<NotQueryObject> nqo{ dynamic_pointer_cast<NotQueryObject>(qo[1]) };
+			Assert::IsTrue(nqo->getSynonymCount() == 1);
+			Assert::IsTrue(typeid(*qo[2]) == typeid(NextStarObject));
+			Assert::IsTrue(qo[2]->getQueryObjectName() == "Next*"sv);
 		}
 
 	};

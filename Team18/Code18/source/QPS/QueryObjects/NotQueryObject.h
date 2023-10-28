@@ -16,6 +16,8 @@ private:
 	*/
 	vector<shared_ptr<QueryObject>> synonyms;
 
+
+
 public:
 	NotQueryObject(string_view data, shared_ptr<QueryObject> originalQueryObject, vector<shared_ptr<QueryObject>> synonyms)
 		: QueryObject(data), originalQueryObject{ originalQueryObject }, synonyms{ synonyms }  {};
@@ -26,7 +28,9 @@ public:
 		return QueryResultsTable::createEmptyTable();
 	}
 
-
+	int getSynonymCount() {
+		return static_cast<int>(synonyms.size());
+	}
 };
 
 
