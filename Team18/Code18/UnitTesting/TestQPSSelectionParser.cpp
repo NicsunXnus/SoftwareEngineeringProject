@@ -6,6 +6,7 @@
 #include "../source/QPS/QueryObjects/WithClauseObject.h"
 #include "../source/QPS/QueryObjects/ComparisonQueryObject.h"
 #include "../source/QPS/QueryObjects/BooleanQueryObject.h"
+#include "../source/QPS/QueryObjects/NotQueryObject.h"
 #include "../source/QPS/PQLTokenizer.h"
 #include <cassert>
 
@@ -2042,6 +2043,19 @@ namespace UnitTesting
 			{
 				Assert::AreEqual("SemanticError", ex.getType());
 			}
+		}
+
+		TEST_METHOD(TestSingleNotSuchThat)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("stmt s; Select s such that not Follows(s, 3)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[0]) == typeid(StmtObject));
+			Assert::IsTrue(qo[0]->getQueryObjectName() == "s"sv);
+			Assert::IsTrue(typeid(*qo[1]) == typeid(NotQueryObject));
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "not"sv);
 		}
 
 	};

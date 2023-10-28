@@ -370,6 +370,7 @@ vector<shared_ptr<QueryObject>> QueryParser::processSuchThatClause(std::vector<s
 	index += SUCH_THAT_CLAUSE_TOKEN_COUNT;
 	try {
 		queryObjects.push_back(clauseFactory->create(relationalReference, argVector));
+		queryObjects.insert(queryObjects.end(), synonymQueryObjects.begin(), synonymQueryObjects.end());
 
 		return queryObjects;
 	}
