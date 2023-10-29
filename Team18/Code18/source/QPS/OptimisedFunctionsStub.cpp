@@ -38,6 +38,18 @@ bool sortMostCommonHeaderFirstStub(const std::shared_ptr<QueryResultsTable>& a, 
 	return maxValueA > maxValueB;
 }
 
+// An auxiliary function to sort the tables in a vector by the most common header
+void sortVectorOfTablesByHeaderStub(vector<shared_ptr<QueryResultsTable>>& tables) {
+	for (shared_ptr<QueryResultsTable> table : tables) {
+		vector<string> headers = table->getHeaders();
+		for (string header : headers) {
+			OptimisedFunctionsStub::updateCountHeaderStore(header);
+		}
+	}
+	sort(tables.begin(), tables.end(), sortMostCommonHeaderFirstStub);
+	OptimisedFunctionsStub::resetCountHeaderStore();
+}
+
 // 1. Removes columns that the select clauses do not ask for
 // 2. Add all empty tables to the beginning
 void OptimisedFunctionsStub::optimiseStepA(vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables) {
@@ -76,14 +88,15 @@ void OptimisedFunctionsStub::optimiseStepB(vector<shared_ptr<QueryResultsTable>>
 	vector<shared_ptr<QueryResultsTable>> nonEmptyTables(nonSelectClauseTables.begin() + indexNonEmpty, nonSelectClauseTables.end());
 	if (nonEmptyTables.size() > 1) {
 		// sort the most table with the most common headers at the start
-		for (shared_ptr<QueryResultsTable> table : nonEmptyTables) {
+		/*for (shared_ptr<QueryResultsTable> table : nonEmptyTables) {
 			vector<string> headers = table->getHeaders();
 			for (string header : headers) {
 				OptimisedFunctionsStub::updateCountHeaderStore(header);
 			}
 		}
 		sort(nonEmptyTables.begin(), nonEmptyTables.end(), sortMostCommonHeaderFirstStub);
-		OptimisedFunctionsStub::resetCountHeaderStore();
+		OptimisedFunctionsStub::resetCountHeaderStore();*/
+		sortVectorOfTablesByHeaderStub(nonEmptyTables);
 
 		vector<string> headers = nonEmptyTables[0]->getHeaders();
 		
@@ -138,18 +151,9 @@ void OptimisedFunctionsStub::optimiseStepB(vector<shared_ptr<QueryResultsTable>>
 // will occur than a cross product.
 void OptimisedFunctionsStub::optimiseStepC(vector< vector<shared_ptr<QueryResultsTable>> >& groups) {
 	for (vector<shared_ptr<QueryResultsTable>>& group : groups) {
-		if (group[0]->isEmpty()) continue; //skip for empty table groups
-		for (shared_ptr<QueryResultsTable> table : group) {
-			vector<string> headers = table->getHeaders();
-			for (string header : headers) {
-				OptimisedFunctionsStub::updateCountHeaderStore(header);
-			}
-		}
-		sort(group.begin(), group.end(), sortMostCommonHeaderFirstStub);
-		OptimisedFunctionsStub::resetCountHeaderStore();
+		if (group.size() <= 1 || group[0]->isEmpty()) continue; //skip for empty table groups and if group size is not greater than 1
+		sortVectorOfTablesByHeaderStub(group);
 	}
-
-
 }
 
 // An auxiliary function to flatten vector< vector<shared_ptr<QueryResultsTable>> >

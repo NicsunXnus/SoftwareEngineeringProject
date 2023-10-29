@@ -54,27 +54,24 @@ vector<shared_ptr<QueryResultsTable>> flatten2DArray(vector< vector<shared_ptr<Q
 	return v1d;
 }
 
+// An auxiliary function to sort the tables in a vector by the most common header
+void sortVectorOfTablesByHeader(vector<shared_ptr<QueryResultsTable>>& tables) {
+	for (shared_ptr<QueryResultsTable> table : tables) {
+		vector<string> headers = table->getHeaders();
+		for (string header : headers) {
+			QueryBuilder::updateCountHeaderStore(header);
+		}
+	}
+	sort(tables.begin(), tables.end(), sortMostCommonHeaderFirst);
+	QueryBuilder::resetCountHeaderStore();
+}
+
 // Add all empty tables to the beginning
 void optimiseStepA(vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables) {
 	sort(nonSelectClauseTables.begin(), nonSelectClauseTables.end(), sortEmptyFirst);		
 }
 
-// Rearrange the clauses in the group such that the clauses with the most common headers are arranged at the front.
-// This means a higher chance of "mutual friends" already forming at the beginning, so more likely that an inner join
-// will occur than a cross product.
-void optimiseStepC(vector< vector<shared_ptr<QueryResultsTable>> >& groups) {
-	for (vector<shared_ptr<QueryResultsTable>>& group : groups) {
-		if (group.size() == 0 || group[0]->isEmpty()) continue; //skip for empty table groups
-		for (shared_ptr<QueryResultsTable> table : group) {
-			vector<string> headers = table->getHeaders();
-			for (string header : headers) {
-				QueryBuilder::updateCountHeaderStore(header);
-			}
-		}
-		sort(group.begin(), group.end(), sortMostCommonHeaderFirst);
-		QueryBuilder::resetCountHeaderStore();
-	}
-}
+void optimiseStepC(vector< vector<shared_ptr<QueryResultsTable>> >& groups);
 
 // Group the clauses
 // A group of clauses is guaranteed to have a continuous link between all clauses.
@@ -93,14 +90,7 @@ void optimiseStepB(vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables)
 	vector<shared_ptr<QueryResultsTable>> nonEmptyTables(nonSelectClauseTables.begin() + indexNonEmpty, nonSelectClauseTables.end());
 	if (nonEmptyTables.size() > 1) {
 		// sort the most table with the most common headers at the start
-		for (shared_ptr<QueryResultsTable> table : nonEmptyTables) {
-			vector<string> headers = table->getHeaders();
-			for (string header : headers) {
-				QueryBuilder::updateCountHeaderStore(header);
-			}
-		}
-		sort(nonEmptyTables.begin(), nonEmptyTables.end(), sortMostCommonHeaderFirst);
-		QueryBuilder::resetCountHeaderStore();
+		sortVectorOfTablesByHeader(nonEmptyTables);
 
 		vector<string> headers = nonEmptyTables[0]->getHeaders();
 
@@ -148,6 +138,16 @@ void optimiseStepB(vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables)
 	}
 	optimiseStepC(groups);
 	nonSelectClauseTables = flatten2DArray(groups);
+}
+
+// Rearrange the clauses in the group such that the clauses with the most common headers are arranged at the front.
+// This means a higher chance of "mutual friends" already forming at the beginning, so more likely that an inner join
+// will occur than a cross product.
+void optimiseStepC(vector< vector<shared_ptr<QueryResultsTable>> >& groups) {
+	for (vector<shared_ptr<QueryResultsTable>>& group : groups) {
+		if (group.size() <= 1 || group[0]->isEmpty()) continue; //skip for empty table groups  and if group size is not greater than 1
+		sortVectorOfTablesByHeader(group);
+	}
 }
 
 //Takes in a vector of Query objects and then returns a vector of QueryResultsTable. This vector will

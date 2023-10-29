@@ -1,5 +1,6 @@
 #ifndef QUERYRESULTSTABLE_H
 #define QUERYRESULTSTABLE_H
+#pragma warning (disable :26495)
 #include <iostream>
 #include <vector>
 #include <string>
@@ -201,29 +202,29 @@ public:
         return data;
     }
 
-    //Prints out the table
-    //void printTable() {
-    //    // Print the header row
-    //    for (const auto& m : columns) {
-    //        for (const auto& p : m) {
-    //            cout << p.first << " | ";
-    //        }
-    //    }
-    //    cout << endl;
+    //DEBUGGING: Prints out the table for visualisation
+    void printTable() {
+        // Print the header row
+        for (const auto& m : columns) {
+            for (const auto& p : m) {
+                cout << p.first << " | ";
+            }
+        }
+        cout << endl;
 
-    //    // Print the data rows
-    //    if (getNumberOfCols() > 0 && getNumberOfRows() > 0) {
-    //        int numRows = columns[0].begin()->second.size();
-    //        for (int i = 0; i < numRows; i++) {
-    //            for (const auto& m : columns) {
-    //                for (const auto& p : m) {
-    //                    cout << p.second[i] << " | ";
-    //                }
-    //            }
-    //            cout << endl;
-    //        }
-    //    }
-    //}
+        // Print the data rows
+        if (getNumberOfCols() > 0 && getNumberOfRows() > 0) {
+            int numRows = columns[0].begin()->second.size();
+            for (int i = 0; i < numRows; i++) {
+                for (const auto& m : columns) {
+                    for (const auto& p : m) {
+                        cout << p.second[i] << " | ";
+                    }
+                }
+                cout << endl;
+            }
+        }
+    }
 
     void setSignificant(bool empty) {
         isSignificant = empty;
@@ -246,13 +247,13 @@ public:
     }
 
     //BELOW TWO FUNCTIONS USED FOR DEBUGGING
-    //void setId(int _id) {
-    //    id = _id;
-    //}
+    void setId(int _id) {
+        id = _id;
+    }
 
-    //int getId() {
-    //    return id;
-    //}
+    int getId() {
+        return id;
+    }
 
 private:
     vector<map<string, vector<string>>> columns; // column name: values
@@ -264,7 +265,7 @@ private:
     // e.g. Select constant.value, primary key will be constant.value, other key will be constant
 
     //FOR DEBUGGING
-    //int id;
+    int id;
 
     //Helper method where (a,b) -> (a,a,b,b)
     vector<string> duplicateEntries(const vector<string>& input, int x);

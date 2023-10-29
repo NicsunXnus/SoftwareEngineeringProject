@@ -80,25 +80,12 @@ public:
 			}
 		}
 	}
-	
 	// TEST_METHOD(Test_Visualise_A) {
-		//Reference to CS3203 Optimisation Slides Slide 19
-		/*
-		assign a, a1, a2; stmt s1, s2, s3; variable v1, v2;
-		 Select <s1, a, a1, v2>
-			 such that Uses (s1, v1) and Uses (5, "y")
-			 Affects (a1, a2) and Modifies (6 , "x")
-			 with a1.stmt = 20
-			 such that Parent (s1, s2)
-			 such that Next (s2, s3) and
-			 Modifies (s1, "x") and
-			 Modifies (a2, v2)
-		*/
-		//vector< shared_ptr<QueryResultsTable> > tupleSelectClauses;
-		/*tupleSelectClauses.emplace_back(singleSelectClausesS1);
-		tupleSelectClauses.emplace_back(singleSelectClausesA);
-		tupleSelectClauses.emplace_back(singleSelectClausesA1);
-		tupleSelectClauses.emplace_back(singleSelectClausesV2);*/
+	//	vector< shared_ptr<QueryResultsTable> > tupleSelectClauses;
+	//	tupleSelectClauses.emplace_back(singleSelectClausesS1);
+	//	tupleSelectClauses.emplace_back(singleSelectClausesA);
+	//	tupleSelectClauses.emplace_back(singleSelectClausesA1);
+	//	tupleSelectClauses.emplace_back(singleSelectClausesV2);
 	//	vector< shared_ptr<QueryResultsTable>> nonSelectClauses;
 	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "s1","v1" }, { generateRandomPair(), generateRandomPair() })); // Uses (s1,v1)
 	//	nonSelectClauses.emplace_back(QueryResultsTable::createEmptyTable()); // Uses(5,"y")
