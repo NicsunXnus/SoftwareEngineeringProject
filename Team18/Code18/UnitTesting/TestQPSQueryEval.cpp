@@ -1,11 +1,11 @@
 #include "stdafx.h"
-#include <QPS/QueryObjects/PatternClauseObject.h>
 
 #include "../source/QPS/DataAccessLayerStub.h"
 #include "../source/QPS/DataAccessLayerAffectsStub.h"
 #include "../source/QPS/PQLTokenizer.h"
 #include "../source/QPS/QueryBuilder.h"
 #include "../source/QPS/QueryObjects/ClauseObject.h"
+#include "../source/QPS/QueryObjects/PatternClauseObject.h"
 #include "../source/QPS/QueryParser.h"
 #include "CppUnitTest.h"
 

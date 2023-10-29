@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include <PKB.h>
+#include <../source/PKB.h>
 
 #include "../source/SP/SimpleProcessor/ExpressionProcessor.h"
 #include "CppUnitTest.h"

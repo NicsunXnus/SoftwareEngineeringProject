@@ -161,11 +161,21 @@ vector<shared_ptr<QueryObject>> QueryParser::parseQuery(vector<string_view> quer
 		throw SyntaxErrorException("Result clause not present");
 	}
 
-	int selectTupleTokenCount{};
+	bool wasBooleanObject{ false };
 	if (isBoolean(query, currentWordIndex)) {
+		// returns a null ptr if a synonym with name BOOLEAN has been declared
 		shared_ptr<QueryObject> booleanObject{ createBooleanObject(query, currentWordIndex) };
 
-		result.push_back(booleanObject);
+		// only push to result if there was a boolean object created
+		if (booleanObject.get()) {
+			wasBooleanObject = true;
+			result.push_back(booleanObject);
+		}
+	}
+
+	int selectTupleTokenCount{};
+	if (wasBooleanObject) {
+		// skip this portion of parsing
 	}
 	else if (validator->isSelectTuple(query, currentWordIndex, selectTupleTokenCount)) { // check if is tuple
 		std::vector<shared_ptr<QueryObject>> selectQueryObjects{ createTupleObjects(query, currentWordIndex, selectTupleTokenCount) };
@@ -322,12 +332,14 @@ bool QueryParser::hasNot(std::vector<string_view>& query, int index) {
 
 shared_ptr<QueryObject> QueryParser::createBooleanObject(std::vector<string_view>& query, int& index) {
 	string_view booleanStr = query[index];
-
-	++index;
-
 	if (isDeclared(booleanStr)) {
-		return this->synonyms[booleanStr];
+		// boolean is a synonym, ignore and proceed as if "BOOLEAN" is just another synonym
+		shared_ptr<QueryObject> emptyPointer{ nullptr };
+		return emptyPointer;
 	}
+
+	// BOOLEAN has not been declared. Create a BOOLEAN object
+	++index;
 	shared_ptr<QueryObjectFactory> factory{ QueryObjectFactory::createFactory(booleanStr) };
 
 	return factory->create(booleanStr);

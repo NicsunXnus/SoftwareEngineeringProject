@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "CppUnitTest.h"
 #include "../source/QPS/QueryParser.h"
 #include "../source/QPS/QueryObjects/ClauseObject.h"
@@ -2191,6 +2191,46 @@ namespace UnitTesting
 			Assert::IsTrue(nqo->getSynonymCount() == 1);
 			Assert::IsTrue(typeid(*qo[2]) == typeid(NextStarObject));
 			Assert::IsTrue(qo[2]->getQueryObjectName() == "Next*"sv);
+		}
+
+		TEST_METHOD(TestSelectConstBOOLSynonym)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant BOOLEAN; Select BOOLEAN");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[0]) == typeid(ConstantObject));
+			Assert::IsTrue(qo[0]->getQueryObjectName() == "BOOLEAN"sv);
+
+		}
+		TEST_METHOD(TestInvalidSelect)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("stmt s; Śelect s");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex)
+			{
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+
+		}
+
+		TEST_METHOD(TestSelectConstBOOLValueSynonym)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("constant BOOLEAN; Select BOOLEAN.value");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[0]) == typeid(ValueObject));
+			Assert::IsTrue(qo[0]->getQueryObjectName() == "value"sv);
+
 		}
 
 	};
