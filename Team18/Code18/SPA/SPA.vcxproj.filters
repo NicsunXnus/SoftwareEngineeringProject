@@ -202,9 +202,9 @@
     <ClCompile Include="..\source\QPS\QueryObjects\AffectsFilter.cpp">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClCompile>
-	  <ClCompile Include="..\source\QPS\DataAccessLayerAffectsStub.cpp">
-		  <Filter>Source Files\QPS</Filter>
-	  </ClCompile>
+    <ClCompile Include="..\source\QPS\DataAccessLayerAffectsStub.cpp">
+      <Filter>Source Files\QPS</Filter>
+    </ClCompile>
     <ClCompile Include="..\source\QPS\QueryObjects\PatternClauseObject.cpp">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClCompile>
@@ -212,6 +212,9 @@
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClCompile>
     <ClCompile Include="..\source\QPS\QueryObjects\QueryObjectModifier.cpp">
+      <Filter>Source Files\QPS\QueryObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryObjects\NotQueryObject.cpp">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClCompile>
   </ItemGroup>
@@ -472,9 +475,9 @@
     <ClInclude Include="..\source\QPS\QueryObjects\AffectsFilter.h">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClInclude>
-	  <ClInclude Include="..\source\QPS\DataAccessLayerAffectsStub.h">
-		  <Filter>Source Files\QPS</Filter>
-	  </ClInclude>
+    <ClInclude Include="..\source\QPS\DataAccessLayerAffectsStub.h">
+      <Filter>Source Files\QPS</Filter>
+    </ClInclude>
     <ClInclude Include="..\source\QPS\QueryObjects\NotQueryObject.h">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClInclude>
