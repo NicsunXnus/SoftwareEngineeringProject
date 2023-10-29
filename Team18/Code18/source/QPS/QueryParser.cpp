@@ -212,98 +212,38 @@ vector<shared_ptr<QueryObject>> QueryParser::parseQuery(vector<string_view> quer
 		return result;
 	}
 
+	ClauseType previousClauseType{ FIRSTCLAUSE };
+
 	// loop to check for such that clauses and pattern clauses
 	while (currentWordIndex < static_cast<int>(query.size())) {
 		bool isSuchThat{ hasSuchThat(query, currentWordIndex) }; // checks the current clause is a such that clause
 		bool isPattern{ hasPattern(query, currentWordIndex) }; // checks the current clause is a pattern clause
 		bool isWith{ hasWith(query, currentWordIndex) }; // checks the current clause is a with clause
-		
+		bool isAnd{ hasAnd(query, currentWordIndex) };
+
 
 		if (isSuchThat) {
+			currentWordIndex += 2;
+			previousClauseType = SUCHTHAT;
 			result.push_back(parseClause(query, currentWordIndex, SUCHTHAT));
 		}
 		else if (isPattern) {
+			currentWordIndex += 1;
+			previousClauseType = PATTERN;
 			result.push_back(parseClause(query, currentWordIndex, PATTERN));
 		}
 		else if (isWith) {
+			currentWordIndex += 1;
+			previousClauseType = WITH;
 			result.push_back(parseClause(query, currentWordIndex, WITH));
+		}
+		else if (isAnd && previousClauseType == FIRSTCLAUSE) {
+			currentWordIndex += 1;
+			result.push_back(parseClause(query, currentWordIndex, previousClauseType));
 		}
 		else {
 			throw SyntaxErrorException("Unidentifiable clause in query");
 		}
-		/**
-		if (isSuchThat) {
-			currentWordIndex += 2;
-
-			bool isNot{ hasNot(query, currentWordIndex) };
-			if (isNot) ++currentWordIndex;
-
-			if (!validator->hasRelationalReference(query, currentWordIndex)) {
-				throw SyntaxErrorException("such that clause has invalid syntax");
-			}
-
-			// Construct such that query object
-			vector<shared_ptr<QueryObject>> suchThatClauseObjVector{ processSuchThatClause(query, currentWordIndex) };
-			if (!isNot) {
-				// just add the create clause object to vector of query objects
-				result.push_back(suchThatClauseObjVector.at(0));
-			}
-			else {
-				// create the not object, then push that into vector of query objects
-
-				result.push_back(modifyToNot(suchThatClauseObjVector));
-			}
-
-		}
-		else if (isPattern) {
-			currentWordIndex += 1;
-
-			bool isNot{ hasNot(query, currentWordIndex) };
-			if (isNot) ++currentWordIndex;
-
-			int patternTokenCount{}; // tracks the number of tokens the clause has if it was a pattern clause
-			bool isIfPattern{ false };
-
-			if (!validator->hasPatternClause(query, currentWordIndex, patternTokenCount, isIfPattern)) {
-				throw SyntaxErrorException("such that clause has invalid syntax");
-			}
-
-			// construct pattern query object
-			vector<shared_ptr<QueryObject>> patternClauseObjVector{ processPatternClause(query, currentWordIndex, patternTokenCount, isIfPattern) };
-			if (!isNot) {
-				result.push_back(patternClauseObjVector.at(0));
-			}
-			else {
-				result.push_back(modifyToNot(patternClauseObjVector));
-			}
-			
-		}
-		else if (isWith) {
-			currentWordIndex += 1;
-
-			bool isNot{ hasNot(query, currentWordIndex) };
-			if (isNot) ++currentWordIndex;
-
-			int withTokenCount{};
-			bool is1stArgAttrRef{ false };
-
-			if (!validator->hasWithClause(query, currentWordIndex, withTokenCount, is1stArgAttrRef)) {
-				throw SyntaxErrorException("with clause has invalid syntax");
-			}
-
-			// construct comparison query object
-			vector<shared_ptr<QueryObject>> comparisonClauseObjVector{ processComparisonClause(query, currentWordIndex, withTokenCount, is1stArgAttrRef) };
-			if (!isNot) {
-				result.push_back(comparisonClauseObjVector.at(0));
-			}
-			else {
-				result.push_back(modifyToNot(comparisonClauseObjVector));
-			}
-			
-		} else {
-			throw SyntaxErrorException("Unidentifiable clause in query");
-		}
-		*/
 	}
 	return result;
 }
@@ -311,7 +251,6 @@ vector<shared_ptr<QueryObject>> QueryParser::parseQuery(vector<string_view> quer
 shared_ptr<QueryObject> QueryParser::parseClause(std::vector<string_view>& query,
 	int& index, ClauseType clauseType) {
 	if (clauseType == SUCHTHAT) {
-		index += 2;
 
 		bool isNot{ hasNot(query, index) };
 		if (isNot) ++index;
@@ -333,7 +272,6 @@ shared_ptr<QueryObject> QueryParser::parseClause(std::vector<string_view>& query
 
 	}
 	else if (clauseType == PATTERN) {
-		index += 1;
 
 		bool isNot{ hasNot(query, index) };
 		if (isNot) ++index;
@@ -356,7 +294,6 @@ shared_ptr<QueryObject> QueryParser::parseClause(std::vector<string_view>& query
 
 	}
 	else if (clauseType == WITH) {
-		index += 1;
 
 		bool isNot{ hasNot(query, index) };
 		if (isNot) ++index;
@@ -378,7 +315,7 @@ shared_ptr<QueryObject> QueryParser::parseClause(std::vector<string_view>& query
 		}
 	}
 	else {
-		throw SyntaxErrorException("Unknown clause type!");
+		throw SyntaxErrorException("Invalid clause type");
 	}
 }
 
@@ -414,8 +351,16 @@ bool QueryParser::hasSuchThat(std::vector<string_view>& query, int index) {
 	return index < static_cast<int>(query.size() - 1) && query[index] == "such"sv && query[index + 1] == "that"sv;
 }
 
+bool QueryParser::hasWith(std::vector<string_view>& query, int index) {
+	return index < static_cast<int>(query.size()) && query[index] == "with"sv;
+}
+
 bool QueryParser::hasNot(std::vector<string_view>& query, int index) {
 	return index < static_cast<int>(query.size()) && query[index] == "not"sv;
+}
+
+bool QueryParser::hasAnd(std::vector<string_view>& query, int index) {
+	return index < static_cast<int>(query.size()) && query[index] == "and"sv;
 }
 
 shared_ptr<QueryObject> QueryParser::createBooleanObject(std::vector<string_view>& query, int& index) {
@@ -670,9 +615,7 @@ std::vector<shared_ptr<QueryObject>> QueryParser::createTupleObjects(std::vector
 
 }
 
-bool QueryParser::hasWith(std::vector<string_view>& query, int index) {
-	return index < static_cast<int>(query.size()) && query[index] == "with"sv;
-}
+
 
 vector<shared_ptr<QueryObject>> QueryParser::processComparisonClause(std::vector<string_view>& query,
 	int& index, int tokenCount, bool is1stArgAttrRef) {

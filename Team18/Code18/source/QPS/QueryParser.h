@@ -98,7 +98,7 @@ private:
 	{ "Follows"sv, "Follows*"sv, "Parent"sv, "Parent*"sv, "Uses"sv, "Modifies"sv, "Calls"sv, "Calls*"sv, "Next"sv, "Next*"sv, "Affects"sv };
 
 	// Type of clauses that can be found in the query
-	enum ClauseType { SUCHTHAT, PATTERN, WITH };
+	enum ClauseType { SUCHTHAT, PATTERN, WITH, FIRSTCLAUSE};
 
 	// Is set to true if the query contains a semantic error
 	vector<shared_ptr<SemanticErrorException>> semanticErrors;
@@ -143,6 +143,9 @@ private:
 
 	// Helper function to check if the not keyword is present
 	bool hasNot(std::vector<string_view>& query, int index);
+
+	// Helper function to check if the and keyword is present
+	bool hasAnd(std::vector<string_view>& query, int index);
 
 	// Parses a clause in the query parser
 	shared_ptr<QueryObject> parseClause(std::vector<string_view>& query, int& index, ClauseType clauseType);
