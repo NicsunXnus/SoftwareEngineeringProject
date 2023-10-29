@@ -18,7 +18,7 @@ private:
 	vector <shared_ptr<QueryObject>> selectClauseQueryObjects;
 	vector <shared_ptr<QueryObject>> nonSelectClauseQueryObjects;
 	shared_ptr<DataAccessLayer> dataAccessLayer;
-	inline static bool isOptimisedSwitch = false;
+	bool isOptimisedSwitch = false;
 	// Stores the count of the header in a group of clauses
 	inline static map<string, int> countHeadersStore;
 public:
@@ -33,7 +33,7 @@ public:
 	/**
 	 * Destructor for the QueryBuilder object
 	 */
-	~QueryBuilder() {};	
+	~QueryBuilder() {};
 
 	/**
 	 * Builds the query results given a list of query objects excluding select clause
