@@ -10,6 +10,7 @@
 #include "QueryObjects/ClauseArg.h"
 #include "QueryObjects/ClauseObject.h"
 #include "QueryObjects/InvalidQueryObject.h"
+#include "QueryObjects/QueryObjectModifier.h"
 
 
 using namespace std;
@@ -211,17 +212,32 @@ vector<shared_ptr<QueryObject>> QueryParser::parseQuery(vector<string_view> quer
 		if (isSuchThat) {
 			currentWordIndex += 2;
 
+			bool isNot{ hasNot(query, currentWordIndex) };
+			if (isNot) ++currentWordIndex;
+
 			if (!validator->hasRelationalReference(query, currentWordIndex)) {
 				throw SyntaxErrorException("such that clause has invalid syntax");
 			}
 
 			// Construct such that query object
-			shared_ptr<QueryObject> suchThatClauseObj{ createClauseObj(query, currentWordIndex) };
-			result.push_back(suchThatClauseObj);
+			vector<shared_ptr<QueryObject>> suchThatClauseObjVector{ processSuchThatClause(query, currentWordIndex) };
+			if (!isNot) {
+				// just add the create clause object to vector of query objects
+				result.push_back(suchThatClauseObjVector.at(0));
+			}
+			else {
+				// create the not object, then push that into vector of query objects
+
+				result.push_back(modifyToNot(suchThatClauseObjVector));
+			}
 
 		}
 		else if (isPattern) {
 			currentWordIndex += 1;
+
+			bool isNot{ hasNot(query, currentWordIndex) };
+			if (isNot) ++currentWordIndex;
+
 			int patternTokenCount{}; // tracks the number of tokens the clause has if it was a pattern clause
 			bool isIfPattern{ false };
 
@@ -230,11 +246,21 @@ vector<shared_ptr<QueryObject>> QueryParser::parseQuery(vector<string_view> quer
 			}
 
 			// construct pattern query object
-			shared_ptr<QueryObject> patternClauseObj{ createPatternObject(query, currentWordIndex, patternTokenCount, isIfPattern) };
-			result.push_back(patternClauseObj);
+			vector<shared_ptr<QueryObject>> patternClauseObjVector{ processPatternClause(query, currentWordIndex, patternTokenCount, isIfPattern) };
+			if (!isNot) {
+				result.push_back(patternClauseObjVector.at(0));
+			}
+			else {
+				result.push_back(modifyToNot(patternClauseObjVector));
+			}
+			
 		}
 		else if (isWith) {
 			currentWordIndex += 1;
+
+			bool isNot{ hasNot(query, currentWordIndex) };
+			if (isNot) ++currentWordIndex;
+
 			int withTokenCount{};
 			bool is1stArgAttrRef{ false };
 
@@ -243,8 +269,14 @@ vector<shared_ptr<QueryObject>> QueryParser::parseQuery(vector<string_view> quer
 			}
 
 			// construct comparison query object
-			shared_ptr<QueryObject> comparisonClauseObj{ createComparisonObject(query, currentWordIndex, withTokenCount, is1stArgAttrRef) };
-			result.push_back(comparisonClauseObj);
+			vector<shared_ptr<QueryObject>> comparisonClauseObjVector{ processComparisonClause(query, currentWordIndex, withTokenCount, is1stArgAttrRef) };
+			if (!isNot) {
+				result.push_back(comparisonClauseObjVector.at(0));
+			}
+			else {
+				result.push_back(modifyToNot(comparisonClauseObjVector));
+			}
+			
 		} else {
 			throw SyntaxErrorException("Unidentifiable clause in query");
 		}
@@ -264,6 +296,10 @@ bool QueryParser::isDeclared(std::string_view synonym) {
 	return this->synonyms.find(synonym) != this->synonyms.end();
 }
 
+shared_ptr<QueryObject> QueryParser::getSynonymQueryObject(std::string_view synonymName) {
+	return this->synonyms[synonymName];
+}
+
 bool QueryParser::hasSelect(std::vector<string_view>& query, int& index) {
 	if (index < static_cast<int>(query.size()) && query[index] == "Select"sv) {
 		index++;
@@ -280,6 +316,10 @@ bool QueryParser::hasSuchThat(std::vector<string_view>& query, int index) {
 	return index < static_cast<int>(query.size() - 1) && query[index] == "such"sv && query[index + 1] == "that"sv;
 }
 
+bool QueryParser::hasNot(std::vector<string_view>& query, int index) {
+	return index < static_cast<int>(query.size()) && query[index] == "not"sv;
+}
+
 shared_ptr<QueryObject> QueryParser::createBooleanObject(std::vector<string_view>& query, int& index) {
 	string_view booleanStr = query[index];
 
@@ -293,7 +333,9 @@ shared_ptr<QueryObject> QueryParser::createBooleanObject(std::vector<string_view
 	return factory->create(booleanStr);
 }
 
-shared_ptr<QueryObject> QueryParser::createClauseObj(std::vector<string_view>& query, int& index) {
+vector<shared_ptr<QueryObject>> QueryParser::processSuchThatClause(std::vector<string_view>& query, int& index) {
+	vector<shared_ptr<QueryObject>> queryObjects;
+	vector<shared_ptr<QueryObject>> synonymQueryObjects;
 	string_view relationalReference{ query[index] };
 
 	shared_ptr<QueryObjectFactory> clauseFactory{ QueryObjectFactory::createFactory(relationalReference) };
@@ -308,7 +350,12 @@ shared_ptr<QueryObject> QueryParser::createClauseObj(std::vector<string_view>& q
 		if (!isDeclared(arg1Name)) { // argument is an undeclared synonym
 			storeSemanticError(make_shared<SemanticErrorException>("Semantic error: Synonym in clause is undeclared"));
 		}
+		else {
+			synonymQueryObjects.push_back(getSynonymQueryObject(arg1Name));
+		}
 		synonym1 = make_shared<SynonymObject>(arg1Name, synonymToEntity[arg1Name]);
+
+		
 	}
 	argVector.push_back(make_shared<ClauseArg>(arg1Name, synonym1));
 
@@ -319,24 +366,37 @@ shared_ptr<QueryObject> QueryParser::createClauseObj(std::vector<string_view>& q
 		if (!isDeclared(arg2Name)) { // argument is an undeclared synonym
 			storeSemanticError(make_shared<SemanticErrorException>("Semantic error: Synonym in clause is undeclared"));
 		}
+		else {
+			synonymQueryObjects.push_back(getSynonymQueryObject(arg2Name));
+		}
 		synonym2 = make_shared<SynonymObject>(arg2Name, synonymToEntity[arg2Name]);
+
+		
 	}
 	argVector.push_back(make_shared<ClauseArg>(arg2Name, synonym2));
 
 	index += SUCH_THAT_CLAUSE_TOKEN_COUNT;
 	try {
-		return clauseFactory->create(relationalReference, argVector);
+		queryObjects.push_back(clauseFactory->create(relationalReference, argVector));
+		queryObjects.insert(queryObjects.end(), synonymQueryObjects.begin(), synonymQueryObjects.end());
+
+		return queryObjects;
 	}
 	catch (const SemanticErrorException& ex) {
 		storeSemanticError(make_shared<SemanticErrorException>(ex));
-		return make_shared<StmtObject>("Clause object has semantic error, query not evaluated");
+		queryObjects.push_back(make_shared<StmtObject>("Clause object has semantic error, query not evaluated"));
+
+		return queryObjects;
+		
 	}
 }
 
-shared_ptr<QueryObject> QueryParser::createPatternObject(std::vector<string_view>& query, int& index, int tokenCount, bool isIfPattern) {
+vector<shared_ptr<QueryObject>> QueryParser::processPatternClause(std::vector<string_view>& query, int& index, int tokenCount, bool isIfPattern) {
 	shared_ptr<QueryObjectFactory> patternFactory{ QueryObjectFactory::createFactory("pattern"sv) };
+	vector<shared_ptr<QueryObject>> queryObjects;
+	vector<shared_ptr<QueryObject>> synonymQueryObjects;
 
-	std::vector<shared_ptr<ClauseArg>> argVector;
+	vector<shared_ptr<ClauseArg>> argVector;
 
 	// create ClauseArg for pattern synonym
 	string_view patternSynonymArg{ query[index] };
@@ -346,8 +406,12 @@ shared_ptr<QueryObject> QueryParser::createPatternObject(std::vector<string_view
 	else if (!isDeclared(patternSynonymArg)) { // synonym is undeclared
 		storeSemanticError(make_shared<SemanticErrorException>("Semantic error: Pattern synonym is undeclared"));
 	}
+	else {
+		synonymQueryObjects.push_back(getSynonymQueryObject(patternSynonymArg));
+	}
 	shared_ptr<SynonymObject> patternSynonymObj{ make_shared<SynonymObject>(patternSynonymArg, synonymToEntity[patternSynonymArg]) };
 	shared_ptr<ClauseArg> patternSynonym{ make_shared<ClauseArg>(patternSynonymArg, patternSynonymObj) };
+	
 	argVector.push_back(patternSynonym);
 
 	// create ClauseArg for arg 1 of pattern clause
@@ -356,6 +420,9 @@ shared_ptr<QueryObject> QueryParser::createPatternObject(std::vector<string_view
 	if (SynonymObject::isValid(arg1Name)) {
 		if (!isDeclared(arg1Name)) { // argument is an undeclared synonym
 			storeSemanticError(make_shared<SemanticErrorException>("Semantic error: Pattern synonym is undeclared"));
+		}
+		else {
+			synonymQueryObjects.push_back(getSynonymQueryObject(arg1Name));
 		}
 		synonym1 = make_shared<SynonymObject>(arg1Name, synonymToEntity[arg1Name]);
 	}
@@ -386,11 +453,16 @@ shared_ptr<QueryObject> QueryParser::createPatternObject(std::vector<string_view
 
 	index += tokenCount;
 	try {
-		return patternFactory->create("pattern"sv, argVector);
+		queryObjects.push_back(patternFactory->create("pattern"sv, argVector));
+		queryObjects.insert(queryObjects.end(), synonymQueryObjects.begin(), synonymQueryObjects.end());
+
+		return queryObjects;
 	}
 	catch (const SemanticErrorException& ex) {
 		storeSemanticError(make_shared<SemanticErrorException>(ex));
-		return make_shared<StmtObject>("Pattern clause has semantic error, query not evaluated");
+		queryObjects.push_back(make_shared<StmtObject>("Pattern clause has semantic error, query not evaluated"));
+
+		return queryObjects;
 	}
 }
 
@@ -502,8 +574,11 @@ bool QueryParser::hasWith(std::vector<string_view>& query, int index) {
 	return index < static_cast<int>(query.size()) && query[index] == "with"sv;
 }
 
-shared_ptr<QueryObject> QueryParser::createComparisonObject(std::vector<string_view>& query, 
+vector<shared_ptr<QueryObject>> QueryParser::processComparisonClause(std::vector<string_view>& query,
 	int& index, int tokenCount, bool is1stArgAttrRef) {
+	vector<shared_ptr<QueryObject>> queryObjects;
+	vector<shared_ptr<QueryObject>> synonymQueryObjects;
+
 	if (tokenCount == MIN_WITH_CLAUSE_TOKEN_COUNT) { // Comparison is made between 2 static args
 		shared_ptr<QueryObjectFactory> staticStaticFactory{ QueryObjectFactory::createFactory("Static=Static"sv) };
 		std::vector<shared_ptr<ClauseArg>> argVector;
@@ -517,11 +592,15 @@ shared_ptr<QueryObject> QueryParser::createComparisonObject(std::vector<string_v
 		index += tokenCount;
 
 		try {
-			return staticStaticFactory->create("Static=Static"sv, argVector);
+			queryObjects.push_back(staticStaticFactory->create("Static=Static"sv, argVector));
+
+			return queryObjects;
 		}
 		catch (const SemanticErrorException& ex) {
 			storeSemanticError(make_shared<SemanticErrorException>(ex));
-			return make_shared<StmtObject>("With clause has semantic error, query not evaluated");
+			queryObjects.push_back(make_shared<StmtObject>("With clause has semantic error, query not evaluated"));
+
+			return queryObjects;
 		}
 	}
 	else if (tokenCount == WITH_CLAUSE_ONE_ATTR_REF_TOKEN_COUNT) { // Comparison is made between 1 static arg and 1 attrRef
@@ -541,15 +620,19 @@ shared_ptr<QueryObject> QueryParser::createComparisonObject(std::vector<string_v
 			staticArg = query[index + 4];
 		}
 
+		index += tokenCount;
+
 		// check synonym is valid and synonym has been declared
 		if (!SynonymObject::isValid(synonymName)) {
 			throw SyntaxErrorException("Invalid synonym grammar syntax in comparison");
 		}
 		if (!isDeclared(synonymName)) { // synonym is not declared
 			storeSemanticError(make_shared<SemanticErrorException>("Synonym in comparison is undeclared"));
-
-			index += tokenCount;
-			return make_shared<StmtObject>("Placeholder, synonym in comparison is undeclared");
+			queryObjects.push_back(make_shared<StmtObject>("Placeholder, synonym in comparison is undeclared"));
+			return queryObjects;
+		}
+		else {
+			synonymQueryObjects.push_back(getSynonymQueryObject(synonymName));
 		}
 
 		// add synonym clause arg
@@ -563,14 +646,17 @@ shared_ptr<QueryObject> QueryParser::createComparisonObject(std::vector<string_v
 		// add static argument compared to
 		argVector.emplace_back(make_shared<ClauseArg>(staticArg));
 
-		index += tokenCount;
-
 		try {
-			return staticAttrRefFactory->create("Static=AttrRef"sv, argVector);
+			queryObjects.push_back(staticAttrRefFactory->create("Static=AttrRef"sv, argVector));
+			queryObjects.insert(queryObjects.end(), synonymQueryObjects.begin(), synonymQueryObjects.end());
+
+			return queryObjects;
 		}
 		catch (const SemanticErrorException& ex) {
 			storeSemanticError(make_shared<SemanticErrorException>(ex));
-			return make_shared<StmtObject>("With clause has semantic error, query not evaluated");
+			queryObjects.push_back(make_shared<StmtObject>("With clause has semantic error, query not evaluated"));
+			
+			return queryObjects;
 		}
 	}
 	else if (tokenCount == MAX_WITH_CLAUSE_TOKEN_COUNT) { // Comparison is made between 2 attrRefs
@@ -584,15 +670,19 @@ shared_ptr<QueryObject> QueryParser::createComparisonObject(std::vector<string_v
 		string_view synonymName2{ query[index + 4] };
 		string_view attrName2{ query[index + 6] };
 
+		index += tokenCount;
+
 		// check synonym 1 is valid and has been declared
 		if (!SynonymObject::isValid(synonymName1)) {
 			throw SyntaxErrorException("Invalid synonym 1 grammar syntax in comparison");
 		}
 		if (!isDeclared(synonymName1)) { // synonym is not declared
 			storeSemanticError(make_shared<SemanticErrorException>("Synonym 1 in comparison is undeclared"));
-
-			index += tokenCount;
-			return make_shared<StmtObject>("Placeholder, synonym 1 in comparison is undeclared");
+			queryObjects.push_back(make_shared<StmtObject>("Placeholder, synonym 1 in comparison is undeclared"));
+			return queryObjects;
+		}
+		else {
+			synonymQueryObjects.push_back(getSynonymQueryObject(synonymName1));
 		}
 
 		// add synonym1 clause arg
@@ -609,7 +699,11 @@ shared_ptr<QueryObject> QueryParser::createComparisonObject(std::vector<string_v
 		}
 		if (!isDeclared(synonymName2)) { // synonym is not declared
 			storeSemanticError(make_shared<SemanticErrorException>("Synonym 2 in comparison is undeclared"));
-			return make_shared<StmtObject>("Placeholder, synonym 2 in comparison is undeclared");
+			queryObjects.push_back(make_shared<StmtObject>("Placeholder, synonym 2 in comparison is undeclared"));
+			return queryObjects;
+		}
+		else {
+			synonymQueryObjects.push_back(getSynonymQueryObject(synonymName2));
 		}
 
 		// add synonym2 clause arg
@@ -620,18 +714,32 @@ shared_ptr<QueryObject> QueryParser::createComparisonObject(std::vector<string_v
 		// add synonym2 attr name
 		argVector.emplace_back(make_shared<ClauseArg>(attrName2));
 
-		index += tokenCount;
-
 		try {
-			return attrRefAttrRefFactory->create("AttrRef=AttrRef"sv, argVector);
+			queryObjects.push_back(attrRefAttrRefFactory->create("AttrRef=AttrRef"sv, argVector));
+			queryObjects.insert(queryObjects.end(), synonymQueryObjects.begin(), synonymQueryObjects.end());
+			return queryObjects;
 		}
 		catch (const SemanticErrorException& ex) {
 			storeSemanticError(make_shared<SemanticErrorException>(ex));
-			return make_shared<StmtObject>("With clause has semantic error, query not evaluated");
+			queryObjects.push_back(make_shared<StmtObject>("With clause has semantic error, query not evaluated"));
+
+			return queryObjects;
 		}
 	}
 
 	throw SyntaxErrorException("Error creating comparison object, invalid token count passed");
+}
+
+shared_ptr<QueryObject> QueryParser::modifyToNot(vector<shared_ptr<QueryObject>> queryObjects) {
+	shared_ptr<QueryObject> clauseQueryObject{ queryObjects.at(0) };
+	vector<shared_ptr<QueryObject>>::iterator synonymObjectsStart{ queryObjects.begin() + 1 };
+	vector<shared_ptr<QueryObject>>::iterator synonymObjectsEnd{ queryObjects.end() };
+	vector<shared_ptr<QueryObject>> synonymObjects(synonymObjectsStart, synonymObjectsEnd);
+
+	shared_ptr<QueryObjectModifier> notModifier{ QueryObjectModifier::createModifier("not"sv) };
+
+	shared_ptr<QueryObject> notQuery{ notModifier->modify(clauseQueryObject, synonymObjects) };
+	return notQuery;
 }
 
 void QueryParser::storeSemanticError(shared_ptr<SemanticErrorException> semanticError) {

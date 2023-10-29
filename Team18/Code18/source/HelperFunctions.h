@@ -252,9 +252,21 @@ static bool mapHasString(std::map<std::string, std::unordered_set<std::string>> 
 
 // returns element in an unordered set, use only if set has one element, else random element from set is returned
 static std::string returnSingleElementFromSet(std::unordered_set<std::string> stringSet) {
+    if (stringSet.size() <= 0) {
+        return "";
+    }
     auto it = stringSet.begin();
     std::string onlyElement = *it;
     return onlyElement;
+}
+
+// convert map to set, by taking all the keys in the map
+static std::unordered_set<std::string> getMapKeys(std::map<std::string, std::unordered_set<std::string>> stringMap) {
+    std::unordered_set<std::string> keySet;
+    for (const auto& pair : stringMap) {
+        keySet.insert(pair.first);
+    }
+    return keySet;
 }
 
 static std::list<std::string> vectorToUniqueList(

@@ -29,6 +29,7 @@
     <ClCompile Include="..\source\QPS\QueryObjects\PatternClauseObject.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\PatternClauseObjectFactory.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\QueryObjectFactory.cpp" />
+    <ClCompile Include="..\source\QPS\QueryObjects\QueryObjectModifier.cpp" />
     <ClCompile Include="..\source\QPS\QueryParser.cpp" />
     <ClCompile Include="..\source\QPS\QueryValidator.cpp" />
     <ClCompile Include="..\source\QPS\ResultsHandler.cpp" />
@@ -103,11 +104,13 @@
     <ClInclude Include="..\source\QPS\QueryObjects\DesignObjectsFactory.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\InvalidQueryObject.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\NextStarFilter.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\NotQueryObject.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\PatternClauseObject.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\PatternClauseObjectFactory.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\QueryEval.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\QueryObject.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\QueryObjectFactory.h" />
+    <ClInclude Include="..\source\QPS\QueryObjects\QueryObjectModifier.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\SynonymObjects.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\WithClauseObject.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\WithClauseObjectFactory.h" />

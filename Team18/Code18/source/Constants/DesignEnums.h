@@ -86,7 +86,7 @@ const unordered_set<ABSTRACTION> flippedStorages = {
 };
 
 static bool isFlippedStorage(ABSTRACTION abstraction) {
-	return flippedStorages.count(abstraction);
+    return flippedStorages.count(abstraction);
 }
 
 #endif

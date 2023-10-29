@@ -186,8 +186,6 @@
     <ClCompile Include="..\source\QPS\QueryObjects\QueryObjectFactory.cpp">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\QPS\QueryObjects\PatternClauseObject.cpp" />
-    <ClCompile Include="..\source\QPS\QueryObjects\PatternClauseObjectFactory.cpp" />
     <ClCompile Include="..\source\QPS\QueryValidator.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\ClauseTableFilter.cpp">
       <Filter>Source Files\QPS\QueryObjects</Filter>
@@ -204,8 +202,17 @@
     <ClCompile Include="..\source\QPS\QueryObjects\AffectsFilter.cpp">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\QPS\DataAccessLayerAffectsStub.cpp">
-      <Filter>Source Files\QPS</Filter>
+	  <ClCompile Include="..\source\QPS\DataAccessLayerAffectsStub.cpp">
+		  <Filter>Source Files\QPS</Filter>
+	  </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryObjects\PatternClauseObject.cpp">
+      <Filter>Source Files\QPS\QueryObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryObjects\PatternClauseObjectFactory.cpp">
+      <Filter>Source Files\QPS\QueryObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryObjects\QueryObjectModifier.cpp">
+      <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -465,8 +472,14 @@
     <ClInclude Include="..\source\QPS\QueryObjects\AffectsFilter.h">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\QPS\DataAccessLayerAffectsStub.h">
-      <Filter>Source Files\QPS</Filter>
+	  <ClInclude Include="..\source\QPS\DataAccessLayerAffectsStub.h">
+		  <Filter>Source Files\QPS</Filter>
+	  </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryObjects\NotQueryObject.h">
+      <Filter>Source Files\QPS\QueryObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryObjects\QueryObjectModifier.h">
+      <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

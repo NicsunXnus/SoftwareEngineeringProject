@@ -57,8 +57,10 @@ shared_ptr<QueryResultsTable> AffectsSynSyn::evaluate(shared_ptr<DataAccessLayer
 				unordered_set<string> uses = usesMap[child]; // variables used at child node
 				if (setHasString(assignments, child) && setHasString(uses, modifiedVar)) { // is a valid affects
 					// if affects(a, a)
-					if (arg1->getArgValue() == arg2->getArgValue() && assignment == child) {
-						results[assignment].insert(child);
+					if (arg1->getArgValue() == arg2->getArgValue()) {
+						if (assignment == child) {
+							results[assignment].insert(child);
+						}
 					}
 					else {
 						results[assignment].insert(child);
@@ -68,6 +70,10 @@ shared_ptr<QueryResultsTable> AffectsSynSyn::evaluate(shared_ptr<DataAccessLayer
 			}
 
 		}
+	}
+	if (arg1->getArgValue() == arg2->getArgValue()) {
+		return QueryResultsTable::createTable(svToString(arg1->getArgValue()), 
+			getMapKeys(results));
 	}
 	vector<string> headers({ svToString(arg1->getArgValue()), svToString(arg2->getArgValue()) });
 	return QueryResultsTable::createTable(headers, results);
@@ -200,7 +206,7 @@ shared_ptr<QueryResultsTable> AffectsIntSyn::evaluate(shared_ptr<DataAccessLayer
 	// if no cfg, start node is not assignment, variable is not used in program
 	if (childrenOfStartNode.empty() || !setHasString(assignments, startingLine) 
 		||!mapHasString(usesInverseMap, modifiedVar)) {
-		return QueryResultsTable::createEmptyTable();
+		return QueryResultsTable::createEmptyTableWithHeader(svToString(arg2->getArgValue()));
 	}
 
 	stack<AffectsStackElement> DFSStack;

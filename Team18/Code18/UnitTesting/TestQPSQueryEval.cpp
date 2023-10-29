@@ -59,6 +59,23 @@ namespace UnitTesting {
       !table->getSignificant());  // empty table, since s == s is not possible
 }
 
+		TEST_METHOD(TestInalidFollowsSynInt) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Follows(s, 3123)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+
+			unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
+				p->getSynonyms();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer =
+				make_shared<DataAccessLayerStub>();
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
+			Assert::IsTrue(!table->getSignificant());
+			Assert::IsTrue(table->getNumberOfCols() == 1);
+		}
+
 		TEST_METHOD(TestValidFollowsIntSyn) {
 			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Follows(2, s)");
 			vector<string_view> test{ sToSvVector(testS) };
@@ -1756,6 +1773,24 @@ TEST_METHOD(TestValidNextSynWildcard) {
   Assert::IsTrue(vectorToSet(table->getColumns()[0]["s"]) == expected);
 }
 
+		TEST_METHOD(TestInvalidNextStarSynInt) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s; Select s such that Next*(s, 12323)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+
+			unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
+				p->getSynonyms();
+			shared_ptr<DataAccessLayerStub> dataAccessLayer =
+				make_shared<DataAccessLayerStub>();
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
+			Assert::IsTrue(!table->getSignificant());
+			Assert::IsTrue(table->getColumns().size() == 1);
+	
+		}
+
 		TEST_METHOD(TestValidNextStarSynSyn) {
 			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Next*(s, s1)");
 			vector<string_view> test{ sToSvVector(testS) };
@@ -1788,6 +1823,7 @@ TEST_METHOD(TestValidNextSynWildcard) {
 			Assert::IsTrue(table->getSignificant());
 			unordered_set<string> expected = { "2", "3", "4" };
 			Assert::IsTrue(vectorToSet(table->getColumns()[0]["s"]) == expected);
+			Assert::IsTrue(table->getColumns().size() == 1);
 		}
 
 		TEST_METHOD(TestValidSelectProcProcName) {
@@ -2052,6 +2088,26 @@ TEST_METHOD(TestValidNextSynWildcard) {
 
 		}
 
+		TEST_METHOD(TestValidAffectsSynSynSame) {
+			vector<string> testS = PQLTokenizer::tokenize("assign a, a1; Select a such that Affects(a, a)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+
+			shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer = make_shared<DataAccessLayerAffectsStub>();
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
+			Assert::IsTrue(table->getSignificant());
+
+			unordered_set<string> expected = { "7", "9" };
+			vector<string> col1 = table->getColumns()[0]["a"];
+			unordered_set<string> colSet1 = vectorToSet(col1);
+			Assert::IsTrue(expected == colSet1);
+			Assert::IsTrue(table->getNumberOfCols() == 1);
+
+		}
+
 		TEST_METHOD(TestValidAffectsSynInt) {
 			vector<string> testS = PQLTokenizer::tokenize("assign a, a1; Select a such that Affects(a, 13)");
 			vector<string_view> test{ sToSvVector(testS) };
@@ -2068,6 +2124,21 @@ TEST_METHOD(TestValidNextSynWildcard) {
 			vector<string> col1 = table->getColumns()[0]["a"];
 			unordered_set<string> colSet1 = vectorToSet(col1);
 			Assert::IsTrue(expected == colSet1);
+		}
+
+		TEST_METHOD(TestInvalidAffectsSynInt) {
+			vector<string> testS = PQLTokenizer::tokenize("assign a, a1; Select a such that Affects(a, 138)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+
+			shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer = make_shared<DataAccessLayerAffectsStub>();
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
+			Assert::IsTrue(!table->getSignificant());
+			Assert::IsTrue(table->getColumns().size() == 1);
+
 		}
 
 		TEST_METHOD(TestValidAffectsSynWildcard) {
@@ -2088,6 +2159,19 @@ TEST_METHOD(TestValidNextSynWildcard) {
 			Assert::IsTrue(expected == colSet1);
 		}
 
+		TEST_METHOD(TestInvalidAffectsSynWildcard) {
+			vector<string> testS = PQLTokenizer::tokenize("stmt a, a1; Select a such that Affects(s, _)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+
+			shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer = make_shared<DataAccessLayerAffectsStub>();
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
+			Assert::IsTrue(!table->getSignificant());
+		}
+
 		TEST_METHOD(TestValidAffectsIntSyn) {
 			vector<string> testS = PQLTokenizer::tokenize("assign a, a1; Select a such that Affects(5, a)");
 			vector<string_view> test{ sToSvVector(testS) };
@@ -2106,6 +2190,20 @@ TEST_METHOD(TestValidNextSynWildcard) {
 			Assert::IsTrue(expected == colSet1);
 		}
 
+		TEST_METHOD(TestInvalidAffectsIntSyn) {
+			vector<string> testS = PQLTokenizer::tokenize("stmt a, a1; Select a such that Affects(5, a)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+
+			shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer = make_shared<DataAccessLayerAffectsStub>();
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
+			Assert::IsTrue(!table->getSignificant());
+
+		}
+
 		TEST_METHOD(TestValidAffectsIntInt) {
 			vector<string> testS = PQLTokenizer::tokenize("assign a, a1; Select a such that Affects(5, 9)");
 			vector<string_view> test{ sToSvVector(testS) };
@@ -2120,6 +2218,20 @@ TEST_METHOD(TestValidNextSynWildcard) {
 
 		}
 
+		TEST_METHOD(TestInvalidAffectsIntInt) {
+			vector<string> testS = PQLTokenizer::tokenize("assign a, a1; Select a such that Affects(111, 9)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+
+			shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer = make_shared<DataAccessLayerAffectsStub>();
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
+			Assert::IsTrue(!table->getSignificant());
+
+		}
+
 		TEST_METHOD(TestValidAffectsIntWildcard) {
 			vector<string> testS = PQLTokenizer::tokenize("assign a, a1; Select a such that Affects(4, _)");
 			vector<string_view> test{ sToSvVector(testS) };
@@ -2131,6 +2243,20 @@ TEST_METHOD(TestValidNextSynWildcard) {
 			shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer = make_shared<DataAccessLayerAffectsStub>();
 			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
+
+		}
+
+		TEST_METHOD(TestInvalidAffectsIntWildcard) {
+			vector<string> testS = PQLTokenizer::tokenize("assign a, a1; Select a such that Affects(100, _)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+
+			shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer = make_shared<DataAccessLayerAffectsStub>();
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
+			Assert::IsTrue(!table->getSignificant());
 
 		}
 
@@ -2153,6 +2279,20 @@ TEST_METHOD(TestValidNextSynWildcard) {
 
 		}
 
+		TEST_METHOD(TestInvalidAffectsWildcardSyn) {
+			vector<string> testS = PQLTokenizer::tokenize("assign a, a1; stmt s; Select a such that Affects(_, s)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+
+			shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer = make_shared<DataAccessLayerAffectsStub>();
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
+			Assert::IsTrue(!table->getSignificant());
+
+		}
+
 		TEST_METHOD(TestValidAffectsWildcardInt) {
 			vector<string> testS = PQLTokenizer::tokenize("assign a, a1; Select a such that Affects(_, 7)");
 			vector<string_view> test{ sToSvVector(testS) };
@@ -2164,6 +2304,20 @@ TEST_METHOD(TestValidNextSynWildcard) {
 			shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer = make_shared<DataAccessLayerAffectsStub>();
 			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 			Assert::IsTrue(table->getSignificant());
+
+		}
+
+		TEST_METHOD(TestInvalidAffectsWildcardInt) {
+			vector<string> testS = PQLTokenizer::tokenize("assign a, a1; Select a such that Affects(_, 3123)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+
+			shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer = make_shared<DataAccessLayerAffectsStub>();
+			shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
+			Assert::IsTrue(!table->getSignificant());
 
 		}
 

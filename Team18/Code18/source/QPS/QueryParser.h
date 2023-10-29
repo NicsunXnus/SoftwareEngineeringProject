@@ -129,17 +129,32 @@ private:
 	// Helper function to check if a synonym is declared
 	bool isDeclared(std::string_view synonym);
 
+	// Helper function to get a synonym query object given the synonym name
+	shared_ptr<QueryObject> getSynonymQueryObject(std::string_view synonymName);
+
 	// Helper function to check if the such that keywords are present
 	bool hasSuchThat(std::vector<string_view>& query, int index);
 
-	// Creates a boolean object if there hasn't been a synonym named BOOLEAN declared. Return the synonym object otherwise
+	// Helper function to check if the not keyword is present
+	bool hasNot(std::vector<string_view>& query, int index);
+
+	/*
+	* Creates a boolean object if there hasn't been a synonym named BOOLEAN declared, and increments the index by 1
+	* Returns a boolean object if the synonym has not been declared. Return the synonym query object otherwise
+	*/
 	shared_ptr<QueryObject> createBooleanObject(std::vector<string_view>& query, int& index);
 
-	// Creates a such that clause query object, and increments the index by the number of tokens the clause has
-	shared_ptr<QueryObject> createClauseObj(std::vector<string_view>& query, int& index);
+	/*
+	* Creates a such that clause query object, and increments the index by the number of tokens the clause has
+	* Returns a vector of query objects, where the first object is the such that and subsequent ones are the synonyms
+	*/
+	vector<shared_ptr<QueryObject>> processSuchThatClause(std::vector<string_view>& query, int& index);
 
-	// Creates a pattern clause query object 
-	shared_ptr<QueryObject> createPatternObject(std::vector<string_view>& query, int& index, int tokenCount, bool isIfPattern);
+	/*
+	* Creates a pattern clause query object, and increments the index by the number of tokens the clause has
+	* Returns a vector of query objects, where the first object is the pattern and subsequent ones are the synonyms
+	*/
+	vector<shared_ptr<QueryObject>> processPatternClause(std::vector<string_view>& query, int& index, int tokenCount, bool isIfPattern);
 
 	// Creates an attribute reference query object
 	shared_ptr<QueryObject> createAttrRefObject(std::vector<string_view>& query, int& index);
@@ -151,11 +166,14 @@ private:
 	std::vector<shared_ptr<QueryObject>> createTupleObjects(std::vector<string_view>& query, int& index, int tokenCount);
 
 	// Checks whether there is a with keyword in the query
-	bool QueryParser::hasWith(std::vector<string_view>& query, int index);
+	bool hasWith(std::vector<string_view>& query, int index);
 
 	// Creates a comparison clause query object
-	shared_ptr<QueryObject> QueryParser::createComparisonObject(std::vector<string_view>& query, 
+	vector<shared_ptr<QueryObject>> processComparisonClause(std::vector<string_view>& query,
 		int& index, int tokenCount, bool is1stArgAttrRef);
+
+	// Modifies a query object such that it becomes a not version of itself
+	shared_ptr<QueryObject> modifyToNot(vector<shared_ptr<QueryObject>> queryObjects);
 
 	// Stores semantic errors to be thrown once syntax validation is complete
 	void storeSemanticError(shared_ptr<SemanticErrorException> semanticError);

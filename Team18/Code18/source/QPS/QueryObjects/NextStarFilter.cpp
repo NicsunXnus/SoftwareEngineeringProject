@@ -64,6 +64,10 @@ shared_ptr<QueryResultsTable> NextStarSynSyn::evaluate(shared_ptr<DataAccessLaye
 
 		}
 	}
+	if (arg1->getArgValue() == arg2->getArgValue()) {
+		return QueryResultsTable::createTable(svToString(arg1->getArgValue()),
+			getMapKeys(nextStarTable));
+	}
 	vector<string> headers({ svToString(arg1->getArgValue()), svToString(arg2->getArgValue()) });
 	return QueryResultsTable::createTable(headers, nextStarTable);
 }
