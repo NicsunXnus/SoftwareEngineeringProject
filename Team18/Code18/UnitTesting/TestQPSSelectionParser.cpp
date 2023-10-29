@@ -2313,6 +2313,62 @@ namespace UnitTesting
 			Assert::IsTrue(qo[3]->getQueryObjectName() == "patternWhile"sv);
 		}
 
+		TEST_METHOD(TestSuchThatAndExtraKeywords)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("stmt s; Select s such that not Follows(s, 3) and such that Parent(s, _) and Next*(3, s)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+			}
+			catch (const QPSError& ex) {
+				Assert::IsTrue(ex.getType() == "SyntaxError");
+			}
+		}
+
+		TEST_METHOD(TestAndFirstClause)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("stmt s; Select s and Follows(s, 3) such that Parent(s, _) and Next*(3, s)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+			}
+			catch (const QPSError& ex) {
+				Assert::IsTrue(ex.getType() == "SyntaxError");
+			}
+		}
+
+		TEST_METHOD(TestSuchThatAndComparison)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("stmt s; Select s such that Follows(s, 3) and s.stmt# = 3");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+			}
+			catch (const QPSError& ex) {
+				Assert::IsTrue(ex.getType() == "SyntaxError");
+			}
+		}
+
+		TEST_METHOD(TestPatternAndSuchThat)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("stmt s; assign a; Select s pattern a(_,_) and Follows(1,2)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+			}
+			catch (const QPSError& ex) {
+				Assert::IsTrue(ex.getType() == "SyntaxError");
+			}
+		}
+
 	};
 
 }
