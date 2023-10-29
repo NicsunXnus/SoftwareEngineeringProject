@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\ApplicationWrapper.cpp" />
+    <ClCompile Include="..\source\ThreadPool.cpp" />
     <ClCompile Include="..\source\QPS\DataAccessLayer.cpp" />
     <ClCompile Include="..\source\QPS\DataAccessLayerStub.cpp" />
     <ClCompile Include="..\source\QPS\QueryBuilder.cpp" />
@@ -71,6 +72,7 @@
     <ClInclude Include="..\source\DesignExtractor\DesignExtractor.h" />
     <ClInclude Include="..\source\ExceptionMessages.h" />
     <ClInclude Include="..\source\HelperFunctions.h" />
+    <ClInclude Include="..\source\ThreadPool.h" />
     <ClInclude Include="..\source\PKB.h" />
     <ClInclude Include="..\source\PKB\Adapter.h" />
     <ClInclude Include="..\source\PKB\Insertor.h" />

@@ -188,6 +188,7 @@
     <ClCompile Include="TestQPSResultsHandler.cpp" />
     <ClCompile Include="TestQPSSelectionParser.cpp" />
     <ClCompile Include="TestSimpleProcessor.cpp" />
+    <ClCompile Include="TestThreadPool.cpp" />
     <ClCompile Include="TestToken.cpp" />
     <ClCompile Include="TestTokenFactory.cpp" />
     <ClCompile Include="TestTreeBuilder.cpp" />
