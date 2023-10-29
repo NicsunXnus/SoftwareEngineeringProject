@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="..\source\ApplicationWrapper.cpp" />
     <ClCompile Include="..\source\QPS\DataAccessLayer.cpp" />
+    <ClCompile Include="..\source\QPS\DataAccessLayerAffectsStub.cpp" />
     <ClCompile Include="..\source\QPS\DataAccessLayerStub.cpp" />
     <ClCompile Include="..\source\QPS\QueryBuilder.cpp" />
     <ClCompile Include="..\source\QPS\QueryDriver.cpp" />
@@ -81,6 +82,7 @@
     <ClInclude Include="..\source\PKB\StorageClasses\EntityStorage.h" />
     <ClInclude Include="..\source\PKB\StorageManager.h" />
     <ClInclude Include="..\source\QPS\DataAccessLayer.h" />
+    <ClInclude Include="..\source\QPS\DataAccessLayerAffectsStub.h" />
     <ClInclude Include="..\source\QPS\DataAccessLayerStub.h" />
     <ClInclude Include="..\source\QPS\Errors\QPSError.h" />
     <ClInclude Include="..\source\QPS\Errors\SemanticError.h" />

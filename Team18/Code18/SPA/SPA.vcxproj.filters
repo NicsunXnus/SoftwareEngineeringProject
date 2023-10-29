@@ -204,6 +204,9 @@
     <ClCompile Include="..\source\QPS\QueryObjects\AffectsFilter.cpp">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\QPS\DataAccessLayerAffectsStub.cpp">
+      <Filter>Source Files\QPS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\ApplicationWrapper.h">
@@ -461,6 +464,9 @@
     </ClInclude>
     <ClInclude Include="..\source\QPS\QueryObjects\AffectsFilter.h">
       <Filter>Source Files\QPS\QueryObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\DataAccessLayerAffectsStub.h">
+      <Filter>Source Files\QPS</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
