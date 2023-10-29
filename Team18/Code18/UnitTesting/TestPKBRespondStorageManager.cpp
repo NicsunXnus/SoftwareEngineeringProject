@@ -13,6 +13,9 @@ TEST_CLASS(TestPKBRespondStorageManager) {
   StringMap variableData = {{"x", {"1", "2"}}, {"y", {"2", "5", "7"}}};
   StringMap procedureData = {{"proc1", {"1", "2"}}, {"proc2", {"5", "6", "7"}}};
   StringMap constantData = {{"10", {"1"}}, {"HERE", {"4", "7", "10"}}};
+  map<string, pair<string, string>> procLineData = {{"proc1", {"1", "19"}},
+                                                    {"proc2", {"20", "37"}},
+                                                    {"proc3", {"38", "183"}}};
   StringMap callProcNameData = {
       {"2", {"proc1"}}, {"4", {"proc2"}}, {"11", {"proc3"}}};
   StringMap readVarNameData = {{"4", {"x"}}, {"13", {"y"}}, {"21", {"z"}}};
@@ -23,6 +26,10 @@ TEST_CLASS(TestPKBRespondStorageManager) {
   shared_ptr<StringMap> variableMap = make_shared<StringMap>(variableData);
   shared_ptr<StringMap> procedureMap = make_shared<StringMap>(procedureData);
   shared_ptr<StringMap> constantMap = make_shared<StringMap>(constantData);
+
+  shared_ptr<map<string, pair<string, string>>> procLineMap =
+      make_shared<map<string, pair<string, string>>>(procLineData);
+
   shared_ptr<StringMap> callProcNameMap =
       make_shared<StringMap>(callProcNameData);
   shared_ptr<StringMap> readVarNameMap =
@@ -117,6 +124,16 @@ TEST_CLASS(TestPKBRespondStorageManager) {
     Assert::IsTrue(
         compare_sets(PKB::responder.getAllConstants(), {"10", "HERE"}));
     Assert::IsTrue(compare_maps(PKB::responder.getConstantMap(), constantData));
+  }
+
+  TEST_METHOD(TestGetProcLines) {
+    PKB::insertor.addProcLines(procLineMap);
+    Assert::IsTrue(compare_pairs(PKB::responder.getProcLines("proc1"),
+                                 procLineData.at("proc1")));
+    Assert::IsTrue(compare_pairs(PKB::responder.getProcLines("proc2"),
+                                 procLineData.at("proc2")));
+    Assert::IsTrue(compare_pairs(PKB::responder.getProcLines("proc3"),
+                                 procLineData.at("proc3")));
   }
 
   TEST_METHOD(TestGetCallProcNames) {
