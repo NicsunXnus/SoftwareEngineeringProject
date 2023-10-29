@@ -12,7 +12,8 @@ namespace UnitTesting
 	TEST_CLASS(TestQPSQueryResultsTable)
 	{
 	public:
-		TEST_METHOD(TestMajorTableOperationsLeftToRight) {
+        //PURELY FOR VISUALISATION
+		/*TEST_METHOD(TestMajorTableOperationsLeftToRight) {
             map<string, vector<string>> map1;
             map1.insert({ "s3", {"5", "5", "7", "8", "2"} });
 
@@ -144,7 +145,7 @@ namespace UnitTesting
 
             Logger::WriteMessage("Output of table operations:\n");
             Logger::WriteMessage(output.str().c_str());
-        }
+        }*/
 
         TEST_METHOD(TestCrossProduct) {
             map<string, vector<string>> map1;

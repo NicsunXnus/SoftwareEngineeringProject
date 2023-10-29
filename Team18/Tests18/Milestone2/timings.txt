@@ -26,27 +26,27 @@ Starting new run........
 ..\..\Tests18\Milestone2\single_UsesP_queries.txt: 96.93 ms
 Starting new run........ OPTABC
 --------Over 100 runtimes-------
-..\..\Tests18\Sample_queries.txt: 82.1 ms
-..\..\Tests18\Sample_queries1.txt: 22.99 ms
-..\..\Tests18\Stress_queries.txt: 20.05 ms
-..\..\Tests18\Milestone1\double_clause_queries.txt: 20.64 ms
-..\..\Tests18\Milestone1\no_clauses_queries.txt: 36.53 ms
-..\..\Tests18\Milestone1\single_follows_queries.txt: 112.07 ms
-..\..\Tests18\Milestone1\single_followsT_queries.txt: 112.94 ms
-..\..\Tests18\Milestone1\single_modifies_queries.txt: 97.38 ms
-..\..\Tests18\Milestone1\single_parent_queries.txt: 104.68 ms
-..\..\Tests18\Milestone1\single_parentT_queries.txt: 93.7 ms
-..\..\Tests18\Milestone1\single_pattern_queries.txt: 63.21 ms
-..\..\Tests18\Milestone1\single_uses_queries.txt: 81.68 ms
-..\..\Tests18\Milestone2\debug_queries.txt: 123.31 ms
-..\..\Tests18\Milestone2\no_clause_queries.txt: 50 ms
-..\..\Tests18\Milestone2\single_calls_queries.txt: 59.45 ms
-..\..\Tests18\Milestone2\single_callsStar_queries.txt: 58.25 ms
-..\..\Tests18\Milestone2\single_follows_queries.txt: 43.83 ms
-..\..\Tests18\Milestone2\single_followsT_queries.txt: 47.19 ms
-..\..\Tests18\Milestone2\single_modifies_queries.txt: 176.39 ms
-..\..\Tests18\Milestone2\single_next_queries.txt: 14.76 ms
-..\..\Tests18\Milestone2\single_parent_queries.txt: 42.29 ms
-..\..\Tests18\Milestone2\single_parentT_queries.txt: 46.36 ms
-..\..\Tests18\Milestone2\single_pattern_queries.txt: 144.03 ms
-..\..\Tests18\Milestone2\single_UsesP_queries.txt: 87 ms
+..\..\Tests18\Sample_queries.txt: 82.1 ms X
+..\..\Tests18\Sample_queries1.txt: 22.99 ms X
+..\..\Tests18\Stress_queries.txt: 20.05 ms X
+..\..\Tests18\Milestone1\double_clause_queries.txt: 20.64 ms X
+..\..\Tests18\Milestone1\no_clauses_queries.txt: 36.53 ms N
+..\..\Tests18\Milestone1\single_follows_queries.txt: 112.07 ms X
+..\..\Tests18\Milestone1\single_followsT_queries.txt: 112.94 ms X
+..\..\Tests18\Milestone1\single_modifies_queries.txt: 97.38 ms X
+..\..\Tests18\Milestone1\single_parent_queries.txt: 104.68 ms X
+..\..\Tests18\Milestone1\single_parentT_queries.txt: 93.7 ms V
+..\..\Tests18\Milestone1\single_pattern_queries.txt: 63.21 ms V
+..\..\Tests18\Milestone1\single_uses_queries.txt: 81.68 ms V
+..\..\Tests18\Milestone2\debug_queries.txt: 123.31 ms V
+..\..\Tests18\Milestone2\no_clause_queries.txt: 50 ms V
+..\..\Tests18\Milestone2\single_calls_queries.txt: 59.45 ms X
+..\..\Tests18\Milestone2\single_callsStar_queries.txt: 58.25 ms X
+..\..\Tests18\Milestone2\single_follows_queries.txt: 43.83 ms V
+..\..\Tests18\Milestone2\single_followsT_queries.txt: 47.19 ms V
+..\..\Tests18\Milestone2\single_modifies_queries.txt: 176.39 ms V
+..\..\Tests18\Milestone2\single_next_queries.txt: 14.76 ms V
+..\..\Tests18\Milestone2\single_parent_queries.txt: 42.29 ms V
+..\..\Tests18\Milestone2\single_parentT_queries.txt: 46.36 ms V
+..\..\Tests18\Milestone2\single_pattern_queries.txt: 144.03 ms V
+..\..\Tests18\Milestone2\single_UsesP_queries.txt: 87 ms V
