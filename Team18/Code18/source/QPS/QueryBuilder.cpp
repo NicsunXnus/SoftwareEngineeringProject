@@ -88,54 +88,57 @@ void optimiseStepB(vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables)
 	}
 	groups.emplace_back(emptyTables);
 	vector<shared_ptr<QueryResultsTable>> nonEmptyTables(nonSelectClauseTables.begin() + indexNonEmpty, nonSelectClauseTables.end());
-	if (nonEmptyTables.size() > 1) {
-		// sort the most table with the most common headers at the start
-		sortVectorOfTablesByHeader(nonEmptyTables);
+	if (nonEmptyTables.size() <= 1) {
+		groups.emplace_back(nonEmptyTables);
+		optimiseStepC(groups);
+		nonSelectClauseTables = flatten2DArray(groups);
+		return;
+	}
 
-		vector<string> headers = nonEmptyTables[0]->getHeaders();
+	// sort the most table with the most common headers at the start
+	sortVectorOfTablesByHeader(nonEmptyTables);
 
-		set<string> firstHeaders;
-		copy(headers.begin(), headers.end(), inserter(firstHeaders, firstHeaders.begin()));
+	vector<string> headers = nonEmptyTables[0]->getHeaders();
 
-		vector<set<string> > groupNames;
-		groupNames.emplace_back(firstHeaders);
+	set<string> firstHeaders;
+	copy(headers.begin(), headers.end(), inserter(firstHeaders, firstHeaders.begin()));
 
-		vector<shared_ptr<QueryResultsTable>> newGroup;
-		newGroup.emplace_back(nonEmptyTables[0]);
-		groups.emplace_back(newGroup);
-		nonEmptyTables.erase(nonEmptyTables.begin());
+	vector<set<string> > groupNames;
+	groupNames.emplace_back(firstHeaders);
 
-		for (shared_ptr<QueryResultsTable> table : nonEmptyTables) {
-			vector<string> thisHeaders = table->getHeaders();
-			int index = 1; //starts from 1 because 0 is for the emptyTables group
-			bool isFound = false;
-			for (set<string>& group : groupNames) {
-				set<string> intersection;
-				set_intersection(group.begin(), group.end(), thisHeaders.begin(), thisHeaders.end(),
-					inserter(intersection, intersection.begin()));
-				if (intersection.size() > 0) {
-					groups[index].emplace_back(table);
-					std::set_union(thisHeaders.cbegin(), thisHeaders.cend(),
-						group.cbegin(), group.cend(),
-						inserter(group, group.begin()));
-					isFound = true;
-					break;
-				}
-				index++;
+	vector<shared_ptr<QueryResultsTable>> newGroup;
+	newGroup.emplace_back(nonEmptyTables[0]);
+	groups.emplace_back(newGroup);
+	nonEmptyTables.erase(nonEmptyTables.begin());
+
+	for (shared_ptr<QueryResultsTable> table : nonEmptyTables) {
+		vector<string> thisHeaders = table->getHeaders();
+		int index = 1; //starts from 1 because 0 is for the emptyTables group
+		bool isFound = false;
+		for (set<string>& group : groupNames) {
+			set<string> intersection;
+			set_intersection(group.begin(), group.end(), thisHeaders.begin(), thisHeaders.end(),
+				inserter(intersection, intersection.begin()));
+			if (intersection.size() > 0) {
+				groups[index].emplace_back(table);
+				std::set_union(thisHeaders.cbegin(), thisHeaders.cend(),
+					group.cbegin(), group.cend(),
+					inserter(group, group.begin()));
+				isFound = true;
+				break;
 			}
-			if (!isFound) {
-				set<string> newHeaders;
-				copy(thisHeaders.begin(), thisHeaders.end(), inserter(newHeaders, newHeaders.begin()));
-				groupNames.emplace_back(newHeaders);
-				vector<shared_ptr<QueryResultsTable>> group;
-				group.emplace_back(table);
-				groups.emplace_back(group);
-			}
+			index++;
+		}
+		if (!isFound) {
+			set<string> newHeaders;
+			copy(thisHeaders.begin(), thisHeaders.end(), inserter(newHeaders, newHeaders.begin()));
+			groupNames.emplace_back(newHeaders);
+			vector<shared_ptr<QueryResultsTable>> group;
+			group.emplace_back(table);
+			groups.emplace_back(group);
 		}
 	}
-	else {
-		groups.emplace_back(nonEmptyTables);
-	}
+
 	optimiseStepC(groups);
 	nonSelectClauseTables = flatten2DArray(groups);
 }
