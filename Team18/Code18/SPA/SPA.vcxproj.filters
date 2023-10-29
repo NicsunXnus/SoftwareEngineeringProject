@@ -359,6 +359,9 @@
     <ClInclude Include="..\source\QPS\QueryBuilder.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
+	<ClInclude Include="..\source\QPS\OptimisedSortingClauses.h" >
+		<Filter>Source Files\QPS</Filter>
+    </ClInclude>
     <ClInclude Include="..\source\QPS\QueryDriver.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>

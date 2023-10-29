@@ -19,8 +19,6 @@ private:
 	vector <shared_ptr<QueryObject>> nonSelectClauseQueryObjects;
 	shared_ptr<DataAccessLayer> dataAccessLayer;
 	bool isOptimisedSwitch = false;
-	// Stores the count of the header in a group of clauses
-	inline static map<string, int> countHeadersStore;
 public:
 	/**
 	 * Constructor for the QueryBuilder object
@@ -55,16 +53,5 @@ public:
 		isOptimisedSwitch = !isOptimisedSwitch;
 	}
 
-	static void updateCountHeaderStore(string header) {
-		countHeadersStore[header]++;
-	}
-
-	static void resetCountHeaderStore() {
-		countHeadersStore.clear();
-	}
-
-	int static getCount(string header) {
-		return countHeadersStore[header];
-	}
 };
 #endif
