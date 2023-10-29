@@ -165,6 +165,9 @@
     <ClCompile Include="..\source\QPS\QueryParser.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
+	<ClCompile Include="..\source\QPS\QueryResultsTable.cpp">
+      <Filter>Source Files\QPS</Filter>
+    </ClCompile>
 	<ClCompile Include="..\source\QPS\QueryValidator.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>

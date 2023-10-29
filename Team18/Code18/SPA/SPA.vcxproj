@@ -27,6 +27,7 @@
     <ClCompile Include="..\source\QPS\QueryObjects\PatternClauseObjectFactory.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\QueryObjectFactory.cpp" />
     <ClCompile Include="..\source\QPS\QueryParser.cpp" />
+	<ClCompile Include="..\source\QPS\QueryResultsTable.cpp" />
     <ClCompile Include="..\source\QPS\QueryValidator.cpp" />
     <ClCompile Include="..\source\QPS\ResultsHandler.cpp" />
 	<ClCompile Include="..\source\QPS\OptimisedFunctionsStub.cpp" />

@@ -4,7 +4,6 @@
 #include "QueryObjects/DesignObjects.h"
 #include "QueryObjects/ClauseObject.h"
 #include "QueryObjects/PatternClauseObject.h"
-using namespace std;
 
 // A set to contain only unique select clauses arguments.
 set<string> getHeadersOfTableAsSet(vector<shared_ptr<QueryResultsTable>> selectClauseTables) {
