@@ -237,7 +237,7 @@ vector<shared_ptr<QueryObject>> QueryParser::parseQuery(vector<string_view> quer
 			previousClauseType = WITH;
 			result.push_back(parseClause(query, currentWordIndex, WITH));
 		}
-		else if (isAnd && previousClauseType == FIRSTCLAUSE) {
+		else if (isAnd && previousClauseType != FIRSTCLAUSE) {
 			currentWordIndex += 1;
 			result.push_back(parseClause(query, currentWordIndex, previousClauseType));
 		}
