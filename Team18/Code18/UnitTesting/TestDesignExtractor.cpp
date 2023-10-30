@@ -759,13 +759,13 @@ namespace UnitTesting
             Assert::IsTrue(std::find(nextMapRef["8"].begin(), nextMapRef["8"].end(), "4") != nextMapRef["8"].end());
         }
 
-        TEST_METHOD(TestMultiThreadingStress)
+        TEST_METHOD(TestStressMultiThreading)
         {
             ApplicationWrapper applicationWrapper;
             applicationWrapper.parse("../../Tests18/Stress_source.txt", true);
         }
 
-        TEST_METHOD(TestStress)
+        TEST_METHOD(TestStressControl)
         {
             ApplicationWrapper applicationWrapper;
             applicationWrapper.parse("../../Tests18/Stress_source.txt", false);
