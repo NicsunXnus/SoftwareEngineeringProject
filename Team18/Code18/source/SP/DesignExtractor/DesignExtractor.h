@@ -70,7 +70,7 @@ public:
 
     
     void extractEntities(shared_ptr<ProcessedProgram> processedProgram);
-    void extractAbstractions(shared_ptr<ProcessedProgram> processedProgram);
+    void extractAbstractions(shared_ptr<ProcessedProgram> processedProgram, bool useMultithread = false);
     
 private:
     shared_ptr<EntityExtractor> entityExtractor;
