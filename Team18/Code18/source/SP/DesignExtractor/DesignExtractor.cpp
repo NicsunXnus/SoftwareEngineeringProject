@@ -2,6 +2,7 @@
 #include <memory>
 #include <thread>
 
+// ai-gen start (copilot, 2)
 void DesignExtractor::extractEntities(shared_ptr<ProcessedProgram> processedProgram) {
     this->entityExtractor->extract(processedProgram);
     this->procedureLineNumberExtractor->extract(processedProgram);
@@ -149,6 +150,7 @@ void DesignExtractor::insertEntities() {
     static shared_ptr<map<string, unordered_set<string>>> readVarNameMap = this->entityExtractor->getReadVarNameMap();
     static shared_ptr<map<string, unordered_set<string>>> printVarNameMap = this->entityExtractor->getPrintVarNameMap();
     static shared_ptr<map<string, shared_ptr<Node>>> patternMap = this->entityExtractor->getPatternMap();
+    static shared_ptr<map<string, pair<string, string>>> procedureStatementStorageMap = this->procedureLineNumberExtractor->getProcedureStatementStorageMap();
 
     // Insert the entities into the PKB
     PKB::insertor.addEntity(statementSet);
@@ -159,7 +161,7 @@ void DesignExtractor::insertEntities() {
     PKB::insertor.addEntityNames(readVarNameMap, READ);
     PKB::insertor.addEntityNames(printVarNameMap, PRINT);
     PKB::insertor.addPatterns(patternMap);
-
+    PKB::insertor.addProcLines(procedureStatementStorageMap);
 }
 
 void DesignExtractor::insertAbstractions() {
@@ -187,4 +189,4 @@ void DesignExtractor::insertAbstractions() {
     PKB::insertor.addAbstraction(nextSet, NEXT);
 
 }
-
+// ai-gen end

@@ -18,7 +18,7 @@ private:
 	vector <shared_ptr<QueryObject>> selectClauseQueryObjects;
 	vector <shared_ptr<QueryObject>> nonSelectClauseQueryObjects;
 	shared_ptr<DataAccessLayer> dataAccessLayer;
-
+	bool isOptimisedSwitch = false;
 public:
 	/**
 	 * Constructor for the QueryBuilder object
@@ -31,7 +31,7 @@ public:
 	/**
 	 * Destructor for the QueryBuilder object
 	 */
-	~QueryBuilder() {};	
+	~QueryBuilder() {};
 
 	/**
 	 * Builds the query results given a list of query objects excluding select clause
@@ -44,6 +44,14 @@ public:
 	 */
 
 	vector<shared_ptr<QueryResultsTable>> buildQuerySelectClause();
+
+	bool getOptimisedSwitch() {
+		return isOptimisedSwitch;
+	}
+
+	void setOptimisedSwitch() {
+		isOptimisedSwitch = !isOptimisedSwitch;
+	}
 
 };
 #endif
