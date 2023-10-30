@@ -102,7 +102,7 @@ public:
      *                     The vector should have the same length for all columns in the table.
      * @return A shared_ptr to the newly created QueryResultsTable object.
      */
-    static shared_ptr<QueryResultsTable> createEmptyTable();
+    static shared_ptr<QueryResultsTable> createEmptyTable(bool isSignificant = false);
     
     /**
      * A static method that creates a new QueryResultsTable object with a single column.
@@ -150,6 +150,14 @@ public:
      * @return A shared pointer to the newly created QueryResultsTable object.
     */
     static shared_ptr<QueryResultsTable> create2DTable(vector<string> headers, vector<vector<string>> columnValues);
+
+    /**
+     * A static method that creates a new QueryResultsTable object with the provided headers
+     *
+     * @param headers A vector of strings representing the headers of the table to be created.
+     * @return A shared pointer to the newly created QueryResultsTable object, which is empty
+    */
+    static shared_ptr<QueryResultsTable> createEmptyTableWithHeaders(vector<string> headers);
 
     /**
      * Deletes a column with the provided header.

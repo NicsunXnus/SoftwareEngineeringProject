@@ -154,8 +154,7 @@ public:
 			shared_ptr<QueryResultsTable> table2 = QueryResultsTable::createTable("b", singleTableVars);
 			table2->setPrimaryKey("b");
 			vector<shared_ptr<QueryResultsTable>> selectClauseTable = { table1, table2 };
-			shared_ptr<QueryResultsTable> emptyTable = QueryResultsTable::createEmptyTable();
-			emptyTable->setSignificant(true);
+			shared_ptr<QueryResultsTable> emptyTable = QueryResultsTable::createEmptyTable(true);
 			vector<shared_ptr<QueryResultsTable>> nonSelectClauseTable = { emptyTable };
 			shared_ptr<ResultHandler> resultHandler = make_shared<ResultHandler>();
 			list<string> finalResult = resultHandler->processTables(selectClauseTable, nonSelectClauseTable);

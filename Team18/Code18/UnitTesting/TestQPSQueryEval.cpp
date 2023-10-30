@@ -2538,9 +2538,8 @@ TEST_METHOD(TestValidNotZeroSynonymWith) {
 
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
       make_shared<DataAccessLayerStub>();
-  shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
+  shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  // TODO: ensure these asserts pass after fixing bug
   Assert::IsTrue(table->getColumns()[0]["c"][0] == "100");
   Assert::IsTrue(table->getColumns()[0]["c"][1] == "300");
 }

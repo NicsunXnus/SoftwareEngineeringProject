@@ -206,7 +206,7 @@ shared_ptr<QueryResultsTable> AffectsIntSyn::evaluate(shared_ptr<DataAccessLayer
 	// if no cfg, start node is not assignment, variable is not used in program
 	if (childrenOfStartNode.empty() || !setHasString(assignments, startingLine) 
 		||!mapHasString(usesInverseMap, modifiedVar)) {
-		return QueryResultsTable::createEmptyTableWithHeader(svToString(arg2->getArgValue()));
+		return QueryResultsTable::createEmptyTableWithHeaders({ svToString(arg2->getArgValue()) });
 	}
 
 	stack<AffectsStackElement> DFSStack;
@@ -284,8 +284,7 @@ shared_ptr<QueryResultsTable> AffectsIntWildcard::evaluate(shared_ptr<DataAccess
 			}
 			unordered_set<string> uses = usesMap[child]; // variables used at child node
 			if (setHasString(assignments, child) && setHasString(uses, modifiedVar)) { // is a valid affects
-				shared_ptr<QueryResultsTable> table = QueryResultsTable::createEmptyTable();
-				table->setSignificant(true);
+				shared_ptr<QueryResultsTable> table = QueryResultsTable::createEmptyTable(true);
 				return table;
 			}
 		}
@@ -335,8 +334,7 @@ shared_ptr<QueryResultsTable> AffectsIntInt::evaluate(shared_ptr<DataAccessLayer
 				DFSStack.push(make_tuple(child, nextChildren));
 			}
 			if (child == finishLine) { // at target node
-				shared_ptr<QueryResultsTable> table = QueryResultsTable::createEmptyTable();
-				table->setSignificant(true);
+				shared_ptr<QueryResultsTable> table = QueryResultsTable::createEmptyTable(true);
 				return table;
 			}
 		}
@@ -443,8 +441,7 @@ shared_ptr<QueryResultsTable> AffectsWildcardWildcard::evaluate(shared_ptr<DataA
 				}
 				unordered_set<string> uses = usesMap[child]; // variables used at child node
 				if (setHasString(assignments, child) && setHasString(uses, modifiedVar)) { // is a valid affects
-					shared_ptr<QueryResultsTable> table = QueryResultsTable::createEmptyTable();
-					table->setSignificant(true);
+					shared_ptr<QueryResultsTable> table = QueryResultsTable::createEmptyTable(true);
 					return table;
 				}
 			}
@@ -499,8 +496,7 @@ shared_ptr<QueryResultsTable> AffectsWildcardInt::evaluate(shared_ptr<DataAccess
 				unordered_set<string> uses = usesMap[child]; // variables used at child node
 				if (setHasString(assignments, child) && setHasString(uses, modifiedVar) 
 					&& child == svToString(arg2->getArgValue())) { // is a valid affects
-					shared_ptr<QueryResultsTable> table = QueryResultsTable::createEmptyTable();
-					table->setSignificant(true);
+					shared_ptr<QueryResultsTable> table = QueryResultsTable::createEmptyTable(true);
 					return table;
 				}
 			}

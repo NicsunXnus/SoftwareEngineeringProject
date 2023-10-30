@@ -246,8 +246,10 @@ void QueryResultsTable::getPrimaryKeyOnlyTable() {
     }
 }
 
-shared_ptr<QueryResultsTable> QueryResultsTable::createEmptyTable() {
-    return make_shared<QueryResultsTable>();
+shared_ptr<QueryResultsTable> QueryResultsTable::createEmptyTable(bool isSignificant) {
+    shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>();
+    table->setSignificant(isSignificant);
+    return table;
 }
 
 shared_ptr<QueryResultsTable> QueryResultsTable::createTable(string header, vector<string> columnValues) {
@@ -349,6 +351,19 @@ shared_ptr<QueryResultsTable> QueryResultsTable::create2DTable(vector<string> he
         map<string, vector<string>> column;
         string header = headers[headerInd];
         column[header] = columnValues[headerInd];
+        columns.emplace_back(column);
+    }
+    shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>(columns);
+    return table;
+}
+
+shared_ptr<QueryResultsTable> QueryResultsTable::createEmptyTableWithHeaders(vector<string> headers) {
+    vector<map<string, vector<string>>> columns;
+    for (string header : headers) {
+        vector<string> emptyCol;
+        map<string, vector<string>> column;
+        column[header] = emptyCol;
+      
         columns.emplace_back(column);
     }
     shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>(columns);

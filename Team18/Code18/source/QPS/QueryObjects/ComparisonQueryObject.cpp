@@ -1,10 +1,9 @@
 #include "ComparisonQueryObject.h"
 
 shared_ptr<QueryResultsTable> StaticStaticComparisonQueryObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) {
-	shared_ptr<QueryResultsTable> table = QueryResultsTable::createEmptyTable();
-	if (ref1->getArgValue() == ref2->getArgValue()) { // e.g. if "3" == "3"
-		table->setSignificant(true);
-	}
+	// e.g. if "3" == "3"
+	shared_ptr<QueryResultsTable> table = 
+		QueryResultsTable::createEmptyTable(ref1->getArgValue() == ref2->getArgValue());
 	return table;
 }
 
