@@ -204,7 +204,6 @@
     <ClCompile Include="..\source\ThreadPool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\QPS\QueryValidator.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\ClauseTableFilter.cpp">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClCompile>
@@ -471,7 +470,6 @@
     <ClInclude Include="..\source\QPS\QueryObjects\BooleanQueryObject.h">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\QPS\QueryValidator.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\QueryEval.h">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClInclude>
@@ -492,9 +490,6 @@
     </ClInclude>
     <ClInclude Include="..\source\QPS\QueryObjects\QueryObjectModifier.h">
       <Filter>Source Files\QPS\QueryObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\QPS\QueryValidator.h">
-      <Filter>Source Files\QPS</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

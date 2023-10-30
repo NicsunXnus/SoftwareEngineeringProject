@@ -267,6 +267,10 @@ public:
         isSignificant = empty;
     }
 
+    void flipSignificant() {
+		isSignificant = !isSignificant;
+	}
+
     bool getSignificant() {
         return isSignificant;
     }
