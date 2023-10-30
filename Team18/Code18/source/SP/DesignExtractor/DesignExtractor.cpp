@@ -15,24 +15,12 @@ void DesignExtractor::extractAbstractions(shared_ptr<ProcessedProgram> processed
         ThreadPool threadPool;
 
         // Define tasks and add them to the thread pool
-        threadPool.addTask([&] {
-            this->parentsExtractor->extractAbstractions(processedProgram);
-        });
-        threadPool.addTask([&] {
-            this->followsExtractor->extractAbstractions(processedProgram);
-        });
-        threadPool.addTask([&] {
-            this->callsExtractor->extractAbstractions(processedProgram);
-        });
-        threadPool.addTask([&] {
-            this->usesExtractor->extractAbstractions(processedProgram);
-        });
-        threadPool.addTask([&] {
-            this->modifiesExtractor->extractAbstractions(processedProgram);
-        });
-        threadPool.addTask([&] {
-            this->nextExtractor->extractAbstractions(processedProgram);
-        });
+        threadPool.addTask(&ParentsExtractor::extractAbstractions, this->parentsExtractor, processedProgram);
+        threadPool.addTask(&FollowsExtractor::extractAbstractions, this->followsExtractor, processedProgram);
+        threadPool.addTask(&CallsExtractor::extractAbstractions, this->callsExtractor, processedProgram);
+        threadPool.addTask(&UsesExtractor::extractAbstractions, this->usesExtractor, processedProgram);
+        threadPool.addTask(&ModifiesExtractor::extractAbstractions, this->modifiesExtractor, processedProgram);
+        threadPool.addTask(&NextExtractor::extractAbstractions, this->nextExtractor, processedProgram);
 
         // Wait for all tasks to complete
         threadPool.wait();
