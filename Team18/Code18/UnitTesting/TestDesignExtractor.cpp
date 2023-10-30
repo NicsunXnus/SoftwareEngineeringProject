@@ -762,13 +762,13 @@ namespace UnitTesting
         TEST_METHOD(TestMultiThreadingStress)
         {
             ApplicationWrapper applicationWrapper;
-            applicationWrapper.parse("../../Tests18/StressTest.txt", true);
+            applicationWrapper.parse("../../Tests18/Stress_source.txt", true);
         }
-        
+
         TEST_METHOD(TestStress)
         {
             ApplicationWrapper applicationWrapper;
-            applicationWrapper.parse("../../Tests18/StressTest.txt", false);
+            applicationWrapper.parse("../../Tests18/Stress_source.txt", false);
         }
    };
      
