@@ -35,9 +35,13 @@ public:
       nextExtractor(make_shared<NextExtractor>()),
       procedureLineNumberExtractor(make_shared<ProcedureLineNumberExtractor>()) {}
 
-    void extractAndInsertAll(shared_ptr<ProcessedProgram> processedProgram) {
+    void extractAndInsertAll(shared_ptr<ProcessedProgram> processedProgram, bool useMultithread = false) {
+        if (useMultithread) {
+            extractAbstractions(processedProgram, true);
+        } else {
+            extractAbstractions(processedProgram, false);
+        }
         extractEntities(processedProgram);
-        extractAbstractions(processedProgram);
         insertEntities();
         insertAbstractions();
     }
