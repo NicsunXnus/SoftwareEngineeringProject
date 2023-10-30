@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "../source/QPS/DataAccessLayerAffectsStub.h"
 #include "../source/QPS/DataAccessLayerStub.h"
 #include "../source/QPS/PQLTokenizer.h"
@@ -6,7 +7,6 @@
 #include "../source/QPS/QueryObjects/PatternClauseObject.h"
 #include "../source/QPS/QueryParser.h"
 #include "CppUnitTest.h"
-#include "stdafx.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;

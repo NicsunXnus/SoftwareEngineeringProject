@@ -1,5 +1,6 @@
 #pragma once
 #include <algorithm>
+#include <cassert>
 #include <iostream>
 #include <map>
 #include <memory>
@@ -82,7 +83,7 @@ class QueryResultsTable {
       otherHeaders.emplace_back(otherColumns[otherCol].begin()->first);
     }
 
-    vector<map<string, vector<string>>> crossProducted(thisColumns);
+    vector<map<string, vector<string>>> crossedProduct(thisColumns);
     vector<map<string, vector<string>>> otherColumnsCopy(otherColumns);
     /*if you have 2 tables
         etc; table1: a, b table2:C, d
@@ -115,9 +116,9 @@ class QueryResultsTable {
         4,  5 ,   6    ,d,  e,  f
         */
     for (int thisCol = 0; thisCol < thisColNums; thisCol++) {
-      string key = crossProducted[thisCol].begin()->first;
-      vector<string> values = crossProducted[thisCol].begin()->second;
-      crossProducted[thisCol][key] = duplicateEntries(values, otherRowNums);
+      string key = crossedProduct[thisCol].begin()->first;
+      vector<string> values = crossedProduct[thisCol].begin()->second;
+      crossedProduct[thisCol][key] = duplicateEntries(values, otherRowNums);
     }
 
     for (int otherCol = 0; otherCol < otherColNums; otherCol++) {
@@ -126,10 +127,10 @@ class QueryResultsTable {
       vector<string> repValues = repeatEntries(values, thisRowNums);
 
       otherColumnsCopy[otherCol][key] = repValues;
-      crossProducted.emplace_back(otherColumnsCopy[otherCol]);
+      crossedProduct.emplace_back(otherColumnsCopy[otherCol]);
     }
 
-    return make_shared<QueryResultsTable>(crossProducted);
+    return make_shared<QueryResultsTable>(crossedProduct);
   }
 
   /**
@@ -238,12 +239,17 @@ class QueryResultsTable {
     // Create a new unordered_set to store the difference
     unordered_set<string> diff_column_values;
 
+    // Convert this_col to set for efficient checks
+    unordered_set<string> this_col;
+    for (const string& elem : this->getColumnData(header)) {
+      this_col.insert(elem);
+    }
+
     // Iterate through the values in 'other' and add those not in 'this' to
     // diff_column_values
-    vector<string> this_col = this->getColumnData(header);
     vector<string> other_col = other->getColumnData(header);
     for (const string& value : other_col) {
-      if (find(this_col.begin(), this_col.end(), value) == this_col.end()) {
+      if (!this_col.count(value)) {
         diff_column_values.insert(value);
       }
     }
@@ -252,11 +258,22 @@ class QueryResultsTable {
     return createTable(header, diff_column_values);
   }
 
+  // Define a hash function for std::pair of strings
+  struct PairHash {
+    template <class T1, class T2>
+    std::size_t operator()(const std::pair<T1, T2>& p) const {
+      auto h1 = std::hash<T1>{}(p.first);
+      auto h2 = std::hash<T2>{}(p.second);
+      return h1 ^ (h2 << 1);
+    }
+  };
+
   /**
    * Creates a shared pointer to a QueryResultsTable object representing the
    * difference between this two-column table and two other single column
    * tables.
    * Each one of this table's headers is identical to other1/other2's header.
+   * Runs in O(m+n) time, where m is size of this QRT, n is size of other QRT
    *
    * @param other1 A shared pointer to a QueryResultsTable object representing
    * a single column other table.
@@ -272,21 +289,54 @@ class QueryResultsTable {
   shared_ptr<QueryResultsTable> difference(
       shared_ptr<QueryResultsTable> other1,
       shared_ptr<QueryResultsTable> other2) {
-    // TODO
+    // cross product
+    shared_ptr<QueryResultsTable> crossed = other1->crossProduct(other2);
+    // this and crossed should have same headers
+    vector<string> crossed_headers = crossed->getHeaders();
+    assert(this->haveSameHeaders(crossed));
+
+    // cache each row in smaller table (this)
+    unordered_set<pair<string, string>, PairHash> cached_rows;
+    vector<string> this_left_col = this->getColumnData(crossed_headers[0]);
+    vector<string> this_right_col = this->getColumnData(crossed_headers[1]);
+    int cache_size = this_left_col.size();
+    for (int i = 0; i < cache_size; i++) {
+      cached_rows.insert(make_pair(this_left_col[i], this_right_col[i]));
+    }
+
+    // loop through rows of crossed table, only include if not in cached_rows
+    vector<string> new_left_col;
+    vector<string> new_right_col;
+
+    vector<string> crossed_left_col =
+        crossed->getColumnData(crossed_headers[0]);
+    vector<string> crossed_right_col =
+        crossed->getColumnData(crossed_headers[1]);
+    int crossed_size = crossed_left_col.size();
+    for (int i = 0; i < crossed_size; i++) {
+      string left_elem = crossed_left_col[i];
+      string right_elem = crossed_right_col[i];
+      if (!cached_rows.count(make_pair(left_elem, right_elem))) {
+        new_left_col.push_back(left_elem);
+        new_right_col.push_back(right_elem);
+      }
+    }
+    vector<vector<string>> columnValues = {new_left_col, new_right_col};
+    return createTable(crossed_headers, columnValues);
   }
 
   void getPrimaryKeyOnlyTable() {
     vector<string> headers = this->getHeaders();
     auto it = find(headers.begin(), headers.end(), primaryKey);
     if (it != headers.end()) {
-      int index = distance(headers.begin(), it);
-      map<string, vector<string>> pKeyColumn = columns[index];
-      vector<map<string, vector<string>>> newColumns;
-      newColumns.push_back(pKeyColumn);
-      columns = newColumns;
-    } else {
       cerr << "Error getting primary key only in table";
+      return;
     }
+    int index = distance(headers.begin(), it);
+    map<string, vector<string>> pKeyColumn = columns[index];
+    vector<map<string, vector<string>>> newColumns;
+    newColumns.push_back(pKeyColumn);
+    columns = newColumns;
   }
 
   /**
