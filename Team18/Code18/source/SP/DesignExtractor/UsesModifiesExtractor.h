@@ -14,6 +14,8 @@
 
 using namespace std;
 
+// This class is the parent class of UsesExtractor and ModifiesExtractor
+// It holds common methods that are used by both classes
 class UsesModifiesExtractor : public AbstractionExtractor {
 public:
     // Constructor

@@ -4,16 +4,10 @@ void AbstractionExtractor::insertToAbstractionMap(string key, string value) {
        insertIntoMap(key, value, this->AbstractionStorageMap);
 }
 
-void AbstractionExtractor::insertToAbstractionStarMap(string key, string value) {
-    insertIntoMap(key, value, this->AbstractionStarStorageMap);
-}
+
 
 shared_ptr<map<string, unordered_set<string>>> AbstractionExtractor::getStorageMap() {
     return this->AbstractionStorageMap;
-}
-
-shared_ptr<map<string, unordered_set<string>>> AbstractionExtractor::getStorageStarMap() {
-    return this->AbstractionStarStorageMap;
 }
 
 void AbstractionExtractor::extractAbstractions(shared_ptr<ProcessedProgram> processedProgram) {
@@ -54,23 +48,4 @@ void AbstractionExtractor::insertIntoMap(string key, string statementNumber, sha
         map->insert({ key, unordered_set<string>() });
     }
     map->at(key).insert(statementNumber);
-}
-
-void AbstractionExtractor::processAbstractionStar() {
-    for (const auto& [key, value] : *AbstractionStorageMap) {
-        unordered_set<string> values = unordered_set<string>(value);
-        for (const auto& value : value) {
-            processAbstractionStarHelper(value, values);
-        }
-        AbstractionStarStorageMap->insert({ key, values });
-    }
-}
-
-void AbstractionExtractor::processAbstractionStarHelper(string value, unordered_set<string>& values) {
-    if (AbstractionStorageMap->find(value) != AbstractionStorageMap->end()) {
-        for (const auto& value : AbstractionStorageMap->at(value)) {
-            values.insert(value);
-            processAbstractionStarHelper(value, values);
-        }
-    }
 }

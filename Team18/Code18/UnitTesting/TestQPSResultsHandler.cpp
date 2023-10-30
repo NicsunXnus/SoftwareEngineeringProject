@@ -4,7 +4,6 @@
 #include "../source/QPS/QueryResultsTable.h"
 #include "../source/QPS/ResultsHandler.h"
 
-
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;
 

@@ -165,7 +165,16 @@
     <ClCompile Include="..\source\QPS\QueryParser.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
+	<ClCompile Include="..\source\QPS\QueryResultsTable.cpp">
+      <Filter>Source Files\QPS</Filter>
+    </ClCompile>
+	<ClCompile Include="..\source\QPS\QueryValidator.cpp">
+      <Filter>Source Files\QPS</Filter>
+    </ClCompile>
     <ClCompile Include="..\source\QPS\ResultsHandler.cpp">
+      <Filter>Source Files\QPS</Filter>
+    </ClCompile>
+	<ClCompile Include="..\source\QPS\OptimisedFunctionsStub.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
     <ClCompile Include="..\source\QPS\QueryObjects\CallsObject.cpp">
@@ -186,6 +195,15 @@
     <ClCompile Include="..\source\QPS\QueryObjects\QueryObjectFactory.cpp">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryObjects\PatternClauseObject.cpp">
+		<Filter>Source Files\QPS\QueryObjects</Filter>
+	  </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryObjects\PatternClauseObjectFactory.cpp">
+		  <Filter>Source Files\QPS\QueryObjects</Filter>
+	  </ClCompile>
+    <ClCompile Include="..\source\ThreadPool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\source\QPS\QueryValidator.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\ClauseTableFilter.cpp">
       <Filter>Source Files\QPS\QueryObjects</Filter>
@@ -193,23 +211,8 @@
     <ClCompile Include="..\source\QPS\QueryObjects\NextStarFilter.cpp">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\QPS\QueryValidator.cpp">
-      <Filter>Source Files\QPS</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\QPS\QueryObjects\AffectsObject.cpp">
-      <Filter>Source Files\QPS\QueryObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\QPS\QueryObjects\AffectsFilter.cpp">
-      <Filter>Source Files\QPS\QueryObjects</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\QPS\DataAccessLayerAffectsStub.cpp">
       <Filter>Source Files\QPS</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\QPS\QueryObjects\PatternClauseObject.cpp">
-      <Filter>Source Files\QPS\QueryObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\QPS\QueryObjects\PatternClauseObjectFactory.cpp">
-      <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClCompile>
     <ClCompile Include="..\source\QPS\QueryObjects\QueryObjectModifier.cpp">
       <Filter>Source Files\QPS\QueryObjects</Filter>
@@ -366,6 +369,9 @@
     <ClInclude Include="..\source\QPS\QueryBuilder.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
+	<ClInclude Include="..\source\QPS\OptimisedSortingClauses.h" >
+		<Filter>Source Files\QPS</Filter>
+    </ClInclude>
     <ClInclude Include="..\source\QPS\QueryDriver.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
@@ -376,6 +382,9 @@
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\ResultsHandler.h">
+      <Filter>Source Files\QPS</Filter>
+    </ClInclude>
+	<ClInclude Include="..\source\QPS\OptimisedFunctionsStub.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\Errors\QPSError.h">
@@ -483,6 +492,9 @@
     </ClInclude>
     <ClInclude Include="..\source\QPS\QueryObjects\QueryObjectModifier.h">
       <Filter>Source Files\QPS\QueryObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryValidator.h">
+      <Filter>Source Files\QPS</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

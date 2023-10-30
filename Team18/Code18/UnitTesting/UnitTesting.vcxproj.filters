@@ -9,7 +9,6 @@
     <ClCompile Include="TestToken.cpp" />
     <ClCompile Include="TestTokenFactory.cpp" />
     <ClCompile Include="TestTreeBuilder.cpp" />
-    <ClCompile Include="TestAbstractions.cpp" />
     <ClCompile Include="TestDesignExtractor.cpp" />
     <ClCompile Include="TestExpressionProcessor.cpp" />
     <ClCompile Include="TestHelperFunctions.cpp" />
@@ -17,11 +16,12 @@
     <ClCompile Include="TestPKBInsertStorageManager.cpp" />
     <ClCompile Include="TestPKBRespondStorageManager.cpp" />
     <ClCompile Include="TestPQLTokenizer.cpp" />
-    <ClCompile Include="TestQPS.cpp" />
+    <ClCompile Include="TestQPSOptimisation.cpp" />
     <ClCompile Include="TestQPSDeclarationParser.cpp" />
     <ClCompile Include="TestQPSDriver.cpp" />
     <ClCompile Include="TestQPSErrorQueries.cpp" />
     <ClCompile Include="TestQPSQueryEval.cpp" />
+    <ClCompile Include="TestThreadPool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
