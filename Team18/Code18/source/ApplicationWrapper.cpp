@@ -14,10 +14,10 @@ ApplicationWrapper::~ApplicationWrapper() {
 }
 
 // method for parsing the SIMPLE source code
-void ApplicationWrapper::directParse(std::string_view sourceCode) {
+void ApplicationWrapper::directParse(std::string_view sourceCode, bool useMultithread) {
   std::shared_ptr<ProcessedProgram> processedProgram = SimpleProcessor::processProgram(sourceCode);
   DesignExtractor designExtractor = DesignExtractor();
-  designExtractor.extractAndInsertAll(processedProgram);
+  designExtractor.extractAndInsertAll(processedProgram, useMultithread);
 }
 
 // method to evaluating a query

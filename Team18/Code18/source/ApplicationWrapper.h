@@ -21,10 +21,10 @@ class ApplicationWrapper {
   ~ApplicationWrapper();
 
   // directly parses source code assuming the input is the actual code
-  void directParse(std::string_view srcCode);
+  void directParse(std::string_view srcCode, bool useMultithread = false);
 
   // method for parsing the SIMPLE source, assuming the input is the filename
-  void parse(std::string filename) {
+  void parse(std::string filename, bool useMultithread = false) {
     // call your parser to do the parsing
     std::ifstream simpleStream(filename);
 
@@ -38,7 +38,7 @@ class ApplicationWrapper {
         src += c;
       }
     }
-    this->directParse(std::string_view(src));
+    this->directParse(std::string_view(src), useMultithread);
   }
 
   // method to evaluating a query
