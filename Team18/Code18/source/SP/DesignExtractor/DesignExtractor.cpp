@@ -1,7 +1,7 @@
 #include "DesignExtractor.h"
 #include <memory>
 #include <thread>
-#include "../../ThreadPool.h"
+// #include "../../ThreadPool.h"
 
 // ai-gen start (copilot, 2)
 void DesignExtractor::extractEntities(shared_ptr<ProcessedProgram> processedProgram) {
