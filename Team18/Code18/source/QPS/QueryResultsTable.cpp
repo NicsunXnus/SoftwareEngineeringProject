@@ -1,4 +1,5 @@
 #include "QueryResultsTable.h"
+#include <cassert>
 
 shared_ptr<QueryResultsTable> QueryResultsTable::crossProduct(shared_ptr<QueryResultsTable> other) {
     vector<map<string, vector<string>>> thisColumns = this->getColumns();
@@ -147,6 +148,87 @@ shared_ptr<QueryResultsTable> QueryResultsTable::innerJoin(shared_ptr<QueryResul
         }
     }
     return make_shared<QueryResultsTable>(innerJoined);
+}
+
+shared_ptr<QueryResultsTable> QueryResultsTable::difference(
+    shared_ptr<QueryResultsTable> other) {
+    // Check if headers are the same
+    string header = this->getHeaders()[0];
+    if (header != other->getHeaders()[0]) {
+        // Headers don't match; return an empty QRT with the same header
+        unordered_set<string> empty_values = {};
+        return createTable(header, empty_values);
+    }
+
+    // Create a new unordered_set to store the difference
+    unordered_set<string> diff_column_values;
+
+    // Convert this_col to set for efficient checks
+    unordered_set<string> this_col;
+    for (const string& elem : this->getColumnData(header)) {
+        this_col.insert(elem);
+    }
+
+    // Iterate through the values in 'other' and add those not in 'this' to
+    // diff_column_values
+    vector<string> other_col = other->getColumnData(header);
+    for (const string& value : other_col) {
+        if (!this_col.count(value)) {
+            diff_column_values.insert(value);
+        }
+    }
+
+    // Create new QRT with the same header and the difference set
+    return createTable(header, diff_column_values);
+}
+
+// Define a hash function for std::pair of strings
+struct PairHash {
+    template <class T1, class T2>
+    std::size_t operator()(const std::pair<T1, T2>& p) const {
+        auto h1 = std::hash<T1>{}(p.first);
+        auto h2 = std::hash<T2>{}(p.second);
+        return h1 ^ (h2 << 1);
+    }
+};
+
+shared_ptr<QueryResultsTable> QueryResultsTable::difference(
+    shared_ptr<QueryResultsTable> other1,
+                                         shared_ptr<QueryResultsTable> other2) {
+    // cross product
+    shared_ptr<QueryResultsTable> crossed = other1->crossProduct(other2);
+    // this and crossed should have same headers
+    vector<string> crossed_headers = crossed->getHeaders();
+    assert(this->haveSameHeaders(crossed));
+
+    // cache each row in smaller table (this)
+    unordered_set<pair<string, string>, PairHash> cached_rows;
+    vector<string> this_left_col = this->getColumnData(crossed_headers[0]);
+    vector<string> this_right_col = this->getColumnData(crossed_headers[1]);
+    int cache_size = this_left_col.size();
+    for (int i = 0; i < cache_size; i++) {
+        cached_rows.insert(make_pair(this_left_col[i], this_right_col[i]));
+    }
+
+    // loop through rows of crossed table, only include if not in cached_rows
+    vector<string> new_left_col;
+    vector<string> new_right_col;
+
+    vector<string> crossed_left_col =
+        crossed->getColumnData(crossed_headers[0]);
+    vector<string> crossed_right_col =
+        crossed->getColumnData(crossed_headers[1]);
+    int crossed_size = crossed_left_col.size();
+    for (int i = 0; i < crossed_size; i++) {
+        string left_elem = crossed_left_col[i];
+        string right_elem = crossed_right_col[i];
+        if (!cached_rows.count(make_pair(left_elem, right_elem))) {
+            new_left_col.push_back(left_elem);
+            new_right_col.push_back(right_elem);
+        }
+    }
+    vector<vector<string>> columnValues = {new_left_col, new_right_col};
+    return create2DTable(crossed_headers, columnValues);
 }
 
 void QueryResultsTable::getPrimaryKeyOnlyTable() {

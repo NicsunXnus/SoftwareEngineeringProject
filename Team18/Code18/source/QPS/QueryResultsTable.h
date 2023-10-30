@@ -53,7 +53,44 @@ public:
   * @param other A shared pointer to a QueryResultsTable object representing the other table
   * @return A sharer pointer to a newly created QueryResultsTable object
   */
-    shared_ptr<QueryResultsTable> innerJoin(shared_ptr<QueryResultsTable> other);
+    shared_ptr<QueryResultsTable> innerJoin(
+        shared_ptr<QueryResultsTable> other);
+
+    /**
+     * Creates a shared pointer to a QueryResultsTable object representing the
+     * difference between this table and one other table.
+     *
+     * @param other A shared pointer to a QueryResultsTable object representing
+     * the other table.
+     * this table's column values is a subset of the other table's column
+     * values.
+     * @return A shared pointer to a newly created QueryResultsTable object
+     * (single column)
+     */
+    shared_ptr<QueryResultsTable> difference(
+        shared_ptr<QueryResultsTable> other);
+
+    /**
+     * Creates a shared pointer to a QueryResultsTable object representing the
+     * difference between this two-column table and two other single column
+     * tables.
+     * Each one of this table's headers is identical to other1/other2's header.
+     * Runs in O(m+n) time, where m is size of this QRT, n is size of other QRT
+     *
+     * @param other1 A shared pointer to a QueryResultsTable object representing
+     * a single column other table.
+     * this table has a set of column values is a subset of the other table's
+     * column values.
+     * @param other2 A shared pointer to a QueryResultsTable object representing
+     * a single column other table.
+     * this table has a set of column values is a subset of the other table's
+     * column values.
+     * @return A shared pointer to a newly created QueryResultsTable object
+     * (two columns)
+     */
+    shared_ptr<QueryResultsTable> difference(
+        shared_ptr<QueryResultsTable> other1,
+        shared_ptr<QueryResultsTable> other2);
 
     void getPrimaryKeyOnlyTable();
 
