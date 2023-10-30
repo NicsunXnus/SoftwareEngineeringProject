@@ -13,11 +13,12 @@
 using namespace std::string_view_literals;
 
 class ExpressionProcessor {
-private:
-	int statementNumber;
-
+protected:
 	// Convert Arithmetic expressions into tokens
 	static std::vector<std::shared_ptr<Token>> tokenizeArithmeticExpression(std::string expression);
+
+private:
+	int statementNumber;
 
 	// Converts conditional expressions involving 2 bracket-pairs into nodes. A recursive call is done.
 	std::shared_ptr<Node> nodifyCondExprTwoPairHelper(std::string trimmed, std::vector<std::shared_ptr<std::pair<int, int>>> bracketPairs);
