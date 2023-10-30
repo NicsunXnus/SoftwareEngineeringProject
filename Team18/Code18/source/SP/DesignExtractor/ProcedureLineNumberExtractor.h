@@ -11,6 +11,9 @@
 
 using namespace std;
 
+// This class is used to extract a map that contains the procedure name to the min and max values of the statement numbers
+// Along with methods to determine the procedure name given a statement number
+// This assists the extraction of Uses, Modifies and Next abstractions
 class ProcedureLineNumberExtractor : public Extractor {
 public:
     // Constructor
