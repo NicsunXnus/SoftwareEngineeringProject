@@ -25,46 +25,6 @@ void DesignExtractor::extractAbstractions(shared_ptr<ProcessedProgram> processed
         // Wait for all tasks to complete
         threadPool.wait();
 
-        // std::vector<std::thread> threads;
-
-        // // Define lambda functions for each abstraction
-        // auto parentsThread = [&] {
-        //     this->parentsExtractor->extractAbstractions(processedProgram);
-        // };
-
-        // auto followsThread = [&] {
-        //     this->followsExtractor->extractAbstractions(processedProgram);
-        // };
-
-        // auto callsThread = [&] {
-        //     this->callsExtractor->extractAbstractions(processedProgram);
-        // };
-
-        // auto usesThread = [&] {
-        //     this->usesExtractor->extractAbstractions(processedProgram);
-        // };
-
-        // auto modifiesThread = [&] {
-        //     this->modifiesExtractor->extractAbstractions(processedProgram);
-        // };
-
-        // auto nextThread = [&] {
-        //     this->nextExtractor->extractAbstractions(processedProgram);
-        // };
-
-        // // Start each abstraction in a separate thread
-        // threads.emplace_back(parentsThread);
-        // threads.emplace_back(followsThread);
-        // threads.emplace_back(callsThread);
-        // threads.emplace_back(usesThread);
-        // threads.emplace_back(modifiesThread);
-        // threads.emplace_back(nextThread);
-
-        // // Join all threads to wait for them to complete
-        // for (auto& thread : threads) {
-        //     thread.join();
-        // }
-
     } else {
         // Execute the extractions sequentially
         this->parentsExtractor->extractAbstractions(processedProgram);
