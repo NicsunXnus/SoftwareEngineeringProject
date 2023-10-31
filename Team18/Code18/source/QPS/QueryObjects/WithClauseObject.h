@@ -16,9 +16,7 @@ private:
 public:
 	WithObject(string_view clauseName, shared_ptr<ClauseArg> synonym)
 		: QueryObject{ clauseName }, synonym{ synonym } {};
-	shared_ptr<ClauseArg> getObjectSynonym() {
-		return synonym;
-	}
+	shared_ptr<ClauseArg> getSynonymObject();
 protected:
 	shared_ptr<QueryResultsTable> returnWithTable(string_view argName, string attrName, StringMap attrMap);
 	shared_ptr<QueryResultsTable> processTrivialTable(shared_ptr<DataAccessLayer> dataAccessLayer, string attrName, ENTITY entity);
