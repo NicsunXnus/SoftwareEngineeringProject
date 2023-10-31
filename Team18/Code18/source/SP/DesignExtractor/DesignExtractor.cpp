@@ -1,7 +1,7 @@
 #include "DesignExtractor.h"
 #include <memory>
 #include <thread>
-// #include "../../ThreadPool.h"
+#include "../../ThreadPool.h"
 
 // ai-gen start (copilot, 2)
 void DesignExtractor::extractEntities(shared_ptr<ProcessedProgram> processedProgram) {
@@ -11,59 +11,59 @@ void DesignExtractor::extractEntities(shared_ptr<ProcessedProgram> processedProg
 
 void DesignExtractor::extractAbstractions(shared_ptr<ProcessedProgram> processedProgram, bool useMultithread) {
     if (useMultithread) {
-        //  // Create a ThreadPool instance
-        // ThreadPool threadPool;
+         // Create a ThreadPool instance
+        ThreadPool threadPool;
 
-        // // Define tasks and add them to the thread pool
-        // threadPool.addTask(&ParentsExtractor::extractAbstractions, this->parentsExtractor, processedProgram);
-        // threadPool.addTask(&FollowsExtractor::extractAbstractions, this->followsExtractor, processedProgram);
-        // threadPool.addTask(&CallsExtractor::extractAbstractions, this->callsExtractor, processedProgram);
-        // threadPool.addTask(&UsesExtractor::extractAbstractions, this->usesExtractor, processedProgram);
-        // threadPool.addTask(&ModifiesExtractor::extractAbstractions, this->modifiesExtractor, processedProgram);
-        // threadPool.addTask(&NextExtractor::extractAbstractions, this->nextExtractor, processedProgram);
+        // Define tasks and add them to the thread pool
+        threadPool.addTask(&ParentsExtractor::extractAbstractions, this->parentsExtractor, processedProgram);
+        threadPool.addTask(&FollowsExtractor::extractAbstractions, this->followsExtractor, processedProgram);
+        threadPool.addTask(&CallsExtractor::extractAbstractions, this->callsExtractor, processedProgram);
+        threadPool.addTask(&UsesExtractor::extractAbstractions, this->usesExtractor, processedProgram);
+        threadPool.addTask(&ModifiesExtractor::extractAbstractions, this->modifiesExtractor, processedProgram);
+        threadPool.addTask(&NextExtractor::extractAbstractions, this->nextExtractor, processedProgram);
 
-        // // Wait for all tasks to complete
-        // threadPool.wait();
+        // Wait for all tasks to complete
+        threadPool.wait();
 
-        std::vector<std::thread> threads;
+        // std::vector<std::thread> threads;
 
-        // Define lambda functions for each abstraction
-        auto parentsThread = [&] {
-            this->parentsExtractor->extractAbstractions(processedProgram);
-        };
+        // // Define lambda functions for each abstraction
+        // auto parentsThread = [&] {
+        //     this->parentsExtractor->extractAbstractions(processedProgram);
+        // };
 
-        auto followsThread = [&] {
-            this->followsExtractor->extractAbstractions(processedProgram);
-        };
+        // auto followsThread = [&] {
+        //     this->followsExtractor->extractAbstractions(processedProgram);
+        // };
 
-        auto callsThread = [&] {
-            this->callsExtractor->extractAbstractions(processedProgram);
-        };
+        // auto callsThread = [&] {
+        //     this->callsExtractor->extractAbstractions(processedProgram);
+        // };
 
-        auto usesThread = [&] {
-            this->usesExtractor->extractAbstractions(processedProgram);
-        };
+        // auto usesThread = [&] {
+        //     this->usesExtractor->extractAbstractions(processedProgram);
+        // };
 
-        auto modifiesThread = [&] {
-            this->modifiesExtractor->extractAbstractions(processedProgram);
-        };
+        // auto modifiesThread = [&] {
+        //     this->modifiesExtractor->extractAbstractions(processedProgram);
+        // };
 
-        auto nextThread = [&] {
-            this->nextExtractor->extractAbstractions(processedProgram);
-        };
+        // auto nextThread = [&] {
+        //     this->nextExtractor->extractAbstractions(processedProgram);
+        // };
 
-        // Start each abstraction in a separate thread
-        threads.emplace_back(parentsThread);
-        threads.emplace_back(followsThread);
-        threads.emplace_back(callsThread);
-        threads.emplace_back(usesThread);
-        threads.emplace_back(modifiesThread);
-        threads.emplace_back(nextThread);
+        // // Start each abstraction in a separate thread
+        // threads.emplace_back(parentsThread);
+        // threads.emplace_back(followsThread);
+        // threads.emplace_back(callsThread);
+        // threads.emplace_back(usesThread);
+        // threads.emplace_back(modifiesThread);
+        // threads.emplace_back(nextThread);
 
-        // Join all threads to wait for them to complete
-        for (auto& thread : threads) {
-            thread.join();
-        }
+        // // Join all threads to wait for them to complete
+        // for (auto& thread : threads) {
+        //     thread.join();
+        // }
 
     } else {
         // Execute the extractions sequentially
