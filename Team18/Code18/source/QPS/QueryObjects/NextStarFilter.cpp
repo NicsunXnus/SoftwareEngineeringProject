@@ -15,7 +15,7 @@ shared_ptr<QueryResultsTable> NextStarSynSyn::evaluate(shared_ptr<DataAccessLaye
 
 	if (filteredPKBClauseDataKeepArg1.empty() || filteredPKBClauseDataKeepArg2.empty()) {
 		if (arg1->getArgValue() == arg2->getArgValue()) {
-			return QueryResultsTable::createEmptyTableWithHeader(svToString(arg1->getArgValue()));
+			return QueryResultsTable::createEmptyTableWithHeaders({ svToString(arg1->getArgValue()) });
 		}
 		StringMap empty;
 		vector<string> headers({ svToString(arg1->getArgValue()), svToString(arg2->getArgValue()) });
@@ -146,8 +146,7 @@ shared_ptr<QueryResultsTable> NextStarIntInt::evaluate(shared_ptr<DataAccessLaye
 				nextStack.push(make_tuple(child, nextChildren));
 			}
 			if (child == target) {
-				shared_ptr<QueryResultsTable> table = QueryResultsTable::createEmptyTable();
-				table->setSignificant(true);
+				shared_ptr<QueryResultsTable> table = QueryResultsTable::createEmptyTable(true);
 				return table;
 			}
 		}

@@ -12,16 +12,19 @@
 
 using namespace std;
 
+
+/**
+ * This class is used as the base class to all abstraction extractors. It is used to extract the designs from the AST.
+ */
 class AbstractionExtractor : public Extractor {
 public:
     // Constructor
     AbstractionExtractor() : 
-    AbstractionStorageMap(make_shared<map<string, unordered_set<string>>>()), 
-    AbstractionStarStorageMap(make_shared<map<string, unordered_set<string>>>()) {}
+    AbstractionStorageMap(make_shared<map<string, unordered_set<string>>>()) {}
 
     shared_ptr<map<string, unordered_set<string>>> getStorageMap();
-    shared_ptr<map<string, unordered_set<string>>> getStorageStarMap();
 
+    // Virtual function for individual extractors to perform pre/post processing on top of the base class's extract method
     virtual void extractAbstractions(shared_ptr<ProcessedProgram> processedProgram);
     void extract(shared_ptr<ProcessedProgram> processedProgram) override;
     void extract(shared_ptr<ProcessedProcedure> processedProcedure) override;
@@ -30,14 +33,10 @@ public:
     void extract(shared_ptr<ProcessedIfStmt> processedIf) override;
     
     void insertToAbstractionMap(string key, string value);
-    void insertToAbstractionStarMap(string key, string value);
     void insertIntoMap(string key, string statementNumber, shared_ptr<map<string, unordered_set<string>>> map);
 
 
 protected:
     std::shared_ptr<map<string, unordered_set<string>>> AbstractionStorageMap;  
-    std::shared_ptr<map<string, unordered_set<string>>> AbstractionStarStorageMap;  
-
-    void processAbstractionStar();
-    void processAbstractionStarHelper(string value, unordered_set<string>& values);
+    
 };

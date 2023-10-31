@@ -1,10 +1,9 @@
 #include "ComparisonQueryObject.h"
 
 shared_ptr<QueryResultsTable> StaticStaticComparisonQueryObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) {
-	shared_ptr<QueryResultsTable> table = QueryResultsTable::createEmptyTable();
-	if (ref1->getArgValue() == ref2->getArgValue()) { // e.g. if "3" == "3"
-		table->setSignificant(true);
-	}
+	// e.g. if "3" == "3"
+	shared_ptr<QueryResultsTable> table = 
+		QueryResultsTable::createEmptyTable(ref1->getArgValue() == ref2->getArgValue());
 	return table;
 }
 
@@ -30,7 +29,7 @@ shared_ptr<QueryResultsTable> AttrRefAttrRefComparisonQueryObject::callAndProces
 
 	shared_ptr<QueryResultsTable> crossProductTables = attRef1Table->crossProduct(attRef2Table);
 
-	shared_ptr<QueryResultsTable> filteredTable = crossProductTables->filter(attRef1Table->getPrimaryKey(), attRef2Table->getPrimaryKey());
+	shared_ptr<QueryResultsTable> filteredTable = crossProductTables->innerJoinOnTwoColumns(attRef1Table->getPrimaryKey(), attRef2Table->getPrimaryKey());
 	
 	return filteredTable;
 }

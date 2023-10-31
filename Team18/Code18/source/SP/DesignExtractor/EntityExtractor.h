@@ -9,6 +9,9 @@
 
 using namespace std;
 
+/**
+ * This class is used to extract the entity abstraction from the AST
+ */
 class EntityExtractor : public Extractor {
 public:
     // Constructor

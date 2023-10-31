@@ -4,8 +4,7 @@
 #include "QueryObjects/DesignObjects.h"
 #include "QueryObjects/ClauseObject.h"
 #include "QueryObjects/PatternClauseObject.h"
-using namespace std;
-
+#include "OptimisedSortingClauses.h"
 //Takes in a vector of Query objects and then returns a vector of QueryResultsTable. This vector will
 //be passed to ResultHandler to process (inner join etc) the various tables of the clauses
 // In the future, optimization of queries, sorting etc will be done here before passing to results handler
@@ -18,7 +17,13 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
 		shared_ptr<QueryResultsTable> table = obj->callAndProcess(dataAccessLayer);
 		queryResultsTables.push_back(table);
 	}
-	// for optimization in future, sort here
+	//// for optimization in future, sort here
+	// Activate Optimisation
+	QueryBuilder::setOptimisedSwitch();
+	if (QueryBuilder::getOptimisedSwitch()) {
+		optimiseStepA(queryResultsTables);
+		optimiseStepB(queryResultsTables);
+	}
 	return queryResultsTables;
 }
 

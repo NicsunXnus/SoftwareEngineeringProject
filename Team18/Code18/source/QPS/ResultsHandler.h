@@ -62,8 +62,8 @@ public:
 	 */
 	~ResultHandler() {};
 	
+	// The QueryResultTables of the clauses are processed, and through a series of cross-products and/or inner joins, the final result
+	// of the PQL is obtained.
 	list<string> processTables(vector<shared_ptr<QueryResultsTable>> selectClause, vector<shared_ptr<QueryResultsTable>> nonSelectClause);
-
-
 };
 #endif

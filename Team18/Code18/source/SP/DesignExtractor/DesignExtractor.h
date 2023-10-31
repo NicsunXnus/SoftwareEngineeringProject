@@ -68,7 +68,6 @@ public:
     shared_ptr<map<string, unordered_set<string>>> getNextMap();
     shared_ptr<map<string, pair<string, string>>> getProcedureStatementStorageMap();
 
-    
     void extractEntities(shared_ptr<ProcessedProgram> processedProgram);
     void extractAbstractions(shared_ptr<ProcessedProgram> processedProgram);
     
@@ -82,10 +81,7 @@ private:
     shared_ptr<NextExtractor> nextExtractor;
     shared_ptr<ProcedureLineNumberExtractor> procedureLineNumberExtractor;
 
-
-    // Method to insert the entities into the PKB
     void insertEntities();
 
-    // Method to insert the abstractions into the PKB
     void insertAbstractions();
 };

@@ -48,9 +48,7 @@ unordered_set<string> DataAccessLayerAffectsStub::getEntity(ENTITY type) {
 }
 
 unordered_set<string> DataAccessLayerAffectsStub::getAllProcedures() {
-    unordered_set<string> test;
-
-    return test;
+    return {"First", "Second", "Third"};
 }
 
 unordered_set<string> DataAccessLayerAffectsStub::getAllVariables() {
@@ -177,4 +175,11 @@ StringMap DataAccessLayerAffectsStub::getReadVarNames() {
 StringMap DataAccessLayerAffectsStub::getPrintVarNames() {
     StringMap test;
     return test;
+}
+
+pair<string, string> DataAccessLayerAffectsStub::getProcLines(string procName) {
+    map<string, pair<string, string>> procLines = { {"First", {"1", "3"}},
+                                                    {"Second", {"4", "15"}},
+                                                    {"Third", {"16", "19"}} };
+    return procLines[procName];
 }

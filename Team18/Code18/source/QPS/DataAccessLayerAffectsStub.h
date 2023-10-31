@@ -52,6 +52,8 @@ public:
 	StringMap getReadVarNames() override;
 	StringMap getPrintVarNames() override;
 
+	pair<string, string> getProcLines(string procName) override;
+
 
 };
 #endif
