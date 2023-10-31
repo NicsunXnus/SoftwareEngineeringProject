@@ -3,6 +3,37 @@
 
 typedef tuple<string, unordered_set<string>> AffectsStackElement; // parent, set of childs
 
+unordered_set<string> AffectsFilter::filterAssignmentsInProcedure(unordered_set<string> assignments, int target, shared_ptr<DataAccessLayer> dataAccessLayer) {
+	unordered_set<string> procedures = dataAccessLayer->getAllProcedures();
+	// first determine the procedure that the target lies in
+	string targetProcedure;
+	bool procedureExists = false;
+	for (string procedure : procedures) {
+		pair<string, string> range = dataAccessLayer->getProcLines(procedure);
+		int startInt = stoi(range.first);
+		int endInt = stoi(range.second);
+		if (startInt <= target && target <= endInt) {
+			targetProcedure = procedure;
+			procedureExists = true;
+			break;
+		}
+	}
+	if (!procedureExists) {
+		return {};
+	}
+	pair<string, string> targetRange = dataAccessLayer->getProcLines(targetProcedure);
+	int startRange = stoi(targetRange.first);
+	int endRange = stoi(targetRange.second);
+	unordered_set<string> filteredAssignments;
+	for (string assignment : assignments) {
+		int assignmentInt = stoi(assignment);
+		if (startRange <= assignmentInt && assignmentInt <= endRange) {
+			filteredAssignments.insert(assignment);
+		}
+	}
+	return filteredAssignments;
+}
+
 /*
 * Strictly assume PKB data is correct
 * In general, affects logic is as follows:
@@ -137,9 +168,10 @@ shared_ptr<QueryResultsTable> AffectsSynWildcard::evaluate(shared_ptr<DataAccess
 
 shared_ptr<QueryResultsTable> AffectsSynInt::evaluate(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
 	StringMap cfg = dataAccessLayer->getClause(clause); // next table (CFG)
-	unordered_set<string> assignments = dataAccessLayer->getEntity(ASSIGN);
+	unordered_set<string> unfilteredassignments = dataAccessLayer->getEntity(ASSIGN);
 	unordered_set<string> results;
-	// TODO: filter assignments in the same procedure as int, in the future
+	unordered_set<string> assignments = filterAssignmentsInProcedure(unfilteredassignments, 
+		stoi(svToString(arg2->getArgValue())), dataAccessLayer);
 	for (string assignment : assignments) {
 		string startingLine = assignment;
 		unordered_set<string> childrenOfStartNode = filterMapKeyReturnSetValues(startingLine, dataAccessLayer, cfg);

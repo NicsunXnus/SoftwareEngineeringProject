@@ -71,3 +71,8 @@ StringMap DataAccessLayer::getPrintVarNames() {
 	StringMap PKBResponse = PKB::responder.getPrintVarNameMap();
 	return PKBResponse;
 }
+
+pair<string, string> DataAccessLayer::getProcLines(string procName) {
+	pair<string, string> PKBResponse = PKB::responder.getProcLines(procName);
+	return PKBResponse;
+}

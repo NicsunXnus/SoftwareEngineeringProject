@@ -15,6 +15,8 @@ public:
 	AffectsFilter(shared_ptr<ClauseArg> argument1, shared_ptr<ClauseArg> argument2) : arg1(argument1), arg2(argument2) {
 
 	}
+protected:
+	unordered_set<string> filterAssignmentsInProcedure(unordered_set<string> assignments, int target, shared_ptr<DataAccessLayer> dataAccessLayer);
 };
 
 class AffectsSynSyn : public AffectsFilter {
