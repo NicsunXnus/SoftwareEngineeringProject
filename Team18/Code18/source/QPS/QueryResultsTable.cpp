@@ -114,8 +114,10 @@ shared_ptr<QueryResultsTable> QueryResultsTable::innerJoin(shared_ptr<QueryResul
         map<string, vector<string>> map = { {key, {}} };
         innerJoined.emplace_back(map);
     }
+    
     //perform inner join
-    for (int thisRow = 0; thisRow < thisRowNums; thisRow++) {
+    for (int thisRow = 0; thisRow < thisRowNums; thisRow++)
+    {
         for (int otherRow = 0; otherRow < otherRowNums; otherRow++) {
             vector<string> vect1; vector<string> vect2;
             for (tuple<int, int> indexOfSameHeaders : sameCols) {
@@ -368,24 +370,12 @@ shared_ptr<QueryResultsTable> QueryResultsTable::innerJoinOnTwoColumns(string he
 
 }
 
-bool QueryResultsTable::haveSameHeaders(shared_ptr<QueryResultsTable> other) {
-    vector<map<string, vector<string>>> thisColumns = QueryResultsTable::getColumns();
-    vector<map<string, vector<string>>> otherColumns = other->getColumns();
-    vector<string> thisHeaders;
-    vector<string> otherHeaders;
-
-    for (map<string, vector<string>> thisColumn : thisColumns) {
-        thisHeaders.emplace_back(thisColumn.begin()->first);
-    }
-
-    for (map<string, vector<string>> otherColumn : otherColumns) {
-        string header = otherColumn.begin()->first;
-        auto it = find(thisHeaders.begin(), thisHeaders.end(), header);
-        if (it != thisHeaders.end()) {
-            return true;
-        }
-    }
-    return false;
+bool QueryResultsTable::haveSimilarHeaders(shared_ptr<QueryResultsTable> other) {
+    set<string> thisHeaders = getHeadersAsSet();
+    set<string> otherHeaders = other->getHeadersAsSet();
+    set<string> intersect;
+    set_intersection(thisHeaders.begin(), thisHeaders.end(), otherHeaders.begin(), otherHeaders.end(), inserter(intersect, intersect.begin()));
+    return intersect.size() > 0;
 }
 
 bool QueryResultsTable::hasHeader(string header) {
@@ -405,6 +395,14 @@ void QueryResultsTable::duplicateColumns(string columnName) {
         columns.push_back(columns[index]);
     }
 
+}
+
+int QueryResultsTable::differenceInHeaders(shared_ptr<QueryResultsTable> _table) {
+    set<string> _headers = _table->getHeadersAsSet();
+    set<string> headers = getHeadersAsSet();
+    set<string> diff;
+    set_symmetric_difference(headers.begin(), headers.end(), _headers.begin(), _headers.end(), inserter(diff, diff.begin()));
+    return diff.size();
 }
 
 //Helper method where (a,b) -> (a,a,b,b)
