@@ -90,6 +90,7 @@
     <ClInclude Include="..\source\QPS\PQLTokenizer.h" />
     <ClInclude Include="..\source\QPS\QueryBuilder.h" />
 	<ClInclude Include="..\source\QPS\OptimisedSortingClauses.h" />
+	<ClInclude Include="..\source\QPS\GroupClause.h" />
     <ClInclude Include="..\source\QPS\QueryDriver.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\ClauseArg.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\ClauseObject.h" />

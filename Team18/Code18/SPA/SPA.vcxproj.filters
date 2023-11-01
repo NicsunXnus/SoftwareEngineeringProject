@@ -365,6 +365,9 @@
     <ClInclude Include="..\source\QPS\DataAccessLayerStub.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
+	<ClInclude Include="..\source\QPS\GroupClause.h" >
+		<Filter>Source Files\QPS</Filter>
+    </ClInclude>
     <ClInclude Include="..\source\QPS\PQLTokenizer.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
