@@ -4,7 +4,8 @@
 #include <vector>
 #include "GroupClause.h"
 #include "QueryResultsTable.h"
-#include <execution>
+#include <ppl.h>
+using namespace concurrency;
 /**
 * An auxiliary class to contain and provide the functions to QueryBuilder for the sorting of the clauses into groups
 * for a more efficient processing of the results of the clauses. No contents of the clauses will be modified, only the order.
@@ -39,7 +40,7 @@ vector<shared_ptr<QueryResultsTable>> revert1DTables(vector< shared_ptr<GroupCla
 // 1. Removes columns that the select clauses do not ask for
 // 2. Add all empty tables to the beginning
 void optimiseStepA(vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables) {
-	sort(nonSelectClauseTables.begin(), nonSelectClauseTables.end(), sortEmptyFirst);		
+	parallel_buffered_sort(nonSelectClauseTables.begin(), nonSelectClauseTables.end(), sortEmptyFirst);		
 }
 
 // Group the clauses. A group of clauses is guaranteed to have a continuous link between all clauses
@@ -68,7 +69,7 @@ vector<shared_ptr<GroupClause>> optimiseStepB(vector<shared_ptr<QueryResultsTabl
 		groups.emplace_back(twoNonEmptyTables);
 		return groups;
 	}
-	sort(nonEmptyTables.begin(), nonEmptyTables.end(), sortMostUniqueHeadersFirst);
+	parallel_buffered_sort(nonEmptyTables.begin(), nonEmptyTables.end(), sortMostUniqueHeadersFirst);
 	shared_ptr<GroupClause> newGroup = make_shared<GroupClause>();
 	newGroup->addOne(nonEmptyTables[0]);
 	groups.emplace_back(newGroup);

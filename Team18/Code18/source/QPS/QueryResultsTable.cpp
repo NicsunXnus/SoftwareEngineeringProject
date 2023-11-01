@@ -379,7 +379,7 @@ bool QueryResultsTable::haveSimilarHeaders(shared_ptr<QueryResultsTable> other) 
 }
 
 bool QueryResultsTable::hasHeader(string header) {
-    vector<string> headers = QueryResultsTable::getHeaders();
+    set<string> headers = QueryResultsTable::getHeadersAsSet();
 
     auto it = find(headers.begin(), headers.end(), header);
         
