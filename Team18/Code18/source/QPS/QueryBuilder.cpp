@@ -19,7 +19,7 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
 	}
 
 	// Activate Optimisation
-	//QueryBuilder::setOptimisedSwitch();
+	QueryBuilder::setOptimisedSwitch();
 	if (QueryBuilder::getOptimisedSwitch()) { // Trigger sorting of clauses
 		optimiseStepA(queryResultsTables);
 		vector<shared_ptr<GroupClause>> groups = optimiseStepB(queryResultsTables);
