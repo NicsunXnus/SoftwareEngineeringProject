@@ -8,6 +8,7 @@
 
 using namespace std;
 
+// I think these two functions (this file) are now obsolete?
 static shared_ptr<map<string, unordered_set<string>>> convertVectorToUnorderedSet(shared_ptr<map<string, vector<string>>> stringMap) {
     shared_ptr<map<string, unordered_set<string>>> resultSet = make_shared<map<string, unordered_set<string>>>();
     for (const auto& pair : *stringMap) {
