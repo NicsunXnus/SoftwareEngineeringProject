@@ -129,3 +129,84 @@ Starting new run........ --> With Sorting of Clauses, 1/11/2023 11:04 a.m.
 ..\..\Tests18\Milestone2\single_parentT_queries.txt: 49.09 ms | ~1ms slower
 ..\..\Tests18\Milestone2\single_pattern_queries.txt: 135.98 ms | NO DIFF
 ..\..\Tests18\Milestone2\single_UsesP_queries.txt: 82.04 ms | ~1ms slower
+Starting new run........ Testing Optimisation queries
+--------Over 1 runtimes-------
+..\..\Tests18\Optimisation_queries.txt: 25 ms
+Starting new run........ optimisation
+--------Over 1 runtimes-------
+..\..\Tests18\Optimisation_queries.txt: 22 ms
+Starting new run........ as
+--------Over 1 runtimes-------
+..\..\Tests18\Optimisation_queries.txt: 22 ms
+Starting new run........ 
+--------Over 1 runtimes-------
+..\..\Tests18\Optimisation_queries.txt: 19 ms
+Starting new run........ 
+--------Over 1 runtimes-------
+..\..\Tests18\Optimisation_queries.txt: 20 ms
+Starting new run........ 
+--------Over 1 runtimes-------
+..\..\Tests18\Optimisation_queries.txt: 7 ms
+Starting new run........ 
+--------Over 1 runtimes-------
+..\..\Tests18\Optimisation_queries.txt: 7 ms
+Starting new run........ 
+--------Over 1 runtimes-------
+..\..\Tests18\Optimisation_queries.txt: 6 ms
+Starting new run........ 
+--------Over 1 runtimes-------
+..\..\Tests18\Optimisation_queries.txt: 5 ms
+Starting new run........ 
+--------Over 1 runtimes-------
+..\..\Tests18\Optimisation_queries.txt: 5 ms
+Starting new run........ 
+--------Over 1 runtimes-------
+..\..\Tests18\Optimisation_queries.txt: 6 ms
+Starting new run........ 
+--------Over 1 runtimes-------
+..\..\Tests18\Optimisation_queries.txt: 9 ms
+Starting new run........ 
+--------Over 1 runtimes-------
+..\..\Tests18\Optimisation_queries.txt: 10 ms
+Starting new run........ 
+--------Over 1 runtimes-------
+..\..\Tests18\Optimisation_queries.txt: 203 ms
+Starting new run........ 
+--------Over 1 runtimes-------
+..\..\Tests18\Optimisation_queries.txt: 12 ms
+Starting new run........ 
+--------Over 1 runtimes-------
+..\..\Tests18\Optimisation_queries.txt: 10 ms
+Starting new run........ 
+--------Over 1 runtimes-------
+..\..\Tests18\Optimisation_queries.txt: 11 ms
+Starting new run........ 
+--------Over 1 runtimes-------
+..\..\Tests18\Optimisation_queries.txt: 8 ms
+Starting new run........ 
+--------Over 1 runtimes-------
+..\..\Tests18\Optimisation_queries.txt: 12 ms
+Starting new run........ 
+--------Over 1 runtimes-------
+..\..\Tests18\Optimisation_queries.txt: 10 ms
+Starting new run........ 
+--------Over 1 runtimes-------
+..\..\Tests18\Optimisation_queries.txt: 6 ms
+Starting new run........ 
+--------Over 1 runtimes-------
+..\..\Tests18\Optimisation_queries.txt: 8 ms
+Starting new run........ 
+--------Over 1 runtimes-------
+..\..\Tests18\Optimisation_queries.txt: 10 ms
+Starting new run........ 1
+--------Over 1 runtimes-------
+..\..\Tests18\Optimisation_queries.txt: 9 ms
+Starting new run........ 
+--------Over 1 runtimes-------
+..\..\Tests18\Optimisation_queries.txt: 11 ms
+Starting new run........ 1
+--------Over 1 runtimes-------
+..\..\Tests18\Optimisation_queries.txt: 362 ms
+Starting new run........ 
+--------Over 1 runtimes-------
+..\..\Tests18\Optimisation_queries.txt: 770 ms
