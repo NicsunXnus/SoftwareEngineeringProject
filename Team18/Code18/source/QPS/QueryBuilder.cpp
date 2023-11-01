@@ -17,12 +17,15 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
 		shared_ptr<QueryResultsTable> table = obj->callAndProcess(dataAccessLayer);
 		queryResultsTables.push_back(table);
 	}
-	//// for optimization in future, sort here
+
 	// Activate Optimisation
-	QueryBuilder::setOptimisedSwitch();
-	if (QueryBuilder::getOptimisedSwitch()) {
+	//QueryBuilder::setOptimisedSwitch();
+	if (QueryBuilder::getOptimisedSwitch()) { // Trigger sorting of clauses
 		optimiseStepA(queryResultsTables);
-		optimiseStepB(queryResultsTables);
+		vector<shared_ptr<GroupClause>> groups = optimiseStepB(queryResultsTables);
+		optimiseStepC(groups);
+		optimiseStepD(groups);
+		queryResultsTables = revert1DTables(groups);
 	}
 	return queryResultsTables;
 }
