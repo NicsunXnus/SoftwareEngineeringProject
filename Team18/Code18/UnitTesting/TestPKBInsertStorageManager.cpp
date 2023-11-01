@@ -1,7 +1,5 @@
 #include "stdafx.h"
-#include <PKB.h>
-
-#include <cassert>
+#include "PKB.h"
 
 #include "CppUnitTest.h"
 
