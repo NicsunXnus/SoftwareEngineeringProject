@@ -1,7 +1,0 @@
-
-Starting new run........ --> No sorting, optimisation stress test
---------Over 100 runtimes-------
-..\..\Tests18\Optimisation_queries.txt: 862.59 ms
-Starting new run........ --> With Sorting, Optimisation Stress test
---------Over 100 runtimes-------
-..\..\Tests18\Optimisation_queries.txt: 455.63 ms
