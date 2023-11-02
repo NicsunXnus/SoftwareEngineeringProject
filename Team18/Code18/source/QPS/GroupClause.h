@@ -3,11 +3,11 @@
 
 #include "QueryResultsTable.h"
 
-// This class represents a group of clauses/QueryResultstTables.
+// This class represents a group of clauses/QueryResultsTables.
 class GroupClause {
 public:
     GroupClause() {}
-
+    
     void addOne(shared_ptr< QueryResultsTable> table) {
         members.emplace_back(table);
         updateHeaders(table->getHeaders());

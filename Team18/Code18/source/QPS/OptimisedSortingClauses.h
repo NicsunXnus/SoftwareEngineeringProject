@@ -64,9 +64,9 @@ vector<shared_ptr<GroupClause>> optimiseStepB(vector<shared_ptr<QueryResultsTabl
 		nonEmptyTables = nonSelectClauseTables;
 	}
 	if (nonEmptyTables.size() <= 2) { // trivial if there is not more than 2 tables
-		shared_ptr<GroupClause> twoNonEmptyTables = make_shared<GroupClause>();
-		twoNonEmptyTables->addMany(nonEmptyTables);
-		groups.emplace_back(twoNonEmptyTables);
+		shared_ptr<GroupClause> lessThanTwoNonEmptyTables = make_shared<GroupClause>();
+		lessThanTwoNonEmptyTables->addMany(nonEmptyTables);
+		groups.emplace_back(lessThanTwoNonEmptyTables);
 		return groups;
 	}
 	parallel_buffered_sort(nonEmptyTables.begin(), nonEmptyTables.end(), sortMostUniqueHeadersFirst);
