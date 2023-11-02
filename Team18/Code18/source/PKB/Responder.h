@@ -23,42 +23,23 @@ class Responder {
    * @return unordered_set<string> the set of statement numbers that are of the
    * entity type
    */
-   unordered_set<string> Responder::getEntityStatement(ENTITY entity);
+  unordered_set<string> Responder::getEntityStatement(ENTITY entity);
 
   /*
-   * This function gets all procedure names.
+   * This function gets list of all non-statement entities of a specified type.
    *
+   * @param entity the type of entity to be retrieved
    * @return unordered_set<string> the set of all procedure names
    */
-   unordered_set<string> Responder::getAllProcedures();
+  unordered_set<string> Responder::getNonStatementEntityList(ENTITY entity);
 
   /*
-   * This function gets the map of all variable numbers to statement numbers.
+   * This function gets the map of a specified non-statement entity.
    *
-   * @return StringMap the map of all variable numbers to statement numbers
+   * @param entity the type of entity to be retrieved
+   * @return StringMap the map of a specified non-statement entity
    */
-   StringMap Responder::getVariableMap();
-
-  /*
-   * This function gets the set of all variable names.
-   *
-   * @return unordered_set<string> the set of all variable names
-   */
-   unordered_set<string> Responder::getAllVariables();
-
-  /*
-   * This function gets the map of all constant numbers to statement numbers.
-   *
-   * @return StringMap the map of all constant numbers to statement numbers
-   */
-  StringMap Responder::getConstantMap();
-
-  /*
-   * This function gets the set of all constant names.
-   *
-   * @return unordered_set<string> the set of all constant names
-   */
-  unordered_set<string> Responder::getAllConstants();
+  StringMap Responder::getNonStatementEntityMap(ENTITY entity);
 
   /*
    * This function gets the start/end line numbers.
@@ -70,29 +51,12 @@ class Responder {
   pair<string, string> Responder::getProcLines(string procedure);
 
   /*
-   * This function gets the map of all procedure calls to names of procedures
-   * called.
+   * This function gets the name maps for a specified entity.
    *
-   * @return StringMap the map of all procedure calls to names of procedures
-   * called
+   * @param entity_type the type of entity name map to be retrieved
+   * @return StringMap the name map for the entity specified.
    */
-  StringMap Responder::getCallProcNameMap();
-
-  /*
-   * This function gets the map of all reads to names of variables
-   * being read.
-   *
-   * @return StringMap the map of all reads to names of variables
-   */
-  StringMap Responder::getReadVarNameMap();
-
-  /*
-   * This function gets the map of all prints to names of variables
-   * being printed.
-   *
-   * @return StringMap the map of all prints to names of variables
-   */
-  StringMap Responder::getPrintVarNameMap();
+  StringMap Responder::getNameMap(ENTITY entity_type);
 
   /*
    * This function gets the map of all if/while/assign statement numbers to root
@@ -121,7 +85,7 @@ class Responder {
    * arguments for this abstraction, vice versa if inversed.
    */
   StringMap Responder::getAbstraction(ABSTRACTION abstraction,
-    bool inverse = false);
+                                      bool inverse = false);
 
   /*
    * This function gets the set of all second arguments for a design
@@ -132,10 +96,10 @@ class Responder {
    * abstraction
    */
   unordered_set<string> Responder::getAbstractionVariable(
-    ABSTRACTION abstraction, string key);
+      ABSTRACTION abstraction, string key);
 
  private:
-   unordered_set<string> getKeys(shared_ptr<StringMap> db);
+  unordered_set<string> getKeys(shared_ptr<StringMap> db);
 
   /*
    * This function creates an inverse map, reversing keys and values.
@@ -143,5 +107,5 @@ class Responder {
    * @param originalMap the original map
    * @return StringMap the inverse map
    */
-   StringMap createInverseMap(shared_ptr<StringMap> originalMap);
+  StringMap createInverseMap(shared_ptr<StringMap> originalMap);
 };

@@ -231,6 +231,9 @@
     <ClCompile Include="..\source\PKB\StorageClasses\AbstractionStorage.cpp">
       <Filter>Source Files\PKB\StorageClasses</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\PKB\StorageClasses\EntityStorage.cpp">
+      <Filter>Source Files\PKB\StorageClasses</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\ApplicationWrapper.h">

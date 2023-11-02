@@ -1,10 +1,10 @@
 #include "Responder.h"
 
 unordered_set<string> Responder::getEntityStatement(ENTITY entity) {
-  shared_ptr<EntityStorage> entity_storage =
-      StorageManager::getEntityStorage();
+  shared_ptr<StatementStorage> entity_storage =
+      StorageManager::getStatementStorage();
   shared_ptr<map<ENTITY, unordered_set<string>>> entity_database =
-      entity_storage->getStatementDatabase();
+      entity_storage->getDatabase();
   // check if entity exists
   if (entity_database->find(entity) == entity_database->end()) {
     return unordered_set<string>();
@@ -12,49 +12,24 @@ unordered_set<string> Responder::getEntityStatement(ENTITY entity) {
   return (*entity_database).at(entity);
 }
 
-unordered_set<string> Responder::getAllProcedures() {
-  shared_ptr<EntityStorage> entity_storage =
-      StorageManager::getEntityStorage();
-  shared_ptr<StringMap> proc_database =
-      entity_storage->getProcedureDatabase();
-  return getKeys(proc_database);
+unordered_set<string> Responder::getNonStatementEntityList(ENTITY entity) {
+  shared_ptr<NonStatementStorage> entity_storage =
+      StorageManager::getEntityNonStmtStorage(entity);
+  shared_ptr<StringMap> entity_database = entity_storage->getDatabase();
+  return getKeys(entity_database);
 }
 
-StringMap Responder::getVariableMap() {
-  shared_ptr<EntityStorage> entity_storage =
-      StorageManager::getEntityStorage();
-  shared_ptr<StringMap> var_database = entity_storage->getVariableDatabase();
-  return *var_database;
-}
-
-unordered_set<string> Responder::getAllVariables() {
-  shared_ptr<EntityStorage> entity_storage =
-      StorageManager::getEntityStorage();
-  shared_ptr<StringMap> var_database = entity_storage->getVariableDatabase();
-  return getKeys(var_database);
-}
-
-StringMap Responder::getConstantMap() {
-  shared_ptr<EntityStorage> entity_storage =
-      StorageManager::getEntityStorage();
-  shared_ptr<StringMap> const_database =
-      entity_storage->getConstantDatabase();
-  return *const_database;
-}
-
-unordered_set<string> Responder::getAllConstants() {
-  shared_ptr<EntityStorage> entity_storage =
-      StorageManager::getEntityStorage();
-  shared_ptr<StringMap> const_database =
-      entity_storage->getConstantDatabase();
-  return getKeys(const_database);
+StringMap Responder::getNonStatementEntityMap(ENTITY entity) {
+  shared_ptr<NonStatementStorage> entity_storage =
+      StorageManager::getEntityNonStmtStorage(entity);
+  return *(entity_storage->getDatabase());
 }
 
 pair<string, string> Responder::getProcLines(string procedure) {
-  shared_ptr<EntityStorage> entity_storage =
-      StorageManager::getEntityStorage();
+  shared_ptr<ProcLinesStorage> entity_storage =
+      StorageManager::getProcLinesStorage();
   shared_ptr<map<string, pair<string, string>>> proclines_database =
-      entity_storage->getProcLinesDatabase();
+      entity_storage->getDatabase();
   // check if procedure exists
   if (proclines_database->find(procedure) == proclines_database->end()) {
     return pair<string, string>();
@@ -62,43 +37,23 @@ pair<string, string> Responder::getProcLines(string procedure) {
   return (*proclines_database).at(procedure);
 }
 
-StringMap Responder::getCallProcNameMap() {
-  shared_ptr<EntityStorage> entity_storage =
-      StorageManager::getEntityStorage();
-  shared_ptr<StringMap> call_procname_database =
-      entity_storage->getCallProcnameDatabase();
-  return *call_procname_database;
-}
-
-StringMap Responder::getReadVarNameMap() {
-  shared_ptr<EntityStorage> entity_storage =
-      StorageManager::getEntityStorage();
-  shared_ptr<StringMap> read_varname_database =
-      entity_storage->getReadVarnameDatabase();
-  return *read_varname_database;
-}
-
-StringMap Responder::getPrintVarNameMap() {
-  shared_ptr<EntityStorage> entity_storage =
-      StorageManager::getEntityStorage();
-  shared_ptr<StringMap> print_varname_database =
-      entity_storage->getPrintVarnameDatabase();
-  return *print_varname_database;
+StringMap Responder::getNameMap(ENTITY entity_type) { 
+  shared_ptr<NameStorage> name_storage =
+	  StorageManager::getEntityNameStorage(entity_type);
+  return *(name_storage->getDatabase());
 }
 
 map<string, shared_ptr<Node>> Responder::getAllPatterns() {
-  shared_ptr<EntityStorage> entity_storage =
-      StorageManager::getEntityStorage();
-  shared_ptr<map<string, shared_ptr<Node>>> pattern_database =
-      entity_storage->getPatternDatabase();
-  return *pattern_database;
+  shared_ptr<PatternStorage> entity_storage =
+      StorageManager::getPatternStorage();
+  return *(entity_storage->getDatabase());
 }
 
 shared_ptr<Node> Responder::getPattern(string statement_number) {
-  shared_ptr<EntityStorage> entity_storage =
-      StorageManager::getEntityStorage();
+  shared_ptr<PatternStorage> entity_storage =
+      StorageManager::getPatternStorage();
   shared_ptr<map<string, shared_ptr<Node>>> pattern_database =
-      entity_storage->getPatternDatabase();
+      entity_storage->getDatabase();
   // check if pattern exists
   if (pattern_database->find(statement_number) == pattern_database->end()) {
     return nullptr;

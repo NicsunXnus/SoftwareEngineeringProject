@@ -1,7 +1,6 @@
 #include "stdafx.h"
-#include "PKB.h"
-
 #include "CppUnitTest.h"
+#include "PKB.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;
@@ -47,10 +46,10 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     PKB::insertor.addEntity(toInsert);
 
     // Create reference to EntityStorage to check database
-    shared_ptr<EntityStorage> entity_storage =
-        StorageManager::getEntityStorage();
+    shared_ptr<StatementStorage> entity_storage =
+        StorageManager::getStatementStorage();
     shared_ptr<map<ENTITY, unordered_set<string>>> stmt_db =
-        entity_storage->getStatementDatabase();
+        entity_storage->getDatabase();
 
     unordered_set<string> expected_vector = {"1"};
 
@@ -78,10 +77,10 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     PKB::insertor.addEntity(toInsert);
 
     // Create reference to EntityStorage to check database
-    shared_ptr<EntityStorage> entity_storage =
-        StorageManager::getEntityStorage();
+    shared_ptr<StatementStorage> entity_storage =
+        StorageManager::getStatementStorage();
     shared_ptr<map<ENTITY, unordered_set<string>>> stmt_db =
-        entity_storage->getStatementDatabase();
+        entity_storage->getDatabase();
 
     unordered_set<string> expected_vector1 = {"1", "2"};
     unordered_set<string> expected_vector2 = {"4"};
@@ -103,10 +102,10 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     PKB::insertor.addEntity(toInsert);
 
     // Create reference to EntityStorage to check database
-    shared_ptr<EntityStorage> entity_storage =
-        StorageManager::getEntityStorage();
+    shared_ptr<StatementStorage> entity_storage =
+        StorageManager::getStatementStorage();
     shared_ptr<map<ENTITY, unordered_set<string>>> stmt_db =
-        entity_storage->getStatementDatabase();
+        entity_storage->getDatabase();
 
     // assert database is empty
     Assert::IsTrue(stmt_db->empty());
@@ -121,9 +120,9 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     PKB::insertor.addEntity(toInsert, PROCEDURE);
 
     // Create reference to EntityStorage to check database
-    shared_ptr<EntityStorage> entity_storage =
-        StorageManager::getEntityStorage();
-    shared_ptr<StringMap> procedure_db = entity_storage->getProcedureDatabase();
+    shared_ptr<NonStatementStorage> entity_storage =
+        StorageManager::getEntityNonStmtStorage(PROCEDURE);
+    shared_ptr<StringMap> procedure_db = entity_storage->getDatabase();
 
     unordered_set<string> expected_vector = {"1"};
 
@@ -140,9 +139,9 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     PKB::insertor.addEntity(toInsert, PROCEDURE);
 
     // Create reference to EntityStorage to check database
-    shared_ptr<EntityStorage> entity_storage =
-        StorageManager::getEntityStorage();
-    shared_ptr<StringMap> procedure_db = entity_storage->getProcedureDatabase();
+    shared_ptr<NonStatementStorage> entity_storage =
+        StorageManager::getEntityNonStmtStorage(PROCEDURE);
+    shared_ptr<StringMap> procedure_db = entity_storage->getDatabase();
 
     unordered_set<string> expected_vector1 = {"1", "2"};
     unordered_set<string> expected_vector2 = {"5", "6", "7"};
@@ -163,9 +162,9 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     PKB::insertor.addEntity(toInsert, PROCEDURE);
 
     // Create reference to EntityStorage to check database
-    shared_ptr<EntityStorage> entity_storage =
-        StorageManager::getEntityStorage();
-    shared_ptr<StringMap> procedure_db = entity_storage->getProcedureDatabase();
+    shared_ptr<NonStatementStorage> entity_storage =
+        StorageManager::getEntityNonStmtStorage(PROCEDURE);
+    shared_ptr<StringMap> procedure_db = entity_storage->getDatabase();
 
     // assert database is empty
     Assert::IsTrue(procedure_db->empty());
@@ -180,9 +179,9 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     PKB::insertor.addEntity(toInsert, VARIABLE);
 
     // Create reference to EntityStorage to check database
-    shared_ptr<EntityStorage> entity_storage =
-        StorageManager::getEntityStorage();
-    shared_ptr<StringMap> variable_db = entity_storage->getVariableDatabase();
+    shared_ptr<NonStatementStorage> entity_storage =
+        StorageManager::getEntityNonStmtStorage(VARIABLE);
+    shared_ptr<StringMap> variable_db = entity_storage->getDatabase();
 
     unordered_set<string> expected_vector = {"5"};
 
@@ -198,9 +197,9 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     PKB::insertor.addEntity(toInsert, VARIABLE);
 
     // Create reference to EntityStorage to check database
-    shared_ptr<EntityStorage> entity_storage =
-        StorageManager::getEntityStorage();
-    shared_ptr<StringMap> variable_db = entity_storage->getVariableDatabase();
+    shared_ptr<NonStatementStorage> entity_storage =
+        StorageManager::getEntityNonStmtStorage(VARIABLE);
+    shared_ptr<StringMap> variable_db = entity_storage->getDatabase();
 
     unordered_set<string> expected_vector1 = {"1", "2"};
     unordered_set<string> expected_vector2 = {"2", "5", "7"};
@@ -221,9 +220,9 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     PKB::insertor.addEntity(toInsert, VARIABLE);
 
     // Create reference to EntityStorage to check database
-    shared_ptr<EntityStorage> entity_storage =
-        StorageManager::getEntityStorage();
-    shared_ptr<StringMap> variable_db = entity_storage->getVariableDatabase();
+    shared_ptr<NonStatementStorage> entity_storage =
+        StorageManager::getEntityNonStmtStorage(VARIABLE);
+    shared_ptr<StringMap> variable_db = entity_storage->getDatabase();
 
     // assert database is empty
     Assert::IsTrue(variable_db->empty());
@@ -238,9 +237,9 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     PKB::insertor.addEntity(toInsert, CONSTANT);
 
     // Create reference to EntityStorage to check database
-    shared_ptr<EntityStorage> entity_storage =
-        StorageManager::getEntityStorage();
-    shared_ptr<StringMap> constant_db = entity_storage->getConstantDatabase();
+    shared_ptr<NonStatementStorage> entity_storage =
+        StorageManager::getEntityNonStmtStorage(CONSTANT);
+    shared_ptr<StringMap> constant_db = entity_storage->getDatabase();
 
     unordered_set<string> expected_vector = {"1"};
 
@@ -256,9 +255,9 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     PKB::insertor.addEntity(toInsert, CONSTANT);
 
     // Create reference to EntityStorage to check database
-    shared_ptr<EntityStorage> entity_storage =
-        StorageManager::getEntityStorage();
-    shared_ptr<StringMap> constant_db = entity_storage->getConstantDatabase();
+    shared_ptr<NonStatementStorage> entity_storage =
+        StorageManager::getEntityNonStmtStorage(CONSTANT);
+    shared_ptr<StringMap> constant_db = entity_storage->getDatabase();
 
     unordered_set<string> expected_vector1 = {"1"};
     unordered_set<string> expected_vector2 = {"4", "7", "10"};
@@ -279,9 +278,9 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     PKB::insertor.addEntity(toInsert, CONSTANT);
 
     // Create reference to EntityStorage to check database
-    shared_ptr<EntityStorage> entity_storage =
-        StorageManager::getEntityStorage();
-    shared_ptr<StringMap> constant_db = entity_storage->getConstantDatabase();
+    shared_ptr<NonStatementStorage> entity_storage =
+        StorageManager::getEntityNonStmtStorage(CONSTANT);
+    shared_ptr<StringMap> constant_db = entity_storage->getDatabase();
 
     // assert database is empty
     Assert::IsTrue(constant_db->empty());
@@ -311,13 +310,19 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     PKB::insertor.addEntity(toInsertVariable, VARIABLE);
 
     // Create reference to EntityStorage to check database
-    shared_ptr<EntityStorage> entity_storage =
-        StorageManager::getEntityStorage();
-    shared_ptr<StringMap> constant_db = entity_storage->getConstantDatabase();
-    shared_ptr<StringMap> procedure_db = entity_storage->getProcedureDatabase();
-    shared_ptr<StringMap> variable_db = entity_storage->getVariableDatabase();
+    shared_ptr<NonStatementStorage> constant_storage =
+        StorageManager::getEntityNonStmtStorage(CONSTANT);
+    shared_ptr<StringMap> constant_db = constant_storage->getDatabase();
+    shared_ptr<NonStatementStorage> procedure_storage =
+        StorageManager::getEntityNonStmtStorage(PROCEDURE);
+    shared_ptr<StringMap> procedure_db = procedure_storage->getDatabase();
+    shared_ptr<NonStatementStorage> variable_storage =
+        StorageManager::getEntityNonStmtStorage(VARIABLE);
+    shared_ptr<StringMap> variable_db = variable_storage->getDatabase();
+    shared_ptr<StatementStorage> stmt_storage =
+        StorageManager::getStatementStorage();
     shared_ptr<map<ENTITY, unordered_set<string>>> stmt_db =
-        entity_storage->getStatementDatabase();
+        stmt_storage->getDatabase();
 
     // assert database has correct entries
     Assert::IsTrue(compare_maps(*variable_db, variableData));
@@ -338,10 +343,10 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     PKB::insertor.addProcLines(toInsert);
 
     // Create reference to EntityStorage to check database
-    shared_ptr<EntityStorage> entity_storage =
-        StorageManager::getEntityStorage();
+    shared_ptr<ProcLinesStorage> entity_storage =
+        StorageManager::getProcLinesStorage();
     shared_ptr<map<string, pair<string, string>>> proclines_db =
-        entity_storage->getProcLinesDatabase();
+        entity_storage->getDatabase();
 
     pair<string, string> expected_vector1 = {"1", "20"};
 
@@ -359,10 +364,10 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     PKB::insertor.addProcLines(toInsert);
 
     // Create reference to EntityStorage to check database
-    shared_ptr<EntityStorage> entity_storage =
-        StorageManager::getEntityStorage();
+    shared_ptr<ProcLinesStorage> entity_storage =
+        StorageManager::getProcLinesStorage();
     shared_ptr<map<string, pair<string, string>>> proclines_db =
-        entity_storage->getProcLinesDatabase();
+        entity_storage->getDatabase();
 
     pair<string, string> expected_vector1 = {"1", "2"};
     pair<string, string> expected_vector2 = {"5", "7"};
@@ -384,12 +389,11 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     // Insertion
     PKB::insertor.addProcLines(toInsert);
 
-    // Create reference to EntityStorage to check
-    // database
-    shared_ptr<EntityStorage> entity_storage =
-        StorageManager::getEntityStorage();
+    // Create reference to EntityStorage to check database
+    shared_ptr<ProcLinesStorage> entity_storage =
+        StorageManager::getProcLinesStorage();
     shared_ptr<map<string, pair<string, string>>> proclines_db =
-        entity_storage->getProcLinesDatabase();
+        entity_storage->getDatabase();
 
     // assert database is empty
     Assert::IsTrue(proclines_db->empty());
@@ -405,10 +409,9 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     PKB::insertor.addEntityNames(toInsert, CALL);
 
     // Create reference to EntityStorage to check database
-    shared_ptr<EntityStorage> entity_storage =
-        StorageManager::getEntityStorage();
-    shared_ptr<StringMap> call_procname_db =
-        entity_storage->getCallProcnameDatabase();
+    shared_ptr<NameStorage> entity_storage =
+        StorageManager::getEntityNameStorage(CALL);
+    shared_ptr<StringMap> call_procname_db = entity_storage->getDatabase();
 
     Assert::IsTrue(compare_maps(*call_procname_db, callProcNameData));
   }
@@ -422,10 +425,9 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     PKB::insertor.addEntityNames(toInsert, READ);
 
     // Create reference to EntityStorage to check database
-    shared_ptr<EntityStorage> entity_storage =
-        StorageManager::getEntityStorage();
-    shared_ptr<StringMap> read_varname_db =
-        entity_storage->getReadVarnameDatabase();
+    shared_ptr<NameStorage> entity_storage =
+        StorageManager::getEntityNameStorage(READ);
+    shared_ptr<StringMap> read_varname_db = entity_storage->getDatabase();
 
     Assert::IsTrue(compare_maps(*read_varname_db, readVarNameData));
   }
@@ -439,10 +441,9 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     PKB::insertor.addEntityNames(toInsert, PRINT);
 
     // Create reference to EntityStorage to check database
-    shared_ptr<EntityStorage> entity_storage =
-        StorageManager::getEntityStorage();
-    shared_ptr<StringMap> print_varname_db =
-        entity_storage->getPrintVarnameDatabase();
+    shared_ptr<NameStorage> entity_storage =
+        StorageManager::getEntityNameStorage(PRINT);
+    shared_ptr<StringMap> print_varname_db = entity_storage->getDatabase();
 
     Assert::IsTrue(compare_maps(*print_varname_db, printVarNameData));
   }
@@ -465,10 +466,10 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     PKB::insertor.addPatterns(toInsert);
 
     // Create reference to EntityStorage to check database
-    shared_ptr<EntityStorage> entity_storage =
-        StorageManager::getEntityStorage();
+    shared_ptr<PatternStorage> entity_storage =
+        StorageManager::getPatternStorage();
     shared_ptr<map<string, shared_ptr<Node>>> pattern_db =
-        entity_storage->getPatternDatabase();
+        entity_storage->getDatabase();
 
     Assert::IsTrue(
         (pattern_db->at("5")->isIdentical(arithmetic_node_ptr, true)));
@@ -483,10 +484,10 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     PKB::insertor.addPatterns(toInsert);
 
     // Create reference to EntityStorage to check database
-    shared_ptr<EntityStorage> entity_storage =
-        StorageManager::getEntityStorage();
+    shared_ptr<PatternStorage> entity_storage =
+        StorageManager::getPatternStorage();
     shared_ptr<map<string, shared_ptr<Node>>> pattern_db =
-        entity_storage->getPatternDatabase();
+        entity_storage->getDatabase();
 
     Assert::IsTrue(
         (pattern_db->at("1")->isIdentical(conditional_node_ptr, true)));
@@ -502,10 +503,10 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     PKB::insertor.addPatterns(toInsert);
 
     // Create reference to EntityStorage to check database
-    shared_ptr<EntityStorage> entity_storage =
-        StorageManager::getEntityStorage();
+    shared_ptr<PatternStorage> entity_storage =
+        StorageManager::getPatternStorage();
     shared_ptr<map<string, shared_ptr<Node>>> pattern_db =
-        entity_storage->getPatternDatabase();
+        entity_storage->getDatabase();
 
     Assert::IsTrue(
         (pattern_db->at("5")->isIdentical(arithmetic_node_ptr, true)));
@@ -523,10 +524,10 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     PKB::insertor.addPatterns(toInsert);
 
     // Create reference to EntityStorage to check database
-    shared_ptr<EntityStorage> entity_storage =
-        StorageManager::getEntityStorage();
+    shared_ptr<PatternStorage> entity_storage =
+        StorageManager::getPatternStorage();
     shared_ptr<map<string, shared_ptr<Node>>> pattern_db =
-        entity_storage->getPatternDatabase();
+        entity_storage->getDatabase();
 
     Assert::IsTrue(pattern_db->empty());
   }
