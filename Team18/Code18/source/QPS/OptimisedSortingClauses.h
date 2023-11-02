@@ -37,8 +37,7 @@ vector<shared_ptr<QueryResultsTable>> revert1DTables(vector< shared_ptr<GroupCla
 	return v1d;
 }
 
-// 1. Removes columns that the select clauses do not ask for
-// 2. Add all empty tables to the beginning
+// Add all empty tables to the beginning
 void moveEmptyTablesToFront(vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables) {
 	parallel_buffered_sort(nonSelectClauseTables.begin(), nonSelectClauseTables.end(), sortEmptyFirst);		
 }
