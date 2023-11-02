@@ -458,9 +458,6 @@
     <ClInclude Include="..\source\QPS\QueryObjects\WithClauseObjectFactory.h">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\PKB\Adapter.h">
-      <Filter>Source Files\PKB</Filter>
-    </ClInclude>
     <ClInclude Include="..\source\PKB\Insertor.h">
       <Filter>Source Files\PKB</Filter>
     </ClInclude>
