@@ -37,7 +37,7 @@ public:
     set<string> getHeaders() {
         return headers;
     }
-    bool hasSimilarHeaders(shared_ptr < GroupClause > _group) {
+    bool hasCommonHeaders(shared_ptr < GroupClause > _group) {
         set<string> otherGroupHeaders = _group->getHeaders();
         set<string> intersect;
         set_intersection(otherGroupHeaders.begin(), otherGroupHeaders.end(), headers.begin(), headers.end(), inserter(intersect, intersect.begin()));

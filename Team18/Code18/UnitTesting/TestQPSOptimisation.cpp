@@ -3,7 +3,6 @@
 #include <cassert>
 #include"../source/QPS/OptimisedFunctionsStub.h"
 #include <random>
-//#include <chrono>
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;
 
@@ -747,89 +746,6 @@ public:
 	//	Logger::WriteMessage(outputD.str().c_str());
 	//}
 
-	//TEST_METHOD(Test_ParallelSort_SpeedUp_StepAB) {
-	//	vector< shared_ptr<QueryResultsTable>> nonSelectClauses;
 
-	//	for (int i = 0; i < 10000; i++) {
-	//		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable(generateRandomPair(), { generateRandomPair(),generateRandomPair() }));
-	//	}
-	//	for (int i = 0; i < 25; i++) {
-	//		nonSelectClauses.emplace_back(QueryResultsTable::createEmptyTable());
-	//	}
-	//	for (int i = 0; i < 10000; i++) {
-	//		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable(generateRandomPair(), { generateRandomPair(),generateRandomPair() }));
-	//	}
-	//	auto start = std::chrono::high_resolution_clock::now();
-	//	OptimisedFunctionsStub::optimiseStepA(nonSelectClauses, false);
-	//	OptimisedFunctionsStub::optimiseStepB(nonSelectClauses, false);
-	//	
-	//	auto end = std::chrono::high_resolution_clock::now();Logger::WriteMessage("Time taken without parallel sort:\n");
-	//	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-	//	string time = to_string(duration.count()) + " microseconds.\n";
-	//	Logger::WriteMessage(time.c_str());
-
-	//	nonSelectClauses.clear();
-	//	
-
-	//	for (int i = 0; i < 10000; i++) {
-	//		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable(generateRandomPair(), { generateRandomPair(),generateRandomPair() }));
-	//	}
-	//	for (int i = 0; i < 25; i++) {
-	//		nonSelectClauses.emplace_back(QueryResultsTable::createEmptyTable());
-	//	}
-	//	for (int i = 0; i < 10000; i++) {
-	//		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable(generateRandomPair(), { generateRandomPair(),generateRandomPair() }));
-	//	}
-	//	start = std::chrono::high_resolution_clock::now();
-	//	OptimisedFunctionsStub::optimiseStepA(nonSelectClauses, true);
-	//	OptimisedFunctionsStub::optimiseStepB(nonSelectClauses, true);
-	//	
-	//	end = std::chrono::high_resolution_clock::now();Logger::WriteMessage("Time taken with parallel sort:\n");
-	//	duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-	//	time = to_string(duration.count()) + " microseconds.";
-	//	Logger::WriteMessage(time.c_str());
-	//}
-
-	//TEST_METHOD(Test_ParallelSort_SpeedUp_StepA) {
-	//	vector< shared_ptr<QueryResultsTable>> nonSelectClauses;
-	//	
-
-	//	for (int i = 0; i < 10000; i++) {
-	//		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "c", "d" }, { generateRandomPair(),generateRandomPair() }));
-	//	}
-	//	for (int i = 0; i < 25; i++) {
-	//		nonSelectClauses.emplace_back(QueryResultsTable::createEmptyTable());
-	//	}
-	//	for (int i = 0; i < 10000; i++) {
-	//		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "c", "d" }, { generateRandomPair(),generateRandomPair() }));
-	//	}
-	//	auto start = std::chrono::high_resolution_clock::now();
-	//	OptimisedFunctionsStub::optimiseStepA(nonSelectClauses, false);
-
-	//	
-	//	auto end = std::chrono::high_resolution_clock::now();Logger::WriteMessage("Time taken without parallel sort:\n");
-	//	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-	//	string time = to_string(duration.count()) + " microseconds.\n";
-	//	Logger::WriteMessage(time.c_str());
-
-	//	nonSelectClauses.clear();
-	//	
-
-	//	for (int i = 0; i < 10000; i++) {
-	//		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "c", "d" }, { generateRandomPair(),generateRandomPair() }));
-	//	}
-	//	for (int i = 0; i < 25; i++) {
-	//		nonSelectClauses.emplace_back(QueryResultsTable::createEmptyTable());
-	//	}
-	//	for (int i = 0; i < 10000; i++) {
-	//		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "c", "d" }, { generateRandomPair(),generateRandomPair() }));
-	//	}
-	//	start = std::chrono::high_resolution_clock::now();
-	//	OptimisedFunctionsStub::optimiseStepA(nonSelectClauses, true);
-	//	end = std::chrono::high_resolution_clock::now();Logger::WriteMessage("Time taken with parallel sort:\n");
-	//	duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-	//	time = to_string(duration.count()) + " microseconds.";
-	//	Logger::WriteMessage(time.c_str());
-	//}
 	};
 }

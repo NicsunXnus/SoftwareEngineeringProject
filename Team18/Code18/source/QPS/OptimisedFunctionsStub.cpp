@@ -86,7 +86,7 @@ void OptimisedFunctionsStub::optimiseStepC(vector< shared_ptr<GroupClause> >& gr
 	if (groups[0]->hasEmptyTablesFirst()) startIndex = 1;
 	for (int i = startIndex; i < groupSize; i++) {
 		for (int j = i + 1; j < groupSize; j++) {
-			if (groups[i]->hasSimilarHeaders(groups[j])) {
+			if (groups[i]->hasCommonHeaders(groups[j])) {
 				groups[i]->merge(groups[j]);
 				groups.erase(groups.begin() + j);
 				groupSize--;

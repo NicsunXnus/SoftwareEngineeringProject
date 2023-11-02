@@ -39,14 +39,14 @@ vector<shared_ptr<QueryResultsTable>> revert1DTables(vector< shared_ptr<GroupCla
 
 // 1. Removes columns that the select clauses do not ask for
 // 2. Add all empty tables to the beginning
-void optimiseStepA(vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables) {
+void moveEmptyTablesToFront(vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables) {
 	parallel_buffered_sort(nonSelectClauseTables.begin(), nonSelectClauseTables.end(), sortEmptyFirst);		
 }
 
 // Group the clauses. A group of clauses is guaranteed to have a continuous link between all clauses
 // However the order of the clauses is not guaranteed such that any two neighboring clauses
 // will share a common header.
-vector<shared_ptr<GroupClause>> optimiseStepB(vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables) {
+vector<shared_ptr<GroupClause>> groupSimilarTables(vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables) {
 	vector <shared_ptr<GroupClause>> groups;
 	shared_ptr<GroupClause> emptyTables = make_shared<GroupClause>();
 	int indexNonEmpty = 0;
@@ -103,7 +103,7 @@ vector<shared_ptr<GroupClause>> optimiseStepB(vector<shared_ptr<QueryResultsTabl
 }
 
 // Goes through each group and merge groups that shares same headers
-void optimiseStepC(vector< shared_ptr<GroupClause> >& groups) {
+void mergeSimilarGroups(vector< shared_ptr<GroupClause> >& groups) {
 	if (groups.size() == 0) return;
 	if (groups[0]->hasEmptyTablesFirst() && groups.size() < 3) return;
 	if (!groups[0]->hasEmptyTablesFirst() && groups.size() < 2) return;
@@ -113,7 +113,7 @@ void optimiseStepC(vector< shared_ptr<GroupClause> >& groups) {
 	if (groups[0]->hasEmptyTablesFirst()) startIndex = 1;
 	for (int i = startIndex; i < groupSize; i++) {
 		for (int j = i + 1; j < groupSize; j++) {
-			if (groups[i]->hasSimilarHeaders(groups[j])) {
+			if (groups[i]->hasCommonHeaders(groups[j])) {
 				groups[i]->merge(groups[j]);
 				groups.erase(groups.begin() + j);
 				groupSize--;
@@ -125,7 +125,7 @@ void optimiseStepC(vector< shared_ptr<GroupClause> >& groups) {
 	}
 }
 
-void optimisedSubStepD1(vector<shared_ptr<QueryResultsTable>> groupMembers, set<string>& headerContainer, set<string> groupHeaders) {
+void checkForUmbrellaHeadersPresence(vector<shared_ptr<QueryResultsTable>> groupMembers, set<string>& headerContainer, set<string> groupHeaders) {
 	for (int i = 1; i < groupMembers.size(); i++) {
 		set<string> intersect;
 		set<string> thisHeaders = groupMembers[i]->getHeadersAsSet();
@@ -140,7 +140,7 @@ void optimisedSubStepD1(vector<shared_ptr<QueryResultsTable>> groupMembers, set<
 	}
 }
 
-void optimisedSubStepD2(vector<shared_ptr<QueryResultsTable>>& groupMembers, set<string> groupHeaders) {
+void tableReshuffleToCreateUmbrellasHeader(vector<shared_ptr<QueryResultsTable>>& groupMembers, set<string> groupHeaders) {
 	int gap = 1;
 	set<string> headerContainer;
 	for (int j = 0; j < groupMembers.size(); j++) { // Iterate the same number of times as the number of members unless a table is found to have no shared header
@@ -174,7 +174,7 @@ void optimisedSubStepD2(vector<shared_ptr<QueryResultsTable>>& groupMembers, set
 // For every group, this function attempts to sort the tables at the front such that not only do they create a 
 // link within themselves (allows inner join) but also a union of them will cover the whole group, which will
 // effectively enable inner join for the whole group.
-void optimiseStepD(vector<shared_ptr<GroupClause>>& groups) {
+void optimiseTablePositions(vector<shared_ptr<GroupClause>>& groups) {
 	if (groups.size() == 0) return;
 	int startIndex = 0;
 	if (groups[0]->hasEmptyTablesFirst()) startIndex = 1; // start from 1 given that the first group is the emptyTables group
@@ -184,9 +184,9 @@ void optimiseStepD(vector<shared_ptr<GroupClause>>& groups) {
 		vector<shared_ptr<QueryResultsTable>> currGroupMembers = groups[i]->getMembers();
 		set<string> currTableHeaders = currGroupMembers[0]->getHeadersAsSet();
 		if (currTableHeaders == groupHeaders) continue; // Means that the first table already has headers that covers the whole group
-		optimisedSubStepD1(currGroupMembers, currTableHeaders, groupHeaders); // Checks for a possible link between first table and some table that covers the whole group
+		checkForUmbrellaHeadersPresence(currGroupMembers, currTableHeaders, groupHeaders); // Checks for a possible link between first table and some table that covers the whole group
 		if (currTableHeaders == groupHeaders) continue; // Means there is a link from the first table to some table in a later row that covers the whole group
-		optimisedSubStepD2(currGroupMembers, groupHeaders);
+		tableReshuffleToCreateUmbrellasHeader(currGroupMembers, groupHeaders);
 		groups[i]->setMembers(currGroupMembers);
 	}
 }

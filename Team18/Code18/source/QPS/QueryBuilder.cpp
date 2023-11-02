@@ -21,10 +21,10 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
 	// Activate Optimisation
 	QueryBuilder::setOptimisedSwitch();
 	if (QueryBuilder::getOptimisedSwitch()) { // Trigger sorting of clauses
-		optimiseStepA(queryResultsTables);
-		vector<shared_ptr<GroupClause>> groups = optimiseStepB(queryResultsTables);
-		optimiseStepC(groups);
-		optimiseStepD(groups);
+		moveEmptyTablesToFront(queryResultsTables);
+		vector<shared_ptr<GroupClause>> groups = groupSimilarTables(queryResultsTables);
+		mergeSimilarGroups(groups);
+		optimiseTablePositions(groups);
 		queryResultsTables = revert1DTables(groups);
 	}
 	return queryResultsTables;
