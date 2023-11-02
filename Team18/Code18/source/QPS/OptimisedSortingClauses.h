@@ -76,10 +76,10 @@ vector<shared_ptr<GroupClause>> groupSimilarTables(vector<shared_ptr<QueryResult
 	groups.emplace_back(newGroup);
 	nonEmptyTables.erase(nonEmptyTables.begin());
 	int startIndex = 0;
-	if (emptyTables->size() > 0) startIndex = 1;
+	if (emptyTables->size() > 0) startIndex = 1; //starts from 1 because 0 is for the emptyTables group
 	for (shared_ptr<QueryResultsTable> table : nonEmptyTables) {
 		set<string> thisHeaders = table->getHeadersAsSet();
-		int index = startIndex; //starts from 1 because 0 is for the emptyTables group
+		int index = startIndex;
 		bool isFound = false;
 		for (shared_ptr<GroupClause> group : groups) {
 			if (group->hasEmptyTablesFirst()) continue;
