@@ -228,6 +228,12 @@
     <ClCompile Include="..\source\QPS\QueryObjects\WithClauseObject.cpp">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryObjects\QueryObject.cpp">
+      <Filter>Source Files\QPS\QueryObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\QPS\QRTCache.cpp">
+      <Filter>Source Files\QPS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\ApplicationWrapper.h">
@@ -501,5 +507,11 @@
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClInclude>
     <ClInclude Include="..\source\ThreadPool.h" />
+    <ClInclude Include="..\source\Cache.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QRTCache.h">
+      <Filter>Source Files\QPS</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

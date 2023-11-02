@@ -2310,7 +2310,7 @@ TEST_METHOD(TestValidAffectsSynWildcard) {
 
 TEST_METHOD(TestInvalidAffectsSynWildcard) {
   vector<string> testS =
-      PQLTokenizer::tokenize("stmt a, a1; Select a such that Affects(s, _)");
+      PQLTokenizer::tokenize("read a, a1; Select a such that Affects(a, _)");
   vector<string_view> test{sToSvVector(testS)};
   shared_ptr<QueryParser> p = make_shared<QueryParser>();
   tuple<vector<string_view>, vector<string_view>> testObj =
@@ -2347,7 +2347,7 @@ TEST_METHOD(TestValidAffectsIntSyn) {
 
 TEST_METHOD(TestInvalidAffectsIntSyn) {
   vector<string> testS =
-      PQLTokenizer::tokenize("stmt a, a1; Select a such that Affects(5, a)");
+      PQLTokenizer::tokenize("read a, a1; Select a such that Affects(5, a)");
   vector<string_view> test{sToSvVector(testS)};
   shared_ptr<QueryParser> p = make_shared<QueryParser>();
   tuple<vector<string_view>, vector<string_view>> testObj =
@@ -2448,7 +2448,7 @@ TEST_METHOD(TestValidAffectsWildcardSyn) {
 
 TEST_METHOD(TestInvalidAffectsWildcardSyn) {
   vector<string> testS = PQLTokenizer::tokenize(
-      "assign a, a1; stmt s; Select a such that Affects(_, s)");
+      "assign a, a1; read s; Select a such that Affects(_, s)");
   vector<string_view> test{sToSvVector(testS)};
   shared_ptr<QueryParser> p = make_shared<QueryParser>();
   tuple<vector<string_view>, vector<string_view>> testObj =
