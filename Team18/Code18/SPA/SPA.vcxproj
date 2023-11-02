@@ -75,7 +75,6 @@
   <ItemGroup>
     <ClInclude Include="..\source\ApplicationWrapper.h" />
     <ClInclude Include="..\source\Constants\DesignEnums.h" />
-    <ClInclude Include="..\source\DesignExtractor\DesignExtractor.h" />
     <ClInclude Include="..\source\ExceptionMessages.h" />
     <ClInclude Include="..\source\HelperFunctions.h" />
     <ClInclude Include="..\source\ThreadPool.h" />

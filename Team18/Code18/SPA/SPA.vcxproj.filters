@@ -248,9 +248,6 @@
     <ClInclude Include="..\source\Constants\DesignEnums.h">
       <Filter>Source Files\Constants</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\DesignExtractor\DesignExtractor.h">
-      <Filter>Source Files\DesignExtractor</Filter>
-    </ClInclude>
     <ClInclude Include="..\source\SP\AST\BinaryOpNode.h">
       <Filter>Source Files\SP\AST</Filter>
     </ClInclude>
