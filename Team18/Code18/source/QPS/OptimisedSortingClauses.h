@@ -9,7 +9,7 @@ using namespace concurrency;
 /**
 * An auxiliary class to contain and provide the functions to QueryBuilder for the sorting of the clauses into groups
 * for a more efficient processing of the results of the clauses. No contents of the clauses will be modified, only the order.
-* The functions used in optimising are prefixed by "optimise" and are designed to be used in their alphabetical order.
+* The functions used in optimising are identified in the method description" and are designed to be used in their numerical order.
 * The functions,by the user's needs, can also be used in any order.
 */
 
@@ -37,11 +37,13 @@ vector<shared_ptr<QueryResultsTable>> revert1DTables(vector< shared_ptr<GroupCla
 	return v1d;
 }
 
+// Optimise Step 1
 // Add all empty tables to the beginning
 void moveEmptyTablesToFront(vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables) {
 	parallel_buffered_sort(nonSelectClauseTables.begin(), nonSelectClauseTables.end(), sortEmptyFirst);		
 }
 
+//Optimise Step 2
 // Group the clauses. A group of clauses is guaranteed to have a continuous link between all clauses
 // However the order of the clauses is not guaranteed such that any two neighboring clauses
 // will share a common header.
@@ -101,6 +103,7 @@ vector<shared_ptr<GroupClause>> groupSimilarTables(vector<shared_ptr<QueryResult
 	return groups;
 }
 
+// Optimise Step 3
 // Goes through each group and merge groups that shares same headers
 void mergeSimilarGroups(vector< shared_ptr<GroupClause> >& groups) {
 	if (groups.size() == 0) return;
@@ -124,6 +127,7 @@ void mergeSimilarGroups(vector< shared_ptr<GroupClause> >& groups) {
 	}
 }
 
+// Optimise SubStep 4.1
 void checkForUmbrellaHeadersPresence(vector<shared_ptr<QueryResultsTable>> groupMembers, set<string>& headerContainer, set<string> groupHeaders) {
 	for (int i = 1; i < groupMembers.size(); i++) {
 		set<string> intersect;
@@ -139,6 +143,7 @@ void checkForUmbrellaHeadersPresence(vector<shared_ptr<QueryResultsTable>> group
 	}
 }
 
+// Optimise SubStep 4.2
 void tableReshuffleToCreateUmbrellasHeader(vector<shared_ptr<QueryResultsTable>>& groupMembers, set<string> groupHeaders) {
 	int gap = 1;
 	set<string> headerContainer;
@@ -170,6 +175,7 @@ void tableReshuffleToCreateUmbrellasHeader(vector<shared_ptr<QueryResultsTable>>
 	}
 }
 
+// Optimise Step 4
 // For every group, this function attempts to sort the tables at the front such that not only do they create a 
 // link within themselves (allows inner join) but also a union of them will cover the whole group, which will
 // effectively enable inner join for the whole group.
