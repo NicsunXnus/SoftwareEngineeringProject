@@ -6,9 +6,6 @@
  */
 class Insertor {
  public:
-  // I wonder if it is possible to do method overloading here with ENTITY being a parent class instead
-  // That would eliminate the use of the switch case statements. (similar comment for addEntityNames)
-  // Alternatively, would it be possible to do something like the addAbstractions method?
   /*
    * This function adds entities into the corresponding database, based on the
    * entity type.
