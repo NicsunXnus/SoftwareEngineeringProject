@@ -2,6 +2,7 @@
 #define QPS_ERROR_H
 #include <iostream>
 #include <exception>
+#include "../../Constants/QPSConstants.h"
 
 using namespace std;
 
@@ -14,7 +15,7 @@ public:
         return (errorMessage).c_str();
     }
     virtual const char* getType() const noexcept {
-        return "QPS Internal Error";
+        return QPS_ERROR.c_str();
     }
 
 
