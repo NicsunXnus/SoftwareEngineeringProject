@@ -1,7 +1,5 @@
 #include "ParentsExtractor.h"
 
-// TO ADDRESS: nit Parent*
-
 void ParentsExtractor::extract(std::shared_ptr<ProcessedStmtList> processedStmtList, std::string parentStatementNumber) {
     for (auto& stmt : processedStmtList->getStmts()) {
         this->insertToAbstractionMap(std::to_string(stmt->getStatementNumber()), parentStatementNumber);

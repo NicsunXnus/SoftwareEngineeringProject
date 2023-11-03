@@ -26,8 +26,6 @@ void TreeBuilder::applyArithmeticOperation(std::stack<std::string>& ops, std::st
 	ops.pop();
 }
 
-// TO ADDRESS: will it be possible to abstract out some steps in this method? Slightly long
-
 shared_ptr<Node> TreeBuilder::buildTree(std::vector<std::shared_ptr<Token>> tokens) {
 	stack<shared_ptr<Node>> values; stack<string> ops;
 	bool isPreviousCloseParenthesis = false, isPreviousOpenParenthesis = false, isPreviousAlphanumeric = false;

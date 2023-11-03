@@ -7,9 +7,6 @@
 
 using namespace std;
 
-// TO ADDRESS: a suggestion is we could rename this file to something like OperatorHelper.h?
-// Since all the helpers are related to identifying/prioritising operators
-
 bool isComparisonOp(string op);
 
 bool isBoolOp(string op);

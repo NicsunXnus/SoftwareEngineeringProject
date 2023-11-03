@@ -8,8 +8,6 @@
 
 #include "AbstractionStarExtractor.h"
 
-// TO ADDRESS: nit Parent*
-
 class ParentsExtractor : public AbstractionStarExtractor {
 public:
     void extract(shared_ptr<ProcessedStmtList> processedStmtList, std::string parentStatementNumber);
