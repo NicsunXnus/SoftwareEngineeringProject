@@ -14,7 +14,7 @@ using namespace std;
 #include "CallsExtractor.h"
 #include "NextExtractor.h"
 #include "ProcedureLineNumberExtractor.h"
-#include "../../PKB.h"
+#include "../../PKB/PKB.h"
 #include "../SimpleProcessor/ProcessedProgram.h"
 
 

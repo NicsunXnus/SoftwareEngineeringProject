@@ -1,7 +1,7 @@
 #pragma once
 
-#include "PKB/Insertor.h"
-#include "PKB/Responder.h"
+#include "Insertor.h"
+#include "Responder.h"
 
 
 /**
