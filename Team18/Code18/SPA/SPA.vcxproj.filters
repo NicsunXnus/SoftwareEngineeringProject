@@ -228,6 +228,9 @@
     <ClCompile Include="..\source\QPS\QueryObjects\WithClauseObject.cpp">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryObjects\ClauseObjectFactory.cpp">
+      <Filter>Source Files\QPS\QueryObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\ApplicationWrapper.h">

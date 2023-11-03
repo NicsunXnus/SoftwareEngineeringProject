@@ -107,13 +107,18 @@ bool QueryValidator::hasPatternClause(std::vector<string_view>& query, int index
 	}
 
 	bool isSynonym{ SynonymObject::isValid(query[index]) };
+
+	if (!isSynonym) {
+		return false;
+	}
+
 	bool hasOpenBracket{ query[index + 1] == "("sv };
 	bool hasComma{ query[index + 3] == ","sv };
-	bool hasCloseBracket{ false };
-	if (query[index + 5] == ")"sv) { // pattern is looking for an exact match
+	bool hasCloseBracket{ query[index + 5] == ")"sv };
+	if (hasOpenBracket && hasComma && hasCloseBracket) { // pattern is looking for an exact match
 		tokenCount = MIN_PATTERN_CLAUSE_TOKEN_COUNT;
 		hasCloseBracket = true;
-		return true;
+ 		return true;
 	}
 
 	if (index > (static_cast<int>(query.size()) - MAX_PATTERN_CLAUSE_TOKEN_COUNT)) {

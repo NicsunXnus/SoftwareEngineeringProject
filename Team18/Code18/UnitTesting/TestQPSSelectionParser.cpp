@@ -153,7 +153,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectUsesEntQuery)
 		{
-			vector<string> testEntRefSyn = PQLTokenizer::tokenize("constant c; variable v; Select v such that Uses(c, v)");
+			vector<string> testEntRefSyn = PQLTokenizer::tokenize("procedure c; variable v; Select v such that Uses(c, v)");
 			vector<string_view> testEntRefSynSV{ sToSvVector(testEntRefSyn) };
 			shared_ptr<QueryParser> p1 = make_shared<QueryParser>();
 			vector<shared_ptr<QueryObject>> qo1 = p1->parsePQL(testEntRefSynSV);
@@ -235,7 +235,7 @@ namespace UnitTesting
 
 		TEST_METHOD(TestValidSelectModifiesEntQuery)
 		{
-			vector<string> testEntRefSyn = PQLTokenizer::tokenize("constant c; variable v; Select v such that Modifies(c, v)");
+			vector<string> testEntRefSyn = PQLTokenizer::tokenize("procedure c; variable v; Select v such that Modifies(c, v)");
 			vector<string_view> testEntRefSynSV{ sToSvVector(testEntRefSyn) };
 			shared_ptr<QueryParser> p1 = make_shared<QueryParser>();
 			tuple<vector<string_view>, vector<string_view>> testEntRefSynObj = p1->splitDeclarationQuery(testEntRefSynSV);
@@ -530,18 +530,18 @@ namespace UnitTesting
 
 		TEST_METHOD(TestCallsWithRead1stArg)
 		{
-			vector<string> tokenizer = PQLTokenizer::tokenize("read s; variable v; Select s such that Uses (s, v)");
+			vector<string> tokenizer = PQLTokenizer::tokenize("read s; variable v; Select s such that Calls (s, v)");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
-			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(testSv);
-			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
-			Assert::IsTrue(typeid(*qo[1]) == typeid(UsesObject));
-			std::shared_ptr<ClauseObject> co1 = std::static_pointer_cast<UsesObject>(qo[1]);
-			Assert::IsTrue(co1->getQueryObjectName() == "Uses"sv
-				&& co1->getArg1()->getArg() == "s"sv
-				&& co1->getArg2()->getArg() == "v"sv);
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex) {
+				Assert::AreEqual("SemanticError", ex.getType());
+			}
+			
 		}
 
 		TEST_METHOD(TestParentWcWcPatternWcWc)
@@ -607,9 +607,9 @@ namespace UnitTesting
 				&& co1->getArg2()->getArg() == "p1"sv);
 		}
 
-		TEST_METHOD(TestValidCallsConstVar)
+		TEST_METHOD(TestValidCallsProcProc)
 		{
-			vector<string> tokenizer = PQLTokenizer::tokenize("constant c; variable v; Select c such that Calls (c, v)");
+			vector<string> tokenizer = PQLTokenizer::tokenize("procedure c; variable v; Select c such that Calls (c, c)");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
@@ -618,7 +618,7 @@ namespace UnitTesting
 			std::shared_ptr<ClauseObject> co1 = std::static_pointer_cast<CallsObject>(qo[1]);
 			Assert::IsTrue(co1->getQueryObjectName() == "Calls"sv
 				&& co1->getArg1()->getArg() == "c"sv
-				&& co1->getArg2()->getArg() == "v"sv);
+				&& co1->getArg2()->getArg() == "c"sv);
 		}
 
 		TEST_METHOD(TestTupleSingleDeclaredSyn)
@@ -2321,9 +2321,10 @@ namespace UnitTesting
 
 			try {
 				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
 			}
 			catch (const QPSError& ex) {
-				Assert::IsTrue(ex.getType() == "SyntaxError");
+				Assert::AreEqual(ex.getType(), "SyntaxError");
 			}
 		}
 
@@ -2335,9 +2336,10 @@ namespace UnitTesting
 
 			try {
 				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
 			}
 			catch (const QPSError& ex) {
-				Assert::IsTrue(ex.getType() == "SyntaxError");
+				Assert::AreEqual(ex.getType(), "SyntaxError");
 			}
 		}
 
@@ -2349,9 +2351,10 @@ namespace UnitTesting
 
 			try {
 				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
 			}
 			catch (const QPSError& ex) {
-				Assert::IsTrue(ex.getType() == "SyntaxError");
+				Assert::AreEqual(ex.getType(), "SyntaxError");
 			}
 		}
 
@@ -2363,9 +2366,25 @@ namespace UnitTesting
 
 			try {
 				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
 			}
 			catch (const QPSError& ex) {
-				Assert::IsTrue(ex.getType() == "SyntaxError");
+				Assert::AreEqual(ex.getType(), "SyntaxError");
+			}
+		}
+
+		TEST_METHOD(TestInvalidSelectSynonym)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("Select 1v");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex) {
+				Assert::AreEqual(ex.getType(), "SyntaxError");
 			}
 		}
 

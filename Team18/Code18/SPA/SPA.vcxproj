@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\ApplicationWrapper.cpp" />
+    <ClCompile Include="..\source\QPS\QueryObjects\ClauseObjectFactory.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\WithClauseObject.cpp" />
     <ClCompile Include="..\source\ThreadPool.cpp" />
     <ClCompile Include="..\source\QPS\DataAccessLayer.cpp" />

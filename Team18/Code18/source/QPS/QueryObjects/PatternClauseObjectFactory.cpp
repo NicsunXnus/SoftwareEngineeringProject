@@ -45,7 +45,10 @@ shared_ptr<QueryObject> PatternClauseObjectFactory::create(string_view clauseNam
 		return make_shared<AssignPatternObject>("pattern"sv, arguments);
 	}
 
-	if (patternSynonym->isSynonym() && !isArg0ValidSynonymAssign && !isArg0ValidSynonymWhile) {
+	if (!patternSynonym->isSynonym() || !isArg1ValidEntRef || !isArg2ValidExprSpec) {
+		throw SyntaxErrorException("Syntax error: invalid arguments in pattern clause");
+	}
+	else if (patternSynonym->isSynonym() && !isArg0ValidSynonymAssign && !isArg0ValidSynonymWhile) {
 		throw SemanticErrorException("Semantic error: synonym for pattern clause is not valid");
 	}
 	else if (arg1->isSynonym() && !isArg1ValidSynonym) {

@@ -183,7 +183,10 @@ vector<shared_ptr<QueryObject>> QueryParser::parseQuery(vector<string_view> quer
 		result.insert(result.end(), selectQueryObjects.begin(), selectQueryObjects.end());
 	}
 	else if (validator->isSelectElem(query, currentWordIndex, selectTupleTokenCount)) {
-		if (selectTupleTokenCount == 1 && !isDeclared(query[currentWordIndex])) {
+		if (selectTupleTokenCount == 1 && !SynonymObject::isValid(query[currentWordIndex])) {
+			throw SyntaxErrorException("Invalid syntax for synonym");
+		}
+		else if (selectTupleTokenCount == 1 && !isDeclared(query[currentWordIndex])) {
 			storeSemanticError(make_shared<SemanticErrorException>("Synonym not present in select clause, or synonym not declared"));
 			result.push_back(make_shared<StmtObject>("Placeholder query object, synonym not declared"));
 
