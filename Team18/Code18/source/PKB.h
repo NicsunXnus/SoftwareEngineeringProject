@@ -1,6 +1,5 @@
 #pragma once
 
-#include "PKB/Adapter.h"
 #include "PKB/Insertor.h"
 #include "PKB/Responder.h"
 
@@ -11,9 +10,9 @@
  */
 class PKB {
  public:
-  static inline Insertor insertor;
-  static inline Responder responder;
+   static inline Insertor insertor = Insertor();
+   static inline Responder responder = Responder();
 
  private:
-  static inline StorageManager storage_manager;
+   static inline StorageManager storage_manager = StorageManager();
 };

@@ -168,16 +168,16 @@
     <ClCompile Include="..\source\QPS\QueryParser.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
-	<ClCompile Include="..\source\QPS\QueryResultsTable.cpp">
+    <ClCompile Include="..\source\QPS\QueryResultsTable.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
-	<ClCompile Include="..\source\QPS\QueryValidator.cpp">
+    <ClCompile Include="..\source\QPS\QueryValidator.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
     <ClCompile Include="..\source\QPS\ResultsHandler.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
-	<ClCompile Include="..\source\QPS\OptimisedFunctionsStub.cpp">
+    <ClCompile Include="..\source\QPS\OptimisedFunctionsStub.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
     <ClCompile Include="..\source\QPS\QueryObjects\CallsObject.cpp">
@@ -199,11 +199,11 @@
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClCompile>
     <ClCompile Include="..\source\QPS\QueryObjects\PatternClauseObject.cpp">
-		<Filter>Source Files\QPS\QueryObjects</Filter>
-	  </ClCompile>
+      <Filter>Source Files\QPS\QueryObjects</Filter>
+    </ClCompile>
     <ClCompile Include="..\source\QPS\QueryObjects\PatternClauseObjectFactory.cpp">
-		  <Filter>Source Files\QPS\QueryObjects</Filter>
-	  </ClCompile>
+      <Filter>Source Files\QPS\QueryObjects</Filter>
+    </ClCompile>
     <ClCompile Include="..\source\ThreadPool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -222,6 +222,21 @@
     <ClCompile Include="..\source\QPS\QueryValidator.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\PKB\Insertor.cpp">
+      <Filter>Source Files\PKB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\PKB\Responder.cpp">
+      <Filter>Source Files\PKB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\PKB\StorageManager.cpp">
+      <Filter>Source Files\PKB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\PKB\StorageClasses\AbstractionStorage.cpp">
+      <Filter>Source Files\PKB\StorageClasses</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\PKB\StorageClasses\EntityStorage.cpp">
+      <Filter>Source Files\PKB\StorageClasses</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\ApplicationWrapper.h">
@@ -238,9 +253,6 @@
     </ClInclude>
     <ClInclude Include="..\source\Constants\DesignEnums.h">
       <Filter>Source Files\Constants</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\DesignExtractor\DesignExtractor.h">
-      <Filter>Source Files\DesignExtractor</Filter>
     </ClInclude>
     <ClInclude Include="..\source\SP\AST\BinaryOpNode.h">
       <Filter>Source Files\SP\AST</Filter>
@@ -377,8 +389,8 @@
     <ClInclude Include="..\source\QPS\QueryBuilder.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
-	<ClInclude Include="..\source\QPS\OptimisedSortingClauses.h" >
-		<Filter>Source Files\QPS</Filter>
+    <ClInclude Include="..\source\QPS\OptimisedSortingClauses.h">
+      <Filter>Source Files\QPS</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\QueryDriver.h">
       <Filter>Source Files\QPS</Filter>
@@ -386,7 +398,7 @@
     <ClInclude Include="..\source\QPS\QueryParser.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
-	<ClInclude Include="..\source\QPS\QueryValidator.h">
+    <ClInclude Include="..\source\QPS\QueryValidator.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\QueryResultsTable.h">
@@ -395,7 +407,7 @@
     <ClInclude Include="..\source\QPS\ResultsHandler.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
-	<ClInclude Include="..\source\QPS\OptimisedFunctionsStub.h">
+    <ClInclude Include="..\source\QPS\OptimisedFunctionsStub.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\Errors\QPSError.h">
@@ -451,9 +463,6 @@
     </ClInclude>
     <ClInclude Include="..\source\QPS\QueryObjects\WithClauseObjectFactory.h">
       <Filter>Source Files\QPS\QueryObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\PKB\Adapter.h">
-      <Filter>Source Files\PKB</Filter>
     </ClInclude>
     <ClInclude Include="..\source\PKB\Insertor.h">
       <Filter>Source Files\PKB</Filter>

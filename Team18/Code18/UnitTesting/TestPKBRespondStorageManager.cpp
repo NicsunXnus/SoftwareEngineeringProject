@@ -1,8 +1,7 @@
 #include "stdafx.h"
-#include "PKB.h"
-
 #include "../source/SP/SimpleProcessor/ExpressionProcessor.h"
 #include "CppUnitTest.h"
+#include "PKB.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -108,22 +107,26 @@ TEST_CLASS(TestPKBRespondStorageManager) {
     PKB::insertor.addEntity(procedureMap, PROCEDURE);
 
     Assert::IsTrue(
-        compare_sets(PKB::responder.getAllProcedures(), {"proc1", "proc2"}));
+        compare_sets(PKB::responder.getNonStatementEntityList(PROCEDURE),
+                     {"proc1", "proc2"}));
   }
 
   TEST_METHOD(TestGetVariables) {
     PKB::insertor.addEntity(variableMap, VARIABLE);
 
-    Assert::IsTrue(compare_sets(PKB::responder.getAllVariables(), {"x", "y"}));
-    Assert::IsTrue(compare_maps(PKB::responder.getVariableMap(), variableData));
+    Assert::IsTrue(compare_sets(
+        PKB::responder.getNonStatementEntityList(VARIABLE), {"x", "y"}));
+    Assert::IsTrue(compare_maps(
+        PKB::responder.getNonStatementEntityMap(VARIABLE), variableData));
   }
 
   TEST_METHOD(TestGetConstants) {
     PKB::insertor.addEntity(constantMap, CONSTANT);
 
-    Assert::IsTrue(
-        compare_sets(PKB::responder.getAllConstants(), {"10", "HERE"}));
-    Assert::IsTrue(compare_maps(PKB::responder.getConstantMap(), constantData));
+    Assert::IsTrue(compare_sets(
+        PKB::responder.getNonStatementEntityList(CONSTANT), {"10", "HERE"}));
+    Assert::IsTrue(compare_maps(
+        PKB::responder.getNonStatementEntityMap(CONSTANT), constantData));
   }
 
   TEST_METHOD(TestGetProcLines) {
@@ -138,20 +141,19 @@ TEST_CLASS(TestPKBRespondStorageManager) {
 
   TEST_METHOD(TestGetCallProcNames) {
     PKB::insertor.addEntityNames(callProcNameMap, CALL);
-    Assert::IsTrue(
-        compare_maps(PKB::responder.getCallProcNameMap(), callProcNameData));
+    Assert::IsTrue(compare_maps(PKB::responder.getNameMap(CALL), callProcNameData));
   }
 
   TEST_METHOD(TestGetReadVarNames) {
     PKB::insertor.addEntityNames(readVarNameMap, READ);
     Assert::IsTrue(
-        compare_maps(PKB::responder.getReadVarNameMap(), readVarNameData));
+        compare_maps(PKB::responder.getNameMap(READ), readVarNameData));
   }
 
   TEST_METHOD(TestGetPrintVarNames) {
     PKB::insertor.addEntityNames(printVarNameMap, PRINT);
     Assert::IsTrue(
-        compare_maps(PKB::responder.getPrintVarNameMap(), printVarNameData));
+        compare_maps(PKB::responder.getNameMap(PRINT), printVarNameData));
   }
 
   TEST_METHOD(TestGetPatterns) {

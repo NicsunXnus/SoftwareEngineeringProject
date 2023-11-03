@@ -12,6 +12,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\ApplicationWrapper.cpp" />
+    <ClCompile Include="..\source\PKB\Insertor.cpp" />
+    <ClCompile Include="..\source\PKB\Responder.cpp" />
+    <ClCompile Include="..\source\PKB\StorageClasses\AbstractionStorage.cpp" />
+    <ClCompile Include="..\source\PKB\StorageClasses\EntityStorage.cpp" />
+    <ClCompile Include="..\source\PKB\StorageManager.cpp" />
     <ClCompile Include="..\source\ThreadPool.cpp" />
     <ClCompile Include="..\source\QPS\DataAccessLayer.cpp" />
     <ClCompile Include="..\source\QPS\DataAccessLayerStub.cpp" />
@@ -29,10 +34,10 @@
     <ClCompile Include="..\source\QPS\QueryObjects\PatternClauseObjectFactory.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\QueryObjectFactory.cpp" />
     <ClCompile Include="..\source\QPS\QueryParser.cpp" />
-	<ClCompile Include="..\source\QPS\QueryResultsTable.cpp" />
+    <ClCompile Include="..\source\QPS\QueryResultsTable.cpp" />
     <ClCompile Include="..\source\QPS\QueryValidator.cpp" />
     <ClCompile Include="..\source\QPS\ResultsHandler.cpp" />
-	<ClCompile Include="..\source\QPS\OptimisedFunctionsStub.cpp" />
+    <ClCompile Include="..\source\QPS\OptimisedFunctionsStub.cpp" />
     <ClCompile Include="..\source\SP\AST\BinaryOpNode.cpp" />
     <ClCompile Include="..\source\SP\AST\Node.cpp" />
     <ClCompile Include="..\source\SP\AST\TerminalNode.cpp" />
@@ -72,12 +77,10 @@
   <ItemGroup>
     <ClInclude Include="..\source\ApplicationWrapper.h" />
     <ClInclude Include="..\source\Constants\DesignEnums.h" />
-    <ClInclude Include="..\source\DesignExtractor\DesignExtractor.h" />
     <ClInclude Include="..\source\ExceptionMessages.h" />
     <ClInclude Include="..\source\HelperFunctions.h" />
     <ClInclude Include="..\source\ThreadPool.h" />
     <ClInclude Include="..\source\PKB.h" />
-    <ClInclude Include="..\source\PKB\Adapter.h" />
     <ClInclude Include="..\source\PKB\Insertor.h" />
     <ClInclude Include="..\source\PKB\Responder.h" />
     <ClInclude Include="..\source\PKB\StorageClasses\AbstractionStorage.h" />
@@ -90,8 +93,8 @@
     <ClInclude Include="..\source\QPS\Errors\SyntaxError.h" />
     <ClInclude Include="..\source\QPS\PQLTokenizer.h" />
     <ClInclude Include="..\source\QPS\QueryBuilder.h" />
-	<ClInclude Include="..\source\QPS\OptimisedSortingClauses.h" />
-	<ClInclude Include="..\source\QPS\GroupClause.h" />
+	  <ClInclude Include="..\source\QPS\OptimisedSortingClauses.h" />
+	  <ClInclude Include="..\source\QPS\GroupClause.h" />
     <ClInclude Include="..\source\QPS\QueryDriver.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\ClauseArg.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\ClauseObject.h" />
@@ -115,7 +118,7 @@
     <ClInclude Include="..\source\QPS\QueryResultsTable.h" />
     <ClInclude Include="..\source\QPS\QueryValidator.h" />
     <ClInclude Include="..\source\QPS\ResultsHandler.h" />
-	<ClInclude Include="..\source\QPS\OptimisedFunctionsStub.h" />
+    <ClInclude Include="..\source\QPS\OptimisedFunctionsStub.h" />
     <ClInclude Include="..\source\SP\AST\BinaryOpNode.h" />
     <ClInclude Include="..\source\SP\AST\Node.h" />
     <ClInclude Include="..\source\SP\AST\TerminalNode.h" />
