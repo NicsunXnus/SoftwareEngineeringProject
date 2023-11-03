@@ -9,6 +9,8 @@
 
 using namespace std;
 
+// TO ADDRESS: can we use StringMap for map<string, unordered_set<string>> to make it much more readable and consistent w QPS/PKB?
+
 /**
  * This class is used to extract the entity abstraction from the AST
  */

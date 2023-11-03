@@ -28,6 +28,9 @@ public:
     // Constructor
     virtual ~Extractor() = default;
 
+    // TO ADDRESS: I'm aware that not all the methods are used in each extractors - will it be possible to provide a summary
+    // for each broad category of extract methods?
+
     virtual void extract(shared_ptr<ProcessedProgram> processedProgram) {};
     virtual void extract(shared_ptr<ProcessedProcedure> processedProcedure) {};
     virtual void extract(shared_ptr<ProcessedStmtList> processedStmtList) {};
