@@ -156,6 +156,9 @@
     <ClCompile Include="..\source\QPS\DataAccessLayerStub.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
+	<ClCompile Include="..\source\QPS\GroupClause.cpp">
+      <Filter>Source Files\QPS</Filter>
+    </ClCompile>
     <ClCompile Include="..\source\QPS\QueryBuilder.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>

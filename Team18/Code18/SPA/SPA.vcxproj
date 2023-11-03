@@ -15,6 +15,7 @@
     <ClCompile Include="..\source\ThreadPool.cpp" />
     <ClCompile Include="..\source\QPS\DataAccessLayer.cpp" />
     <ClCompile Include="..\source\QPS\DataAccessLayerStub.cpp" />
+	<ClCompile Include="..\source\QPS\GroupClause.cpp" />
     <ClCompile Include="..\source\QPS\QueryBuilder.cpp" />
     <ClCompile Include="..\source\QPS\QueryDriver.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\CallsObject.cpp" />
