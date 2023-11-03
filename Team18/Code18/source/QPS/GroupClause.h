@@ -2,12 +2,11 @@
 #define GROUPCLAUSE_H
 
 #include "QueryResultsTable.h"
-
 // This class represents a group of clauses/QueryResultsTables.
 class GroupClause {
 public:
     GroupClause() {}
-    
+
     void addOne(shared_ptr< QueryResultsTable> table) {
         members.emplace_back(table);
         updateHeaders(table->getHeaders());
@@ -25,6 +24,35 @@ public:
     void setMembers(vector<shared_ptr< QueryResultsTable>> tables) {
         members.clear();
         addMany(tables);
+    }
+
+    void reduceToOne() {
+        if (size() == 0) return;
+        shared_ptr<QueryResultsTable> intermediateTable = members[0];
+        members.erase(members.begin());
+        shared_ptr<QueryResultsTable> currTable;
+        for (shared_ptr<QueryResultsTable> table : members) {
+            currTable = table;
+            // for empty but significant tables
+            if (currTable->isEmpty()) {
+                if (currTable->getSignificant()) {
+                    continue; // just keep current table
+                }
+                else { // no need to evaluate the rest of the query  
+                    members = { QueryResultsTable::createEmptyTable() };
+                    return;
+                }
+            }
+            if (intermediateTable->haveSimilarHeaders(currTable)) {
+                //do inner join
+                intermediateTable = intermediateTable->innerJoin(currTable);
+            }
+            else {
+                //do cross product
+                intermediateTable = intermediateTable->crossProduct(currTable);
+            }
+        }
+        members = { intermediateTable };
     }
 
     int size() {
