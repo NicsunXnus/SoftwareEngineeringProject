@@ -18,6 +18,9 @@ static inline const string PROCEDURE_STRING = "procedure";
 static inline const string SEMICOLON_STRING = ";";
 static inline const string EQUALS_STRING = "=";
 
+static inline const string AND_BOOL_OP_STRING = "&&";
+static inline const string OR_BOOL_OP_STRING = "&&";
+
 static inline const int IF_STR_LEN = 2;
 static inline const int WHILE_STR_LEN = 5;
 static inline const int THEN_STR_LEN_MINUS_ONE = 3;
@@ -26,6 +29,7 @@ static inline const char OPEN_BRACKET_CHAR = '(';
 static inline const char CLOSE_BRACKET_CHAR = ')';
 static inline const char OPEN_CURLY_CHAR = '{';
 static inline const char CLOSE_CURLY_CHAR = '}';
+static inline const char EXCLAMATION_MARK_CHAR = '!';
 
 static inline const int SEPARATOR_LEN = 1; // because separators are one character long
 

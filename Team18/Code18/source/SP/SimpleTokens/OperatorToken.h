@@ -7,14 +7,14 @@
 #include "Token.h"
 #include "../../Constants/SPConstants.h"
 
-using namespace std::string_view_literals;
+using namespace std;
 
 /**
  * This class represents tokens objects that are operators between expressions
  */
 class OperatorToken : public Token {
  public:
-  OperatorToken(std::string_view tokenName) : Token{tokenName} {};
+  OperatorToken(string_view tokenName) : Token{tokenName} {};
 };
 
 // === ARITHMETIC OPERATORS ===
@@ -25,7 +25,7 @@ class OperatorToken : public Token {
  */
 class ArithmeticOpToken : public OperatorToken {
  public:
-  ArithmeticOpToken(std::string_view tokenName) : OperatorToken{tokenName} {};
+  ArithmeticOpToken(string_view tokenName) : OperatorToken{tokenName} {};
 };
 
 /**

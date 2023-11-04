@@ -7,6 +7,8 @@
 #include "Token.h"
 #include "../../Constants/SPConstants.h"
 
+using namespace std;
+
 /**
  * This class represents tokens objects that stem from user-defined names.
  */
