@@ -4,10 +4,10 @@
 #include <memory>
 #include <vector>
 #include "ProcessedProcedure.h"
+#include "../DesignExtractor/Extractor.h"
 
 using namespace std;
 
-class Extractor;
 class ProcessedProgram;
 
 /// <summary>

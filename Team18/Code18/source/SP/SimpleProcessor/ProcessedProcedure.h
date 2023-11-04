@@ -5,37 +5,37 @@
 #include <vector>
 #include <string>
 #include "ProcessedStmtList.h"
+#include "../DesignExtractor/Extractor.h"
 
-using namespace std::string_view_literals;
+using namespace std;
 
 class ProcessedProcedure;
-class Extractor;
 
 /// <summary>
 /// Abstraction for a procedure
 /// </summary>
-class ProcessedProcedure : public std::enable_shared_from_this<ProcessedProcedure> {
+class ProcessedProcedure : public enable_shared_from_this<ProcessedProcedure> {
 private:
-  std::string procedureName; // to make sure the string is always on the heap
-  std::shared_ptr<ProcessedStmtList> statementList;
+  string procedureName; // to make sure the string is always on the heap
+  shared_ptr<ProcessedStmtList> statementList;
 public:
-  ProcessedProcedure(std::string procedureName, std::shared_ptr<ProcessedStmtList> stmtList)
+  ProcessedProcedure(string procedureName, shared_ptr<ProcessedStmtList> stmtList)
     : procedureName{ procedureName },
       statementList{ stmtList } {};
 
   // if provided with a vector of statements instead, create stmtList automatically and assign to field
-  ProcessedProcedure(std::string procedureName, std::vector<std::shared_ptr<ProcessedStmt>> stmtVector);
+  ProcessedProcedure(string procedureName, vector<shared_ptr<ProcessedStmt>> stmtVector);
 
-  std::string_view getProcName() {
-    return std::string_view(this->procedureName);
+  string_view getProcName() {
+    return string_view(this->procedureName);
   }
 
-  std::shared_ptr<ProcessedStmtList> getStmts() {
+  shared_ptr<ProcessedStmtList> getStmts() {
     return this->statementList;
   }
 
-  bool equalsTo(ProcessedProcedure& rhs);
-  void accept(std::shared_ptr<Extractor> extractor);
+  static bool checkEquality(shared_ptr<ProcessedProcedure> left, shared_ptr<ProcessedProcedure> right);
+  void accept(shared_ptr<Extractor> extractor);
 
 };
 

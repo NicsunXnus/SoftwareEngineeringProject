@@ -1,4 +1,3 @@
-#include "../DesignExtractor/Extractor.h"
 #include "ProcessedProgram.h"
 
 bool ProcessedProgram::checkEquality(shared_ptr<ProcessedProgram> left, shared_ptr<ProcessedProgram> right) {
@@ -9,7 +8,6 @@ bool ProcessedProgram::checkEquality(shared_ptr<ProcessedProgram> left, shared_p
     if (ProcessedProcedure::checkEquality(left->procedures[i], right->procedures[i])) {
       return false;
     }
-    //if ((*(left.procedures[i])).equalsTo(*(right.procedures[i]))) return false;
   }
   return true;
 }
