@@ -1,4 +1,5 @@
 #include "ProcessedProcedure.h"
+#include "../DesignExtractor/Extractor.h"
 
 ProcessedProcedure::ProcessedProcedure(string procedureName, vector<shared_ptr<ProcessedStmt>> stmtVector) {
   this->procedureName = procedureName;
@@ -14,4 +15,12 @@ bool ProcessedProcedure::checkEquality(shared_ptr<ProcessedProcedure> left, shar
 
 void ProcessedProcedure::accept(shared_ptr<Extractor> extractor) {
   extractor->extract(shared_from_this());
+}
+
+string_view ProcessedProcedure::getProcName() {
+  return string_view(this->procedureName);
+}
+
+shared_ptr<ProcessedStmtList> ProcessedProcedure::getStmts() {
+  return this->statementList;
 }

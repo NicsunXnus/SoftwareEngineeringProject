@@ -7,9 +7,6 @@
     <Filter Include="Source Files\Constants">
       <UniqueIdentifier>{b31c45bc-75b6-440b-b6ba-47df489cc8f8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\DesignExtractor">
-      <UniqueIdentifier>{cbe5f014-9b97-4220-bfbf-4038c67c2496}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\PKB">
       <UniqueIdentifier>{8b91ac6e-6885-4ebb-b49e-dd321c08cee7}</UniqueIdentifier>
     </Filter>

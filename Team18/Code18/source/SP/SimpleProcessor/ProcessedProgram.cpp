@@ -1,4 +1,5 @@
 #include "ProcessedProgram.h"
+#include "../DesignExtractor/Extractor.h"
 
 bool ProcessedProgram::checkEquality(shared_ptr<ProcessedProgram> left, shared_ptr<ProcessedProgram> right) {
   if (left->procedures.size() != right->procedures.size()) {
@@ -15,3 +16,8 @@ bool ProcessedProgram::checkEquality(shared_ptr<ProcessedProgram> left, shared_p
 void ProcessedProgram::accept(shared_ptr<Extractor> extractor) {
   extractor->extract(shared_from_this());
 }
+
+vector<shared_ptr<ProcessedProcedure>>  ProcessedProgram::getAllProcedures() {
+  return this->procedures;
+}
+

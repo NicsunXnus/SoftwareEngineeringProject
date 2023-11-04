@@ -22,9 +22,9 @@ private:
 	inline static int statementNumber = 0;
 
 	// Simple enum to be used in utility functions
-	static enum ConditionalDeclaration {
-		IF,
-		WHILE
+	enum ConditionalDeclaration {
+		IF = 0,
+		WHILE = 1
 	};
 	// processes and evaluates the conditional expression, returning the type of conditional statement and a vector containing the conditional expression
 	static std::pair<SimpleProcessor::ConditionalDeclaration, std::shared_ptr<Node>> processConditionalExpression(std::string trimmed, bool isIf, int stmtNum);

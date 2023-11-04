@@ -9,14 +9,18 @@ bool ProcessedReadStmt::equalsTo(ProcessedReadStmt& rhs) {
   return castedThis.equalsTo(castedThat);
 }
 
-void ProcessedReadStmt::accept(std::shared_ptr<Extractor> extractor) {
+shared_ptr<Token> ProcessedReadStmt::getVariable() {
+  return this->variable;
+}
+
+void ProcessedReadStmt::accept(shared_ptr<Extractor> extractor) {
   extractor->extract(shared_from_this());
 }
 
-void ProcessedReadStmt::accept(std::shared_ptr<Extractor> extractor, std::string procedureName) {
+void ProcessedReadStmt::accept(shared_ptr<Extractor> extractor, string procedureName) {
   extractor->extract(shared_from_this(), procedureName);
 }
 
-void ProcessedReadStmt::accept(std::shared_ptr<Extractor> extractor, std::unordered_set<std::string>& prevStatementNumbers) {
+void ProcessedReadStmt::accept(shared_ptr<Extractor> extractor, unordered_set<string>& prevStatementNumbers) {
   extractor->extract(shared_from_this(), prevStatementNumbers);
 }

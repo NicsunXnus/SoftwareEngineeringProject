@@ -5,34 +5,30 @@
 #include <vector>
 #include "ProcessedConditionalStmt.h"
 #include "ProcessedStmtList.h"
-#include "../SimpleTokens/Token.h"
 
-using namespace std::string_view_literals;
+using namespace std;
 
 class ProcessedWhileStmt;
 class Extractor;
 
-
 /// <summary>
 /// While statement with 1 "child" statement list
 /// </summary>
-class ProcessedWhileStmt : public ProcessedConditionalStmt, public std::enable_shared_from_this<ProcessedWhileStmt> {
+class ProcessedWhileStmt : public ProcessedConditionalStmt, public enable_shared_from_this<ProcessedWhileStmt> {
 private:
-  std::shared_ptr<ProcessedStmtList> whileBlock;
+  shared_ptr<ProcessedStmtList> whileBlock;
 public:
-  ProcessedWhileStmt(int statementNumber, std::shared_ptr<Node> conditionalExp,
-    std::shared_ptr<ProcessedStmtList> whileBlock)
+  ProcessedWhileStmt(int statementNumber, shared_ptr<Node> conditionalExp,
+    shared_ptr<ProcessedStmtList> whileBlock)
     : ProcessedConditionalStmt{ statementNumber, conditionalExp },
       whileBlock{ whileBlock } {};
 
-  std::shared_ptr<ProcessedStmtList> getWhileBlock() {
-    return this->whileBlock;
-  }
+  shared_ptr<ProcessedStmtList> getWhileBlock();
 
   bool equalsTo(ProcessedWhileStmt& rhs);
-  void accept(std::shared_ptr<Extractor> extractor) override;
-  void accept(std::shared_ptr<Extractor> extractor, std::string procedureName) override;
-  void accept(std::shared_ptr<Extractor> extractor, std::unordered_set<std::string>& prevStatementNumbers) override;
+  void accept(shared_ptr<Extractor> extractor) override;
+  void accept(shared_ptr<Extractor> extractor, string procedureName) override;
+  void accept(shared_ptr<Extractor> extractor, unordered_set<string>& prevStatementNumbers) override;
 };
 
 #endif

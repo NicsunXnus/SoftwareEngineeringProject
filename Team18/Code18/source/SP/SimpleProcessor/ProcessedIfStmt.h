@@ -5,7 +5,6 @@
 #include <vector>
 #include "ProcessedConditionalStmt.h"
 #include "ProcessedStmtList.h"
-#include "../SimpleTokens/Token.h"
 
 class ProcessedIfStmt;
 class Extractor;
@@ -25,12 +24,8 @@ public:
       thenBlock{ thenBlock },
       elseBlock{ elseBlock } {};
 
-  std::shared_ptr<ProcessedStmtList> getThenBlock() {
-    return this->thenBlock;
-  }
-  std::shared_ptr<ProcessedStmtList> getElseBlock() {
-    return this->elseBlock;
-  }
+  std::shared_ptr<ProcessedStmtList> getThenBlock();
+  std::shared_ptr<ProcessedStmtList> getElseBlock();
 
   bool equalsTo(ProcessedIfStmt& rhs);
   void accept(std::shared_ptr<Extractor> extractor) override;

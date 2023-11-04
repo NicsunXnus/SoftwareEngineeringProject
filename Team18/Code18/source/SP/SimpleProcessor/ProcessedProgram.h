@@ -4,11 +4,11 @@
 #include <memory>
 #include <vector>
 #include "ProcessedProcedure.h"
-#include "../DesignExtractor/Extractor.h"
 
 using namespace std;
 
 class ProcessedProgram;
+class Extractor;
 
 /// <summary>
 /// Abstraction for a vector of Procedures
@@ -20,9 +20,7 @@ private:
 public:
   ProcessedProgram(vector<shared_ptr<ProcessedProcedure>>  procedures) : procedures{ procedures } {};
 
-  std::vector<shared_ptr<ProcessedProcedure>>  getAllProcedures() {
-    return this->procedures;
-  }
+  vector<shared_ptr<ProcessedProcedure>> getAllProcedures();
 
   static bool checkEquality(shared_ptr<ProcessedProgram> left, shared_ptr<ProcessedProgram> right);
 

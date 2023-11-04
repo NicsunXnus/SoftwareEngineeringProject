@@ -6,8 +6,10 @@
 #include <string>
 #include <unordered_set>
 
-class Extractor;
+using namespace std;
+
 class ProcessedStmt;
+class Extractor;
 
 /// <summary>
 /// Abstraction for a tokenised statement.
@@ -24,20 +26,17 @@ private:
   const int statementNumber;
 public:
   ProcessedStmt(int statementNumber) : statementNumber(statementNumber) {};
-  int getStatementNumber() {
-    return this->statementNumber;
-  }
 
-  std::string getStatementNumberInString() {
-      return std::to_string(this->statementNumber);
-  }
+  int getStatementNumber();
+
+  string getStatementNumberInString();
 
   virtual ~ProcessedStmt() {};
-  bool equalsTo(ProcessedStmt& rhs);
+  static bool checkEquality(shared_ptr<ProcessedStmt> left, shared_ptr<ProcessedStmt> right);
 
-  virtual void accept(std::shared_ptr<Extractor> extractor) {};
-  virtual void accept(std::shared_ptr<Extractor> extractor, std::string procedureName) {};
-  virtual void accept(std::shared_ptr<Extractor> extractor, std::unordered_set<std::string>& prevStatementNumbers) {};
+  virtual void accept(shared_ptr<Extractor> extractor) {};
+  virtual void accept(shared_ptr<Extractor> extractor, string procedureName) {};
+  virtual void accept(shared_ptr<Extractor> extractor, unordered_set<string>& prevStatementNumbers) {};
 };
 
 #endif

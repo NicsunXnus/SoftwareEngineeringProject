@@ -5,11 +5,9 @@
 #include <vector>
 
 #include "ProcessedStmt.h"
-#include "../SimpleTokens/Token.h"
 #include "../AST/Node.h"
-#include "../AST/TreeBuilder.h"
 
-using namespace std::string_view_literals;
+using namespace std;
 
 class ProcessedConditionalStmt;
 class Extractor;
@@ -19,20 +17,21 @@ class Extractor;
 /// </summary>
 class ProcessedConditionalStmt : public ProcessedStmt {
 private:
-  std::shared_ptr<Node> condExp;
+  shared_ptr<Node> condExp;
+protected:
+  friend class ProcessedIfStmt;
+  friend class ProcessedWhileStmt;
+  bool equalsTo(ProcessedConditionalStmt& rhs);
 public:
-  ProcessedConditionalStmt(int statementNumber, std::shared_ptr<Node> conditionalExp)
+  ProcessedConditionalStmt(int statementNumber, shared_ptr<Node> conditionalExp)
     : ProcessedStmt{ statementNumber },
       condExp{ conditionalExp } {};
 
-  std::shared_ptr<Node> getConditionalExp() {
-    return this->condExp;
-  };
+  shared_ptr<Node> getConditionalExp();
 
-  bool equalsTo(ProcessedConditionalStmt& rhs);
-  void accept(std::shared_ptr<Extractor> extractor) override {};
-  void accept(std::shared_ptr<Extractor> extractor, std::string procedureName) override {};
-  void accept(std::shared_ptr<Extractor> extractor, std::unordered_set<std::string>& prevStatementNumbers) override {};
+  void accept(shared_ptr<Extractor> extractor) override {};
+  void accept(shared_ptr<Extractor> extractor, string procedureName) override {};
+  void accept(shared_ptr<Extractor> extractor, unordered_set<string>& prevStatementNumbers) override {};
 };
 
 #endif
