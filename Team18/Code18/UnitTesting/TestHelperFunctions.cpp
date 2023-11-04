@@ -5,6 +5,7 @@
 #include <map>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+using namespace std;
 
 namespace HelperFunctions_Test
 {

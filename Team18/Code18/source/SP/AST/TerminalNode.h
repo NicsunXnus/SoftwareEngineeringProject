@@ -6,7 +6,6 @@
 using namespace std;
 
 class Extractor;
-class UsesExtractor;
 
 /// <summary>
 /// Represents the last element in the tree-like node structure without any children, which should be either constants or variables.

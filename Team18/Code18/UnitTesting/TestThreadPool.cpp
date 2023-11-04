@@ -11,27 +11,27 @@
 #include "../source/HelperFunctions.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
-using namespace std::string_view_literals;
+using namespace std;
 
 namespace Multithreading_Test
 {
 	TEST_CLASS(dummyFunctions_Tests) {
 	private:
 		void slowFunc1() {
-			std::cout << "slow 1 called!" << std::endl;
+			cout << "slow 1 called!" << endl;
 			int i = 0;
 			while (i < 10000) {
 				i += 1;
 			}
-			std::cout << "slow 1 ended!" << std::endl;
+			cout << "slow 1 ended!" << endl;
 		}
 		void slowFunc2() {
-			std::cout << "slow 2 called!" << std::endl;
+			cout << "slow 2 called!" << endl;
 			int i = 0;
 			while (i < 10000000) {
 				i += 1;
 			}
-			std::cout << "slow 2 ended!" << std::endl;
+			cout << "slow 2 ended!" << endl;
 		}
 	public:
 		// Test 1: While loop that does nothing meaningful
@@ -108,7 +108,7 @@ namespace Multithreading_Test
 
 	class ExpressionProcessorExposer : public ExpressionProcessor {
 	public:
-		static void tokenizeArithmeticExpression(std::string expression) {
+		static void tokenizeArithmeticExpression(string expression) {
 			ExpressionProcessor::tokenizeArithmeticExpression(expression);
 		}
 	};
