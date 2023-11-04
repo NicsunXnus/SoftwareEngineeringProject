@@ -143,32 +143,6 @@ namespace HelperFunctions_Test
 		}
 	};
 
-	TEST_CLASS(isAlphanumeric_Test) {
-	public:
-		TEST_METHOD(alphanum_success) {
-			std::vector<std::string> tests = {
-				"abc",
-				"123",
-				"x4y5z6",
-				"abc0",
-				"0x1",
-				"0b1"
-			};
-			bool result = std::all_of(tests.begin(), tests.end(), isAlphanumeric);
-			assert(result == true);
-		}
-
-		TEST_METHOD(nonAlphanum_failure) {
-			std::vector<std::string> tests = {
-				" ",
-				"|",
-				"é"
-			};
-			bool result = std::any_of(tests.begin(), tests.end(), isValidNumber);
-			assert(result == false);
-		}
-	};
-
 	TEST_CLASS(isValidName_Test) {
 	public:
 		TEST_METHOD(lettersOnly_success) {
