@@ -10,16 +10,15 @@ bool validateStmtStmtArgs(shared_ptr<ClauseArg> arg1, shared_ptr<ClauseArg> arg2
 	if (isArg1ValidStmtRef && isArg2ValidStmtRef) {
 		return true;
 	}
+
+	if (arg1->isSynonym() && !isArg1ValidStmtRef) {
+		throw SemanticErrorException("Arg 1 of stmt stmt clause is an invalid synonym");
+	}
+	else if (arg2->isSynonym() && !isArg2ValidStmtRef) {
+		throw SemanticErrorException("Arg 2 of stmt stmt clause is an invalid synonym");
+	}
 	else {
-		if (arg1->isSynonym() && !isArg1ValidStmtRef) {
-			throw SemanticErrorException("Arg 1 of stmt stmt clause is an invalid synonym");
-		}
-		else if (arg2->isSynonym() && !isArg2ValidStmtRef) {
-			throw SemanticErrorException("Arg 2 of stmt stmt clause is an invalid synonym");
-		}
-		else {
-			throw SyntaxErrorException("Stmt stmt clause has invalid stmtRef");
-		}
+		throw SyntaxErrorException("Stmt stmt clause has invalid stmtRef");
 	}
 }
 
@@ -69,17 +68,17 @@ bool validateEntEntArgs(shared_ptr<ClauseArg> arg1, shared_ptr<ClauseArg> arg2, 
 	if (isArg1ValidEntRef && isArg2ValidEntRef) {
 		return true;
 	}
-	else {
-		if (arg1->isSynonym() && !isArg1SynonymEntRef) {
-			throw SemanticErrorException("Arg 1 of ent ent clause is an invalid synonym");
-		}
-		else if (arg2->isSynonym() && !isArg2SynonymEntRef) {
-			throw SemanticErrorException("Arg 2 of ent ent clause is an invalid synonym");
-		}
-		else {
-			throw SyntaxErrorException("Ent ent clause has invalid args");
-		}
+
+	if (arg1->isSynonym() && !isArg1SynonymEntRef) {
+		throw SemanticErrorException("Arg 1 of ent ent clause is an invalid synonym");
 	}
+	else if (arg2->isSynonym() && !isArg2SynonymEntRef) {
+		throw SemanticErrorException("Arg 2 of ent ent clause is an invalid synonym");
+	}
+	else {
+		throw SyntaxErrorException("Ent ent clause has invalid args");
+	}
+
 }
 
 bool UsesObjectFactory::validateUsesStmtArgs(vector<shared_ptr<ClauseArg>> arguments) {
