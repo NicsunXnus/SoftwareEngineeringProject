@@ -52,8 +52,14 @@ public:
   // Overloaded method to take in Node* instead of shared_ptr<Node>
   bool isSubtreeOf(Node* other, bool isStrict);
 
+  /// <summary>
+  /// Gets all the terminal nodes of this subtree that are variable nodes
+  /// </summary>
+  /// <param name="node">The node which is the root of the subtree</param>
+  /// <returns>A set of all variable names of the terminal nodes</returns>
   unordered_set<string> getTerminalVariablesHelper(shared_ptr<Node> node);
 
+  // Overloaded method to take in Node* instead of shared_ptr<Node>
   unordered_set<string> getTerminalVariablesHelper(Node* node);
 
   /// <summary>

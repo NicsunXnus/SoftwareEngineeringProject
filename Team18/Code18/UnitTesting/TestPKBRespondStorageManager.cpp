@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "../source/SP/SimpleProcessor/ExpressionProcessor.h"
 #include "CppUnitTest.h"
-#include "PKB.h"
+#include "PKB/PKB.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

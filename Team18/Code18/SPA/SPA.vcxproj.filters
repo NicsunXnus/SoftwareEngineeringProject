@@ -245,9 +245,6 @@
     <ClInclude Include="..\source\HelperFunctions.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\PKB.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\source\Constants\DesignEnums.h">
       <Filter>Source Files\Constants</Filter>
     </ClInclude>
@@ -487,6 +484,9 @@
     </ClInclude>
     <ClInclude Include="..\source\QPS\QueryValidator.h">
       <Filter>Source Files\QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\PKB.h">
+      <Filter>Source Files\PKB</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

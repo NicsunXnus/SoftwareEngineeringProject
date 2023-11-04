@@ -7,8 +7,6 @@
 
 using namespace std;
 
-// Originally done by Nicholas
-
 bool isComparisonOp(string op);
 
 bool isBoolOp(string op);

@@ -41,7 +41,7 @@ shared_ptr<Node> TreeBuilder::buildTree(std::vector<std::shared_ptr<Token>> toke
 			continue;
 		}
 		if (tokenName == ")") {
-			if (isPreviousOpenParenthesis) { throw std::invalid_argument(ExceptionMessages::emptyBrackets); }
+			if (isPreviousOpenParenthesis) throw std::invalid_argument(ExceptionMessages::emptyBrackets);
 			isPreviousCloseParenthesis = true;
 			while (!ops.empty() && ops.top() != "(") {
 				this->applyArithmeticOperation(ops, values);
