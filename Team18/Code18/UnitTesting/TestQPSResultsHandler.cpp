@@ -3,6 +3,7 @@
 
 #include "../source/QPS/QueryResultsTable.h"
 #include "../source/QPS/ResultsHandler.h"
+#include "Constants/QPSConstants.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;
@@ -252,7 +253,7 @@ public:
 			auto l_front = finalResult.begin();
 			advance(l_front, 0);
 			Assert::IsTrue(finalResult.size() == 1);
-			Assert::IsTrue(*l_front == "FALSE");
+			Assert::IsTrue(*l_front == FALSE_STRING);
 		}
 
 		TEST_METHOD(TestBooleanEmptySuchThat) {
@@ -263,7 +264,7 @@ public:
 			auto l_front = finalResult.begin();
 			advance(l_front, 0);
 			Assert::IsTrue(finalResult.size() == 1);
-			Assert::IsTrue(*l_front == "FALSE");
+			Assert::IsTrue(*l_front == FALSE_STRING);
 		}
 
 		TEST_METHOD(TestBooleanNonEmptySuchThat) {
@@ -274,7 +275,7 @@ public:
 			auto l_front = finalResult.begin();
 			advance(l_front, 0);
 			Assert::IsTrue(finalResult.size() == 1);
-			Assert::IsTrue(*l_front == "TRUE");
+			Assert::IsTrue(*l_front == TRUE_STRING);
 		}
 	};
 }

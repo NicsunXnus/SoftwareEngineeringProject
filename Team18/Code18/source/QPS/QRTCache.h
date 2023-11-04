@@ -21,13 +21,7 @@ public:
 
     void clear() override;
 
-    static inline string generateCacheName(string objectType, vector<string> args) {
-        string result = objectType;
-        for (string arg : args) {
-            result += " " + arg;
-        }
-        return result;
-    }
+    static string generateCacheName(string objectType, vector<string> args);
 };
 
 #endif

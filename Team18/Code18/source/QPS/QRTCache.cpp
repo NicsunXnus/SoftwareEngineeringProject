@@ -19,4 +19,10 @@ void QRTCache::clear() {
     cache.clear();
 }
 
-
+string QRTCache::generateCacheName(string objectType, vector<string> args) {
+    string result = objectType;
+    for (string arg : args) {
+        result += " " + arg;
+    }
+    return result;
+}

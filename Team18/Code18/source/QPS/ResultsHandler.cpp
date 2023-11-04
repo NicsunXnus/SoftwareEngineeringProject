@@ -179,8 +179,7 @@ list<string> ResultHandler::handleTuples(vector<shared_ptr<QueryResultsTable>> s
 
 list<string> ResultHandler::handleBoolean(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
 	list<string> result;
-	string TRUE_STRING = "TRUE";
-	string FALSE_STRING = "FALSE";
+	
 	if (nonSelectClauseTables.empty()) {
 		result.push_back(FALSE_STRING);
 		return result;

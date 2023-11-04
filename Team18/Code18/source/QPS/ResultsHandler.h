@@ -5,6 +5,7 @@
 #include <list>
 #include "QueryResultsTable.h"
 #include "../HelperFunctions.h"
+#include "../Constants/QPSConstants.h"
 
 using namespace std;
 /**

@@ -3,6 +3,16 @@
 
 typedef tuple<string, unordered_set<string>> AffectsStackElement; // parent, set of childs
 
+// returns element in an unordered set, use only if set has one element, else random element from set is returned
+static std::string returnSingleElementFromSet(std::unordered_set<std::string> stringSet) {
+	if (stringSet.size() <= 0) {
+		return "";
+	}
+	auto it = stringSet.begin();
+	std::string onlyElement = *it;
+	return onlyElement;
+}
+
 unordered_set<string> AffectsFilter::filterAssignmentsInProcedure(unordered_set<string> assignments, int target, shared_ptr<DataAccessLayer> dataAccessLayer) {
 	unordered_set<string> procedures = dataAccessLayer->getAllProcedures();
 	// first determine the procedure that the target lies in
@@ -58,7 +68,7 @@ shared_ptr<QueryResultsTable> AffectsSynSyn::evaluate(shared_ptr<DataAccessLayer
 
 		// if no cfg, variable is not used in prog
 		if (childrenOfStartNode.empty()
-			|| !mapHasString(usesInverseMap, modifiedVar)) {
+			|| !containerHasKey(usesInverseMap, modifiedVar)) {
 			continue;
 		}
 
@@ -76,7 +86,7 @@ shared_ptr<QueryResultsTable> AffectsSynSyn::evaluate(shared_ptr<DataAccessLayer
 
 			// modified before reaching target, do not traverse further down that branch
 			if (parent != startingLine
-				&& setHasString(assignments, parent) && setHasString(modifiesMap[parent], modifiedVar)) {
+				&& containerHasKey(assignments, parent) && containerHasKey(modifiesMap[parent], modifiedVar)) {
 				continue; // cannot break, as there may exist another path that does not modifies
 			}
 			for (string child : children) {
@@ -86,7 +96,7 @@ shared_ptr<QueryResultsTable> AffectsSynSyn::evaluate(shared_ptr<DataAccessLayer
 					DFSStack.push(make_tuple(child, nextChildren));
 				}
 				unordered_set<string> uses = usesMap[child]; // variables used at child node
-				if (setHasString(assignments, child) && setHasString(uses, modifiedVar)) { // is a valid affects
+				if (containerHasKey(assignments, child) && containerHasKey(uses, modifiedVar)) { // is a valid affects
 					// if affects(a, a)
 					if (arg1->getArgValue() == arg2->getArgValue()) {
 						if (assignment == child) {
@@ -125,7 +135,7 @@ shared_ptr<QueryResultsTable> AffectsSynWildcard::evaluate(shared_ptr<DataAccess
 
 		// if no cfg, variable is not used in prog
 		if (childrenOfStartNode.empty()
-			|| !mapHasString(usesInverseMap, modifiedVar)) {
+			|| !containerHasKey(usesInverseMap, modifiedVar)) {
 			continue;
 		}
 
@@ -143,7 +153,7 @@ shared_ptr<QueryResultsTable> AffectsSynWildcard::evaluate(shared_ptr<DataAccess
 
 			// modified before reaching target, do not traverse further down that branch
 			if (parent != startingLine
-				&& setHasString(assignments, parent) && setHasString(modifiesMap[parent], modifiedVar)) {
+				&& containerHasKey(assignments, parent) && containerHasKey(modifiesMap[parent], modifiedVar)) {
 				continue; // cannot break, as there may exist another path that does not modifies
 			}
 			for (string child : children) {
@@ -153,7 +163,7 @@ shared_ptr<QueryResultsTable> AffectsSynWildcard::evaluate(shared_ptr<DataAccess
 					DFSStack.push(make_tuple(child, nextChildren));
 				}
 				unordered_set<string> uses = usesMap[child]; // variables used at child node
-				if (setHasString(assignments, child) && setHasString(uses, modifiedVar)) { // is a valid affects
+				if (containerHasKey(assignments, child) && containerHasKey(uses, modifiedVar)) { // is a valid affects
 					results.insert(assignment);
 					break; // no need to check further
 				}
@@ -182,7 +192,7 @@ shared_ptr<QueryResultsTable> AffectsSynInt::evaluate(shared_ptr<DataAccessLayer
 
 		// if no cfg, variable is not used in prog
 		if (childrenOfStartNode.empty()
-			|| !mapHasString(usesInverseMap, modifiedVar)) {
+			|| !containerHasKey(usesInverseMap, modifiedVar)) {
 			continue;
 		}
 
@@ -200,7 +210,7 @@ shared_ptr<QueryResultsTable> AffectsSynInt::evaluate(shared_ptr<DataAccessLayer
 
 			// modified before reaching target, do not traverse further down that branch
 			if (parent != startingLine
-				&& setHasString(assignments, parent) && setHasString(modifiesMap[parent], modifiedVar)) {
+				&& containerHasKey(assignments, parent) && containerHasKey(modifiesMap[parent], modifiedVar)) {
 				continue; // cannot break, as there may exist another path that does not modifies
 			}
 			for (string child : children) {
@@ -210,7 +220,7 @@ shared_ptr<QueryResultsTable> AffectsSynInt::evaluate(shared_ptr<DataAccessLayer
 					DFSStack.push(make_tuple(child, nextChildren));
 				}
 				unordered_set<string> uses = usesMap[child]; // variables used at child node
-				if (setHasString(assignments, child) && setHasString(uses, modifiedVar) 
+				if (containerHasKey(assignments, child) && containerHasKey(uses, modifiedVar) 
 					&& child == svToString(arg2->getArgValue())) { // is a valid affects
 					results.insert(assignment);
 					break; // no need to check further
@@ -236,8 +246,8 @@ shared_ptr<QueryResultsTable> AffectsIntSyn::evaluate(shared_ptr<DataAccessLayer
 	StringMap usesInverseMap = dataAccessLayer->getClauseInverse(USES);
 	
 	// if no cfg, start node is not assignment, variable is not used in program
-	if (childrenOfStartNode.empty() || !setHasString(assignments, startingLine) 
-		||!mapHasString(usesInverseMap, modifiedVar)) {
+	if (childrenOfStartNode.empty() || !containerHasKey(assignments, startingLine) 
+		||!containerHasKey(usesInverseMap, modifiedVar)) {
 		return QueryResultsTable::createEmptyTableWithHeaders({ svToString(arg2->getArgValue()) });
 	}
 
@@ -255,7 +265,7 @@ shared_ptr<QueryResultsTable> AffectsIntSyn::evaluate(shared_ptr<DataAccessLayer
 
 		// modified before reaching target, do not traverse further down that branch
 		if (parent != startingLine
-			&& setHasString(assignments, parent) && setHasString(modifiesMap[parent], modifiedVar)) {
+			&& containerHasKey(assignments, parent) && containerHasKey(modifiesMap[parent], modifiedVar)) {
 			continue; // cannot break, as there may exist another path that does not modifies
 		}
 		for (string child : children) {
@@ -265,7 +275,7 @@ shared_ptr<QueryResultsTable> AffectsIntSyn::evaluate(shared_ptr<DataAccessLayer
 				DFSStack.push(make_tuple(child, nextChildren));
 			}
 			unordered_set<string> uses = usesMap[child]; // variables used at child node
-			if (setHasString(assignments, child) && setHasString(uses, modifiedVar)) { // is a valid affects
+			if (containerHasKey(assignments, child) && containerHasKey(uses, modifiedVar)) { // is a valid affects
 				results.insert(child);
 			}
 		}
@@ -286,8 +296,8 @@ shared_ptr<QueryResultsTable> AffectsIntWildcard::evaluate(shared_ptr<DataAccess
 	StringMap usesInverseMap = dataAccessLayer->getClauseInverse(USES);
 
 	// if no cfg, start node is not assignment, variable is not used in program
-	if (childrenOfStartNode.empty() || !setHasString(assignments, startingLine)
-		|| !mapHasString(usesInverseMap, modifiedVar)) {
+	if (childrenOfStartNode.empty() || !containerHasKey(assignments, startingLine)
+		|| !containerHasKey(usesInverseMap, modifiedVar)) {
 		return QueryResultsTable::createEmptyTable();
 	}
 
@@ -305,7 +315,7 @@ shared_ptr<QueryResultsTable> AffectsIntWildcard::evaluate(shared_ptr<DataAccess
 
 		// modified before reaching target, do not traverse further down that branch
 		if (parent != startingLine
-			&& setHasString(assignments, parent) && setHasString(modifiesMap[parent], modifiedVar)) {
+			&& containerHasKey(assignments, parent) && containerHasKey(modifiesMap[parent], modifiedVar)) {
 			continue; // cannot break, as there may exist another path that does not modifies
 		}
 		for (string child : children) {
@@ -315,7 +325,7 @@ shared_ptr<QueryResultsTable> AffectsIntWildcard::evaluate(shared_ptr<DataAccess
 				DFSStack.push(make_tuple(child, nextChildren));
 			}
 			unordered_set<string> uses = usesMap[child]; // variables used at child node
-			if (setHasString(assignments, child) && setHasString(uses, modifiedVar)) { // is a valid affects
+			if (containerHasKey(assignments, child) && containerHasKey(uses, modifiedVar)) { // is a valid affects
 				shared_ptr<QueryResultsTable> table = QueryResultsTable::createEmptyTable(true);
 				return table;
 			}
@@ -338,8 +348,8 @@ shared_ptr<QueryResultsTable> AffectsIntInt::evaluate(shared_ptr<DataAccessLayer
 	unordered_set<string> uses = usesMap[finishLine]; // variables used at last line
 
 	// if no cfg, start node is not assignment, end node not assignment, uses does not use the var
-	if (childrenOfStartNode.empty() || !setHasString(assignments, startingLine) || !setHasString(assignments, finishLine)
-		|| !setHasString(uses, modifiedVar)) {
+	if (childrenOfStartNode.empty() || !containerHasKey(assignments, startingLine) || !containerHasKey(assignments, finishLine)
+		|| !containerHasKey(uses, modifiedVar)) {
 		return QueryResultsTable::createEmptyTable();
 	}
 	
@@ -356,7 +366,7 @@ shared_ptr<QueryResultsTable> AffectsIntInt::evaluate(shared_ptr<DataAccessLayer
 
 		// modified before reaching target, do not traverse further down that branch
 		if (parent != finishLine && parent != startingLine 
-			&& setHasString(assignments, parent) && setHasString(modifiesMap[parent], modifiedVar)) {
+			&& containerHasKey(assignments, parent) && containerHasKey(modifiesMap[parent], modifiedVar)) {
 			continue; // cannot break, as there may exist another path that does not modifies
 		}
 		for (string child : children) {
@@ -390,7 +400,7 @@ shared_ptr<QueryResultsTable> AffectsWildcardSyn::evaluate(shared_ptr<DataAccess
 
 		// if no cfg, variable is not used in prog
 		if (childrenOfStartNode.empty()
-			|| !mapHasString(usesInverseMap, modifiedVar)) {
+			|| !containerHasKey(usesInverseMap, modifiedVar)) {
 			continue;
 		}
 
@@ -408,7 +418,7 @@ shared_ptr<QueryResultsTable> AffectsWildcardSyn::evaluate(shared_ptr<DataAccess
 
 			// modified before reaching target, do not traverse further down that branch
 			if (parent != startingLine
-				&& setHasString(assignments, parent) && setHasString(modifiesMap[parent], modifiedVar)) {
+				&& containerHasKey(assignments, parent) && containerHasKey(modifiesMap[parent], modifiedVar)) {
 				continue; // cannot break, as there may exist another path that does not modifies
 			}
 			for (string child : children) {
@@ -418,7 +428,7 @@ shared_ptr<QueryResultsTable> AffectsWildcardSyn::evaluate(shared_ptr<DataAccess
 					DFSStack.push(make_tuple(child, nextChildren));
 				}
 				unordered_set<string> uses = usesMap[child]; // variables used at child node
-				if (setHasString(assignments, child) && setHasString(uses, modifiedVar)) { // is a valid affects
+				if (containerHasKey(assignments, child) && containerHasKey(uses, modifiedVar)) { // is a valid affects
 					results.insert(child);
 					break; // i think its ok to not check further here
 				}
@@ -444,7 +454,7 @@ shared_ptr<QueryResultsTable> AffectsWildcardWildcard::evaluate(shared_ptr<DataA
 
 		// if no cfg, variable is not used in prog
 		if (childrenOfStartNode.empty()
-			|| !mapHasString(usesInverseMap, modifiedVar)) {
+			|| !containerHasKey(usesInverseMap, modifiedVar)) {
 			continue;
 		}
 
@@ -462,7 +472,7 @@ shared_ptr<QueryResultsTable> AffectsWildcardWildcard::evaluate(shared_ptr<DataA
 
 			// modified before reaching target, do not traverse further down that branch
 			if (parent != startingLine
-				&& setHasString(assignments, parent) && setHasString(modifiesMap[parent], modifiedVar)) {
+				&& containerHasKey(assignments, parent) && containerHasKey(modifiesMap[parent], modifiedVar)) {
 				continue; // cannot break, as there may exist another path that does not modifies
 			}
 			for (string child : children) {
@@ -472,7 +482,7 @@ shared_ptr<QueryResultsTable> AffectsWildcardWildcard::evaluate(shared_ptr<DataA
 					DFSStack.push(make_tuple(child, nextChildren));
 				}
 				unordered_set<string> uses = usesMap[child]; // variables used at child node
-				if (setHasString(assignments, child) && setHasString(uses, modifiedVar)) { // is a valid affects
+				if (containerHasKey(assignments, child) && containerHasKey(uses, modifiedVar)) { // is a valid affects
 					shared_ptr<QueryResultsTable> table = QueryResultsTable::createEmptyTable(true);
 					return table;
 				}
@@ -498,7 +508,7 @@ shared_ptr<QueryResultsTable> AffectsWildcardInt::evaluate(shared_ptr<DataAccess
 
 		// if no cfg, variable is not used in prog
 		if (childrenOfStartNode.empty()
-			|| !mapHasString(usesInverseMap, modifiedVar)) {
+			|| !containerHasKey(usesInverseMap, modifiedVar)) {
 			continue;
 		}
 
@@ -516,7 +526,7 @@ shared_ptr<QueryResultsTable> AffectsWildcardInt::evaluate(shared_ptr<DataAccess
 
 			// modified before reaching target, do not traverse further down that branch
 			if (parent != startingLine
-				&& setHasString(assignments, parent) && setHasString(modifiesMap[parent], modifiedVar)) {
+				&& containerHasKey(assignments, parent) && containerHasKey(modifiesMap[parent], modifiedVar)) {
 				continue; // cannot break, as there may exist another path that does not modifies
 			}
 			for (string child : children) {
@@ -526,7 +536,7 @@ shared_ptr<QueryResultsTable> AffectsWildcardInt::evaluate(shared_ptr<DataAccess
 					DFSStack.push(make_tuple(child, nextChildren));
 				}
 				unordered_set<string> uses = usesMap[child]; // variables used at child node
-				if (setHasString(assignments, child) && setHasString(uses, modifiedVar) 
+				if (containerHasKey(assignments, child) && containerHasKey(uses, modifiedVar) 
 					&& child == svToString(arg2->getArgValue())) { // is a valid affects
 					shared_ptr<QueryResultsTable> table = QueryResultsTable::createEmptyTable(true);
 					return table;

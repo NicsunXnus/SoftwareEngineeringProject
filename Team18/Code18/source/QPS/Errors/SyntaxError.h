@@ -19,7 +19,7 @@ public:
 
 
 private:
-    string type = "SyntaxError";
+    string type = SYNTAX_ERROR;
 };
 
 

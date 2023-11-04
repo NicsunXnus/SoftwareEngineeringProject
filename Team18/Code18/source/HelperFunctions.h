@@ -13,6 +13,7 @@
 #include <map>
 
 #include "ExceptionMessages.h"
+#include "QPS/Errors/SemanticError.h"
 
 using namespace std::string_view_literals;
 
@@ -218,47 +219,12 @@ static std::list<std::string> vectorToList(std::vector<std::string> vectorOfStri
   return listOfString;
 }
 
-// Check if set of string contains the string
-static bool setHasString(std::unordered_set<std::string> stringSet, std::string target) {
-    return stringSet.find(target) != stringSet.end();
+
+template <typename Container, typename KeyType>
+static bool containerHasKey(const Container& myContainer, const KeyType& keyToCheck) {
+    return myContainer.find(keyToCheck) != myContainer.end();
 }
 
-// Check if two sets have a non-empty intersection
-static bool hasIntersection(std::unordered_set<std::string> stringSet, std::unordered_set<std::string> targets) {
-    for (std::string str : stringSet) {
-        // Check if the value in the set is in the unordered_set
-        if (targets.find(str) != targets.end()) {
-            return true;
-        }
-    }
-    return false;
-}
-
-// Check if map of string contains the string
-static bool mapHasString(std::map<std::string, std::unordered_set<std::string>> stringMap, std::string target) {
-    return stringMap.find(target) != stringMap.end();
-}
-
-// Check if map of string contains any of target strings
-static bool mapHasString(std::map<std::string, std::unordered_set<std::string>> stringMap, std::unordered_set<std::string> targets) {
-    for (const auto& pair : stringMap) {
-        // Check if the value in the map is in the unordered_set
-        if (targets.find(pair.first) != targets.end()) {
-            return true;
-        }
-    }
-    return false;
-}
-
-// returns element in an unordered set, use only if set has one element, else random element from set is returned
-static std::string returnSingleElementFromSet(std::unordered_set<std::string> stringSet) {
-    if (stringSet.size() <= 0) {
-        return "";
-    }
-    auto it = stringSet.begin();
-    std::string onlyElement = *it;
-    return onlyElement;
-}
 
 // convert map to set, by taking all the keys in the map
 static std::unordered_set<std::string> getMapKeys(std::map<std::string, std::unordered_set<std::string>> stringMap) {

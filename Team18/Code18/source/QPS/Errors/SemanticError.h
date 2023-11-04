@@ -16,7 +16,7 @@ public:
 
 
 private:
-    string type = "SemanticError";
+    string type = SEMANTIC_ERROR;
 };
 
 
