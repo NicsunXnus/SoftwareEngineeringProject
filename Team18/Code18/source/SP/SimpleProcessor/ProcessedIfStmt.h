@@ -16,6 +16,7 @@ class ProcessedIfStmt : public ProcessedConditionalStmt, public std::enable_shar
 private:
   std::shared_ptr<ProcessedStmtList> thenBlock;
   std::shared_ptr<ProcessedStmtList> elseBlock;
+
 public:
   ProcessedIfStmt(int statementNumber, std::shared_ptr<Node> conditionalExp,
     std::shared_ptr<ProcessedStmtList> thenBlock,

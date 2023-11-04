@@ -22,6 +22,7 @@ protected:
   friend class ProcessedIfStmt;
   friend class ProcessedWhileStmt;
   bool equalsTo(ProcessedConditionalStmt& rhs);
+
 public:
   ProcessedConditionalStmt(int statementNumber, shared_ptr<Node> conditionalExp)
     : ProcessedStmt{ statementNumber },

@@ -24,7 +24,10 @@ class Extractor;
 class ProcessedStmt {
 private:
   const int statementNumber;
+
 public:
+  static bool checkEquality(shared_ptr<ProcessedStmt> left, shared_ptr<ProcessedStmt> right);
+
   ProcessedStmt(int statementNumber) : statementNumber(statementNumber) {};
 
   int getStatementNumber();
@@ -32,7 +35,6 @@ public:
   string getStatementNumberInString();
 
   virtual ~ProcessedStmt() {};
-  static bool checkEquality(shared_ptr<ProcessedStmt> left, shared_ptr<ProcessedStmt> right);
 
   virtual void accept(shared_ptr<Extractor> extractor) {};
   virtual void accept(shared_ptr<Extractor> extractor, string procedureName) {};

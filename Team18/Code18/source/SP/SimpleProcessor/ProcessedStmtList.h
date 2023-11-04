@@ -21,17 +21,16 @@ class ProcessedStmtList : public enable_shared_from_this<ProcessedStmtList>  {
 private:
   vector<shared_ptr<ProcessedStmt>> statements;
 public:
+  static bool checkEquality(shared_ptr<ProcessedStmtList> left, shared_ptr<ProcessedStmtList> right);
+
   // Constructor to fill all existing statements
   ProcessedStmtList(vector<shared_ptr<ProcessedStmt>> statements) : statements{ statements } {};
 
   vector<shared_ptr<ProcessedStmt>> getStmts();
 
-  static bool checkEquality(shared_ptr<ProcessedStmtList> left, shared_ptr<ProcessedStmtList> right);
-
   void accept(shared_ptr<Extractor> extractor);
   void accept(shared_ptr<Extractor> extractor, string procedureName);
   unordered_set<string> accept(shared_ptr<Extractor> extractor, unordered_set<string>& prevStatementNumbers);
-
 };
 
 #endif

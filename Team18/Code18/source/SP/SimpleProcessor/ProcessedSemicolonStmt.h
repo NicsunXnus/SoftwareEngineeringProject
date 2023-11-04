@@ -21,6 +21,7 @@ protected:
   friend class ProcessedPrintStmt;
   friend class ProcessedReadStmt;
   bool equalsTo(ProcessedSemicolonStmt& rhs);
+
 public:
   ProcessedSemicolonStmt(int statementNumber) 
     : ProcessedStmt{ statementNumber } {};

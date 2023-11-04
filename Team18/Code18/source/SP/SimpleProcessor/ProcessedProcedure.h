@@ -18,7 +18,10 @@ class ProcessedProcedure : public enable_shared_from_this<ProcessedProcedure> {
 private:
   string procedureName;
   shared_ptr<ProcessedStmtList> statementList;
+
 public:
+  static bool checkEquality(shared_ptr<ProcessedProcedure> left, shared_ptr<ProcessedProcedure> right);
+
   ProcessedProcedure(string procedureName, shared_ptr<ProcessedStmtList> stmtList)
     : procedureName{ procedureName },
       statementList{ stmtList } {};
@@ -30,9 +33,7 @@ public:
 
   shared_ptr<ProcessedStmtList> getStmts();
 
-  static bool checkEquality(shared_ptr<ProcessedProcedure> left, shared_ptr<ProcessedProcedure> right);
   void accept(shared_ptr<Extractor> extractor);
-
 };
 
 #endif
