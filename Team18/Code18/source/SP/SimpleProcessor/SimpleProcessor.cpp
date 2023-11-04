@@ -79,8 +79,8 @@ shared_ptr<ProcessedStmtList> SimpleProcessor::processStmtList(string stmtList) 
 	vector<shared_ptr<pair<int, int>>> curlyPairs = outermostSepDetector(trimmed, Separator::CURLY); // this should detect { and } for if-then-else and while
 	vector<shared_ptr<ProcessedStmt>> out;
 
-	int prevEnd = 0;
-	int pairIndex = 0;
+	size_t prevEnd = 0;
+	size_t pairIndex = 0;
 	while (pairIndex < curlyPairs.size()) {
 		pair<int, int> currPair = *(curlyPairs[pairIndex]);
 
@@ -92,7 +92,7 @@ shared_ptr<ProcessedStmtList> SimpleProcessor::processStmtList(string stmtList) 
 			throw invalid_argument(ExceptionMessages::missingConditionalDeclaration);
 		}
 		// process each semicolon statement. Last element is not a semicolon statement due to conditional declaration
-		for (int stmtIndex = 0; stmtIndex < preCurlySplit.size() - 1; stmtIndex++) {
+		for (size_t stmtIndex = 0; stmtIndex < preCurlySplit.size() - 1; stmtIndex++) {
 			out.push_back(processSemicolonStatement(preCurlySplit[stmtIndex]));
 		}
 
