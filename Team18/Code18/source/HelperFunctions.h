@@ -13,10 +13,11 @@
 #include <map>
 
 #include "ExceptionMessages.h"
+#include "Constants/SPConstants.h"
 
 using namespace std;
 
-const string whitespaces = " \t\f\v\n\r\b 	      ";
+const string whitespaces = " \t\f\v\n\r\b";
 const string arithmeticOpsWithWhitespaceRegex = "([()+-/*%]|\\s+)";
 const string relationalOpsRegex = "([><]=?|==|!=)";
 
@@ -32,22 +33,25 @@ static vector<shared_ptr<pair<int, int>>> outermostSepDetector(string input, Sep
   // stack keeps track of the indexes of the open curly
   stack<int> scopeTracker;
   vector<shared_ptr<pair<int, int>>> output;
-  char open = sepType == Separator::BRACKET ? '(' : '{';
-  char close = sepType == Separator::BRACKET ? ')' : '}';
+  char open = sepType == Separator::BRACKET ? OPEN_BRACKET_CHAR : OPEN_CURLY_CHAR;
+  char close = sepType == Separator::BRACKET ? CLOSE_BRACKET_CHAR : CLOSE_CURLY_CHAR;
   for (size_t i = 0; i < input.size(); i++) {
     char thisChar = input[i];
     if (thisChar == open) {
       scopeTracker.push(i);
+      continue;
     }
-    if (thisChar == close) {
-      if (scopeTracker.empty()) {
-        throw invalid_argument(ExceptionMessages::extraCloseSep); 
-      }
-      int lastSeen = scopeTracker.top();
-      scopeTracker.pop();
-      if (scopeTracker.empty()) {
-        output.push_back(make_shared<pair<int, int>>(lastSeen, i));
-      }
+    if (thisChar != close) {
+      continue;
+    }
+    // guaranteed to be close character here
+    if (scopeTracker.empty()) {
+      throw invalid_argument(ExceptionMessages::extraCloseSep); 
+    }
+    int lastSeen = scopeTracker.top();
+    scopeTracker.pop();
+    if (scopeTracker.empty()) {
+      output.push_back(make_shared<pair<int, int>>(lastSeen, i));
     }
   }
   if (!scopeTracker.empty()) {
@@ -67,41 +71,18 @@ static bool isValidNumber(string input) {
   if (input[0] == '0') {
     return false;
   }
-  for (char const& ch : input) {
-    if (!isdigit(ch)) {
-      return false;
-    }
-  }
-  return true;
-}
-
-// Checks if a given input string is alphanumeric.
-static bool isAlphanumeric(string input) {
-  for (char const& ch : input) {
-    if (!isalnum(ch)) {
-      return false;
-    }
-  }
-  return true;
+  return all_of(input.begin(), input.end(), isdigit);
 }
 
 // Checks if a given input string is a valid name: LETTER (LETTER | DIGIT)*
 static bool isValidName(string input) {
-  bool seenFirst = false;
-  for (char const& ch : input) {
-    if (seenFirst) {
-      if (!isalnum(ch)) {
-        return false;
-      }
-      continue;
-    }
-    // looking at the first character
-    if (!isalpha(ch)) {
-      return false;
-    }
-    seenFirst = true;
+  if (input.empty()) {
+    return false;
   }
-  return true;
+  if (isdigit(input[0])) {
+    return false;
+  }
+  return all_of(input.begin(), input.end(), isalnum);
 }
 
 /// <summary>
