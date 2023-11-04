@@ -87,7 +87,7 @@ std::shared_ptr<Node> ExpressionProcessor::nodifyRelationalExpression(std::strin
 
 std::shared_ptr<Node> ExpressionProcessor::nodifyArithmeticExpression(std::string expression) {
 	std::string trimmed = trimWhitespaces(expression);
-	if (trimmed == "") {
+	if (trimmed.empty()) {
 		throw std::invalid_argument(ExceptionMessages::invalidArithExp);
 	}
 	TreeBuilder tb = TreeBuilder(statementNumber);
@@ -97,7 +97,7 @@ std::shared_ptr<Node> ExpressionProcessor::nodifyArithmeticExpression(std::strin
 
 std::shared_ptr<Node> ExpressionProcessor::nodifyConditionalExpression(std::string expression) {
 	std::string trimmed = trimWhitespaces(expression);
-	if (trimmed == "") {
+	if (trimmed.empty()) {
 		throw std::invalid_argument(ExceptionMessages::invalidCondExp);
 	}
 	std::vector<std::shared_ptr<std::pair<int, int>>> bracketPairs = outermostSepDetector(trimmed, Separator::BRACKET);
