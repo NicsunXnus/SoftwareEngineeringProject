@@ -5,7 +5,7 @@
 #include <vector>
 #include "ProcessedProcedure.h"
 
-using namespace std::string_view_literals;
+using namespace std;
 
 class Extractor;
 class ProcessedProgram;
@@ -13,20 +13,20 @@ class ProcessedProgram;
 /// <summary>
 /// Abstraction for a vector of Procedures
 /// </summary>
-class ProcessedProgram : public std::enable_shared_from_this<ProcessedProgram> {
+class ProcessedProgram : public enable_shared_from_this<ProcessedProgram> {
 private:
   // no need shared_ptr of vector because copying over pointers is not memory intensive.
-  std::vector<std::shared_ptr<ProcessedProcedure>> procedures;
+  vector<shared_ptr<ProcessedProcedure>> procedures;
 public:
-  ProcessedProgram(std::vector<std::shared_ptr<ProcessedProcedure>>  procedures) : procedures{ procedures } {};
+  ProcessedProgram(vector<shared_ptr<ProcessedProcedure>>  procedures) : procedures{ procedures } {};
 
-  std::vector<std::shared_ptr<ProcessedProcedure>>  getAllProcedures() {
+  std::vector<shared_ptr<ProcessedProcedure>>  getAllProcedures() {
     return this->procedures;
   }
 
-  bool equalsTo(ProcessedProgram& rhs);
+  static bool checkEquality(shared_ptr<ProcessedProgram> left, shared_ptr<ProcessedProgram> right);
 
-  void accept(std::shared_ptr<Extractor> extractor);
+  void accept(shared_ptr<Extractor> extractor);
 };
 
 #endif
