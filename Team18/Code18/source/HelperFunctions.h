@@ -61,7 +61,7 @@ static bool isValidNumber(string input) {
   if (input.empty()) {
     return false;
   } 
-  if (input.size() == 1 && isdigit(input[0])) {
+  if (input.length() == 1 && isdigit(input[0])) {
     return true;
   }
   if (input[0] == '0') {

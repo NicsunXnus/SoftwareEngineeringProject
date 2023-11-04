@@ -15,7 +15,7 @@ using namespace std;
 class SeparatorToken : public Token {
  private:
  public:
-  SeparatorToken(std::string_view tokenName) : Token{tokenName} {};
+  SeparatorToken(string_view tokenName) : Token{tokenName} {};
 };
 
 /**

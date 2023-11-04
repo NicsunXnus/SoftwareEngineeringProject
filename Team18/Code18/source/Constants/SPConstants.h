@@ -19,7 +19,7 @@ static inline const string SEMICOLON_STRING = ";";
 static inline const string EQUALS_STRING = "=";
 
 static inline const string AND_BOOL_OP_STRING = "&&";
-static inline const string OR_BOOL_OP_STRING = "&&";
+static inline const string OR_BOOL_OP_STRING = "||";
 
 static inline const int IF_STR_LEN = 2;
 static inline const int WHILE_STR_LEN = 5;

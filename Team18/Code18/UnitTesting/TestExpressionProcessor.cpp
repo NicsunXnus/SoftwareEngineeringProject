@@ -360,7 +360,7 @@ namespace ExpressionProcessor_Test
 		}
 
 		TEST_METHOD(everyOp_success) {
-			std::string left = "(a + b * c > 6) || (a - b * c < 1)";
+			std::string left = "(a + b * c > 0) || (a - b * c < 1)";
 			std::string middle = "(a - b / c >= 2) || (a * b / c <= 3)";
 			std::string right = "(a % b - c == 4) || (a % b % c != 5)";
 			std::string expression = "(" + left + ") || ((!(" + middle + ")) && (" + right + "))";
@@ -377,7 +377,7 @@ namespace ExpressionProcessor_Test
 			};
 			std::vector<std::shared_ptr<Node>> aPlusBtimesC_MoreThan_Zero = {
 					std::make_shared<Node>(statementNum, "+", a_Plus_BtimesC),
-					std::make_shared<Node>(statementNum, "6", empty)
+					std::make_shared<Node>(statementNum, "0", empty)
 			};
 			std::vector<std::shared_ptr<Node>> a_Minus_BtimesC = {
 					std::make_shared<Node>(statementNum, "a", empty),
