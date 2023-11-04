@@ -112,16 +112,6 @@ namespace ExpressionProcessor_Test
 			bool result = nodifyArithExpWrapper(input, expected);
 			assert(result);
 		}
-
-<<<<<<< HEAD
-		TEST_METHOD(badSyntax_failure) {
-			string input = ")1 + * + 2(";
-			bool result = nodifyArithExpWrapper(input, dummy);
-			assert(result == false);
-		}
-
-=======
->>>>>>> 5635c4cf49cd9545eee4dcc2e25c22671a5b618a
 		TEST_METHOD(invalidIntegerLiteral_failure) {
 			string input = ")01 + * + 2(";
 			bool result = nodifyArithExpWrapper(input, dummy);
