@@ -110,10 +110,18 @@ namespace HelperFunctions_Test
 			assert(false);
 		}
 	};
-	TEST_CLASS(isNumber_Test) {
+	TEST_CLASS(isValidNumber_Test) {
 	public:
 		TEST_METHOD(numbers_success) {
-			bool result = isNumber("01234");
+			bool result = isValidNumber("1234");
+			assert(result == true);
+		}
+		TEST_METHOD(leading_zero_failure) {
+			bool result = isValidNumber("01234");
+			assert(result == false);
+		}
+		TEST_METHOD(only_zero_success) {
+			bool result = isValidNumber("0");
 			assert(result == true);
 		}
 
@@ -130,7 +138,7 @@ namespace HelperFunctions_Test
 				"|",
 				"é"
 			};
-			bool result = std::any_of(tests.begin(), tests.end(), isNumber);
+			bool result = std::any_of(tests.begin(), tests.end(), isValidNumber);
 			assert(result == false);
 		}
 	};
@@ -156,7 +164,7 @@ namespace HelperFunctions_Test
 				"|",
 				"é"
 			};
-			bool result = std::any_of(tests.begin(), tests.end(), isNumber);
+			bool result = std::any_of(tests.begin(), tests.end(), isValidNumber);
 			assert(result == false);
 		}
 	};

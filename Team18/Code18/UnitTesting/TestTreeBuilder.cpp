@@ -4,6 +4,7 @@
 #include "../source/SP/SimpleProcessor/SimpleProcessor.h"
 #include "../source/SP/AST/TreeBuilder.h"
 #include "../source/SP/SimpleTokens/TokenFactory.h"
+#include "../source/SP/SimpleTokens/IdentifierToken.h"
 #include <cassert>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -155,7 +156,11 @@ public:
 		std::string expression = "a == b";
 		int statementNum = 61;
 
-		std::vector<std::shared_ptr<Token>> tokens = tokeniseWrapper(expression);
+		std::vector<std::shared_ptr<Token>> tokens = {
+			make_shared<IdentifierToken>("a"),
+			make_shared<Token>("=="),
+			make_shared<IdentifierToken>("b"),
+		};
 		TreeBuilder tb = TreeBuilder(statementNum);
 		try {
 			std::shared_ptr<Node> result = tb.buildTree(tokens);

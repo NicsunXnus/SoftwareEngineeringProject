@@ -57,7 +57,7 @@ shared_ptr<Node> TreeBuilder::buildTree(std::vector<std::shared_ptr<Token>> toke
 		isPreviousOpenParenthesis = false; //since everything after this is not a open parenthesis
 		isPreviousCloseParenthesis = false; //set to false as rest is not a close parenthesis
 
-		if (isNumber(tokenName)) {
+		if (isValidNumber(tokenName)) {
 			//Guard clause to prevent consecutive variables/constants
 			if (isPreviousAlphanumeric) { throw std::invalid_argument(ExceptionMessages::consecutiveVariablesOrConstants); }
 			values.push(make_shared<ConstantNode>(this->statementNumber, tokenName));

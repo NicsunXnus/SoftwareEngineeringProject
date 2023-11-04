@@ -76,6 +76,7 @@
   <ItemGroup>
     <ClInclude Include="..\source\ApplicationWrapper.h" />
     <ClInclude Include="..\source\Constants\DesignEnums.h" />
+    <ClInclude Include="..\source\Constants\SPConstants.h" />
     <ClInclude Include="..\source\ExceptionMessages.h" />
     <ClInclude Include="..\source\HelperFunctions.h" />
     <ClInclude Include="..\source\ThreadPool.h" />
@@ -151,7 +152,6 @@
     <ClInclude Include="..\source\SP\SimpleProcessor\ProcessedWhileStmt.h" />
     <ClInclude Include="..\source\SP\SimpleProcessor\SimpleProcessor.h" />
     <ClInclude Include="..\source\SP\SimpleTokens\IdentifierToken.h" />
-    <ClInclude Include="..\source\SP\SimpleTokens\KeywordToken.h" />
     <ClInclude Include="..\source\SP\SimpleTokens\LiteralToken.h" />
     <ClInclude Include="..\source\SP\SimpleTokens\OperatorToken.h" />
     <ClInclude Include="..\source\SP\SimpleTokens\SeparatorToken.h" />

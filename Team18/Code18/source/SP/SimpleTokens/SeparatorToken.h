@@ -5,6 +5,7 @@
 #include <string_view>
 
 #include "Token.h"
+#include "../../Constants/SPConstants.h"
 
 /**
  * This class represents tokens objects that stem from user-defined names.
@@ -20,7 +21,7 @@ class SeparatorToken : public Token {
  */
 class ParenCloseSepToken : public SeparatorToken {
  public:
-  ParenCloseSepToken() : SeparatorToken{")"sv} {};
+  ParenCloseSepToken() : SeparatorToken{CLOSE_BRACKET_STRING_VIEW} {};
 };
 
 /**
@@ -28,7 +29,7 @@ class ParenCloseSepToken : public SeparatorToken {
  */
 class ParenOpenSepToken : public SeparatorToken {
  public:
-  ParenOpenSepToken() : SeparatorToken{"("sv} {};
+  ParenOpenSepToken() : SeparatorToken{OPEN_BRACKET_STRING_VIEW} {};
 };
 
 #endif

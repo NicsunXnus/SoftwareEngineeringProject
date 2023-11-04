@@ -305,9 +305,6 @@
     <ClInclude Include="..\source\SP\SimpleTokens\IdentifierToken.h">
       <Filter>Source Files\SP\SimpleTokens</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\SP\SimpleTokens\KeywordToken.h">
-      <Filter>Source Files\SP\SimpleTokens</Filter>
-    </ClInclude>
     <ClInclude Include="..\source\SP\SimpleTokens\LiteralToken.h">
       <Filter>Source Files\SP\SimpleTokens</Filter>
     </ClInclude>
@@ -484,6 +481,9 @@
     </ClInclude>
     <ClInclude Include="..\source\PKB.h">
       <Filter>Source Files\PKB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\Constants\SPConstants.h">
+      <Filter>Source Files\Constants</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

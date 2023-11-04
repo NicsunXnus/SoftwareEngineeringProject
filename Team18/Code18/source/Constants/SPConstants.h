@@ -26,8 +26,15 @@ static inline const char OPEN_BRACKET_CHAR = '(';
 static inline const char CLOSE_BRACKET_CHAR = ')';
 static inline const char OPEN_CURLY_CHAR = '{';
 static inline const char CLOSE_CURLY_CHAR = '}';
+
 static inline const int SEPARATOR_LEN = 1; // because separators are one character long
 
-
+static inline const string_view OPEN_BRACKET_STRING_VIEW = "(";
+static inline const string_view CLOSE_BRACKET_STRING_VIEW = ")";
+static inline const string_view PLUS_STRING_VIEW = "+";
+static inline const string_view MINUS_STRING_VIEW = "-";
+static inline const string_view MULTIPLY_STRING_VIEW = "*";
+static inline const string_view DIVIDE_STRING_VIEW = "/";
+static inline const string_view MODULO_STRING_VIEW = "%";
 
 #endif
