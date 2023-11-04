@@ -234,6 +234,9 @@
     <ClCompile Include="..\source\QPS\QRTCache.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\QPS\CFG.cpp">
+      <Filter>Source Files\QPS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\ApplicationWrapper.h">
@@ -511,6 +514,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\QRTCache.h">
+      <Filter>Source Files\QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\CFG.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
   </ItemGroup>
