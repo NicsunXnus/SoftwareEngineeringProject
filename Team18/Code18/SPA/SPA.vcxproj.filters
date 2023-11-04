@@ -54,6 +54,9 @@
     <ClCompile Include="..\source\SP\AST\TreeBuilder.cpp">
       <Filter>Source Files\SP\AST</Filter>
     </ClCompile>
+	<ClCompile Include="..\source\SP\AST\OperatorEvaluator.cpp">
+      <Filter>Source Files\SP\AST</Filter>
+    </ClCompile>
     <ClCompile Include="..\source\SP\AST\UnaryOpNode.cpp">
       <Filter>Source Files\SP\AST</Filter>
     </ClCompile>
@@ -228,9 +231,6 @@
     <ClCompile Include="..\source\PKB\StorageClasses\EntityStorage.cpp">
       <Filter>Source Files\PKB\StorageClasses</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\SP\AST\TreeBuilderHelper.cpp">
-      <Filter>Source Files\SP\AST</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\ApplicationWrapper.h">
@@ -255,6 +255,9 @@
       <Filter>Source Files\SP\AST</Filter>
     </ClInclude>
     <ClInclude Include="..\source\SP\AST\TreeBuilder.h">
+      <Filter>Source Files\SP\AST</Filter>
+    </ClInclude>
+	 <ClInclude Include="..\source\SP\AST\OperatorEvaluator.h">
       <Filter>Source Files\SP\AST</Filter>
     </ClInclude>
     <ClInclude Include="..\source\SP\AST\UnaryOpNode.h">
@@ -481,9 +484,6 @@
     </ClInclude>
     <ClInclude Include="..\source\Constants\SPConstants.h">
       <Filter>Source Files\Constants</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\SP\AST\TreeBuilderHelper.h">
-      <Filter>Source Files\SP\AST</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

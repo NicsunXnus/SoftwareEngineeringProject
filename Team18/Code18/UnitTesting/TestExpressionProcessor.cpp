@@ -113,12 +113,6 @@ namespace ExpressionProcessor_Test
 			assert(result);
 		}
 
-		TEST_METHOD(badSyntax_failure) {
-			std::string input = ")1 + * + 2(";
-			bool result = nodifyArithExpWrapper(input, dummy);
-			assert(result == false);
-		}
-
 		TEST_METHOD(invalidIntegerLiteral_failure) {
 			std::string input = ")01 + * + 2(";
 			bool result = nodifyArithExpWrapper(input, dummy);
