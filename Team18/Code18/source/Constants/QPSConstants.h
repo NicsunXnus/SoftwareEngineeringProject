@@ -13,4 +13,6 @@ static inline const string QPS_ERROR = "QPS Internal Error";
 static inline const string SEMANTIC_ERROR = "SemanticError";
 static inline const string SYNTAX_ERROR = "SyntaxError";
 
+// CFG
+static inline const string CFG_CACHE_STRING = "CFG";
 #endif

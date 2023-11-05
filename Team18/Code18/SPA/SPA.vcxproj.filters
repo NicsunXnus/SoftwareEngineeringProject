@@ -240,6 +240,9 @@
     <ClCompile Include="..\source\QPS\CFG\CFG.cpp">
       <Filter>Source Files\QPS\CFG</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\QPS\CFG\CFGCache.cpp">
+      <Filter>Source Files\QPS\CFG</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\ApplicationWrapper.h">
@@ -526,6 +529,9 @@
       <Filter>Source Files\QPS\CFG</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\CFG\CFGNode.h">
+      <Filter>Source Files\QPS\CFG</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\CFG\CFGCache.h">
       <Filter>Source Files\QPS\CFG</Filter>
     </ClInclude>
   </ItemGroup>
