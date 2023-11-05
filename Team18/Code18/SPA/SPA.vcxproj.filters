@@ -525,5 +525,8 @@
     <ClInclude Include="..\source\QPS\CFG\CFG.h">
       <Filter>Source Files\QPS\CFG</Filter>
     </ClInclude>
+    <ClInclude Include="..\source\QPS\CFG\CFGNode.h">
+      <Filter>Source Files\QPS\CFG</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
