@@ -95,9 +95,8 @@ void ExtendedCFG::DFS(string start) {
     if (isWhile) {
       DFSWhileHelper(incompletePaths, finishedPaths, curr, nextNodes, currLineNumber);
     }
-
-    unrollPaths(finishedPaths);
   }
+  unrollPaths(finishedPaths);
 }
 
 // UNROLL FUNCTIONS
