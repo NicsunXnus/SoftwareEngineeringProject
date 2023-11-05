@@ -44,12 +44,14 @@ shared_ptr<DFSPathNode> DFSPathNode::deepCopy(shared_ptr<DFSPathNode> current) {
 }
 
 shared_ptr<DFSPathNode> DFSPathNode::traverse(shared_ptr<DFSPathNode> current, string nextLineNumber) {
+  // Traverse simply adds a child node without copying.
   shared_ptr<DFSPathNode> childNode = make_shared<DFSPathNode>(nextLineNumber, current, current->whileVisitCount);
   current->child = childNode;
   return childNode;
 }
 
 unordered_set<shared_ptr<DFSPathNode>> DFSPathNode::diverge(shared_ptr<DFSPathNode> current, unordered_set<string> lineNumbers) {
+  // Traverses the original copy of current, and copies of the original for everything else
   unordered_set<shared_ptr<DFSPathNode>> output;
   for (auto it = lineNumbers.begin(); it != lineNumbers.end(); it++) {
     if (it == lineNumbers.begin()) {
@@ -62,7 +64,8 @@ unordered_set<shared_ptr<DFSPathNode>> DFSPathNode::diverge(shared_ptr<DFSPathNo
   return output;
 }
 
-unordered_set<shared_ptr<DFSPathNode>> DFSPathNode::joinDescendents(shared_ptr<DFSPathNode> current, unordered_set<shared_ptr<DFSPathNode>> toJoin) {
+unordered_set<shared_ptr<DFSPathNode>> DFSPathNode::joinDescendants(shared_ptr<DFSPathNode> current, unordered_set<shared_ptr<DFSPathNode>> toJoin) {
+  // Joins one descendant to the current's parent, and others to copies of the parent
   unordered_set<shared_ptr<DFSPathNode>> output;
   shared_ptr<DFSPathNode> currParent = current->getParent();
   for (auto it = toJoin.begin(); it != toJoin.end(); it++) {
