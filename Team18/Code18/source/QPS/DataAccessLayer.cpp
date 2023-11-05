@@ -82,9 +82,8 @@ shared_ptr<ExtendedCFG> DataAccessLayer::getCFG() {
 		return cacheCFG->get(CFG_CACHE_STRING);
 	}
 	else {
-		// generate CFG
-		// insert to cache
-		// return the CFG
-
+		shared_ptr<ExtendedCFG> cfg = make_shared<ExtendedCFG>(shared_from_this());
+		cacheCFG->insert(CFG_CACHE_STRING, cfg);
+		return cfg;
 	}
 }

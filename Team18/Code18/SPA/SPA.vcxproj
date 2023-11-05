@@ -14,6 +14,7 @@
     <ClCompile Include="..\source\ApplicationWrapper.cpp" />
     <ClCompile Include="..\source\QPS\CFG\CFG.cpp" />
     <ClCompile Include="..\source\QPS\CFG\CFGCache.cpp" />
+    <ClCompile Include="..\source\QPS\CFG\DFSPathNode.cpp" />
     <ClCompile Include="..\source\QPS\QRTCache.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\QueryObject.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\WithClauseObject.cpp" />

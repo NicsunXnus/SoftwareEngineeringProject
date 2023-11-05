@@ -7,6 +7,8 @@
 
 using namespace std;
 
+class ExtendedCFG;
+
 /*
 * This class represents the cache for CFG, for Next and Affects
 */

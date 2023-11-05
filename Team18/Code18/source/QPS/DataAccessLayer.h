@@ -15,10 +15,14 @@
 using namespace std;
 
 class QueryObject;
+class CFGCache;
+class ExtendedCFG;
+class DataAccessLayer;
+
 /**
 * This class represents an interface object that calls APIs from the PKB
 */
-class DataAccessLayer {
+class DataAccessLayer : public enable_shared_from_this<DataAccessLayer> {
 private:
 	shared_ptr<CFGCache> cacheCFG = make_shared<CFGCache>();
 
