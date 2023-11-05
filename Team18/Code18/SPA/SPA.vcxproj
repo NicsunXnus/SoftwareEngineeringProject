@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClCompile Include="..\source\ApplicationWrapper.cpp" />
     <ClCompile Include="..\source\QPS\CFG\CFG.cpp" />
+    <ClCompile Include="..\source\QPS\CFG\CFGCache.cpp" />
     <ClCompile Include="..\source\QPS\QRTCache.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\QueryObject.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\WithClauseObject.cpp" />
@@ -86,6 +87,7 @@
     <ClInclude Include="..\source\ExceptionMessages.h" />
     <ClInclude Include="..\source\HelperFunctions.h" />
     <ClInclude Include="..\source\QPS\CFG\CFG.h" />
+    <ClInclude Include="..\source\QPS\CFG\CFGCache.h" />
     <ClInclude Include="..\source\QPS\QRTCache.h" />
     <ClInclude Include="..\source\ThreadPool.h" />
     <ClInclude Include="..\source\PKB.h" />
