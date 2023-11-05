@@ -14,7 +14,7 @@ using namespace std;
 // 3. Call wait() to ensure all threads have been joined.
 class ThreadPool {
 private:
-  std::vector<thread> threads = {};
+  vector<thread> threads = {};
 public:
   ThreadPool() {};
 

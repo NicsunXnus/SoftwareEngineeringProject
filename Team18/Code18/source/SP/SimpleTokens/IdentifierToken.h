@@ -6,12 +6,14 @@
 
 #include "Token.h"
 
+using namespace std;
+
 /**
  * This class represents tokens objects that stem from user-defined names.
  */
 class IdentifierToken : public Token {
  private:
  public:
-  IdentifierToken(std::string_view tokenName) : Token{tokenName} {};
+  IdentifierToken(string_view tokenName) : Token{tokenName} {};
 };
 #endif

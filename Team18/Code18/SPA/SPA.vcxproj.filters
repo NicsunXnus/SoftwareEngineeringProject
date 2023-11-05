@@ -7,9 +7,6 @@
     <Filter Include="Source Files\Constants">
       <UniqueIdentifier>{b31c45bc-75b6-440b-b6ba-47df489cc8f8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\DesignExtractor">
-      <UniqueIdentifier>{cbe5f014-9b97-4220-bfbf-4038c67c2496}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\PKB">
       <UniqueIdentifier>{8b91ac6e-6885-4ebb-b49e-dd321c08cee7}</UniqueIdentifier>
     </Filter>
@@ -57,7 +54,7 @@
     <ClCompile Include="..\source\SP\AST\TreeBuilder.cpp">
       <Filter>Source Files\SP\AST</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\SP\AST\TreeBuilderHelper.cpp">
+	<ClCompile Include="..\source\SP\AST\OperatorEvaluator.cpp">
       <Filter>Source Files\SP\AST</Filter>
     </ClCompile>
     <ClCompile Include="..\source\SP\AST\UnaryOpNode.cpp">
@@ -263,7 +260,7 @@
     <ClInclude Include="..\source\SP\AST\TreeBuilder.h">
       <Filter>Source Files\SP\AST</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\SP\AST\TreeBuilderHelper.h">
+	 <ClInclude Include="..\source\SP\AST\OperatorEvaluator.h">
       <Filter>Source Files\SP\AST</Filter>
     </ClInclude>
     <ClInclude Include="..\source\SP\AST\UnaryOpNode.h">
@@ -309,9 +306,6 @@
       <Filter>Source Files\SP\DesignExtractor</Filter>
     </ClInclude>
     <ClInclude Include="..\source\SP\SimpleTokens\IdentifierToken.h">
-      <Filter>Source Files\SP\SimpleTokens</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\SP\SimpleTokens\KeywordToken.h">
       <Filter>Source Files\SP\SimpleTokens</Filter>
     </ClInclude>
     <ClInclude Include="..\source\SP\SimpleTokens\LiteralToken.h">
@@ -493,6 +487,9 @@
     </ClInclude>
     <ClInclude Include="..\source\PKB.h">
       <Filter>Source Files\PKB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\Constants\SPConstants.h">
+      <Filter>Source Files\Constants</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

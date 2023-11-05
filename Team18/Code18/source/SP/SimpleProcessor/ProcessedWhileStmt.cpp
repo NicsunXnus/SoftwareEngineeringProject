@@ -2,7 +2,7 @@
 #include "../DesignExtractor/Extractor.h"
 
 bool ProcessedWhileStmt::equalsTo(ProcessedWhileStmt& rhs) {
-  if ((*(this->whileBlock)).equalsTo(*(rhs.whileBlock))) {
+  if (!(ProcessedStmtList::checkEquality(this->whileBlock, rhs.whileBlock))) {
     return false;
   }
   auto castedThis = static_cast<ProcessedConditionalStmt&>(*this);
@@ -10,14 +10,18 @@ bool ProcessedWhileStmt::equalsTo(ProcessedWhileStmt& rhs) {
   return castedThis.equalsTo(castedThat);
 }
 
-void ProcessedWhileStmt::accept(std::shared_ptr<Extractor> extractor) {
+shared_ptr<ProcessedStmtList> ProcessedWhileStmt::getWhileBlock() {
+  return this->whileBlock;
+}
+
+void ProcessedWhileStmt::accept(shared_ptr<Extractor> extractor) {
   extractor->extract(shared_from_this());
 }
 
-void ProcessedWhileStmt::accept(std::shared_ptr<Extractor> extractor, std::string procedureName) {
+void ProcessedWhileStmt::accept(shared_ptr<Extractor> extractor, string procedureName) {
   extractor->extract(shared_from_this(), procedureName);
 }
 
-void ProcessedWhileStmt::accept(std::shared_ptr<Extractor> extractor, std::unordered_set<std::string>& prevStatementNumbers) {
+void ProcessedWhileStmt::accept(shared_ptr<Extractor> extractor, unordered_set<string>& prevStatementNumbers) {
   extractor->extract(shared_from_this(), prevStatementNumbers);
 }

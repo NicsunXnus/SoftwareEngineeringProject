@@ -1,132 +1,60 @@
+#include <string>
+#include <string_view>
+#include <unordered_map>
+
 #include "TokenFactory.h"
+#include "IdentifierToken.h"
+#include "LiteralToken.h"
+#include "OperatorToken.h"
+#include "SeparatorToken.h"
+#include "../../HelperFunctions.h"
+#include "../../ExceptionMessages.h"
+#include "../../Constants/SPConstants.h"
 
-using namespace std::string_view_literals;
-
-// Reserved Keywords
-static const std::unordered_set<std::string> reservedKeyWords = {
-	"read",
-	"print",
-	"call",
-	"(",
-	")",
-	";",
-	"+",
-	"-",
-	"*",
-	"/",
-	"%",
-	"=",
-	"!",
-	"||",
-	"&&",
-	"<",
-	"<=",
-	">",
-	">=",
-	"==",
-	"!="
+static const unordered_map<string_view, shared_ptr<Token>> arithmeticOpTokens = {
+	{OPEN_BRACKET_STRING_VIEW, make_shared<ParenOpenSepToken>()},
+	{CLOSE_BRACKET_STRING_VIEW, make_shared<ParenCloseSepToken>()},
+	{PLUS_STRING_VIEW, make_shared<PlusOpToken>()},
+	{MINUS_STRING_VIEW, make_shared<MinusOpToken>()},
+	{MULTIPLY_STRING_VIEW, make_shared<MultiplyOpToken>()},
+	{DIVIDE_STRING_VIEW, make_shared<DivideOpToken>()},
+	{MODULO_STRING_VIEW, make_shared<ModuloOpToken>()},
 };
 
-// Generates a Token with a name that is common between SIMPLE and PQL
-std::shared_ptr<Token> TokenFactory::generateReservedKWToken(std::string_view tokenName) {
-	if (tokenName == "read"sv) {
-		return std::make_shared<ReadKeywordToken>();
-	}
-	if (tokenName == "print"sv) {
-		return std::make_shared<PrintKeywordToken>();
-	}
-	if (tokenName == "call"sv) {
-		return std::make_shared<CallKeywordToken>();
-	}
-	if (tokenName == "("sv) {
-		return std::make_shared<ParenOpenSepToken>();
-	}
-	if (tokenName == ")"sv) {
-		return std::make_shared<ParenCloseSepToken>();
-	}
-	if (tokenName == "+"sv) {
-		return std::make_shared<PlusOpToken>();
-	}
-	if (tokenName == "-"sv) {
-		return std::make_shared<MinusOpToken>();
-	}
-	if (tokenName == "*"sv) {
-		return std::make_shared<MultiplyOpToken>();
-	}
-	if (tokenName == "/"sv) {
-		return std::make_shared<DivideOpToken>();
-	}
-	if (tokenName == "%"sv) {
-		return std::make_shared<ModuloOpToken>();
-	}
-	if (tokenName == "="sv) {
-		return std::make_shared<EqualsOpToken>();
-	}
-	if (tokenName == "!"sv) {
-		return std::make_shared<NotOpToken>();
-	}
-	if (tokenName == "||"sv) {
-		return std::make_shared<OrOpToken>();
-	}
-	if (tokenName == "&&"sv) {
-		return std::make_shared<AndOpToken>();
-	}
-	if (tokenName == "<"sv) {
-		return std::make_shared<LessThanOpToken>();
-	}
-	if (tokenName == "<="sv) {
-		return std::make_shared<LessThanEqualOpToken>();
-	}
-	if (tokenName == ">"sv) {
-		return std::make_shared<MoreThanOpToken>();
-	}
-	if (tokenName == ">="sv) {
-		return std::make_shared<MoreThanEqualOpToken>();
-	}
-	if (tokenName == "=="sv) {
-		return std::make_shared<EqualityOpToken>();
-	}
-	if (tokenName == "!="sv) {
-		return std::make_shared<InequalityOpToken>();
-	}
-	throw std::invalid_argument(ExceptionMessages::invalidToken);
+shared_ptr<Token> TokenFactory::generateArithmeticOpToken(string_view tokenName) {
+	return arithmeticOpTokens.at(tokenName);
 }
 
-// Generates a Identifier Token. REMINDER that this does not validate the argument to ensure that it is a valid name
-std::shared_ptr<Token> TokenFactory::generateIdentifier(std::string_view tokenName) {
-	return std::make_shared<IdentifierToken>(tokenName);
+shared_ptr<Token> TokenFactory::generateIdentifier(string_view tokenName) {
+	return make_shared<IdentifierToken>(tokenName);
 }
 
-// Generates an Integer Literal Token. REMINDER that this does not validate the argument to ensure that it is a valid number
-std::shared_ptr<Token> TokenFactory::generateIntLiteral(std::string_view number) {
-	return std::make_shared<IntegerLiteralToken>(number);
+shared_ptr<Token> TokenFactory::generateIntLiteral(string_view number) {
+	return make_shared<IntegerLiteralToken>(number);
 }
 
-std::shared_ptr<Token> TokenFactory::generateTokenForSimple(std::string tokenName, bool forceIdentifier) {
+shared_ptr<Token> TokenFactory::generateTokenForSimple(string tokenName, bool forceIdentifier) {
 	if (tokenName.empty()) {
-		throw std::invalid_argument(ExceptionMessages::invalidToken);
+		throw invalid_argument(ExceptionMessages::invalidToken);
 	}
+	tokenName = trimWhitespaces(tokenName);
 	// Prioritises creating an identifier if given tokenName is a valid name
 	if (forceIdentifier && isValidName(tokenName)) {
 		return generateIdentifier(tokenName);
 	}
-	if (reservedKeyWords.count(tokenName) != 0) {
-		return generateReservedKWToken(tokenName);
+	if (arithmeticOpTokens.find(tokenName) != arithmeticOpTokens.end()) {
+		return generateArithmeticOpToken(tokenName);
 	}
 	if (isValidName(tokenName)) {
 		return generateIdentifier(tokenName);
 	}
-	if (isNumber(tokenName)) {
-		if (tokenName.size() > 1 && tokenName[0] == '0') {
-			throw std::invalid_argument(ExceptionMessages::invalidToken);
-		}
+	if (isValidNumber(tokenName)) {
 		return generateIntLiteral(tokenName);
 	}
-	throw std::invalid_argument(ExceptionMessages::invalidToken);
+	throw invalid_argument(ExceptionMessages::invalidToken);
 }
 
-// Overloaded method to take in string views instead
-std::shared_ptr<Token> TokenFactory::generateTokenForSimple(std::string_view tokenName, bool forceIdentifier) {
-	return generateTokenForSimple(std::string(tokenName), forceIdentifier);
+shared_ptr<Token> TokenFactory::generateTokenForSimple(string_view tokenName, bool forceIdentifier) {
+	return generateTokenForSimple(string(tokenName), forceIdentifier);
 }
 

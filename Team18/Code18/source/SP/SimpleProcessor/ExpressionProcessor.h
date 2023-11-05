@@ -10,36 +10,37 @@
 #include "SimpleProcessor.h"
 #include "../AST/Node.h"
 
-using namespace std::string_view_literals;
+using namespace std;
 
 class ExpressionProcessor {
 protected:
 	// Convert Arithmetic expressions into tokens
-	static std::vector<std::shared_ptr<Token>> tokenizeArithmeticExpression(std::string expression);
+	static vector<shared_ptr<Token>> tokenizeArithmeticExpression(string expression);
 
 private:
 	int statementNumber;
 
 	// Converts conditional expressions involving 2 bracket-pairs into nodes. A recursive call is done.
-	std::shared_ptr<Node> nodifyCondExprTwoPairHelper(std::string trimmed, std::vector<std::shared_ptr<std::pair<int, int>>> bracketPairs);
+	shared_ptr<Node> nodifyCondExprTwoPairHelper(string trimmed, vector<shared_ptr<pair<int, int>>> bracketPairs);
 
 	// Converts conditional expressions involving 1 bracket-pair into nodes. A recursive call is done.
-	std::shared_ptr<Node> nodifyCondExprOnePairHelper(std::string trimmed, std::shared_ptr<std::pair<int, int>> bracketIndexes);
+	shared_ptr<Node> nodifyCondExprOnePairHelper(string trimmed, shared_ptr<pair<int, int>> bracketIndexes);
 
 	// Converts relational expressions involving nodes. A recursive call is done.
-	std::shared_ptr<Node> nodifyRelationalExpression(std::string trimmed);
+	shared_ptr<Node> nodifyRelationalExpression(string trimmed);
 
 public:
 	ExpressionProcessor(int statementNumber = -1) :
 		statementNumber{ statementNumber } {};
+
 	/// <summary>
 	/// Converts arithmetic expressions into nodes. Prioritises identifiers for valid names.
 	/// No assumptions made about whether whitespaces have been trimmed or not.
 	/// </summary>
 	/// <param name="expression">The string containing the arithmetic expression</param>
-	/// <exception cref="std::invalid_argument">Thrown when the the declaration is invalid syntactically</exception>
+	/// <exception cref="invalid_argument">Thrown when the the declaration is invalid syntactically</exception>
 	/// <returns>A pointer to the Node</returns>
-	std::shared_ptr<Node> nodifyArithmeticExpression(std::string expression);
+	shared_ptr<Node> nodifyArithmeticExpression(string expression);
 
 
 	/// <summary>
@@ -47,8 +48,8 @@ public:
 	/// No assumptions made about whether whitespaces have been trimmed or not.
 	/// </summary>
 	/// <param name="expression">The string containing the conditional expression</param>
-	/// <exception cref="std::invalid_argument">Thrown when the the declaration is invalid syntactically, even for brackets.</exception>
+	/// <exception cref="invalid_argument">Thrown when the the declaration is invalid syntactically, even for brackets.</exception>
 	/// <returns>A pointer to the Node</returns>
-	std::shared_ptr<Node> nodifyConditionalExpression(std::string expression);
+	shared_ptr<Node> nodifyConditionalExpression(string expression);
 };
 #endif

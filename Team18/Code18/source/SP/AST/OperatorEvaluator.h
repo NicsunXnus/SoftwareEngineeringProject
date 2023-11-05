@@ -1,11 +1,14 @@
-#ifndef TREEBUILDERHELPER_H
-#define TREEBUILDERHELPER_H
+#ifndef OPERATOREVALUATOR_H
+#define OPERATOREVALUATOR_H
 
 #include <unordered_map>
 
 #include "Node.h"
 
 using namespace std;
+
+// Originally done by Nicholas
+// Provides the helper functions for TreeBuilder
 
 bool isComparisonOp(string op);
 
