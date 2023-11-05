@@ -6,7 +6,7 @@ void AbstractionExtractor::insertToAbstractionMap(string key, string value) {
 
 
 
-shared_ptr<map<string, unordered_set<string>>> AbstractionExtractor::getStorageMap() {
+shared_ptr<unordered_map<string, unordered_set<string>>> AbstractionExtractor::getStorageMap() {
     return this->AbstractionStorageMap;
 }
 
@@ -42,7 +42,7 @@ void AbstractionExtractor::extract(shared_ptr<ProcessedIfStmt> processedIf) {
     processedIf->getElseBlock()->accept(shared_from_this());
 }
 
-void AbstractionExtractor::insertIntoMap(string key, string statementNumber, shared_ptr<map<string, unordered_set<string>>> map) {
+void AbstractionExtractor::insertIntoMap(string key, string statementNumber, shared_ptr<unordered_map<string, unordered_set<string>>> map) {
     // Insert to the map if the key is not found
     if (map->find(key) == map->end()) {
         map->insert({ key, unordered_set<string>() });

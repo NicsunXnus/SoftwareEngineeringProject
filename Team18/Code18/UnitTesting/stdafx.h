@@ -10,10 +10,11 @@
 // Headers for CppUnitTest
 #include <algorithm>
 #include <cassert>
-#include <map>
+#include <unordered_map>
 #include <string>
 #include <unordered_set>
 #include <vector>
+#include <unordered_map>
 
 #include "CppUnitTest.h"
 
@@ -46,8 +47,8 @@ inline bool compare_sets(unordered_set<string> s1, unordered_set<string> s2) {
   return true;
 }
 
-inline bool compare_vector_maps(map<string, vector<string>> m1,
-                                map<string, vector<string>> m2) {
+inline bool compare_vector_maps(unordered_map<string, vector<string>> m1,
+                                unordered_map<string, vector<string>> m2) {
   if (m1.size() != m2.size()) {
     return false;
   }
@@ -62,8 +63,8 @@ inline bool compare_vector_maps(map<string, vector<string>> m1,
   return true;
 }
 
-inline bool compare_maps(map<string, unordered_set<string>> m1,
-                         map<string, unordered_set<string>> m2) {
+inline bool compare_maps(unordered_map<string, unordered_set<string>> m1,
+                         unordered_map<string, unordered_set<string>> m2) {
   if (m1.size() != m2.size()) {
     return false;
   }
@@ -78,13 +79,13 @@ inline bool compare_maps(map<string, unordered_set<string>> m1,
   return true;
 }
 
-inline bool compare_vectors_of_maps(vector<map<string, vector<string>>> v1,
-                                    vector<map<string, vector<string>>> v2) {
+inline bool compare_vectors_of_maps(vector<unordered_map<string, vector<string>>> v1,
+                                    vector<unordered_map<string, vector<string>>> v2) {
   if (v1.size() != v2.size()) {
     return false;
   }
-  vector<map<string, vector<string>>> temp1 = v1;
-  vector<map<string, vector<string>>> temp2 = v2;
+  vector<unordered_map<string, vector<string>>> temp1 = v1;
+  vector<unordered_map<string, vector<string>>> temp2 = v2;
   sort(temp1.begin(), temp1.end());
   sort(temp2.begin(), temp2.end());
   for (size_t i = 0; i < temp1.size(); ++i) {

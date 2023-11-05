@@ -11,7 +11,7 @@ void AbstractionStarExtractor::insertToAbstractionStarMap(string key, string val
 }
 
 
-shared_ptr<map<string, unordered_set<string>>> AbstractionStarExtractor::getStorageStarMap() {
+shared_ptr<unordered_map<string, unordered_set<string>>> AbstractionStarExtractor::getStorageStarMap() {
     return this->AbstractionStarStorageMap;
 }
 

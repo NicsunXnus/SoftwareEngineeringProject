@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#include <map>
+#include <unordered_map>
 #include <string>
 #include <unordered_set>
 #include <vector>
@@ -17,14 +17,14 @@ class EntityStorage {};
 
 class StatementStorage : public EntityStorage {
  public:
-  shared_ptr<map<ENTITY, unordered_set<string>>>
+  shared_ptr<unordered_map<ENTITY, unordered_set<string>>>
   StatementStorage::getDatabase();
 
   void StatementStorage::setEntity(
       shared_ptr<StringMap> database_to_insert);
 
  private:
-  shared_ptr<map<ENTITY, unordered_set<string>>> database;
+  shared_ptr<unordered_map<ENTITY, unordered_set<string>>> database;
 };
 
 class NonStatementStorage : public EntityStorage {
@@ -53,22 +53,22 @@ class PrintVarnameStorage : public NameStorage {};
 
 class ProcLinesStorage : public EntityStorage {
  public:
-  shared_ptr<map<string, pair<string, string>>> ProcLinesStorage::getDatabase();
+  shared_ptr<unordered_map<string, pair<string, string>>> ProcLinesStorage::getDatabase();
 
   void ProcLinesStorage::setProcLines(
-      shared_ptr<map<string, pair<string, string>>> database_to_insert);
+      shared_ptr<unordered_map<string, pair<string, string>>> database_to_insert);
 
  private:
-  shared_ptr<map<string, pair<string, string>>> database;
+  shared_ptr<unordered_map<string, pair<string, string>>> database;
 };
 
 class PatternStorage : public EntityStorage {
  public:
-  shared_ptr<map<string, shared_ptr<Node>>> PatternStorage::getDatabase();
+  shared_ptr<unordered_map<string, shared_ptr<Node>>> PatternStorage::getDatabase();
 
   void PatternStorage::setPattern(
-      shared_ptr<map<string, shared_ptr<Node>>> database_to_insert);
+      shared_ptr<unordered_map<string, shared_ptr<Node>>> database_to_insert);
 
  private:
-  shared_ptr<map<string, shared_ptr<Node>>> database;
+  shared_ptr<unordered_map<string, shared_ptr<Node>>> database;
 };

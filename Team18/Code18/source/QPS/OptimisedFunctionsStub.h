@@ -9,7 +9,7 @@ class OptimisedFunctionsStub
 {
 private:
 	// Stores the count of the header in a group of clauses
-	inline static map<string, int> countHeadersStore;
+	inline static unordered_map<string, int> countHeadersStore;
 	// The "switch" to activate the opimisation of the processing of the tables
 	bool isOptimised = false;
 

@@ -10,7 +10,7 @@
 #include <set>
 #include <stack>
 #include <unordered_set>
-#include <map>
+#include <unordered_map>
 
 #include "ExceptionMessages.h"
 #include "Constants/SPConstants.h"
@@ -255,7 +255,7 @@ static void printVectorString(vector<string> v) {
 }
 
 // debugging
-static void printMap(map<string, vector<string>> m) {
+static void printMap(unordered_map<string, vector<string>> m) {
   for (const auto& pair : m) {
     string result;
     for (const string& num : pair.second) {

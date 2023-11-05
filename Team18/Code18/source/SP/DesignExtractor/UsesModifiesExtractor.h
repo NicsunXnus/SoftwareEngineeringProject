@@ -4,7 +4,7 @@
 #include <string>
 #include <unordered_set>
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 #include "../SimpleProcessor/ProcessedProgram.h"
 #include "../SimpleProcessor/ProcessedCallStmt.h"
@@ -20,9 +20,9 @@ class UsesModifiesExtractor : public AbstractionExtractor {
 public:
     // Constructor
     UsesModifiesExtractor() : AbstractionExtractor(),
-        callsProcedureParentProcedureMap(make_shared<map<string, unordered_set<string>>>()),
-        procedureCallLinesMap(make_shared<map<string, unordered_set<string>>>()),
-        ifWhileNestedStatementsMap(make_shared<map<string, unordered_set<string>>>()),
+        callsProcedureParentProcedureMap(make_shared<unordered_map<string, unordered_set<string>>>()),
+        procedureCallLinesMap(make_shared<unordered_map<string, unordered_set<string>>>()),
+        ifWhileNestedStatementsMap(make_shared<unordered_map<string, unordered_set<string>>>()),
         callsExtractor(make_shared<CallsExtractor>()) {}
 
     void extractAbstractions(shared_ptr<ProcessedProgram> processedProgram) override;
@@ -43,15 +43,15 @@ public:
 
 protected:
     // This map is used to store procedure names as the key and a vector of the procedures names that calls it
-    shared_ptr<map<string, unordered_set<string>>> callsProcedureParentProcedureMap;
+    shared_ptr<unordered_map<string, unordered_set<string>>> callsProcedureParentProcedureMap;
     // This map is used to store procedure names as the key and a vector of the statement numbers that calls it
-    shared_ptr<map<string, unordered_set<string>>> procedureCallLinesMap;
+    shared_ptr<unordered_map<string, unordered_set<string>>> procedureCallLinesMap;
     // This map is used to storeif/while statement number as the key and nested statement numbers as the value 
-    shared_ptr<map<string, unordered_set<string>>> ifWhileNestedStatementsMap;
+    shared_ptr<unordered_map<string, unordered_set<string>>> ifWhileNestedStatementsMap;
     shared_ptr<CallsExtractor> callsExtractor;
 
     void processIndirectProcedureCalls();
     void processNestedIfWhileStatements();
     void nestedIfWhileHelper(string childStatementNumber, shared_ptr<unordered_set<std::string>> statementNumbersToBeAdded);
-    void createCallsProcedureParentProcedureMap(shared_ptr<map<string, unordered_set<string>>> callsMap);
+    void createCallsProcedureParentProcedureMap(shared_ptr<unordered_map<string, unordered_set<string>>> callsMap);
 };

@@ -144,7 +144,7 @@ list<string> ResultHandler::handleTuples(vector<shared_ptr<QueryResultsTable>> s
 	// join select clause tables
 	vector<string> selectClauseHeaders;
 	vector<shared_ptr<QueryResultsTable>> selectClausesInIntermediateTable;
-	map<string, shared_ptr<QueryResultsTable>> selectClausesNotInIntermediateTable;
+	unordered_map<string, shared_ptr<QueryResultsTable>> selectClausesNotInIntermediateTable;
 
 	for (shared_ptr<QueryResultsTable> table : selectClauseTables) {
 		selectClauseHeaders.push_back(table->getPrimaryKey());

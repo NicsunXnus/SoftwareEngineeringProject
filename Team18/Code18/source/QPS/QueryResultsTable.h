@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
-#include <map>
+#include <unordered_map>
 #include <memory>
 #include "../HelperFunctions.h"
 #include <unordered_set>
@@ -18,7 +18,7 @@ public:
     //It is assumed that there are no duplicate headers in the table.
     //A table is always sorted by headers.
 
-    QueryResultsTable(vector<map<string, vector<string>>> _columns) : columns(_columns), isSignificant(getNumberOfCols() > 0 && getNumberOfRows() > 0) {
+    QueryResultsTable(vector<unordered_map<string, vector<string>>> _columns) : columns(_columns), isSignificant(getNumberOfCols() > 0 && getNumberOfRows() > 0) {
         sort(columns.begin(), columns.end());
     }
 
@@ -84,7 +84,7 @@ public:
      * @param columnValues A map of a string to a vector of strings representing the unflattened map.
      * @return A shared pointer to the newly created QueryResultsTable object.
     */
-    static shared_ptr<QueryResultsTable> createTable(vector<string> headers, map<string, vector<string>> columnValues);
+    static shared_ptr<QueryResultsTable> createTable(vector<string> headers, unordered_map<string, vector<string>> columnValues);
 
     /**
      * A static method that creates a new QueryResultsTable object with a single column.
@@ -103,7 +103,7 @@ public:
      * @param columnValues A map of a string to a vector of strings representing the unflattened map.
      * @return A shared pointer to the newly created QueryResultsTable object.
     */
-    static shared_ptr<QueryResultsTable> createTable(vector<string> headers, map<string, unordered_set<string>> columnValues);
+    static shared_ptr<QueryResultsTable> createTable(vector<string> headers, unordered_map<string, unordered_set<string>> columnValues);
 
     /**
      * A static method that creates a new QueryResultsTable object with the provided headers and column values.
@@ -176,7 +176,7 @@ public:
     int differenceInHeaders(shared_ptr<QueryResultsTable> _table);
 
     //Getter method for columns
-    vector<map<string, vector<string>>> getColumns() {
+    vector<unordered_map<string, vector<string>>> getColumns() {
         return this->columns;
     }
 
@@ -184,7 +184,7 @@ public:
     vector<string> getHeaders() {
         vector<string> headers;
 
-        for (map<string, vector<string>> column : this->columns) {
+        for (unordered_map<string, vector<string>> column : this->columns) {
             headers.emplace_back(column.begin()->first);
         }
 
@@ -194,7 +194,7 @@ public:
     set<string> getHeadersAsSet() {
         set<string> headers;
 
-        for (map<string, vector<string>> column : this->columns) {
+        for (unordered_map<string, vector<string>> column : this->columns) {
             headers.insert(column.begin()->first);
         }
 
@@ -202,7 +202,7 @@ public:
     }
 
     //Setter method for columns
-    void setColumns(vector<map<string, vector<string>>> newColumns) {
+    void setColumns(vector<unordered_map<string, vector<string>>> newColumns) {
         this->columns = newColumns;
     }
 
@@ -210,7 +210,7 @@ public:
     vector<string> getColumnData(string header) {
         vector<string> data;
 
-        for (map<string, vector<string>> column : this->columns) {
+        for (unordered_map<string, vector<string>> column : this->columns) {
             if (column.begin()->first == header) {
                 return column.begin()->second;
             }
@@ -274,7 +274,7 @@ public:
     }
 
 private:
-    vector<map<string, vector<string>>> columns; // column name: values
+    vector<unordered_map<string, vector<string>>> columns; // column name: values
     bool isSignificant; 
     // denotes whether a table is significant or not. 
     // A significant table represents the boolean "true", regardless if the table is empty or not
@@ -292,6 +292,6 @@ private:
     vector<string> repeatEntries(vector<string> input, int repetition);
 
     //Create the vector representation of a table. To only be used internally
-    vector<map<string, vector<string>>> createColumnsWithHeaders(vector<string> theseHeaders);
+    vector<unordered_map<string, vector<string>>> createColumnsWithHeaders(vector<string> theseHeaders);
 };
 #endif

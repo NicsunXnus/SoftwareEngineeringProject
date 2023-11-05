@@ -138,7 +138,12 @@ public:
 
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {
 		ENTITY type = getObjectSynonym()->getSynonym()->getEntityType();
-		unordered_set<ENTITY> validStmtEntities{ STMT, READ, PRINT, ASSIGN, CALL, WHILE, IF };
+                unordered_set<ENTITY> validStmtEntities{STMT,
+                                                        READ,
+                                                        PRINT,
+                                                        ASSIGN,
+                                                        CALL,
+                                                        WHILE, IF};
 		if (validStmtEntities.find(type) != validStmtEntities.end()) {
 			unordered_set<string> PKBdata = dataAccessLayer->getEntity(type);
 			StringMap attrMap;

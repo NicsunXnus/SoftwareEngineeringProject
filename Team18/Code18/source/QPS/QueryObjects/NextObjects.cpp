@@ -22,5 +22,5 @@ shared_ptr<QueryResultsTable> NextObject::callAndProcess(shared_ptr<DataAccessLa
 }
 
 shared_ptr<QueryResultsTable> NextStarObject::callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) {
-	return handleNextStar(dataAccessLayer, NEXT);
+        return handleNextStar(dataAccessLayer, NEXT);
 }

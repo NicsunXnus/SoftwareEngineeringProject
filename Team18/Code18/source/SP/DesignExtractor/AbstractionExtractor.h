@@ -4,7 +4,7 @@
 #include <string>
 #include <unordered_set>
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 #include "../SimpleProcessor/ProcessedProgram.h"
 #include "../AST/Node.h"
@@ -20,9 +20,9 @@ class AbstractionExtractor : public Extractor {
 public:
     // Constructor
     AbstractionExtractor() : 
-    AbstractionStorageMap(make_shared<map<string, unordered_set<string>>>()) {}
+    AbstractionStorageMap(make_shared<unordered_map<string, unordered_set<string>>>()) {}
 
-    shared_ptr<map<string, unordered_set<string>>> getStorageMap();
+    shared_ptr<unordered_map<string, unordered_set<string>>> getStorageMap();
 
     // Virtual function for individual extractors to perform pre/post processing on top of the base class's extract method
     virtual void extractAbstractions(shared_ptr<ProcessedProgram> processedProgram);
@@ -33,10 +33,10 @@ public:
     void extract(shared_ptr<ProcessedIfStmt> processedIf) override;
     
     void insertToAbstractionMap(string key, string value);
-    void insertIntoMap(string key, string statementNumber, shared_ptr<map<string, unordered_set<string>>> map);
+    void insertIntoMap(string key, string statementNumber, shared_ptr<unordered_map<string, unordered_set<string>>> map);
 
 
 protected:
-    std::shared_ptr<map<string, unordered_set<string>>> AbstractionStorageMap;  
+    std::shared_ptr<unordered_map<string, unordered_set<string>>> AbstractionStorageMap;  
     
 };

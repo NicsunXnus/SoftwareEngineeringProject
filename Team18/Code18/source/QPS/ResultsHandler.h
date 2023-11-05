@@ -32,7 +32,7 @@ private:
 		for (int i = 0; i < totalRow; i++) {
 			string curr = "";
 			for (int j = 0; j < totalHeaders; j++) {
-				vector<map<string, vector<string>>> cols = table->getColumns();
+				vector<unordered_map<string, vector<string>>> cols = table->getColumns();
 				vector<string> column = cols[j].begin()->second;
 				if (j == totalHeaders - 1) { // last element
 					curr += column[i];

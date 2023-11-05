@@ -13,7 +13,9 @@ shared_ptr<QueryObject> PatternClauseObjectFactory::create(string_view clauseNam
 
 	bool isArg0ValidSynonymAssign{ patternSynonym->isSynonym() && patternSynonym->getSynonym()->getEntityType() == ASSIGN };
 
-	bool isArg0ValidSynonymWhile{ patternSynonym->isSynonym() && patternSynonym->getSynonym()->getEntityType() == WHILE };
+	bool isArg0ValidSynonymWhile{
+            patternSynonym->isSynonym() &&
+            patternSynonym->getSynonym()->getEntityType() == WHILE};
 
 	bool isArg1Wildcard{ arg1->isWildcard() };
 	bool isArg1ValidSynonym{ arg1->isSynonym()

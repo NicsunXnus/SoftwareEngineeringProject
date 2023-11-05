@@ -1,8 +1,8 @@
 #include "QueryResultsTable.h"
 
 shared_ptr<QueryResultsTable> QueryResultsTable::crossProduct(shared_ptr<QueryResultsTable> other) {
-    vector<map<string, vector<string>>> thisColumns = this->getColumns();
-    vector<map<string, vector<string>>> otherColumns = other->getColumns();
+    vector<unordered_map<string, vector<string>>> thisColumns = this->getColumns();
+    vector<unordered_map<string, vector<string>>> otherColumns = other->getColumns();
     int thisColNums = thisColumns.size();
     int otherColNums = otherColumns.size();
     if (other->isEmpty() || this->isEmpty()) {
@@ -33,8 +33,8 @@ shared_ptr<QueryResultsTable> QueryResultsTable::crossProduct(shared_ptr<QueryRe
         otherHeaders.emplace_back(otherColumns[otherCol].begin()->first);
     }
 
-    vector<map<string, vector<string>>> crossProducted(thisColumns);
-    vector<map<string, vector<string>>> otherColumnsCopy(otherColumns);
+    vector<unordered_map<string, vector<string>>> crossProducted(thisColumns);
+    vector<unordered_map<string, vector<string>>> otherColumnsCopy(otherColumns);
     /*if you have 2 tables
         etc; table1: a, b table2:C, d
         Then for each entry in table1 columns a and b, duplicate each value by size(table2)
@@ -88,7 +88,7 @@ shared_ptr<QueryResultsTable> QueryResultsTable::crossProduct(shared_ptr<QueryRe
 }
 
 shared_ptr<QueryResultsTable> QueryResultsTable::innerJoin(shared_ptr<QueryResultsTable> other) {
-    vector<map<string, vector<string>>> thisMap = QueryResultsTable::getColumns(), otherMap = other->getColumns(), innerJoined;
+    vector<unordered_map<string, vector<string>>> thisMap = QueryResultsTable::getColumns(), otherMap = other->getColumns(), innerJoined;
     vector<string> thisHeaders = QueryResultsTable::getHeaders();
     // Get the number of columns and rows in both tables
     int thisColNums = QueryResultsTable::getNumberOfCols(), thisRowNums = QueryResultsTable::getNumberOfRows(), otherColNums = other->getNumberOfCols(), otherRowNums = other->getNumberOfRows();
@@ -96,7 +96,7 @@ shared_ptr<QueryResultsTable> QueryResultsTable::innerJoin(shared_ptr<QueryResul
     vector<tuple<int, int>> sameCols;
     for (int thisCol = 0; thisCol < thisColNums; thisCol++) {
         //add headers of thisMap
-        map<string, vector<string>> map = { {thisMap[thisCol].begin()->first, {}} };
+        unordered_map<string, vector<string>> map = { {thisMap[thisCol].begin()->first, {}} };
         innerJoined.emplace_back(map);
         //at the same time, check for similar headers and record down the pairs of column numbers from both tables
         for (int otherCol = 0; otherCol < otherColNums; otherCol++) {
@@ -111,7 +111,7 @@ shared_ptr<QueryResultsTable> QueryResultsTable::innerJoin(shared_ptr<QueryResul
             continue;
         }
         //add headers of otherMap only if header is not in innerJoined
-        map<string, vector<string>> map = { {key, {}} };
+        unordered_map<string, vector<string>> map = { {key, {}} };
         innerJoined.emplace_back(map);
     }
     
@@ -130,7 +130,7 @@ shared_ptr<QueryResultsTable> QueryResultsTable::innerJoin(shared_ptr<QueryResul
                 int colInner = 0;
                 for (int thisCol = 0; thisCol < thisColNums; thisCol++) {
                     vector<string> valuesInner = innerJoined[colInner].begin()->second;
-                    map<string, vector<string>> mapInner = innerJoined[colInner];
+                    unordered_map<string, vector<string>> mapInner = innerJoined[colInner];
                     valuesInner.emplace_back(thisMap[thisCol].begin()->second[thisRow]);
                     innerJoined[colInner][innerJoined[colInner].begin()->first] = valuesInner;
                     colInner++;
@@ -140,7 +140,7 @@ shared_ptr<QueryResultsTable> QueryResultsTable::innerJoin(shared_ptr<QueryResul
                         continue;
                     }
                     vector<string> valuesInner = innerJoined[colInner].begin()->second;
-                    map<string, vector<string>> mapInner = innerJoined[colInner];
+                    unordered_map<string, vector<string>> mapInner = innerJoined[colInner];
                     valuesInner.emplace_back(otherMap[otherCol].begin()->second[otherRow]);
                     innerJoined[colInner][innerJoined[colInner].begin()->first] = valuesInner;
                     colInner++;
@@ -156,8 +156,8 @@ void QueryResultsTable::getPrimaryKeyOnlyTable() {
     auto it = find(headers.begin(), headers.end(), primaryKey);
     if (it != headers.end()) {
         int index = distance(headers.begin(), it);
-        map<string, vector<string>> pKeyColumn = columns[index];
-        vector<map<string, vector<string>>> newColumns;
+        unordered_map<string, vector<string>> pKeyColumn = columns[index];
+        vector<unordered_map<string, vector<string>>> newColumns;
         newColumns.push_back(pKeyColumn);
         columns = newColumns;
     }
@@ -171,18 +171,18 @@ shared_ptr<QueryResultsTable> QueryResultsTable::createEmptyTable() {
 }
 
 shared_ptr<QueryResultsTable> QueryResultsTable::createTable(string header, vector<string> columnValues) {
-    map<string, vector<string>> column;
+    unordered_map<string, vector<string>> column;
     column[header] = columnValues;
-    vector<map<string, vector<string>>> columns;
+    vector<unordered_map<string, vector<string>>> columns;
     columns.emplace_back(column);
     shared_ptr<QueryResultsTable> singleColTable = make_shared<QueryResultsTable>(columns);
     return singleColTable;
 }
 
-shared_ptr<QueryResultsTable> QueryResultsTable::createTable(vector<string> headers, map<string, vector<string>> columnValues) {
-    vector<map<string, vector<string>>> columns;
-    map<string, vector<string>> col1;
-    map<string, vector<string>> col2;
+shared_ptr<QueryResultsTable> QueryResultsTable::createTable(vector<string> headers, unordered_map<string, vector<string>> columnValues) {
+    vector<unordered_map<string, vector<string>>> columns;
+    unordered_map<string, vector<string>> col1;
+    unordered_map<string, vector<string>> col2;
     vector<string> colContent1;
     vector<string> colContent2;
     for (const auto& entry : columnValues) {
@@ -209,19 +209,19 @@ shared_ptr<QueryResultsTable> QueryResultsTable::createTable(vector<string> head
 }
 
 shared_ptr<QueryResultsTable> QueryResultsTable::createTable(string header, unordered_set<string> columnValues) {
-    map<string, vector<string>> column;
+    unordered_map<string, vector<string>> column;
     vector<string> vectorFromSet(columnValues.begin(), columnValues.end());
     column[header] = vectorFromSet;
-    vector<map<string, vector<string>>> columns;
+    vector<unordered_map<string, vector<string>>> columns;
     columns.emplace_back(column);
     shared_ptr<QueryResultsTable> singleColTable = make_shared<QueryResultsTable>(columns);
     return singleColTable;
 }
 
-shared_ptr<QueryResultsTable> QueryResultsTable::createTable(vector<string> headers, map<string, unordered_set<string>> columnValues) {
-    vector<map<string, vector<string>>> columns;
-    map<string, vector<string>> col1;
-    map<string, vector<string>> col2;
+shared_ptr<QueryResultsTable> QueryResultsTable::createTable(vector<string> headers, unordered_map<string, unordered_set<string>> columnValues) {
+    vector<unordered_map<string, vector<string>>> columns;
+    unordered_map<string, vector<string>> col1;
+    unordered_map<string, vector<string>> col2;
     vector<string> colContent1;
     vector<string> colContent2;
     for (const auto& entry : columnValues) {
@@ -248,7 +248,7 @@ shared_ptr<QueryResultsTable> QueryResultsTable::createTable(vector<string> head
 }   
 
 shared_ptr<QueryResultsTable> QueryResultsTable::create2DTable(vector<string> headers, vector<vector<string>> columnValues) {
-    vector<map<string, vector<string>>> columns;
+    vector<unordered_map<string, vector<string>>> columns;
 
     //Start of check for error
     int currSize = columnValues[0].size();
@@ -266,7 +266,7 @@ shared_ptr<QueryResultsTable> QueryResultsTable::create2DTable(vector<string> he
     //End of Check for error
 
     for (int headerInd = 0; headerInd < headers.size(); headerInd++) {
-        map<string, vector<string>> column;
+        unordered_map<string, vector<string>> column;
         string header = headers[headerInd];
         column[header] = columnValues[headerInd];
         columns.emplace_back(column);
@@ -298,7 +298,7 @@ void QueryResultsTable::renameColumn(string newName, string oldName) {
         int index = distance(headers.begin(), it);
         vector<string> columnContent = columns[index].begin()->second;
         columns.erase(columns.begin() + index);
-        map<string, vector<string>> renamedColumn;
+        unordered_map<string, vector<string>> renamedColumn;
         renamedColumn[newName] = columnContent;
         columns.emplace_back(renamedColumn);
     }
@@ -315,7 +315,7 @@ shared_ptr<QueryResultsTable> QueryResultsTable::filter(string key, vector<strin
     }
     shared_ptr<QueryResultsTable> filteredTable;
     vector<string> headers = getHeaders();
-    vector<map<string, vector<string>>> filteredTableColumns = createColumnsWithHeaders(headers);
+    vector<unordered_map<string, vector<string>>> filteredTableColumns = createColumnsWithHeaders(headers);
 
     auto it = find(headers.begin(), headers.end(), key);
     if (it != headers.end()) {
@@ -355,8 +355,8 @@ shared_ptr<QueryResultsTable> QueryResultsTable::innerJoinOnTwoColumns(string he
     int dist1 = distance(headers.begin(), it1); // index of header1
     int dist2 = distance(headers.begin(), it2); // index of header2
 
-    vector<map<string, vector<string>>> thisColumns = QueryResultsTable::getColumns();
-    vector<map<string, vector<string>>> filteredTableColumns = createColumnsWithHeaders(headers);
+    vector<unordered_map<string, vector<string>>> thisColumns = QueryResultsTable::getColumns();
+    vector<unordered_map<string, vector<string>>> filteredTableColumns = createColumnsWithHeaders(headers);
 
     int totalRows = QueryResultsTable::getNumberOfRows();
     for (int row = 0; row < totalRows; row++) {
@@ -429,10 +429,10 @@ vector<string> QueryResultsTable::repeatEntries(vector<string> input, int repeti
 }
 
 //Create the vector representation of a table. To only be used internally
-vector<map<string, vector<string>>> QueryResultsTable::createColumnsWithHeaders(vector<string> theseHeaders) {
-    vector<map<string, vector<string>>> columns;
+vector<unordered_map<string, vector<string>>> QueryResultsTable::createColumnsWithHeaders(vector<string> theseHeaders) {
+    vector<unordered_map<string, vector<string>>> columns;
     for (string header : theseHeaders) {
-        map<string, vector<string>> column;
+        unordered_map<string, vector<string>> column;
         vector<string> emptyValues;
         column[header] = emptyValues;
         columns.emplace_back(column);

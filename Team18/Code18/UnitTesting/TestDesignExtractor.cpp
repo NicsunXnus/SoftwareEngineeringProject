@@ -130,12 +130,12 @@ namespace UnitTesting
                 designExtractor.extractEntities(processedProgram);
 
                 // Get the maps from the design extractor
-                std::map<std::string, unordered_set<std::string>> procedureMap = *(designExtractor.getProcedureSetMap());
-                std::map<std::string, unordered_set<std::string>> statementMap = *(designExtractor.getStatementSetMap());
-                std::map<std::string, unordered_set<std::string>> variableMap = *(designExtractor.getVariableSetMap());
-                std::map<std::string, unordered_set<std::string>> constantMap = *(designExtractor.getConstantSetMap());
+                std::unordered_map<std::string, unordered_set<std::string>> procedureMap = *(designExtractor.getProcedureSetMap());
+                std::unordered_map<std::string, unordered_set<std::string>> statementMap = *(designExtractor.getStatementSetMap());
+                std::unordered_map<std::string, unordered_set<std::string>> variableMap = *(designExtractor.getVariableSetMap());
+                std::unordered_map<std::string, unordered_set<std::string>> constantMap = *(designExtractor.getConstantSetMap());
 
-                std::map<std::string, shared_ptr<Node>> patternMap = *(designExtractor.getPatternMap());
+                std::unordered_map<std::string, shared_ptr<Node>> patternMap = *(designExtractor.getPatternMap());
 
                 Assert::AreEqual(procedureMap["procedure1"].empty(), true);
 
@@ -237,9 +237,9 @@ namespace UnitTesting
                 std::shared_ptr<ProcessedProgram> processedProgram = SimpleProcessor::processProgram(sourceCode);
                 DesignExtractor designExtractor = DesignExtractor();
                 designExtractor.extractEntities(processedProgram);
-                std::map<std::string, unordered_set<std::string>> callProcNameMap = *(designExtractor.getCallProcNameMap());
-                std::map<std::string, unordered_set<std::string>> readVarNameMap = *(designExtractor.getReadVarNameMap());
-                std::map<std::string, unordered_set<std::string>> printVarNameMap = *(designExtractor.getPrintVarNameMap());
+                std::unordered_map<std::string, unordered_set<std::string>> callProcNameMap = *(designExtractor.getCallProcNameMap());
+                std::unordered_map<std::string, unordered_set<std::string>> readVarNameMap = *(designExtractor.getReadVarNameMap());
+                std::unordered_map<std::string, unordered_set<std::string>> printVarNameMap = *(designExtractor.getPrintVarNameMap());
 
                 // Check the existence of values in callProcNameMap
                 Assert::AreEqual(static_cast<int>(callProcNameMap.size()), 2);
@@ -293,10 +293,10 @@ namespace UnitTesting
                 designExtractor.extractParents(processedProgram);
                 designExtractor.extractFollows(processedProgram);
 
-                std::map<std::string, unordered_set<std::string>> parentsMap = *(designExtractor.getParentMap());
-                std::map<std::string, unordered_set<std::string>> parentsStarMap = *(designExtractor.getParentStarMap());
-                std::map<std::string, unordered_set<std::string>> followsMap = *(designExtractor.getFollowsMap());
-                std::map<std::string, unordered_set<std::string>> followsStarMap = *(designExtractor.getFollowsStarMap());
+                std::unordered_map<std::string, unordered_set<std::string>> parentsMap = *(designExtractor.getParentMap());
+                std::unordered_map<std::string, unordered_set<std::string>> parentsStarMap = *(designExtractor.getParentStarMap());
+                std::unordered_map<std::string, unordered_set<std::string>> followsMap = *(designExtractor.getFollowsMap());
+                std::unordered_map<std::string, unordered_set<std::string>> followsStarMap = *(designExtractor.getFollowsStarMap());
  
                  // Check if the parentsMap is extracted correctly
                  Assert::AreEqual(parentsMap["1"].empty(), true);
@@ -382,7 +382,7 @@ namespace UnitTesting
             DesignExtractor designExtractor = DesignExtractor();
             designExtractor.extractEntities(processedProgram);
 
-            std::map<std::string, std::pair<std::string, std::string>> procedureStatementStorageMap = *(designExtractor.getProcedureStatementStorageMap());
+            std::unordered_map<std::string, std::pair<std::string, std::string>> procedureStatementStorageMap = *(designExtractor.getProcedureStatementStorageMap());
 
             // Check the existence of values in procedureStatementStorageMap
             // Check that the first value for procedure1 is 1 and the second value is 12
@@ -415,8 +415,8 @@ namespace UnitTesting
             DesignExtractor designExtractor = DesignExtractor();
             designExtractor.extractCalls(processedProgram);
 
-            std::map<std::string, unordered_set<std::string>> callsMap = *(designExtractor.getCallsMap());
-            std::map<std::string, unordered_set<std::string>> callsStarMap = *(designExtractor.getCallsStarMap());
+            std::unordered_map<std::string, unordered_set<std::string>> callsMap = *(designExtractor.getCallsMap());
+            std::unordered_map<std::string, unordered_set<std::string>> callsStarMap = *(designExtractor.getCallsStarMap());
 
             // Check the existence of values in callsMap
             Assert::AreEqual(static_cast<int>(callsMap.size()), 4);
@@ -460,7 +460,7 @@ namespace UnitTesting
             DesignExtractor designExtractor = DesignExtractor();
             designExtractor.extractUses(processedProgram);
 
-            std::map<std::string, unordered_set<std::string>> usesAbstractionMap = *(designExtractor.getUsesMap());
+            std::unordered_map<std::string, unordered_set<std::string>> usesAbstractionMap = *(designExtractor.getUsesMap());
 
             // Check useAbstractionMap for the key "x" and that it has values "4", "5", "6", "7", "8", "12", "21", "22", "24", "26" "29", "31", "32", "33", "34" "procedure1", "procedure3", "procedure4" "procedure5"
             Assert::IsTrue(std::find(usesAbstractionMap["x"].begin(), usesAbstractionMap["x"].end(), "4") != usesAbstractionMap["x"].end());
@@ -498,7 +498,7 @@ namespace UnitTesting
             DesignExtractor designExtractor = DesignExtractor();
             designExtractor.extractModifies(processedProgram);
 
-            std::map<std::string, unordered_set<std::string>> modifiesAbstractionMap = *(designExtractor.getModifiesMap());
+            std::unordered_map<std::string, unordered_set<std::string>> modifiesAbstractionMap = *(designExtractor.getModifiesMap());
 
             // Check modifiesAbstractionMap for the key "x" and that it has values "2", "5", "6", "8", "12", "21", "22", "23", "29", "30", "32", "33", "procedure1", "procedure3", "procedure5"
             Assert::IsTrue(std::find(modifiesAbstractionMap["x"].begin(), modifiesAbstractionMap["x"].end(), "2") != modifiesAbstractionMap["x"].end());
@@ -530,7 +530,7 @@ namespace UnitTesting
             DesignExtractor designExtractor = DesignExtractor();
             designExtractor.extractNext(processedProgram);
 
-            std::map<std::string, unordered_set<std::string>> nextMap = *(designExtractor.getNextMap());
+            std::unordered_map<std::string, unordered_set<std::string>> nextMap = *(designExtractor.getNextMap());
 
             // Check the values of nextMap
             Assert::IsTrue(std::find(nextMap["1"].begin(), nextMap["1"].end(), "2") != nextMap["1"].end());
@@ -586,13 +586,13 @@ namespace UnitTesting
             designExtractor.extractAbstractions(processedProgram);
 
             // Get the abstraction map
-            std::map<std::string, unordered_set<std::string>> modifiesMapRef = *(designExtractor.getModifiesMap());
-            std::map<std::string, unordered_set<std::string>> usesMapRef = *(designExtractor.getUsesMap());
-            std::map<std::string, unordered_set<std::string>> followsMapRef = *(designExtractor.getFollowsMap());
-            std::map<std::string, unordered_set<std::string>> followsStarMapRef = *(designExtractor.getFollowsStarMap());
-            std::map<std::string, unordered_set<std::string>> parentMapRef = *(designExtractor.getParentMap());
-            std::map<std::string, unordered_set<std::string>> parentStarMapRef = *(designExtractor.getParentStarMap());
-            std::map<std::string, unordered_set<std::string>> nextMapRef = *(designExtractor.getNextMap());
+            std::unordered_map<std::string, unordered_set<std::string>> modifiesMapRef = *(designExtractor.getModifiesMap());
+            std::unordered_map<std::string, unordered_set<std::string>> usesMapRef = *(designExtractor.getUsesMap());
+            std::unordered_map<std::string, unordered_set<std::string>> followsMapRef = *(designExtractor.getFollowsMap());
+            std::unordered_map<std::string, unordered_set<std::string>> followsStarMapRef = *(designExtractor.getFollowsStarMap());
+            std::unordered_map<std::string, unordered_set<std::string>> parentMapRef = *(designExtractor.getParentMap());
+            std::unordered_map<std::string, unordered_set<std::string>> parentStarMapRef = *(designExtractor.getParentStarMap());
+            std::unordered_map<std::string, unordered_set<std::string>> nextMapRef = *(designExtractor.getNextMap());
 
             // Check the existence of values in usesMap
             Assert::IsTrue(std::find(usesMapRef["x"].begin(), usesMapRef["x"].end(), std::to_string(1)) == usesMapRef["x"].end());

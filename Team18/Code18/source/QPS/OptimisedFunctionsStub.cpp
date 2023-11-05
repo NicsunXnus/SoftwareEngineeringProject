@@ -56,9 +56,9 @@ void OptimisedFunctionsStub::optimiseStepA(vector<shared_ptr<QueryResultsTable>>
 	/*set<string> selectClauses = getHeadersOfTableAsSet(selectClauseTables);
 	for (shared_ptr<QueryResultsTable> table : nonSelectClauseTables) {
 		if (!table->isEmpty()) {
-			vector< map<string, vector<string>> > columns = table->getColumns();
-			vector< map<string, vector<string>> > result;
-			for (map<string, vector<string>> column : columns) {
+			vector< unordered_map<string, vector<string>> > columns = table->getColumns();
+			vector< unordered_map<string, vector<string>> > result;
+			for (unordered_map<string, vector<string>> column : columns) {
 				if (find(selectClauses.begin(), selectClauses.end(), column.begin()->first) != selectClauses.end()) {
 					result.emplace_back(column);
 				}

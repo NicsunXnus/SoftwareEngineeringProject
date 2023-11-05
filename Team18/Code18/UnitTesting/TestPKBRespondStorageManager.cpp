@@ -12,7 +12,7 @@ TEST_CLASS(TestPKBRespondStorageManager) {
   StringMap variableData = {{"x", {"1", "2"}}, {"y", {"2", "5", "7"}}};
   StringMap procedureData = {{"proc1", {"1", "2"}}, {"proc2", {"5", "6", "7"}}};
   StringMap constantData = {{"10", {"1"}}, {"HERE", {"4", "7", "10"}}};
-  map<string, pair<string, string>> procLineData = {{"proc1", {"1", "19"}},
+  unordered_map<string, pair<string, string>> procLineData = {{"proc1", {"1", "19"}},
                                                     {"proc2", {"20", "37"}},
                                                     {"proc3", {"38", "183"}}};
   StringMap callProcNameData = {
@@ -26,8 +26,8 @@ TEST_CLASS(TestPKBRespondStorageManager) {
   shared_ptr<StringMap> procedureMap = make_shared<StringMap>(procedureData);
   shared_ptr<StringMap> constantMap = make_shared<StringMap>(constantData);
 
-  shared_ptr<map<string, pair<string, string>>> procLineMap =
-      make_shared<map<string, pair<string, string>>>(procLineData);
+  shared_ptr<unordered_map<string, pair<string, string>>> procLineMap =
+      make_shared<unordered_map<string, pair<string, string>>>(procLineData);
 
   shared_ptr<StringMap> callProcNameMap =
       make_shared<StringMap>(callProcNameData);
@@ -43,12 +43,12 @@ TEST_CLASS(TestPKBRespondStorageManager) {
   shared_ptr<Node> node_ptr3 =
       ep.nodifyArithmeticExpression("((a + b) * 3 + 5)");
   shared_ptr<Node> node_ptr4 = ep.nodifyConditionalExpression("a > 1");
-  map<string, shared_ptr<Node>> patternData = {{"17", node_ptr1},
+  unordered_map<string, shared_ptr<Node>> patternData = {{"17", node_ptr1},
                                                {"21", node_ptr2},
                                                {"6", node_ptr3},
                                                {"33", node_ptr4}};
-  shared_ptr<map<string, shared_ptr<Node>>> patternMap =
-      make_shared<map<string, shared_ptr<Node>>>(patternData);
+  shared_ptr<unordered_map<string, shared_ptr<Node>>> patternMap =
+      make_shared<unordered_map<string, shared_ptr<Node>>>(patternData);
 
   StringMap usesData = {{"x", {"main", "3", "6"}}};
   StringMap usesDataInverse = {{"main", {"x"}}, {"3", {"x"}}, {"6", {"x"}}};

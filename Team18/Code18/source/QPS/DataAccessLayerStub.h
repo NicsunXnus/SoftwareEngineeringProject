@@ -38,15 +38,15 @@ public:
 
 	unordered_set<string> getAllConstants() override;
 
-	map<string, unordered_set<string>> getVariableMap() override;
+	unordered_map<string, unordered_set<string>> getVariableMap() override;
 
-	map<string, unordered_set<string>> getConstantMap() override;
+	unordered_map<string, unordered_set<string>> getConstantMap() override;
 
 	shared_ptr<Node> getPatternTree(string statement_number) override;
 
-	map<string, unordered_set<string>> getClause(ABSTRACTION abstraction) override;
+	unordered_map<string, unordered_set<string>> getClause(ABSTRACTION abstraction) override;
 
-	map<string, unordered_set<string>> getClauseInverse(ABSTRACTION abstraction) override;
+	unordered_map<string, unordered_set<string>> getClauseInverse(ABSTRACTION abstraction) override;
 
 	StringMap getCallProcNames() override;
 	StringMap getReadVarNames() override;
