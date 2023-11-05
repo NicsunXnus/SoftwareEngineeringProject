@@ -59,7 +59,7 @@ void ExtendedCFG::DFSWhileHelper(stack<shared_ptr<DFSPathNode>>& incompletePaths
 void ExtendedCFG::DFSEncounteredCacheHelper(unordered_set<shared_ptr<DFSPathNode>>& finishedPaths, shared_ptr<DFSPathNode>& curr) {
   string currLineNum = curr->getLineNumber();
   unordered_set<shared_ptr<DFSPathNode>> cachedPaths = frozenPaths.at(currLineNum);
-  unordered_set<shared_ptr<DFSPathNode>> restoredPaths = DFSPathNode::joinDescendents(curr, cachedPaths);
+  unordered_set<shared_ptr<DFSPathNode>> restoredPaths = DFSPathNode::joinDescendants(curr, cachedPaths);
   finishedPaths.insert(restoredPaths.begin(), restoredPaths.end());
 }
 
