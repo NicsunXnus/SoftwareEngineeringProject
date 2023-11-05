@@ -87,7 +87,7 @@
     <ClInclude Include="..\source\ExceptionMessages.h" />
     <ClInclude Include="..\source\HelperFunctions.h" />
     <ClInclude Include="..\source\QPS\CFG\CFG.h" />
-    <ClInclude Include="..\source\QPS\CFG\CFGNode.h" />
+    <ClInclude Include="..\source\QPS\CFG\DFSPathNode.h" />
     <ClInclude Include="..\source\QPS\CFG\CFGCache.h" />
     <ClInclude Include="..\source\QPS\QRTCache.h" />
     <ClInclude Include="..\source\ThreadPool.h" />

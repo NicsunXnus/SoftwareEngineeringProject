@@ -18,16 +18,110 @@ using namespace std;
 class ExtendedCFG {
 private:
   map<string, pair<string, string>> stmtNumBoundaries; // boundaries of each procedure in terms of statement numbers
+  unordered_set<string> procNames;
   StringMap next; // children nodes
   StringMap modifies; // variables that this statement number modifies
   StringMap uses; // variables that this statement number uses
   map<ENTITY, unordered_set<string>> entityMap;
 
   StringMap nextStar; // <Line Number, Next*>, internally map<string, unordered_set<string>>
-  StringMap affects; // Affects(s, collection<s>) is True
+  StringMap nextStarInverse;
+  StringMap affects; // Affects(s, collection<other_s>) is True
+  StringMap affectsInverse; // AffectedBy(s, other_s) is True; 
 
   unordered_set<string> completed; // Stores line numbers of statements that have been evaluated completely
   unordered_map<string, unordered_set<shared_ptr<DFSPathNode>>> frozenPaths; // line number : set<frozen paths>
+
+  string procedureNameContainingThis(string lineNumber) {
+    for (const auto& p : stmtNumBoundaries) {
+      string procName = p.first;
+      pair<string, string> boundaries = p.second;
+      int low = stoi(boundaries.first);
+      int high = stoi(boundaries.second);
+      int lineNumInt = stoi(lineNumber);
+      if (lineNumInt >= low && lineNumInt <= high) {
+        return procName;
+      }
+    }
+  }
+
+  bool isInSameProcedure(string lineNumber1, string lineNumber2) {
+    return procedureNameContainingThis(lineNumber1) == procedureNameContainingThis(lineNumber2);
+  }
+
+  string getFirstLineNumberOfProc(string procName) {
+    return stmtNumBoundaries.at(procName).first;
+  }
+
+  bool isCompleted(string stmtNumber) {
+    return completed.find(stmtNumber) != completed.end();
+  }
+
+  void ensureCompleted(string lineNumber) {
+    if (!isCompleted(lineNumber)) {
+      DFS(lineNumber);
+    }
+  }
+
+  void ensureProcCompleted(string procName) {
+    string firstLine = getFirstLineNumberOfProc(procName);
+    ensureCompleted(firstLine);
+  }
+
+  bool intIntHelper(string from, string to) {
+    if (!isInSameProcedure(from, to)) {
+      return false;
+    }
+    ensureCompleted(from);
+  }
+
+  void synIntHelper(string lineNumber) {
+    string procName = procedureNameContainingThis(lineNumber);
+    ensureProcCompleted(procName);
+  }
+
+  bool isStmtType(string stmtNumber, ENTITY entity) {
+    unordered_set<string> entitySet = entityMap.at(entity);
+    return entitySet.find(stmtNumber) != entitySet.end();
+  }
+
+  void addNextStar(string lineNumber, unordered_set<string> toAdd) {
+    for (string s : toAdd) {
+      addNextStar(lineNumber, s);
+    }
+  }
+
+  void addNextStar(string lineNumber, string toAdd) {
+    if (nextStar.find(lineNumber) == nextStar.end()) {
+      nextStar.emplace(lineNumber, unordered_set<string>{ toAdd });
+    }
+    else {
+      nextStar.at(lineNumber).insert(toAdd);
+    }
+
+    if (nextStarInverse.find(lineNumber) == nextStarInverse.end()) {
+      nextStarInverse.emplace(toAdd, unordered_set<string>{lineNumber});
+    }
+    else {
+      nextStarInverse.at(toAdd).insert(lineNumber);
+    }
+  }
+
+  void addAffects(string lineNumber, string toAdd) {
+    if (affects.find(lineNumber) == affects.end()) {
+      affects.emplace(lineNumber, unordered_set<string>{ toAdd });
+    }
+    else {
+      affects.at(lineNumber).insert(toAdd);
+    }
+
+    if (affectsInverse.find(lineNumber) == affectsInverse.end()) {
+      affectsInverse.emplace(toAdd, unordered_set<string>{lineNumber});
+    }
+    else {
+      affectsInverse.at(toAdd).insert(lineNumber);
+    }
+  }
 
   void DFS(string start, bool forceTraverse=false) {
     stack<shared_ptr<DFSPathNode>> incompletePaths;
@@ -105,20 +199,6 @@ private:
     }
   }
 
-  bool isStmtType(string stmtNumber, ENTITY entity) {
-    unordered_set<string> entitySet = entityMap.at(entity);
-    return entitySet.find(stmtNumber) != entitySet.end();
-  }
-
-  void addToAffects(string lineNumber, string toAdd) {
-    if (affects.find(lineNumber) == affects.end()) {
-      affects.emplace(lineNumber, unordered_set<string>{ toAdd });
-    }
-    else {
-      affects.at(lineNumber).insert(toAdd);
-    }
-  }
-
   void storePath(string lineNumber, shared_ptr<DFSPathNode>& curr) {
     if (frozenPaths.find(lineNumber) == frozenPaths.end()) {
       frozenPaths.emplace(lineNumber, unordered_set<shared_ptr<DFSPathNode>>{ curr });
@@ -127,6 +207,7 @@ private:
       frozenPaths.at(lineNumber).insert(curr);
     }    
   }
+
   void RestoreDescendants(deque<string>& descendants, shared_ptr<DFSPathNode>& curr) {
     bool skippedFirst = false;
     while (curr != nullptr) {
@@ -139,6 +220,7 @@ private:
       curr = curr->getChild();
     }
   }
+
   void UnrollPathsIteratorHelper(string currLineNumber, deque<string>& descendants, shared_ptr<DFSPathNode>& curr) {
     completed.insert(currLineNumber);
     storePath(currLineNumber, curr);
@@ -148,6 +230,7 @@ private:
     // Hence, all children spawned off, despite having weak pointers to their ancestors, the root ancestor, the start node is kept strong.
     // During unroll paths, the path is unrolled back to the start and then stored, and function returns, and DFS returns, so no pointers are lost.
   }
+
   void unrollPaths(unordered_set<shared_ptr<DFSPathNode>>& finishedPaths) {
     for (shared_ptr<DFSPathNode> currPath : finishedPaths) {
       bool terminalNode = true;
@@ -163,9 +246,7 @@ private:
         }
         // Not terminal Node
         // For Next*
-        unordered_set<string>& currNextStar = nextStar[currLineNumber];
-        unordered_set<string>& prevNextStar = nextStar[descendants[0]];
-        currNextStar.insert(prevNextStar.begin(), prevNextStar.end());
+        addNextStar(currLineNumber, descendants[0]);
         // For Affects
         if (!isStmtType(currLineNumber, ASSIGN)) {
           UnrollPathsIteratorHelper(currLineNumber, descendants, curr);
@@ -181,7 +262,7 @@ private:
             unordered_set<string> descVarUsed = uses.at(descLineNumber);
             bool varExistsInUsed = descVarUsed.find(currVarModified) != descVarUsed.end();
             if (varExistsInUsed) { //encounteredModifies should be false here due to for loop condition
-              addToAffects(currLineNumber, descLineNumber);
+              addAffects(currLineNumber, descLineNumber);
             }
           }
           bool isReadAssignCall = isStmtType(descLineNumber, READ) ||
@@ -202,7 +283,7 @@ private:
   }
 public:
   ExtendedCFG(shared_ptr<DataAccessLayer> dataAccessLayer) {
-    unordered_set<string> procNames = dataAccessLayer->getAllProcedures();
+    procNames = dataAccessLayer->getAllProcedures();
     for (string procName : procNames) {
       pair<string, string> procBoundaries = dataAccessLayer->getProcLines(procName);
       stmtNumBoundaries.emplace(procName, procBoundaries);
@@ -219,56 +300,56 @@ public:
       {CALL, dataAccessLayer->getEntity(CALL)},
     };
   }
-  string procedureNameContainingThis(string lineNumber) {
-
-  }
-
-  bool isInSameProcedure(string lineNumber1, string lineNumber2) {
-    return procedureNameContainingThis(lineNumber1) == procedureNameContainingThis(lineNumber2);
-  }
-
-  bool isCompleted(string stmtNumber) {
-    return completed.find(stmtNumber) != completed.end();
-  }
-
+  // NEXT STAR
   bool nextStarIntInt(string from, string to) {
-    if (!isInSameProcedure(from, to)) {
-      return false;
-    }
-    if (!isCompleted(from)) {
-      DFS(from);
-    }
+    if (!intIntHelper(from, to)) return false;
     unordered_set<string> fromNextStar = nextStar.at(from);
     return fromNextStar.find(to) != fromNextStar.end();
   }
-  unordered_set<string> nextStarSynInt(string to) {
 
+  unordered_set<string> nextStarSynInt(string to) {
+    synIntHelper(to);
+    unordered_set<string> toNextStarInv = nextStarInverse.at(to);
+    return toNextStarInv;
   }
+
   unordered_set<string> nextStarIntSyn(string from) {
-    if (!isCompleted(from)) {
-      DFS(from);
-    }
+    ensureCompleted(from);
     unordered_set<string> fromNextStar = nextStar.at(from);
     return fromNextStar;
   }
-  unordered_set<pair<string, string>> nextStarSynSyn() {
 
+  StringMap nextStarSynSyn() {
+    for (string procName : procNames) {
+      ensureProcCompleted(procName);
+    }
+    return nextStar;
   }
   
-
-  // Affects wrapper
+  // AFFECTS
   bool affectsIntInt(string from, string to) {
-
-
+    if (!intIntHelper(from, to)) return false;
+    unordered_set<string> fromAffects = affects.at(from);
+    return fromAffects.find(to) != fromAffects.end();
   }
+
   unordered_set<string> affectsSynInt(string to) {
-
+    synIntHelper(to);
+    unordered_set<string> toAffectsInverse = affectsInverse.at(to);
+    return toAffectsInverse;
   }
+
   unordered_set<string> affectsIntSyn(string from) {
-
+    ensureCompleted(from);
+    unordered_set<string> fromAffects = affects.at(from);
+    return fromAffects;
   }
-  unordered_set<pair<string, string>> affectsSynSyn() {
 
+  StringMap affectsSynSyn() {
+    for (string procName : procNames) {
+      ensureProcCompleted(procName);
+    }
+    return affects;
   }
 };
 
