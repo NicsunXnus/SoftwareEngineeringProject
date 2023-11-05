@@ -40,6 +40,9 @@
     <Filter Include="Source Files\PKB\StorageClasses">
       <UniqueIdentifier>{6fc53631-e77e-420a-b73c-5c0156b11b3c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\QPS\CFG">
+      <UniqueIdentifier>{7c3effb7-a592-4814-829f-78a2c9534196}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\ApplicationWrapper.cpp">
@@ -234,8 +237,8 @@
     <ClCompile Include="..\source\QPS\QRTCache.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\QPS\CFG.cpp">
-      <Filter>Source Files\QPS</Filter>
+    <ClCompile Include="..\source\QPS\CFG\CFG.cpp">
+      <Filter>Source Files\QPS\CFG</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -516,11 +519,11 @@
     <ClInclude Include="..\source\QPS\QRTCache.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\QPS\CFG.h">
-      <Filter>Source Files\QPS</Filter>
-    </ClInclude>
     <ClInclude Include="..\source\Constants\QPSConstants.h">
       <Filter>Source Files\Constants</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\CFG\CFG.h">
+      <Filter>Source Files\QPS\CFG</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
