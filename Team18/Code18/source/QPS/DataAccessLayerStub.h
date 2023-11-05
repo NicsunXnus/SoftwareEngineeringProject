@@ -4,8 +4,8 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
-#include "../PKB.h"
-#include "../Constants/QPSPKB.h"
+#include "../PKB/PKB.h"
+#include "../Constants/DesignEnums.h"
 #include "DataAccessLayer.h"
 #include "../QPS/QueryResultsTable.h"
 #include "../QPS/QueryObjects/ClauseArg.h"
@@ -30,19 +30,27 @@ public:
 	 */
 	~DataAccessLayerStub() {};
 
-	vector<string> getEntity(ENTITY type);
+	unordered_set<string> getEntity(ENTITY type) override;
 
-	vector<string> getAllProcedures();
+	unordered_set<string> getAllProcedures() override;
 
-	vector<string> getAllVariables();
+	unordered_set<string> getAllVariables() override;
 
-	vector<string> getAllConstants();
+	unordered_set<string> getAllConstants() override;
 
-	map<string, vector<string>> getVariableMap();
+	map<string, unordered_set<string>> getVariableMap() override;
 
-	map<string, vector<string>> getConstantMap();
+	map<string, unordered_set<string>> getConstantMap() override;
 
-	map<string, vector<string>> getClause(ABSTRACTION abstraction);
+	shared_ptr<Node> getPatternTree(string statement_number) override;
+
+	map<string, unordered_set<string>> getClause(ABSTRACTION abstraction) override;
+
+	map<string, unordered_set<string>> getClauseInverse(ABSTRACTION abstraction) override;
+
+	StringMap getCallProcNames() override;
+	StringMap getReadVarNames() override;
+	StringMap getPrintVarNames() override;
 
 
 };

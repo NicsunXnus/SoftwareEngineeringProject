@@ -1,0 +1,100 @@
+1 - non-ent ref
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(v, s)
+SemanticError
+5000
+2 - non-ent ref
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(s, v)
+SemanticError
+5000
+3 - different nesting
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(6, 7)
+
+5000
+4 - invalid integer
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(06, 7)
+SyntaxError
+5000
+5 - invalid inputs
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(_6, 7)
+SyntaxError
+5000
+6 - invalid inputs
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(6, 7_)
+SyntaxError
+5000
+7 - invalid inputs
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Follows(6, s_)
+SyntaxError
+5000
+8 - invalid inputs
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select r such that Follows(s, __)
+SyntaxError
+5000
+9 - out of bounds
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select r such that Follows(50, 51)
+
+5000
+10 - invalid character
+stmt ſ́,ſ́2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select r such that Follows(ſ́, ſ́2)
+SyntaxError
+5000
+11 - same statement
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select r such that Follows(s, s)
+
+5000
+12 - double declaration
+stmt s, s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select r such that Follows(s, s)
+SemanticError
+5000
+13 - invalid inputs
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select r such that Follows("6", "7")
+SyntaxError
+5000
+14 - invalid inputs
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select r such that Follows(6;7)
+SyntaxError
+5000
+15 - whitespace galore (success)
+stmt s    ;    read    r  ;    print   pn   ;    call  cl; while w; if i; assign a; variable v; constant c; procedure p;
+    Select      pn                     such                     that               Follows                                     (                1      ,     2     )       
+3,18,19,27,48
+5000
+16 - invalid inputs
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select r such that Follows(6,7);
+SyntaxError
+5000
+17 - invalid inputs
+stmt s;; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select r such that Follows(6,7)
+SyntaxError
+5000
+18 - different procedures
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select r such that Follows(27,28)
+
+5000
+19 - non capitalised
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select r such that follows(28,cl)
+SyntaxError
+5000
+20 - such that capitalised
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select r sUch that Follows(cl,29)
+SyntaxError
+5000

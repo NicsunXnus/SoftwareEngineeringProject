@@ -12,7 +12,8 @@ namespace UnitTesting
 	TEST_CLASS(TestQPSQueryResultsTable)
 	{
 	public:
-		TEST_METHOD(TestMajorTableOperationsLeftToRight) {
+        //PURELY FOR VISUALISATION
+		/*TEST_METHOD(TestMajorTableOperationsLeftToRight) {
             map<string, vector<string>> map1;
             map1.insert({ "s3", {"5", "5", "7", "8", "2"} });
 
@@ -144,7 +145,7 @@ namespace UnitTesting
 
             Logger::WriteMessage("Output of table operations:\n");
             Logger::WriteMessage(output.str().c_str());
-        }
+        }*/
 
         TEST_METHOD(TestCrossProduct) {
             map<string, vector<string>> map1;
@@ -188,6 +189,37 @@ namespace UnitTesting
             shared_ptr<QueryResultsTable> immediate2 = tab1->innerJoin(tab2);
             bool isSame = compare_vectors_of_maps(immediate1->getColumns() ,immediate2->getColumns());
             assert(isSame);
+        }
+
+        TEST_METHOD(TestFilterCol1Col2) {
+            map<string, vector<string>> map1;
+            map1.insert({ "s3", {"5", "5", "7", "8", "2"} });
+
+            map<string, vector<string>> map2;
+            map2.insert({ "v1", {"y", "z", "x", "y", "y"} });
+
+            map<string, vector<string>> map3;
+            map3.insert({ "s4", {"5", "5", "7", "8", "2"} });
+
+            map<string, vector<string>> map4;
+            map4.insert({ "v2", {"y", "z", "x1", "y1", "y1"} });
+
+            vector<map<string, vector<string>>> columnsUses = { map1,map2,map3, map4 };
+            shared_ptr<QueryResultsTable> tab1 = make_shared<QueryResultsTable>(columnsUses);
+            shared_ptr<QueryResultsTable> tab2 = tab1->innerJoinOnTwoColumns("v1", "v2");
+            
+            tab2->getColumnData("v2");
+            Assert::IsTrue(tab2->getColumnData("v1") == tab2->getColumnData("v2"));
+        
+        }
+
+        TEST_METHOD(TestFilterCol1Col2Empty) {
+            shared_ptr<QueryResultsTable> tab1 = make_shared<QueryResultsTable>();
+            shared_ptr<QueryResultsTable> tab2 = tab1->innerJoinOnTwoColumns("v1", "v2");
+
+            tab2->getColumnData("v2");
+            Assert::IsTrue(tab2->getColumnData("v1") == tab2->getColumnData("v2"));
+
         }
 
 	};

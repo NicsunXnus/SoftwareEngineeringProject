@@ -13,183 +13,173 @@ stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant
 Select a such that Uses(a, v)
 3, 4, 12, 13
 5000
-4 - synonym-synonym, right: var, left: procedure
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select p such that Uses(p, v)
-first
-5000
-5 - synonym-synonym, right: var, left: read (invalid)
+4 - synonym-synonym, right: var, left: read (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select r such that Uses(r, v)
-SemanticError
+
 5000
-6 - synonym-synonym, right: var, left: stmt, select v
+5 - synonym-synonym, right: var, left: stmt, select v
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Uses(s, v)
 a, b, c, d, e, f
 5000
-7 - synonym-synonym, right: var, left: var (invalid)
+6 - synonym-synonym, right: var, left: var (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Uses(v, v)
-SemanticError
+
 5000
-8 - synonym-synonym, right: var, left: print
+7 - synonym-synonym, right: var, left: print
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Uses(pn, v)
 e, f, b
 5000
-9 - synonym-synonym, right: var, left: constant (invalid)
+8 - synonym-synonym, right: var, left: constant (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select c such that Uses(c, v)
-SemanticError
+
 5000
-10 - synonym-synonym, right: var, left: call
+9 - synonym-synonym, right: var, left: call
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select cl such that Uses(cl, v)
 
 5000
-11 - synonym-synonym, right: var, left: if
+10 - synonym-synonym, right: var, left: if
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select i such that Uses(i, v)
 6
 5000
-12 - synonym-synonym, right: var, left: while
+11 - synonym-synonym, right: var, left: while
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select w such that Uses(w, v)
 5
 5000
-13 - synonym-synonym, right: var, left: while, mismatch, exists. NOTE: Does not exist will be below when dealing with integers
+12 - synonym-synonym, right: var, left: while, mismatch, exists. NOTE: Does not exist will be below when dealing with integers
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select i such that Uses(w, v)
 6
 5000
-14 - synonym-wildcard, left: stmt
+13 - synonym-wildcard, left: stmt
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Uses(s, _)
 3, 4, 5, 6, 7, 10, 11, 12, 13
 5000
-15 - synonym-wildcard, left: assignment
+14 - synonym-wildcard, left: assignment
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select a such that Uses(a, _)
 3, 4, 12, 13
 5000
-16 - synonym-wildcard, left: procedure
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select p such that Uses(p, _)
-first
-5000
-17 - synonym-wildcard, left: read (invalid)
+15 - synonym-wildcard, left: read (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select r such that Uses(r, _)
-SemanticError
+
 5000
-18 - synonym-wildcard, left: var (invalid)
+16 - synonym-wildcard, left: var (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Uses(v, _)
-SemanticError
+
 5000
-19 - synonym-wildcard, left: print
+17 - synonym-wildcard, left: print
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select pn such that Uses(pn, _)
 7, 10, 11
 5000
-20 - synonym-wildcard, left: constant (invalid)
+18 - synonym-wildcard, left: constant (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select c such that Uses(c, _)
-SemanticError
+
 5000
-21 - synonym-wildcard, left: call 
+19 - synonym-wildcard, left: call 
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select c such that Uses(cl, _)
 
 5000
-22 - synonym-wildcard, left: if
+20 - synonym-wildcard, left: if
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select i such that Uses(i, _)
 6
 5000
-23 - synonym-wildcard, left: while
+21 - synonym-wildcard, left: while
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select w such that Uses(w, _)
 5
 5000
-24 - synonym-wildcard, left: while, mismatch, exists
+22 - synonym-wildcard, left: while, mismatch, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select c such that Uses(w, _)
 1, 2
 5000
-25 - synonym-identity, left: stmt, right: variable name
+23 - synonym-identity, left: stmt, right: variable name
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Uses(s, "a")
-3, 6, 13
+3, 5, 6, 13
 5000
-26 - synonym-identity, left: stmt, right: constant (invalid)
+24 - synonym-identity, left: stmt, right: constant (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Uses(s, "1")
-SemanticError
+SyntaxError
 5000
-27 - synonym-identity, left: stmt, right: does not exist
+25 - synonym-identity, left: stmt, right: does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select s such that Uses(s, "x")
 
 5000
-28 - synonym-identity, left: stmt, right: variable name, mismatch, exists
+26 - synonym-identity, left: stmt, right: variable name, mismatch, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select p such that Uses(s, "a")
 first
 5000
-29 - synonym-identity, left: stmt, right: variable name, mismatch, does not exist
+27 - synonym-identity, left: stmt, right: variable name, mismatch, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select p such that Uses(s, "x")
 
 5000
-30 - integer-synonym, right: stmt (non-var), stmt number inside
+28 - integer-synonym, right: stmt (non-var), stmt number inside
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select r such that Uses(1, s)
 SemanticError
 5000
-31 - integer-synonym, right: variable, stmt number inside
+29 - integer-synonym, right: variable, stmt number inside
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Uses(3, v)
 a, b
 5000
-32 - integer-synonym, right: variable, stmt number out of bounds
+30 - integer-synonym, right: variable, stmt number out of bounds
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Uses(99999, v)
 
 5000
-33 - integer-synonym, right: variable, stmt number is 0
+31 - integer-synonym, right: variable, stmt number out of bounds
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select v such that Uses(0, v)
+Select v such that Uses(50, v)
 
 5000
-34 - integer-wildcard
+32 - integer-wildcard
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Uses(3, _)
 a, b, c, d, e, f
 5000
-35 - integer-identity, exists in stmt
+33 - integer-identity, exists in stmt
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Uses(3, "a")
 a, b, c, d, e, f
 5000
-36 - integer-identity, does not exists in stmt but in prg
+34 - integer-identity, does not exists in stmt but in prg
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Uses(3, "c")
 
 5000
-37 - integer-identity, does not exists in prg
+35 - integer-identity, does not exists in prg
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Uses(1, "x")
 
 5000
-38 - identity-x, line number in string (invalid)
+36 - identity-x, line number in string (invalid)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select v such that Uses("1", v)
-SemanticError
+SyntaxError
 5000
-39 - identity-x, procedure name in string (invalid)
+37 - wildcard-x
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select v such that Uses("first", v)
+Select v such that Uses(_, v)
 SemanticError
 5000

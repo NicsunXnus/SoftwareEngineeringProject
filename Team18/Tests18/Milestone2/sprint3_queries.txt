@@ -1,0 +1,60 @@
+1 - Calls - synonym, synonym
+procedure p, q;
+Select p such that Calls(p, q)
+procedure1, procedure3, procedure4, procedure5
+5000
+2 - Calls - synonym, _
+procedure p;
+Select p such that Calls(p, _)
+procedure1, procedure3, procedure4, procedure5
+5000
+3 - Calls - synonym, ident (valid)
+procedure p;
+Select p such that Calls(p, "procedure2")
+procedure1, procedure4, procedure5
+5000
+4 - Calls - synonym, ident (invalid)
+procedure p;
+Select p such that Calls(p, "InvalidProcedure")
+
+5000
+5 - Calls - _, synonym
+procedure p;
+Select p such that Calls(_, p)
+procedure2, procedure3, procedure4, procedure5
+5000
+6 - Calls - _, _
+procedure p;
+Select p such that Calls(_, _)
+procedure1, procedure2, procedure3, procedure4, procedure5
+5000
+9 - Calls - ident (valid), synonym
+procedure p;
+Select p such that Calls("procedure3", p)
+procedure4, procedure5
+5000
+1 - CallsT - synonym, synonym
+procedure p, q;
+Select p such that Calls*(p, q)
+procedure1, procedure3, procedure4, procedure5
+5000
+2 - CallsT - synonym, _
+procedure p;
+Select p such that Calls*(p, _)
+procedure1, procedure3, procedure4, procedure5
+5000
+3 - CallsT - synonym, ident (valid)
+procedure p;
+Select p such that Calls*(p, "procedure2")
+procedure1, procedure3, procedure4, procedure5
+5000
+4 - CallsT - synonym, ident (invalid)
+procedure p;
+Select p such that Calls*(p, "InvalidProcedure")
+
+5000
+5 - CallsT - _, synonym
+procedure p;
+Select p such that Calls*(_, p)
+procedure2, procedure3, procedure4, procedure5
+5000

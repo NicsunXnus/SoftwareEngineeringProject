@@ -1,5 +1,6 @@
 #pragma once
 #include "ApplicationWrapper.h"
+#include "SP/DesignExtractor/DesignExtractor.h"
 
 // a default constructor
 ApplicationWrapper::ApplicationWrapper() {
@@ -13,20 +14,14 @@ ApplicationWrapper::~ApplicationWrapper() {
 }
 
 // method for parsing the SIMPLE source code
-void ApplicationWrapper::directParse(std::string_view sourceCode) {
-  std::shared_ptr<TokenizedProgram> tokenizedProgram = SimpleTokenizer::tokenizeProgram(sourceCode);
-
-  std::shared_ptr<ProgramNode> prg = ASTBuilder::parseProgram(tokenizedProgram);
-  
+void ApplicationWrapper::directParse(string_view sourceCode, bool useMultithread) {
+  shared_ptr<ProcessedProgram> processedProgram = SimpleProcessor::processProgram(sourceCode);
   DesignExtractor designExtractor = DesignExtractor();
-  designExtractor.extractEntities(prg);
-  designExtractor.extractAbstractions(prg);
-  designExtractor.insertEntities();
-  designExtractor.insertAbstractions();
+  designExtractor.extractAndInsertAll(processedProgram, useMultithread);
 }
 
 // method to evaluating a query
-void ApplicationWrapper::evaluate(std::string query, std::list<std::string>& results) {
+void ApplicationWrapper::evaluate(string query, list<string>& results) {
   // call your evaluator to evaluate the query here
   // ...code to evaluate query...
 
@@ -34,9 +29,9 @@ void ApplicationWrapper::evaluate(std::string query, std::list<std::string>& res
     // each result must be a string.
     cout << "In AppWrapper, starting query evaluation\n";
     shared_ptr<QueryDriver> driver = make_shared<QueryDriver>(query);
-    //std::cout << "AppWrap::Eval" << std::endl;
+    //cout << "AppWrap::Eval" << endl;
     list<string>queryResults = driver->execute();
-    //std::cout << queryResults.size() << std::endl;
+    //cout << queryResults.size() << endl;
     // chat-gpt code
-    std::copy(queryResults.begin(), queryResults.end(), std::back_inserter(results));
+    copy(queryResults.begin(), queryResults.end(), back_inserter(results));
 }

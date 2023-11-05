@@ -1,0 +1,175 @@
+1 - Uses - procIdent, varSyn
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select v such that Uses("procedure1", v)
+y, x, z, a, f, b, c, d, e
+5000
+2 - Uses - procVar, varSyn
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select v such that Uses(p, v)
+y, x, z, a, f, b, c, d, e
+5000
+3 - Uses - procIdent2, varSyn
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select v such that Uses("procedure2", v)
+b, c, d, e, f, a, x, y
+5000
+4 - Uses - procSyn, varIdent
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select p such that Uses(p, "f")
+procedure1, procedure2
+5000
+5 - Uses - procSyn, varIdent2
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select p such that Uses(p, "y")
+procedure1, procedure2, procedure3
+5000
+6 - Uses - procSyn, nonexistentVar
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select p such that Uses(p, "i")
+
+5000
+7 - Uses - callLine, var
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select v such that Uses(11, v)
+b, c, d, e, f, a, x, y
+5000
+8 - Uses - procSyn, wild
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select p such that Uses(p, _)
+procedure1, procedure2, procedure3
+5000
+9 - Uses - invalidStmt, varSyn
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select v such that Uses(2, v)
+
+5000
+10 - Uses - emptyProcIdent, varSyn
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select v such that Uses("procedure4", v)
+
+5000
+11 - Uses - nonexistentProcIdent, varSyn
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select v such that Uses("procedure5", v)
+
+5000
+12 - Uses - procSyn, nonexistentVarIdent
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select v such that Uses("procedure5", "i")
+
+5000
+13 - Uses - wildcard, nonexistentVarIdent
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select v such that Uses(_, v)
+SemanticError
+5000
+14 - Uses - procSyn, invalidSynEntity
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select v such that Uses(p, pn)
+SemanticError
+5000
+15 - Uses - procSyn, invalidArg
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select v such that Uses(p, 11)
+SyntaxError
+5000
+16 - Uses - procSyn, undeclaredArg
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select v such that Uses(p, var)
+SemanticError
+5000
+17 - Uses - incomplete brackets
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select v such that Uses(p, v
+SyntaxError
+5000
+18 - Uses - incomplete brackets2
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select v such that Uses p, v)
+SyntaxError
+5000
+19 - Uses - no comma
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select v such that Uses(p v)
+SyntaxError
+5000
+20 - Uses - no clause
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select v such that Uses
+SyntaxError
+5000
+21 - Uses - extra symbol at end
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select v such that Uses(p,v);
+SyntaxError
+5000
+22 - Uses - procIdent, varSyn, patt varSyn, wc
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select v such that Uses("procedure1", v) pattern a (v,_)
+z, x, a, f, y
+5000
+23 - Uses - procVar, varSyn, patt varSyn, exactmatch
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select v such that Uses("procedure3", v) pattern a (v,"y")
+x
+5000
+24 - Uses - procIdent2, varSyn, patt varSyn, partialmatch
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select v such that Uses("procedure2", v) pattern a (v,_"y"_)
+x, y
+5000
+25 - Uses - procSyn, varIdent, patt varSyn, non exist partial match
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select p such that Uses(p, "f") pattern a (v, _"(b+c) * d"_)
+
+5000
+26 - Uses - procSyn, varIdent2, patt varSyn, exist partial match
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select p such that Uses(p, "y") pattern a (v, _"c * d / e"_)
+procedure1, procedure2, procedure3
+5000
+27 - Uses - procSyn, nonexistentVar, no space pattern
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select p such that Uses(p, "i") patterna (v, _"c * d / e"_)
+SyntaxError
+5000
+28 - Uses - callLine, var, missing syn-assign pattern
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select v such that Uses(11, v) pattern (v, _"c * d / e"_)
+SyntaxError
+5000
+29 - Uses - procSyn, var, pattern varSyn, exact match
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v, v1; constant c1; procedure p;
+Select p such that Uses(p, v) pattern a (v, _"2"_)
+procedure1
+5000
+30 - Uses - invalidStmt, varSyn, pattern invalid syn
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select v such that Uses(2, v) pattern pn (v, _"c * d / e"_)
+SemanticError
+5000
+31 - Uses - emptyProcIdent, varSyn, incomplete quote exact
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select v such that Uses("procedure4", v) pattern a (v, "e)
+SyntaxError
+5000
+32 - Uses - nonexistentProcIdent, varSyn, incomplete quote exact2
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select v such that Uses("procedure5", v) pattern a (v, e")
+SyntaxError
+5000
+33 - Uses - nonexistentProcIdent, varSyn, incomplete bracket
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select v such that Uses("procedure5", v) pattern a (v, "e"
+SyntaxError
+5000
+34 - Uses - nonexistentProcIdent, varSyn, incomplete bracket 2
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select v such that Uses("procedure5", v) pattern a v, "e")
+SyntaxError
+5000
+35 - Uses - nonexistentProcIdent, varSyn, additional symbol
+stmt s; read r; print pn; call c; while w; if i; assign a; variable v; constant c1; procedure p;
+Select v such that Uses("procedure5", v) pattern a (v, "e");
+SyntaxError
+5000

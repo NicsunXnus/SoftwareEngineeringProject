@@ -56,7 +56,7 @@ SemanticError
 12 - empty declaration
 
 Select s
-SyntaxError
+SemanticError
 5000
 13 - multi declaration
 stmt s1, s2; read r1, r2;

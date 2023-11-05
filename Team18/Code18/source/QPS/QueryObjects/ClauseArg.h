@@ -5,7 +5,8 @@
 #include <string_view>
 #include "SynonymObjects.h"
 #include "../../HelperFunctions.h"
-#include "../../Constants/QPSPKB.h"
+#include "../../Constants/DesignEnums.h"
+
 
 
 using namespace std::string_view_literals;
@@ -26,23 +27,32 @@ private:
 	// indicates if the clauseArg is a partial pattern match
 	bool isPartialMatch;
 
-	bool isNum;
-
 public:
-	ClauseArg(string_view arg, std::shared_ptr<SynonymObject> synonym, bool isPartialMatch=false)
+	ClauseArg(string_view arg, std::shared_ptr<SynonymObject> synonym=nullptr, bool isPartialMatch=false)
 		: arg{ arg }, synonym{ synonym }, isPartialMatch{ isPartialMatch } {};
 
 	string_view getArg() {
 		return this->arg;
 	}
 
+	string_view getArgValue() {
+		if (isIdentifier() || isExpr()) {
+			return getQuotesContent();
+		}
+		return this->arg;
+	}
+
 	// function to check if argument is an integer
 	bool isInteger() {
-		bool isNum{ true };
 		for (int i = 0; i < static_cast<int>(arg.size()); ++i) {
-			isNum = isNum && isdigit(arg[i]);
+			if (i == 0 && arg[i] == '0' && static_cast<int>(arg.size()) != 1) { // number has a leading 0
+				return false;
+			}
+			if (!isdigit(arg[i])) { // number has a non digit
+				return false;
+			}
 		}
-		return isNum;
+		return true;
 	}
 
 	// function to check if clauseArg is a wildcard
@@ -67,18 +77,20 @@ public:
 		string_view identifierName = arg.substr(1, arg.size() - 2);
 		return (arg[0] == '"') && (arg.back() == '"') && (SynonymObject::isValid(identifierName));
 	}
-	// returns the identifier without "
-	string_view getIdentifier() {
+
+	// returns the argument without "
+	string_view getQuotesContent() {
 		string_view identifierName = arg.substr(1, arg.size() - 2);
 		return identifierName;
 	}
 
+	// checks for open close quotes in argument
 	bool isExpr() {
 		if (static_cast<int>(arg.size()) <= IDENTIFIER_MIN_CHARS) {
 			return false;
 		}
 		string_view expr = arg.substr(1, arg.size() - 2);
-		return (arg[0] == '"') && (arg.back() == '"') && (SynonymObject::isValid(expr) || isNumber(std::string(expr)));
+		return (arg[0] == '"') && (arg.back() == '"');
 	}
 
 	// function to check if clauseArg is a partial matching expression-spec

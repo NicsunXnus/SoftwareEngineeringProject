@@ -2,10 +2,11 @@
 #define DATAACCESSLAYER_H
 
 #include <vector>
+#include<unordered_set>
 #include <string>
 #include <unordered_map>
-#include "../PKB.h"
-#include "../Constants/QPSPKB.h"
+#include "../PKB/PKB.h"
+#include "../Constants/DesignEnums.h"
 #include "QueryResultsTable.h"
 #include "QueryObjects/ClauseArg.h"
 
@@ -29,16 +30,23 @@ public:
 	~DataAccessLayer() {};
 
 	/* For Design Entities */
-	vector<string> getEntity(ENTITY type);
-	vector<string> getAllProcedures();
-	vector<string> getAllVariables();
-	vector<string> getAllConstants();
+	virtual unordered_set<string> getEntity(ENTITY type);
+	virtual unordered_set<string> getAllProcedures();
+	virtual unordered_set<string> getAllVariables();
+	virtual unordered_set<string> getAllConstants();
 
-	/* For Patterns (Milestone 1) */
-	map<string, vector<string>> getVariableMap();
-	map<string, vector<string>> getConstantMap();
+	/* For Patterns */
+	virtual map<string, unordered_set<string>> getVariableMap();
+	virtual map<string, unordered_set<string>> getConstantMap();
+    virtual shared_ptr<Node> getPatternTree(string statement_number);
 
 	/* For Design Abstractions / Clauses */
-	map<string, vector<string>> DataAccessLayer::getClause(ABSTRACTION abstraction);
+	virtual StringMap DataAccessLayer::getClause(ABSTRACTION abstraction);
+	virtual StringMap DataAccessLayer::getClauseInverse(ABSTRACTION abstraction);
+
+	/* Attributes */
+	virtual StringMap DataAccessLayer::getCallProcNames();
+	virtual StringMap DataAccessLayer::getReadVarNames();
+	virtual StringMap DataAccessLayer::getPrintVarNames();
 };
 #endif

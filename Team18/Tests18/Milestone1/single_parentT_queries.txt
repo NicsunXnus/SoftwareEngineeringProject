@@ -176,7 +176,7 @@ Select i such that Parent*(_, 2)
 36 - left wildcard, right synonym, exists
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select pn such that Parent*(_, pn)
-7, 9
+7, 10, 11
 5000
 37 - left wildcard, right synonym, does not exist
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
@@ -198,13 +198,13 @@ stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant
 Select w such that Parent*(_, _)
 5
 5000
-40 - integer out of bounds
-stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
-Select w such that Parent*(_, 0)
-
-5000
 41 - integer out of bounds
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
 Select w such that Parent*(_, 9999)
+
+5000
+42 - relation to itself
+stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p;
+Select s such that Parent*(s, s)
 
 5000

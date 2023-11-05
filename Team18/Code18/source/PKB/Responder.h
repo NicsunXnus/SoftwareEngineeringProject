@@ -1,121 +1,111 @@
 #pragma once
-#include <vector>
-#include <variant>
 #include <string>
+#include <unordered_set>
 
+#include "../Constants/DesignEnums.h"
 #include "StorageManager.h"
-#include "../Constants/QPSPKB.h"
 
 using namespace std;
 
 /**
-* This class represents Responder for the PKB.
-*/
+ * This class represents Responder for the PKB, with APIs called by the QPS.
+ * methods to respond to queries. generally, call the storage manager to do
+ * work. storage manager will get entity storage/abstraction storage, perform
+ * the query on that class via polymorphism, then return line numbers.
+ */
 class Responder {
-public:
-	// methods to respond to queries. generally, call the storage manager to do work.
-	// storage manager will get entity storage/abstraction storage, perform the query on that class via polymorphism, then return line numbers.
-	
-	vector<string> Responder::getEntityStatement(ENTITY entity) const {
-		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		shared_ptr<map<ENTITY, vector<string>>> entity_database = entity_storage->getStatementDatabase();
-		// check if entity exists
-		if (entity_database->find(entity) == entity_database->end()) {
-			return vector<string>();
-		}
-		return (*entity_database).at(entity);
-	}
+ public:
+  /*
+   * This function gets entity statements, based on the entity
+   * type.
+   *
+   * @param entity the type of entity to be retrieved
+   * @return unordered_set<string> the set of statement numbers that are of the
+   * entity type
+   */
+  unordered_set<string> Responder::getEntityStatement(ENTITY entity);
 
-	vector<string> Responder::getAllProcedures() const {
-		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		shared_ptr<StringMap> proc_database = entity_storage->getProcedureDatabase();
-		return getKeys(proc_database);
-	}
+  /*
+   * This function gets list of all non-statement entities of a specified type.
+   *
+   * @param entity the type of entity to be retrieved
+   * @return unordered_set<string> the set of all procedure names
+   */
+  unordered_set<string> Responder::getNonStatementEntityList(ENTITY entity);
 
-	// unused now
-	vector<string> Responder::getProcedure(string procedure) const {
-		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		shared_ptr<StringMap> proc_database = entity_storage->getProcedureDatabase();
-		// check if procedure exists
-		if (proc_database->find(procedure) == proc_database->end()) {
-			return vector<string>();
-		}
-		return (*proc_database).at(procedure);
-	}
+  /*
+   * This function gets the map of a specified non-statement entity.
+   *
+   * @param entity the type of entity to be retrieved
+   * @return StringMap the map of a specified non-statement entity
+   */
+  StringMap Responder::getNonStatementEntityMap(ENTITY entity);
 
-	map<string, vector<string>> Responder::getVariableMap() const {
-		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		shared_ptr<map<string, vector<string>>> var_database = entity_storage->getVariableDatabase();
-		return *var_database;
-	}
-	
-	vector<string> Responder::getAllVariables() const {
-		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		shared_ptr<StringMap> var_database = entity_storage->getVariableDatabase();
-		return getKeys(var_database);
-	}
+  /*
+   * This function gets the start/end line numbers.
+   *
+   * @param procedure the name of the procedure
+   * @return pair<string, string> the pair of start/end line numbers of the
+   * procedure
+   */
+  pair<string, string> Responder::getProcLines(string procedure);
 
-	// unused now
-	vector<string> Responder::getVariable(string variable) const {
-		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		shared_ptr<StringMap> var_database = entity_storage->getVariableDatabase();
-		// check if variable exists
-		if (var_database->find(variable) == var_database->end()) {
-			return vector<string>();
-		}
-		return (*var_database).at(variable);
-	}
+  /*
+   * This function gets the name maps for a specified entity.
+   *
+   * @param entity_type the type of entity name map to be retrieved
+   * @return StringMap the name map for the entity specified.
+   */
+  StringMap Responder::getNameMap(ENTITY entity_type);
 
-	map<string, vector<string>> Responder::getConstantMap() const {
-		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		shared_ptr<map<string, vector<string>>> const_database = entity_storage->getConstantDatabase();
-		return *const_database;
-	}
+  /*
+   * This function gets the map of all if/while/assign statement numbers to root
+   * of pattern subtrees
+   *
+   * @return map<string, shared_ptr<Node>> the map of all if/while/assign
+   * statement numbers to root of pattern subtrees
+   */
+  map<string, shared_ptr<Node>> Responder::getAllPatterns();
 
-	vector<string> Responder::getAllConstants() const {
-		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		shared_ptr<StringMap> const_database = entity_storage->getConstantDatabase();
-		return getKeys(const_database);
-	}
+  /*
+   * This function gets the shared pointer to root of pattern subtree
+   *
+   * @param statement_number the statement number of the assign/if/while
+   * statement
+   * @return shared_ptr<Node> the root of the pattern subtree at that statement
+   */
+  shared_ptr<Node> Responder::getPattern(string statement_number);
 
-	// unused now
-	vector<string> Responder::getConstant(string constant) const {
-		shared_ptr<EntityStorage> entity_storage = StorageManager::getEntityStorage();
-		shared_ptr<StringMap> constant_database = entity_storage->getConstantDatabase();
-		// check if constant exists
-		if (constant_database->find(constant) == constant_database->end()) {
-			return vector<string>();
-		}
-		return (*constant_database).at(constant);
-	}
+  /*
+   * This function gets the map for a design abstraction.
+   *
+   * @param abstraction the design abstraction to be retrieved
+   * @param inverse whether to return the inverse map
+   * @return StringMap the map of first arguments to all possible second
+   * arguments for this abstraction, vice versa if inversed.
+   */
+  StringMap Responder::getAbstraction(ABSTRACTION abstraction,
+                                      bool inverse = false);
 
-	map<string, vector<string>> Responder::getAbstraction(ABSTRACTION abstraction) const {
-		shared_ptr<AbstractionStorage> abstraction_storage = StorageManager::getAbstractionStorage(abstraction);
-		// note: for Follows* and Parent*, we return the whole database.
-		// for Follows and Parent, we return a truncated database with the value just the direct follower/parent.
-		if (abstraction == FOLLOWS || abstraction == PARENT) {
-			return *(abstraction_storage->getTruncatedDatabase());
-		}
-		return *(abstraction_storage->getDatabase());
-	}
+  /*
+   * This function gets the set of all second arguments for a design
+   * abstraction, given a first argument.
+   *
+   * @param abstraction the design abstraction to be retrieved
+   * @return unordered_set<string> the set of all second arguments for this
+   * abstraction
+   */
+  unordered_set<string> Responder::getAbstractionVariable(
+      ABSTRACTION abstraction, string key);
 
-	// unused now
-	vector<string> Responder::getAbstractionVariable(ABSTRACTION abstraction, string key) const {
-		shared_ptr<AbstractionStorage> abstraction_storage = StorageManager::getAbstractionStorage(abstraction);
-		shared_ptr<StringMap> abstraction_database = abstraction_storage->getDatabase();
-		// check if key exists
-		if (abstraction_database->find(key) == abstraction_database->end()) {
-			return vector<string>();
-		}
-		return (*abstraction_database).at(key);
-	}
+ private:
+  unordered_set<string> getKeys(shared_ptr<StringMap> db);
 
-private:
-	vector<string> getKeys(shared_ptr<StringMap> db) const {
-		vector<string> keys;
-		for (const auto& [k, v] : *db) {
-			keys.push_back(k);
-		}
-		return keys;
-	}
+  /*
+   * This function creates an inverse map, reversing keys and values.
+   *
+   * @param originalMap the original map
+   * @return StringMap the inverse map
+   */
+  StringMap createInverseMap(shared_ptr<StringMap> originalMap);
 };
