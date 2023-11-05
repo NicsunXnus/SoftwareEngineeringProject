@@ -2,40 +2,17 @@
 #define OPTIMISEDSORTINGCLAUSES_H
 
 #include <vector>
+#include "GroupClause.h"
 #include "QueryResultsTable.h"
-
+#include <ppl.h>
+using namespace concurrency;
 /**
 * An auxiliary class to contain and provide the functions to QueryBuilder for the sorting of the clauses into groups
-* for a more efficient processing of the results of the clauses.
+* for a more efficient processing of the results of the clauses. No contents of the clauses will be modified, only the order.
+* The functions used in optimising are identified in the method description" and are designed to be used in their numerical order.
+* The functions,by the user's needs, can also be used in any order.
 */
-using namespace std;
 
-// Stores the count of the header in a group of clauses
-map<string, int> countHeadersStore;
-
-void updateCountHeaderStore(string header) {
-	countHeadersStore[header]++;
-}
-
-void resetCountHeaderStore() {
-	countHeadersStore.clear();
-}
-
-int getCount(string header) {
-	return countHeadersStore[header];
-}
-
-// A set to contain only unique select clauses arguments.
-set<string> getHeadersOfTableAsSet(vector<shared_ptr<QueryResultsTable>> selectClauseTables) {
-	set<string> result;
-	for (shared_ptr<QueryResultsTable> table : selectClauseTables) {
-		result.insert(table->getHeaders()[0]);
-	}
-	return result;
-}
-
-// An auxiliary function that aids in the comparison of QueryResultsTable(s) in a vector.
-// Empty tables are given higher priority and sorted before non-empty tables.
 bool sortEmptyFirst(const std::shared_ptr<QueryResultsTable>& a, const std::shared_ptr<QueryResultsTable>& b) {
 	int priorityA = -1;
 	int priorityB = 0;
@@ -45,132 +22,177 @@ bool sortEmptyFirst(const std::shared_ptr<QueryResultsTable>& a, const std::shar
 	return priorityA > priorityB;
 }
 
-// An auxiliary function to aid in the comparison within the data structure of QueryResultsTable(s) in a vector.
-// The table containing the more common header in the group of clauses will be sorted before the other.
-bool sortMostCommonHeaderFirst(const std::shared_ptr<QueryResultsTable>& a, const std::shared_ptr<QueryResultsTable>& b) {
-	int maxValueA = 0;
-	int maxValueB = 0;
-	vector<string> headersA = a->getHeaders();
-	vector<string> headersB = b->getHeaders();
-	for (string header : headersA) {
-		if (getCount(header) > maxValueA) {
-			maxValueA = getCount(header);
-		}
-	}
-	for (string header : headersB) {
-		if (getCount(header) > maxValueB) {
-			maxValueB = getCount(header);
-		}
-	}
-	return maxValueA > maxValueB;
+bool sortMostUniqueHeadersFirst(const std::shared_ptr<QueryResultsTable>& a, const std::shared_ptr<QueryResultsTable>& b) {
+	set<string> setA = a->getHeadersAsSet(); set<string> setB = b->getHeadersAsSet();
+	return setA.size() > setB.size();
 }
 
-// An auxiliary function to flatten vector< vector<shared_ptr<QueryResultsTable>> >
-vector<shared_ptr<QueryResultsTable>> flatten2DArray(vector< vector<shared_ptr<QueryResultsTable>> > v2d) {
+// An auxiliary function to revert a vector of GroupClause back to a vector of QueryResultsTable
+vector<shared_ptr<QueryResultsTable>> revert1DTables(vector< shared_ptr<GroupClause> > groups) {
 	vector<shared_ptr<QueryResultsTable>> v1d;
-	for (const auto& row : v2d) {
-		v1d.insert(v1d.end(), row.begin(), row.end());
+	for (shared_ptr<GroupClause> group : groups) {
+		vector<shared_ptr<QueryResultsTable>> tables = group->getMembers();
+		v1d.insert(v1d.end(), tables.begin(), tables.end());
 	}
 	return v1d;
 }
 
-// An auxiliary function to sort the tables in a vector by the most common header
-void sortVectorOfTablesByHeader(vector<shared_ptr<QueryResultsTable>>& tables) {
-	for (shared_ptr<QueryResultsTable> table : tables) {
-		vector<string> headers = table->getHeaders();
-		for (string header : headers) {
-			updateCountHeaderStore(header);
-		}
-	}
-	sort(tables.begin(), tables.end(), sortMostCommonHeaderFirst);
-	resetCountHeaderStore();
-}
-
+// Optimise Step 1
 // Add all empty tables to the beginning
-void optimiseStepA(vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables) {
-	sort(nonSelectClauseTables.begin(), nonSelectClauseTables.end(), sortEmptyFirst);
+void moveEmptyTablesToFront(vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables) {
+	parallel_buffered_sort(nonSelectClauseTables.begin(), nonSelectClauseTables.end(), sortEmptyFirst);		
 }
 
-//Declaration to let the function be used in optimisedStepB
-void optimiseStepC(vector< vector<shared_ptr<QueryResultsTable>> >& groups);
-
-// Group the clauses
-// A group of clauses is guaranteed to have a continuous link between all clauses.
+//Optimise Step 2
+// Group the clauses. A group of clauses is guaranteed to have a continuous link between all clauses
 // However the order of the clauses is not guaranteed such that any two neighboring clauses
 // will share a common header.
-void optimiseStepB(vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables) {
-	vector< vector<shared_ptr<QueryResultsTable>> > groups;
-	vector<shared_ptr<QueryResultsTable>> emptyTables;
+vector<shared_ptr<GroupClause>> groupSimilarTables(vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables) {
+	vector <shared_ptr<GroupClause>> groups;
+	shared_ptr<GroupClause> emptyTables = make_shared<GroupClause>();
 	int indexNonEmpty = 0;
 	for (shared_ptr<QueryResultsTable> table : nonSelectClauseTables) {
-		if (table->isEmpty()) emptyTables.emplace_back(table);
+		if (table->isEmpty()) emptyTables->addOne(table);
 		else break;
 		indexNonEmpty++;
 	}
-	groups.emplace_back(emptyTables);
-	vector<shared_ptr<QueryResultsTable>> nonEmptyTables(nonSelectClauseTables.begin() + indexNonEmpty, nonSelectClauseTables.end());
-	if (nonEmptyTables.size() <= 1) {
-		groups.emplace_back(nonEmptyTables);
-		optimiseStepC(groups);
-		nonSelectClauseTables = flatten2DArray(groups);
-		return;
+	vector<shared_ptr<QueryResultsTable>> nonEmptyTables;
+	if (emptyTables->size() > 0) {
+		nonEmptyTables.insert(nonEmptyTables.begin(), nonSelectClauseTables.begin() + indexNonEmpty, nonSelectClauseTables.end());
+		groups.emplace_back(emptyTables);
 	}
-
-	// sort the most table with the most common headers at the start
-	sortVectorOfTablesByHeader(nonEmptyTables);
-
-	vector<string> headers = nonEmptyTables[0]->getHeaders();
-
-	set<string> firstHeaders;
-	copy(headers.begin(), headers.end(), inserter(firstHeaders, firstHeaders.begin()));
-
-	vector<set<string> > groupNames;
-	groupNames.emplace_back(firstHeaders);
-
-	vector<shared_ptr<QueryResultsTable>> newGroup;
-	newGroup.emplace_back(nonEmptyTables[0]);
+	else {
+		nonEmptyTables = nonSelectClauseTables;
+	}
+	if (nonEmptyTables.size() <= 2) { // trivial if there is not more than 2 tables
+		shared_ptr<GroupClause> lessThanTwoNonEmptyTables = make_shared<GroupClause>();
+		lessThanTwoNonEmptyTables->addMany(nonEmptyTables);
+		groups.emplace_back(lessThanTwoNonEmptyTables);
+		return groups;
+	}
+	parallel_buffered_sort(nonEmptyTables.begin(), nonEmptyTables.end(), sortMostUniqueHeadersFirst);
+	shared_ptr<GroupClause> newGroup = make_shared<GroupClause>();
+	newGroup->addOne(nonEmptyTables[0]);
 	groups.emplace_back(newGroup);
 	nonEmptyTables.erase(nonEmptyTables.begin());
-
+	int startIndex = 0;
+	if (emptyTables->size() > 0) startIndex = 1; //starts from 1 because 0 is for the emptyTables group
 	for (shared_ptr<QueryResultsTable> table : nonEmptyTables) {
-		vector<string> thisHeaders = table->getHeaders();
-		int index = 1; //starts from 1 because 0 is for the emptyTables group
+		set<string> thisHeaders = table->getHeadersAsSet();
+		int index = startIndex;
 		bool isFound = false;
-		for (set<string>& group : groupNames) {
+		for (shared_ptr<GroupClause> group : groups) {
+			if (group->hasEmptyTablesFirst()) continue;
 			set<string> intersection;
-			set_intersection(group.begin(), group.end(), thisHeaders.begin(), thisHeaders.end(),
+			set<string> groupHeaders = group->getHeaders();
+			set_intersection(groupHeaders.begin(), groupHeaders.end(), thisHeaders.begin(), thisHeaders.end(),
 				inserter(intersection, intersection.begin()));
 			if (intersection.size() > 0) {
-				groups[index].emplace_back(table);
-				std::set_union(thisHeaders.cbegin(), thisHeaders.cend(),
-					group.cbegin(), group.cend(),
-					inserter(group, group.begin()));
+				groups[index]->addOne(table);
 				isFound = true;
 				break;
 			}
 			index++;
 		}
 		if (!isFound) {
-			set<string> newHeaders;
-			copy(thisHeaders.begin(), thisHeaders.end(), inserter(newHeaders, newHeaders.begin()));
-			groupNames.emplace_back(newHeaders);
-			vector<shared_ptr<QueryResultsTable>> group;
-			group.emplace_back(table);
+			shared_ptr<GroupClause> group = make_shared<GroupClause>();
+			group->addOne(table);
 			groups.emplace_back(group);
 		}
 	}
-
-	optimiseStepC(groups);
-	nonSelectClauseTables = flatten2DArray(groups);
+	return groups;
 }
 
-// Rearrange the clauses in the group such that the clauses with the most common headers are arranged at the front.
-// This means a higher chance of "mutual friends" already forming at the beginning, so more likely that an inner join
-// will occur than a cross product.
-void optimiseStepC(vector< vector<shared_ptr<QueryResultsTable>> >& groups) {
-	for (vector<shared_ptr<QueryResultsTable>>& group : groups) {
-		if (group.size() <= 1 || group[0]->isEmpty()) continue; //skip for empty table groups  and if group size is not greater than 1
-		sortVectorOfTablesByHeader(group);
+// Optimise Step 3
+// Goes through each group and merge groups that shares same headers
+void mergeSimilarGroups(vector< shared_ptr<GroupClause> >& groups) {
+	if (groups.size() == 0) return;
+	if (groups[0]->hasEmptyTablesFirst() && groups.size() < 3) return;
+	if (!groups[0]->hasEmptyTablesFirst() && groups.size() < 2) return;
+	int gap = 1;
+	int groupSize = groups.size();
+	int startIndex = 0;
+	if (groups[0]->hasEmptyTablesFirst()) startIndex = 1;
+	for (int i = startIndex; i < groupSize; i++) {
+		for (int j = i + 1; j < groupSize; j++) {
+			if (groups[i]->hasCommonHeaders(groups[j])) {
+				groups[i]->merge(groups[j]);
+				groups.erase(groups.begin() + j);
+				groupSize--;
+				i--;
+				break;
+			}
+		}
+		i++;
+	}
+}
+
+// Optimise SubStep 4.1
+void checkForUmbrellaHeadersPresence(vector<shared_ptr<QueryResultsTable>> groupMembers, set<string>& headerContainer, set<string> groupHeaders) {
+	for (int i = 1; i < groupMembers.size(); i++) {
+		set<string> intersect;
+		set<string> thisHeaders = groupMembers[i]->getHeadersAsSet();
+		set_intersection(headerContainer.begin(), headerContainer.end(), thisHeaders.begin(), thisHeaders.end(), inserter(intersect, intersect.begin()));
+		if (intersect.size() > 0) {
+			headerContainer.insert(thisHeaders.begin(), thisHeaders.end());
+			if (headerContainer == groupHeaders) break;
+		}
+		else {
+			break;
+		}
+	}
+}
+
+// Optimise SubStep 4.2
+void tableReshuffleToCreateUmbrellasHeader(vector<shared_ptr<QueryResultsTable>>& groupMembers, set<string> groupHeaders) {
+	int gap = 1;
+	set<string> headerContainer;
+	for (int j = 0; j < groupMembers.size(); j++) { // Iterate the same number of times as the number of members unless a table is found to have no shared header
+		shared_ptr<QueryResultsTable> currTable = groupMembers[0];
+		set<string> currTableHeaders = currTable->getHeadersAsSet();
+		copy(currTableHeaders.begin(), currTableHeaders.end(), inserter(headerContainer, headerContainer.begin()));
+		if (headerContainer == groupHeaders) break;
+		int maximumNonIntersection = -1;
+		int minimumIntersectIndex = -1;
+		for (int k = j + gap; k < groupMembers.size(); k++) {
+			if (!currTable->haveSimilarHeaders(groupMembers[k])) continue;
+			int nonIntersectSize = currTable->differenceInHeaders(groupMembers[k]);
+			if (maximumNonIntersection < 0) {
+				maximumNonIntersection = nonIntersectSize;
+				minimumIntersectIndex = k;
+				continue;
+			}
+			if (nonIntersectSize > maximumNonIntersection) {
+				maximumNonIntersection = nonIntersectSize;
+				minimumIntersectIndex = k;
+			}
+		}
+		gap++;
+		if (minimumIntersectIndex < 0) return;
+		shared_ptr<QueryResultsTable> temp = groupMembers[minimumIntersectIndex];
+		groupMembers.erase(groupMembers.begin() + minimumIntersectIndex);
+		groupMembers.insert(groupMembers.begin(), temp);
+	}
+}
+
+// Optimise Step 4
+// For every group, this function attempts to sort the tables at the front such that not only do they create a 
+// link within themselves (allows inner join) but also a union of them will cover the whole group, which will
+// effectively enable inner join for the whole group.
+void optimiseTablePositions(vector<shared_ptr<GroupClause>>& groups) {
+	if (groups.size() == 0) return;
+	int startIndex = 0;
+	if (groups[0]->hasEmptyTablesFirst()) startIndex = 1; // start from 1 given that the first group is the emptyTables group
+	for (int i = startIndex; i < groups.size(); i++) { // Iterate for each group
+		if (groups[i]->size() <= 2) continue; // In a group of not more than 2, each table is guaranteed to share a header with a neighbor
+		set<string> groupHeaders = groups[i]->getHeaders();
+		vector<shared_ptr<QueryResultsTable>> currGroupMembers = groups[i]->getMembers();
+		set<string> currTableHeaders = currGroupMembers[0]->getHeadersAsSet();
+		if (currTableHeaders == groupHeaders) continue; // Means that the first table already has headers that covers the whole group
+		checkForUmbrellaHeadersPresence(currGroupMembers, currTableHeaders, groupHeaders); // Checks for a possible link between first table and some table that covers the whole group
+		if (currTableHeaders == groupHeaders) continue; // Means there is a link from the first table to some table in a later row that covers the whole group
+		tableReshuffleToCreateUmbrellasHeader(currGroupMembers, groupHeaders);
+		groups[i]->setMembers(currGroupMembers);
 	}
 }
 
