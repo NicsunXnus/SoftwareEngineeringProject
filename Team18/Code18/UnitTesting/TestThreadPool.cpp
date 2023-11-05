@@ -62,6 +62,7 @@ namespace Multithreading_Test
 			assert(true);
 		}
 	};
+	
 	TEST_CLASS(compatibility_classless) {
 	public:
 		// Test 1 : Classless functions (ie helper functions in HelperFunctions.h)
@@ -144,6 +145,7 @@ public:
 	}
 
 	};
+	
 	TEST_CLASS(compatibility_object) {
 	public:
 		// Test 1 : Object Methods (large method)
@@ -152,7 +154,7 @@ public:
 			ApplicationWrapper applicationWrapper;
 			try {
 				for (int i = 0; i < 3; i++) {
-					applicationWrapper.parse("../../Tests18/Sample_source.txt");
+					applicationWrapper.parse("../../Tests18/Sample_source.txt", true);
 				}
 			}
 			catch (exception e) {
@@ -165,7 +167,7 @@ public:
 			ThreadPool tp{};
 			try {
 				for (int i = 0; i < 3; i++) {
-					tp.addTask(&ApplicationWrapper::parse, &applicationWrapper, "../../Tests18/Sample_source.txt");
+					tp.addTask(&ApplicationWrapper::parse, &applicationWrapper, "../../Tests18/Sample_source.txt", true);
 				}
 				tp.wait();
 			}

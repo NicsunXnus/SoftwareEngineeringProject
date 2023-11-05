@@ -5,6 +5,7 @@
 #include "../source/SP/SimpleProcessor/SimpleProcessor.h"
 #include "../source/SP/SimpleProcessor/ProcessedProgram.h"
 #include "../source/SP/AST/Node.h"
+#include "../source/ApplicationWrapper.h"
 
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -756,6 +757,18 @@ namespace UnitTesting
             Assert::IsTrue(std::find(nextMapRef["7"].begin(), nextMapRef["7"].end(), "4") != nextMapRef["7"].end());
             // z = 40
             Assert::IsTrue(std::find(nextMapRef["8"].begin(), nextMapRef["8"].end(), "4") != nextMapRef["8"].end());
+        }
+
+        TEST_METHOD(TestStressMultiThreading)
+        {
+            ApplicationWrapper applicationWrapper;
+            applicationWrapper.parse("../../Tests18/Stress_source.txt", true);
+        }
+
+        TEST_METHOD(TestStressControl)
+        {
+            ApplicationWrapper applicationWrapper;
+            applicationWrapper.parse("../../Tests18/Stress_source.txt", false);
         }
    };
      

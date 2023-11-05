@@ -21,6 +21,9 @@ public:
   /// <summary>
   /// Adds a task to be done by a thread. This method is non-blocking.
   /// 
+  /// Ensure that when adding arguments, all arguments are provided, even the ones with default 
+  /// values assigned.
+  /// 
   /// Simply add the task and an available thread will pick it up
   /// automatically. There are 4 cases to how to add a task, depending on the type of function used:
   /// 1. Methods defined in the same class

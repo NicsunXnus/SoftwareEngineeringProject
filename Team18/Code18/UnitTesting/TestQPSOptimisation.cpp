@@ -23,7 +23,7 @@ private:
 		std::uniform_int_distribution<> alphaDis(0, alphabet.size() - 1);
 		std::uniform_int_distribution<> numDis(0, numbers.size() - 1);
 		std::string first, second;
-		for (int i = 0; i < 2; ++i) {
+		for (int i = 0; i < 1; ++i) { // Changed 2 to 1
 			if (dis(gen) == 0) {
 				first += alphabet[alphaDis(gen)];
 			}
@@ -64,7 +64,7 @@ public:
 		nonSelectClauses.emplace_back(QueryResultsTable::createEmptyTable());
 		nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "s1","s2" }, { { "3","4" }, { "c","d" } }));
 
-		OptimisedFunctionsStub::optimiseStepA(nonSelectClauses);
+		OptimisedFunctionsStub::optimiseStepA(nonSelectClauses, false);
 		bool isSame = false;
 		int expectedEmptyTables = 5;
 		vector< shared_ptr<QueryResultsTable>> emptyTables(nonSelectClauses.begin(), nonSelectClauses.begin() + expectedEmptyTables);
@@ -110,7 +110,7 @@ public:
 	//	Logger::WriteMessage("Order of tables BEFORE STEP A:\n");
 	//	Logger::WriteMessage(output.str().c_str());
 
-	//	OptimisedFunctionsStub::optimiseStepA(nonSelectClauses);
+	//	OptimisedFunctionsStub::optimiseStepA(nonSelectClauses, false);
 
 	//	std::stringstream outputA;
 	//	std::streambuf* oldCoutBufferA = std::cout.rdbuf(outputA.rdbuf());
@@ -126,16 +126,18 @@ public:
 	//	Logger::WriteMessage("Order of tables AFTER STEP A:\n");
 	//	Logger::WriteMessage(outputA.str().c_str());
 
-	//	OptimisedFunctionsStub::optimiseStepB(nonSelectClauses);
-
+	//	//nonSelectClauses = OptimisedFunctionsStub::revert1DTables(OptimisedFunctionsStub::optimiseStepB(nonSelectClauses));
+	//	vector<shared_ptr<GroupClause>> groups = OptimisedFunctionsStub::optimiseStepB(nonSelectClauses, false);
 	//	std::stringstream outputB;
 	//	std::streambuf* oldCoutBufferB = std::cout.rdbuf(outputB.rdbuf());
-	//	for (shared_ptr<QueryResultsTable> table : nonSelectClauses) {
-	//		cout << "Table " + to_string(table->getId()) << endl;
-	//		table->printTable();
-	//		cout << endl;
+	//	for (int i = 0; i < groups.size();i++) {
+	//		cout << "Group " + to_string(i) << endl;
+	//		for (shared_ptr<QueryResultsTable> table :groups[i]->getMembers()) {
+	//			cout << "Table " + to_string(table->getId()) << endl;
+	//			table->printTable();
+	//			cout << endl;
+	//		}
 	//	}
-
 	//	std::cout.rdbuf(oldCoutBufferB);
 
 	//	Logger::WriteMessage("Order of tables AFTER STEP B AND C:\n");
@@ -168,7 +170,7 @@ public:
 	//	Logger::WriteMessage("Order of tables BEFORE STEP A:\n");
 	//	Logger::WriteMessage(output.str().c_str());
 
-	//	OptimisedFunctionsStub::optimiseStepA(nonSelectClauses);
+	//	OptimisedFunctionsStub::optimiseStepA(nonSelectClauses, false);
 
 	//	std::stringstream outputA;
 	//	std::streambuf* oldCoutBufferA = std::cout.rdbuf(outputA.rdbuf());
@@ -184,7 +186,7 @@ public:
 	//	Logger::WriteMessage("Order of tables AFTER STEP A:\n");
 	//	Logger::WriteMessage(outputA.str().c_str());
 
-	//	OptimisedFunctionsStub::optimiseStepB(nonSelectClauses);
+	//	nonSelectClauses = OptimisedFunctionsStub::revert1DTables(OptimisedFunctionsStub::optimiseStepB(nonSelectClauses, false));
 
 	//	std::stringstream outputB;
 	//	std::streambuf* oldCoutBufferB = std::cout.rdbuf(outputB.rdbuf());
@@ -199,5 +201,551 @@ public:
 	//	Logger::WriteMessage("Order of tables AFTER STEP B AND C:\n");
 	//	Logger::WriteMessage(outputB.str().c_str());
 	//}
+
+	//TEST_METHOD(Test_Visualise_C) {
+	//	vector< shared_ptr<QueryResultsTable>> nonSelectClauses;
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "a", "a"}, {generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "b", "b" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "c", "c" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "d", "d" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "e", "e" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "a", "a" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "b", "b" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "c", "c" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "d", "d" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "e", "e" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "a", "a" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "b", "b" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "c", "c" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "d", "d" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "e", "e" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "a", "a" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "b", "b" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "c", "c" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "d", "d" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "e", "e" }, { generateRandomPair(),generateRandomPair() }));
+
+
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "a", "b" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "b", "c" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "c", "d" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "d", "e" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "e", "a" }, { generateRandomPair(),generateRandomPair() }));
+
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "a", "a" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "b", "b" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "c", "c" }, { generateRandomPair() ,generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "d", "d" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "e", "e" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "a", "a" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "b", "b" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "c", "c" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "d", "d" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "e", "e" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "a", "a" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "b", "b" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "c", "c" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "d", "d" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "e", "e" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "a", "a" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "b", "b" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "c", "c" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "d", "d" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "e", "e" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::createEmptyTable());
+
+	//	std::stringstream output;
+	//	std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
+	//	int index = 0;
+	//	for (shared_ptr<QueryResultsTable> table : nonSelectClauses) {
+	//		table->setId(index); index++;
+	//		cout << "Table " + to_string(table->getId()) << endl;
+	//		table->printTable();
+	//		cout << endl;
+	//	}
+	//	
+	//	std::cout.rdbuf(oldCoutBuffer);
+
+	//	Logger::WriteMessage("Order of tables BEFORE STEP A:\n");
+	//	Logger::WriteMessage(output.str().c_str());
+
+	//	OptimisedFunctionsStub::optimiseStepA(nonSelectClauses, false);
+
+	//	std::stringstream outputA;
+	//	std::streambuf* oldCoutBufferA = std::cout.rdbuf(outputA.rdbuf());
+
+	//	for (shared_ptr<QueryResultsTable> table : nonSelectClauses) {
+	//		cout << "Table " + to_string(table->getId()) << endl;
+	//		table->printTable();
+	//		cout << endl;
+	//	}
+
+	//	std::cout.rdbuf(oldCoutBufferA);
+
+	//	Logger::WriteMessage("Order of tables AFTER STEP A:\n");
+	//	Logger::WriteMessage(outputA.str().c_str());
+
+	//	//nonSelectClauses = OptimisedFunctionsStub::revert1DTables(OptimisedFunctionsStub::optimiseStepB(nonSelectClauses));
+	//	vector<shared_ptr<GroupClause>> groups = OptimisedFunctionsStub::optimiseStepB(nonSelectClauses, false);
+	//	std::stringstream outputB;
+	//	std::streambuf* oldCoutBufferB = std::cout.rdbuf(outputB.rdbuf());
+	//	for (int i = 0; i < groups.size(); i++) {
+	//		cout << "Group " + to_string(i) << endl;
+	//		for (shared_ptr<QueryResultsTable> table : groups[i]->getMembers()) {
+	//			cout << "Table " + to_string(table->getId()) << endl;
+	//			table->printTable();
+	//			cout << endl;
+	//		}
+	//	}
+
+	//	std::cout.rdbuf(oldCoutBufferB);
+
+	//	Logger::WriteMessage("Order of tables AFTER STEP B\n");
+	//	Logger::WriteMessage(outputB.str().c_str());
+
+	//	std::stringstream outputC;
+	//	std::streambuf* oldCoutBufferC = std::cout.rdbuf(outputC.rdbuf());
+	//	OptimisedFunctionsStub::optimiseStepC(groups);
+	//	for (int i = 0; i < groups.size(); i++) {
+	//		cout << "Group " + to_string(i) << endl;
+	//		for (shared_ptr<QueryResultsTable> table : groups[i]->getMembers()) {
+	//			cout << "Table " + to_string(table->getId()) << endl;
+	//			table->printTable();
+	//			cout << endl;
+	//		}
+	//	}
+
+	//	std::cout.rdbuf(oldCoutBufferC);
+
+	//	Logger::WriteMessage("Order of tables AFTER STEP C\n");
+	//	Logger::WriteMessage(outputC.str().c_str());
+
+	//	std::stringstream outputD;
+	//	std::streambuf* oldCoutBufferD = std::cout.rdbuf(outputD.rdbuf());
+	//	OptimisedFunctionsStub::optimiseStepD(groups);
+	//	for (int i = 0; i < groups.size(); i++) {
+	//		cout << "Group " + to_string(i) << endl;
+	//		for (shared_ptr<QueryResultsTable> table : groups[i]->getMembers()) {
+	//			cout << "Table " + to_string(table->getId()) << endl;
+	//			table->printTable();
+	//			cout << endl;
+	//		}
+	//	}
+
+	//	std::cout.rdbuf(oldCoutBufferD);
+
+	//	Logger::WriteMessage("Order of tables AFTER STEP D\n");
+	//	Logger::WriteMessage(outputD.str().c_str());
+	//}
+
+	//TEST_METHOD(Test_Visualise_D) {
+	//	vector< shared_ptr<QueryResultsTable>> nonSelectClauses;
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "a", "a" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "b", "b" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "a", "a" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "b", "b" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "a", "a" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "b", "b" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "a", "a" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "b", "b" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "a", "a" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "b", "b" }, { generateRandomPair(),generateRandomPair() }));
+	//	//Leave linking one at the end
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "a", "b" }, { generateRandomPair(),generateRandomPair() }));
+	//		
+	//	nonSelectClauses.emplace_back(QueryResultsTable::createEmptyTable());
+
+	//	std::stringstream output;
+	//	std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
+	//	int index = 0;
+	//	for (shared_ptr<QueryResultsTable> table : nonSelectClauses) {
+	//		table->setId(index); index++;
+	//		cout << "Table " + to_string(table->getId()) << endl;
+	//		table->printTable();
+	//		cout << endl;
+	//	}
+
+	//	std::cout.rdbuf(oldCoutBuffer);
+
+	//	Logger::WriteMessage("Order of tables BEFORE STEP A:\n");
+	//	Logger::WriteMessage(output.str().c_str());
+
+	//	OptimisedFunctionsStub::optimiseStepA(nonSelectClauses, false);
+
+	//	std::stringstream outputA;
+	//	std::streambuf* oldCoutBufferA = std::cout.rdbuf(outputA.rdbuf());
+
+	//	for (shared_ptr<QueryResultsTable> table : nonSelectClauses) {
+	//		cout << "Table " + to_string(table->getId()) << endl;
+	//		table->printTable();
+	//		cout << endl;
+	//	}
+
+	//	std::cout.rdbuf(oldCoutBufferA);
+
+	//	Logger::WriteMessage("Order of tables AFTER STEP A:\n");
+	//	Logger::WriteMessage(outputA.str().c_str());
+
+	//	nonSelectClauses = OptimisedFunctionsStub::revert1DTables(OptimisedFunctionsStub::optimiseStepB(nonSelectClauses, false));
+
+	//	std::stringstream outputB;
+	//	std::streambuf* oldCoutBufferB = std::cout.rdbuf(outputB.rdbuf());
+	//	for (shared_ptr<QueryResultsTable> table : nonSelectClauses) {
+	//		cout << "Table " + to_string(table->getId()) << endl;
+	//		table->printTable();
+	//		cout << endl;
+	//	}
+
+	//	std::cout.rdbuf(oldCoutBufferB);
+
+	//	Logger::WriteMessage("Order of tables AFTER STEP B:\n");
+	//	Logger::WriteMessage(outputB.str().c_str());
+	//}
+
+	//TEST_METHOD(Test_Visualise_E) {
+	//	vector< shared_ptr<QueryResultsTable>> nonSelectClauses;
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "b", "b" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "c", "c" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "e", "e" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "a", "a" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "d", "d" }, { generateRandomPair(),generateRandomPair() }));
+
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "a", "b","c","d","e"}, {generateRandomPair(),generateRandomPair(),generateRandomPair() ,generateRandomPair() ,generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::createEmptyTable());
+
+	//	std::stringstream output;
+	//	std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
+	//	int index = 0;
+	//	for (shared_ptr<QueryResultsTable> table : nonSelectClauses) {
+	//		table->setId(index); index++;
+	//		cout << "Table " + to_string(table->getId()) << endl;
+	//		table->printTable();
+	//		cout << endl;
+	//	}
+
+	//	std::cout.rdbuf(oldCoutBuffer);
+
+	//	Logger::WriteMessage("Order of tables BEFORE STEP A:\n");
+	//	Logger::WriteMessage(output.str().c_str());
+
+	//	OptimisedFunctionsStub::optimiseStepA(nonSelectClauses, false);
+
+	//	std::stringstream outputA;
+	//	std::streambuf* oldCoutBufferA = std::cout.rdbuf(outputA.rdbuf());
+
+	//	for (shared_ptr<QueryResultsTable> table : nonSelectClauses) {
+	//		cout << "Table " + to_string(table->getId()) << endl;
+	//		table->printTable();
+	//		cout << endl;
+	//	}
+
+	//	std::cout.rdbuf(oldCoutBufferA);
+
+	//	Logger::WriteMessage("Order of tables AFTER STEP A:\n");
+	//	Logger::WriteMessage(outputA.str().c_str());
+
+	//	nonSelectClauses = OptimisedFunctionsStub::revert1DTables(OptimisedFunctionsStub::optimiseStepB(nonSelectClauses, false));
+
+	//	std::stringstream outputB;
+	//	std::streambuf* oldCoutBufferB = std::cout.rdbuf(outputB.rdbuf());
+	//	for (shared_ptr<QueryResultsTable> table : nonSelectClauses) {
+	//		cout << "Table " + to_string(table->getId()) << endl;
+	//		table->printTable();
+	//		cout << endl;
+	//	}
+
+	//	std::cout.rdbuf(oldCoutBufferB);
+
+	//	Logger::WriteMessage("Order of tables AFTER STEP B:\n");
+	//	Logger::WriteMessage(outputB.str().c_str());
+	//}
+
+	//TEST_METHOD(Test_Visualise_F) {
+	//	vector< shared_ptr<QueryResultsTable>> nonSelectClauses;
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "d", "d" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "b", "b" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "a", "a" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "c", "c" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "a", "a" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "c", "c" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "b", "b" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "d", "d" }, { generateRandomPair(),generateRandomPair() }));
+
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "a", "b" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "c", "d" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::createEmptyTable());
+
+	//	std::stringstream output;
+	//	std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
+	//	int index = 0;
+	//	for (shared_ptr<QueryResultsTable> table : nonSelectClauses) {
+	//		table->setId(index); index++;
+	//		cout << "Table " + to_string(table->getId()) << endl;
+	//		table->printTable();
+	//		cout << endl;
+	//	}
+
+	//	std::cout.rdbuf(oldCoutBuffer);
+
+	//	Logger::WriteMessage("Order of tables BEFORE STEP A:\n");
+	//	Logger::WriteMessage(output.str().c_str());
+
+	//	OptimisedFunctionsStub::optimiseStepA(nonSelectClauses, false);
+
+	//	std::stringstream outputA;
+	//	std::streambuf* oldCoutBufferA = std::cout.rdbuf(outputA.rdbuf());
+
+	//	for (shared_ptr<QueryResultsTable> table : nonSelectClauses) {
+	//		cout << "Table " + to_string(table->getId()) << endl;
+	//		table->printTable();
+	//		cout << endl;
+	//	}
+
+	//	std::cout.rdbuf(oldCoutBufferA);
+
+	//	Logger::WriteMessage("Order of tables AFTER STEP A:\n");
+	//	Logger::WriteMessage(outputA.str().c_str());
+
+	//	vector<shared_ptr<GroupClause>> groups = OptimisedFunctionsStub::optimiseStepB(nonSelectClauses, false);
+	//	std::stringstream outputB;
+	//	std::streambuf* oldCoutBufferB = std::cout.rdbuf(outputB.rdbuf());
+	//	for (int i = 0; i < groups.size(); i++) {
+	//		cout << "Group " + to_string(i) << endl;
+	//		for (shared_ptr<QueryResultsTable> table : groups[i]->getMembers()) {
+	//			cout << "Table " + to_string(table->getId()) << endl;
+	//			table->printTable();
+	//			cout << endl;
+	//		}
+	//	}
+
+	//	std::cout.rdbuf(oldCoutBufferB);
+
+	//	Logger::WriteMessage("Order of tables AFTER STEP B\n");
+	//	Logger::WriteMessage(outputB.str().c_str());
+
+	//	std::stringstream outputC;
+	//	std::streambuf* oldCoutBufferC = std::cout.rdbuf(outputC.rdbuf());
+	//	OptimisedFunctionsStub::optimiseStepC(groups);
+	//	for (int i = 0; i < groups.size(); i++) {
+	//		cout << "Group " + to_string(i) << endl;
+	//		for (shared_ptr<QueryResultsTable> table : groups[i]->getMembers()) {
+	//			cout << "Table " + to_string(table->getId()) << endl;
+	//			table->printTable();
+	//			cout << endl;
+	//		}
+	//	}
+
+	//	std::cout.rdbuf(oldCoutBufferC);
+
+	//	Logger::WriteMessage("Order of tables AFTER STEP C\n");
+	//	Logger::WriteMessage(outputC.str().c_str());
+
+	//	std::stringstream outputD;
+	//	std::streambuf* oldCoutBufferD = std::cout.rdbuf(outputD.rdbuf());
+	//	OptimisedFunctionsStub::optimiseStepD(groups);
+	//	for (int i = 0; i < groups.size(); i++) {
+	//		cout << "Group " + to_string(i) << endl;
+	//		for (shared_ptr<QueryResultsTable> table : groups[i]->getMembers()) {
+	//			cout << "Table " + to_string(table->getId()) << endl;
+	//			table->printTable();
+	//			cout << endl;
+	//		}
+	//	}
+
+	//	std::cout.rdbuf(oldCoutBufferD);
+
+	//	Logger::WriteMessage("Order of tables AFTER STEP D\n");
+	//	Logger::WriteMessage(outputD.str().c_str());
+	//}
+
+	//TEST_METHOD(Test_Visualise_G) {
+	//	vector< shared_ptr<QueryResultsTable>> nonSelectClauses;
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "a", "b","c","d","e"}, {generateRandomPair(),generateRandomPair(),generateRandomPair() ,generateRandomPair() ,generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "l", "m" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "e", "z" }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ "l", "z" }, { generateRandomPair(),generateRandomPair() }));
+	//	
+	//	std::stringstream output;
+	//	std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
+	//	int index = 0;
+	//	for (shared_ptr<QueryResultsTable> table : nonSelectClauses) {
+	//		table->setId(index); index++;
+	//		cout << "Table " + to_string(table->getId()) << endl;
+	//		table->printTable();
+	//		cout << endl;
+	//	}
+
+	//	std::cout.rdbuf(oldCoutBuffer);
+
+	//	Logger::WriteMessage("Order of tables BEFORE STEP A:\n");
+	//	Logger::WriteMessage(output.str().c_str());
+
+	//	OptimisedFunctionsStub::optimiseStepA(nonSelectClauses, false);
+
+	//	std::stringstream outputA;
+	//	std::streambuf* oldCoutBufferA = std::cout.rdbuf(outputA.rdbuf());
+
+	//	for (shared_ptr<QueryResultsTable> table : nonSelectClauses) {
+	//		cout << "Table " + to_string(table->getId()) << endl;
+	//		table->printTable();
+	//		cout << endl;
+	//	}
+
+	//	std::cout.rdbuf(oldCoutBufferA);
+
+	//	Logger::WriteMessage("Order of tables AFTER STEP A:\n");
+	//	Logger::WriteMessage(outputA.str().c_str());
+
+	//	vector<shared_ptr<GroupClause>> groups = OptimisedFunctionsStub::optimiseStepB(nonSelectClauses, false);
+	//	std::stringstream outputB;
+	//	std::streambuf* oldCoutBufferB = std::cout.rdbuf(outputB.rdbuf());
+	//	for (int i = 0; i < groups.size(); i++) {
+	//		cout << "Group " + to_string(i) << endl;
+	//		for (shared_ptr<QueryResultsTable> table : groups[i]->getMembers()) {
+	//			cout << "Table " + to_string(table->getId()) << endl;
+	//			table->printTable();
+	//			cout << endl;
+	//		}
+	//	}
+
+	//	std::cout.rdbuf(oldCoutBufferB);
+
+	//	Logger::WriteMessage("Order of tables AFTER STEP B\n");
+	//	Logger::WriteMessage(outputB.str().c_str());
+
+	//	std::stringstream outputC;
+	//	std::streambuf* oldCoutBufferC = std::cout.rdbuf(outputC.rdbuf());
+	//	OptimisedFunctionsStub::optimiseStepC(groups);
+	//	for (int i = 0; i < groups.size(); i++) {
+	//		cout << "Group " + to_string(i) << endl;
+	//		for (shared_ptr<QueryResultsTable> table : groups[i]->getMembers()) {
+	//			cout << "Table " + to_string(table->getId()) << endl;
+	//			table->printTable();
+	//			cout << endl;
+	//		}
+	//	}
+
+	//	std::cout.rdbuf(oldCoutBufferC);
+
+	//	Logger::WriteMessage("Order of tables AFTER STEP C\n");
+	//	Logger::WriteMessage(outputC.str().c_str());
+
+	//	std::stringstream outputD;
+	//	std::streambuf* oldCoutBufferD = std::cout.rdbuf(outputD.rdbuf());
+	//	OptimisedFunctionsStub::optimiseStepD(groups);
+	//	for (int i = 0; i < groups.size(); i++) {
+	//		cout << "Group " + to_string(i) << endl;
+	//		for (shared_ptr<QueryResultsTable> table : groups[i]->getMembers()) {
+	//			cout << "Table " + to_string(table->getId()) << endl;
+	//			table->printTable();
+	//			cout << endl;
+	//		}
+	//	}
+
+	//	std::cout.rdbuf(oldCoutBufferD);
+
+	//	Logger::WriteMessage("Order of tables AFTER STEP D\n");
+	//	Logger::WriteMessage(outputD.str().c_str());
+	//}
+
+	//TEST_METHOD(Test_Visualise_Random) {
+	//	vector< shared_ptr<QueryResultsTable>> nonSelectClauses;
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ generateRandomPair() }, { generateRandomPair() ,generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ generateRandomPair() }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ generateRandomPair() }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ generateRandomPair() }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ generateRandomPair() }, { generateRandomPair() ,generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ generateRandomPair() }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ generateRandomPair() }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ generateRandomPair() }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ generateRandomPair() }, { generateRandomPair() ,generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ generateRandomPair() }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ generateRandomPair() }, { generateRandomPair(),generateRandomPair() }));
+	//	nonSelectClauses.emplace_back(QueryResultsTable::create2DTable({ generateRandomPair() }, { generateRandomPair(),generateRandomPair() }));
+
+	//	std::stringstream output;
+	//	std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
+	//	int index = 0;
+	//	for (shared_ptr<QueryResultsTable> table : nonSelectClauses) {
+	//		table->setId(index); index++;
+	//		cout << "Table " + to_string(table->getId()) << endl;
+	//		table->printTable();
+	//		cout << endl;
+	//	}
+
+	//	std::cout.rdbuf(oldCoutBuffer);
+
+	//	Logger::WriteMessage("Order of tables BEFORE STEP A:\n");
+	//	Logger::WriteMessage(output.str().c_str());
+
+	//	OptimisedFunctionsStub::optimiseStepA(nonSelectClauses, false);
+
+	//	std::stringstream outputA;
+	//	std::streambuf* oldCoutBufferA = std::cout.rdbuf(outputA.rdbuf());
+
+	//	for (shared_ptr<QueryResultsTable> table : nonSelectClauses) {
+	//		cout << "Table " + to_string(table->getId()) << endl;
+	//		table->printTable();
+	//		cout << endl;
+	//	}
+
+	//	std::cout.rdbuf(oldCoutBufferA);
+
+	//	Logger::WriteMessage("Order of tables AFTER STEP A:\n");
+	//	Logger::WriteMessage(outputA.str().c_str());
+
+	//	vector<shared_ptr<GroupClause>> groups = OptimisedFunctionsStub::optimiseStepB(nonSelectClauses, false);
+	//	std::stringstream outputB;
+	//	std::streambuf* oldCoutBufferB = std::cout.rdbuf(outputB.rdbuf());
+	//	for (int i = 0; i < groups.size(); i++) {
+	//		cout << "Group " + to_string(i) << endl;
+	//		for (shared_ptr<QueryResultsTable> table : groups[i]->getMembers()) {
+	//			cout << "Table " + to_string(table->getId()) << endl;
+	//			table->printTable();
+	//			cout << endl;
+	//		}
+	//	}
+
+	//	std::cout.rdbuf(oldCoutBufferB);
+
+	//	Logger::WriteMessage("Order of tables AFTER STEP B\n");
+	//	Logger::WriteMessage(outputB.str().c_str());
+
+	//	std::stringstream outputC;
+	//	std::streambuf* oldCoutBufferC = std::cout.rdbuf(outputC.rdbuf());
+	//	OptimisedFunctionsStub::optimiseStepC(groups);
+	//	for (int i = 0; i < groups.size(); i++) {
+	//		cout << "Group " + to_string(i) << endl;
+	//		for (shared_ptr<QueryResultsTable> table : groups[i]->getMembers()) {
+	//			cout << "Table " + to_string(table->getId()) << endl;
+	//			table->printTable();
+	//			cout << endl;
+	//		}
+	//	}
+
+	//	std::cout.rdbuf(oldCoutBufferC);
+
+	//	Logger::WriteMessage("Order of tables AFTER STEP C\n");
+	//	Logger::WriteMessage(outputC.str().c_str());
+
+	//	std::stringstream outputD;
+	//	std::streambuf* oldCoutBufferD = std::cout.rdbuf(outputD.rdbuf());
+	//	OptimisedFunctionsStub::optimiseStepD(groups);
+	//	for (int i = 0; i < groups.size(); i++) {
+	//		cout << "Group " + to_string(i) << endl;
+	//		for (shared_ptr<QueryResultsTable> table : groups[i]->getMembers()) {
+	//			cout << "Table " + to_string(table->getId()) << endl;
+	//			table->printTable();
+	//			cout << endl;
+	//		}
+	//	}
+
+	//	std::cout.rdbuf(oldCoutBufferD);
+
+	//	Logger::WriteMessage("Order of tables AFTER STEP D\n");
+	//	Logger::WriteMessage(outputD.str().c_str());
+	//}
+
+
 	};
 }
