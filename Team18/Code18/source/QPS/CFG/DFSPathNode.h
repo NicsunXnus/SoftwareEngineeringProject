@@ -19,7 +19,7 @@ private:
   // the CFG, essentially storing a shared_ptr to the child. Hence, even when the unrolling traverses to
   // the parents, there still exists a shared_ptr to the child and hence the memory will not be freed
   // until the entire CFG object is deleted when the dataAccessLayer is refreshed.
-  weak_ptr<DFSPathNode> child = make_shared<DFSPathNode>(nullptr);
+  weak_ptr<DFSPathNode> child;// = make_shared<DFSPathNode>(nullptr);
   string lineNumber;
   map<string, int> whileVisitCount;
 

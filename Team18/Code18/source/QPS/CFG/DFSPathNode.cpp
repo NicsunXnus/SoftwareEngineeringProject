@@ -26,7 +26,7 @@ int DFSPathNode::getWhileVisitCount(string stmtNumber) {
 // Does not enforce that the statementNumber is a while statement.
 void DFSPathNode::incrementWhileVisitCount(string stmtNumber) {
   if (whileVisitCount.find(stmtNumber) == whileVisitCount.end()) {
-    whileVisitCount.emplace(stmtNumber, 0);
+    whileVisitCount.emplace(stmtNumber, 1);
   }
   else {
     whileVisitCount[stmtNumber]++;
@@ -39,7 +39,9 @@ shared_ptr<DFSPathNode> DFSPathNode::deepCopy(shared_ptr<DFSPathNode> current) {
   }
   shared_ptr<DFSPathNode> parentCopy = deepCopy(current->getParent());
   shared_ptr<DFSPathNode> thisCopy = make_shared<DFSPathNode>(current->lineNumber, parentCopy, current->whileVisitCount);
-  parentCopy->child = thisCopy;
+  if (parentCopy) {
+    parentCopy->child = thisCopy;
+  }
   return thisCopy;
 }
 

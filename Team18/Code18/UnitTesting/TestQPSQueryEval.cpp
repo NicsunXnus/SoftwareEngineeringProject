@@ -1846,7 +1846,7 @@ TEST_METHOD(TestValidNextStarSynInt) {
       make_shared<DataAccessLayerAffectsStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  unordered_set<string> expected = {"4", "5"};
+  unordered_set<string> expected = {"4", "5", "6", "7", "8", "9"};
   Assert::IsTrue(vectorToSet(table->getColumns()[0]["s"]) == expected);
 }
 

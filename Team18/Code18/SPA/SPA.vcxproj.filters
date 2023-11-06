@@ -7,9 +7,6 @@
     <Filter Include="Source Files\Constants">
       <UniqueIdentifier>{b31c45bc-75b6-440b-b6ba-47df489cc8f8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\DesignExtractor">
-      <UniqueIdentifier>{cbe5f014-9b97-4220-bfbf-4038c67c2496}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\PKB">
       <UniqueIdentifier>{8b91ac6e-6885-4ebb-b49e-dd321c08cee7}</UniqueIdentifier>
     </Filter>
@@ -259,9 +256,6 @@
     </ClInclude>
     <ClInclude Include="..\source\Constants\DesignEnums.h">
       <Filter>Source Files\Constants</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\DesignExtractor\DesignExtractor.h">
-      <Filter>Source Files\DesignExtractor</Filter>
     </ClInclude>
     <ClInclude Include="..\source\SP\AST\BinaryOpNode.h">
       <Filter>Source Files\SP\AST</Filter>

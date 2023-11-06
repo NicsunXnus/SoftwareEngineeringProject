@@ -84,7 +84,6 @@
     <ClInclude Include="..\source\Cache.h" />
     <ClInclude Include="..\source\Constants\DesignEnums.h" />
     <ClInclude Include="..\source\Constants\QPSConstants.h" />
-    <ClInclude Include="..\source\DesignExtractor\DesignExtractor.h" />
     <ClInclude Include="..\source\ExceptionMessages.h" />
     <ClInclude Include="..\source\HelperFunctions.h" />
     <ClInclude Include="..\source\QPS\CFG\CFG.h" />

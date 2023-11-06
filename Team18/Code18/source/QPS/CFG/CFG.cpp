@@ -7,6 +7,18 @@ bool ExtendedCFG::isStmtType(string stmtNumber, ENTITY entity) {
   return entitySet.find(stmtNumber) != entitySet.end();
 }
 
+bool ExtendedCFG::hasNext(string stmtNumber) {
+  return next.find(stmtNumber) != next.end();
+}
+
+unordered_set<string> ExtendedCFG::getUsedVariables(string stmtNumber) {
+  bool usesAnything = uses.find(stmtNumber) != uses.end();
+  if (!usesAnything) {
+    return {};
+  }
+  return uses.at(stmtNumber);
+}
+
 // DFS FUNCTIONS
 void ExtendedCFG::DFSIfHelper(stack<shared_ptr<DFSPathNode>>& incompletePaths, shared_ptr<DFSPathNode>& curr, unordered_set<string>& nextNodes) {
   unordered_set<shared_ptr<DFSPathNode>> newPaths = DFSPathNode::diverge(curr, nextNodes);
@@ -81,12 +93,13 @@ void ExtendedCFG::DFS(string start) {
     bool isWhile = isStmtType(currLineNumber, WHILE);
     bool isIf = isStmtType(currLineNumber, IF);
 
-    unordered_set<string> nextNodes = next.at(currLineNumber);
-    if (nextNodes.size() == 0) {
+    bool hasNextNode = hasNext(currLineNumber);
+    if (!hasNextNode) {
       // no more nextNodes, so this path is complete.
       finishedPaths.insert(curr);
       continue;
     }
+    unordered_set<string> nextNodes = next.at(currLineNumber);
     if (isIf) {
       // Should have exactly 2 nextNodes
       DFSIfHelper(incompletePaths, curr, nextNodes);
@@ -94,13 +107,17 @@ void ExtendedCFG::DFS(string start) {
     }
     if (isWhile) {
       DFSWhileHelper(incompletePaths, finishedPaths, curr, nextNodes, currLineNumber);
+      continue;
     }
+    // regular statements should only have 1 next node
+    incompletePaths.push(DFSPathNode::traverse(curr, *(nextNodes.begin())));
+
   }
   unrollPaths(finishedPaths);
 }
 
 // UNROLL FUNCTIONS
-void ExtendedCFG::storePath(string lineNumber, shared_ptr<DFSPathNode>& curr) {
+void ExtendedCFG::storePath(string lineNumber, shared_ptr<DFSPathNode> curr) {
   if (frozenPaths.find(lineNumber) == frozenPaths.end()) {
     frozenPaths.emplace(lineNumber, unordered_set<shared_ptr<DFSPathNode>>{ curr });
   }
@@ -109,7 +126,7 @@ void ExtendedCFG::storePath(string lineNumber, shared_ptr<DFSPathNode>& curr) {
   }
 }
 
-void ExtendedCFG::restoreDescendants(deque<string>& descendants, shared_ptr<DFSPathNode>& curr) {
+void ExtendedCFG::restoreDescendants(deque<string>& descendants, shared_ptr<DFSPathNode> curr) {
   bool skippedFirst = false;
   while (curr != nullptr) {
     if (!skippedFirst) { // so that the current is not added to the descendant list in a duplicate way (since iteratorHelper does it already)
@@ -122,17 +139,11 @@ void ExtendedCFG::restoreDescendants(deque<string>& descendants, shared_ptr<DFSP
   }
 }
 
-void ExtendedCFG::unrollPathsIteratorHelper(string& currLineNumber, deque<string>& descendants, shared_ptr<DFSPathNode>& curr) {
+void ExtendedCFG::unrollPathsIteratorHelper(string currLineNumber, deque<string>& descendants, shared_ptr<DFSPathNode>& curr) {
   completed.insert(currLineNumber);
   storePath(currLineNumber, curr);
   descendants.push_front(currLineNumber); // closely related descendants are at the front of the queue
   curr = curr->getParent();
-}
-
-void ExtendedCFG::addNextStar(string lineNumber, unordered_set<string> toAdd) {
-  for (string s : toAdd) {
-    addNextStar(lineNumber, s);
-  }
 }
 
 void ExtendedCFG::addNextStar(string lineNumber, string toAdd) {
@@ -143,7 +154,7 @@ void ExtendedCFG::addNextStar(string lineNumber, string toAdd) {
     nextStar.at(lineNumber).insert(toAdd);
   }
 
-  if (nextStarInverse.find(lineNumber) == nextStarInverse.end()) {
+  if (nextStarInverse.find(toAdd) == nextStarInverse.end()) {
     nextStarInverse.emplace(toAdd, unordered_set<string>{lineNumber});
   }
   else {
@@ -159,7 +170,7 @@ void ExtendedCFG::addAffects(string lineNumber, string toAdd) {
     affects.at(lineNumber).insert(toAdd);
   }
 
-  if (affectsInverse.find(lineNumber) == affectsInverse.end()) {
+  if (affectsInverse.find(toAdd) == affectsInverse.end()) {
     affectsInverse.emplace(toAdd, unordered_set<string>{lineNumber});
   }
   else {
@@ -167,8 +178,14 @@ void ExtendedCFG::addAffects(string lineNumber, string toAdd) {
   }
 }
 
+void ExtendedCFG::unrollNextStarHelper(string currLineNumber, deque<string>& descendants) {
+  for (string descendant : descendants) {
+    addNextStar(currLineNumber, descendant);
+  }
+}
+
 // returns true if the loop iteration should be skipped.
-void ExtendedCFG::unrollAffectsHelper(deque<string>& descendants, shared_ptr<DFSPathNode>& curr, string& currLineNumber) {
+void ExtendedCFG::unrollAffectsHelper(deque<string>& descendants, shared_ptr<DFSPathNode>& curr, string currLineNumber) {
   if (!isStmtType(currLineNumber, ASSIGN)) {
     return;
   }
@@ -179,7 +196,7 @@ void ExtendedCFG::unrollAffectsHelper(deque<string>& descendants, shared_ptr<DFS
   for (; iter != descendants.end() && !encounteredModifies; iter++) {
     string descLineNumber = *iter;
     if (isStmtType(descLineNumber, ASSIGN)) {
-      unordered_set<string> descVarUsed = uses.at(descLineNumber);
+      unordered_set<string> descVarUsed = getUsedVariables(descLineNumber);
       bool varExistsInUsed = descVarUsed.find(currVarModified) != descVarUsed.end();
       if (varExistsInUsed) { //encounteredModifies should be false here due to for loop condition
         addAffects(currLineNumber, descLineNumber);
@@ -214,7 +231,8 @@ void ExtendedCFG::unrollPaths(unordered_set<shared_ptr<DFSPathNode>>& finishedPa
         continue;
       }
       // Not terminal Node
-      addNextStar(currLineNumber, descendants[0]); // for Next*
+      unrollNextStarHelper(currLineNumber, descendants); // for Next*
+      //addNextStar(currLineNumber, descendants[0]); // for Next*
       unrollAffectsHelper(descendants, curr, currLineNumber); // for affects
       unrollPathsIteratorHelper(currLineNumber, descendants, curr); // to iterate
     }
@@ -242,8 +260,22 @@ ExtendedCFG::ExtendedCFG(shared_ptr<DataAccessLayer> dataAccessLayer) {
   };
 }
 
+string INVALID_PROCEDURE = "-1";
 // Helper functions to the query functions
+bool ExtendedCFG::isValidLineNumber(string lineNumber) {
+  int low = stoi(stmtNumBoundaries.begin()->second.first);
+  int high = stoi(stmtNumBoundaries.rbegin()->second.second);
+  int lineNumInt = stoi(lineNumber);
+  if (lineNumInt >= low && lineNumInt <= high) {
+    return true;
+  }
+  return false;
+}
+
 string ExtendedCFG::procedureNameContainingThis(string lineNumber) {
+  if (!isValidLineNumber(lineNumber)) {
+    return INVALID_PROCEDURE;
+  }
   for (const auto& p : stmtNumBoundaries) {
     string procName = p.first;
     pair<string, string> boundaries = p.second;
@@ -254,11 +286,15 @@ string ExtendedCFG::procedureNameContainingThis(string lineNumber) {
       return procName;
     }
   }
-  return "";
 }
 
 bool ExtendedCFG::isInSameProcedure(string lineNumber1, string lineNumber2) {
-  return procedureNameContainingThis(lineNumber1) == procedureNameContainingThis(lineNumber2);
+  string proc1 = procedureNameContainingThis(lineNumber1);
+  string proc2 = procedureNameContainingThis(lineNumber2);
+  if (proc1 == INVALID_PROCEDURE || proc2 == INVALID_PROCEDURE) {
+    return false;
+  }
+  return proc1 == proc2;
 }
 
 string ExtendedCFG::getFirstLineNumberOfProc(string procName) {
@@ -269,15 +305,30 @@ bool ExtendedCFG::isCompleted(string stmtNumber) {
   return completed.find(stmtNumber) != completed.end();
 }
 
-void ExtendedCFG::ensureCompleted(string lineNumber) {
+bool ExtendedCFG::ensureCompleted(string lineNumber) {
+  if (!isValidLineNumber(lineNumber)) return false;
   if (!isCompleted(lineNumber)) {
     DFS(lineNumber);
   }
+  return true;
 }
 
 void ExtendedCFG::ensureProcCompleted(string procName) {
   string firstLine = getFirstLineNumberOfProc(procName);
   ensureCompleted(firstLine);
+}
+
+
+bool ExtendedCFG::hasAffects(string from) {
+  return affects.find(from) != affects.end();
+}
+
+bool ExtendedCFG::hasAffectsInv(string to) {
+  return affectsInverse.find(to) != affectsInverse.end();
+}
+
+bool ExtendedCFG::hasNextStarInv(string to) {
+  return nextStarInverse.find(to) != nextStarInverse.end();
 }
 
 bool ExtendedCFG::intIntHelper(string from, string to) {
@@ -288,26 +339,48 @@ bool ExtendedCFG::intIntHelper(string from, string to) {
   return true;
 }
 
-void ExtendedCFG::synIntHelper(string lineNumber) {
+bool ExtendedCFG::synIntHelper(string lineNumber) {
   string procName = procedureNameContainingThis(lineNumber);
+  if (procName == INVALID_PROCEDURE) {
+    return false;
+  }
   ensureProcCompleted(procName);
+  return true;
 }
 
 // NEXT STAR
 bool ExtendedCFG::nextStarIntInt(string from, string to) {
   if (!intIntHelper(from, to)) return false;
+  bool resultsExist = hasNext(from);
+  if (!resultsExist) {
+    return false;
+  }
   unordered_set<string> fromNextStar = nextStar.at(from);
   return fromNextStar.find(to) != fromNextStar.end();
 }
 
 unordered_set<string> ExtendedCFG::nextStarSynInt(string to) {
-  synIntHelper(to);
+  bool isValid = synIntHelper(to);
+  if (!isValid) {
+    return {};
+  }
+  bool resultsExist = hasNextStarInv(to);
+  if (!resultsExist) {
+    return {};
+  }
   unordered_set<string> toNextStarInv = nextStarInverse.at(to);
   return toNextStarInv;
 }
 
 unordered_set<string> ExtendedCFG::nextStarIntSyn(string from) {
-  ensureCompleted(from);
+  bool isValid = ensureCompleted(from);
+  if (!isValid) {
+    return {};
+  }
+  bool resultsExist = hasNext(from);
+  if (!resultsExist) {
+    return {};
+  }
   unordered_set<string> fromNextStar = nextStar.at(from);
   return fromNextStar;
 }
@@ -322,18 +395,36 @@ StringMap ExtendedCFG::nextStarSynSyn() {
 // AFFECTS
 bool ExtendedCFG::affectsIntInt(string from, string to) {
   if (!intIntHelper(from, to)) return false;
+  bool resultsExist = hasAffects(from);
+  if (!resultsExist) {
+    return {};
+  }
   unordered_set<string> fromAffects = affects.at(from);
   return fromAffects.find(to) != fromAffects.end();
 }
 
 unordered_set<string> ExtendedCFG::affectsSynInt(string to) {
-  synIntHelper(to);
+  bool isValid = synIntHelper(to);
+  if (!isValid) {
+    return {};
+  }
+  bool resultsExist = hasAffectsInv(to);
+  if (!resultsExist) {
+    return {};
+  }
   unordered_set<string> toAffectsInverse = affectsInverse.at(to);
   return toAffectsInverse;
 }
 
 unordered_set<string> ExtendedCFG::affectsIntSyn(string from) {
-  ensureCompleted(from);
+  bool isValid = ensureCompleted(from);
+  if (!isValid) {
+    return {};
+  }
+  bool resultsExist = hasAffects(from);
+  if (!resultsExist) {
+    return {};
+  }
   unordered_set<string> fromAffects = affects.at(from);
   return fromAffects;
 }

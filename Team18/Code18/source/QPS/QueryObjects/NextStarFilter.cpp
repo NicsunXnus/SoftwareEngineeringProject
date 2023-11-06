@@ -135,7 +135,7 @@ shared_ptr<QueryResultsTable> NextStarIntSyn::evaluate(shared_ptr<DataAccessLaye
 // If node is not found, return an empty table
 shared_ptr<QueryResultsTable> NextStarIntInt::evaluate(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
 	shared_ptr<ExtendedCFG> cfg = dataAccessLayer->getCFG();
-	bool results = cfg->affectsIntInt(svToString(arg1->getArgValue()), svToString(arg2->getArgValue()));
+	bool results = cfg->nextStarIntInt(svToString(arg1->getArgValue()), svToString(arg2->getArgValue()));
 	shared_ptr<QueryResultsTable> qrt = QueryResultsTable::createEmptyTable(results);
 	return qrt;
 	//StringMap PKBClauseData = dataAccessLayer->getClause(clause);

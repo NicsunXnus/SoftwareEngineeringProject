@@ -43,7 +43,12 @@ private:
   unordered_map<string, unordered_set<shared_ptr<DFSPathNode>>> frozenPaths; // line number : set<frozen paths>
 
   /// GROUP: MISC HELPER FUNCTIONS FOR QUERY METHODS
+
+  // Checks if a given line number is valid or not (ie within the bounds of the program)
+  bool isValidLineNumber(string lineNumber);
+
   // Finds the procedure that contains this line number
+  // returns "-1" if does not exist
   string procedureNameContainingThis(string lineNumber);
 
   // Checks if two lines are in the same procedure
@@ -57,24 +62,38 @@ private:
 
   // Ensures that a certain statement number has been evaluated, by performing DFS
   // from that line number if it has not been evaluated.
-  void ensureCompleted(string lineNumber);
+  // Returns whether the line number is valid or not.
+  bool ensureCompleted(string lineNumber);
 
   // Ensures that the given procedure has been evaluated, by performing DFS
   // on the first line number of the procedure.
   void ensureProcCompleted(string procName);
 
+  // Checks if a given statement has affects
+  bool hasAffects(string from);
+
+  // Checks if a given statement is destination of any Affects
+  bool hasAffectsInv(string to);
+
+  // Checks if a given statement is destination of any Next*
+  bool hasNextStarInv(string to);
+
   // Next*(int, int) and Affects(int, int) helper
+  // Returns false if either from/to are invalid line numbers
   bool intIntHelper(string from, string to);
 
   // Next*(syn, int) and Affects(syn, int) helper
-  void synIntHelper(string lineNumber);
+  // Returns whether the line number is a valid line number or not
+  bool synIntHelper(string lineNumber);
 
   // Checks if a given statement number is of a given statement type
   bool isStmtType(string stmtNumber, ENTITY entity);
 
-  // Adds Next* relations for a given line number and various other line numbers.
-  // Also adds the Inverse Next* relations
-  void addNextStar(string lineNumber, unordered_set<string> toAdd);
+  // Checks if a given statement number has a next node
+  bool hasNext(string stmtNumber);
+
+  // Gets the variables that are used by this statement number
+  unordered_set<string> getUsedVariables(string stmtNumber);
 
   // Adds Next* relations for a given line number and one other line number
   // Also adds the Inverse Next* relations
@@ -105,19 +124,22 @@ private:
   void DFS(string start);
 
   // Caches a given Path at a given line number
-  void storePath(string lineNumber, shared_ptr<DFSPathNode>& curr);
+  void storePath(string lineNumber, shared_ptr<DFSPathNode> curr);
 
   // Restores the descendants deque when given the current node, using cached paths.
-  void restoreDescendants(deque<string>& descendants, shared_ptr<DFSPathNode>& curr);
+  void restoreDescendants(deque<string>& descendants, shared_ptr<DFSPathNode> curr);
 
   // Used to move the curr pointer to the parent. This also indicates that the current iteration is over
   // and hence, mark the current node as done, and cache information, as well as to add to the descendants deque.
-  void unrollPathsIteratorHelper(string& currLineNumber, deque<string>& descendants, shared_ptr<DFSPathNode>& curr);
+  void unrollPathsIteratorHelper(string currLineNumber, deque<string>& descendants, shared_ptr<DFSPathNode>& curr);
+
+  // Helper method to consider the functionality for a Next* relationship
+  void ExtendedCFG::unrollNextStarHelper(string currLineNumber, deque<string>& descendants);
 
   // Helper method to consider the functionality for an Affects relationship.
   // Should be called within each iteration of a path unrolling.
   // Cuts short if the given statement is not an assignment statement.
-  void unrollAffectsHelper(deque<string>& descendants, shared_ptr<DFSPathNode>& curr, string& currLineNumber);
+  void unrollAffectsHelper(deque<string>& descendants, shared_ptr<DFSPathNode>& curr, string currLineNumber);
 
   /// <summary>
   /// Unrolls the paths given by DFS. 
