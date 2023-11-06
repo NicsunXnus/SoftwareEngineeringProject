@@ -201,7 +201,7 @@ shared_ptr<QueryResultsTable> QueryResultsTable::difference(
     shared_ptr<QueryResultsTable> crossed = other1->crossProduct(other2);
     // this and crossed should have same headers
     vector<string> crossed_headers = crossed->getHeaders();
-    assert(this->haveSameHeaders(crossed));
+    assert(this->haveSimilarHeaders(crossed));
 
     // cache each row in smaller table (this)
     unordered_set<pair<string, string>, PairHash> cached_rows;
