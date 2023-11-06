@@ -28,7 +28,7 @@ deactivate AbstractionStorage
 
 deactivate Insertor
 
-[-> Responder : getAbstraction(abstraction)
+[-> Responder : getAbstraction(abstraction, inverse)
 activate Responder
 
 Responder -> StorageManager : getAbstractionStorage()
@@ -42,7 +42,14 @@ activate AbstractionStorage
 AbstractionStorage --> Responder : abstraction_db
 deactivate AbstractionStorage
 
-[<--Responder : abstraction
+opt inverse ^ isFlippedStorage(abstraction)
+    Responder -> Responder : createInverseMap(abstraction_db)
+    activate Responder
+    Responder --> Responder
+    deactivate Responder
+end
+
+[<--Responder : abstraction_db
 deactivate Responder
 
 @end

@@ -1,0 +1,132 @@
+@startuml
+!include ../style.puml
+skinparam ClassFontColor #000000
+
+
+skinparam ClassBorderColor #000000
+box PKB Entities Responder LOGIC_COLOR_T1
+participant ":Responder" as Responder LOGIC_COLOR
+participant ":StorageManager" as StorageManager LOGIC_COLOR
+participant ":EntityStorage" as EntityStorage LOGIC_COLOR
+
+end box
+
+[-> Responder : getEntityStatement(entity)
+activate Responder
+
+Responder -> StorageManager : getStatementStorage()
+activate StorageManager
+StorageManager --> Responder : entity_storage
+deactivate StorageManager
+
+Responder -> EntityStorage : getDatabase()
+activate EntityStorage
+EntityStorage --> Responder : entity_database
+deactivate EntityStorage
+
+[<--Responder : statement_set
+deactivate Responder
+
+[-> Responder : getNonStatementEntityList(entity)
+activate Responder
+
+Responder -> StorageManager : getEntityNonStmtStorage()
+activate StorageManager
+StorageManager --> Responder : entity_storage
+deactivate StorageManager
+
+Responder -> EntityStorage : getDatabase()
+activate EntityStorage
+EntityStorage --> Responder : entity_database
+deactivate EntityStorage
+
+Responder -> Responder : getKeys(entity_database)
+activate Responder
+Responder --> Responder
+deactivate Responder
+
+[<--Responder : non_statement_set
+deactivate Responder
+
+[-> Responder : getNonStatementEntityMap(entity)
+activate Responder
+
+Responder -> StorageManager : getEntityNonStmtStorage()
+activate StorageManager
+StorageManager --> Responder : entity_storage
+deactivate StorageManager
+
+Responder -> EntityStorage : getDatabase()
+activate EntityStorage
+EntityStorage --> Responder : entity_database
+deactivate EntityStorage
+
+[<--Responder : non_statement_database
+deactivate Responder
+
+[-> Responder : getProcLines(procedure)
+activate Responder
+
+Responder -> StorageManager : getProcLinesStorage()
+activate StorageManager
+StorageManager --> Responder : entity_storage
+deactivate StorageManager
+
+Responder -> EntityStorage : getDatabase()
+activate EntityStorage
+EntityStorage --> Responder : proclines_database
+deactivate EntityStorage
+
+[<--Responder : proclines_set
+deactivate Responder
+
+[-> Responder : getNameMap(entity_type)
+activate Responder
+
+Responder -> StorageManager : getEntityNameStorage(entity_type)
+activate StorageManager
+StorageManager --> Responder : name_storage
+deactivate StorageManager
+
+Responder -> EntityStorage : getDatabase()
+activate EntityStorage
+EntityStorage --> Responder : entity_name_database
+deactivate EntityStorage
+
+[<--Responder : entity_name_database
+deactivate Responder
+
+[-> Responder : getAllPatterns()
+activate Responder
+
+Responder -> StorageManager : getPatternStorage()
+activate StorageManager
+StorageManager --> Responder : pattern_storage
+deactivate StorageManager
+
+Responder -> EntityStorage : getDatabase()
+activate EntityStorage
+EntityStorage --> Responder : pattern_database
+deactivate EntityStorage
+
+[<--Responder : pattern_database
+deactivate Responder
+
+[-> Responder : getPattern(statement_number)
+activate Responder
+
+Responder -> StorageManager : getPatternStorage()
+activate StorageManager
+StorageManager --> Responder : pattern_storage
+deactivate StorageManager
+
+Responder -> EntityStorage : getDatabase()
+activate EntityStorage
+EntityStorage --> Responder : pattern_database
+deactivate EntityStorage
+
+[<--Responder : pattern_node
+deactivate Responder
+
+@end
+

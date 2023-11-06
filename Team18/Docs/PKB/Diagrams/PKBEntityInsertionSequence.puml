@@ -1,0 +1,88 @@
+@startuml
+!include ../style.puml
+skinparam ClassFontColor #000000
+
+
+skinparam ClassBorderColor #000000
+box PKB Entities Insertor LOGIC_COLOR_T1
+participant ":Insertor" as Insertor LOGIC_COLOR
+participant ":StorageManager" as StorageManager LOGIC_COLOR
+participant ":EntityStorage" as EntityStorage LOGIC_COLOR
+
+end box
+
+[-> Insertor : addEntity(entity_map, entity_type)
+activate Insertor
+
+alt entity_type == STMT
+    Insertor -> StorageManager : getStatementStorage()
+    activate StorageManager
+    StorageManager --> Insertor : statement_storage
+    deactivate StorageManager
+    
+    Insertor -> EntityStorage : setEntity(entity_map)
+    activate EntityStorage
+    EntityStorage --> Insertor
+    deactivate EntityStorage
+
+else else
+    Insertor -> StorageManager : getNonStatementStorage(entity_type)
+    activate StorageManager
+    StorageManager --> Insertor : non_statement_storage
+    deactivate StorageManager
+
+    Insertor -> EntityStorage : setEntity(entity_map)
+    activate EntityStorage
+    EntityStorage --> Insertor
+    deactivate EntityStorage
+    
+end
+
+deactivate Insertor
+
+[-> Insertor : addEntityNames(entity_name_map, entity_type)
+activate Insertor
+
+Insertor -> StorageManager : getEntityNameStorage()
+activate StorageManager
+StorageManager --> Insertor : entity_name_storage
+deactivate StorageManager
+
+Insertor -> EntityStorage : setEntity(entity_name_map)
+activate EntityStorage
+EntityStorage --> Insertor
+deactivate EntityStorage
+
+deactivate Insertor
+
+[-> Insertor : addProcLines(proc_lines_map)
+activate Insertor
+
+Insertor -> StorageManager : getProcLinesStorage()
+activate StorageManager
+StorageManager --> Insertor : proc_lines_storage
+deactivate StorageManager
+
+Insertor -> EntityStorage : setProcLines(proc_lines_map)
+activate EntityStorage
+EntityStorage --> Insertor
+deactivate EntityStorage
+
+deactivate Insertor
+
+[-> Insertor : addPatterns(pattern_map)
+activate Insertor
+
+Insertor -> StorageManager : getPatternStorage()
+activate StorageManager
+StorageManager --> Insertor : pattern_storage
+deactivate StorageManager
+
+Insertor -> EntityStorage : setPattern(pattern_map)
+activate EntityStorage
+EntityStorage --> Insertor
+deactivate EntityStorage
+
+deactivate Insertor
+
+@end
