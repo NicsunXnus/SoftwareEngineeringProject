@@ -14,59 +14,59 @@ package PKB <<Rectangle>> {
     }
 
     Class StorageManager {
-        -{static} shared_ptr<EntityStorage> entity_storage;
-        -{static} shared_ptr<UsesAbstractionStorage> uses_abstractions;
-        -{static} shared_ptr<ModifiesAbstractionStorage> modifies_abstractions;
-        -{static} shared_ptr<FollowsAbstractionStorage> follows_abstractions;
-        -{static} shared_ptr<ParentAbstractionStorage> parent_abstractions;
-        +{static} shared_ptr<AbstractionStorage> getAbstractionStorage(const ABSTRACTION abstraction_type)
-        +{static} shared_ptr<EntityStorage> getEntityStorage()
+        -{static} sp<StatementStorage> statement_entities;
+        -{static} sp<ProcedureStorage> procedure_entities;
+        -{static} sp<VariableStorage> variable_entities;
+        -{static} sp<ConstantStorage> constant_entities;
+        -{static} sp<CallProcnameStorage> call_procname_entities;
+        -{static} sp<ReadVarnameStorage> read_varname_entities;
+        -{static} sp<PrintVarnameStorage> print_varname_entities;
+        -{static} sp<ProcLinesStorage> proc_lines_entities;
+        -{static} sp<PatternStorage> pattern_entities;
+        -{static} sp<UsesAbstractionStorage> uses_abstractions;
+        -{static} sp<ModifiesAbstractionStorage> modifies_abstractions;
+        -{static} sp<FollowsAbstractionStorage> follows_abstractions;
+        -{static} sp<FollowsStarAbstractionStorage> follows_star_abstractions
+        -{static} sp<ParentAbstractionStorage> parent_abstractions
+        -{static} sp<ParentStarAbstractionStorage> parent_star_abstractions
+        -{static} sp<CallsAbstractionStorage> calls_abstractions
+        -{static} sp<CallsStarAbstractionStorage> calls_star_abstractions
+        -{static} sp<NextAbstractionStorage> next_abstractions
+        -{static} map<ABSTRACTION, sp<AbstractionStorage>>abstraction_storage_map
+        -{static} map<ENTITY, sp<NonStatementStorage>> non_statement_entity_storage_map
+        -{static} map<ENTITY, sp<NameStorage>> entity_name_storage_map
+        
+        +{static} sp<AbstractionStorage> getAbstractionStorage(const ABSTRACTION abstraction_type)
+        +{static} sp<NameStorage> getEntityNameStorage(const ENTITY entity_type)
+        +{static} sp<NonStatementStorage> getEntityNonStmtStorage(const ENTITY entity_type)
+        +{static} sp<StatementStorage> getStatementStorage()
+        +{static} sp<ProcLinesStorage> getProcLinesStorage()
+        +{static} sp<PatternStorage> getPatternStorage()
     }
 
     Class Insertor {
-        +void addEntity(shared_ptr<StringMap> entity_map, ENTITY entity_type = STMT)
-        +void addAbstraction(shared_ptr<StringMap> abstraction_map, ABSTRACTION abstraction_type)
+        +void addEntity(sp<StringMap> entity_map, ENTITY entity_type = STMT)
+        +void addEntityNames(sp<StringMap> entity_name_map, ENTITY entity_type)
+        +void addProcLines(sp<map<string, pair<string, string>>> proclines_map)
+        +void addPatterns(sp<map<string, sp<Node>>> pattern_map)
+        +void addAbstraction(sp<StringMap> abstraction_map, ABSTRACTION abstraction_type)
     }
 
     Class Responder {
-        +vector<string> getEntityStatement(ENTITY entity)
-        +vector<string> getAllProcedures()
-        +vector<string> getAllVariables()
-        +vector<string> getAllConstants()
-        +StringMap getVariableMap()
-        +StringMap getConstantMap()
-        +StringMap getAbstraction(ABSTRACTION abstraction)
+        +unordered_set<string> getEntityStatement(ENTITY entity)
+        +unordered_set<string> getNonStatementEntityList(ENTITY entity)
+        +StringMap getNonStatementEntityMap(ENTITY entity)
+        +pair<string, string> getProcLines(string procedure)
+        +StringMap getNameMap(ENTITY entity_type)
+        +map<string, sp<Node>> getAllPatterns()
+        +sp<Node> getPattern(string statement_number)
+        +StringMap getAbstraction(ABSTRACTION abstraction, bool inverse = false)
+        +unordered_set<string> getAbstractionVariable(ABSTRACTION abstraction, string key)
     }
 
-    Class EntityStorage {
-      -{static} shared_ptr<map<ENTITY, vector<string>>> statement_database;
-      -{static} shared_ptr<StringMap> procedure_database;
-      -{static} shared_ptr<StringMap> variable_database;
-      -{static} shared_ptr<StringMap> constant_database;
-      +shared_ptr<map<ENTITY, vector<string>>> getStatementDatabase()
-      +shared_ptr<StringMap> getProcedureDatabase()
-      +shared_ptr<StringMap> getVariableDatabase()
-      +shared_ptr<StringMap> getConstantDatabase()
-      +void setStatementDatabase(shared_ptr<StringMap> database)
-      +void setProcedureDatabase(shared_ptr<StringMap> database)
-      +void setVariableDatabase(shared_ptr<StringMap> database)
-      +void setConstantDatabase(shared_ptr<StringMap> database)
-    }
+    Class EntityStorage {}
 
-    Class AbstractionStorage {
-      -shared_ptr<StringMap> database
-      +shared_ptr<StringMap> getDatabase()
-      +shared_ptr<StringMap> getTruncatedDatabase()
-      +void setAbstraction(shared_ptr<StringMap> database_to_insert)
-    }
-
-    Class UsesAbstractionStorage {    }
-
-    Class ModifiesAbstractionStorage {    }
-
-    Class ParentAbstractionStorage {    }
-    
-    Class FollowsAbstractionStorage {    }
+    Class AbstractionStorage {}
 
 }
 
@@ -80,37 +80,12 @@ PKB ..> Insertor
 PKB ..> StorageManager
 PKB ..> Responder
 
-StorageManager ..> EntityStorage
-StorageManager ..> AbstractionStorage
-
 Insertor .[hidden]right.> StorageManager
 StorageManager .[hidden]right.> Responder
 
-UsesAbstractionStorage -up-|> AbstractionStorage
-ModifiesAbstractionStorage -up-|> AbstractionStorage
-FollowsAbstractionStorage -up-|> AbstractionStorage
-ParentAbstractionStorage -up-|> AbstractionStorage
+StorageManager ..> EntityStorage
+StorageManager ..> AbstractionStorage
+
+' EntityStorage .[hidden]down.> AbstractionStorage
 
 @end
-
-
-' node "Inserter" as Inserter
-
-' database "Storage" as Storage {
-'   [AST]
-'   frame "Manager" {
-'     [Entity Manager]
-'     [Abstraction Manager]
-'   }
-' }
-
-' node "Responder" as Responder
-
-' Inserter -[hidden]-> AST
-' Inserter -[hidden]-> [Entity Manager]
-' Inserter -[hidden]-> [Abstraction Manager]
-' AST -[hidden]-> Responder
-' [Entity Manager] -[hidden]-> Responder
-' [Abstraction Manager] -[hidden]-> Responder
-
-' @end

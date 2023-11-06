@@ -1,0 +1,60 @@
+@startuml
+' !include ../style.puml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+
+title Abstraction Storage Class Diagram
+
+package AbstractionStorage <<Rectangle>> {
+
+    Class AbstractionStorage {
+      -shared_ptr<StringMap> database
+      +shared_ptr<StringMap> getDatabase()
+      +shared_ptr<StringMap> getTruncatedDatabase()
+      +void setAbstraction(shared_ptr<StringMap> database_to_insert)
+    }
+
+    Class UsesAbstractionStorage {    }
+
+    Class ModifiesAbstractionStorage {    }
+
+    Class ParentAbstractionStorage {    }
+
+    Class ParentStarAbstractionStorage {    }
+    
+    Class FollowsAbstractionStorage {    }
+
+    Class FollowsStarAbstractionStorage {    }
+
+    Class CallsAbstractionStorage {    }
+
+    Class CallsStarAbstractionStorage {    }
+
+    Class NextAbstractionStorage {    }
+}
+
+'QueryParser .down.> QueryObject
+'QueryObject .left.> DataAccessLayer
+
+' inheritance line: ClauseArg --|> QueryObject 
+' dependency line: ClauseArg ..> SynonymObject
+
+UsesAbstractionStorage -left-|> AbstractionStorage
+UsesAbstractionStorage .[hidden]down.> ModifiesAbstractionStorage
+ModifiesAbstractionStorage -left-|> AbstractionStorage
+ModifiesAbstractionStorage .[hidden]down.> FollowsAbstractionStorage
+FollowsAbstractionStorage -left-|> AbstractionStorage
+FollowsAbstractionStorage .[hidden]down.> FollowsStarAbstractionStorage
+FollowsStarAbstractionStorage -left-|> AbstractionStorage
+FollowsStarAbstractionStorage .[hidden]down.> ParentAbstractionStorage
+ParentAbstractionStorage -left-|> AbstractionStorage
+ParentAbstractionStorage .[hidden]down.> ParentStarAbstractionStorage
+ParentStarAbstractionStorage -left-|> AbstractionStorage
+ParentStarAbstractionStorage .[hidden]down.> CallsAbstractionStorage
+CallsAbstractionStorage -left-|> AbstractionStorage
+CallsAbstractionStorage .[hidden]down.> CallsStarAbstractionStorage
+CallsStarAbstractionStorage -left-|> AbstractionStorage
+CallsStarAbstractionStorage .[hidden]down.> NextAbstractionStorage
+NextAbstractionStorage -left-|> AbstractionStorage
+
+@end

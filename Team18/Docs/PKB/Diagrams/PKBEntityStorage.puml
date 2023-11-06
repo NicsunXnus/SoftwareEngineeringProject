@@ -1,0 +1,78 @@
+@startuml
+' !include ../style.puml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+
+title Entity Storage Class Diagram
+
+package EntityStorage <<Rectangle>> {
+
+    Class EntityStorage {}
+
+    Class StatementStorage {
+        -shared_ptr<map<ENTITY, unordered_set<string>>> database
+        +shared_ptr<map<ENTITY, unordered_set<string>>> getDatabase()
+        +void setEntity(shared_ptr<StringMap> database_to_insert)
+    }
+
+    Class NonStatementStorage {
+        -shared_ptr<StringMap> database
+        +shared_ptr<StringMap> getDatabase()
+        +void setEntity(shared_ptr<StringMap> database_to_insert)
+    }
+
+    Class ProcLinesStorage {
+        -shared_ptr<map<string, pair<string, string>>> database
+        +shared_ptr<map<string, pair<string, string>>> getDatabase()
+        +void setProcLines(shared_ptr<map<string, pair<string, string>>> database_to_insert)
+    }
+
+    Class PatternStorage {
+        -shared_ptr<map<string, shared_ptr<Node>>> database
+        +shared_ptr<map<string, shared_ptr<Node>>> getDatabase()
+        +void setPattern(shared_ptr<map<string, shared_ptr<Node>>> database_to_insert)
+    }
+
+    Class ProcedureStorage {    }
+
+    Class VariableStorage {    }
+
+    Class ConstantStorage {    }
+
+    Class NameStorage {    }
+
+    Class CallProcnameStorage {    }
+
+    Class ReadVarnameStorage {    }
+
+    Class PrintVarnameStorage {    }
+}
+
+'QueryParser .down.> QueryObject
+'QueryObject .left.> DataAccessLayer
+
+' inheritance line: ClauseArg --|> QueryObject 
+' dependency line: ClauseArg ..> SynonymObject
+
+StatementStorage -left-|> EntityStorage
+StatementStorage .[hidden]down.> ProcLinesStorage
+NonStatementStorage -left-|> EntityStorage
+ProcLinesStorage .[hidden]down.> PatternStorage
+ProcLinesStorage -left-|> EntityStorage
+PatternStorage .[hidden]down.> NonStatementStorage
+PatternStorage -left-|> EntityStorage
+
+ProcedureStorage -left-|> NonStatementStorage
+ProcedureStorage .[hidden]down.> VariableStorage
+VariableStorage -left-|> NonStatementStorage
+VariableStorage .[hidden]down.> ConstantStorage
+ConstantStorage -left-|> NonStatementStorage
+ConstantStorage .[hidden]down.> NameStorage
+NameStorage -left-|> NonStatementStorage
+CallProcnameStorage -left-|> NameStorage
+CallProcnameStorage .[hidden]down.> ReadVarnameStorage
+ReadVarnameStorage -left-|> NameStorage
+ReadVarnameStorage .[hidden]down.> PrintVarnameStorage
+PrintVarnameStorage -left-|> NameStorage
+
+@end
