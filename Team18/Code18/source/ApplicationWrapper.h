@@ -10,7 +10,7 @@
 #include "SP/SimpleProcessor/SimpleProcessor.h"
 #include "QPS/QueryDriver.h"
 
-using namespace std::string_view_literals;
+using namespace std;
 
 class ApplicationWrapper {
  public:
@@ -21,14 +21,14 @@ class ApplicationWrapper {
   ~ApplicationWrapper();
 
   // directly parses source code assuming the input is the actual code
-  void directParse(std::string_view srcCode);
+  void directParse(string_view srcCode, bool useMultithread = false);
 
   // method for parsing the SIMPLE source, assuming the input is the filename
-  void parse(std::string filename) {
+  void parse(string filename, bool useMultithread = false) {
     // call your parser to do the parsing
-    std::ifstream simpleStream(filename);
+    ifstream simpleStream(filename);
 
-    std::string src = "";
+    string src = "";
     if (simpleStream.is_open()) {
       while (simpleStream) {
         char c = simpleStream.get();
@@ -38,10 +38,10 @@ class ApplicationWrapper {
         src += c;
       }
     }
-    this->directParse(std::string_view(src));
+    this->directParse(string_view(src), useMultithread);
   }
 
   // method to evaluating a query
-  void evaluate(std::string query, std::list<std::string>& results);
+  void evaluate(string query, list<string>& results);
 };
 #endif

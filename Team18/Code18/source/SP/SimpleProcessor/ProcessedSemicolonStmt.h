@@ -6,7 +6,7 @@
 #include "ProcessedStmt.h"
 #include "../SimpleTokens/Token.h"
 
-using namespace std::string_view_literals;
+using namespace std;
 
 class ProcessedSemicolonStmt;
 class Extractor;
@@ -15,13 +15,19 @@ class Extractor;
 /// Regular statement that ends with a semicolon.
 /// </summary>
 class ProcessedSemicolonStmt : public ProcessedStmt {
+protected:
+  friend class ProcessedAssignStmt;
+  friend class ProcessedCallStmt;
+  friend class ProcessedPrintStmt;
+  friend class ProcessedReadStmt;
+  bool equalsTo(ProcessedSemicolonStmt& rhs);
+
 public:
   ProcessedSemicolonStmt(int statementNumber) 
     : ProcessedStmt{ statementNumber } {};
 
-  bool equalsTo(ProcessedSemicolonStmt& rhs);
-  void accept(std::shared_ptr<Extractor> extractor) override {};
-  void accept(std::shared_ptr<Extractor> extractor, std::string procedureName) override {};
-  void accept(std::shared_ptr<Extractor> extractor, std::unordered_set<std::string>& prevStatementNumbers) override {};
+  void accept(shared_ptr<Extractor> extractor) override {};
+  void accept(shared_ptr<Extractor> extractor, string procedureName) override {};
+  void accept(shared_ptr<Extractor> extractor, unordered_set<string>& prevStatementNumbers) override {};
 };
 #endif

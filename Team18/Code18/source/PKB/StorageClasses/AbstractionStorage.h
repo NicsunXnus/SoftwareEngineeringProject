@@ -16,18 +16,10 @@ using namespace std;
  */
 class AbstractionStorage {
  public:
-  shared_ptr<StringMap> AbstractionStorage::getDatabase() {
-    return this->database;
-  }
+  shared_ptr<StringMap> AbstractionStorage::getDatabase();
 
   void AbstractionStorage::setAbstraction(
-      shared_ptr<StringMap> database_to_insert) {
-    StringMap new_database;
-    this->database = make_shared<StringMap>(new_database);
-    for (auto const& [key, lines] : *database_to_insert) {
-      (*(this->database))[key] = lines;
-    }
-  }
+    shared_ptr<StringMap> database_to_insert);
 
  private:
   shared_ptr<StringMap> database;

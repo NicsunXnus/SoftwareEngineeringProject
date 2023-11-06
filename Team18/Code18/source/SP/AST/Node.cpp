@@ -7,11 +7,11 @@ int Node::getStatementNumber() {
   return this->statementNumber;
 }
 
-std::string Node::getValue() {
+string Node::getValue() {
   return this->value;
 }
 
-std::vector<std::shared_ptr<Node>> Node::getChildren() {
+vector<shared_ptr<Node>> Node::getChildren() {
   return this->children;
 }
 
@@ -23,7 +23,7 @@ bool Node::hasChildren() {
   return !(this->children.empty());
 }
 
-bool Node::isIdentical(std::shared_ptr<Node> that, bool isStrict) {
+bool Node::isIdentical(shared_ptr<Node> that, bool isStrict) {
   Node* thatPtr = &(*that);
   return this->isIdentical(thatPtr, isStrict);
 }
@@ -38,15 +38,15 @@ bool Node::isIdentical(Node* that, bool isStrict) {
   if (!sameValue || !strictCheck || !sameChildNum) return false;
 
   for (int i = 0; i < this->getChildrenCount(); i++) {
-    std::shared_ptr<Node> thisChild = this->children[i];
-    std::shared_ptr<Node> thatChild = that->children[i];
+    shared_ptr<Node> thisChild = this->children[i];
+    shared_ptr<Node> thatChild = that->children[i];
     bool sameChild = thisChild->isIdentical(thatChild, isStrict);
     if (!sameChild) return false;
   }
   return true;
 }
 
-bool Node::isSubtreeOf(std::shared_ptr<Node> other, bool isStrict) {
+bool Node::isSubtreeOf(shared_ptr<Node> other, bool isStrict) {
   Node* otherPtr = &(*other);
   return this->isSubtreeOf(otherPtr, isStrict);
 }
@@ -59,7 +59,7 @@ bool Node::isSubtreeOf(Node* other, bool isStrict) {
   bool isIdentical = this->isIdentical(other, isStrict);
   if (isIdentical) return true;
 
-  for (std::shared_ptr<Node> otherChild : other->children) {
+  for (shared_ptr<Node> otherChild : other->children) {
     // Use isSubtreeOf to allow for exploration of all descendants, since isIdentical cuts short nearer to the root if something mismatches
     bool childIdentical = this->isSubtreeOf(otherChild, isStrict);
     if (childIdentical) return true;
@@ -78,10 +78,7 @@ unordered_set<string> Node::getTerminalVariablesHelper(shared_ptr<Node> node) {
 
 unordered_set<string> Node::getTerminalVariablesHelper(Node* node) {
   unordered_set<string> values;
-  if (!node->hasChildren()) {  // Terminal node.
-    // Check if variable node
-
-    // VariableNode* variableNode = dynamic_cast<VariableNode*>(node);
+  if (!node->hasChildren()) {  // Terminal node: Check if variable node
     string val = node->getValue();
     if (isValidName(val)) {
       values.insert(val);
@@ -95,14 +92,14 @@ unordered_set<string> Node::getTerminalVariablesHelper(Node* node) {
   return values;
 }
 
-std::vector<std::shared_ptr<Node>> OpNode::validate(std::vector<std::shared_ptr<Node>> children) {
+vector<shared_ptr<Node>> OpNode::validate(vector<shared_ptr<Node>> children) {
   if (children.size() == 0 || children.size() > 2) {
-    throw std::invalid_argument(ExceptionMessages::wrongNumberChildren);
+    throw invalid_argument(ExceptionMessages::wrongNumberChildren);
   }
   return children;
 }
 
 
-void OpNode::accept(std::shared_ptr<Extractor> extractor) {
+void OpNode::accept(shared_ptr<Extractor> extractor) {
   extractor->extract(shared_from_this());
 }

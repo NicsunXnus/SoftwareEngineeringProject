@@ -5,28 +5,27 @@
 #include <vector>
 #include "ProcessedProcedure.h"
 
-using namespace std::string_view_literals;
+using namespace std;
 
-class Extractor;
 class ProcessedProgram;
+class Extractor;
 
 /// <summary>
 /// Abstraction for a vector of Procedures
 /// </summary>
-class ProcessedProgram : public std::enable_shared_from_this<ProcessedProgram> {
+class ProcessedProgram : public enable_shared_from_this<ProcessedProgram> {
 private:
   // no need shared_ptr of vector because copying over pointers is not memory intensive.
-  std::vector<std::shared_ptr<ProcessedProcedure>> procedures;
+  vector<shared_ptr<ProcessedProcedure>> procedures;
+
 public:
-  ProcessedProgram(std::vector<std::shared_ptr<ProcessedProcedure>>  procedures) : procedures{ procedures } {};
+  static bool checkEquality(shared_ptr<ProcessedProgram> left, shared_ptr<ProcessedProgram> right);
 
-  std::vector<std::shared_ptr<ProcessedProcedure>>  getAllProcedures() {
-    return this->procedures;
-  }
+  ProcessedProgram(vector<shared_ptr<ProcessedProcedure>>  procedures) : procedures{ procedures } {};
 
-  bool equalsTo(ProcessedProgram& rhs);
+  vector<shared_ptr<ProcessedProcedure>> getAllProcedures();
 
-  void accept(std::shared_ptr<Extractor> extractor);
+  void accept(shared_ptr<Extractor> extractor);
 };
 
 #endif

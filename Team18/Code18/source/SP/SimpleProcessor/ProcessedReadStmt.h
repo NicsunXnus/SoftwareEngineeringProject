@@ -5,30 +5,30 @@
 #include <vector>
 #include "ProcessedSemicolonStmt.h"
 #include "../SimpleTokens/Token.h"
+#include "../DesignExtractor/Extractor.h"
 
-using namespace std::string_view_literals;
+using namespace std;
 
 class ProcessedReadStmt;
+class Extractor;
 
 /// <summary>
 /// A read statement
 /// </summary>
-class ProcessedReadStmt : public ProcessedSemicolonStmt, public std::enable_shared_from_this<ProcessedReadStmt> {
+class ProcessedReadStmt : public ProcessedSemicolonStmt, public enable_shared_from_this<ProcessedReadStmt> {
 private:
-  std::shared_ptr<Token> variable;
+  shared_ptr<Token> variable;
 
 public:
-  ProcessedReadStmt(int statementNumber, std::shared_ptr<Token> variable)
+  ProcessedReadStmt(int statementNumber, shared_ptr<Token> variable)
     : ProcessedSemicolonStmt{ statementNumber },
       variable{ variable } {};
 
-  std::shared_ptr<Token> getVariable() {
-    return this->variable;
-  }
+  shared_ptr<Token> getVariable();
 
   bool equalsTo(ProcessedReadStmt& rhs);
-  void accept(std::shared_ptr<Extractor> extractor) override;
-  void accept(std::shared_ptr<Extractor> extractor, std::string procedureName) override;
-  void accept(std::shared_ptr<Extractor> extractor, std::unordered_set<std::string>& prevStatementNumbers) override;
+  void accept(shared_ptr<Extractor> extractor) override;
+  void accept(shared_ptr<Extractor> extractor, string procedureName) override;
+  void accept(shared_ptr<Extractor> extractor, unordered_set<string>& prevStatementNumbers) override;
 };
 #endif

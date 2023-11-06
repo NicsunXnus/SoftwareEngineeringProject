@@ -9,15 +9,18 @@ bool ProcessedCallStmt::equalsTo(ProcessedCallStmt& rhs) {
   return castedThis.equalsTo(castedThat);
 }
 
+shared_ptr<Token> ProcessedCallStmt::getProcedureName() {
+  return this->procedureName;
+}
 
-void ProcessedCallStmt::accept(std::shared_ptr<Extractor> extractor) {
+void ProcessedCallStmt::accept(shared_ptr<Extractor> extractor) {
   extractor->extract(shared_from_this());
 }
 
-void ProcessedCallStmt::accept(std::shared_ptr<Extractor> extractor, std::string procedureName) {
+void ProcessedCallStmt::accept(shared_ptr<Extractor> extractor, string procedureName) {
   extractor->extract(shared_from_this(), procedureName);
 }
 
-void ProcessedCallStmt::accept(std::shared_ptr<Extractor> extractor, std::unordered_set<std::string>& prevStatementNumbers) {
+void ProcessedCallStmt::accept(shared_ptr<Extractor> extractor, unordered_set<string>& prevStatementNumbers) {
   extractor->extract(shared_from_this(), prevStatementNumbers);
 }

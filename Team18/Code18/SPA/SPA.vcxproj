@@ -12,6 +12,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\ApplicationWrapper.cpp" />
+    <ClCompile Include="..\source\PKB\Insertor.cpp" />
+    <ClCompile Include="..\source\PKB\Responder.cpp" />
+    <ClCompile Include="..\source\PKB\StorageClasses\AbstractionStorage.cpp" />
+    <ClCompile Include="..\source\PKB\StorageClasses\EntityStorage.cpp" />
+    <ClCompile Include="..\source\PKB\StorageManager.cpp" />
     <ClCompile Include="..\source\QPS\QRTCache.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\QueryObject.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\WithClauseObject.cpp" />
@@ -19,6 +24,7 @@
     <ClCompile Include="..\source\QPS\DataAccessLayer.cpp" />
     <ClCompile Include="..\source\QPS\DataAccessLayerAffectsStub.cpp" />
     <ClCompile Include="..\source\QPS\DataAccessLayerStub.cpp" />
+	<ClCompile Include="..\source\QPS\GroupClause.cpp" />
     <ClCompile Include="..\source\QPS\QueryBuilder.cpp" />
     <ClCompile Include="..\source\QPS\QueryDriver.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\AffectsFilter.cpp" />
@@ -44,7 +50,7 @@
     <ClCompile Include="..\source\SP\AST\Node.cpp" />
     <ClCompile Include="..\source\SP\AST\TerminalNode.cpp" />
     <ClCompile Include="..\source\SP\AST\TreeBuilder.cpp" />
-    <ClCompile Include="..\source\SP\AST\TreeBuilderHelper.cpp" />
+	<ClCompile Include="..\source\SP\AST\OperatorEvaluator.cpp" />
     <ClCompile Include="..\source\SP\AST\UnaryOpNode.cpp" />
     <ClCompile Include="..\source\SP\DesignExtractor\AbstractionExtractor.cpp" />
     <ClCompile Include="..\source\SP\DesignExtractor\AbstractionStarExtractor.cpp" />
@@ -80,6 +86,7 @@
     <ClInclude Include="..\source\ApplicationWrapper.h" />
     <ClInclude Include="..\source\Cache.h" />
     <ClInclude Include="..\source\Constants\DesignEnums.h" />
+    <ClInclude Include="..\source\Constants\SPConstants.h" />
     <ClInclude Include="..\source\Constants\QPSConstants.h" />
     <ClInclude Include="..\source\DesignExtractor\DesignExtractor.h" />
     <ClInclude Include="..\source\ExceptionMessages.h" />
@@ -87,7 +94,6 @@
     <ClInclude Include="..\source\QPS\QRTCache.h" />
     <ClInclude Include="..\source\ThreadPool.h" />
     <ClInclude Include="..\source\PKB.h" />
-    <ClInclude Include="..\source\PKB\Adapter.h" />
     <ClInclude Include="..\source\PKB\Insertor.h" />
     <ClInclude Include="..\source\PKB\Responder.h" />
     <ClInclude Include="..\source\PKB\StorageClasses\AbstractionStorage.h" />
@@ -101,7 +107,8 @@
     <ClInclude Include="..\source\QPS\Errors\SyntaxError.h" />
     <ClInclude Include="..\source\QPS\PQLTokenizer.h" />
     <ClInclude Include="..\source\QPS\QueryBuilder.h" />
-    <ClInclude Include="..\source\QPS\OptimisedSortingClauses.h" />
+	  <ClInclude Include="..\source\QPS\OptimisedSortingClauses.h" />
+	  <ClInclude Include="..\source\QPS\GroupClause.h" />
     <ClInclude Include="..\source\QPS\QueryDriver.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\AffectsFilter.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\BooleanObjectFactory.h" />
@@ -135,7 +142,7 @@
     <ClInclude Include="..\source\SP\AST\Node.h" />
     <ClInclude Include="..\source\SP\AST\TerminalNode.h" />
     <ClInclude Include="..\source\SP\AST\TreeBuilder.h" />
-    <ClInclude Include="..\source\SP\AST\TreeBuilderHelper.h" />
+	<ClInclude Include="..\source\SP\AST\OperatorEvaluator.h" />
     <ClInclude Include="..\source\SP\AST\UnaryOpNode.h" />
     <ClInclude Include="..\source\SP\DesignExtractor\AbstractionExtractor.h" />
     <ClInclude Include="..\source\SP\DesignExtractor\AbstractionStarExtractor.h" />
@@ -165,7 +172,6 @@
     <ClInclude Include="..\source\SP\SimpleProcessor\ProcessedWhileStmt.h" />
     <ClInclude Include="..\source\SP\SimpleProcessor\SimpleProcessor.h" />
     <ClInclude Include="..\source\SP\SimpleTokens\IdentifierToken.h" />
-    <ClInclude Include="..\source\SP\SimpleTokens\KeywordToken.h" />
     <ClInclude Include="..\source\SP\SimpleTokens\LiteralToken.h" />
     <ClInclude Include="..\source\SP\SimpleTokens\OperatorToken.h" />
     <ClInclude Include="..\source\SP\SimpleTokens\SeparatorToken.h" />

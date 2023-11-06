@@ -6,7 +6,7 @@
 #include "ProcessedSemicolonStmt.h"
 #include "../SimpleTokens/Token.h"
 
-using namespace std::string_view_literals;
+using namespace std;
 
 class ProcessedPrintStmt;
 class Extractor;
@@ -23,9 +23,7 @@ public:
     : ProcessedSemicolonStmt{ statementNumber },
       variable{ variable } {};
 
-  std::shared_ptr<Token> getVariable() {
-    return this->variable;
-  }
+  std::shared_ptr<Token> getVariable();
 
   bool equalsTo(ProcessedPrintStmt& rhs);
   void accept(std::shared_ptr<Extractor> extractor) override;
