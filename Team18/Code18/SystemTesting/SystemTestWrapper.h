@@ -22,12 +22,12 @@ class SystemTestWrapper {
   // 3, 4
   // 5000
   // Returns: vector(query, expected_results_list)
-  static std::vector<std::pair<std::string, std::list<std::string>>>
-  unpackQueryFile(std::string queryFilePath) {
-    std::ifstream infile(queryFilePath);
-    std::string tempQuery = "";
-    std::string line;
-    std::vector<std::pair<std::string, std::list<std::string>>> out;
+  static vector<pair<string, list<string>>>
+  unpackQueryFile(string queryFilePath) {
+    ifstream infile(queryFilePath);
+    string tempQuery = "";
+    string line;
+    vector<pair<string, list<string>>> out;
     while (getline(infile, line)) {  // first line is useless, only for comments
       for (int _ = 0; _ < 2;
            _++) {  // next 2 lines are for declaration and query
@@ -35,18 +35,18 @@ class SystemTestWrapper {
         tempQuery += line;
       }
       getline(infile, line);  // this line is for results
-      std::list<std::string> results;
+      list<string> results;
       if (line == "semantic error") {
         results.push_back("semantic error");
         out.push_back(
-            std::pair<std::string, std::list<std::string>>(tempQuery, results));
+            pair<string, list<string>>(tempQuery, results));
       } else {
-        std::vector<std::string> split = splitString(line, ",");
-        for (std::string s : split) {
+        vector<string> split = splitString(line, ",");
+        for (string s : split) {
           results.push_back(trimWhitespaces(s));
         }
         out.push_back(
-            std::pair<std::string, std::list<std::string>>(tempQuery, results));
+            pair<string, list<string>>(tempQuery, results));
       }
       tempQuery = "";
       getline(infile, line);  // this line is for time limit
@@ -56,52 +56,52 @@ class SystemTestWrapper {
 
   // checks if two lists are equal by converting them to a set and then
   // performing equality checks
-  static bool checkListEquality(std::list<std::string> left,
-                                std::list<std::string> right) {
-    std::unordered_set<std::string> leftSet;
-    std::unordered_set<std::string> rightSet;
-    std::copy(left.begin(), left.end(),
-              std::inserter(leftSet, leftSet.begin()));
-    std::copy(right.begin(), right.end(),
-              std::inserter(rightSet, rightSet.begin()));
+  static bool checkListEquality(list<string> left,
+                                list<string> right) {
+    unordered_set<string> leftSet;
+    unordered_set<string> rightSet;
+    copy(left.begin(), left.end(),
+              inserter(leftSet, leftSet.begin()));
+    copy(right.begin(), right.end(),
+              inserter(rightSet, rightSet.begin()));
     return leftSet == rightSet;
   }
 
  public:
-  static bool run(std::string srcFilePath, std::string queryFilePath,
+  static bool run(string srcFilePath, string queryFilePath,
                   bool debugMode = true) {
     ApplicationWrapper applicationWrapper;
     applicationWrapper.parse(srcFilePath);
     bool isAllOk = true;
-    std::vector<bool> queryResults;
-    std::vector<std::pair<std::string, std::list<std::string>>> unpacked =
+    vector<bool> queryResults;
+    vector<pair<string, list<string>>> unpacked =
         unpackQueryFile(queryFilePath);
     for (int i = 1; i < unpacked.size() + 1; i++) {
-      std::pair<std::string, std::list<std::string>> curr = unpacked[i - 1];
-      std::string query = curr.first;
-      std::list<std::string> expected = curr.second;
+      pair<string, list<string>> curr = unpacked[i - 1];
+      string query = curr.first;
+      list<string> expected = curr.second;
 
-      std::list<std::string> results = {};
+      list<string> results = {};
       applicationWrapper.evaluate(query, results);
       bool passed = checkListEquality(expected, results);
       if (debugMode) {
-        std::string passedStr = passed ? " passed" : " failed";
+        string passedStr = passed ? " passed" : " failed";
         Logger::WriteMessage(
             ("! Query Number " + to_string(i) + passedStr + " !").c_str());
-        // std::cout << "Query Number " << to_string(i) << std::endl;
-        std::string tempActl = "Actual: ";
-        std::string tempExp = "Expected: ";
+        // cout << "Query Number " << to_string(i) << endl;
+        string tempActl = "Actual: ";
+        string tempExp = "Expected: ";
         for (auto r : results) {
           tempActl += r + " ";
-          // std::cout << r << " " << std::endl;
+          // cout << r << " " << endl;
         }
         for (auto r : expected) {
           tempExp += r + " ";
-          // std::cout << r << " " << std::endl;
+          // cout << r << " " << endl;
         }
         Logger::WriteMessage(tempExp.c_str());
         Logger::WriteMessage(tempActl.c_str());
-        Logger::WriteMessage(std::string("\n").c_str());
+        Logger::WriteMessage(string("\n").c_str());
       }
       queryResults.push_back(passed);
       if (!passed) {
@@ -110,14 +110,14 @@ class SystemTestWrapper {
     }
     if (!isAllOk) {
       // convert results into string and return as error
-      std::stringstream ss;
+      stringstream ss;
       for (size_t i = 0; i < queryResults.size(); i++) {
         if (i != 0) {
           ss << "\n";
         }
         ss << "Query #" + to_string(i) + ": " + to_string(queryResults[i]);
       }
-      throw std::invalid_argument(ss.str());
+      throw invalid_argument(ss.str());
     }
     return isAllOk;
   }

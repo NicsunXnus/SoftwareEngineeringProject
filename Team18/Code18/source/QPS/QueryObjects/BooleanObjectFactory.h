@@ -12,7 +12,7 @@ public:
 	BooleanObjectFactory() : QueryObjectFactory{} {}
 
 	shared_ptr<QueryObject> create(string_view clauseName, 
-		vector<std::shared_ptr<ClauseArg>> arguments = vector<std::shared_ptr<ClauseArg>>()) {
+		vector<shared_ptr<ClauseArg>> arguments = vector<shared_ptr<ClauseArg>>()) {
 
 		return make_shared<BooleanQueryObject>(clauseName);
 	}

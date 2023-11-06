@@ -10,9 +10,9 @@
 
 #include "../HelperFunctions.h"
 
-using namespace std::string_view_literals;
+using namespace string_view_literals;
 
-inline std::unordered_set<char> TOKENIZED_CHARS{ ';', ',', '(', ')', '_', '.' , '='};
+inline unordered_set<char> TOKENIZED_CHARS{ ';', ',', '(', ')', '_', '.' , '='};
 
 /**
 * This class encapsulates a tokenizer that tokenizes PQL queries
@@ -22,16 +22,16 @@ public:
 	/**
 	* Splits a pql query into tokens.
 	*
-	* Returns a std::vector of tokens.
+	* Returns a vector of tokens.
 	*/
-	static std::vector<std::string> tokenize(std::string pql) {
+	static vector<string> tokenize(string pql) {
 
-		std::vector<std::string> tokens;
+		vector<string> tokens;
 		int startIndex{ 0 };
 		bool isWord{ false };
 		bool isWithinQuotes{ false };
 		
-		std::stringstream ss;
+		stringstream ss;
 
 
 		for (int i = 0; i < pql.length(); ++i) {
@@ -41,7 +41,7 @@ public:
 					tokens.push_back(pql.substr(startIndex, i - startIndex));
 					isWord = false;
 				}
-				std::vector<std::string> tupleTokens{ tokenizeTuple(pql, i) };
+				vector<string> tupleTokens{ tokenizeTuple(pql, i) };
 				tokens.insert(tokens.end(), tupleTokens.begin(), tupleTokens.end());
 
 				continue;
@@ -51,7 +51,7 @@ public:
 					tokens.push_back(pql.substr(startIndex, i - startIndex));
 					isWord = false;
 				}
-				std::string quoteToken{ tokenizeQuotes(pql, i) };
+				string quoteToken{ tokenizeQuotes(pql, i) };
 				tokens.emplace_back(quoteToken);
 
 				continue;
@@ -91,13 +91,13 @@ public:
 	}
 
 private:
-	static std::string tokenizeQuotes(std::string pql, int& index) {
+	static string tokenizeQuotes(string pql, int& index) {
 		if (pql[index] != '"') {
-			throw std::runtime_error("This should not be called");
+			throw runtime_error("This should not be called");
 		}
-		std::stringstream ss;
+		stringstream ss;
 
-		ss.str(std::string()); // empties the stream
+		ss.str(string()); // empties the stream
 		ss << pql[index];
 		index++;
 
@@ -126,8 +126,8 @@ private:
 		return ss.str();
 	}
 
-	static std::vector<std::string> tokenizeTuple(std::string pql, int& index) {
-		std::vector<std::string> tokens;
+	static vector<string> tokenizeTuple(string pql, int& index) {
+		vector<string> tokens;
 		int startIndex{ 0 };
 		bool isIdent{ false };
 

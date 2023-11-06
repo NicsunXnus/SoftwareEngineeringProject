@@ -20,15 +20,15 @@ TestWrapper::TestWrapper() {
 }
 
 // method for parsing the SIMPLE source
-void TestWrapper::parse(std::string filename) {
-  // std::cout << "parsing" << std::endl;
+void TestWrapper::parse(string filename) {
+  // cout << "parsing" << endl;
   this->appWrap.parse(filename);
-  // std::cout << "parsed" << std::endl;
+  // cout << "parsed" << endl;
 }
 
 // method to evaluating a query
-void TestWrapper::evaluate(std::string query, std::list<std::string>& results) {
-  // std::cout << "start" << std::endl;
+void TestWrapper::evaluate(string query, list<string>& results) {
+  // cout << "start" << endl;
   this->appWrap.evaluate(query, results);
-  // std::cout << "end" << std::endl << std::flush;
+  // cout << "end" << endl << flush;
 }

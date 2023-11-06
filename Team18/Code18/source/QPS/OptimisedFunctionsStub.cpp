@@ -1,6 +1,6 @@
 #include "OptimisedFunctionsStub.h"
 #include <execution>
-bool sortEmptyFirstStub(const std::shared_ptr<QueryResultsTable>& a, const std::shared_ptr<QueryResultsTable>& b) {
+bool sortEmptyFirstStub(const shared_ptr<QueryResultsTable>& a, const shared_ptr<QueryResultsTable>& b) {
 	int priorityA = -1;
 	int priorityB = 0;
 	if (a->isEmpty() && !b->isEmpty()) {
@@ -11,7 +11,7 @@ bool sortEmptyFirstStub(const std::shared_ptr<QueryResultsTable>& a, const std::
 
 // An auxiliary function to aid in the comparison within the data structure of vector<shared_ptr<QueryResultsTable>>
 // The table containing the more common header in the group of clauses will be sorted before the other.
-bool sortMostCommonHeaderFirstStub(const std::shared_ptr<QueryResultsTable>& a, const std::shared_ptr<QueryResultsTable>& b) {
+bool sortMostCommonHeaderFirstStub(const shared_ptr<QueryResultsTable>& a, const shared_ptr<QueryResultsTable>& b) {
 	int maxValueA = 0;
 	int maxValueB = 0;
 	vector<string> headersA = a->getHeaders();
@@ -33,7 +33,7 @@ bool sortMostCommonHeaderFirstStub(const std::shared_ptr<QueryResultsTable>& a, 
 	return maxValueA > maxValueB;
 }
 
-bool OptimisedFunctionsStub::sortMostUniqueHeadersFirst(const std::shared_ptr<QueryResultsTable>& a, const std::shared_ptr<QueryResultsTable>& b) {
+bool OptimisedFunctionsStub::sortMostUniqueHeadersFirst(const shared_ptr<QueryResultsTable>& a, const shared_ptr<QueryResultsTable>& b) {
 	set<string> setA = a->getHeadersAsSet(); set<string> setB = b->getHeadersAsSet();
 	return setA.size() > setB.size();
 }

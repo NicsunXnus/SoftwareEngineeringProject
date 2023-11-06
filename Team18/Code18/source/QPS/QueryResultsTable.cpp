@@ -198,12 +198,12 @@ shared_ptr<QueryResultsTable> QueryResultsTable::difference(
   return createTable(header, diff_column_values);
 }
 
-// Define a hash function for std::pair of strings
+// Define a hash function for pair of strings
 struct PairHash {
   template <class T1, class T2>
-  std::size_t operator()(const std::pair<T1, T2>& p) const {
-    auto h1 = std::hash<T1>{}(p.first);
-    auto h2 = std::hash<T2>{}(p.second);
+  size_t operator()(const pair<T1, T2>& p) const {
+    auto h1 = hash<T1>{}(p.first);
+    auto h2 = hash<T2>{}(p.second);
     return h1 ^ (h2 << 1);
   }
 };

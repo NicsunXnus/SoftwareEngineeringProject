@@ -8,23 +8,23 @@
 using namespace std;
 
 void EntityExtractor::extract(shared_ptr<ProcessedProgram> processedProgram) {
-    std::vector<std::shared_ptr<ProcessedProcedure>> procedures = processedProgram->getAllProcedures();
-    for (std::shared_ptr<ProcessedProcedure> procedure : procedures) {
-        std::string_view procName = procedure->getProcName();
-        std::string procedureName(procName);
+    vector<shared_ptr<ProcessedProcedure>> procedures = processedProgram->getAllProcedures();
+    for (shared_ptr<ProcessedProcedure> procedure : procedures) {
+        string_view procName = procedure->getProcName();
+        string procedureName(procName);
         this->insertToProcedureMap(procedureName);
         procedure->accept(shared_from_this());
     }
 }
 
 void EntityExtractor::extract(shared_ptr<ProcessedProcedure> processedProcedure) {
-    std::shared_ptr<ProcessedStmtList> statementList = processedProcedure->getStmts();
+    shared_ptr<ProcessedStmtList> statementList = processedProcedure->getStmts();
     statementList->accept(shared_from_this());
 }
 
 void EntityExtractor::extract(shared_ptr<ProcessedStmtList> processedStmtList) {
-    std::vector<std::shared_ptr<ProcessedStmt>> stmts = processedStmtList->getStmts();
-    for (std::shared_ptr<ProcessedStmt> stmt : stmts) {
+    vector<shared_ptr<ProcessedStmt>> stmts = processedStmtList->getStmts();
+    for (shared_ptr<ProcessedStmt> stmt : stmts) {
         stmt->accept(shared_from_this());
     }
 }
@@ -33,14 +33,14 @@ void EntityExtractor::extract(shared_ptr<ProcessedStmt> processedStmt) {
 }
 
 void EntityExtractor::extract(shared_ptr<ProcessedWhileStmt> processedWhile) {
-    string statementNumber = std::to_string(processedWhile->getStatementNumber());
+    string statementNumber = to_string(processedWhile->getStatementNumber());
 
     // for statementMap
     this->insertToStatementMap("while", statementNumber);
     this->insertToStatementMap("stmt", statementNumber);
 
     // for patternMap
-    std::shared_ptr<Node> node = processedWhile->getConditionalExp();
+    shared_ptr<Node> node = processedWhile->getConditionalExp();
     this->insertToPatternMap(statementNumber, node);
 
     node->accept(shared_from_this());
@@ -50,14 +50,14 @@ void EntityExtractor::extract(shared_ptr<ProcessedWhileStmt> processedWhile) {
 }
 
 void EntityExtractor::extract(shared_ptr<ProcessedIfStmt> processedIf) {
-    string statementNumber = std::to_string(processedIf->getStatementNumber());
+    string statementNumber = to_string(processedIf->getStatementNumber());
 
     // for statementMap
     this->insertToStatementMap("if", statementNumber);
     this->insertToStatementMap("stmt", statementNumber);
 
     // for patternMap
-    std::shared_ptr<Node> node = processedIf->getConditionalExp();
+    shared_ptr<Node> node = processedIf->getConditionalExp();
     this->insertToPatternMap(statementNumber, node);
 
     node->accept(shared_from_this());
@@ -69,7 +69,7 @@ void EntityExtractor::extract(shared_ptr<ProcessedIfStmt> processedIf) {
 }
 
 void EntityExtractor::extract(shared_ptr<ProcessedAssignStmt> processedAssign) {
-    string statementNumber = std::to_string(processedAssign->getStatementNumber());
+    string statementNumber = to_string(processedAssign->getStatementNumber());
     string assignedVariable = processedAssign->getLeft()->getName();
 
     //for variableMap
@@ -80,14 +80,14 @@ void EntityExtractor::extract(shared_ptr<ProcessedAssignStmt> processedAssign) {
     this->insertToStatementMap("stmt", statementNumber);
 
     // for patternMap
-    std::shared_ptr<Node> node = processedAssign->getRight();
+    shared_ptr<Node> node = processedAssign->getRight();
     this->insertToPatternMap(statementNumber, node);
 
     node->accept(shared_from_this());
 }
 
 void EntityExtractor::extract(shared_ptr<ProcessedCallStmt> processedCall) {
-    string statementNumber = std::to_string(processedCall->getStatementNumber());
+    string statementNumber = to_string(processedCall->getStatementNumber());
 
     // For statementMap
     this->insertToStatementMap("call", statementNumber);
@@ -99,7 +99,7 @@ void EntityExtractor::extract(shared_ptr<ProcessedCallStmt> processedCall) {
 }
 
 void EntityExtractor::extract(shared_ptr<ProcessedReadStmt> processedRead) {
-    string statementNumber = std::to_string(processedRead->getStatementNumber());
+    string statementNumber = to_string(processedRead->getStatementNumber());
 
     // for statementMap
     this->insertToStatementMap("read", statementNumber);
@@ -114,7 +114,7 @@ void EntityExtractor::extract(shared_ptr<ProcessedReadStmt> processedRead) {
 }
 
 void EntityExtractor::extract(shared_ptr<ProcessedPrintStmt> processedPrint) {
-     string statementNumber = std::to_string(processedPrint->getStatementNumber());
+     string statementNumber = to_string(processedPrint->getStatementNumber());
 
     // for statementMap
     this->insertToStatementMap("print", statementNumber);
@@ -129,21 +129,21 @@ void EntityExtractor::extract(shared_ptr<ProcessedPrintStmt> processedPrint) {
 }
 
 void EntityExtractor::extract(shared_ptr<OpNode> node) {
-    std::vector<std::shared_ptr<Node>> children = node->getChildren();
-    for (std::shared_ptr<Node> child : children) {
+    vector<shared_ptr<Node>> children = node->getChildren();
+    for (shared_ptr<Node> child : children) {
         child->accept(shared_from_this());
     }
 }
 
 void EntityExtractor::extract(shared_ptr<VariableNode> node) {
-    std::string variableName = node->getValue();
-    std::string statementNumber = std::to_string(node->getStatementNumber());
+    string variableName = node->getValue();
+    string statementNumber = to_string(node->getStatementNumber());
     this->insertToVariableMap(variableName, statementNumber);
 }
 
 void EntityExtractor::extract(shared_ptr<ConstantNode> node) {
-    std::string constantValue = node->getValue();
-    std::string statementNumber = std::to_string(node->getStatementNumber());
+    string constantValue = node->getValue();
+    string statementNumber = to_string(node->getStatementNumber());
 
     this->insertToConstantMap(constantValue, statementNumber);
 }

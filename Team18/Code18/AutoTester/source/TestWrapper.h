@@ -21,10 +21,10 @@ class TestWrapper : public AbstractWrapper {
   ~TestWrapper();
 
   // method for parsing the SIMPLE source
-  virtual void parse(std::string filename);
+  virtual void parse(string filename);
 
   // method for evaluating a query
-  virtual void evaluate(std::string query, std::list<std::string>& results);
+  virtual void evaluate(string query, list<string>& results);
 };
 
 #endif

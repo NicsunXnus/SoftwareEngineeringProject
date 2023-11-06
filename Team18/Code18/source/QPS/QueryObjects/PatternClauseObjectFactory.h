@@ -11,11 +11,11 @@ private:
 	const unordered_set<ENTITY> validArg1SynonymEntities{ VARIABLE };
 	const int IF_PATTERN_ARGUMENT_COUNT{ 4 };
 
-	shared_ptr<QueryObject> createIf(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments);
+	shared_ptr<QueryObject> createIf(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments);
 
 public:
 	PatternClauseObjectFactory() : QueryObjectFactory{} {}
 
-	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override;
+	shared_ptr<QueryObject> create(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) override;
 };
 #endif

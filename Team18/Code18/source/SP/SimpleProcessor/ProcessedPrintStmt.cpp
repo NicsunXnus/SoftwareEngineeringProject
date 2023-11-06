@@ -9,7 +9,7 @@ bool ProcessedPrintStmt::equalsTo(ProcessedPrintStmt& rhs) {
   return castedThis.equalsTo(castedThat);
 }
 
-std::shared_ptr<Token> ProcessedPrintStmt::getVariable() {
+shared_ptr<Token> ProcessedPrintStmt::getVariable() {
   return this->variable;
 }
 

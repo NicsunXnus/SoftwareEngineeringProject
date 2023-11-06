@@ -24,7 +24,7 @@ class UsesObjectFactory : public ClauseObjectFactory {
 public:
 	UsesObjectFactory() {};
 
-	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
+	shared_ptr<QueryObject> create(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> arg1 = arguments[0];
 		shared_ptr<ClauseArg> arg2 = arguments[1];
 		bool isArg1SynonymStmtRef{ arg1->isSynonym() && (validStmtEntities.find(arg1->getSynonym()->getEntityType()) != validStmtEntities.end()) };
@@ -64,7 +64,7 @@ public:
 
 	}; 
 
-	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
+	shared_ptr<QueryObject> create(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> arg1 = arguments[0];
 		shared_ptr<ClauseArg> arg2 = arguments[1];
 		bool isArg1SynonymStmtRef{ arg1->isSynonym() && (validStmtEntities.find(arg1->getSynonym()->getEntityType()) != validStmtEntities.end()) };
@@ -105,7 +105,7 @@ public:
 
 	};
 
-	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
+	shared_ptr<QueryObject> create(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> arg1 = arguments[0];
 		shared_ptr<ClauseArg> arg2 = arguments[1];
 		bool isArg1SynonymStmtRef{ arg1->isSynonym() && (validStmtEntities.find(arg1->getSynonym()->getEntityType()) != validStmtEntities.end()) };
@@ -137,7 +137,7 @@ class FollowsStarObjectFactory : public ClauseObjectFactory {
 public:
 	FollowsStarObjectFactory() {};
 
-	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
+	shared_ptr<QueryObject> create(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> arg1 = arguments[0];
 		shared_ptr<ClauseArg> arg2 = arguments[1];
 		bool isArg1SynonymStmtRef{ arg1->isSynonym() && (validStmtEntities.find(arg1->getSynonym()->getEntityType()) != validStmtEntities.end()) };
@@ -173,7 +173,7 @@ public:
 
 	};
 
-	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
+	shared_ptr<QueryObject> create(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> arg1 = arguments[0];
 		shared_ptr<ClauseArg> arg2 = arguments[1];
 		bool isArg1SynonymStmtRef{ arg1->isSynonym() && (validStmtEntities.find(arg1->getSynonym()->getEntityType()) != validStmtEntities.end()) };
@@ -209,7 +209,7 @@ public:
 
 	};
 
-	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
+	shared_ptr<QueryObject> create(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> arg1 = arguments[0];
 		shared_ptr<ClauseArg> arg2 = arguments[1];
 		bool isArg1SynonymStmtRef{ arg1->isSynonym() && (validStmtEntities.find(arg1->getSynonym()->getEntityType()) != validStmtEntities.end()) };
@@ -244,7 +244,7 @@ class CallsObjectFactory : public ClauseObjectFactory {
 public:
 	CallsObjectFactory() {};
 
-	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
+	shared_ptr<QueryObject> create(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> arg1 = arguments[0];
 		shared_ptr<ClauseArg> arg2 = arguments[1];
 		bool isArg1SynonymEntRef{ arg1->isSynonym() && (validOtherEntities.find(arg1->getSynonym()->getEntityType()) != validOtherEntities.end()) };
@@ -278,7 +278,7 @@ class CallsStarObjectFactory : public ClauseObjectFactory {
 public:
 	CallsStarObjectFactory() {};
 
-	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
+	shared_ptr<QueryObject> create(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> arg1 = arguments[0];
 		shared_ptr<ClauseArg> arg2 = arguments[1];
 		bool isArg1SynonymEntRef{ arg1->isSynonym() && (validOtherEntities.find(arg1->getSynonym()->getEntityType()) != validOtherEntities.end()) };
@@ -314,7 +314,7 @@ public:
 
 	};
 
-	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
+	shared_ptr<QueryObject> create(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> arg1 = arguments[0];
 		shared_ptr<ClauseArg> arg2 = arguments[1];
 		bool isArg1SynonymStmtRef{ arg1->isSynonym() && (validStmtEntities.find(arg1->getSynonym()->getEntityType()) != validStmtEntities.end()) };
@@ -351,7 +351,7 @@ public:
 
 	};
 
-	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
+	shared_ptr<QueryObject> create(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> arg1 = arguments[0];
 		shared_ptr<ClauseArg> arg2 = arguments[1];
 		bool isArg1SynonymStmtRef{ arg1->isSynonym() && (validStmtEntities.find(arg1->getSynonym()->getEntityType()) != validStmtEntities.end()) };
@@ -386,7 +386,7 @@ class AffectsObjectFactory : public ClauseObjectFactory {
 public:
 	AffectsObjectFactory() {};
 
-	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
+	shared_ptr<QueryObject> create(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> arg1 = arguments[0];
 		shared_ptr<ClauseArg> arg2 = arguments[1];
 		bool isArg1SynonymStmtRef{ arg1->isSynonym() && (validStmtEntities.find(arg1->getSynonym()->getEntityType()) != validStmtEntities.end()) };

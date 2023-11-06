@@ -20,7 +20,7 @@ public:
 
 	const unordered_set<ENTITY> validSynonyms{ PROCEDURE, CALL };
 
-	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
+	shared_ptr<QueryObject> create(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> synonym{ arguments[0] };
 		
 		if (!synonym->isSynonym()) {
@@ -45,7 +45,7 @@ public:
 
 	const unordered_set<ENTITY> validSynonyms{ VARIABLE, READ, PRINT };
 
-	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
+	shared_ptr<QueryObject> create(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> synonym{ arguments[0] };
 
 		if (!synonym->isSynonym()) {
@@ -71,7 +71,7 @@ public:
 
 	const unordered_set<ENTITY> validSynonyms{ CONSTANT };
 
-	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
+	shared_ptr<QueryObject> create(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> synonym{ arguments[0] };
 
 		if (!synonym->isSynonym()) {
@@ -96,7 +96,7 @@ public:
 
 	const unordered_set<ENTITY> validSynonyms{ STMT, READ, PRINT, CALL, WHILE, IF, ASSIGN };
 
-	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
+	shared_ptr<QueryObject> create(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> synonym{ arguments[0] };
 
 		if (!synonym->isSynonym()) {

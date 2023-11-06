@@ -21,10 +21,10 @@ private:
   int statementNumber;
 
   // Combines a left and a right Node into a new node representing the arithmetic operation
-  shared_ptr<Node> makeArithmeticNode(std::string op, std::shared_ptr<Node> left, std::shared_ptr<Node> right);
+  shared_ptr<Node> makeArithmeticNode(string op, shared_ptr<Node> left, shared_ptr<Node> right);
 
   // Applies arithmetic operations on the stacks given
-  void applyArithmeticOperation(std::stack<std::string>& ops, std::stack<std::shared_ptr<Node>>& values);
+  void applyArithmeticOperation(stack<string>& ops, stack<shared_ptr<Node>>& values);
 
 public:
   // Initialise with statement number, default value of -1 (more applicable to QPS side)
@@ -38,9 +38,9 @@ public:
   ///     appropriately.</remarks>
   /// 
   /// <param name="tokens">the tokens to be converted into an AST</param>
-  /// <exception cref="std::invalid_argument">Thrown when anything invalid is detected. This can include mismatched parentheses, 
+  /// <exception cref="invalid_argument">Thrown when anything invalid is detected. This can include mismatched parentheses, 
   ///     operations, operations or variable/constants</exception>
   /// <returns>the AST built from the tokens</returns>
-  shared_ptr<Node> buildTree(std::vector<std::shared_ptr<Token>> tokens);
+  shared_ptr<Node> buildTree(vector<shared_ptr<Token>> tokens);
 };
 #endif

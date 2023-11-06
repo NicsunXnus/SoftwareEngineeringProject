@@ -38,7 +38,7 @@ namespace UnitTesting
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 
 			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(testSv);
-			Assert::IsTrue(static_cast<int>(std::get<0>(testObj).size()) == 0);
+			Assert::IsTrue(static_cast<int>(get<0>(testObj).size()) == 0);
 
 		}
 

@@ -1,14 +1,14 @@
 #include "PatternClauseObjectFactory.h"
 #include "../../SP/SimpleProcessor/ExpressionProcessor.h"
 
-shared_ptr<QueryObject> PatternClauseObjectFactory::create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) {
+shared_ptr<QueryObject> PatternClauseObjectFactory::create(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) {
 	if (static_cast<int>(arguments.size()) == IF_PATTERN_ARGUMENT_COUNT) {
 		return createIf(clauseName, arguments);
 	}
 
-	std::shared_ptr<ClauseArg> patternSynonym{ arguments[0] };
-	std::shared_ptr<ClauseArg> arg1{ arguments[1] };
-	std::shared_ptr<ClauseArg> arg2{ arguments[2] };
+	shared_ptr<ClauseArg> patternSynonym{ arguments[0] };
+	shared_ptr<ClauseArg> arg1{ arguments[1] };
+	shared_ptr<ClauseArg> arg2{ arguments[2] };
 
 
 	bool isArg0ValidSynonymAssign{ patternSynonym->isSynonym() && patternSynonym->getSynonym()->getEntityType() == ASSIGN };
@@ -28,7 +28,7 @@ shared_ptr<QueryObject> PatternClauseObjectFactory::create(string_view clauseNam
 	if (isArg2PartialMatching || isArg2ExactExpr) {
 		try {
 			ExpressionProcessor ep = ExpressionProcessor();
-			std::shared_ptr<Node> patternTree = ep.nodifyArithmeticExpression(svToString(arg2->getArgValue()));
+			shared_ptr<Node> patternTree = ep.nodifyArithmeticExpression(svToString(arg2->getArgValue()));
 			isSyntacticallyCorrectExpr = true;
 		}
 		catch (invalid_argument e) {
@@ -56,11 +56,11 @@ shared_ptr<QueryObject> PatternClauseObjectFactory::create(string_view clauseNam
 	}
 }
 
-shared_ptr<QueryObject> PatternClauseObjectFactory::createIf(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) {
-	std::shared_ptr<ClauseArg> ifSynonym{ arguments[0] };
-	std::shared_ptr<ClauseArg> arg1{ arguments[1] };
-	std::shared_ptr<ClauseArg> arg2{ arguments[2] };
-	std::shared_ptr<ClauseArg> arg3{ arguments[3] };
+shared_ptr<QueryObject> PatternClauseObjectFactory::createIf(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) {
+	shared_ptr<ClauseArg> ifSynonym{ arguments[0] };
+	shared_ptr<ClauseArg> arg1{ arguments[1] };
+	shared_ptr<ClauseArg> arg2{ arguments[2] };
+	shared_ptr<ClauseArg> arg3{ arguments[3] };
 
 	bool isArg0ValidSynonym{ ifSynonym->isSynonym() && ifSynonym->getSynonym()->getEntityType() == IF };
 
