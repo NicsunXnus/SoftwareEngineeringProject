@@ -67,21 +67,21 @@ unordered_set<shared_ptr<DFSPathNode>> DFSPathNode::diverge(shared_ptr<DFSPathNo
 }
 
 unordered_set<shared_ptr<DFSPathNode>> DFSPathNode::joinDescendants(shared_ptr<DFSPathNode> current, unordered_set<shared_ptr<DFSPathNode>> toJoin) {
-  // Joins one descendant to the current's parent, and others to copies of the parent
+  // This is only called when a completed node has been found. Hence, toJoin is guaranteed
+  // to not be nullptrs, and therefore toJoin[i]->child exists.
+  // This function then joins each of toJoin[i]->child to current or a copy of current.
   unordered_set<shared_ptr<DFSPathNode>> output;
-  shared_ptr<DFSPathNode> currParent = current->getParent();
   for (auto it = toJoin.begin(); it != toJoin.end(); it++) {
     shared_ptr<DFSPathNode> node = *it;
+    shared_ptr<DFSPathNode> childFromCache = node->getChild();
     if (it == toJoin.begin()) {
-      currParent->child = node;
-      node->parent = currParent;
-      output.insert(node);
+      current->child = childFromCache;
+      output.insert(current);
     }
     else {
-      shared_ptr<DFSPathNode> parentCopy = deepCopy(currParent);
-      parentCopy->child = node;
-      node->parent = parentCopy;
-      output.insert(node);
+      shared_ptr<DFSPathNode> currentCopy = deepCopy(current);
+      currentCopy->child = childFromCache;
+      output.insert(currentCopy);
     }
   }
   return output;
