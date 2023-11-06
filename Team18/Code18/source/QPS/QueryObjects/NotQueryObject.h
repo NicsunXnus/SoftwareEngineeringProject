@@ -30,6 +30,8 @@ class NotQueryObject : public QueryObject {
 
   int getSynonymCount() { return static_cast<int>(synonyms.size()); }
 
+  bool isPattern() { return getQueryObjectName().substr(0, 7) == "pattern"; }
+
   shared_ptr<QueryObject> getFirstSynonym() { return synonyms[0]; }
 
   shared_ptr<QueryObject> getSecondSynonym() { return synonyms[1]; }
