@@ -56,7 +56,9 @@ unordered_set<string> AffectsFilter::filterAssignmentsInProcedure(unordered_set<
 shared_ptr<QueryResultsTable> AffectsSynSyn::evaluate(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
 	shared_ptr<ExtendedCFG> cfg = dataAccessLayer->getCFG();
 	StringMap results = cfg->affectsSynSyn();
-	return nullptr;
+	vector<string> headers({ svToString(arg1->getArgValue()), svToString(arg2->getArgValue()) });
+	shared_ptr<QueryResultsTable> qrt = QueryResultsTable::createTable(headers, results);
+	return qrt;
 	//StringMap cfg = dataAccessLayer->getClause(clause); // next table (CFG)
 	//unordered_set<string> assignments = dataAccessLayer->getEntity(ASSIGN);
 	//StringMap results;
@@ -181,8 +183,9 @@ shared_ptr<QueryResultsTable> AffectsSynWildcard::evaluate(shared_ptr<DataAccess
 
 shared_ptr<QueryResultsTable> AffectsSynInt::evaluate(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
 	shared_ptr<ExtendedCFG> cfg = dataAccessLayer->getCFG();
-	//unordered_set<string> results = cfg->affectsSynInt(INSERTARGSHERE);
-	return nullptr;
+	unordered_set<string> results = cfg->affectsSynInt(svToString(arg2->getArgValue()));
+	shared_ptr<QueryResultsTable> qrt = QueryResultsTable::createTable(svToString(arg1->getArgValue()), results);
+	return qrt;
 	//StringMap cfg = dataAccessLayer->getClause(clause); // next table (CFG)
 	//unordered_set<string> unfilteredassignments = dataAccessLayer->getEntity(ASSIGN);
 	//unordered_set<string> results;
@@ -242,8 +245,9 @@ shared_ptr<QueryResultsTable> AffectsSynInt::evaluate(shared_ptr<DataAccessLayer
 
 shared_ptr<QueryResultsTable> AffectsIntSyn::evaluate(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
 	shared_ptr<ExtendedCFG> cfg = dataAccessLayer->getCFG();
-	//unordered_set<string> results = cfg->affectsIntSyn(INSERTARGSHERE);
-	return nullptr;
+	unordered_set<string> results = cfg->affectsIntSyn(svToString(arg1->getArgValue()));
+	shared_ptr<QueryResultsTable> qrt = QueryResultsTable::createTable(svToString(arg2->getArgValue()), results);
+	return qrt;
 	//StringMap cfg = dataAccessLayer->getClause(clause); // next table (CFG)
 	//unordered_set<string> assignments = dataAccessLayer->getEntity(ASSIGN);
 
@@ -346,8 +350,9 @@ shared_ptr<QueryResultsTable> AffectsIntWildcard::evaluate(shared_ptr<DataAccess
 
 shared_ptr<QueryResultsTable> AffectsIntInt::evaluate(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
 	shared_ptr<ExtendedCFG> cfg = dataAccessLayer->getCFG();
-	//bool results = cfg->affectsIntInt(INSERTARGSHERE, INSERTARGSHERE);
-	return nullptr;
+	bool results = cfg->affectsIntInt(svToString(arg1->getArgValue()), svToString(arg2->getArgValue()));
+	shared_ptr<QueryResultsTable> qrt = QueryResultsTable::createEmptyTable(results);
+	return qrt;
 	//StringMap cfg = dataAccessLayer->getClause(clause); // next table (CFG)
 	//unordered_set<string> assignments = dataAccessLayer->getEntity(ASSIGN);
 	//
