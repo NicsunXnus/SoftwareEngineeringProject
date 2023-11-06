@@ -109,3 +109,8 @@ StringMap DataAccessLayerStub::getClauseInverse(ABSTRACTION abstraction) {
 StringMap DataAccessLayerStub::getCallProcNames() { return callProcName; }
 StringMap DataAccessLayerStub::getReadVarNames() { return readVarName; }
 StringMap DataAccessLayerStub::getPrintVarNames() { return printVarName; }
+
+pair<string, string> DataAccessLayerStub::getProcLines(string procName) {
+    pair<string, string> empty;
+    return empty;
+}

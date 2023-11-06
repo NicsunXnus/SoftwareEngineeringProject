@@ -2,6 +2,7 @@
 #define QPS_ERROR_H
 #include <iostream>
 #include <exception>
+#include "../../Constants/QPSConstants.h"
 
 using namespace std;
 
@@ -13,7 +14,9 @@ public:
     const char* what() const noexcept override {
         return (errorMessage).c_str();
     }
-    virtual const char* getType() const noexcept = 0; // Pure virtual function
+    virtual const char* getType() const noexcept {
+        return QPS_ERROR.c_str();
+    }
 
 
 };

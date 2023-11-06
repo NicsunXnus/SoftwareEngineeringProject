@@ -14,21 +14,21 @@ class Extractor;
 /// <summary>
 /// A print statement
 /// </summary>
-class ProcessedPrintStmt : public ProcessedSemicolonStmt, public std::enable_shared_from_this<ProcessedPrintStmt> {
+class ProcessedPrintStmt : public ProcessedSemicolonStmt, public enable_shared_from_this<ProcessedPrintStmt> {
 private:
-  std::shared_ptr<Token> variable;
+  shared_ptr<Token> variable;
 
 public:
-  ProcessedPrintStmt(int statementNumber, std::shared_ptr<Token> variable)
+  ProcessedPrintStmt(int statementNumber, shared_ptr<Token> variable)
     : ProcessedSemicolonStmt{ statementNumber },
       variable{ variable } {};
 
-  std::shared_ptr<Token> getVariable();
+  shared_ptr<Token> getVariable();
 
   bool equalsTo(ProcessedPrintStmt& rhs);
-  void accept(std::shared_ptr<Extractor> extractor) override;
-  void accept(std::shared_ptr<Extractor> extractor, std::string procedureName) override;
-  void accept(std::shared_ptr<Extractor> extractor, std::unordered_set<std::string>& prevStatementNumbers) override;
+  void accept(shared_ptr<Extractor> extractor) override;
+  void accept(shared_ptr<Extractor> extractor, string procedureName) override;
+  void accept(shared_ptr<Extractor> extractor, unordered_set<string>& prevStatementNumbers) override;
 
 };
 #endif

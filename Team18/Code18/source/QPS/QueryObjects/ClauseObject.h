@@ -38,12 +38,24 @@ protected:
 		return true;
 	}
 
+	shared_ptr<QueryResultsTable> getEmptyTable() {
+		vector<string> headers;
+		if (argument1->isSynonym()) {
+			headers.push_back(svToString(argument1->getArgValue()));
+		}
+		if (argument2->isSynonym()) {
+			headers.push_back(svToString(argument2->getArgValue()));
+		}
+		return QueryResultsTable::createEmptyTableWithHeaders(headers);
+	}
+
 	shared_ptr<QueryResultsTable> handleCallsCallsStar(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause);
 	shared_ptr<QueryResultsTable> handleUses(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause);
 	shared_ptr<QueryResultsTable> handleModifies(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause);
 	shared_ptr<QueryResultsTable> handleFollowsParents(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause);
 	shared_ptr<QueryResultsTable> handleNext(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause);
 	shared_ptr<QueryResultsTable> handleNextStar(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause);
+	shared_ptr<QueryResultsTable> handleAffects(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause);
 };
 
 /*
@@ -186,6 +198,10 @@ public:
 	};
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override;
 
+	string getCacheName() override;
+
+	bool shouldCache() override;
+
 };
 
 /*
@@ -196,10 +212,11 @@ public:
 	AffectsObject(string_view clauseName, shared_ptr<ClauseArg> argument0, shared_ptr<ClauseArg> argument1)
 		: ClauseObject{ clauseName, argument0, argument1 } {
 	};
-	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-		// TODO
-		return make_shared<QueryResultsTable>();
-	}
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override;
+
+	string getCacheName() override;
+
+	bool shouldCache() override;
 
 };
 #endif

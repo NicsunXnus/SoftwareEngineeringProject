@@ -14,6 +14,9 @@ shared_ptr<QueryResultsTable> NextStarSynSyn::evaluate(shared_ptr<DataAccessLaye
 	unordered_set<string> filteredPKBClauseDataKeepArg2 = removeMapValuesReturnSet(arg1, dataAccessLayer, filteredPKBClauseDataArg2); // nodes that have parent
 
 	if (filteredPKBClauseDataKeepArg1.empty() || filteredPKBClauseDataKeepArg2.empty()) {
+		if (arg1->getArgValue() == arg2->getArgValue()) {
+			return QueryResultsTable::createEmptyTableWithHeaders({ svToString(arg1->getArgValue()) });
+		}
 		StringMap empty;
 		vector<string> headers({ svToString(arg1->getArgValue()), svToString(arg2->getArgValue()) });
 		return QueryResultsTable::createTable(headers, empty);
@@ -60,6 +63,10 @@ shared_ptr<QueryResultsTable> NextStarSynSyn::evaluate(shared_ptr<DataAccessLaye
 			}
 
 		}
+	}
+	if (arg1->getArgValue() == arg2->getArgValue()) {
+		return QueryResultsTable::createTable(svToString(arg1->getArgValue()),
+			getMapKeys(nextStarTable));
 	}
 	vector<string> headers({ svToString(arg1->getArgValue()), svToString(arg2->getArgValue()) });
 	return QueryResultsTable::createTable(headers, nextStarTable);
@@ -139,8 +146,7 @@ shared_ptr<QueryResultsTable> NextStarIntInt::evaluate(shared_ptr<DataAccessLaye
 				nextStack.push(make_tuple(child, nextChildren));
 			}
 			if (child == target) {
-				shared_ptr<QueryResultsTable> table = QueryResultsTable::createEmptyTable();
-				table->setSignificant(true);
+				shared_ptr<QueryResultsTable> table = QueryResultsTable::createEmptyTable(true);
 				return table;
 			}
 		}

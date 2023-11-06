@@ -37,6 +37,6 @@ public:
 
 
 protected:
-    std::shared_ptr<map<string, unordered_set<string>>> AbstractionStorageMap;  
+    shared_ptr<map<string, unordered_set<string>>> AbstractionStorageMap;  
     
 };

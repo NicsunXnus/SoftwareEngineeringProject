@@ -9,7 +9,7 @@
 
 
 
-using namespace std::string_view_literals;
+using namespace string_view_literals;
 /*
 * This class represents a Query argument, which represents the query arguments in a clause
 */
@@ -19,7 +19,7 @@ private:
 	string_view arg;
 
 	// is a null ptr if the argument is not a synonym
-	std::shared_ptr<SynonymObject> synonym;
+	shared_ptr<SynonymObject> synonym;
 
 	// each identifier arg holds an open and close quote marks
 	int IDENTIFIER_MIN_CHARS{ 2 };
@@ -28,7 +28,7 @@ private:
 	bool isPartialMatch;
 
 public:
-	ClauseArg(string_view arg, std::shared_ptr<SynonymObject> synonym=nullptr, bool isPartialMatch=false)
+	ClauseArg(string_view arg, shared_ptr<SynonymObject> synonym=nullptr, bool isPartialMatch=false)
 		: arg{ arg }, synonym{ synonym }, isPartialMatch{ isPartialMatch } {};
 
 	string_view getArg() {
@@ -65,7 +65,7 @@ public:
 		return synonym.get() != nullptr;
 	}
 
-	std::shared_ptr<SynonymObject> getSynonym() {
+	shared_ptr<SynonymObject> getSynonym() {
 		return this->synonym;
 	}
 

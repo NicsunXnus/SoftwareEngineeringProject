@@ -48,5 +48,8 @@ public:
 	virtual StringMap DataAccessLayer::getCallProcNames();
 	virtual StringMap DataAccessLayer::getReadVarNames();
 	virtual StringMap DataAccessLayer::getPrintVarNames();
+
+	/* Misc */
+	virtual pair<string, string> getProcLines(string procName);
 };
 #endif

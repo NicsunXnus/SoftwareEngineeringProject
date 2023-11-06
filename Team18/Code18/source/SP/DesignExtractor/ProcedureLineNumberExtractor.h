@@ -20,7 +20,7 @@ public:
     ProcedureLineNumberExtractor() : procedureStatementStorageMap(make_shared<map<string, pair<string, string>>>()) {}
    
     // Get procedureStatementStorageMap
-    std::shared_ptr<map<string, pair<string, string>>> getProcedureStatementStorageMap() {
+    shared_ptr<map<string, pair<string, string>>> getProcedureStatementStorageMap() {
         return this->procedureStatementStorageMap;
     }
 
@@ -38,7 +38,7 @@ public:
 
 private:
     // map to store procedurename to the min and max values of the statement numbers
-    std::shared_ptr<map<string, pair<string, string>>> procedureStatementStorageMap;
+    shared_ptr<map<string, pair<string, string>>> procedureStatementStorageMap;
 
     
 };

@@ -8,7 +8,7 @@ list<string> ResultHandler::processTables(vector<shared_ptr<QueryResultsTable>> 
 		return handleTuples(selectClauseTables, nonSelectClauseTables);
 	}
 	else { // BOOLEAN
-		
+		return handleBoolean(selectClauseTables, nonSelectClauseTables);
 	}
 
 	list<string> empty;
@@ -175,4 +175,29 @@ list<string> ResultHandler::handleTuples(vector<shared_ptr<QueryResultsTable>> s
 	}
 	
 	return returnTuples(tupleTables);
+}
+
+list<string> ResultHandler::handleBoolean(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
+	list<string> result;
+	
+	if (nonSelectClauseTables.empty()) {
+		result.push_back(FALSE_STRING);
+		return result;
+	}
+
+	shared_ptr<QueryResultsTable> intermediateTable = joinIntermediateTables(nonSelectClauseTables);
+
+	if (intermediateTable->isEmpty()) { // case 2.1
+		if (intermediateTable->getSignificant()) { // case 2.1.1
+			result.push_back(TRUE_STRING);
+		}
+		else { // case 2.1.2
+			result.push_back(FALSE_STRING);
+		}
+		return result;
+	}
+	// non-empty intermediate table
+
+	result.push_back(TRUE_STRING);
+	return result;
 }

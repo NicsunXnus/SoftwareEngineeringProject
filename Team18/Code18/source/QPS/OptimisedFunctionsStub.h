@@ -46,6 +46,6 @@ public:
 	static void optimiseStepC(vector<shared_ptr<GroupClause>>& groups);
 	static void optimiseStepD(vector<shared_ptr<GroupClause>>& groups);
 	static vector<shared_ptr<QueryResultsTable>> revert1DTables(vector< shared_ptr<GroupClause> > groups);
-	static bool sortMostUniqueHeadersFirst(const std::shared_ptr<QueryResultsTable>& a, const std::shared_ptr<QueryResultsTable>& b);
+	static bool sortMostUniqueHeadersFirst(const shared_ptr<QueryResultsTable>& a, const shared_ptr<QueryResultsTable>& b);
 };
 

@@ -13,7 +13,7 @@ using namespace concurrency;
 * The functions,by the user's needs, can also be used in any order.
 */
 
-bool sortEmptyFirst(const std::shared_ptr<QueryResultsTable>& a, const std::shared_ptr<QueryResultsTable>& b) {
+bool sortEmptyFirst(const shared_ptr<QueryResultsTable>& a, const shared_ptr<QueryResultsTable>& b) {
 	int priorityA = -1;
 	int priorityB = 0;
 	if (a->isEmpty() && !b->isEmpty()) {
@@ -22,7 +22,7 @@ bool sortEmptyFirst(const std::shared_ptr<QueryResultsTable>& a, const std::shar
 	return priorityA > priorityB;
 }
 
-bool sortMostUniqueHeadersFirst(const std::shared_ptr<QueryResultsTable>& a, const std::shared_ptr<QueryResultsTable>& b) {
+bool sortMostUniqueHeadersFirst(const shared_ptr<QueryResultsTable>& a, const shared_ptr<QueryResultsTable>& b) {
 	set<string> setA = a->getHeadersAsSet(); set<string> setB = b->getHeadersAsSet();
 	return setA.size() > setB.size();
 }
