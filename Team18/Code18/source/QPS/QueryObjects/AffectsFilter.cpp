@@ -126,7 +126,7 @@ shared_ptr<QueryResultsTable> AffectsWildcardWildcard::evaluate(shared_ptr<DataA
 
 shared_ptr<QueryResultsTable> AffectsWildcardInt::evaluate(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
 	shared_ptr<ExtendedCFG> cfg = dataAccessLayer->getCFG();
-	unordered_set<string> cfgResults = cfg->affectsSynInt(svToString(arg1->getArgValue()));
+	unordered_set<string> cfgResults = cfg->affectsSynInt(svToString(arg2->getArgValue()));
 	shared_ptr<QueryResultsTable> qrt = QueryResultsTable::createEmptyTable(cfgResults.size() > 0);
 	return qrt;
 }

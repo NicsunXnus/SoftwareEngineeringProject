@@ -8,7 +8,11 @@ bool ExtendedCFG::isStmtType(string stmtNumber, ENTITY entity) {
 }
 
 bool ExtendedCFG::hasNext(string stmtNumber) {
-  return next.find(stmtNumber) != next.end();
+  bool exists = next.find(stmtNumber) != next.end();
+  if (!exists) {
+    return false;
+  }
+  return next.at(stmtNumber).size() != 0;
 }
 
 unordered_set<string> ExtendedCFG::getUsedVariables(string stmtNumber) {
