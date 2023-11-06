@@ -56,7 +56,9 @@ unordered_set<string> AffectsFilter::filterAssignmentsInProcedure(unordered_set<
 shared_ptr<QueryResultsTable> AffectsSynSyn::evaluate(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
 	shared_ptr<ExtendedCFG> cfg = dataAccessLayer->getCFG();
 	StringMap cfgResults = cfg->affectsSynSyn();
-	StringMap results = filterMapKeyReturnMap(arg1, dataAccessLayer, cfgResults);
+	StringMap cfgResultsArg1 = filterMapKeyReturnMap(arg1, dataAccessLayer, cfgResults);
+	StringMap results = filterMapValueReturnMap(arg2, dataAccessLayer, cfgResultsArg1);
+
 	if (arg1->getArgValue() == arg2->getArgValue()) {
 		unordered_set<string> result = filterSynSyn(results);
 		shared_ptr<QueryResultsTable> qrt = QueryResultsTable::createTable(svToString(arg1->getArgValue()), result);

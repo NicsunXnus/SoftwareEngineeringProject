@@ -1885,8 +1885,8 @@ TEST_METHOD(TestValidNextStarSynSyn) {
       make_shared<DataAccessLayerAffectsStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  unordered_set<string> expected = { "4", "5", "7", "9", 
-    "11", "12", "13", "14", "16", "17"};
+  unordered_set<string> expected = { "4", "5", "7", "9", "11",
+    "12", "13", "14", "16"};
   Assert::IsTrue(vectorToSet(table->getColumns()[0]["s"]) == expected);
 }
 
