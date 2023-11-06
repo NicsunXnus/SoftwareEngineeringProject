@@ -5,93 +5,100 @@ title DesignExtractor Overview
 package DesignExtractor <<Rectangle>> {
     Class DesignExtractor {
         -shared_ptr<EntityExtractor> entityExtractor;
-        -shared_ptr<ModifiesAbstractionExtractor> modifiesExtractor;
-        -shared_ptr<UsesAbstractionExtractor> usesExtractor;
-        -shared_ptr<ParentsAbstractionExtractor> parentsExtractor;
-        -shared_ptr<FollowsAbstractionExtractor> followsExtractor;
-        +void extractEntities(shared_ptr<ASTNode> astNode)
-        +void extractAbstractions(shared_ptr<ASTNode> astNode)
-        +void insertEntities()
-        +void insertAbstractions()
+        -shared_ptr<ModifiesExtractor> modifiesExtractor;
+        -shared_ptr<UsesExtractor> usesExtractor;
+        -shared_ptr<ParentsExtractor> parentsExtractor;
+        -shared_ptr<FollowsExtractor> followsExtractor;
+        -shared_ptr<CallsExtractor> callsExtractor;
+        -shared_ptr<NextExtractor> nextExtractor;
+        -shared_ptr<ProcedureLineNumberExtractor> procedureLineNumberExtractor;
+        +void extractAndInsertAll(shared_ptr<ProcessedProgram> processedProgram, bool useMultithread = false)
     }
 
-    Abstract Exractor <<Base>> {
-        +virtual void extractDesigns(shared_ptr<ASTNode> astNode)
-        +virtual void handleProgram(std::shared_ptr<ProgramNode> programNode)
-        +virtual void handleProcedure(std::shared_ptr<ProcedureNode> procedureNode)
-        +virtual void handleStatement(std::shared_ptr<StatementNode> statementNode)
-        +virtual void handleRead(std::shared_ptr<ReadNode> readNode)
-        +virtual void handlePrint(std::shared_ptr<PrintNode> printNode)
-        +virtual void handleAssign(std::shared_ptr<AssignNode> assignNode)
-        +virtual void handleCall(std::shared_ptr<CallNode> callNode)
-        +virtual void handleWhile(std::shared_ptr<WhileNode> whileNode)
-        +virtual void handleIf(std::shared_ptr<IfNode> ifNode)
+    Abstract Extractor <<Base>> {
+        +void extract(shared_ptr<ProcessedProgram> processedProgram)
+        +void extract(shared_ptr<ProcessedProcedure> processedProcedure)
+        +void extract(shared_ptr<ProcessedStmtList> processedStmtList)
+        ---
+        {abstract more extract methods}
     }
     Class EntityExtractor {
-        -shared_ptr<ProcedureEntity> procedureEntity
-        -shared_ptr<StatementEntity> statementEntity
-        -shared_ptr<VariableEntity> variableEntity
-        -shared_ptr<ConstantEntity> constantEntity
+        - procedureMap: shared_ptr<map<string, unordered_set<string>>>
+        - variableMap: shared_ptr<map<string, unordered_set<string>>>
+        - statementMap: shared_ptr<map<string, unordered_set<string>>>
+        - constantMap: shared_ptr<map<string, unordered_set<string>>>
+        - callProcNameMap: shared_ptr<map<string, unordered_set<string>>>
+        - readVarNameMap: shared_ptr<map<string, unordered_set<string>>>
+        - printVarNameMap: shared_ptr<map<string, unordered_set<string>>>
+        - patternMap: shared_ptr<map<string, shared_ptr<Node>>>
+        +void extract(shared_ptr<ProcessedProgram> processedProgram) override
+        +void extract(shared_ptr<ProcessedProcedure> processedProcedure) override
+        +void extract(shared_ptr<ProcessedStmtList> processedStmtList) override
+        +shared_ptr<map<string, unordered_set<string>>> getProcedureMap();
+        ---
+        {abstract more overridden extract, getMap methods}
     }
-    Abstract ParentsFollowsAbstractionExtractor {
-        -std::shared_ptr<map<string, vector<string>>> AbstractionStorageMap
-        +void extractDesigns(shared_ptr<ASTNode> astNode) override
-        +virtual void handleNode(...) = 0
+
+    Abstract AbstractionExtractor {
+        +virtual void extractAbstractions(shared_ptr<ProcessedProgram> processedProgram);
+        +void extract(shared_ptr<ProcessedProgram> processedProgram) override
+        +void extract(shared_ptr<ProcessedProcedure> processedProcedure) override
+        +void extract(shared_ptr<ProcessedStmtList> processedStmtList) override
+        +shared_ptr<map<string, unordered_set<string>>> getStorageMap();
+        # AbstractionStorageMap: std::shared_ptr<map<string, unordered_set<string>>
+        ---
+        {abstract more extract methods}
     }
-    Class ParentsAbstractionExtractor {
-        +void handleNode(...) override
+
+    Class AbstractionStarExtractor {
+        +void extractAbstractions(shared_ptr<ProcessedProgram> processedProgram) override;
+        +shared_ptr<map<string, unordered_set<string>>> getStorageStarMap();
+        -void processAbstractionStar();
+        -void processAbstractionStarHelper(string value, unordered_set<string>& values);
+        -AbstractionStarStorageMap: std::shared_ptr<map<string, unordered_set<string>>
     } 
-    Class FollowsAbstractionExtractor {
-        +void handleNode(...) override
-    }
-    Class UsesModifiesAbstractionExtractor {
-        -std::shared_ptr<map<string, vector<string>>> AbstractionStorageMap
-        -std::shared_ptr<map<string, vector<string>>> procedureStatementStorageMap
-        +void handleProcedure(std::shared_ptr<ProcedureNode> procedureNode) override
-        +void handleWhile(std::shared_ptr<WhileNode> whileNode) override
-        +void handleIf(std::shared_ptr<IfNode> ifNode) override
-    }
-    Class UsesAbstractionExtractor {
-        +void handleRead(std::shared_ptr<ReadNode> readNode) override
-        +void handleAssign(std::shared_ptr<AssignNode> assignNode) override
-    }
-    Class ModifiesAbstractionExtractor {
-        +void handlePrint(std::shared_ptr<PrintNode> printNode) override
-        +void handleAssign(std::shared_ptr<AssignNode> assignNode) override
-    }
-    Class Entity {
-        +shared_ptr<StringMap> getMap()
-        +virtual void extractEntity(shared_ptr<ASTNode> astNode) = 0;
-    }
-    Class ProcedureEntity {
-        +void extractEntity(shared_ptr<ASTNode> astNode)
-    }
-    Class StatementEntity{
-        +void extractEntity(shared_ptr<ASTNode> astNode)
-    }
-    Class VariableEntity{
-        +void extractEntity(shared_ptr<ASTNode> astNode)
-    }
-    Class ConstantEntity{
-        +void extractEntity(shared_ptr<ASTNode> astNode)
-    }
-
-    DesignExtractor ..> Exractor
-    Exractor <|-- EntityExtractor
-    Exractor <|-right- ParentsFollowsAbstractionExtractor
-    Exractor <|-right- UsesModifiesAbstractionExtractor
-    ParentsFollowsAbstractionExtractor <|-- ParentsAbstractionExtractor
-    ParentsFollowsAbstractionExtractor <|-- FollowsAbstractionExtractor
-    UsesModifiesAbstractionExtractor <|-- UsesAbstractionExtractor
-    UsesModifiesAbstractionExtractor <|-- ModifiesAbstractionExtractor
-    EntityExtractor ..> Entity
-    Entity <|-- ProcedureEntity
-    Entity <|-- StatementEntity
-    Entity <|-- VariableEntity
-    Entity <|-- ConstantEntity
-
-
     
+    Class UsesModifiesExtractor {
+        +void extractAbstractions(shared_ptr<ProcessedProgram> processedProgram) override;
+        -shared_ptr<map<string, unordered_set<string>>> callsProcedureParentProcedureMap;
+        -shared_ptr<map<string, unordered_set<string>>> procedureCallLinesMap;
+        -shared_ptr<CallsExtractor> callsExtractor;
+        -shared_ptr<map<string, unordered_set<string>>> ifWhileNestedStatementsMap;
+        ---
+        {abstract more extract methods}
+    } 
+
+    Class FollowsExtractor {
+        {override extract methods}
+    }
+    Class ParentsExtractor {
+        {override extract methods}
+    }
+    Class CallsExtractor {
+        {override extract methods}
+    }
+    Class NextExtractor {
+        {override extract methods}
+    }
+    Class UsesExtractor {
+        {override extract methods}
+    }
+    Class ModifiesExtractor {
+        {override extract methods}
+    }
+    
+
+    DesignExtractor ..> Extractor
+    Extractor <|-left- EntityExtractor
+    Extractor <|-- AbstractionExtractor
+    AbstractionExtractor <|-left- AbstractionStarExtractor
+    AbstractionExtractor <|-- UsesModifiesExtractor
+    AbstractionExtractor <|-- NextExtractor
+    AbstractionStarExtractor <|-- FollowsExtractor
+    AbstractionStarExtractor <|-- ParentsExtractor
+    AbstractionStarExtractor <|-- CallsExtractor
+    UsesModifiesExtractor <|-- UsesExtractor
+    UsesModifiesExtractor <|-- ModifiesExtractor
     
 }
 @enduml
