@@ -30,19 +30,13 @@ package AST <<Rectangle>> {
         - string op
         + string getOp();
     }
-    Class BinaryOpNode
-    Class PlusNode
-    Class MinusNode
-    Class MultiplyNode
-    Class DivideNode
-    Class AndNode
-    Class OrNode
-    Class MoreThanNode
-    Class LessThanNode
-    Class MoreThanEqualNode
-    Class LessThanEqualNode
-    Class EqualityNode
-    Class InequalityNode
+    package BinaryOpNodes {
+        Class BinaryOpNode    
+        note right of BinaryOpNode
+        Further expanded in
+        another file
+        end note
+    }
     Class UnaryOpNode
     Class NotOpNode
     Class TerminalNode
@@ -51,18 +45,6 @@ package AST <<Rectangle>> {
 
     Node <|-- OpNode
     OpNode <|-- BinaryOpNode
-    BinaryOpNode <|-- PlusNode
-    BinaryOpNode <|-- MinusNode
-    BinaryOpNode <|-- MultiplyNode
-    BinaryOpNode <|-- DivideNode
-    BinaryOpNode <|-- AndNode
-    BinaryOpNode <|-- OrNode
-    BinaryOpNode <|-- MoreThanNode
-    BinaryOpNode <|-- LessThanNode
-    BinaryOpNode <|-- MoreThanEqualNode
-    BinaryOpNode <|-- LessThanEqualNode
-    BinaryOpNode <|-- EqualityNode
-    BinaryOpNode <|-- InequalityNode
     OpNode <|-- UnaryOpNode
     UnaryOpNode <|-- NotOpNode
     Node <|-right- TerminalNode

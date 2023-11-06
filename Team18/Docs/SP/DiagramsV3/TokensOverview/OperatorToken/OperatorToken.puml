@@ -1,0 +1,9 @@
+@startuml
+
+    ArithmeticOpToken -up-|> OperatorToken
+    PlusOpToken -up-|> ArithmeticOpToken
+    MinusOpToken -up-|> ArithmeticOpToken
+    MultiplyOpToken -up-|> ArithmeticOpToken
+    DivideOpToken -up-|> ArithmeticOpToken
+    ModuloOpToken -up-|> ArithmeticOpToken
+@enduml

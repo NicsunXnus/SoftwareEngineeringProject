@@ -1,0 +1,51 @@
+@startuml
+
+title AbstractionExtractors Overview
+
+Class AbstractionStarExtractor {
+    +void extractAbstractions(@ProcessedProgram) override
+    +@map<str, u_set<str>> getStorageStarMap()
+    -void processAbstractionStar()
+    -void processAbstractionStarHelper(str value, u_set<str>& values)
+    -AbstractionStarStorageMap: @map<str, u_set<str>
+} 
+
+Class UsesModifiesExtractor {
+    +void extractAbstractions(@ProcessedProgram) override
+    -@map<str, u_set<str>> callsProcedureParentProcedureMap
+    -@map<str, u_set<str>> procedureCallLinesMap
+    -@CallsExtractor> callsExtractor
+    -@map<str, u_set<str>> ifWhileNestedStatementsMap
+    ---
+    {abstract more extract methods}
+} 
+
+Class FollowsExtractor {
+    {override extract methods}
+}
+Class ParentsExtractor {
+    {override extract methods}
+}
+Class CallsExtractor {
+    {override extract methods}
+}
+Class NextExtractor {
+    {override extract methods}
+}
+Class UsesExtractor {
+    {override extract methods}
+}
+Class ModifiesExtractor {
+    {override extract methods}
+}
+
+AbstractionExtractor <|-left- AbstractionStarExtractor
+AbstractionExtractor <|-- UsesModifiesExtractor
+AbstractionExtractor <|-- NextExtractor
+AbstractionStarExtractor <|-- FollowsExtractor
+AbstractionStarExtractor <|-- ParentsExtractor
+AbstractionStarExtractor <|-- CallsExtractor
+UsesModifiesExtractor <|-- UsesExtractor
+UsesModifiesExtractor <|-- ModifiesExtractor
+
+@enduml

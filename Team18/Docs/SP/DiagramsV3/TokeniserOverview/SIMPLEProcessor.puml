@@ -1,0 +1,45 @@
+@startuml
+' !include ../style.puml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+
+title SIMPLE Processor
+
+enum ConditionalDeclaration {
+    IF 
+    WHILE
+}
+
+note as n1
+    Shorthand for types used:
+    @ - Shared Pointer, str - String, b - Bool,
+    strv - String View, v - vector, ∅ - void, p - pair
+end note
+
+Class SimpleProcessor {
+    {static} - int statementNumber
+    {static} - p<ConditionalDeclaration, @Node> processConditionalExpression(str, bool, int)
+    {static} - p<ConditionalDeclaration, @Node> processConditionalDeclaration(str, int)
+    {static} - @ProcessedStmtList processStmtList(str)
+    {static} - @ProcessedSemicolonStmt processSemicolonStatement(str)
+    {static} - @ProcessedSemicolonStmt processTwoWordStmt(str)
+    {static} - @ProcessedAssignStmt processAssignment(str)
+    {static} + @ProcessedProgram processProgram(strv)
+}
+package SimpleProcessorResults {
+    note as n2
+        Further expanded in another file
+    end note
+}
+package ExpressionProcessor {
+    note as n3
+        Further expanded in another file
+    end note
+}
+
+SimpleProcessor ..> Token
+SimpleProcessor ..> Node
+SimpleProcessor -- SimpleProcessorResults
+SimpleProcessor -right- ExpressionProcessor
+ConditionalDeclaration -- SimpleProcessor
+@enduml

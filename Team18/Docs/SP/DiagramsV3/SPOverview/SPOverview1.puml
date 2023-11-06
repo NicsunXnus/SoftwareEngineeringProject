@@ -15,6 +15,7 @@ package SP <<Rectangle>> {
 end note
 Class Token {
 }
+Class Node {}
 Class TokenFactory {
     {static} + @Token generateToken(str tokenName, b forSimple, b forceIdentifer)
     {static} + @Token generateToken(strv tokenName, b forSimple, b forceIdentifer)
@@ -29,54 +30,33 @@ Class HelperFunctions {
     {static} + str subString(str str, int startIndex, int endIndex)
 }
     'Tokenizes the source code'
-    Class SimpleTokenizer {
+    Class SimpleProcessor {
         {static} - int statementNumber
-        {static} + @TokenizedProgram tokenizeProgram(strv)
-        '{static} - vector<@pair<int,int>>outermostScopeDetector(str) 
-        '{static} - vector<@Token> tokenizeExpression(str,str)
-        '{static} - pair<ConditionalDeclaration,@Token> processConditionalExpression(str,b)
-        '{static} - pair<ConditionalDeclaration,vector<@Token> processConditionalDeclaration(str)
-        '{static} - @TokenizerStmtList tokenizeStmtList(str)
-        '{static} - @TokenizedSemicolonStmt tokenizeSemiColonStatement(str)
-        '{static} - vector<@Token> tokenizeAssignment(str)
-        '{static} - v<@Token> tokenizeTwoWordStmt(str,str)
-        '{static} - str processPreProcedureDetails(str)
+        {static} + @TokenizedProgram processProgram(strv)
     }
     
     enum ConditionalDeclaration {
         IF, WHILE
     }
 
-    class TokenizerResults {
+    class ProcessorResults {
     
-    }
-
-    Class ASTBuilder {
-        {static} + @ProgramNode parseProgram(
-            @TokenizedProgram tokenizedProgram)
     }
 
     'Converts the Tokens into Query Object'
     Class DesignExtractor {
-        - @ProcedureEntity procedureEntity
-        - @StatementEntity statementEntity
-        - @VariableEntity variableEntity
-        - @ConstantEntity constantEntitiy
-        - @PatternStatementEntity patternStatementEntity
-        ∅ + extractEntities(@ASTNode astNode)
-        ∅ + insertEntities()
+        + void extractAndInsertAll(@ProcessedProgram, bool)
     }
 }
 
 
-Token <-up.- SimpleTokenizer
-ConditionalDeclaration -right->SimpleTokenizer
-TokenizerResults -up- SimpleTokenizer
-SimpleTokenizer -up- TokenFactory
-SimpleTokenizer -up- HelperFunctions
-SimpleTokenizer -right- ASTBuilder
-DesignExtractor -- ASTBuilder
+Token <-up.- SimpleProcessor
+Node <-up.- SimpleProcessor
+ConditionalDeclaration -right->SimpleProcessor
+ProcessorResults -up- SimpleProcessor
+SimpleProcessor -up- TokenFactory
+SimpleProcessor -up- HelperFunctions
 TokenFactory -up- Token
-TokenizerResults -left- ASTBuilder
+ProcessorResults -right- DesignExtractor
 
 @end

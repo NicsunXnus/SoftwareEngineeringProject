@@ -1,0 +1,51 @@
+@startuml
+' !include ../style.puml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+
+title Token Overview
+
+Class TokenFactory {
+    {static} - shared_ptr<Token> generateArithmeticOpToken(string_view tokenName)
+    {static} - shared_ptr<Token> generateIdentifier(string_view tokenName)
+    {static} - shared_ptr<Token> generateIntLiteral(string_view number)
+    {static} + shared_ptr<Token> generateTokenForSimple(string tokenName, bool forceIdentifier = false)
+    {static} + shared_ptr<Token> generateTokenForSimple(string_view tokenName, bool forceIdentifier = false);
+}
+package Tokens <<rectangle>> {
+    Class Token {
+        - string tokenName
+        + Token(tokenName)
+        + string getName()
+    }
+    Class IdentifierToken {}
+    Class LiteralToken {}
+    Class IntegerLiteralToken {}
+    Class SeparatorToken {}
+    Class ParenCloseSepToken {}
+    Class ParenOpenSepToken {}
+
+    package OperatorTokens <<rectangle>> {
+        Class OperatorToken {}
+        note right of OperatorToken
+        Further expanded in
+        another file
+        end note
+    }
+
+}
+
+Token -left- TokenFactory
+
+Token -right-|> SeparatorToken
+SeparatorToken -right-|> ParenCloseSepToken
+SeparatorToken -right-|> ParenOpenSepToken
+
+IdentifierToken -down-|> Token
+
+LiteralToken -down-|> Token
+IntegerLiteralToken -down-|> LiteralToken
+
+OperatorToken -up-|> Token
+
+@end

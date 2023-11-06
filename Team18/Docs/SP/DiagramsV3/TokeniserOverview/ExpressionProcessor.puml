@@ -1,0 +1,42 @@
+@startuml
+' !include ../style.puml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+
+title ExpressionProcessor Overview
+
+note as n1
+    Shorthand for types used:
+    @ - Shared Pointer, str - String, b - Bool,
+    strv - String View, v - vector, ∅ - void, p - pair
+end note
+
+Class ExpressionProcessor {
+    - int statementNumber
+    - @Node nodifyCondExprTwoPairHelper(str, v<@<p<int, int>>> bracketPairs)
+    - @Node nodifyCondExprOnePairHelper(str, @<p<int, int>> bracketIndexes)
+    - @Node nodifyRelationalExpression(str)
+    # v<@Token> tokenizeArithmeticExpression(str)
+    + @Node nodifyArithmeticExpression(str)
+    + @Node nodifyConditionalExpression(str)
+}
+
+Class TreeBuilder {
+    - int statementNumber
+    - @Node makeArithmeticNode(str, @Node left, @Node right)
+    - void applyArithmeticOperation(stack<str>, stack<@Node>)
+    + @Node buildTree(v<@Token>)
+}
+
+Class OperatorEvaluator { 
+    {static} unordered_map<str, int> precedence
+    b isComparisonOp(str)
+    b isBoolOp(str)
+    b isArithOp(str)
+
+}
+
+ExpressionProcessor --> TreeBuilder
+TreeBuilder -- OperatorEvaluator
+
+@end

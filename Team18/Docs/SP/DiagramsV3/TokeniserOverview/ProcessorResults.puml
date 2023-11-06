@@ -1,0 +1,77 @@
+@startuml
+' !include ../style.puml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+
+title SIMPLE Processor Results Overview
+
+package SimpleProcessorResults {
+    Class ProcessedProgram {
+        - v<@ProcessedProcedure> procedures
+    }
+
+    note as n1
+        Shorthand for types used:
+        @ - Shared Pointer, str - String, b - Bool,
+        strv - String View, v - vector, ∅ - void
+    end note
+
+    Class ProcessedProcedure {
+        - string procedureName
+        - @ProcessedStmtList statementList
+    }
+
+    Class ProcessedStmtList {
+        - v<@ProcessedStmt> statements
+    }
+
+    Class ProcessedStmt {
+        - const int statementNumber
+    }
+
+    Class ProcessedSemicolonStmt {
+        - v<@Token> contents
+    }
+
+    Class ProcessedConditionalStmt {
+        - v<@Token> conditionalExp
+    }
+
+    Class ProcessedIfStmt {
+        - @ProcessedStmtList thenBlock
+        - @ProcessedStmtList elseBlock
+    }
+
+    Class ProcessedWhileStmt {
+        - @ProcessedStmtList whileBlock
+    }
+    Class ProcessedAssignStmt {
+        - @Token LHS
+        - @Node RHS
+    }
+    Class ProcessedCallStmt {
+        - @Token procedureName
+    }
+    Class ProcessedPrintStmt {
+        - @Token variable
+    }
+    Class ProcessedReadStmt {
+        - @Token variable
+    }
+}
+ProcessedProgram *-- ProcessedProcedure
+ProcessedProcedure *-- ProcessedStmtList
+ProcessedStmtList *-- ProcessedStmt
+ProcessedIfStmt *-- ProcessedStmtList
+ProcessedWhileStmt *-- ProcessedStmtList
+
+ProcessedIfStmt --|> ProcessedConditionalStmt
+ProcessedWhileStmt --|> ProcessedConditionalStmt
+ProcessedConditionalStmt --|> ProcessedStmt
+ProcessedSemicolonStmt --|> ProcessedStmt
+ProcessedAssignStmt -up-|> ProcessedStmt
+ProcessedCallStmt -up-|> ProcessedStmt
+ProcessedPrintStmt -up-|> ProcessedStmt
+ProcessedReadStmt -up-|> ProcessedStmt
+
+@end

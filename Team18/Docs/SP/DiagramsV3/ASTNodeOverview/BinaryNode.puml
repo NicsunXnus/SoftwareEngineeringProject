@@ -1,0 +1,34 @@
+@startuml
+
+title BinaryOpNode Overview
+
+package BinaryOpNode <<Rectangle>> {
+    Class BinaryOpNode
+    Class PlusNode
+    Class MinusNode
+    Class MultiplyNode
+    Class DivideNode
+    Class AndNode
+    Class OrNode
+    Class MoreThanNode
+    Class LessThanNode
+    Class MoreThanEqualNode
+    Class LessThanEqualNode
+    Class EqualityNode
+    Class InequalityNode
+
+    BinaryOpNode <|-up- PlusNode
+    BinaryOpNode <|-up- MinusNode
+    BinaryOpNode <|-up- MultiplyNode
+    BinaryOpNode <|-left- DivideNode
+    BinaryOpNode <|-left- AndNode
+    BinaryOpNode <|-left- OrNode
+    BinaryOpNode <|-right- MoreThanNode
+    BinaryOpNode <|-right- LessThanNode
+    BinaryOpNode <|-right- MoreThanEqualNode
+    BinaryOpNode <|-- LessThanEqualNode
+    BinaryOpNode <|-- EqualityNode
+    BinaryOpNode <|-- InequalityNode
+
+}
+@enduml
