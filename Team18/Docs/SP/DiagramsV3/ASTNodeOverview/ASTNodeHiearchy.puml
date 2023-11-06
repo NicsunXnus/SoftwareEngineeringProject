@@ -1,0 +1,72 @@
+@startuml
+
+' !include ../style.puml
+'skinparam ClassFontColor #000000
+'skinparam ClassBorderColor #000000
+' skinparam class {
+' BackgroundColor<<ChildOfBase>> PaleGreen 
+' ArrowColor SeaGreen
+' BorderColor SpringGreen
+' BackgroundColor<<Base>> Wheat
+' BorderColor<<Base>> Salmon
+' BackgroundColor<<GrandChildOfBase>> LightSeaGreen
+' BorderColor<<GrandChildOfBase>> Salmon
+' BackgroundColor<<GrandGrandChildOfBase>> Lavender
+' BorderColor<<GrandGrandChildOfBase>> Salmon
+' }
+
+title ASTNode Overview
+
+package AST <<Rectangle>> {
+    Class Node <<Base>> {
+        - string name
+        - int statementNumber
+        - vector<shared_ptr<Node>> children
+        + int getStatementNumber()
+        + string getValue();
+        + vector<shared_ptr<Node>> getChildren();
+    }
+    Class OpNode {
+        - string op
+        + string getOp();
+    }
+    Class BinaryOpNode
+    Class PlusNode
+    Class MinusNode
+    Class MultiplyNode
+    Class DivideNode
+    Class AndNode
+    Class OrNode
+    Class MoreThanNode
+    Class LessThanNode
+    Class MoreThanEqualNode
+    Class LessThanEqualNode
+    Class EqualityNode
+    Class InequalityNode
+    Class UnaryOpNode
+    Class NotOpNode
+    Class TerminalNode
+    Class ConstantNode
+    Class VariableNode 
+
+    Node <|-- OpNode
+    OpNode <|-- BinaryOpNode
+    BinaryOpNode <|-- PlusNode
+    BinaryOpNode <|-- MinusNode
+    BinaryOpNode <|-- MultiplyNode
+    BinaryOpNode <|-- DivideNode
+    BinaryOpNode <|-- AndNode
+    BinaryOpNode <|-- OrNode
+    BinaryOpNode <|-- MoreThanNode
+    BinaryOpNode <|-- LessThanNode
+    BinaryOpNode <|-- MoreThanEqualNode
+    BinaryOpNode <|-- LessThanEqualNode
+    BinaryOpNode <|-- EqualityNode
+    BinaryOpNode <|-- InequalityNode
+    OpNode <|-- UnaryOpNode
+    UnaryOpNode <|-- NotOpNode
+    Node <|-right- TerminalNode
+    TerminalNode <|-- ConstantNode
+    TerminalNode <|-- VariableNode
+}
+@enduml

@@ -1,0 +1,82 @@
+@startuml
+' !include ../style.puml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+
+title SP Overview
+skinparam class {
+    FontStyle bold
+}
+package SP <<Rectangle>> {
+    note bottom of ConditionalDeclaration
+    Shorthand for types used:
+    @ - Shared Pointer, str - String, b - Bool,
+    strv - String View, v - vector, ∅ - void
+end note
+Class Token {
+}
+Class TokenFactory {
+    {static} + @Token generateToken(str tokenName, b forSimple, b forceIdentifer)
+    {static} + @Token generateToken(strv tokenName, b forSimple, b forceIdentifer)
+}
+Class HelperFunctions {
+    {static} + str trimWhitespaces(str str)
+    {static} + v<str> splitString(str input, str delimiter, b includeDelimiter=false)
+    {static} + v<str> splitString(str input)
+    {static} + b isNumber(str input)
+    {static} + b isAlphanumeric(str input)
+    {static} + b isValidName(str input)
+    {static} + str subString(str str, int startIndex, int endIndex)
+}
+    'Tokenizes the source code'
+    Class SimpleTokenizer {
+        {static} - int statementNumber
+        {static} + @TokenizedProgram tokenizeProgram(strv)
+        '{static} - vector<@pair<int,int>>outermostScopeDetector(str) 
+        '{static} - vector<@Token> tokenizeExpression(str,str)
+        '{static} - pair<ConditionalDeclaration,@Token> processConditionalExpression(str,b)
+        '{static} - pair<ConditionalDeclaration,vector<@Token> processConditionalDeclaration(str)
+        '{static} - @TokenizerStmtList tokenizeStmtList(str)
+        '{static} - @TokenizedSemicolonStmt tokenizeSemiColonStatement(str)
+        '{static} - vector<@Token> tokenizeAssignment(str)
+        '{static} - v<@Token> tokenizeTwoWordStmt(str,str)
+        '{static} - str processPreProcedureDetails(str)
+    }
+    
+    enum ConditionalDeclaration {
+        IF, WHILE
+    }
+
+    class TokenizerResults {
+    
+    }
+
+    Class ASTBuilder {
+        {static} + @ProgramNode parseProgram(
+            @TokenizedProgram tokenizedProgram)
+    }
+
+    'Converts the Tokens into Query Object'
+    Class DesignExtractor {
+        - @ProcedureEntity procedureEntity
+        - @StatementEntity statementEntity
+        - @VariableEntity variableEntity
+        - @ConstantEntity constantEntitiy
+        - @PatternStatementEntity patternStatementEntity
+        ∅ + extractEntities(@ASTNode astNode)
+        ∅ + insertEntities()
+    }
+}
+
+
+Token <-up.- SimpleTokenizer
+ConditionalDeclaration -right->SimpleTokenizer
+TokenizerResults -up- SimpleTokenizer
+SimpleTokenizer -up- TokenFactory
+SimpleTokenizer -up- HelperFunctions
+SimpleTokenizer -right- ASTBuilder
+DesignExtractor -- ASTBuilder
+TokenFactory -up- Token
+TokenizerResults -left- ASTBuilder
+
+@end
