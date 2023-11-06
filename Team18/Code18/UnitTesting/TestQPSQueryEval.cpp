@@ -1494,7 +1494,7 @@ TEST_METHOD(TestInvalidNextIntSyn) {
 
 TEST_METHOD(TestValidNextSynInt) {
   vector<string> testS =
-      PQLTokenizer::tokenize("assign s, s1; Select s such that Next(s, 3)");
+      PQLTokenizer::tokenize("stmt s, s1; Select s such that Next(s, 3)");
   vector<string_view> test{sToSvVector(testS)};
   shared_ptr<QueryParser> p = make_shared<QueryParser>();
   tuple<vector<string_view>, vector<string_view>> testObj =
@@ -1719,7 +1719,7 @@ TEST_METHOD(TestValidNextStarIntIntNormal) {
 
 TEST_METHOD(TestValidNextStarIntIntForLoop) {
   vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Next*(3, 2)");
+      PQLTokenizer::tokenize("assign s; Select s such that Next*(8, 7)");
   vector<string_view> test{sToSvVector(testS)};
   shared_ptr<QueryParser> p = make_shared<QueryParser>();
   tuple<vector<string_view>, vector<string_view>> testObj =
@@ -1737,7 +1737,7 @@ TEST_METHOD(TestValidNextStarIntIntForLoop) {
 
 TEST_METHOD(TestValidNextStarIntIntForLoopSame) {
   vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Next*(3, 3)");
+      PQLTokenizer::tokenize("assign s; Select s such that Next*(7, 7)");
   vector<string_view> test{sToSvVector(testS)};
   shared_ptr<QueryParser> p = make_shared<QueryParser>();
   tuple<vector<string_view>, vector<string_view>> testObj =
@@ -1791,7 +1791,7 @@ TEST_METHOD(TestInvalidNextStarIntIntInvalidFirst) {
 
 TEST_METHOD(TestValidNextStarIntSyn) {
   vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Next*(2, s)");
+      PQLTokenizer::tokenize("assign s; Select s such that Next*(14, s)");
   vector<string_view> test{sToSvVector(testS)};
   shared_ptr<QueryParser> p = make_shared<QueryParser>();
   tuple<vector<string_view>, vector<string_view>> testObj =
@@ -1806,7 +1806,7 @@ TEST_METHOD(TestValidNextStarIntSyn) {
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
   unordered_set<string> expected = {
-      "3"};
+      "15"};
   Assert::IsTrue(vectorToSet(table->getColumns()[0]["s"]) == expected);
 }
 
@@ -1846,7 +1846,7 @@ TEST_METHOD(TestValidNextStarSynInt) {
       make_shared<DataAccessLayerAffectsStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  unordered_set<string> expected = {"4", "5", "6", "7", "8", "9"};
+  unordered_set<string> expected = {"4", "5", "7", "9"};
   Assert::IsTrue(vectorToSet(table->getColumns()[0]["s"]) == expected);
 }
 
@@ -1885,8 +1885,8 @@ TEST_METHOD(TestValidNextStarSynSyn) {
       make_shared<DataAccessLayerAffectsStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  unordered_set<string> expected = {"1", "2", "4", "5", "6", "7", "8", "9", 
-      "10", "11", "12", "13", "14", "16", "17", "18"};
+  unordered_set<string> expected = { "4", "5", "7", "9", 
+    "11", "12", "13", "14", "16", "17"};
   Assert::IsTrue(vectorToSet(table->getColumns()[0]["s"]) == expected);
 }
 
@@ -1906,7 +1906,7 @@ TEST_METHOD(TestValidNextStarSynSynSameSyn) {
       make_shared<DataAccessLayerAffectsStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  unordered_set<string> expected = {"6", "7", "8", "9"};
+  unordered_set<string> expected = {"7", "9"};
   Assert::IsTrue(vectorToSet(table->getColumns()[0]["s"]) == expected);
   Assert::IsTrue(table->getColumns().size() == 1);
 }
