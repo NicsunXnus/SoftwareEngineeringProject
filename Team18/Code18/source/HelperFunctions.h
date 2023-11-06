@@ -217,25 +217,25 @@ static bool containerHasKey(const Container& myContainer, const KeyType& keyToCh
 
 
 // convert map to set, by taking all the keys in the map
-static std::unordered_set<std::string> getMapKeys(std::map<std::string, std::unordered_set<std::string>> stringMap) {
-    std::unordered_set<std::string> keySet;
+static unordered_set<string> getMapKeys(map<string, unordered_set<string>> stringMap) {
+    unordered_set<string> keySet;
     for (const auto& pair : stringMap) {
         keySet.insert(pair.first);
     }
     return keySet;
 }
 
-static std::list<std::string> vectorToUniqueList(
-    std::vector<std::string> vectorOfString) {
-  std::list<std::string> listOfString(vectorOfString.begin(),
+static list<string> vectorToUniqueList(
+    vector<string> vectorOfString) {
+  list<string> listOfString(vectorOfString.begin(),
                                       vectorOfString.end());
-  std::set<std::string> uniqueStrings;
-  for (std::string str : listOfString) {
+  set<string> uniqueStrings;
+  for (string str : listOfString) {
     uniqueStrings.insert(str);
   }
 
-  std::list<std::string> uniqueStringList;
-  for (std::string str : uniqueStrings) {
+  list<string> uniqueStringList;
+  for (string str : uniqueStrings) {
     uniqueStringList.push_back(str);
   }
   return uniqueStringList;
