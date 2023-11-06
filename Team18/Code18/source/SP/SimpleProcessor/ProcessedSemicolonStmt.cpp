@@ -1,7 +1,7 @@
 #include "ProcessedSemicolonStmt.h"
 
 bool ProcessedSemicolonStmt::equalsTo(ProcessedSemicolonStmt& rhs) {
-  auto castedThis = static_cast<ProcessedStmt&>(*this);
-  auto castedThat = static_cast<ProcessedStmt&>(rhs);
-  return castedThis.equalsTo(castedThat);
+  shared_ptr<ProcessedStmt> castedThis = static_cast<shared_ptr<ProcessedStmt>>(this);
+  shared_ptr<ProcessedStmt> castedThat = static_cast<shared_ptr<ProcessedStmt>>(make_shared<ProcessedSemicolonStmt>(rhs));
+  return ProcessedStmt::checkEquality(castedThis, castedThat);
 }

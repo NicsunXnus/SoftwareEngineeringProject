@@ -1,26 +1,31 @@
 #include "ProcessedStmtList.h"
 #include "../DesignExtractor/Extractor.h"
 
-
-bool ProcessedStmtList::equalsTo(ProcessedStmtList& rhs) {
-  if (this->statements.size() != rhs.statements.size()) {
+bool ProcessedStmtList::checkEquality(shared_ptr<ProcessedStmtList> left, shared_ptr<ProcessedStmtList> right) {
+  if (left->statements.size() != right->statements.size()) {
     return false;
   }
-  for (int i = 0; i < this->statements.size(); i++) {
-    if ((*(this->statements[i])).equalsTo(*(rhs.statements[i]))) return false;
+  for (int i = 0; i < left->statements.size(); i++) {
+    if (ProcessedStmt::checkEquality(left->statements[i], right->statements[i])) {
+      return false;
+    }
   }
   return true;
 }
 
-void ProcessedStmtList::accept(std::shared_ptr<Extractor> extractor) {
+vector<shared_ptr<ProcessedStmt>> ProcessedStmtList::getStmts() {
+  return this->statements;
+}
+
+void ProcessedStmtList::accept(shared_ptr<Extractor> extractor) {
   extractor->extract(shared_from_this());
 }
 
-void ProcessedStmtList::accept(std::shared_ptr<Extractor> extractor, std::string procedureName) {
+void ProcessedStmtList::accept(shared_ptr<Extractor> extractor, string procedureName) {
   extractor->extract(shared_from_this(), procedureName);
 }
 
-std::unordered_set<std::string> ProcessedStmtList::accept(std::shared_ptr<Extractor> extractor, std::unordered_set<std::string>& prevStatementNumbers) {
+unordered_set<string> ProcessedStmtList::accept(shared_ptr<Extractor> extractor, unordered_set<string>& prevStatementNumbers) {
   return extractor->extract(shared_from_this(), prevStatementNumbers);
 }
 

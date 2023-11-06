@@ -32,7 +32,7 @@ shared_ptr<QueryResultsTable> ResultHandler::joinIntermediateTables(vector<share
 			}
 
 		}
-		if (intermediateTable->haveSameHeaders(currTable)) {
+		if (intermediateTable->haveSimilarHeaders(currTable)) {
 			//do inner join
 			intermediateTable = intermediateTable->innerJoin(currTable);
 		}
@@ -87,7 +87,7 @@ list<string> ResultHandler::handleSingleSynonym(vector<shared_ptr<QueryResultsTa
 	vector<shared_ptr<QueryResultsTable>> mergeTable = { intermediateTable };
 	mergeTable.insert(mergeTable.end(), selectClauseTables.begin(), selectClauseTables.end());
 	// case 2.2
-	if (selectClauseTables[0]->haveSameHeaders(intermediateTable)) {
+	if (selectClauseTables[0]->haveSimilarHeaders(intermediateTable)) {
 		intermediateTable = joinIntermediateTables(mergeTable);
 		vector<string> colContents = intermediateTable->getColumnData(selectVar);
 		return vectorToUniqueList(colContents);
@@ -110,7 +110,7 @@ list<string> ResultHandler::returnTuples(vector<shared_ptr<QueryResultsTable>> s
 	selectClauseTables.erase(selectClauseTables.begin());
 	for (shared_ptr<QueryResultsTable> table : selectClauseTables) {
 		table->getPrimaryKeyOnlyTable();
-		if (intermediateTable->haveSameHeaders(table)) { // for cases like select<s, s>, duplicate the column (do not cross product)
+		if (intermediateTable->haveSimilarHeaders(table)) { // for cases like select<s, s>, duplicate the column (do not cross product)
 			intermediateTable->duplicateColumns(table->getPrimaryKey());
 		}
 		else {
@@ -148,7 +148,7 @@ list<string> ResultHandler::handleTuples(vector<shared_ptr<QueryResultsTable>> s
 
 	for (shared_ptr<QueryResultsTable> table : selectClauseTables) {
 		selectClauseHeaders.push_back(table->getPrimaryKey());
-		if (intermediateTable->haveSameHeaders(table)) {
+		if (intermediateTable->haveSimilarHeaders(table)) {
 			selectClausesInIntermediateTable.push_back(table);
 		}
 		else {

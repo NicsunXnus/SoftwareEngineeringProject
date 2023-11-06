@@ -5,7 +5,7 @@
 #include "../source/SP/SimpleTokens/LiteralToken.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
-using namespace std::string_view_literals;
+using namespace std;
 
 namespace Token_Test
 {
@@ -48,28 +48,28 @@ namespace Token_Test
 			assert(token1 == token2);
 		}
 		TEST_METHOD(sameObject_success) {
-			Token token = Token("123");
-			assert(Token::checkEquality(&token, &token) == true);
+			shared_ptr<Token> token = make_shared<Token>("123");
+			assert(Token::checkEquality(token, token) == true);
 		}
 		TEST_METHOD(diffObject_success) {
-			Token token1 = Token("123");
-			Token token2 = Token("123");
-			assert(Token::checkEquality(&token1, &token2) == true);
+			shared_ptr<Token> token1 = make_shared<Token>("123");
+			shared_ptr<Token> token2 = make_shared<Token>("123");
+			assert(Token::checkEquality(token1, token2) == true);
 		}
 		TEST_METHOD(sameClass_failure) {
-			Token token1 = Token("abc");
-			Token token2 = Token("bcd");
-			assert(Token::checkEquality(&token1, &token2) == false);
+			shared_ptr<Token> token1 = make_shared<Token>("abc");
+			shared_ptr<Token> token2 = make_shared<Token>("def");
+			assert(Token::checkEquality(token1, token2) == false);
 		}
 		TEST_METHOD(sameTokenName_failure) {
-			IntegerLiteralToken token1 = IntegerLiteralToken("abc");
-			Token token2 = Token("abc");
-			assert(Token::checkEquality(&token1, &token2) == false);
+			shared_ptr<IntegerLiteralToken> token1 = make_shared<IntegerLiteralToken>("abc");
+			shared_ptr<Token> token2 = make_shared<Token>("abc");
+			assert(Token::checkEquality(token1, token2) == false);
 		}
 		TEST_METHOD(everythingDifferent_failure) {
-			IntegerLiteralToken token1 = IntegerLiteralToken("abc");
-			Token token2 = Token("bcd");
-			assert(Token::checkEquality(&token1, &token2) == false);
+			shared_ptr<IntegerLiteralToken> token1 = make_shared<IntegerLiteralToken>("abc");
+			shared_ptr<Token> token2 = make_shared<Token>("bcd");
+			assert(Token::checkEquality(token1, token2) == false);
 		}
 	};
 }

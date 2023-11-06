@@ -15,7 +15,7 @@ void NextExtractor::extract(shared_ptr<ProcessedStmtList> processedStmtList) {
 	this->traverse(processedStmtList->getStmts());
 }
 
-std::unordered_set<std::string> NextExtractor::extract(shared_ptr<ProcessedStmtList> processedStmtList, std::unordered_set<std::string>& prevStatementNumbers) {
+unordered_set<string> NextExtractor::extract(shared_ptr<ProcessedStmtList> processedStmtList, unordered_set<string>& prevStatementNumbers) {
 	vector<shared_ptr<ProcessedStmt>> statements = processedStmtList->getStmts();
 	for (auto& stmt : statements) {
 		string statementNumber = stmt->getStatementNumberInString();
@@ -35,11 +35,11 @@ std::unordered_set<std::string> NextExtractor::extract(shared_ptr<ProcessedStmtL
 	return prevStatementNumbers;
 }
 
-void NextExtractor::extract(shared_ptr<ProcessedStmt> processedStmt, std::unordered_set<std::string>& prevStatementNumbers) {
+void NextExtractor::extract(shared_ptr<ProcessedStmt> processedStmt, unordered_set<string>& prevStatementNumbers) {
 	prevStatementNumbers.insert(processedStmt->getStatementNumberInString());
 }
 
-void NextExtractor::extract(shared_ptr<ProcessedWhileStmt> processedWhile, std::unordered_set<std::string>& prevStatementNumbers) {
+void NextExtractor::extract(shared_ptr<ProcessedWhileStmt> processedWhile, unordered_set<string>& prevStatementNumbers) {
 	string whileStatementNumber = processedWhile->getStatementNumberInString(); // Store the while statement number
 	string firstStatementNumber = processedWhile->getWhileBlock()->getStmts().front()->getStatementNumberInString();
 	this->insertToAbstractionMap(whileStatementNumber, firstStatementNumber);
@@ -57,7 +57,7 @@ void NextExtractor::extract(shared_ptr<ProcessedWhileStmt> processedWhile, std::
 	prevStatementNumbers.insert(whileStatementNumber);
 }
 
-void NextExtractor::extract(shared_ptr<ProcessedIfStmt> processedIf, std::unordered_set<std::string>& prevStatementNumbers) {
+void NextExtractor::extract(shared_ptr<ProcessedIfStmt> processedIf, unordered_set<string>& prevStatementNumbers) {
 	string statementNumber = processedIf->getStatementNumberInString();
     string firstStatementNumberThen = processedIf->getThenBlock()->getStmts().front()->getStatementNumberInString();// If Block CFG
     this->insertToAbstractionMap(statementNumber, firstStatementNumberThen);
@@ -79,7 +79,7 @@ void NextExtractor::insertKeyToAbstractionMap(string key) {
 }
 
 void NextExtractor::traverse(vector<shared_ptr<ProcessedStmt>> processedStatements) {
-	unordered_set<std::string> prevStatementNumbers;
+	unordered_set<string> prevStatementNumbers;
 	for (auto& stmt : processedStatements) {
 		string statementNumber = stmt->getStatementNumberInString();
 		if (!prevStatementNumbers.empty()) {

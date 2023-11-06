@@ -5,6 +5,7 @@
 #include "QueryObjects/ClauseObject.h"
 #include "QueryObjects/PatternClauseObject.h"
 #include "OptimisedSortingClauses.h"
+#include "../ThreadPool.h"
 #include "QRTCache.h"
 //Takes in a vector of Query objects and then returns a vector of QueryResultsTable. This vector will
 //be passed to ResultHandler to process (inner join etc) the various tables of the clauses
@@ -27,12 +28,20 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
 			cache->insert(obj->getCacheName(), table);
 		}
 	}
-	//// for optimization in future, sort here
+
 	// Activate Optimisation
 	QueryBuilder::setOptimisedSwitch();
-	if (QueryBuilder::getOptimisedSwitch()) {
-		optimiseStepA(queryResultsTables);
-		optimiseStepB(queryResultsTables);
+	if (QueryBuilder::getOptimisedSwitch()) { // Trigger sorting of clauses
+		moveEmptyTablesToFront(queryResultsTables);
+		vector<shared_ptr<GroupClause>> groups = groupSimilarTables(queryResultsTables);
+		mergeSimilarGroups(groups);
+		optimiseTablePositions(groups);
+		ThreadPool pool;
+		for (shared_ptr<GroupClause> group : groups) {
+			pool.addTask(&GroupClause::reduceToOne, group);
+		}
+		pool.wait();
+		queryResultsTables = revert1DTables(groups);
 	}
 	return queryResultsTables;
 }

@@ -14,12 +14,15 @@ using namespace std;
 // 3. Call wait() to ensure all threads have been joined.
 class ThreadPool {
 private:
-  std::vector<thread> threads = {};
+  vector<thread> threads = {};
 public:
   ThreadPool() {};
 
   /// <summary>
   /// Adds a task to be done by a thread. This method is non-blocking.
+  /// 
+  /// Ensure that when adding arguments, all arguments are provided, even the ones with default 
+  /// values assigned.
   /// 
   /// Simply add the task and an available thread will pick it up
   /// automatically. There are 4 cases to how to add a task, depending on the type of function used:

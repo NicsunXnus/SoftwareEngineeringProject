@@ -1,4 +1,7 @@
 #include "DesignExtractor.h"
+#include <memory>
+#include <thread>
+#include "../../ThreadPool.h"
 
 // ai-gen start (copilot, 2)
 void DesignExtractor::extractEntities(shared_ptr<ProcessedProgram> processedProgram) {
@@ -6,13 +9,31 @@ void DesignExtractor::extractEntities(shared_ptr<ProcessedProgram> processedProg
     this->procedureLineNumberExtractor->extract(processedProgram);
 }
 
-void DesignExtractor::extractAbstractions(shared_ptr<ProcessedProgram> processedProgram) {
-    this->parentsExtractor->extractAbstractions(processedProgram);
-    this->followsExtractor->extractAbstractions(processedProgram);
-    this->callsExtractor->extractAbstractions(processedProgram);
-    this->usesExtractor->extractAbstractions(processedProgram);
-    this->modifiesExtractor->extractAbstractions(processedProgram);
-    this->nextExtractor->extractAbstractions(processedProgram);
+void DesignExtractor::extractAbstractions(shared_ptr<ProcessedProgram> processedProgram, bool useMultithread) {
+    if (useMultithread) {
+         // Create a ThreadPool instance
+        ThreadPool threadPool;
+
+        // Define tasks and add them to the thread pool
+        threadPool.addTask(&ParentsExtractor::extractAbstractions, this->parentsExtractor, processedProgram);
+        threadPool.addTask(&FollowsExtractor::extractAbstractions, this->followsExtractor, processedProgram);
+        threadPool.addTask(&CallsExtractor::extractAbstractions, this->callsExtractor, processedProgram);
+        threadPool.addTask(&UsesExtractor::extractAbstractions, this->usesExtractor, processedProgram);
+        threadPool.addTask(&ModifiesExtractor::extractAbstractions, this->modifiesExtractor, processedProgram);
+        threadPool.addTask(&NextExtractor::extractAbstractions, this->nextExtractor, processedProgram);
+
+        // Wait for all tasks to complete
+        threadPool.wait();
+
+    } else {
+        // Execute the extractions sequentially
+        this->parentsExtractor->extractAbstractions(processedProgram);
+        this->followsExtractor->extractAbstractions(processedProgram);
+        this->callsExtractor->extractAbstractions(processedProgram);
+        this->usesExtractor->extractAbstractions(processedProgram);
+        this->modifiesExtractor->extractAbstractions(processedProgram);
+        this->nextExtractor->extractAbstractions(processedProgram);
+    }
 }
 
 void DesignExtractor::extractParents(shared_ptr<ProcessedProgram> processedProgram) {

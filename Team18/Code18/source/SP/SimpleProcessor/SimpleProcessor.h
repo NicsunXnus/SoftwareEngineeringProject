@@ -14,7 +14,7 @@
 #include "../SimpleTokens/Token.h"
 #include "../AST/Node.h"
 
-using namespace std::string_view_literals;
+using namespace std;
 
 class SimpleProcessor {
 private:
@@ -22,33 +22,32 @@ private:
 	inline static int statementNumber = 0;
 
 	// Simple enum to be used in utility functions
-	static enum ConditionalDeclaration {
-		IF,
-		WHILE
+	enum ConditionalDeclaration {
+		IF = 0,
+		WHILE = 1
 	};
 	// processes and evaluates the conditional expression, returning the type of conditional statement and a vector containing the conditional expression
-	static std::pair<SimpleProcessor::ConditionalDeclaration, std::shared_ptr<Node>> processConditionalExpression(std::string trimmed, bool isIf, int stmtNum);
+	static pair<SimpleProcessor::ConditionalDeclaration, shared_ptr<Node>> processConditionalExpression(string trimmed, bool isIf, int stmtNum);
 
 	// Processes and validates the conditional statement declaration of a conditional statement
-	static std::pair<SimpleProcessor::ConditionalDeclaration, std::shared_ptr<Node>> processConditionalDeclaration(std::string declaration, int stmtNum);
+	static pair<SimpleProcessor::ConditionalDeclaration, shared_ptr<Node>> processConditionalDeclaration(string declaration, int stmtNum);
 	
 	// Processes a Statement List, which can be found in either IF/WHILE or Procedures
-	static std::shared_ptr<ProcessedStmtList> processStmtList(std::string stmtList);
+	static shared_ptr<ProcessedStmtList> processStmtList(string stmtList);
 
 	// Processes statements that end with a semicolon.
-	static std::shared_ptr<ProcessedSemicolonStmt> processSemicolonStatement(std::string stmt);
+	static shared_ptr<ProcessedSemicolonStmt> processSemicolonStatement(string stmt);
 
 	// Processes two-word statements
-	static std::shared_ptr<ProcessedSemicolonStmt> processTwoWordStmt(std::string twoWordStmt);
+	static shared_ptr<ProcessedSemicolonStmt> processTwoWordStmt(string twoWordStmt);
 
 	// Processes an assignment statement
-	static std::shared_ptr<ProcessedAssignStmt> processAssignmentStmt(std::string assStmt);
-	//static std::pair<std::shared_ptr<Token>, std::shared_ptr<Node>> processAssignmentStmt(std::string assStmt);
+	static shared_ptr<ProcessedAssignStmt> processAssignmentStmt(string assStmt);
 
 	// Processes and validates the details that are found before the {} of a procedure.
-	// throws an std::invalid_argument exception
+	// throws an invalid_argument exception
 	// Returns the procedure name
-	static std::string processPreProcedureDetails(std::string input);
+	static string processPreProcedureDetails(string input);
 
 public:
 	/// <summary>
@@ -57,8 +56,8 @@ public:
 	/// See ProcessedX for the details of the class.
 	/// </summary>
 	/// <param name="srcCode">The source code in string view form</param>
-	/// <exception cref="std::invalid_argument">Thrown when the source code is syntactically wrong</exception>
+	/// <exception cref="invalid_argument">Thrown when the source code is syntactically wrong</exception>
 	/// <returns>A shared pointer to the ProcessedProgram</returns>
-	static std::shared_ptr<ProcessedProgram> processProgram(std::string_view srcCode);
+	static shared_ptr<ProcessedProgram> processProgram(string_view srcCode);
 };
 #endif

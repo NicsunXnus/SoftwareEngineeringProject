@@ -6,13 +6,15 @@
 
 #include "Token.h"
 
+using namespace std;
+
 /**
  * This class represents tokens objects that are constants or literals
  */
 class LiteralToken : public Token {
  private:
  public:
-  LiteralToken(std::string_view tokenName) : Token{tokenName} {};
+  LiteralToken(string_view tokenName) : Token{tokenName} {};
 };
 
 /**
@@ -21,7 +23,7 @@ class LiteralToken : public Token {
  */
 class IntegerLiteralToken : public LiteralToken {
  public:
-  IntegerLiteralToken(std::string_view tokenName) : LiteralToken{tokenName} {};
+  IntegerLiteralToken(string_view tokenName) : LiteralToken{tokenName} {};
 };
 
 #endif

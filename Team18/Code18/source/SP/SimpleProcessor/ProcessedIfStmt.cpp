@@ -1,12 +1,11 @@
 #include "ProcessedIfStmt.h"
 #include "../DesignExtractor/Extractor.h"
 
-
 bool ProcessedIfStmt::equalsTo(ProcessedIfStmt& rhs) {
-  if ((*(this->thenBlock)).equalsTo(*(rhs.thenBlock))) {
+  if (!(ProcessedStmtList::checkEquality(this->thenBlock, rhs.thenBlock))) {
     return false;
   }
-  if ((*(this->elseBlock)).equalsTo(*(rhs.elseBlock))) {
+  if (!(ProcessedStmtList::checkEquality(this->elseBlock, rhs.elseBlock))) {
     return false;
   }
   auto castedThis = static_cast<ProcessedConditionalStmt&>(*this);
@@ -14,14 +13,21 @@ bool ProcessedIfStmt::equalsTo(ProcessedIfStmt& rhs) {
   return castedThis.equalsTo(castedThat);
 }
 
-void ProcessedIfStmt::accept(std::shared_ptr<Extractor> extractor) {
+shared_ptr<ProcessedStmtList> ProcessedIfStmt::getThenBlock() {
+  return this->thenBlock;
+}
+shared_ptr<ProcessedStmtList> ProcessedIfStmt::getElseBlock() {
+  return this->elseBlock;
+}
+
+void ProcessedIfStmt::accept(shared_ptr<Extractor> extractor) {
   extractor->extract(shared_from_this());
 }
 
-void ProcessedIfStmt::accept(std::shared_ptr<Extractor> extractor, std::string procedureName) {
+void ProcessedIfStmt::accept(shared_ptr<Extractor> extractor, string procedureName) {
   extractor->extract(shared_from_this(), procedureName);
 }
 
-void ProcessedIfStmt::accept(std::shared_ptr<Extractor> extractor, std::unordered_set<std::string>& prevStatementNumbers) {
+void ProcessedIfStmt::accept(shared_ptr<Extractor> extractor, unordered_set<string>& prevStatementNumbers) {
   extractor->extract(shared_from_this(), prevStatementNumbers);
 }

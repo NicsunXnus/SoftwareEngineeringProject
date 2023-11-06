@@ -4,12 +4,12 @@
 typedef tuple<string, unordered_set<string>> AffectsStackElement; // parent, set of childs
 
 // returns element in an unordered set, use only if set has one element, else random element from set is returned
-static std::string returnSingleElementFromSet(std::unordered_set<std::string> stringSet) {
+static string returnSingleElementFromSet(unordered_set<string> stringSet) {
 	if (stringSet.size() <= 0) {
 		return "";
 	}
 	auto it = stringSet.begin();
-	std::string onlyElement = *it;
+	string onlyElement = *it;
 	return onlyElement;
 }
 

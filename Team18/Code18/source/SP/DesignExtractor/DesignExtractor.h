@@ -14,7 +14,7 @@ using namespace std;
 #include "CallsExtractor.h"
 #include "NextExtractor.h"
 #include "ProcedureLineNumberExtractor.h"
-#include "../../PKB.h"
+#include "../../PKB/PKB.h"
 #include "../SimpleProcessor/ProcessedProgram.h"
 
 
@@ -35,9 +35,13 @@ public:
       nextExtractor(make_shared<NextExtractor>()),
       procedureLineNumberExtractor(make_shared<ProcedureLineNumberExtractor>()) {}
 
-    void extractAndInsertAll(shared_ptr<ProcessedProgram> processedProgram) {
+    void extractAndInsertAll(shared_ptr<ProcessedProgram> processedProgram, bool useMultithread = false) {
+        if (useMultithread) {
+            extractAbstractions(processedProgram, true);
+        } else {
+            extractAbstractions(processedProgram, false);
+        }
         extractEntities(processedProgram);
-        extractAbstractions(processedProgram);
         insertEntities();
         insertAbstractions();
     }
@@ -69,7 +73,7 @@ public:
     shared_ptr<map<string, pair<string, string>>> getProcedureStatementStorageMap();
 
     void extractEntities(shared_ptr<ProcessedProgram> processedProgram);
-    void extractAbstractions(shared_ptr<ProcessedProgram> processedProgram);
+    void extractAbstractions(shared_ptr<ProcessedProgram> processedProgram, bool useMultithread = false);
     
 private:
     shared_ptr<EntityExtractor> entityExtractor;
