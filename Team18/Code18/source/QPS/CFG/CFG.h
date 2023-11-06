@@ -95,6 +95,8 @@ private:
   // Gets the variables that are used by this statement number
   unordered_set<string> getUsedVariables(string stmtNumber);
 
+  /// GROUP: Add to abstraction methods
+
   // Adds Next* relations for a given line number and one other line number
   // Also adds the Inverse Next* relations
   void addNextStar(string lineNumber, string toAdd);
@@ -102,6 +104,8 @@ private:
   // Adds Affects relations for a given line number and one other line number
   // Also adds the Inverse Affects relations
   void addAffects(string lineNumber, string toAdd);
+
+  // GROUP: DFS Functions
 
   // Helper function to consider the case when encountering an IF statement
   void DFSIfHelper(stack<shared_ptr<DFSPathNode>>& incompletePaths, shared_ptr<DFSPathNode>& curr, unordered_set<string>& nextNodes);
@@ -123,6 +127,8 @@ private:
   /// <param name="start">The start statement number</param>
   void DFS(string start);
 
+  // GROUP: Unroll functions
+
   // Caches a given Path at a given line number
   void storePath(string lineNumber, shared_ptr<DFSPathNode> curr);
 
@@ -134,7 +140,7 @@ private:
   void unrollPathsIteratorHelper(string currLineNumber, deque<string>& descendants, shared_ptr<DFSPathNode>& curr);
 
   // Helper method to consider the functionality for a Next* relationship
-  void ExtendedCFG::unrollNextStarHelper(string currLineNumber, deque<string>& descendants);
+  void unrollNextStarHelper(string currLineNumber, deque<string>& descendants);
 
   // Helper method to consider the functionality for an Affects relationship.
   // Should be called within each iteration of a path unrolling.
