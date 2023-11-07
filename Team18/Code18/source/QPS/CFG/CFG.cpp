@@ -211,6 +211,10 @@ void ExtendedCFG::unrollAffectsHelper(deque<string>& descendants, shared_ptr<DFS
     if (!isReadAssignCall) {
       continue;
     }
+    bool lineNumberModifiesSomething = containerHasKey(modifies, descLineNumber) && !modifies.at(descLineNumber).empty();
+    if (!lineNumberModifiesSomething) {
+      continue;
+    }
     unordered_set<string> descVarModified = modifies.at(descLineNumber);
     bool varExistsInModified = descVarModified.find(currVarModified) != descVarModified.end();
     if (varExistsInModified) {

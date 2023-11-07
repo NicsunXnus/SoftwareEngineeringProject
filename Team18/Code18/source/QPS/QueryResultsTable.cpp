@@ -128,6 +128,13 @@ shared_ptr<QueryResultsTable> QueryResultsTable::removeDuplicates() {
     existingRows.insert(row);
     row.clear();
   }
+  vector<vector<string>> outputCols(numCols, vector<string>());
+  for (vector<string> v : existingRows) {
+    for (size_t index = 0; index < numCols; index++) {
+      outputCols[index].push_back(v[index]);
+    }
+  }
+  return create2DTable(getHeaders(), outputCols);
   
   //cout << "existing rows size" << existingRows.size() << endl;
  // // print each row in existingRows
@@ -139,7 +146,7 @@ shared_ptr<QueryResultsTable> QueryResultsTable::removeDuplicates() {
 
   // TODO: add rows from existingRows to result
 
-  return make_shared<QueryResultsTable>(result);
+  //return make_shared<QueryResultsTable>(result);
 }
 
 shared_ptr<QueryResultsTable> QueryResultsTable::innerJoin(
