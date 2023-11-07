@@ -66,7 +66,7 @@ void NextExtractor::extract(shared_ptr<ProcessedIfStmt> processedIf, unordered_s
 
     unordered_set<string> elsePrevStatementNumbers = prevStatementNumbers;
 	unordered_set<string> lastInIfSet = processedIf->getThenBlock()->accept(shared_from_this(), prevStatementNumbers);
-    unordered_set<string> lastInElseSet = processedIf->getElseBlock()->accept(shared_from_this(), elsePrevStatementNumbers, false);
+    unordered_set<string> lastInElseSet = processedIf->getElseBlock()->accept(shared_from_this(), elsePrevStatementNumbers);
 
     prevStatementNumbers.insert(lastInIfSet.begin(), lastInIfSet.end());
     prevStatementNumbers.insert(lastInElseSet.begin(), lastInElseSet.end());
