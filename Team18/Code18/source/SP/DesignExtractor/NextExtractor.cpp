@@ -51,6 +51,9 @@ void NextExtractor::extract(shared_ptr<ProcessedWhileStmt> processedWhile, unord
 
 	// Make the last statements of the loop reference back to the while loop
 	for (const auto& lastInLoop : lastInLoopSet) {
+		if (lastInLoop == whileStatementNumber) {
+			continue;
+		}
 		this->insertToAbstractionMap(lastInLoop, whileStatementNumber);
 	}
 
