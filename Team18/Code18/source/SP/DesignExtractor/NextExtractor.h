@@ -25,7 +25,7 @@ public:
     void extractAbstractions(shared_ptr<ProcessedProgram> processedProgram) override;
     void extract(shared_ptr<ProcessedProgram> processedProgram) override;
     void extract(shared_ptr<ProcessedStmtList> processedStmtList) override;
-    unordered_set<string> extract(shared_ptr<ProcessedStmtList> processedStmtList, unordered_set<string>& prevStatementNumbers, bool isNotIf = true) override;
+    unordered_set<string> extract(shared_ptr<ProcessedStmtList> processedStmtList, unordered_set<string>& prevStatementNumbers) override;
     void extract(shared_ptr<ProcessedStmt> processedStmt, unordered_set<string>& prevStatementNumbers) override;
     void extract(shared_ptr<ProcessedWhileStmt> processedWhile, unordered_set<string>& prevStatementNumbers) override;
     void extract(shared_ptr<ProcessedIfStmt> processedIf, unordered_set<string>& prevStatementNumbers) override;

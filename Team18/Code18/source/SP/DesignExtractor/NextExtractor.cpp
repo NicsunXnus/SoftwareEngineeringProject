@@ -15,11 +15,11 @@ void NextExtractor::extract(shared_ptr<ProcessedStmtList> processedStmtList) {
 	this->traverse(processedStmtList->getStmts());
 }
 
-unordered_set<string> NextExtractor::extract(shared_ptr<ProcessedStmtList> processedStmtList, unordered_set<string>& prevStatementNumbers, bool isNotIf) {
+unordered_set<string> NextExtractor::extract(shared_ptr<ProcessedStmtList> processedStmtList, unordered_set<string>& prevStatementNumbers) {
 	vector<shared_ptr<ProcessedStmt>> statements = processedStmtList->getStmts();
 	for (auto& stmt : statements) {
 		string statementNumber = stmt->getStatementNumberInString();
-		if (!prevStatementNumbers.empty() && isNotIf) {
+		if (!prevStatementNumbers.empty()) {
 			for (const auto& prevStatementNumber : prevStatementNumbers) {
 				this->insertToAbstractionMap(prevStatementNumber, statementNumber);
 			}

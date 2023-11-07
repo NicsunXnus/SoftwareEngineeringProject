@@ -25,7 +25,7 @@ void ProcessedStmtList::accept(shared_ptr<Extractor> extractor, string procedure
   extractor->extract(shared_from_this(), procedureName);
 }
 
-unordered_set<string> ProcessedStmtList::accept(shared_ptr<Extractor> extractor, unordered_set<string>& prevStatementNumbers, bool isNotIf) {
+unordered_set<string> ProcessedStmtList::accept(shared_ptr<Extractor> extractor, unordered_set<string>& prevStatementNumbers) {
   return extractor->extract(shared_from_this(), prevStatementNumbers, isNotIf);
 }
 
