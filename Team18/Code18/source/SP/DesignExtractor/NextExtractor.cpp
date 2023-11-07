@@ -52,7 +52,7 @@ void NextExtractor::extract(shared_ptr<ProcessedWhileStmt> processedWhile, unord
 	for (const auto& lastInLoop : lastInLoopSet) {
 		this->insertToAbstractionMap(lastInLoop, whileStatementNumber);
 	}
-
+	prevStatementNumbers.clear();
 	prevStatementNumbers.insert(whileStatementNumber);
 }
 
