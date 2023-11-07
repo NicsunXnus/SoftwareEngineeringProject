@@ -77,3 +77,14 @@ pair<string, string> DataAccessLayer::getProcLines(string procName) {
 	pair<string, string> PKBResponse = PKB::responder.getProcLines(procName);
 	return PKBResponse;
 }
+
+shared_ptr<ExtendedCFG> DataAccessLayer::getCFG() {
+	if (cacheCFG->contains(CFG_CACHE_STRING)) {
+		return cacheCFG->get(CFG_CACHE_STRING);
+	}
+	else {
+		shared_ptr<ExtendedCFG> cfg = make_shared<ExtendedCFG>(shared_from_this());
+		cacheCFG->insert(CFG_CACHE_STRING, cfg);
+		return cfg;
+	}
+}

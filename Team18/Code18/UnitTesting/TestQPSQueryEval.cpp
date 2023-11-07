@@ -1494,7 +1494,7 @@ TEST_METHOD(TestInvalidNextIntSyn) {
 
 TEST_METHOD(TestValidNextSynInt) {
   vector<string> testS =
-      PQLTokenizer::tokenize("assign s, s1; Select s such that Next(s, 3)");
+      PQLTokenizer::tokenize("stmt s, s1; Select s such that Next(s, 3)");
   vector<string_view> test{sToSvVector(testS)};
   shared_ptr<QueryParser> p = make_shared<QueryParser>();
   tuple<vector<string_view>, vector<string_view>> testObj =
@@ -1711,15 +1711,15 @@ TEST_METHOD(TestValidNextStarIntIntNormal) {
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
-  shared_ptr<DataAccessLayerStub> dataAccessLayer =
-      make_shared<DataAccessLayerStub>();
+  shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer =
+      make_shared<DataAccessLayerAffectsStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
 }
 
 TEST_METHOD(TestValidNextStarIntIntForLoop) {
   vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Next*(3, 2)");
+      PQLTokenizer::tokenize("assign s; Select s such that Next*(8, 7)");
   vector<string_view> test{sToSvVector(testS)};
   shared_ptr<QueryParser> p = make_shared<QueryParser>();
   tuple<vector<string_view>, vector<string_view>> testObj =
@@ -1729,15 +1729,15 @@ TEST_METHOD(TestValidNextStarIntIntForLoop) {
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
-  shared_ptr<DataAccessLayerStub> dataAccessLayer =
-      make_shared<DataAccessLayerStub>();
+  shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer =
+      make_shared<DataAccessLayerAffectsStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
 }
 
 TEST_METHOD(TestValidNextStarIntIntForLoopSame) {
   vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Next*(3, 3)");
+      PQLTokenizer::tokenize("assign s; Select s such that Next*(7, 7)");
   vector<string_view> test{sToSvVector(testS)};
   shared_ptr<QueryParser> p = make_shared<QueryParser>();
   tuple<vector<string_view>, vector<string_view>> testObj =
@@ -1747,8 +1747,8 @@ TEST_METHOD(TestValidNextStarIntIntForLoopSame) {
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
-  shared_ptr<DataAccessLayerStub> dataAccessLayer =
-      make_shared<DataAccessLayerStub>();
+  shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer =
+      make_shared<DataAccessLayerAffectsStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
 }
@@ -1765,8 +1765,8 @@ TEST_METHOD(TestInvalidNextStarIntInt) {
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
-  shared_ptr<DataAccessLayerStub> dataAccessLayer =
-      make_shared<DataAccessLayerStub>();
+  shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer =
+      make_shared<DataAccessLayerAffectsStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(!table->getSignificant());
 }
@@ -1783,15 +1783,15 @@ TEST_METHOD(TestInvalidNextStarIntIntInvalidFirst) {
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
-  shared_ptr<DataAccessLayerStub> dataAccessLayer =
-      make_shared<DataAccessLayerStub>();
+  shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer =
+      make_shared<DataAccessLayerAffectsStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(!table->getSignificant());
 }
 
 TEST_METHOD(TestValidNextStarIntSyn) {
   vector<string> testS =
-      PQLTokenizer::tokenize("assign s; Select s such that Next*(2, s)");
+      PQLTokenizer::tokenize("assign s; Select s such that Next*(14, s)");
   vector<string_view> test{sToSvVector(testS)};
   shared_ptr<QueryParser> p = make_shared<QueryParser>();
   tuple<vector<string_view>, vector<string_view>> testObj =
@@ -1801,12 +1801,12 @@ TEST_METHOD(TestValidNextStarIntSyn) {
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
-  shared_ptr<DataAccessLayerStub> dataAccessLayer =
-      make_shared<DataAccessLayerStub>();
+  shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer =
+      make_shared<DataAccessLayerAffectsStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
   unordered_set<string> expected = {
-      "3", "4", "2"};  // note that its assign statements only
+      "15"};
   Assert::IsTrue(vectorToSet(table->getColumns()[0]["s"]) == expected);
 }
 
@@ -1822,8 +1822,8 @@ TEST_METHOD(TestInvalidNextStarIntSynBigInt) {
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
-  shared_ptr<DataAccessLayerStub> dataAccessLayer =
-      make_shared<DataAccessLayerStub>();
+  shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer =
+      make_shared<DataAccessLayerAffectsStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(!table->getSignificant());
   unordered_set<string> expected = {};
@@ -1842,11 +1842,11 @@ TEST_METHOD(TestValidNextStarSynInt) {
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
-  shared_ptr<DataAccessLayerStub> dataAccessLayer =
-      make_shared<DataAccessLayerStub>();
+  shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer =
+      make_shared<DataAccessLayerAffectsStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  unordered_set<string> expected = {"1", "2", "3", "4"};
+  unordered_set<string> expected = {"4", "5", "7", "9"};
   Assert::IsTrue(vectorToSet(table->getColumns()[0]["s"]) == expected);
 }
 
@@ -1862,8 +1862,8 @@ TEST_METHOD(TestInvalidNextStarSynInt) {
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
-  shared_ptr<DataAccessLayerStub> dataAccessLayer =
-      make_shared<DataAccessLayerStub>();
+  shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer =
+      make_shared<DataAccessLayerAffectsStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(!table->getSignificant());
   Assert::IsTrue(table->getColumns().size() == 1);
@@ -1881,11 +1881,12 @@ TEST_METHOD(TestValidNextStarSynSyn) {
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
-  shared_ptr<DataAccessLayerStub> dataAccessLayer =
-      make_shared<DataAccessLayerStub>();
+  shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer =
+      make_shared<DataAccessLayerAffectsStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  unordered_set<string> expected = {"1", "2", "3", "4"};
+  unordered_set<string> expected = { "4", "5", "7", "9", "11",
+    "12", "13", "14", "16"};
   Assert::IsTrue(vectorToSet(table->getColumns()[0]["s"]) == expected);
 }
 
@@ -1901,11 +1902,11 @@ TEST_METHOD(TestValidNextStarSynSynSameSyn) {
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
-  shared_ptr<DataAccessLayerStub> dataAccessLayer =
-      make_shared<DataAccessLayerStub>();
+  shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer =
+      make_shared<DataAccessLayerAffectsStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  unordered_set<string> expected = {"2", "3", "4"};
+  unordered_set<string> expected = {"7", "9"};
   Assert::IsTrue(vectorToSet(table->getColumns()[0]["s"]) == expected);
   Assert::IsTrue(table->getColumns().size() == 1);
 }
