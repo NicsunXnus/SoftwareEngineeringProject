@@ -57,7 +57,7 @@
     <ClCompile Include="..\source\SP\AST\TreeBuilder.cpp">
       <Filter>Source Files\SP\AST</Filter>
     </ClCompile>
-	<ClCompile Include="..\source\SP\AST\OperatorEvaluator.cpp">
+    <ClCompile Include="..\source\SP\AST\OperatorEvaluator.cpp">
       <Filter>Source Files\SP\AST</Filter>
     </ClCompile>
     <ClCompile Include="..\source\SP\AST\UnaryOpNode.cpp">
@@ -156,7 +156,7 @@
     <ClCompile Include="..\source\QPS\DataAccessLayerStub.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
-	<ClCompile Include="..\source\QPS\GroupClause.cpp">
+    <ClCompile Include="..\source\QPS\GroupClause.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
     <ClCompile Include="..\source\QPS\QueryBuilder.cpp">
@@ -231,6 +231,9 @@
     <ClCompile Include="..\source\QPS\QueryObjects\WithClauseObject.cpp">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryObjects\ClauseObjectFactory.cpp">
+      <Filter>Source Files\QPS\QueryObjects</Filter>
+    </ClCompile>
     <ClCompile Include="..\source\QPS\QueryObjects\QueryObject.cpp">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClCompile>
@@ -261,6 +264,9 @@
     <ClCompile Include="..\source\PKB\StorageClasses\EntityStorage.cpp">
       <Filter>Source Files\PKB\StorageClasses</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryObjects\ComparisonQueryObjectFactory.cpp">
+      <Filter>Source Files\QPS\QueryObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\ApplicationWrapper.h">
@@ -287,7 +293,7 @@
     <ClInclude Include="..\source\SP\AST\TreeBuilder.h">
       <Filter>Source Files\SP\AST</Filter>
     </ClInclude>
-	 <ClInclude Include="..\source\SP\AST\OperatorEvaluator.h">
+    <ClInclude Include="..\source\SP\AST\OperatorEvaluator.h">
       <Filter>Source Files\SP\AST</Filter>
     </ClInclude>
     <ClInclude Include="..\source\SP\AST\UnaryOpNode.h">
@@ -398,8 +404,8 @@
     <ClInclude Include="..\source\QPS\DataAccessLayerStub.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
-	<ClInclude Include="..\source\QPS\GroupClause.h" >
-		<Filter>Source Files\QPS</Filter>
+    <ClInclude Include="..\source\QPS\GroupClause.h">
+      <Filter>Source Files\QPS</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\PQLTokenizer.h">
       <Filter>Source Files\QPS</Filter>
@@ -543,6 +549,8 @@
     <ClInclude Include="..\source\Constants\QPSConstants.h">
       <Filter>Source Files\Constants</Filter>
     </ClInclude>
+    <ClInclude Include="..\source\DesignExtractor\DesignExtractor.h" />
+    <ClInclude Include="..\source\PKB.h" />
     <ClInclude Include="..\source\QPS\CFG\CFG.h">
       <Filter>Source Files\QPS\CFG</Filter>
     </ClInclude>

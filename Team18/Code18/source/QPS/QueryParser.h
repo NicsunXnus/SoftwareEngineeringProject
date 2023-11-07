@@ -98,6 +98,9 @@ private:
 	unordered_set<string_view> relationalReferences
 	{ "Follows"sv, "Follows*"sv, "Parent"sv, "Parent*"sv, "Uses"sv, "Modifies"sv, "Calls"sv, "Calls*"sv, "Next"sv, "Next*"sv, "Affects"sv };
 
+	// Type of clauses that can be found in the query
+	enum ClauseType { SUCHTHAT, PATTERN, WITH, FIRSTCLAUSE};
+
 	// Is set to true if the query contains a semantic error
 	vector<shared_ptr<SemanticErrorException>> semanticErrors;
 
@@ -136,8 +139,17 @@ private:
 	// Helper function to check if the such that keywords are present
 	bool hasSuchThat(vector<string_view>& query, int index);
 
+	// Checks whether there is a with keyword in the query
+	bool hasWith(std::vector<string_view>& query, int index);
+
 	// Helper function to check if the not keyword is present
 	bool hasNot(vector<string_view>& query, int index);
+
+	// Helper function to check if the and keyword is present
+	bool hasAnd(std::vector<string_view>& query, int index);
+
+	// Parses a clause in the query parser
+	shared_ptr<QueryObject> parseClause(std::vector<string_view>& query, int& index, ClauseType clauseType);
 
 	/*
 	* Creates a boolean object if there hasn't been a synonym named BOOLEAN declared, and increments the index by 1
@@ -165,9 +177,6 @@ private:
 
 	// Returns a vector of declaration query objects or with clause objects specified in the tuple
 	vector<shared_ptr<QueryObject>> createTupleObjects(vector<string_view>& query, int& index, int tokenCount);
-
-	// Checks whether there is a with keyword in the query
-	bool hasWith(vector<string_view>& query, int index);
 
 	// Creates a comparison clause query object
 	vector<shared_ptr<QueryObject>> processComparisonClause(vector<string_view>& query,
