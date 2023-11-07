@@ -714,8 +714,9 @@ namespace UnitTesting
             Assert::IsTrue(find(nextMap["1"].begin(), nextMap["1"].end(), "2") != nextMap["1"].end());
             Assert::AreEqual(static_cast<int>(nextMap["2"].size()), 1);
             Assert::IsTrue(find(nextMap["2"].begin(), nextMap["2"].end(), "3") != nextMap["2"].end());
-            Assert::AreEqual(static_cast<int>(nextMap["3"].size()), 1);
+            Assert::AreEqual(static_cast<int>(nextMap["3"].size()), 2);
             Assert::IsTrue(find(nextMap["3"].begin(), nextMap["3"].end(), "4") != nextMap["3"].end());
+            Assert::IsTrue(find(nextMap["3"].begin(), nextMap["3"].end(), "40") != nextMap["3"].end());
             Assert::AreEqual(static_cast<int>(nextMap["4"].size()), 1);
             Assert::IsTrue(find(nextMap["4"].begin(), nextMap["4"].end(), "5") != nextMap["4"].end());
             Assert::AreEqual(static_cast<int>(nextMap["5"].size()), 2);
