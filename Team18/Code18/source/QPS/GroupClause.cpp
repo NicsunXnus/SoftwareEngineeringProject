@@ -2,7 +2,7 @@
 
 void GroupClause::addOne(shared_ptr< QueryResultsTable> table) {
     members.emplace_back(table);
-    updateHeaders(table->getHeaders());
+    updateHeaders(table->getVectorizedRows()[0]);
 }
 
 void GroupClause::addMany(vector<shared_ptr< QueryResultsTable>> tables) {
@@ -72,5 +72,7 @@ int GroupClause::size() {
 }
 
 void GroupClause::updateHeaders(vector<string> _headers) {
+    sort(_headers.begin(), _headers.end());
     set_union(headers.cbegin(), headers.cend(), _headers.cbegin(), _headers.cend(), inserter(headers, headers.begin()));
+
 }

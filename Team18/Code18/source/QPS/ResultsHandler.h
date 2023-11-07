@@ -25,23 +25,15 @@ private:
 	}
 
 	vector<string> tableToVectorForTuples(shared_ptr<QueryResultsTable> table) {
+		vector<vector<string>> values = table->getVectorizedRows();
 		vector<string> result;
-		vector<string> headers = table->getHeaders();
-		int totalRow = table->getNumberOfRows();
-		int totalHeaders = headers.size();
-
-		for (int i = 0; i < totalRow; i++) {
-			string curr = "";
-			for (int j = 0; j < totalHeaders; j++) {
-				vector<map<string, vector<string>>> cols = table->getColumns();
-				vector<string> column = cols[j].begin()->second;
-				if (j == totalHeaders - 1) { // last element
-					curr += column[i];
-					break;
-				}
-				curr += column[i] + " ";
+		for (int i = 1; i < values.size(); i++) {
+			string temp = "";
+			for (string s : values[i]) {
+				temp += s + " ";
 			}
-			result.push_back(curr);
+			temp.erase(temp.end() - 1);
+			result.emplace_back(temp);
 		}
 		return result;
 	}

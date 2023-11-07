@@ -30,7 +30,7 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
 	}
 
 	// Activate Optimisation
-	QueryBuilder::setOptimisedSwitch();
+	//QueryBuilder::setOptimisedSwitch();
 	if (QueryBuilder::getOptimisedSwitch()) { // Trigger sorting of clauses
 		moveEmptyTablesToFront(queryResultsTables);
 		vector<shared_ptr<GroupClause>> groups = groupSimilarTables(queryResultsTables);

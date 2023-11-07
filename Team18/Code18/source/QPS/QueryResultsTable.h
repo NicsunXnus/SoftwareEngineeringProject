@@ -18,24 +18,43 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
     //It is assumed that there are no duplicate headers in the table.
     //A table is always sorted by headers.
 
-    QueryResultsTable(vector<map<string, vector<string>>> _columns) : columns(_columns), isSignificant(getNumberOfCols() > 0 && getNumberOfRows() > 0) {
-        sort(columns.begin(), columns.end());
+    /*QueryResultsTable(vector<map<string, vector<string>>> _columns) : columns(_columns), isSignificant(getNumberOfCols() > 0 && getNumberOfRows() > 0) {
+        //sort(columns.begin(), columns.end());
+    }*/
+
+    QueryResultsTable(vector<string> _rows) : rows(_rows), isSignificant(getNumberOfCols() > 0 && getNumberOfRows() > 0) {
+        //sort(columns.begin(), columns.end());
+        if (_rows.size() == 0) {
+            numRows = 0; numCols = 0;
+        }
+        else {
+            vectorizedRows = vectorizeRows(rows);
+            numRows = rows.size();
+            numCols = numRows > 0 ? vectorizedRows[0].size() : 0;
+            headersUnorderedSet = getHeadersAsUnorderedSet();
+            headersSet = getHeadersAsSet();
+        }
     }
 
     //Constructor for empty table creation
-    QueryResultsTable() : isSignificant(false) {}
+    QueryResultsTable() : isSignificant(false), numRows(0), numCols(0) {}
 
     // get number of rows in table
     int getNumberOfRows() {
-        if (getNumberOfCols() <= 0) {
-            return 0;
-        }
-        return columns[0].begin()->second.size();
+        return numRows;
+    }
+
+    void updateNumberOfRows() {
+        numRows = rows.size();
     }
 
     // get number of cols in table
     int getNumberOfCols() {
-        return columns.size();
+        return numCols;
+    }
+
+    void updateNumberOfCols() {
+        numCols = numRows > 0 ? vectorizedRows[0].size() : 0;
     }
 
     /**
@@ -220,72 +239,75 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
    */
     int differenceInHeaders(shared_ptr<QueryResultsTable> _table);
 
-    //Getter method for columns
-    vector<map<string, vector<string>>> getColumns() {
-        return this->columns;
+    vector<string> splitString(string s, string del = " ")
+    {
+        vector<string> res;
+        int start, end = -1 * del.size();
+        do {
+            start = end + del.size();
+            end = s.find(del, start);
+            res.emplace_back(s.substr(start, end - start));
+        } while (end != -1);
+        return res;
+    }
+
+    vector<vector<string>> vectorizeRows(vector<string> rows) {
+        vector<vector<string>> res;
+        for (string s : rows) {
+            res.emplace_back(splitString(s, ","));
+        }
+        return res;
     }
 
     //Getter method for headers of columns
-    vector<string> getHeaders() {
-        vector<string> headers;
+    string getHeaders() {
+        return numRows > 0  ? rows[0] : "";
+    }
 
-        for (map<string, vector<string>> column : this->columns) {
-            headers.emplace_back(column.begin()->first);
-        }
 
-        return headers;
+    vector<string> getRows() {
+        return rows;
+    }
+
+    vector<vector<string>> getVectorizedRows() {
+        return vectorizedRows;
+    }
+
+    unordered_set<string> getHeadersAsUnorderedSet() {
+        vector<string> temp = splitString(getHeaders(), ",");
+        unordered_set<string> res;
+        res.insert(temp.begin(), temp.end());
+        return res;
     }
 
     set<string> getHeadersAsSet() {
-        set<string> headers;
-
-        for (map<string, vector<string>> column : this->columns) {
-            headers.insert(column.begin()->first);
-        }
-
-        return headers;
+        set<string> res;
+        res.insert(headersUnorderedSet.begin(), headersUnorderedSet.end());
+        return res;
     }
 
     //Setter method for columns
-    void setColumns(vector<map<string, vector<string>>> newColumns) {
-        this->columns = newColumns;
+    void setRows(vector<string> newRows) {
+        rows = newRows;
     }
 
     //Getter method for data in a column
     vector<string> getColumnData(string header) {
-        vector<string> data;
-
-        for (map<string, vector<string>> column : this->columns) {
-            if (column.begin()->first == header) {
-                return column.begin()->second;
-            }
-           
+        vector<string> res;
+        if (numRows == 0) return res;
+        auto it = find(vectorizedRows[0].begin(), vectorizedRows[0].end(), header);
+        int index = it - vectorizedRows[0].begin();
+        for (vector<string> row : vectorizedRows) {
+            res.emplace_back(row[index]);
         }
-
-        return data;
+        res.erase(res.begin());
+        return res;
     }
 
     //DEBUGGING: Prints out the table for visualisation
     void printTable() {
-        // Print the header row
-        for (const auto& m : columns) {
-            for (const auto& p : m) {
-                cout << p.first << " | ";
-            }
-        }
-        cout << endl;
-
-        // Print the data rows
-        if (getNumberOfCols() > 0 && getNumberOfRows() > 0) {
-            int numRows = columns[0].begin()->second.size();
-            for (int i = 0; i < numRows; i++) {
-                for (const auto& m : columns) {
-                    for (const auto& p : m) {
-                        cout << p.second[i] << " | ";
-                    }
-                }
-                cout << endl;
-            }
+        for (string s : rows) {
+            cout << s << endl;
         }
     }
 
@@ -302,7 +324,7 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
     }
 
     bool isEmpty() {
-        return getNumberOfCols() == 0 || getNumberOfRows() == 0;
+        return getNumberOfCols() == 0 || getNumberOfRows() <= 1;
     }
 
     void setPrimaryKey(string key) {
@@ -325,24 +347,19 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
     shared_ptr<QueryResultsTable> getShared() { return shared_from_this(); }
 
 private:
-    vector<map<string, vector<string>>> columns; // column name: values
+    int numRows;
+    int numCols;
     bool isSignificant; 
     // denotes whether a table is significant or not. 
     // A significant table represents the boolean "true", regardless if the table is empty or not
     // This is especially important for queries that involve booleans, such as with clause: "this" = "this"
     string primaryKey = ""; // primary key of the table, especially important for selecting attributes 
     // e.g. Select constant.value, primary key will be constant.value, other key will be constant
-
+    set<string> headersSet;
+    unordered_set<string> headersUnorderedSet;
+    vector<string> rows;
+    vector<vector<string>> vectorizedRows;
     //FOR DEBUGGING
     int id;
-
-    //Helper method where (a,b) -> (a,a,b,b)
-    vector<string> duplicateEntries(const vector<string>& input, int x);
-
-    //Helper method where (a,b) -> (a,b,a,b)
-    vector<string> repeatEntries(vector<string> input, int repetition);
-
-    //Create the vector representation of a table. To only be used internally
-    vector<map<string, vector<string>>> createColumnsWithHeaders(vector<string> theseHeaders);
 };
 #endif

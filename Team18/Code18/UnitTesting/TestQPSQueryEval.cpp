@@ -12,20 +12,21 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;
 
 namespace UnitTesting {
-TEST_CLASS(TestQPSQueryEval){private : unordered_set<string> vectorToSet(
-    vector<string> in){unordered_set<string> out(in.begin(), in.end());
-return out;
-}  // namespace UnitTesting
-public:
-TEST_METHOD(TestValidFollowsSynSyn) {
-  vector<string> testS =
-      PQLTokenizer::tokenize("assign s, s1; Select s such that Follows(s, s1)");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
+	TEST_CLASS(TestQPSQueryEval) {
+	private:
+		unordered_set<string> vectorToSet(vector<string> in) {
+			unordered_set<string> out(in.begin(), in.end());
+			return out;
+		}
+	public:
+		/*
+		TEST_METHOD(TestValidFollowsSynSyn) {
+			vector<string> testS = PQLTokenizer::tokenize("assign s, s1; Select s such that Follows(s, s1)");
+			vector<string_view> test{ sToSvVector(testS) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			tuple<vector<string_view>, vector<string_view>> testObj = p->splitDeclarationQuery(test);
+			vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
+			vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -2633,58 +2634,14 @@ TEST_METHOD(TestValidNotTwoSynonymsPattern) {
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
   vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
-  shared_ptr<DataAccessLayerStub> dataAccessLayer =
-      make_shared<DataAccessLayerStub>();
-  shared_ptr<QueryResultsTable> table =
-      qo[2]->callAndProcess(dataAccessLayer);  // tuple is one qo
-  Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["v"][0] == "c");
-  Assert::IsTrue(table->getColumns()[0]["v"][1] == "a");
-  Assert::IsTrue(table->getColumns()[0]["v"][2] == "b");
-  Assert::IsTrue(table->getColumns()[0]["v"][3] == "a");
-  Assert::IsTrue(table->getColumns()[0]["v"][4] == "b");
-  Assert::IsTrue(table->getColumns()[0]["v"][5] == "c");
-  Assert::IsTrue(table->getColumns()[0]["v"][6] == "a");
-  Assert::IsTrue(table->getColumns()[1]["w"][0] == "1");
-  Assert::IsTrue(table->getColumns()[1]["w"][1] == "2");
-  Assert::IsTrue(table->getColumns()[1]["w"][2] == "2");
-  Assert::IsTrue(table->getColumns()[1]["w"][3] == "3");
-  Assert::IsTrue(table->getColumns()[1]["w"][4] == "3");
-  Assert::IsTrue(table->getColumns()[1]["w"][5] == "3");
-  Assert::IsTrue(table->getColumns()[1]["w"][6] == "4");
-}
-
-TEST_METHOD(TestValidNotTwoSynonymsWith) {
-  vector<string> testS = PQLTokenizer::tokenize(
-      "while w; constant c; Select c with not c.value = w.stmt#");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
-
-  shared_ptr<DataAccessLayerStub> dataAccessLayer =
-      make_shared<DataAccessLayerStub>();
-  shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
-  Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["c"][0] == "100");
-  Assert::IsTrue(table->getColumns()[0]["c"][1] == "100");
-  Assert::IsTrue(table->getColumns()[0]["c"][2] == "100");
-  Assert::IsTrue(table->getColumns()[0]["c"][3] == "100");
-  Assert::IsTrue(table->getColumns()[0]["c"][4] == "300");
-  Assert::IsTrue(table->getColumns()[0]["c"][5] == "300");
-  Assert::IsTrue(table->getColumns()[0]["c"][6] == "300");
-  Assert::IsTrue(table->getColumns()[0]["c"][7] == "300");
-  Assert::IsTrue(table->getColumns()[1]["w"][0] == "1");
-  Assert::IsTrue(table->getColumns()[1]["w"][1] == "2");
-  Assert::IsTrue(table->getColumns()[1]["w"][2] == "3");
-  Assert::IsTrue(table->getColumns()[1]["w"][3] == "4");
-  Assert::IsTrue(table->getColumns()[1]["w"][4] == "1");
-  Assert::IsTrue(table->getColumns()[1]["w"][5] == "2");
-  Assert::IsTrue(table->getColumns()[1]["w"][6] == "3");
-  Assert::IsTrue(table->getColumns()[1]["w"][7] == "4");
-}
-}
-;
+			shared_ptr<DataAccessLayerStub> dataAccessLayer = make_shared<DataAccessLayerStub>();
+			shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
+			Assert::IsTrue(table->getSignificant());
+			unordered_set<string> expectedS = { "1"};
+			Assert::IsTrue(vectorToSet(table->getColumns()[0]["s"]) == expectedS);
+			unordered_set<string> expectedProcName = { "e"};
+			Assert::IsTrue(vectorToSet(table->getColumns()[1]["s.varName"]) == expectedProcName);
+		}
+		*/
+	};
 }

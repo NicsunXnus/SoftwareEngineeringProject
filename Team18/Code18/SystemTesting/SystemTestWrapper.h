@@ -83,7 +83,9 @@ class SystemTestWrapper {
 
       list<string> results = {};
       applicationWrapper.evaluate(query, results);
+      
       bool passed = checkListEquality(expected, results);
+
       if (debugMode) {
         string passedStr = passed ? " passed" : " failed";
         Logger::WriteMessage(
