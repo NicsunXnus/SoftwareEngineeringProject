@@ -31,7 +31,7 @@ public:
   bool equalsTo(ProcessedIfStmt& rhs);
   void accept(shared_ptr<Extractor> extractor) override;
   void accept(shared_ptr<Extractor> extractor, string procedureName) override;
-  void accept(shared_ptr<Extractor> extractor, unordered_set<string>& prevStatementNumbers) override {};
+  void accept(shared_ptr<Extractor> extractor, unordered_set<string>& prevStatementNumbers) override;
 };
 
 #endif
