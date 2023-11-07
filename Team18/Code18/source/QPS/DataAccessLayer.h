@@ -9,14 +9,22 @@
 #include "../Constants/DesignEnums.h"
 #include "QueryResultsTable.h"
 #include "QueryObjects/ClauseArg.h"
+#include "CFG/CFG.h"
+#include "CFG/CFGCache.h"
 
 using namespace std;
 
 class QueryObject;
+class CFGCache;
+class ExtendedCFG;
+class DataAccessLayer;
+
 /**
 * This class represents an interface object that calls APIs from the PKB
 */
-class DataAccessLayer {
+class DataAccessLayer : public enable_shared_from_this<DataAccessLayer> {
+private:
+	shared_ptr<CFGCache> cacheCFG = make_shared<CFGCache>();
 
 public:
 	/**
@@ -41,15 +49,16 @@ public:
     virtual shared_ptr<Node> getPatternTree(string statement_number);
 
 	/* For Design Abstractions / Clauses */
-	virtual StringMap DataAccessLayer::getClause(ABSTRACTION abstraction);
-	virtual StringMap DataAccessLayer::getClauseInverse(ABSTRACTION abstraction);
+	virtual StringMap getClause(ABSTRACTION abstraction);
+	virtual StringMap getClauseInverse(ABSTRACTION abstraction);
 
 	/* Attributes */
-	virtual StringMap DataAccessLayer::getCallProcNames();
-	virtual StringMap DataAccessLayer::getReadVarNames();
-	virtual StringMap DataAccessLayer::getPrintVarNames();
+	virtual StringMap getCallProcNames();
+	virtual StringMap getReadVarNames();
+	virtual StringMap getPrintVarNames();
 
 	/* Misc */
 	virtual pair<string, string> getProcLines(string procName);
+	virtual shared_ptr<ExtendedCFG> getCFG();
 };
 #endif

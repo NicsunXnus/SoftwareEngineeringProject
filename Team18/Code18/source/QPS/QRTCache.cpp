@@ -1,8 +1,5 @@
 #include "QRTCache.h"
 
-using namespace std;
-
-
 bool QRTCache::contains(string key) {
     return cache.find(key) != cache.end();
 }

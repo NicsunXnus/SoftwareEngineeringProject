@@ -5,7 +5,6 @@
 #include <unordered_map>
 #include <iostream>
 
-
 using namespace std;
 
 // Abstract base class representing a cache
