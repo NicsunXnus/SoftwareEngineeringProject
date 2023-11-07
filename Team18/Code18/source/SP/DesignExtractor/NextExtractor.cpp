@@ -29,7 +29,6 @@ unordered_set<string> NextExtractor::extract(shared_ptr<ProcessedStmtList> proce
 
 		if (stmt == statements.back()) {
 			this->insertKeyToAbstractionMap(statementNumber);
-			prevStatementNumbers.insert(statementNumber);
 		}
 	}
 	return prevStatementNumbers;
@@ -53,7 +52,7 @@ void NextExtractor::extract(shared_ptr<ProcessedWhileStmt> processedWhile, unord
 	for (const auto& lastInLoop : lastInLoopSet) {
 		this->insertToAbstractionMap(lastInLoop, whileStatementNumber);
 	}
-
+	prevStatementNumbers.clear();
 	prevStatementNumbers.insert(whileStatementNumber);
 }
 
@@ -65,8 +64,9 @@ void NextExtractor::extract(shared_ptr<ProcessedIfStmt> processedIf, unordered_s
     string firstStatementNumberElse = processedIf->getElseBlock()->getStmts().front()->getStatementNumberInString(); // Else Block CFG
     this->insertToAbstractionMap(statementNumber, firstStatementNumberElse);
 
-    unordered_set<string> lastInIfSet = processedIf->getThenBlock()->accept(shared_from_this(), prevStatementNumbers);
-    unordered_set<string> lastInElseSet = processedIf->getElseBlock()->accept(shared_from_this(), prevStatementNumbers);
+    unordered_set<string> elsePrevStatementNumbers = prevStatementNumbers;
+	unordered_set<string> lastInIfSet = processedIf->getThenBlock()->accept(shared_from_this(), prevStatementNumbers);
+    unordered_set<string> lastInElseSet = processedIf->getElseBlock()->accept(shared_from_this(), elsePrevStatementNumbers);
 
     prevStatementNumbers.insert(lastInIfSet.begin(), lastInIfSet.end());
     prevStatementNumbers.insert(lastInElseSet.begin(), lastInElseSet.end());
