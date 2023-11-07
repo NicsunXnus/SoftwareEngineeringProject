@@ -179,6 +179,29 @@ TEST_METHOD(TestCrossProduct) {
   assert(isSame);
 }
 
+TEST_METHOD(TestRemoveDuplicates) {
+  map<string, vector<string>> map1;
+  map1.insert({"m", {"1", "2", "1", "2", "3", "2"}});
+
+  map<string, vector<string>> map2;
+  map2.insert({"s", {"a", "a", "a", "b", "c", "d"}});
+
+  map<string, vector<string>> map3;
+  map3.insert({"v", {"a", "a", "a", "d", "c", "b"}});
+
+  vector<map<string, vector<string>>> columns = {map1, map2, map3};
+  shared_ptr<QueryResultsTable> table =
+      make_shared<QueryResultsTable>(columns);
+
+  shared_ptr<QueryResultsTable> new_table = table->removeDuplicates();
+  vector<string> new_col_1 = new_table->getColumnData("m");
+  vector<string> new_col_2 = new_table->getColumnData("s");
+  vector<string> new_col_3 = new_table->getColumnData("v");
+  Assert::IsTrue(compare_vectors(new_col_1, {"1", "2", "2", "3", "2"}));
+  Assert::IsTrue(compare_vectors(new_col_2, {"a", "a", "b", "c", "d"}));
+  Assert::IsTrue(compare_vectors(new_col_3, {"a", "a", "d", "c", "b"}));
+}
+
 TEST_METHOD(TestDifferenceOneColumn) {
   map<string, vector<string>> map1;
   map1.insert({"s", {"x", "z", "y", "w"}});

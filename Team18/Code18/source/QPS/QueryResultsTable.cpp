@@ -87,6 +87,61 @@ shared_ptr<QueryResultsTable> QueryResultsTable::crossProduct(
   return make_shared<QueryResultsTable>(crossProducted);
 }
 
+struct CustomVectorHash {
+  size_t operator()(const std::vector<std::string>& vec) const {
+    size_t hash = 0;
+    for (size_t i = 0; i < vec.size(); ++i) {
+      hash ^= std::hash<std::string>{}(vec[i]) + (i << 1);
+    }
+    return hash;
+  }
+};
+
+shared_ptr<QueryResultsTable> QueryResultsTable::removeDuplicates() {
+  vector<map<string, vector<string>>> thisMap = QueryResultsTable::getColumns(),
+                                      result;
+
+  // add headers of thisMap
+  int numCols = QueryResultsTable::getNumberOfCols();
+  int numRows = QueryResultsTable::getNumberOfRows();
+  cout << "numRows" << numRows << endl;
+
+  if (numRows == 0) {
+    return QueryResultsTable::createEmptyTableWithHeaders(getHeaders());
+  }
+
+  for (int thisCol = 0; thisCol < numCols; thisCol++) {
+    map<string, vector<string>> map = {{thisMap[thisCol].begin()->first, {}}};
+    result.emplace_back(map);
+  }
+
+  // store all existing rows in a set
+  unordered_set<vector<string>, CustomVectorHash> existingRows;
+  // int numRows = columns[0].begin()->second.size();
+  for (int i = 0; i < numRows; i++) {
+    vector<string> row;
+    for (const auto& m : columns) {
+      for (const auto& p : m) {
+          row.push_back(p.second[i]);
+      }
+    }
+    existingRows.insert(row);
+    row.clear();
+  }
+  
+  //cout << "existing rows size" << existingRows.size() << endl;
+ // // print each row in existingRows
+ // for (const auto& row : existingRows) {
+ //   for (int i = 0; i < numCols; i++) {
+	//  result[i].begin()->second.emplace_back(row[i]);
+	//}
+ // }
+
+  // TODO: add rows from existingRows to result
+
+  return make_shared<QueryResultsTable>(result);
+}
+
 shared_ptr<QueryResultsTable> QueryResultsTable::innerJoin(
     shared_ptr<QueryResultsTable> other) {
   vector<map<string, vector<string>>> thisMap = QueryResultsTable::getColumns(),

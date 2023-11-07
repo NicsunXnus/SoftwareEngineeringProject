@@ -48,7 +48,15 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
      * @param other A shared pointer to a QueryResultsTable object that represents the other tables.
      * @return A shared pointer to a newly created QueryResultsTable object.
      */
-    shared_ptr<QueryResultsTable> crossProduct(shared_ptr<QueryResultsTable> other);
+    shared_ptr<QueryResultsTable> crossProduct(
+        shared_ptr<QueryResultsTable> other);
+
+    /**
+    * Creates a new QueryResultsTable object that has duplicate rows removed.
+    *
+    * @return A shared pointer to a newly created QueryResultsTable object.
+    */
+    shared_ptr<QueryResultsTable> removeDuplicates();
 
     /**
   * Creates a shared pointer to a QueryResultsTable object representing the intersection between this table and the other table.
