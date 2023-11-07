@@ -28,6 +28,6 @@ void ProcessedIfStmt::accept(shared_ptr<Extractor> extractor, string procedureNa
   extractor->extract(shared_from_this(), procedureName);
 }
 
-void ProcessedIfStmt::accept(shared_ptr<Extractor> extractor, unordered_set<string>& prevStatementNumbers) {
-  extractor->extract(shared_from_this(), prevStatementNumbers);
-}
+// void ProcessedIfStmt::accept(shared_ptr<Extractor> extractor, unordered_set<string>& prevStatementNumbers) {
+//   extractor->extract(shared_from_this(), prevStatementNumbers);
+// }
