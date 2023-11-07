@@ -29,7 +29,6 @@ unordered_set<string> NextExtractor::extract(shared_ptr<ProcessedStmtList> proce
 
 		if (stmt == statements.back()) {
 			this->insertKeyToAbstractionMap(statementNumber);
-			prevStatementNumbers.insert(statementNumber);
 		}
 	}
 	return prevStatementNumbers;
