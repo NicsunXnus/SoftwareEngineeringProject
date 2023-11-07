@@ -96,6 +96,97 @@ namespace UnitTesting
                "        x = 50;"
                "    }"
                "}";
+            string sourceCodeDemo5 =
+                "procedure double {"
+                "    x = a + b;"
+                "    z = x + y;"
+                "    while ((p > 1) && (q > 2) ) {"
+                "        x = p + q;"
+                "        if (x > 1) then {"
+                "            z = x * 3 - 2;"
+                "            if (y <= 10) then {"
+                "                z = x + y + 1 * 2;"
+                "            } else {"
+                "                read p;"
+                "                call single;"
+                "            }"
+                "            print x;"
+                "            a = 12 + x + y + c / 8;"
+                "            while ((p / 10 * 9 + 11) < 11) {"
+                "                a = b + 1 + x + r + e;"
+                "                p = q;" 
+                "                while (!(x == a + b)) {"
+                "                    if (17 % y != x) then {"
+                "                        a = b + 3;"
+                "                    } else {"
+                "                        b = a + b + p + q - 9;"
+                "                    }"
+                "                    read c;"
+                "                    a = c * (1 * 2 * 3);"
+                "                }"
+                "                read a;"
+                "                print b;"
+                "            }"
+                "            call single;"
+                "            read x;"
+                "            a = b - c % 26;"
+                "        } else {"
+                "            while (x < 8) {"
+                "                x = (1 * 2 * 3) + a + b;"
+                "                x = x + y + (a + b * c) * 29 * 29;"
+                "                if (x >= 55555) then {"
+                "                    print x;"
+                "                    x = 1234567; }"
+                "                else {"
+                "                    print x;"
+                "                    read y;"
+                "                    call child2;"
+                "                    a = (1 * 2 * 3) + (12 / 13 % 14) % a - 36;"
+                "                }"
+                "            }"
+                "        }"
+                "        read y;"
+                "        print x;"
+                "        call child;"
+                "    }"
+                "    if (p == q) then {"
+                "        a = a + 41;"
+                "        var = var + (x + y) + a - (z / 2 - (z * 2));"
+                "        print var;"
+                "    } else {"
+                "        b = 54321 * 99 % c;"
+                "        read b;"
+                "        if (a == b) then {"
+                "            b = b + 47 - (z * 2);"
+                "        } else {"
+                "            read = print;"
+                "            print = read + if - while * assign / call;"
+                "        }"
+                "        x = 11 + ((((12)))) % 13;"
+                "        y = 51*8-6%17;"
+                "    }"
+                "    call single;"
+                "    a = x * y + b;"
+                "}"
+
+                "procedure single {"
+                "    read x;"
+                "    x = y * x + p + q - 55;"
+                "    if (y > z) then {"
+                "        call child;"
+                "        call child2;"
+                "    } else {"
+                "        print c;"
+                "    }"
+                "}"
+
+                "procedure child {"
+                "    read x;"
+                "}"
+
+                "procedure child2 {"
+                "    print y;"
+                "}";
 
        public:
            TEST_METHOD(TestEntityExtraction) {
@@ -606,11 +697,134 @@ namespace UnitTesting
             Assert::IsTrue(find(nextMap["34"].begin(), nextMap["34"].end(), "29") != nextMap["34"].end());
             Assert::AreEqual(static_cast<int>(nextMap["35"].size()), 1);
             Assert::IsTrue(find(nextMap["35"].begin(), nextMap["35"].end(), "29") != nextMap["35"].end());
-            
-            
-            
-            
-            
+        }
+
+        TEST_METHOD(TestComplexNextExtractor)
+        {
+            string sourceCode = sourceCodeDemo5;
+
+            shared_ptr<ProcessedProgram> processedProgram = SimpleProcessor::processProgram(sourceCode);
+            DesignExtractor designExtractor = DesignExtractor();
+            designExtractor.extractNext(processedProgram);
+
+            map<string, unordered_set<string>> nextMap = *(designExtractor.getNextMap());
+
+            // Check the values of nextMap
+            Assert::AreEqual(static_cast<int>(nextMap["1"].size()), 1);
+            Assert::IsTrue(find(nextMap["1"].begin(), nextMap["1"].end(), "2") != nextMap["1"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["2"].size()), 1);
+            Assert::IsTrue(find(nextMap["2"].begin(), nextMap["2"].end(), "3") != nextMap["2"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["3"].size()), 1);
+            Assert::IsTrue(find(nextMap["3"].begin(), nextMap["3"].end(), "4") != nextMap["3"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["4"].size()), 1);
+            Assert::IsTrue(find(nextMap["4"].begin(), nextMap["4"].end(), "5") != nextMap["4"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["5"].size()), 2);
+            Assert::IsTrue(find(nextMap["5"].begin(), nextMap["5"].end(), "6") != nextMap["5"].end());
+            Assert::IsTrue(find(nextMap["5"].begin(), nextMap["5"].end(), "28") != nextMap["5"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["6"].size()), 1);
+            Assert::IsTrue(find(nextMap["6"].begin(), nextMap["6"].end(), "7") != nextMap["6"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["7"].size()), 2);
+            Assert::IsTrue(find(nextMap["7"].begin(), nextMap["7"].end(), "8") != nextMap["7"].end());
+            Assert::IsTrue(find(nextMap["7"].begin(), nextMap["7"].end(), "9") != nextMap["7"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["8"].size()), 1);
+            Assert::IsTrue(find(nextMap["8"].begin(), nextMap["8"].end(), "11") != nextMap["8"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["9"].size()), 1);
+            Assert::IsTrue(find(nextMap["9"].begin(), nextMap["9"].end(), "10") != nextMap["9"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["10"].size()), 1);
+            Assert::IsTrue(find(nextMap["10"].begin(), nextMap["10"].end(), "11") != nextMap["10"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["11"].size()), 1);
+            Assert::IsTrue(find(nextMap["11"].begin(), nextMap["11"].end(), "12") != nextMap["11"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["12"].size()), 1);
+            Assert::IsTrue(find(nextMap["12"].begin(), nextMap["12"].end(), "13") != nextMap["12"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["13"].size()), 2);
+            Assert::IsTrue(find(nextMap["13"].begin(), nextMap["13"].end(), "14") != nextMap["13"].end());
+            Assert::IsTrue(find(nextMap["13"].begin(), nextMap["13"].end(), "24") != nextMap["13"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["14"].size()), 1);
+            Assert::IsTrue(find(nextMap["14"].begin(), nextMap["14"].end(), "15") != nextMap["14"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["15"].size()), 1);
+            Assert::IsTrue(find(nextMap["15"].begin(), nextMap["15"].end(), "16") != nextMap["15"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["16"].size()), 2);
+            Assert::IsTrue(find(nextMap["16"].begin(), nextMap["16"].end(), "17") != nextMap["16"].end());
+            Assert::IsTrue(find(nextMap["16"].begin(), nextMap["16"].end(), "22") != nextMap["16"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["17"].size()), 1);
+            Assert::IsTrue(find(nextMap["17"].begin(), nextMap["17"].end(), "18") != nextMap["17"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["18"].size()), 1);
+            Assert::IsTrue(find(nextMap["18"].begin(), nextMap["18"].end(), "20") != nextMap["18"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["19"].size()), 1);
+            Assert::IsTrue(find(nextMap["19"].begin(), nextMap["19"].end(), "20") != nextMap["19"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["20"].size()), 1);
+            Assert::IsTrue(find(nextMap["20"].begin(), nextMap["20"].end(), "21") != nextMap["20"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["21"].size()), 2);
+            Assert::IsTrue(find(nextMap["21"].begin(), nextMap["21"].end(), "16") != nextMap["21"].end());
+            Assert::IsTrue(find(nextMap["21"].begin(), nextMap["21"].end(), "22") != nextMap["21"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["22"].size()), 1);
+            Assert::IsTrue(find(nextMap["22"].begin(), nextMap["22"].end(), "23") != nextMap["22"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["23"].size()), 1);
+            Assert::IsTrue(find(nextMap["23"].begin(), nextMap["23"].end(), "13") != nextMap["23"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["24"].size()), 1);
+            Assert::IsTrue(find(nextMap["24"].begin(), nextMap["24"].end(), "25") != nextMap["24"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["25"].size()), 1);
+            Assert::IsTrue(find(nextMap["25"].begin(), nextMap["25"].end(), "26") != nextMap["25"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["26"].size()), 1);
+            Assert::IsTrue(find(nextMap["26"].begin(), nextMap["26"].end(), "37") != nextMap["26"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["27"].size()), 2);
+            Assert::IsTrue(find(nextMap["27"].begin(), nextMap["27"].end(), "28") != nextMap["27"].end());
+            Assert::IsTrue(find(nextMap["27"].begin(), nextMap["27"].end(), "37") != nextMap["27"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["28"].size()), 1);
+            Assert::IsTrue(find(nextMap["28"].begin(), nextMap["28"].end(), "29") != nextMap["28"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["29"].size()), 1);
+            Assert::IsTrue(find(nextMap["29"].begin(), nextMap["29"].end(), "30") != nextMap["29"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["30"].size()), 2);
+            Assert::IsTrue(find(nextMap["30"].begin(), nextMap["30"].end(), "31") != nextMap["30"].end());
+            Assert::IsTrue(find(nextMap["30"].begin(), nextMap["30"].end(), "33") != nextMap["30"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["31"].size()), 1);
+            Assert::IsTrue(find(nextMap["31"].begin(), nextMap["31"].end(), "32") != nextMap["31"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["32"].size()), 1);
+            Assert::IsTrue(find(nextMap["32"].begin(), nextMap["32"].end(), "27") != nextMap["32"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["33"].size()), 1);
+            Assert::IsTrue(find(nextMap["33"].begin(), nextMap["33"].end(), "34") != nextMap["33"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["34"].size()), 1);
+            Assert::IsTrue(find(nextMap["34"].begin(), nextMap["34"].end(), "35") != nextMap["34"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["35"].size()), 1);
+            Assert::IsTrue(find(nextMap["35"].begin(), nextMap["35"].end(), "36") != nextMap["35"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["36"].size()), 1);
+            Assert::IsTrue(find(nextMap["36"].begin(), nextMap["36"].end(), "27") != nextMap["36"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["37"].size()), 1);
+            Assert::IsTrue(find(nextMap["37"].begin(), nextMap["37"].end(), "38") != nextMap["37"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["38"].size()), 1);
+            Assert::IsTrue(find(nextMap["38"].begin(), nextMap["38"].end(), "39") != nextMap["38"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["39"].size()), 1);
+            Assert::IsTrue(find(nextMap["39"].begin(), nextMap["39"].end(), "3") != nextMap["39"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["40"].size()), 2);
+            Assert::IsTrue(find(nextMap["40"].begin(), nextMap["40"].end(), "41") != nextMap["40"].end());
+            Assert::IsTrue(find(nextMap["40"].begin(), nextMap["40"].end(), "44") != nextMap["40"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["41"].size()), 1);
+            Assert::IsTrue(find(nextMap["41"].begin(), nextMap["41"].end(), "42") != nextMap["41"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["42"].size()), 1);
+            Assert::IsTrue(find(nextMap["42"].begin(), nextMap["42"].end(), "43") != nextMap["42"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["43"].size()), 1);
+            Assert::IsTrue(find(nextMap["43"].begin(), nextMap["43"].end(), "52") != nextMap["43"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["44"].size()), 1);
+            Assert::IsTrue(find(nextMap["44"].begin(), nextMap["44"].end(), "45") != nextMap["44"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["45"].size()), 1);
+            Assert::IsTrue(find(nextMap["45"].begin(), nextMap["45"].end(), "46") != nextMap["45"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["46"].size()), 2);
+            Assert::IsTrue(find(nextMap["46"].begin(), nextMap["46"].end(), "47") != nextMap["46"].end());
+            Assert::IsTrue(find(nextMap["46"].begin(), nextMap["46"].end(), "48") != nextMap["46"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["47"].size()), 1);
+            Assert::IsTrue(find(nextMap["47"].begin(), nextMap["47"].end(), "50") != nextMap["47"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["48"].size()), 1);
+            Assert::IsTrue(find(nextMap["48"].begin(), nextMap["48"].end(), "49") != nextMap["48"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["49"].size()), 1);
+            Assert::IsTrue(find(nextMap["49"].begin(), nextMap["49"].end(), "50") != nextMap["49"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["50"].size()), 1);
+            Assert::IsTrue(find(nextMap["50"].begin(), nextMap["50"].end(), "51") != nextMap["50"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["51"].size()), 1);
+            Assert::IsTrue(find(nextMap["51"].begin(), nextMap["51"].end(), "52") != nextMap["51"].end());
+            Assert::AreEqual(static_cast<int>(nextMap["52"].size()), 1);
+            Assert::IsTrue(find(nextMap["52"].begin(), nextMap["52"].end(), "53") != nextMap["52"].end());
+
+               
         }
 
         TEST_METHOD(TestNestedAbstractionExtractopm)
