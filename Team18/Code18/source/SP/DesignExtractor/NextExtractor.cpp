@@ -15,11 +15,11 @@ void NextExtractor::extract(shared_ptr<ProcessedStmtList> processedStmtList) {
 	this->traverse(processedStmtList->getStmts());
 }
 
-unordered_set<string> NextExtractor::extract(shared_ptr<ProcessedStmtList> processedStmtList, unordered_set<string>& prevStatementNumbers) {
+unordered_set<string> NextExtractor::extract(shared_ptr<ProcessedStmtList> processedStmtList, unordered_set<string>& prevStatementNumbers, bool isNotIf) {
 	vector<shared_ptr<ProcessedStmt>> statements = processedStmtList->getStmts();
 	for (auto& stmt : statements) {
 		string statementNumber = stmt->getStatementNumberInString();
-		if (!prevStatementNumbers.empty()) {
+		if (!prevStatementNumbers.empty() && isNotIf) {
 			for (const auto& prevStatementNumber : prevStatementNumbers) {
 				this->insertToAbstractionMap(prevStatementNumber, statementNumber);
 			}
@@ -65,7 +65,7 @@ void NextExtractor::extract(shared_ptr<ProcessedIfStmt> processedIf, unordered_s
     this->insertToAbstractionMap(statementNumber, firstStatementNumberElse);
 
     unordered_set<string> lastInIfSet = processedIf->getThenBlock()->accept(shared_from_this(), prevStatementNumbers);
-    unordered_set<string> lastInElseSet = processedIf->getElseBlock()->accept(shared_from_this(), prevStatementNumbers);
+    unordered_set<string> lastInElseSet = processedIf->getElseBlock()->accept(shared_from_this(), prevStatementNumbers, false);
 
     prevStatementNumbers.insert(lastInIfSet.begin(), lastInIfSet.end());
     prevStatementNumbers.insert(lastInElseSet.begin(), lastInElseSet.end());

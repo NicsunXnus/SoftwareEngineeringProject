@@ -32,7 +32,7 @@ public:
     virtual void extract(shared_ptr<ProcessedProcedure> processedProcedure) {};
     virtual void extract(shared_ptr<ProcessedStmtList> processedStmtList) {};
     virtual void extract(shared_ptr<ProcessedStmtList> processedStmtList, string procedureName) {};
-    virtual unordered_set<string> extract(shared_ptr<ProcessedStmtList> processedStmtList, unordered_set<string> &prevStatementNumbers) { return {}; };
+    virtual unordered_set<string> extract(shared_ptr<ProcessedStmtList> processedStmtList, unordered_set<string> &prevStatementNumbers, bool isNotIf = true) { return {}; };
     virtual void extract(shared_ptr<ProcessedStmt> processedStmt) {};
     virtual void extract(shared_ptr<ProcessedStmt> processedStmt, string procedureName) {};
     virtual void extract(shared_ptr<ProcessedStmt> processedStmt, unordered_set<string>& prevStatementNumbers) {};

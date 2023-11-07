@@ -30,7 +30,7 @@ public:
 
   void accept(shared_ptr<Extractor> extractor);
   void accept(shared_ptr<Extractor> extractor, string procedureName);
-  unordered_set<string> accept(shared_ptr<Extractor> extractor, unordered_set<string>& prevStatementNumbers);
+  unordered_set<string> accept(shared_ptr<Extractor> extractor, unordered_set<string>& prevStatementNumbers, bool isNotIf = true);
 };
 
 #endif
