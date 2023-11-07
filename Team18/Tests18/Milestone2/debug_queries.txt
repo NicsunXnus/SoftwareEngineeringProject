@@ -1,5 +1,5 @@
-2 - Multi-clauses(No Pattern such that With): Parent, Calls
-procedure proc; call c; while w;
-Select proc such that Calls("double", proc) such that Parent(w, c) with c.procName = proc.procName
-child
+5 - Multi-clauses(Pattern and No With): Next*, Modifies, Uses, Follows*
+assign a; variable v; while w; stmt s, s1; call c;
+Select <s, v> such that Next*(s, s1) such that Modifies(s1, v) such that Uses(a, v) such that Uses(c, v) such that Follows*(a, s) pattern a(_, _"1"_)
+15 x, 16 x, 22 x, 23 x
 5000

@@ -17,7 +17,7 @@ shared_ptr<QueryResultsTable> QueryResultsTable::crossProduct(
         !other->isEmpty()) {  // TABLE X TRUE EMPTY
       return other;
     }
-    return make_shared<QueryResultsTable>();
+    return QueryResultsTable::createEmptyTable(other->getSignificant() && this->getSignificant());
   }
 
   // Get the number of columns and rows in both tables

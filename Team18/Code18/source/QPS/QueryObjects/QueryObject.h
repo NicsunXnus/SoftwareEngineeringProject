@@ -11,7 +11,6 @@
 
 
 using namespace std;
-// API calls should be a function in the query object
 
 /*
 * This class represents a Query object; abstractions that are used to query the PKB
@@ -26,13 +25,18 @@ public:
 
 	string_view getQueryObjectName();
 
+	/*
+	* Returns The name of the object stored in cache
+	*/
 	virtual string getCacheName();
 
+	/*
+	* Whether this object should be cached or not. Only objects that require DFS are cached
+	*/
 	virtual bool shouldCache();
 
 	// pure virtual function, for getting the data from PKB and processing it into a results table by filtering and remove columns
 	virtual shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) = 0;
-
 
 };
 
