@@ -408,6 +408,21 @@ void QueryResultsTable::deleteColumn(string deleteHeader) {
   }
 }
 
+
+void QueryResultsTable::condenseTable(unordered_set<string> targetHeaders) {
+    vector<string> headers = getHeaders();
+    vector<string> colsToDelete;
+    for (string header : headers) {
+        if (targetHeaders.find(header) == targetHeaders.end()) { //exact match
+            colsToDelete.push_back(header);
+        }
+    }
+
+    for (string col : colsToDelete) {
+        deleteColumn(col);
+    }
+}
+
 void QueryResultsTable::renameColumn(string newName, string oldName) {
   vector<string> headers = QueryResultsTable::getHeaders();
   auto it = find(headers.begin(), headers.end(), oldName);
@@ -511,8 +526,25 @@ bool QueryResultsTable::hasHeader(string header) {
   set<string> headers = QueryResultsTable::getHeadersAsSet();
 
   auto it = find(headers.begin(), headers.end(), header);
+  bool hasHeader = it != headers.end();
+   
+  return hasHeader;
 
-  return it != headers.end();
+}
+
+bool QueryResultsTable::hasAttributeHeader(string header) {
+    set<string> headers = QueryResultsTable::getHeadersAsSet();
+    size_t pos = header.find('.');
+    if (pos == string::npos) {
+        return false;
+    }
+    header = header.substr(0, pos);
+
+    auto it = find(headers.begin(), headers.end(), header);
+    bool hasHeader = it != headers.end();
+
+    return hasHeader;
+
 }
 
 void QueryResultsTable::duplicateColumns(string columnName) {

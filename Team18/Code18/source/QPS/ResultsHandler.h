@@ -24,6 +24,11 @@ private:
 		return selectClause.size() < 1;
 	}
 
+	unordered_set<string> getSetOfSelectClauseHeaders(vector<shared_ptr<QueryResultsTable>> selectClauseTables);
+	unordered_set<string> getPrimaryKeySet(vector<shared_ptr<QueryResultsTable>> selectClauseTables);
+	string getAttributeSynonym(string attribute);
+	vector<string> getVectorOfSelectClauseHeaders(vector<shared_ptr<QueryResultsTable>> selectClauseTables);
+
 	vector<string> tableToVectorForTuples(shared_ptr<QueryResultsTable> table) {
 		vector<string> result;
 		vector<string> headers = table->getHeaders();

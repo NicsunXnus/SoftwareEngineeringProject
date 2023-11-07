@@ -60,7 +60,7 @@ shared_ptr<QueryResultsTable> AffectsSynSyn::evaluate(shared_ptr<DataAccessLayer
 
 	for (string assignment : assignments) {
 		string startingLine = assignment;
-		unordered_set<string> childrenOfStartNode = filterMapKeyReturnSetValues(startingLine, dataAccessLayer, cfg);
+		unordered_set<string> childrenOfStartNode = filterMapKeyReturnSetValues(startingLine, cfg);
 		StringMap usesMap = dataAccessLayer->getClause(USES);
 		StringMap modifiesMap = dataAccessLayer->getClause(MODIFIES);
 		string modifiedVar = returnSingleElementFromSet(modifiesMap[startingLine]); // get variable modified
@@ -92,7 +92,7 @@ shared_ptr<QueryResultsTable> AffectsSynSyn::evaluate(shared_ptr<DataAccessLayer
 			for (string child : children) {
 				auto it = visited.find(child);
 				if (it == visited.end()) {
-					unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, dataAccessLayer, cfg);
+					unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, cfg);
 					DFSStack.push(make_tuple(child, nextChildren));
 				}
 				unordered_set<string> uses = usesMap[child]; // variables used at child node
@@ -127,7 +127,7 @@ shared_ptr<QueryResultsTable> AffectsSynWildcard::evaluate(shared_ptr<DataAccess
 
 	for (string assignment : assignments) {
 		string startingLine = assignment;
-		unordered_set<string> childrenOfStartNode = filterMapKeyReturnSetValues(startingLine, dataAccessLayer, cfg);
+		unordered_set<string> childrenOfStartNode = filterMapKeyReturnSetValues(startingLine, cfg);
 		StringMap usesMap = dataAccessLayer->getClause(USES);
 		StringMap modifiesMap = dataAccessLayer->getClause(MODIFIES);
 		string modifiedVar = returnSingleElementFromSet(modifiesMap[startingLine]); // get variable modified
@@ -159,7 +159,7 @@ shared_ptr<QueryResultsTable> AffectsSynWildcard::evaluate(shared_ptr<DataAccess
 			for (string child : children) {
 				auto it = visited.find(child);
 				if (it == visited.end()) {
-					unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, dataAccessLayer, cfg);
+					unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, cfg);
 					DFSStack.push(make_tuple(child, nextChildren));
 				}
 				unordered_set<string> uses = usesMap[child]; // variables used at child node
@@ -184,7 +184,7 @@ shared_ptr<QueryResultsTable> AffectsSynInt::evaluate(shared_ptr<DataAccessLayer
 		stoi(svToString(arg2->getArgValue())), dataAccessLayer);
 	for (string assignment : assignments) {
 		string startingLine = assignment;
-		unordered_set<string> childrenOfStartNode = filterMapKeyReturnSetValues(startingLine, dataAccessLayer, cfg);
+		unordered_set<string> childrenOfStartNode = filterMapKeyReturnSetValues(startingLine, cfg);
 		StringMap usesMap = dataAccessLayer->getClause(USES);
 		StringMap modifiesMap = dataAccessLayer->getClause(MODIFIES);
 		string modifiedVar = returnSingleElementFromSet(modifiesMap[startingLine]); // get variable modified
@@ -216,7 +216,7 @@ shared_ptr<QueryResultsTable> AffectsSynInt::evaluate(shared_ptr<DataAccessLayer
 			for (string child : children) {
 				auto it = visited.find(child);
 				if (it == visited.end()) {
-					unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, dataAccessLayer, cfg);
+					unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, cfg);
 					DFSStack.push(make_tuple(child, nextChildren));
 				}
 				unordered_set<string> uses = usesMap[child]; // variables used at child node
@@ -238,7 +238,7 @@ shared_ptr<QueryResultsTable> AffectsIntSyn::evaluate(shared_ptr<DataAccessLayer
 	StringMap cfg = dataAccessLayer->getClause(clause); // next table (CFG)
 	unordered_set<string> assignments = dataAccessLayer->getEntity(ASSIGN);
 
-	unordered_set<string> childrenOfStartNode = filterMapKeyReturnSetValues(arg1, dataAccessLayer, cfg);
+	unordered_set<string> childrenOfStartNode = filterMapKeyReturnSetValues(arg1, cfg);
 	string startingLine = svToString(arg1->getArgValue());
 	StringMap usesMap = dataAccessLayer->getClause(USES);
 	StringMap modifiesMap = dataAccessLayer->getClause(MODIFIES);
@@ -271,7 +271,7 @@ shared_ptr<QueryResultsTable> AffectsIntSyn::evaluate(shared_ptr<DataAccessLayer
 		for (string child : children) {
 			auto it = visited.find(child);
 			if (it == visited.end()) {
-				unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, dataAccessLayer, cfg);
+				unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, cfg);
 				DFSStack.push(make_tuple(child, nextChildren));
 			}
 			unordered_set<string> uses = usesMap[child]; // variables used at child node
@@ -288,7 +288,7 @@ shared_ptr<QueryResultsTable> AffectsIntWildcard::evaluate(shared_ptr<DataAccess
 	StringMap cfg = dataAccessLayer->getClause(clause); // next table (CFG)
 	unordered_set<string> assignments = dataAccessLayer->getEntity(ASSIGN);
 
-	unordered_set<string> childrenOfStartNode = filterMapKeyReturnSetValues(arg1, dataAccessLayer, cfg);
+	unordered_set<string> childrenOfStartNode = filterMapKeyReturnSetValues(arg1, cfg);
 	string startingLine = svToString(arg1->getArgValue());
 	StringMap usesMap = dataAccessLayer->getClause(USES);
 	StringMap modifiesMap = dataAccessLayer->getClause(MODIFIES);
@@ -321,7 +321,7 @@ shared_ptr<QueryResultsTable> AffectsIntWildcard::evaluate(shared_ptr<DataAccess
 		for (string child : children) {
 			auto it = visited.find(child);
 			if (it == visited.end()) {
-				unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, dataAccessLayer, cfg);
+				unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, cfg);
 				DFSStack.push(make_tuple(child, nextChildren));
 			}
 			unordered_set<string> uses = usesMap[child]; // variables used at child node
@@ -339,7 +339,7 @@ shared_ptr<QueryResultsTable> AffectsIntInt::evaluate(shared_ptr<DataAccessLayer
 	StringMap cfg = dataAccessLayer->getClause(clause); // next table (CFG)
 	unordered_set<string> assignments = dataAccessLayer->getEntity(ASSIGN);
 	
-	unordered_set<string> childrenOfStartNode = filterMapKeyReturnSetValues(arg1, dataAccessLayer, cfg);
+	unordered_set<string> childrenOfStartNode = filterMapKeyReturnSetValues(arg1, cfg);
 	string startingLine = svToString(arg1->getArgValue());
 	string finishLine = svToString(arg2->getArgValue());
 	StringMap usesMap = dataAccessLayer->getClause(USES);
@@ -372,7 +372,7 @@ shared_ptr<QueryResultsTable> AffectsIntInt::evaluate(shared_ptr<DataAccessLayer
 		for (string child : children) {
 			auto it = visited.find(child);
 			if (it == visited.end()) {
-				unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, dataAccessLayer, cfg);
+				unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, cfg);
 				DFSStack.push(make_tuple(child, nextChildren));
 			}
 			if (child == finishLine) { // at target node
@@ -392,7 +392,7 @@ shared_ptr<QueryResultsTable> AffectsWildcardSyn::evaluate(shared_ptr<DataAccess
 
 	for (string assignment : assignments) {
 		string startingLine = assignment;
-		unordered_set<string> childrenOfStartNode = filterMapKeyReturnSetValues(startingLine, dataAccessLayer, cfg);
+		unordered_set<string> childrenOfStartNode = filterMapKeyReturnSetValues(startingLine, cfg);
 		StringMap usesMap = dataAccessLayer->getClause(USES);
 		StringMap modifiesMap = dataAccessLayer->getClause(MODIFIES);
 		string modifiedVar = returnSingleElementFromSet(modifiesMap[startingLine]); // get variable modified
@@ -424,7 +424,7 @@ shared_ptr<QueryResultsTable> AffectsWildcardSyn::evaluate(shared_ptr<DataAccess
 			for (string child : children) {
 				auto it = visited.find(child);
 				if (it == visited.end()) {
-					unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, dataAccessLayer, cfg);
+					unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, cfg);
 					DFSStack.push(make_tuple(child, nextChildren));
 				}
 				unordered_set<string> uses = usesMap[child]; // variables used at child node
@@ -446,7 +446,7 @@ shared_ptr<QueryResultsTable> AffectsWildcardWildcard::evaluate(shared_ptr<DataA
 
 	for (string assignment : assignments) {
 		string startingLine = assignment;
-		unordered_set<string> childrenOfStartNode = filterMapKeyReturnSetValues(startingLine, dataAccessLayer, cfg);
+		unordered_set<string> childrenOfStartNode = filterMapKeyReturnSetValues(startingLine, cfg);
 		StringMap usesMap = dataAccessLayer->getClause(USES);
 		StringMap modifiesMap = dataAccessLayer->getClause(MODIFIES);
 		string modifiedVar = returnSingleElementFromSet(modifiesMap[startingLine]); // get variable modified
@@ -478,7 +478,7 @@ shared_ptr<QueryResultsTable> AffectsWildcardWildcard::evaluate(shared_ptr<DataA
 			for (string child : children) {
 				auto it = visited.find(child);
 				if (it == visited.end()) {
-					unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, dataAccessLayer, cfg);
+					unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, cfg);
 					DFSStack.push(make_tuple(child, nextChildren));
 				}
 				unordered_set<string> uses = usesMap[child]; // variables used at child node
@@ -500,7 +500,7 @@ shared_ptr<QueryResultsTable> AffectsWildcardInt::evaluate(shared_ptr<DataAccess
 
 	for (string assignment : assignments) {
 		string startingLine = assignment;
-		unordered_set<string> childrenOfStartNode = filterMapKeyReturnSetValues(startingLine, dataAccessLayer, cfg);
+		unordered_set<string> childrenOfStartNode = filterMapKeyReturnSetValues(startingLine, cfg);
 		StringMap usesMap = dataAccessLayer->getClause(USES);
 		StringMap modifiesMap = dataAccessLayer->getClause(MODIFIES);
 		string modifiedVar = returnSingleElementFromSet(modifiesMap[startingLine]); // get variable modified
@@ -532,7 +532,7 @@ shared_ptr<QueryResultsTable> AffectsWildcardInt::evaluate(shared_ptr<DataAccess
 			for (string child : children) {
 				auto it = visited.find(child);
 				if (it == visited.end()) {
-					unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, dataAccessLayer, cfg);
+					unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, cfg);
 					DFSStack.push(make_tuple(child, nextChildren));
 				}
 				unordered_set<string> uses = usesMap[child]; // variables used at child node

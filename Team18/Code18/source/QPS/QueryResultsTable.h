@@ -25,6 +25,9 @@ public:
     //Constructor for empty table creation
     QueryResultsTable() : isSignificant(false) {}
 
+    void condenseTable(unordered_set<string> headers);
+
+
     // get number of rows in table
     int getNumberOfRows() {
         if (getNumberOfCols() <= 0) {
@@ -220,6 +223,8 @@ public:
    */
     int differenceInHeaders(shared_ptr<QueryResultsTable> _table);
 
+    bool QueryResultsTable::hasAttributeHeader(string header);
+
     //Getter method for columns
     vector<map<string, vector<string>>> getColumns() {
         return this->columns;
@@ -322,8 +327,17 @@ public:
         return id;
     }
 
+    void setAttr(StringMap attribute) {
+        attr = attribute;
+    }
+
+    StringMap getAttr() {
+        return attr;
+    }
+
 private:
     vector<map<string, vector<string>>> columns; // column name: values
+    StringMap attr;
     bool isSignificant; 
     // denotes whether a table is significant or not. 
     // A significant table represents the boolean "true", regardless if the table is empty or not
