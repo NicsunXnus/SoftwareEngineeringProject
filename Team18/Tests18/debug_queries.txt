@@ -266,7 +266,7 @@ Select s1 such that Next(s1, s2)
 2 - int, syn - loop
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
 Select s1 such that Next(9, s1)
-6, 10
+6
 5000
 3 - syn, syn - loop
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
