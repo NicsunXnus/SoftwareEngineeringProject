@@ -94,7 +94,7 @@ public:
 
 	bool validateFollowsArgs(vector<shared_ptr<ClauseArg>> arguments);
 
-	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
+	shared_ptr<QueryObject> create(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> arg1 = arguments[0];
 		shared_ptr<ClauseArg> arg2 = arguments[1];
 		if (validateFollowsArgs(arguments)) {
@@ -138,7 +138,7 @@ public:
 
 	bool validateParentArgs(vector<shared_ptr<ClauseArg>> arguments);
 
-	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
+	shared_ptr<QueryObject> create(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> arg1 = arguments[0];
 		shared_ptr<ClauseArg> arg2 = arguments[1];
 		if (validateParentArgs(arguments)) {
@@ -160,7 +160,7 @@ public:
 
 	bool validateParentStarArgs(vector<shared_ptr<ClauseArg>> arguments);
 
-	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
+	shared_ptr<QueryObject> create(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> arg1 = arguments[0];
 		shared_ptr<ClauseArg> arg2 = arguments[1];
 		if (validateParentStarArgs(arguments)) {
@@ -229,7 +229,7 @@ public:
 
 	bool validateNextArgs(vector<shared_ptr<ClauseArg>> arguments);
 
-	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
+	shared_ptr<QueryObject> create(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> arg1 = arguments[0];
 		shared_ptr<ClauseArg> arg2 = arguments[1];
 		if (validateNextArgs(arguments)) {
@@ -253,7 +253,7 @@ public:
 
 	bool validateNextStarArgs(vector<shared_ptr<ClauseArg>> arguments);
 
-	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
+	shared_ptr<QueryObject> create(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> arg1 = arguments[0];
 		shared_ptr<ClauseArg> arg2 = arguments[1];
 		if (validateNextStarArgs(arguments)) {

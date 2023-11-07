@@ -9,37 +9,32 @@
 #include "../AST/Node.h"
 #include "../AST/TreeBuilder.h"
 
-using namespace std::string_view_literals;
+using namespace std;
 
 class ProcessedAssignStmt;
 class Extractor;
 
-
 /// <summary>
 /// An assignment statement
 /// </summary>
-class ProcessedAssignStmt : public ProcessedSemicolonStmt, public std::enable_shared_from_this<ProcessedAssignStmt> {
+class ProcessedAssignStmt : public ProcessedSemicolonStmt, public enable_shared_from_this<ProcessedAssignStmt> {
 private:
-  std::shared_ptr<Token> LHS;
-  std::shared_ptr<Node> RHS;
+  shared_ptr<Token> LHS;
+  shared_ptr<Node> RHS;
 
 public:
-  ProcessedAssignStmt(int statementNumber, std::shared_ptr<Token> LHS, std::shared_ptr<Node> RHS)
+  ProcessedAssignStmt(int statementNumber, shared_ptr<Token> LHS, shared_ptr<Node> RHS)
     : ProcessedSemicolonStmt{ statementNumber },
       LHS{ LHS },
       RHS{ RHS } {};
 
-  std::shared_ptr<Token> getLeft() {
-    return this->LHS;
-  }
+  shared_ptr<Token> getLeft();
 
-  std::shared_ptr<Node> getRight() {
-    return this->RHS;
-  }
+  shared_ptr<Node> getRight();
 
   bool equalsTo(ProcessedAssignStmt& that);
-  void accept(std::shared_ptr<Extractor> extractor) override;
-  void accept(std::shared_ptr<Extractor> extractor, std::string procedureName) override;
-  void accept(std::shared_ptr<Extractor> extractor, std::unordered_set<std::string>& prevStatementNumbers) override;
+  void accept(shared_ptr<Extractor> extractor) override;
+  void accept(shared_ptr<Extractor> extractor, string procedureName) override;
+  void accept(shared_ptr<Extractor> extractor, unordered_set<string>& prevStatementNumbers) override;
 };
 #endif

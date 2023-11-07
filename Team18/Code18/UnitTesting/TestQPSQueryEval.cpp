@@ -25,7 +25,7 @@ TEST_METHOD(TestValidFollowsSynSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -51,7 +51,7 @@ TEST_METHOD(TestValidFollowsSynSynSameSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -70,7 +70,7 @@ TEST_METHOD(TestInalidFollowsSynInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -89,7 +89,7 @@ TEST_METHOD(TestValidFollowsIntSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -109,7 +109,7 @@ TEST_METHOD(TestInvalidFollowsIntSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -128,7 +128,7 @@ TEST_METHOD(TestValidFollowsSynInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -148,7 +148,7 @@ TEST_METHOD(TestInvalidFollowsSynInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -167,7 +167,7 @@ TEST_METHOD(TestValidFollowsSynWildcard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -188,7 +188,7 @@ TEST_METHOD(TestValidFollowsWildCardSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -209,7 +209,7 @@ TEST_METHOD(TestValidFollowsIntWildcard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -227,7 +227,7 @@ TEST_METHOD(TestInvalidFollowsIntWildcard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -245,7 +245,7 @@ TEST_METHOD(TestValidFollowsWildcardInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -263,7 +263,7 @@ TEST_METHOD(TestInvalidFollowsWildcardInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -281,7 +281,7 @@ TEST_METHOD(TestValidFollowsWildcardWildcard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -299,7 +299,7 @@ TEST_METHOD(TestValidFollowsIntInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -317,7 +317,7 @@ TEST_METHOD(TestInvalidFollowsIntInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -335,7 +335,7 @@ TEST_METHOD(TestValidParentStarSynSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -363,7 +363,7 @@ TEST_METHOD(TestValidParentStarSynSynSameSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -381,7 +381,7 @@ TEST_METHOD(TestValidParentStarSynInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -401,7 +401,7 @@ TEST_METHOD(TestInvalidParentStarSynInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -419,7 +419,7 @@ TEST_METHOD(TestValidParentStarIntSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -439,7 +439,7 @@ TEST_METHOD(TestInvalidParentStarIntSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -457,7 +457,7 @@ TEST_METHOD(TestValidParentStarSynWildcard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -478,7 +478,7 @@ TEST_METHOD(TestValidParentStarWildcardSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -499,7 +499,7 @@ TEST_METHOD(TestValidParentStarIntWildcard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -517,7 +517,7 @@ TEST_METHOD(TestInvalidParentStarIntWildcard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -535,7 +535,7 @@ TEST_METHOD(TestValidParentStarWildcardInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -553,7 +553,7 @@ TEST_METHOD(TestInvalidParentStarWildcardInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -571,7 +571,7 @@ TEST_METHOD(TestValidParentStarIntInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -589,7 +589,7 @@ TEST_METHOD(TestInvalidParentStarIntInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -607,7 +607,7 @@ TEST_METHOD(TestValidParentStarWildcardWildcard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -625,7 +625,7 @@ TEST_METHOD(TestValidUsesSynSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -651,7 +651,7 @@ TEST_METHOD(TestValidUsesSynWildCard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -672,7 +672,7 @@ TEST_METHOD(TestValidUsesSynIdent) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -692,7 +692,7 @@ TEST_METHOD(TestValidUsesIntSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -711,7 +711,7 @@ TEST_METHOD(TestValidUsesIntWildCard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -729,7 +729,7 @@ TEST_METHOD(TestValidUsesIntIdent) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -747,9 +747,9 @@ TEST_METHOD(TestValidPatternWildcardWildcard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
-  auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
+  auto clause = dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
@@ -771,9 +771,9 @@ TEST_METHOD(TestValidAssignPatternWildcardPartialMatch) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
-  auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
+  auto clause = dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
@@ -793,9 +793,9 @@ TEST_METHOD(TestValidAssignPatternWildcardExactMatch) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
-  auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
+  auto clause = dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
@@ -814,9 +814,9 @@ TEST_METHOD(TestValidAssignPatternCharStringWildcard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
-  auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
+  auto clause = dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
@@ -836,9 +836,9 @@ TEST_METHOD(TestInvalidAssignPatternCharStringWildcard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
-  auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
+  auto clause = dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
@@ -857,9 +857,9 @@ TEST_METHOD(TestValidAssignPatternCharStringPartialMatch) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
-  auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
+  auto clause = dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
@@ -878,9 +878,9 @@ TEST_METHOD(TestValidAssignPatternCharStringExactMatch) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
-  auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
+  auto clause = dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
@@ -899,9 +899,9 @@ TEST_METHOD(TestValidPatternVarSynWildcard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
-  auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
+  auto clause = dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
@@ -928,9 +928,9 @@ TEST_METHOD(TestValidAssignPatternVarSynPartialMatch) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
-  auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
+  auto clause = dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
@@ -952,9 +952,9 @@ TEST_METHOD(TestValidAssignPatternVarSynExactMatch) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
-  auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
+  auto clause = dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
@@ -976,9 +976,9 @@ TEST_METHOD(TestValidIfPatternWildcard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
-  auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
+  auto clause = dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
@@ -1000,9 +1000,9 @@ TEST_METHOD(TestValidIfPatternVarSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
-  auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
+  auto clause = dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
@@ -1032,9 +1032,9 @@ TEST_METHOD(TestValidIfPatternVarString) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
-  auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
+  auto clause = dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
@@ -1054,9 +1054,9 @@ TEST_METHOD(TestInvalidIfPatternVarString) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
-  auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
+  auto clause = dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
@@ -1075,9 +1075,9 @@ TEST_METHOD(TestValidWhilePatternWildcard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
-  auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
+  auto clause = dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
@@ -1099,9 +1099,9 @@ TEST_METHOD(TestValidWhilePatternVarSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
-  auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
+  auto clause = dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
@@ -1131,9 +1131,9 @@ TEST_METHOD(TestValidWhilePatternVarString) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
-  auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
+  auto clause = dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
@@ -1153,9 +1153,9 @@ TEST_METHOD(TestInvalidWhilePatternVarString) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
-  auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
+  auto clause = dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
@@ -1176,9 +1176,9 @@ TEST_METHOD(
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
-  auto clause = std::dynamic_pointer_cast<PatternObject>(qo[1]);
+  auto clause = dynamic_pointer_cast<PatternObject>(qo[1]);
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
@@ -1200,7 +1200,7 @@ TEST_METHOD(
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1228,7 +1228,7 @@ TEST_METHOD(TestValidCallsSynWildCard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1249,7 +1249,7 @@ TEST_METHOD(TestValidCallsSynIdent) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1268,7 +1268,7 @@ TEST_METHOD(TestValidCallsWildcardSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1290,7 +1290,7 @@ TEST_METHOD(TestValidCallsWildcardWildcard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1308,7 +1308,7 @@ TEST_METHOD(TestValidCallsWildcardIdent) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1326,7 +1326,7 @@ TEST_METHOD(TestValidCallsIdentSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1346,7 +1346,7 @@ TEST_METHOD(TestValidCallsIdentWildCard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1364,7 +1364,7 @@ TEST_METHOD(TestInvalidCallsIdentWildCard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1382,7 +1382,7 @@ TEST_METHOD(TestValidCallsIdentIdent) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1400,7 +1400,7 @@ TEST_METHOD(TestInvalidCallsIdentIdent) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1418,7 +1418,7 @@ TEST_METHOD(TestValidNextSynSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1442,7 +1442,7 @@ TEST_METHOD(TestValidNextSynSynSameSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1461,7 +1461,7 @@ TEST_METHOD(TestValidNextIntSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1481,7 +1481,7 @@ TEST_METHOD(TestInvalidNextIntSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1500,7 +1500,7 @@ TEST_METHOD(TestValidNextSynInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1520,7 +1520,7 @@ TEST_METHOD(TestInvalidNextSynInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1539,7 +1539,7 @@ TEST_METHOD(TestValidNextSynWildcard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1560,7 +1560,7 @@ TEST_METHOD(TestValidNextWildCardSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1581,7 +1581,7 @@ TEST_METHOD(TestValidNextIntWildcard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1599,7 +1599,7 @@ TEST_METHOD(TestInvalidNextIntWildcard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1617,7 +1617,7 @@ TEST_METHOD(TestValidNextWildcardInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1635,7 +1635,7 @@ TEST_METHOD(TestInvalidNextWildcardInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1653,7 +1653,7 @@ TEST_METHOD(TestValidNextWildcardWildcard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1671,7 +1671,7 @@ TEST_METHOD(TestValidNextIntInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1689,7 +1689,7 @@ TEST_METHOD(TestInvalidNextIntInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1707,7 +1707,7 @@ TEST_METHOD(TestValidNextStarIntIntNormal) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1725,7 +1725,7 @@ TEST_METHOD(TestValidNextStarIntIntForLoop) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1743,7 +1743,7 @@ TEST_METHOD(TestValidNextStarIntIntForLoopSame) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1761,7 +1761,7 @@ TEST_METHOD(TestInvalidNextStarIntInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1779,7 +1779,7 @@ TEST_METHOD(TestInvalidNextStarIntIntInvalidFirst) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1797,7 +1797,7 @@ TEST_METHOD(TestValidNextStarIntSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1818,7 +1818,7 @@ TEST_METHOD(TestInvalidNextStarIntSynBigInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1838,7 +1838,7 @@ TEST_METHOD(TestValidNextStarSynInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1858,7 +1858,7 @@ TEST_METHOD(TestInvalidNextStarSynInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1877,7 +1877,7 @@ TEST_METHOD(TestValidNextStarSynSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1897,7 +1897,7 @@ TEST_METHOD(TestValidNextStarSynSynSameSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1918,7 +1918,7 @@ TEST_METHOD(TestValidSelectProcProcName) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1938,7 +1938,7 @@ TEST_METHOD(TestValidSelectCallProcName) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1958,7 +1958,7 @@ TEST_METHOD(TestValidSelectVarVarName) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1977,7 +1977,7 @@ TEST_METHOD(TestValidSelectReadVarName) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -1997,7 +1997,7 @@ TEST_METHOD(TestValidSelectPrintVarName) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -2017,7 +2017,7 @@ TEST_METHOD(TestValidSelectConstantValue) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -2036,7 +2036,7 @@ TEST_METHOD(TestValidSelectStmtStmtNo) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
@@ -2056,7 +2056,7 @@ TEST_METHOD(TestValidWithClauseStaticAttr) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
       make_shared<DataAccessLayerStub>();
@@ -2073,7 +2073,7 @@ TEST_METHOD(TestValidWithClauseAttrStatic) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
       make_shared<DataAccessLayerStub>();
@@ -2090,7 +2090,7 @@ TEST_METHOD(TestValidWithClauseAttrAttr) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
       make_shared<DataAccessLayerStub>();
@@ -2108,7 +2108,7 @@ TEST_METHOD(TestValidWithClauseAttrAttrSameAttr) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
       make_shared<DataAccessLayerStub>();
@@ -2126,7 +2126,7 @@ TEST_METHOD(TestValidSelectAttrVarName) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
       make_shared<DataAccessLayerStub>();
@@ -2145,7 +2145,7 @@ TEST_METHOD(TestValidSelectAttrCallProcName) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
       make_shared<DataAccessLayerStub>();
@@ -2165,7 +2165,7 @@ TEST_METHOD(TestValidSelectAttrReadVarName) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
       make_shared<DataAccessLayerStub>();
@@ -2186,7 +2186,7 @@ TEST_METHOD(TestValidSelectAttrPrintVarName) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
       make_shared<DataAccessLayerStub>();
@@ -2207,7 +2207,7 @@ TEST_METHOD(TestValidAffectsSynSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer =
       make_shared<DataAccessLayerAffectsStub>();
@@ -2234,7 +2234,7 @@ TEST_METHOD(TestValidAffectsSynSynSame) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer =
       make_shared<DataAccessLayerAffectsStub>();
@@ -2256,7 +2256,7 @@ TEST_METHOD(TestValidAffectsSynInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer =
       make_shared<DataAccessLayerAffectsStub>();
@@ -2277,7 +2277,7 @@ TEST_METHOD(TestInvalidAffectsSynInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer =
       make_shared<DataAccessLayerAffectsStub>();
@@ -2294,7 +2294,7 @@ TEST_METHOD(TestValidAffectsSynWildcard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer =
       make_shared<DataAccessLayerAffectsStub>();
@@ -2310,13 +2310,13 @@ TEST_METHOD(TestValidAffectsSynWildcard) {
 
 TEST_METHOD(TestInvalidAffectsSynWildcard) {
   vector<string> testS =
-      PQLTokenizer::tokenize("stmt a, a1; Select a such that Affects(s, _)");
+      PQLTokenizer::tokenize("read a, a1; Select a such that Affects(a, _)");
   vector<string_view> test{sToSvVector(testS)};
   shared_ptr<QueryParser> p = make_shared<QueryParser>();
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer =
       make_shared<DataAccessLayerAffectsStub>();
@@ -2332,7 +2332,7 @@ TEST_METHOD(TestValidAffectsIntSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer =
       make_shared<DataAccessLayerAffectsStub>();
@@ -2347,13 +2347,13 @@ TEST_METHOD(TestValidAffectsIntSyn) {
 
 TEST_METHOD(TestInvalidAffectsIntSyn) {
   vector<string> testS =
-      PQLTokenizer::tokenize("stmt a, a1; Select a such that Affects(5, a)");
+      PQLTokenizer::tokenize("read a, a1; Select a such that Affects(5, a)");
   vector<string_view> test{sToSvVector(testS)};
   shared_ptr<QueryParser> p = make_shared<QueryParser>();
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer =
       make_shared<DataAccessLayerAffectsStub>();
@@ -2369,7 +2369,7 @@ TEST_METHOD(TestValidAffectsIntInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer =
       make_shared<DataAccessLayerAffectsStub>();
@@ -2385,7 +2385,7 @@ TEST_METHOD(TestInvalidAffectsIntInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer =
       make_shared<DataAccessLayerAffectsStub>();
@@ -2401,7 +2401,7 @@ TEST_METHOD(TestValidAffectsIntWildcard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer =
       make_shared<DataAccessLayerAffectsStub>();
@@ -2417,7 +2417,7 @@ TEST_METHOD(TestInvalidAffectsIntWildcard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer =
       make_shared<DataAccessLayerAffectsStub>();
@@ -2433,7 +2433,7 @@ TEST_METHOD(TestValidAffectsWildcardSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer =
       make_shared<DataAccessLayerAffectsStub>();
@@ -2448,13 +2448,13 @@ TEST_METHOD(TestValidAffectsWildcardSyn) {
 
 TEST_METHOD(TestInvalidAffectsWildcardSyn) {
   vector<string> testS = PQLTokenizer::tokenize(
-      "assign a, a1; stmt s; Select a such that Affects(_, s)");
+      "assign a, a1; read s; Select a such that Affects(_, s)");
   vector<string_view> test{sToSvVector(testS)};
   shared_ptr<QueryParser> p = make_shared<QueryParser>();
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer =
       make_shared<DataAccessLayerAffectsStub>();
@@ -2470,7 +2470,7 @@ TEST_METHOD(TestValidAffectsWildcardInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer =
       make_shared<DataAccessLayerAffectsStub>();
@@ -2486,7 +2486,7 @@ TEST_METHOD(TestInvalidAffectsWildcardInt) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer =
       make_shared<DataAccessLayerAffectsStub>();
@@ -2502,7 +2502,7 @@ TEST_METHOD(TestValidAffectsWildcardWildcard) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
 
   shared_ptr<DataAccessLayerAffectsStub> dataAccessLayer =
       make_shared<DataAccessLayerAffectsStub>();

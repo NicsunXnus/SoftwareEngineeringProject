@@ -25,7 +25,7 @@ public:
 	/**
 	 * Constructor of the QueryDriver object
 	 */
-	QueryDriver(std::string query)
+	QueryDriver(string query)
 		: query { query } {
 		//queryParser = make_shared<QueryParser>();
 	};

@@ -22,7 +22,7 @@ public:
 	/*
 	* This function creates the QueryObject, overriden in the subclasses for design entities
 	*/
-	virtual inline shared_ptr<QueryObject> create(string_view name, vector<std::shared_ptr<ClauseArg>> arguments = {}) = 0;
+	virtual inline shared_ptr<QueryObject> create(string_view name, vector<shared_ptr<ClauseArg>> arguments = {}) = 0;
 
 	/*
 	* This function creates the factory for each type (design entities, clauses etc.)

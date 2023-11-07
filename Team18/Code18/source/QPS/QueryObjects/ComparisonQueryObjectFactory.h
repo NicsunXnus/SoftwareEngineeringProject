@@ -21,7 +21,7 @@ private:
 public:
 	StaticStaticComparisonFactory() : ComparisonQueryObjectFactory{} {}
 
-	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
+	shared_ptr<QueryObject> create(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) override {
 		if (static_cast<int>(arguments.size() != 2)) {
 			throw SyntaxErrorException("invalid argument count for static static comparison object");
 		}
@@ -53,7 +53,7 @@ public:
 	StaticAttrRefComparisonFactory() : ComparisonQueryObjectFactory{} {}
 
 	// arg[0] is synonym name, arg[1] is attrName, arg[2] is static value
-	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
+	shared_ptr<QueryObject> create(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) override {
 		if (static_cast<int>(arguments.size() != 3)) {
 			throw SyntaxErrorException("invalid argument count for attrRef static comparison object");
 		}
@@ -75,7 +75,7 @@ public:
 
 		// create attr ref object
 		shared_ptr<QueryObjectFactory> attrRefFactory{ QueryObjectFactory::createFactory(attrName->getArg()) };
-		std::vector<shared_ptr<ClauseArg>> synonymVec{ synonymArg };
+		vector<shared_ptr<ClauseArg>> synonymVec{ synonymArg };
 		shared_ptr<QueryObject> attrRef{ attrRefFactory->create(attrName->getArg(), synonymVec) };
 
 		// check both args are same type
@@ -93,7 +93,7 @@ private:
 public:
 	AttrRefAttrRefComparisonFactory() : ComparisonQueryObjectFactory{} {}
 
-	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
+	shared_ptr<QueryObject> create(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) override {
 		if (static_cast<int>(arguments.size() != 4)) {
 			throw SyntaxErrorException("invalid argument count for attrRef attrRef comparison object");
 		}
@@ -118,12 +118,12 @@ public:
 
 		// create attr ref 1 object
 		shared_ptr<QueryObjectFactory> attrRefFactory1{ QueryObjectFactory::createFactory(attrName1->getArg()) };
-		std::vector<shared_ptr<ClauseArg>> synonymVec1{ synonymArg1 };
+		vector<shared_ptr<ClauseArg>> synonymVec1{ synonymArg1 };
 		shared_ptr<QueryObject> attrRef1{ attrRefFactory1->create(attrName1->getArg(), synonymVec1) };
 
 		// create attr ref 2 object
 		shared_ptr<QueryObjectFactory> attrRefFactory2{ QueryObjectFactory::createFactory(attrName2->getArg()) };
-		std::vector<shared_ptr<ClauseArg>> synonymVec2{ synonymArg2 };
+		vector<shared_ptr<ClauseArg>> synonymVec2{ synonymArg2 };
 		shared_ptr<QueryObject> attrRef2{ attrRefFactory2->create(attrName2->getArg(), synonymVec2) };
 
 		// check both args are same type

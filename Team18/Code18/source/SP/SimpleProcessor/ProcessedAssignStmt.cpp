@@ -11,15 +11,22 @@ bool ProcessedAssignStmt::equalsTo(ProcessedAssignStmt& that) {
   auto castedThat = static_cast<ProcessedSemicolonStmt&>(that);
   return castedThis.equalsTo(castedThat);
 }
+shared_ptr<Token> ProcessedAssignStmt::getLeft() {
+  return this->LHS;
+}
 
-void ProcessedAssignStmt::accept(std::shared_ptr<Extractor> extractor) {
+shared_ptr<Node> ProcessedAssignStmt::getRight() {
+  return this->RHS;
+}
+
+void ProcessedAssignStmt::accept(shared_ptr<Extractor> extractor) {
   extractor->extract(shared_from_this());
 }
 
-void ProcessedAssignStmt::accept(std::shared_ptr<Extractor> extractor, std::string procedureName) {
+void ProcessedAssignStmt::accept(shared_ptr<Extractor> extractor, string procedureName) {
   extractor->extract(shared_from_this(), procedureName);
 }
 
-void ProcessedAssignStmt::accept(std::shared_ptr<Extractor> extractor, std::unordered_set<std::string>& prevStatementNumbers) {
+void ProcessedAssignStmt::accept(shared_ptr<Extractor> extractor, unordered_set<string>& prevStatementNumbers) {
   extractor->extract(shared_from_this(), prevStatementNumbers);
 }

@@ -1,9 +1,14 @@
 #include "ProcessedStmt.h"
 #include "../DesignExtractor/Extractor.h"
-#include "../DesignExtractor/ProcedureLineNumberExtractor.h"
-#include "../DesignExtractor/NextExtractor.h"
 
+bool ProcessedStmt::checkEquality(shared_ptr<ProcessedStmt> left, shared_ptr<ProcessedStmt> right) {
+  return left->statementNumber == right->statementNumber;
+}
 
-bool ProcessedStmt::equalsTo(ProcessedStmt& rhs) {
-  return this->statementNumber == rhs.statementNumber;
+int ProcessedStmt::getStatementNumber() {
+  return this->statementNumber;
+}
+
+string ProcessedStmt::getStatementNumberInString() {
+  return to_string(this->statementNumber);
 }

@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
-#include "../PKB.h"
+#include "../PKB/PKB.h"
 #include "../Constants/DesignEnums.h"
 #include "DataAccessLayer.h"
 #include "../QPS/QueryResultsTable.h"

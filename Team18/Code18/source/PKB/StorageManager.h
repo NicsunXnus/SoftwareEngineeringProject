@@ -13,31 +13,7 @@ using namespace std;
  */
 class StorageManager {
  public:
-  StorageManager() {
-    this->entity_storage = make_shared<EntityStorage>();
-    this->uses_abstractions = make_shared<UsesAbstractionStorage>();
-    this->modifies_abstractions = make_shared<ModifiesAbstractionStorage>();
-    this->follows_abstractions = make_shared<FollowsAbstractionStorage>();
-    this->follows_star_abstractions =
-        make_shared<FollowsStarAbstractionStorage>();
-    this->parent_abstractions = make_shared<ParentAbstractionStorage>();
-    this->parent_star_abstractions =
-        make_shared<ParentStarAbstractionStorage>();
-    this->calls_abstractions = make_shared<CallsAbstractionStorage>();
-    this->calls_star_abstractions = make_shared<CallsStarAbstractionStorage>();
-    this->next_abstractions = make_shared<NextAbstractionStorage>();
-
-    // store all abstraction storages in a map for easy retrieval
-    this->abstraction_storage_map = {{USES, uses_abstractions},
-                                     {MODIFIES, modifies_abstractions},
-                                     {FOLLOWS, follows_abstractions},
-                                     {FOLLOWSSTAR, follows_star_abstractions},
-                                     {PARENT, parent_abstractions},
-                                     {PARENTSTAR, parent_star_abstractions},
-                                     {CALLS, calls_abstractions},
-                                     {CALLSSTAR, calls_star_abstractions},
-                                     {NEXT, next_abstractions}};
-  }
+  StorageManager();
 
   ~StorageManager() {}
 
@@ -45,26 +21,63 @@ class StorageManager {
    * This function gets the abstraction storage, based on the
    * abstraction type.
    *
-   * @param abstraction_type the type of abstraction to be inserted
+   * @param abstraction_type the type of abstraction to be retrieved
    * @return shared pointer to the abstraction storage
    */
   static shared_ptr<AbstractionStorage> StorageManager::getAbstractionStorage(
-      const ABSTRACTION abstraction_type) {
-    return abstraction_storage_map.at(abstraction_type);
-  }
+      const ABSTRACTION abstraction_type);
 
   /*
-   * This function gets the entity storage.
+   * This function gets the entity name storage, based on the
+   * entity type.
    *
-   * @return shared pointer to the entity storage
+   * @param entity_type the type of entity name to be retrieved
+   * @return shared pointer to the entity name storage
    */
-  static shared_ptr<EntityStorage> StorageManager::getEntityStorage() {
-    return entity_storage;
-  }
+  static shared_ptr<NameStorage> getEntityNameStorage(const ENTITY entity_type);
+
+  /*
+   * This function gets the non statement entity storage, based on the
+   * entity type.
+   *
+   * @param entity_type the type of non statement entity to be retrieved
+   * @return shared pointer to the non statement entity storage
+   */
+  static shared_ptr<NonStatementStorage> getEntityNonStmtStorage(
+      const ENTITY entity_type);
+
+  /*
+   * This function gets the statement entity storage.
+   *
+   * @return shared pointer to the statement entity storage
+   */
+  static shared_ptr<StatementStorage> getStatementStorage();
+
+  /*
+   * This function gets the procedure lines entity storage.
+   *
+   * @return shared pointer to the procedure lines entity storage
+   */
+  static shared_ptr<ProcLinesStorage> getProcLinesStorage();
+
+  /*
+   * This function gets the pattern entity storage.
+   *
+   * @return shared pointer to the pattern entity storage
+   */
+  static shared_ptr<PatternStorage> getPatternStorage();
 
  private:
   // entities
-  static inline shared_ptr<EntityStorage> entity_storage;
+  static inline shared_ptr<StatementStorage> statement_entities;
+  static inline shared_ptr<ProcedureStorage> procedure_entities;
+  static inline shared_ptr<VariableStorage> variable_entities;
+  static inline shared_ptr<ConstantStorage> constant_entities;
+  static inline shared_ptr<CallProcnameStorage> call_procname_entities;
+  static inline shared_ptr<ReadVarnameStorage> read_varname_entities;
+  static inline shared_ptr<PrintVarnameStorage> print_varname_entities;
+  static inline shared_ptr<ProcLinesStorage> proc_lines_entities;
+  static inline shared_ptr<PatternStorage> pattern_entities;
 
   // abstractions
   static inline shared_ptr<UsesAbstractionStorage> uses_abstractions;
@@ -82,5 +95,12 @@ class StorageManager {
   // map of abstraction storages for retrieval based on enums
   static inline map<ABSTRACTION, shared_ptr<AbstractionStorage>>
       abstraction_storage_map;
+
+  // map of non-statement entities for retrieval based on enums
+  static inline map<ENTITY, shared_ptr<NonStatementStorage>>
+      non_statement_entity_storage_map;
+
+  // map of entity name storages for retrieval based on enums
+  static inline map<ENTITY, shared_ptr<NameStorage>> entity_name_storage_map;
 };
 #endif

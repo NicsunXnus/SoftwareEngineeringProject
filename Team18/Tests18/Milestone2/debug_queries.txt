@@ -1,7 +1,12 @@
+7 - syn, syn - test cache
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select BOOLEAN such that Affects(a,a1) such that Affects(a,a1)
+TRUE
+5000
 7 - syn, syn - loop
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
 Select BOOLEAN such that Affects(a,s1)
-FALSE
+TRUE
 5000
 7 - syn, syn - loop
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
@@ -101,7 +106,7 @@ Select a such that Affects(5,a)
 7 - syn, syn - loop
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
 Select s1 such that Affects(5,s1)
-
+9,13
 5000
 7 - syn, syn - loop
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;

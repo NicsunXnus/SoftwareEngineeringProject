@@ -25,7 +25,7 @@ bool PatternClauseObjectFactory::validateAssignPatternArgs(vector<shared_ptr<Cla
 	if (isArg2PartialMatching || isArg2ExactExpr) {
 		try {
 			ExpressionProcessor ep = ExpressionProcessor();
-			std::shared_ptr<Node> patternTree = ep.nodifyArithmeticExpression(svToString(arg2->getArgValue()));
+			shared_ptr<Node> patternTree = ep.nodifyArithmeticExpression(svToString(arg2->getArgValue()));
 			isSyntacticallyCorrectExpr = true;
 		}
 		catch (invalid_argument e) {

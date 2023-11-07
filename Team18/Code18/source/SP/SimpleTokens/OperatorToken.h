@@ -5,25 +5,16 @@
 #include <string_view>
 
 #include "Token.h"
+#include "../../Constants/SPConstants.h"
 
-using namespace std::string_view_literals;
+using namespace std;
 
 /**
  * This class represents tokens objects that are operators between expressions
  */
 class OperatorToken : public Token {
  public:
-  OperatorToken(std::string_view tokenName) : Token{tokenName} {};
-};
-
-/**
- * This class represents a "=" symbol.
- *
- * Not to be confused with the equality operator "==" or its token.
- */
-class EqualsOpToken : public OperatorToken {
- public:
-  EqualsOpToken() : OperatorToken{"="sv} {};
+  OperatorToken(string_view tokenName) : Token{tokenName} {};
 };
 
 // === ARITHMETIC OPERATORS ===
@@ -34,7 +25,7 @@ class EqualsOpToken : public OperatorToken {
  */
 class ArithmeticOpToken : public OperatorToken {
  public:
-  ArithmeticOpToken(std::string_view tokenName) : OperatorToken{tokenName} {};
+  ArithmeticOpToken(string_view tokenName) : OperatorToken{tokenName} {};
 };
 
 /**
@@ -42,7 +33,7 @@ class ArithmeticOpToken : public OperatorToken {
  */
 class PlusOpToken : public ArithmeticOpToken {
  public:
-  PlusOpToken() : ArithmeticOpToken{"+"sv} {};
+  PlusOpToken() : ArithmeticOpToken{PLUS_STRING_VIEW} {};
 };
 
 /**
@@ -50,7 +41,7 @@ class PlusOpToken : public ArithmeticOpToken {
  */
 class MinusOpToken : public ArithmeticOpToken {
  public:
-  MinusOpToken() : ArithmeticOpToken{"-"sv} {};
+  MinusOpToken() : ArithmeticOpToken{MINUS_STRING_VIEW} {};
 };
 
 /**
@@ -58,7 +49,7 @@ class MinusOpToken : public ArithmeticOpToken {
  */
 class DivideOpToken : public ArithmeticOpToken {
  public:
-  DivideOpToken() : ArithmeticOpToken{"/"sv} {};
+  DivideOpToken() : ArithmeticOpToken{DIVIDE_STRING_VIEW} {};
 };
 
 /**
@@ -66,7 +57,7 @@ class DivideOpToken : public ArithmeticOpToken {
  */
 class MultiplyOpToken : public ArithmeticOpToken {
  public:
-  MultiplyOpToken() : ArithmeticOpToken{"*"sv} {};
+  MultiplyOpToken() : ArithmeticOpToken{MULTIPLY_STRING_VIEW} {};
 };
 
 /**
@@ -74,101 +65,7 @@ class MultiplyOpToken : public ArithmeticOpToken {
  */
 class ModuloOpToken : public ArithmeticOpToken {
  public:
-  ModuloOpToken() : ArithmeticOpToken{"%"sv} {};
-};
-
-// === BOOlEAN OPERATORS ===
-
-/**
- * This class represents tokens objects that are boolean operators between
- * expressions
- */
-class BooleanOpToken : public OperatorToken {
- public:
-  BooleanOpToken(std::string_view tokenName) : OperatorToken{tokenName} {};
-};
-
-/**
- * This class represents a "&&" symbol.
- */
-class AndOpToken : public BooleanOpToken {
- public:
-  AndOpToken() : BooleanOpToken{"&&"sv} {};
-};
-
-/**
- * This class represents a "||" symbol.
- */
-class OrOpToken : public BooleanOpToken {
- public:
-  OrOpToken() : BooleanOpToken{"||"sv} {};
-};
-
-/**
- * This class represents a "!" symbol when used to invert boolean values
- */
-class NotOpToken : public BooleanOpToken {
- public:
-  NotOpToken() : BooleanOpToken{"!"sv} {};
-};
-
-// === RELATIONAL OPERATORS ===
-
-/**
- * This class represents tokens objects that are relational operators between
- * expressions
- */
-class RelationalOpToken : public OperatorToken {
- public:
-  RelationalOpToken(std::string_view tokenName) : OperatorToken{tokenName} {};
-};
-
-/**
- * This class represents a ">" symbol.
- */
-class MoreThanOpToken : public RelationalOpToken {
- public:
-  MoreThanOpToken() : RelationalOpToken{">"sv} {};
-};
-
-/**
- * This class represents a ">=" symbol.
- */
-class MoreThanEqualOpToken : public RelationalOpToken {
- public:
-  MoreThanEqualOpToken() : RelationalOpToken{">="sv} {};
-};
-
-/**
- * This class represents a "<" symbol.
- */
-class LessThanOpToken : public RelationalOpToken {
- public:
-  LessThanOpToken() : RelationalOpToken{"<"sv} {};
-};
-
-/**
- * This class represents a "<=" symbol.
- */
-class LessThanEqualOpToken : public RelationalOpToken {
- public:
-  LessThanEqualOpToken() : RelationalOpToken{"<="sv} {};
-};
-
-/**
- * This class represents a "==" symbol.
- */
-class EqualityOpToken : public RelationalOpToken {
- public:
-  EqualityOpToken() : RelationalOpToken{"=="sv} {};
-};
-
-/**
- * This class represents a "!=" symbol.
- */
-class InequalityOpToken : public RelationalOpToken {
- public:
-  InequalityOpToken() : RelationalOpToken{"!="sv} {};
+  ModuloOpToken() : ArithmeticOpToken{MODULO_STRING_VIEW} {};
 };
 
 #endif

@@ -17,12 +17,12 @@ using namespace std;
 list<string> QueryDriver::execute() {
 
 	try {
-		std::cout << "In Query Driver, starting tokenizer\n";
-		std::cout << "Query: " << query << '\n';
+		cout << "In Query Driver, starting tokenizer\n";
+		cout << "Query: " << query << '\n';
 
-		vector<std::string> tokens = PQLTokenizer::tokenize(query);
+		vector<string> tokens = PQLTokenizer::tokenize(query);
 		shared_ptr<QueryParser> parser = make_shared<QueryParser>();
-		vector<std::string_view> tokensView{ sToSvVector(tokens) };
+		vector<string_view> tokensView{ sToSvVector(tokens) };
 
 		vector<shared_ptr<QueryObject>> queryObjects = parser->parsePQL(tokensView);
 		vector<shared_ptr<QueryObject>> selectClauseQueryObjects = parser->getSelectClauseQueryObject(queryObjects);

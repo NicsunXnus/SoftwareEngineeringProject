@@ -1,35 +1,25 @@
 #ifndef TOKENFACTORY_H
 #define TOKENFACTORY_H
 
-#include <string>
-#include <string_view>
-#include <vector>
 #include <memory>
-#include <unordered_set>
 
-#include "../SimpleTokens/IdentifierToken.h"
-#include "../SimpleTokens/KeywordToken.h"
-#include "../SimpleTokens/LiteralToken.h"
-#include "../SimpleTokens/OperatorToken.h"
-#include "../SimpleTokens/SeparatorToken.h"
-#include "../../HelperFunctions.h"
-#include "../../ExceptionMessages.h"
+#include "Token.h"
 
-using namespace std::string_view_literals;
+using namespace std;
 
 /**
 * Factory class that produces tokens.
 */
 class TokenFactory {
 private:
-	// Generates a Token with a name that is common between SIMPLE and PQL
-	static std::shared_ptr<Token> generateReservedKWToken(std::string_view tokenName);
+	// Generates a Token with for arithmetic operations and parentheses
+	static shared_ptr<Token> generateArithmeticOpToken(string_view tokenName);
 
 	// Generates a Identifier Token. REMINDER that this does not validate the argument to ensure that it is a valid name
-	static std::shared_ptr<Token> generateIdentifier(std::string_view tokenName);
+	static shared_ptr<Token> generateIdentifier(string_view tokenName);
 
 	// Generates an Integer Literal Token. REMINDER that this does not validate the argument to ensure that it is a valid number
-	static std::shared_ptr<Token> generateIntLiteral(std::string_view number);
+	static shared_ptr<Token> generateIntLiteral(string_view number);
 public:
 	/// <summary>
 	/// Generates SIMPLE tokens based on a token name and if the
@@ -41,12 +31,12 @@ public:
 	/// 
 	/// <param name="tokenName">The string to be passed to be turned into a token</param>
 	/// <param name="forceIdentifier">Whether to force the token to be an IdentifierToken</param>
-	/// <exception cref="std::invalid_argument">Thrown when the supplied tokenName is invalid</exception>
+	/// <exception cref="invalid_argument">Thrown when the supplied tokenName is invalid</exception>
 	/// <returns>a shared pointer to the generated token</returns>
-	static std::shared_ptr<Token> generateTokenForSimple(std::string tokenName, bool forceIdentifier = false);
+	static shared_ptr<Token> generateTokenForSimple(string tokenName, bool forceIdentifier = false);
 
 	// Overloaded method to take in string views instead
-	static std::shared_ptr<Token> generateTokenForSimple(std::string_view tokenName, bool forceIdentifier = false);
+	static shared_ptr<Token> generateTokenForSimple(string_view tokenName, bool forceIdentifier = false);
 
 };
 

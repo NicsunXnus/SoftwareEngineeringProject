@@ -25,7 +25,7 @@ vector<shared_ptr<QueryObject>> QueryParser::parsePQL(vector<string_view> tokens
 	if (static_cast<int>(semanticErrors.size()) > 0) {
 		// throw the first semantic error we encountered
 		shared_ptr<SemanticErrorException> s = semanticErrors[0];
-		std::string se = s->what();
+		string se = s->what();
 		throw* semanticErrors[0];
 	}
 
@@ -133,7 +133,7 @@ vector<shared_ptr<QueryObject>> QueryParser::parseDeclaration(vector<string_view
 			}
 			else {
 				synonyms[currentDeclaration] = queryObject;
-				std::string entityType(declaration[0].begin(), declaration[0].end());
+				string entityType(declaration[0].begin(), declaration[0].end());
 				synonymToEntity[currentDeclaration] = EntityStringToEnum(entityType);
 			}
 			wasDeclaration = true;
@@ -178,7 +178,7 @@ vector<shared_ptr<QueryObject>> QueryParser::parseQuery(vector<string_view> quer
 		// skip this portion of parsing
 	}
 	else if (validator->isSelectTuple(query, currentWordIndex, selectTupleTokenCount)) { // check if is tuple
-		std::vector<shared_ptr<QueryObject>> selectQueryObjects{ createTupleObjects(query, currentWordIndex, selectTupleTokenCount) };
+		vector<shared_ptr<QueryObject>> selectQueryObjects{ createTupleObjects(query, currentWordIndex, selectTupleTokenCount) };
 
 		result.insert(result.end(), selectQueryObjects.begin(), selectQueryObjects.end());
 	}
@@ -322,7 +322,7 @@ shared_ptr<QueryObject> QueryParser::parseClause(std::vector<string_view>& query
 	}
 }
 
-bool QueryParser::isBoolean(std::vector<string_view>& query, int index) {
+bool QueryParser::isBoolean(vector<string_view>& query, int index) {
 	if (index >= static_cast<int>(query.size())) {
 		return false;
 	}
@@ -330,15 +330,15 @@ bool QueryParser::isBoolean(std::vector<string_view>& query, int index) {
 	return query[index] == "BOOLEAN"sv;
 }
 
-bool QueryParser::isDeclared(std::string_view synonym) {
+bool QueryParser::isDeclared(string_view synonym) {
 	return this->synonyms.find(synonym) != this->synonyms.end();
 }
 
-shared_ptr<QueryObject> QueryParser::getSynonymQueryObject(std::string_view synonymName) {
+shared_ptr<QueryObject> QueryParser::getSynonymQueryObject(string_view synonymName) {
 	return this->synonyms[synonymName];
 }
 
-bool QueryParser::hasSelect(std::vector<string_view>& query, int& index) {
+bool QueryParser::hasSelect(vector<string_view>& query, int& index) {
 	if (index < static_cast<int>(query.size()) && query[index] == "Select"sv) {
 		index++;
 		return true;
@@ -346,11 +346,11 @@ bool QueryParser::hasSelect(std::vector<string_view>& query, int& index) {
 	return false;
 }
 
-bool QueryParser::hasPattern(std::vector<string_view>& query, int index) {
+bool QueryParser::hasPattern(vector<string_view>& query, int index) {
 	return index < static_cast<int>(query.size()) && query[index] == "pattern"sv;
 }
 
-bool QueryParser::hasSuchThat(std::vector<string_view>& query, int index) {
+bool QueryParser::hasSuchThat(vector<string_view>& query, int index) {
 	return index < static_cast<int>(query.size() - 1) && query[index] == "such"sv && query[index + 1] == "that"sv;
 }
 
@@ -381,7 +381,7 @@ shared_ptr<QueryObject> QueryParser::createBooleanObject(std::vector<string_view
 	return factory->create(booleanStr);
 }
 
-vector<shared_ptr<QueryObject>> QueryParser::processSuchThatClause(std::vector<string_view>& query, int& index) {
+vector<shared_ptr<QueryObject>> QueryParser::processSuchThatClause(vector<string_view>& query, int& index) {
 	vector<shared_ptr<QueryObject>> queryObjects;
 	vector<shared_ptr<QueryObject>> synonymQueryObjects;
 	string_view relationalReference{ query[index] };
@@ -389,7 +389,7 @@ vector<shared_ptr<QueryObject>> QueryParser::processSuchThatClause(std::vector<s
 	shared_ptr<QueryObjectFactory> clauseFactory{ QueryObjectFactory::createFactory(relationalReference) };
 
 	// create a vector of args for the clause objects
-	std::vector<shared_ptr<ClauseArg>> argVector;
+	vector<shared_ptr<ClauseArg>> argVector;
 
 	// create clauseArg object for first argument
 	string_view arg1Name{ query[index + 2] };
@@ -439,7 +439,7 @@ vector<shared_ptr<QueryObject>> QueryParser::processSuchThatClause(std::vector<s
 	}
 }
 
-vector<shared_ptr<QueryObject>> QueryParser::processPatternClause(std::vector<string_view>& query, int& index, int tokenCount, bool isIfPattern) {
+vector<shared_ptr<QueryObject>> QueryParser::processPatternClause(vector<string_view>& query, int& index, int tokenCount, bool isIfPattern) {
 	shared_ptr<QueryObjectFactory> patternFactory{ QueryObjectFactory::createFactory("pattern"sv) };
 	vector<shared_ptr<QueryObject>> queryObjects;
 	vector<shared_ptr<QueryObject>> synonymQueryObjects;
@@ -490,7 +490,7 @@ vector<shared_ptr<QueryObject>> QueryParser::processPatternClause(std::vector<st
 		argVector.push_back(make_shared<ClauseArg>(arg2Name, nullptr, false));
 	}
 	else {
-		std::cout << "Invalid token count in pattern object creation\n";
+		cout << "Invalid token count in pattern object creation\n";
 	}
 
 	// create ClauseArg for arg3 of pattern clause if its an if pattern
@@ -514,7 +514,7 @@ vector<shared_ptr<QueryObject>> QueryParser::processPatternClause(std::vector<st
 	}
 }
 
-shared_ptr<QueryObject> QueryParser::createAttrRefObject(std::vector<string_view>& query, int& index) {
+shared_ptr<QueryObject> QueryParser::createAttrRefObject(vector<string_view>& query, int& index) {
 	string_view synonymName{ query[index] };
 	string_view attrRef{ query[index + 2] };
 
@@ -572,7 +572,7 @@ shared_ptr<QueryObject> QueryParser::createAttrRefObjectInTuple(string_view syno
 	}
 }
 
-std::vector<shared_ptr<QueryObject>> QueryParser::createTupleObjects(std::vector<string_view>& query, int& index, int tokenCount) {
+vector<shared_ptr<QueryObject>> QueryParser::createTupleObjects(vector<string_view>& query, int& index, int tokenCount) {
 	// TODO: implement create tuple objects for attr refs. Current iteration only supports tuples of synonyms
 	vector<shared_ptr<QueryObject>> resultClauseObjects;
 
@@ -620,14 +620,14 @@ std::vector<shared_ptr<QueryObject>> QueryParser::createTupleObjects(std::vector
 
 
 
-vector<shared_ptr<QueryObject>> QueryParser::processComparisonClause(std::vector<string_view>& query,
+vector<shared_ptr<QueryObject>> QueryParser::processComparisonClause(vector<string_view>& query,
 	int& index, int tokenCount, bool is1stArgAttrRef) {
 	vector<shared_ptr<QueryObject>> queryObjects;
 	vector<shared_ptr<QueryObject>> synonymQueryObjects;
 
 	if (tokenCount == MIN_WITH_CLAUSE_TOKEN_COUNT) { // Comparison is made between 2 static args
 		shared_ptr<QueryObjectFactory> staticStaticFactory{ QueryObjectFactory::createFactory("Static=Static"sv) };
-		std::vector<shared_ptr<ClauseArg>> argVector;
+		vector<shared_ptr<ClauseArg>> argVector;
 
 		// Create clause args with the two arguments
 		string_view arg1{ query[index] };
@@ -651,7 +651,7 @@ vector<shared_ptr<QueryObject>> QueryParser::processComparisonClause(std::vector
 	}
 	else if (tokenCount == WITH_CLAUSE_ONE_ATTR_REF_TOKEN_COUNT) { // Comparison is made between 1 static arg and 1 attrRef
 		shared_ptr<QueryObjectFactory> staticAttrRefFactory{ QueryObjectFactory::createFactory("Static=AttrRef"sv) };
-		std::vector<shared_ptr<ClauseArg>> argVector;
+		vector<shared_ptr<ClauseArg>> argVector;
 
 		string_view staticArg, synonymName, attrName;
 
@@ -709,7 +709,7 @@ vector<shared_ptr<QueryObject>> QueryParser::processComparisonClause(std::vector
 		// e.g., 'a', '.', 'procName', '=', 'b', '.', 'stmt#'
 
 		shared_ptr<QueryObjectFactory> attrRefAttrRefFactory{ QueryObjectFactory::createFactory("AttrRef=AttrRef"sv) };
-		std::vector<shared_ptr<ClauseArg>> argVector;
+		vector<shared_ptr<ClauseArg>> argVector;
 
 		string_view synonymName1{ query[index] };
 		string_view attrName1{ query[index + 2] };

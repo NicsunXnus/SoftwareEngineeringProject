@@ -10,9 +10,9 @@ using namespace std;
 /// </summary>
 class BinaryOpNode : public OpNode {
 private:
-  static std::vector<std::shared_ptr<Node>> validate(std::vector<std::shared_ptr<Node>> children);
+  static vector<shared_ptr<Node>> validate(vector<shared_ptr<Node>> children);
 public:
-  BinaryOpNode(int stmtNum, std::string val, std::vector<std::shared_ptr<Node>> children)
+  BinaryOpNode(int stmtNum, string val, vector<shared_ptr<Node>> children)
     : OpNode{ stmtNum, val, validate(children) } {};
 };
 
@@ -21,8 +21,8 @@ public:
 /// </summary>
 class PlusNode : public BinaryOpNode {
 public:
-  PlusNode(int stmtNum, std::shared_ptr<Node> left, std::shared_ptr<Node> right)
-    : BinaryOpNode{ stmtNum, "+", std::vector<std::shared_ptr<Node>>{left, right} } {};
+  PlusNode(int stmtNum, shared_ptr<Node> left, shared_ptr<Node> right)
+    : BinaryOpNode{ stmtNum, "+", vector<shared_ptr<Node>>{left, right} } {};
 };
 
 /// <summary>
@@ -30,8 +30,8 @@ public:
 /// </summary>
 class MinusNode : public BinaryOpNode {
 public:
-  MinusNode(int stmtNum, std::shared_ptr<Node> left, std::shared_ptr<Node> right)
-    : BinaryOpNode{ stmtNum, "-", std::vector<std::shared_ptr<Node>>{left, right} } {};
+  MinusNode(int stmtNum, shared_ptr<Node> left, shared_ptr<Node> right)
+    : BinaryOpNode{ stmtNum, "-", vector<shared_ptr<Node>>{left, right} } {};
 };
 
 /// <summary>
@@ -39,8 +39,8 @@ public:
 /// </summary>
 class MultiplyNode : public BinaryOpNode {
 public:
-  MultiplyNode(int stmtNum, std::shared_ptr<Node> left, std::shared_ptr<Node> right)
-    : BinaryOpNode{ stmtNum, "*", std::vector<std::shared_ptr<Node>>{left, right} } {};
+  MultiplyNode(int stmtNum, shared_ptr<Node> left, shared_ptr<Node> right)
+    : BinaryOpNode{ stmtNum, "*", vector<shared_ptr<Node>>{left, right} } {};
 };
 
 /// <summary>
@@ -48,8 +48,8 @@ public:
 /// </summary>
 class DivideNode : public BinaryOpNode {
 public:
-  DivideNode(int stmtNum, std::shared_ptr<Node> left, std::shared_ptr<Node> right)
-    : BinaryOpNode{ stmtNum, "/", std::vector<std::shared_ptr<Node>>{left, right} } {};
+  DivideNode(int stmtNum, shared_ptr<Node> left, shared_ptr<Node> right)
+    : BinaryOpNode{ stmtNum, "/", vector<shared_ptr<Node>>{left, right} } {};
 };
 
 /// <summary>
@@ -57,8 +57,8 @@ public:
 /// </summary>
 class ModuloNode : public BinaryOpNode {
 public:
-  ModuloNode(int stmtNum, std::shared_ptr<Node> left, std::shared_ptr<Node> right)
-    : BinaryOpNode{ stmtNum, "%", std::vector<std::shared_ptr<Node>>{left, right} } {};
+  ModuloNode(int stmtNum, shared_ptr<Node> left, shared_ptr<Node> right)
+    : BinaryOpNode{ stmtNum, "%", vector<shared_ptr<Node>>{left, right} } {};
 };
 
 /// <summary>
@@ -66,8 +66,8 @@ public:
 /// </summary>
 class AndNode : public BinaryOpNode {
 public:
-  AndNode(int stmtNum, std::shared_ptr<Node> left, std::shared_ptr<Node> right)
-    : BinaryOpNode{ stmtNum, "&&", std::vector<std::shared_ptr<Node>>{left, right} } {};
+  AndNode(int stmtNum, shared_ptr<Node> left, shared_ptr<Node> right)
+    : BinaryOpNode{ stmtNum, "&&", vector<shared_ptr<Node>>{left, right} } {};
 };
 
 /// <summary>
@@ -75,8 +75,8 @@ public:
 /// </summary>
 class OrNode : public BinaryOpNode {
 public:
-  OrNode(int stmtNum, std::shared_ptr<Node> left, std::shared_ptr<Node> right)
-    : BinaryOpNode{ stmtNum, "||", std::vector<std::shared_ptr<Node>>{left, right} } {};
+  OrNode(int stmtNum, shared_ptr<Node> left, shared_ptr<Node> right)
+    : BinaryOpNode{ stmtNum, "||", vector<shared_ptr<Node>>{left, right} } {};
 };
 
 /// <summary>
@@ -84,8 +84,8 @@ public:
 /// </summary>
 class MoreThanNode : public BinaryOpNode {
 public:
-  MoreThanNode(int stmtNum, std::shared_ptr<Node> left, std::shared_ptr<Node> right)
-    : BinaryOpNode{ stmtNum, ">", std::vector<std::shared_ptr<Node>>{left, right} } {};
+  MoreThanNode(int stmtNum, shared_ptr<Node> left, shared_ptr<Node> right)
+    : BinaryOpNode{ stmtNum, ">", vector<shared_ptr<Node>>{left, right} } {};
 };
 
 /// <summary>
@@ -93,8 +93,8 @@ public:
 /// </summary>
 class MoreThanEqualNode : public BinaryOpNode {
 public:
-  MoreThanEqualNode(int stmtNum, std::shared_ptr<Node> left, std::shared_ptr<Node> right)
-    : BinaryOpNode{ stmtNum, ">=", std::vector<std::shared_ptr<Node>>{left, right} } {};
+  MoreThanEqualNode(int stmtNum, shared_ptr<Node> left, shared_ptr<Node> right)
+    : BinaryOpNode{ stmtNum, ">=", vector<shared_ptr<Node>>{left, right} } {};
 };
 
 /// <summary>
@@ -102,8 +102,8 @@ public:
 /// </summary>
 class LessThanNode : public BinaryOpNode {
 public:
-  LessThanNode(int stmtNum, std::shared_ptr<Node> left, std::shared_ptr<Node> right)
-    : BinaryOpNode{ stmtNum, "<", std::vector<std::shared_ptr<Node>>{left, right} } {};
+  LessThanNode(int stmtNum, shared_ptr<Node> left, shared_ptr<Node> right)
+    : BinaryOpNode{ stmtNum, "<", vector<shared_ptr<Node>>{left, right} } {};
 };
 
 /// <summary>
@@ -111,8 +111,8 @@ public:
 /// </summary>
 class LessThanEqualNode : public BinaryOpNode {
 public:
-  LessThanEqualNode(int stmtNum, std::shared_ptr<Node> left, std::shared_ptr<Node> right)
-    : BinaryOpNode{ stmtNum, "<=", std::vector<std::shared_ptr<Node>>{left, right} } {};
+  LessThanEqualNode(int stmtNum, shared_ptr<Node> left, shared_ptr<Node> right)
+    : BinaryOpNode{ stmtNum, "<=", vector<shared_ptr<Node>>{left, right} } {};
 };
 
 /// <summary>
@@ -120,8 +120,8 @@ public:
 /// </summary>
 class EqualityNode : public BinaryOpNode {
 public:
-  EqualityNode(int stmtNum, std::shared_ptr<Node> left, std::shared_ptr<Node> right)
-    : BinaryOpNode{ stmtNum, "==", std::vector<std::shared_ptr<Node>>{left, right} } {};
+  EqualityNode(int stmtNum, shared_ptr<Node> left, shared_ptr<Node> right)
+    : BinaryOpNode{ stmtNum, "==", vector<shared_ptr<Node>>{left, right} } {};
 };
 
 /// <summary>
@@ -129,7 +129,7 @@ public:
 /// </summary>
 class InequalityNode : public BinaryOpNode {
 public:
-  InequalityNode(int stmtNum, std::shared_ptr<Node> left, std::shared_ptr<Node> right)
-    : BinaryOpNode{ stmtNum, "!=", std::vector<std::shared_ptr<Node>>{left, right} } {};
+  InequalityNode(int stmtNum, shared_ptr<Node> left, shared_ptr<Node> right)
+    : BinaryOpNode{ stmtNum, "!=", vector<shared_ptr<Node>>{left, right} } {};
 };
 #endif

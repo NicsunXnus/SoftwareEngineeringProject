@@ -62,8 +62,8 @@ vector<map<string, vector<string>>> columnsUses2 = {map8, map9};
 shared_ptr<QueryResultsTable> tab5 =
     make_shared<QueryResultsTable>(columnsUses2);
 
-std::stringstream output;
-std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
+stringstream output;
+streambuf* oldCoutBuffer = cout.rdbuf(output.rdbuf());
 
 shared_ptr<QueryResultsTable> immediate1 = table1->innerJoin(table2);
 immediate1->printTable();
@@ -78,7 +78,7 @@ shared_ptr<QueryResultsTable> immediate4 = immediate3->innerJoin(tab5);
 immediate4->printTable();
 cout << endl;
 
-std::cout.rdbuf(oldCoutBuffer);
+cout.rdbuf(oldCoutBuffer);
 
 Logger::WriteMessage("Output of table operations:\n");
 Logger::WriteMessage(output.str().c_str());
@@ -132,8 +132,8 @@ TEST_METHOD(TestMajorTableOperationsRightToLeft) {
   shared_ptr<QueryResultsTable> tab5 =
       make_shared<QueryResultsTable>(columnsUses2);
 
-  std::stringstream output;
-  std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
+  stringstream output;
+  streambuf* oldCoutBuffer = cout.rdbuf(output.rdbuf());
 
   shared_ptr<QueryResultsTable> immediate1 = tab5->crossProduct(tab4);
   immediate1->printTable();
@@ -148,7 +148,7 @@ TEST_METHOD(TestMajorTableOperationsRightToLeft) {
   immediate4->printTable();
   cout << endl;
 
-  std::cout.rdbuf(oldCoutBuffer);
+  cout.rdbuf(oldCoutBuffer);
 
             Logger::WriteMessage("Output of table operations:\n");
             Logger::WriteMessage(output.str().c_str());

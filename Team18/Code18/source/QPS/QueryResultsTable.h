@@ -11,8 +11,8 @@
 #include <unordered_set>
 using namespace std;
 
-class QueryResultsTable {
-public:
+class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
+ public:
     //A table can be represented by an array of ordered columns.
     //Each column is represented by a map, key being header and value being its contents
     //It is assumed that there are no duplicate headers in the table.
@@ -200,7 +200,7 @@ public:
      * @param other A shared pointer to a QueryResultsTable object representing the other table
      * @return A boolean value, with a true value representing same headers for both, and a false value for otherwise.
     */
-    bool haveSameHeaders(shared_ptr<QueryResultsTable> other);
+    bool haveSimilarHeaders(shared_ptr<QueryResultsTable> other);
 
     /**
     * Checks this header exists in the table
@@ -212,6 +212,14 @@ public:
 
     void duplicateColumns(string columnName);
     
+    /**
+    * Returns the number of headers in the argument not found within this table.
+    *
+    * @param shared_ptr<QueryResultsTable> _table
+    * @return See description
+   */
+    int differenceInHeaders(shared_ptr<QueryResultsTable> _table);
+
     //Getter method for columns
     vector<map<string, vector<string>>> getColumns() {
         return this->columns;
@@ -223,6 +231,16 @@ public:
 
         for (map<string, vector<string>> column : this->columns) {
             headers.emplace_back(column.begin()->first);
+        }
+
+        return headers;
+    }
+
+    set<string> getHeadersAsSet() {
+        set<string> headers;
+
+        for (map<string, vector<string>> column : this->columns) {
+            headers.insert(column.begin()->first);
         }
 
         return headers;
@@ -303,6 +321,8 @@ public:
     int getId() {
         return id;
     }
+
+    shared_ptr<QueryResultsTable> getShared() { return shared_from_this(); }
 
 private:
     vector<map<string, vector<string>>> columns; // column name: values

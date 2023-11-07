@@ -1,8 +1,9 @@
 #pragma once
 #include <vector>
 #include <list>
+#include <algorithm>
 #include "QueryResultsTable.h"
-
+#include "GroupClause.h"
 using namespace std;
 class OptimisedFunctionsStub
 {
@@ -38,9 +39,13 @@ public:
 	}
 
 	static set<string> getHeadersOfTableAsSet(vector<shared_ptr<QueryResultsTable>> selectClauseTables);
-	static void optimiseStepA(vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables);
-	static void optimiseStepB(vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables);
-	static void optimiseStepC(vector< vector<shared_ptr<QueryResultsTable>> >& groups);
-	static vector<shared_ptr<QueryResultsTable>> flatten2DArray(vector< vector<shared_ptr<QueryResultsTable>> > v2d);
+	static void optimiseStepA(vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables, bool isParallel);
+	//static void optimiseStepA(shared_ptr<GroupClause> group);
+	//static void optimiseStepB(vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables);
+	static vector<shared_ptr<GroupClause>> optimiseStepB(vector<shared_ptr<QueryResultsTable>>& nonSelectClauseTables, bool isParallel);
+	static void optimiseStepC(vector<shared_ptr<GroupClause>>& groups);
+	static void optimiseStepD(vector<shared_ptr<GroupClause>>& groups);
+	static vector<shared_ptr<QueryResultsTable>> revert1DTables(vector< shared_ptr<GroupClause> > groups);
+	static bool sortMostUniqueHeadersFirst(const shared_ptr<QueryResultsTable>& a, const shared_ptr<QueryResultsTable>& b);
 };
 

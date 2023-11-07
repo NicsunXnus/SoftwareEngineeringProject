@@ -1,5 +1,5 @@
-#ifndef TREEBUILDERHELPER_H
-#define TREEBUILDERHELPER_H
+#ifndef OPERATOREVALUATOR_H
+#define OPERATOREVALUATOR_H
 
 #include <unordered_map>
 
@@ -8,6 +8,7 @@
 using namespace std;
 
 // Originally done by Nicholas
+// Provides the helper functions for TreeBuilder
 
 bool isComparisonOp(string op);
 
@@ -16,7 +17,7 @@ bool isBoolOp(string op);
 bool isArithOp(string op);
 
 // Precedence of operations
-static const inline std::unordered_map<std::string, int> precedence = {
+static const inline unordered_map<string, int> precedence = {
   {"(", 0},
   {"||", 1},
   {"&&", 2},
