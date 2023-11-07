@@ -183,7 +183,10 @@ vector<shared_ptr<QueryObject>> QueryParser::parseQuery(vector<string_view> quer
 		result.insert(result.end(), selectQueryObjects.begin(), selectQueryObjects.end());
 	}
 	else if (validator->isSelectElem(query, currentWordIndex, selectTupleTokenCount)) {
-		if (selectTupleTokenCount == 1 && !isDeclared(query[currentWordIndex])) {
+		if (selectTupleTokenCount == 1 && !SynonymObject::isValid(query[currentWordIndex])) {
+			throw SyntaxErrorException("Invalid syntax for synonym");
+		}
+		else if (selectTupleTokenCount == 1 && !isDeclared(query[currentWordIndex])) {
 			storeSemanticError(make_shared<SemanticErrorException>("Synonym not present in select clause, or synonym not declared"));
 			result.push_back(make_shared<StmtObject>("Placeholder query object, synonym not declared"));
 
@@ -212,86 +215,111 @@ vector<shared_ptr<QueryObject>> QueryParser::parseQuery(vector<string_view> quer
 		return result;
 	}
 
+	ClauseType previousClauseType{ FIRSTCLAUSE };
+
 	// loop to check for such that clauses and pattern clauses
 	while (currentWordIndex < static_cast<int>(query.size())) {
 		bool isSuchThat{ hasSuchThat(query, currentWordIndex) }; // checks the current clause is a such that clause
 		bool isPattern{ hasPattern(query, currentWordIndex) }; // checks the current clause is a pattern clause
 		bool isWith{ hasWith(query, currentWordIndex) }; // checks the current clause is a with clause
-		
-		
+		bool isAnd{ hasAnd(query, currentWordIndex) };
+
+
 		if (isSuchThat) {
 			currentWordIndex += 2;
-
-			bool isNot{ hasNot(query, currentWordIndex) };
-			if (isNot) ++currentWordIndex;
-
-			if (!validator->hasRelationalReference(query, currentWordIndex)) {
-				throw SyntaxErrorException("such that clause has invalid syntax");
-			}
-
-			// Construct such that query object
-			vector<shared_ptr<QueryObject>> suchThatClauseObjVector{ processSuchThatClause(query, currentWordIndex) };
-			if (!isNot) {
-				// just add the create clause object to vector of query objects
-				result.push_back(suchThatClauseObjVector.at(0));
-			}
-			else {
-				// create the not object, then push that into vector of query objects
-
-				result.push_back(modifyToNot(suchThatClauseObjVector));
-			}
-
+			previousClauseType = SUCHTHAT;
+			result.push_back(parseClause(query, currentWordIndex, SUCHTHAT));
 		}
 		else if (isPattern) {
 			currentWordIndex += 1;
-
-			bool isNot{ hasNot(query, currentWordIndex) };
-			if (isNot) ++currentWordIndex;
-
-			int patternTokenCount{}; // tracks the number of tokens the clause has if it was a pattern clause
-			bool isIfPattern{ false };
-
-			if (!validator->hasPatternClause(query, currentWordIndex, patternTokenCount, isIfPattern)) {
-				throw SyntaxErrorException("such that clause has invalid syntax");
-			}
-
-			// construct pattern query object
-			vector<shared_ptr<QueryObject>> patternClauseObjVector{ processPatternClause(query, currentWordIndex, patternTokenCount, isIfPattern) };
-			if (!isNot) {
-				result.push_back(patternClauseObjVector.at(0));
-			}
-			else {
-				result.push_back(modifyToNot(patternClauseObjVector));
-			}
-			
+			previousClauseType = PATTERN;
+			result.push_back(parseClause(query, currentWordIndex, PATTERN));
 		}
 		else if (isWith) {
 			currentWordIndex += 1;
-
-			bool isNot{ hasNot(query, currentWordIndex) };
-			if (isNot) ++currentWordIndex;
-
-			int withTokenCount{};
-			bool is1stArgAttrRef{ false };
-
-			if (!validator->hasWithClause(query, currentWordIndex, withTokenCount, is1stArgAttrRef)) {
-				throw SyntaxErrorException("with clause has invalid syntax");
-			}
-
-			// construct comparison query object
-			vector<shared_ptr<QueryObject>> comparisonClauseObjVector{ processComparisonClause(query, currentWordIndex, withTokenCount, is1stArgAttrRef) };
-			if (!isNot) {
-				result.push_back(comparisonClauseObjVector.at(0));
-			}
-			else {
-				result.push_back(modifyToNot(comparisonClauseObjVector));
-			}
-			
-		} else {
+			previousClauseType = WITH;
+			result.push_back(parseClause(query, currentWordIndex, WITH));
+		}
+		else if (isAnd && previousClauseType != FIRSTCLAUSE) {
+			currentWordIndex += 1;
+			result.push_back(parseClause(query, currentWordIndex, previousClauseType));
+		}
+		else {
 			throw SyntaxErrorException("Unidentifiable clause in query");
 		}
 	}
 	return result;
+}
+
+shared_ptr<QueryObject> QueryParser::parseClause(std::vector<string_view>& query,
+	int& index, ClauseType clauseType) {
+	if (clauseType == SUCHTHAT) {
+
+		bool isNot{ hasNot(query, index) };
+		if (isNot) ++index;
+
+		if (!validator->hasRelationalReference(query, index)) {
+			throw SyntaxErrorException("such that clause has invalid syntax");
+		}
+
+		// Construct such that query object
+		vector<shared_ptr<QueryObject>> suchThatClauseObjVector{ processSuchThatClause(query, index) };
+		if (!isNot) {
+			// just return the query object
+			return suchThatClauseObjVector[0];
+		}
+		else {
+			// create the not object, then push that into vector of query objects
+			return modifyToNot(suchThatClauseObjVector);
+		}
+
+	}
+	else if (clauseType == PATTERN) {
+
+		bool isNot{ hasNot(query, index) };
+		if (isNot) ++index;
+
+		int patternTokenCount{}; // tracks the number of tokens the clause has if it was a pattern clause
+		bool isIfPattern{ false };
+
+		if (!validator->hasPatternClause(query, index, patternTokenCount, isIfPattern)) {
+			throw SyntaxErrorException("pattern clause has invalid syntax");
+		}
+
+		// construct pattern query object
+		vector<shared_ptr<QueryObject>> patternClauseObjVector{ processPatternClause(query, index, patternTokenCount, isIfPattern) };
+		if (!isNot) {
+			return patternClauseObjVector[0];
+		}
+		else {
+			return modifyToNot(patternClauseObjVector);
+		}
+
+	}
+	else if (clauseType == WITH) {
+
+		bool isNot{ hasNot(query, index) };
+		if (isNot) ++index;
+
+		int withTokenCount{};
+		bool is1stArgAttrRef{ false };
+
+		if (!validator->hasWithClause(query, index, withTokenCount, is1stArgAttrRef)) {
+			throw SyntaxErrorException("with clause has invalid syntax");
+		}
+
+		// construct comparison query object
+		vector<shared_ptr<QueryObject>> comparisonClauseObjVector{ processComparisonClause(query, index, withTokenCount, is1stArgAttrRef) };
+		if (!isNot) {
+			return comparisonClauseObjVector[0];
+		}
+		else {
+			return modifyToNot(comparisonClauseObjVector);
+		}
+	}
+	else {
+		throw SyntaxErrorException("Invalid clause type");
+	}
 }
 
 bool QueryParser::isBoolean(vector<string_view>& query, int index) {
@@ -326,11 +354,19 @@ bool QueryParser::hasSuchThat(vector<string_view>& query, int index) {
 	return index < static_cast<int>(query.size() - 1) && query[index] == "such"sv && query[index + 1] == "that"sv;
 }
 
-bool QueryParser::hasNot(vector<string_view>& query, int index) {
+bool QueryParser::hasWith(std::vector<string_view>& query, int index) {
+	return index < static_cast<int>(query.size()) && query[index] == "with"sv;
+}
+
+bool QueryParser::hasNot(std::vector<string_view>& query, int index) {
 	return index < static_cast<int>(query.size()) && query[index] == "not"sv;
 }
 
-shared_ptr<QueryObject> QueryParser::createBooleanObject(vector<string_view>& query, int& index) {
+bool QueryParser::hasAnd(std::vector<string_view>& query, int index) {
+	return index < static_cast<int>(query.size()) && query[index] == "and"sv;
+}
+
+shared_ptr<QueryObject> QueryParser::createBooleanObject(std::vector<string_view>& query, int& index) {
 	string_view booleanStr = query[index];
 	if (isDeclared(booleanStr)) {
 		// boolean is a synonym, ignore and proceed as if "BOOLEAN" is just another synonym
@@ -582,9 +618,7 @@ vector<shared_ptr<QueryObject>> QueryParser::createTupleObjects(vector<string_vi
 
 }
 
-bool QueryParser::hasWith(vector<string_view>& query, int index) {
-	return index < static_cast<int>(query.size()) && query[index] == "with"sv;
-}
+
 
 vector<shared_ptr<QueryObject>> QueryParser::processComparisonClause(vector<string_view>& query,
 	int& index, int tokenCount, bool is1stArgAttrRef) {

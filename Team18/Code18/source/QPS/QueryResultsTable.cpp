@@ -213,6 +213,10 @@ shared_ptr<QueryResultsTable> QueryResultsTable::difference(
     shared_ptr<QueryResultsTable> other2) {
   // cross product
   shared_ptr<QueryResultsTable> crossed = other1->crossProduct(other2);
+  // early termination if crossed is empty
+  if (crossed->isEmpty()) {
+    return this->getShared();
+  }
   // this and crossed should have same headers
   vector<string> crossed_headers = crossed->getHeaders();
   assert(this->haveSimilarHeaders(crossed));

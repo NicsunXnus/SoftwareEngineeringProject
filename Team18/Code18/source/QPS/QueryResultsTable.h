@@ -11,8 +11,8 @@
 #include <unordered_set>
 using namespace std;
 
-class QueryResultsTable {
-public:
+class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
+ public:
     //A table can be represented by an array of ordered columns.
     //Each column is represented by a map, key being header and value being its contents
     //It is assumed that there are no duplicate headers in the table.
@@ -334,6 +334,8 @@ public:
     StringMap getAttr() {
         return attr;
     }
+
+    shared_ptr<QueryResultsTable> getShared() { return shared_from_this(); }
 
 private:
     vector<map<string, vector<string>>> columns; // column name: values

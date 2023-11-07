@@ -8,31 +8,25 @@
 // Program is as follows:
 
 /*
-procedure First{
-      read x;
-      read z;
-      call Second; }
-    procedure Second{
-      x = 0;
-      i = 5;
-      while (i != 0) {
-         x = x + 2 * y;
-          call Third;
-         i = i - 1;
-}
-if (x == 1) then {
-    x = x + 1; }
-   else {
-     z = 1;
-}
-z = z + x + i;
- y = z + 2;
-x = x * y + z; }
-procedure Third{
-    z = 5;
-    v = z;
-    print v;
-read Third; }
+ 1  procedure First{read x; 
+ 2    read z;
+ 3    call Second; }
+ 4  procedure Second{x = 0;
+ 5    i = 5;
+ 6    while (i != 0) {
+ 7      x = x + 2 * y;
+ 8      call Third;
+ 9      i = i - 1;}
+10    if (x == 1) then {
+11      x = x + 1; }
+12    else {z = 1;}
+13    z = z + x + i;
+14    y = z + 2;
+15    x = x * y + z; }
+16  procedure Third{z = 5;
+17    v = z;
+18    print v;
+19    read Third; }
 
 */
 
@@ -42,6 +36,30 @@ unordered_set<string> DataAccessLayerAffectsStub::getEntity(ENTITY type) {
     if (type == ASSIGN) {
         unordered_set<string> assignments = { "4", "5", "7", "9", "11", "12", "13", "14", "15", "16", "17" };
         return assignments;
+    }
+    if (type == IF) {
+      unordered_set<string> assignments = { "10", };
+      return assignments;
+    }
+    if (type == WHILE) {
+      unordered_set<string> assignments = { "6" };
+      return assignments;
+    }
+    if (type == READ) {
+      unordered_set<string> assignments = { "1", "2", "19"};
+      return assignments;
+    }
+    if (type == CALL) {
+      unordered_set<string> assignments = { "3", "8"};
+      return assignments;
+    }
+    if (type == PRINT) {
+      unordered_set<string> assignments = { "18" };
+      return assignments;
+    }
+    if (type == PROCEDURE) {
+      unordered_set<string> assignments = { "First", "Second", "Third"};
+      return assignments;
     }
 
     return test;

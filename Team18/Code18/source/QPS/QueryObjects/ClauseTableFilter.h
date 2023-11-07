@@ -229,6 +229,28 @@ inline unordered_set<string> removeMapValuesReturnSet(shared_ptr<ClauseArg> arg,
 	return keySet;
 }
 
+inline unordered_set<string> filterSynSyn(StringMap results) {
+	unordered_set<string> result;
+	for (const auto& entry : results) {
+		for (string val : entry.second) {
+			if (val == entry.first) {
+				result.insert(val);
+			}
+		}
+	}
+	return result;
+}
+
+inline unordered_set<string> keepMapValues(StringMap results) {
+	unordered_set<string> result;
+	for (const auto& entry : results) {
+		for (string val : entry.second) {
+			result.insert(val);
+		}
+	}
+	return result;
+}
+
 /*
 * Factory class for clause filters
 */
