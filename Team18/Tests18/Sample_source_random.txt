@@ -46,7 +46,7 @@ procedure double {  while (a > 1) {
                     } else { b = 54321 * 99 % c ;
                         read b ;
                         if (a == b) then {
-                            b = b + 47 - ( z * 2);
+                            b = b + 47 - ( d * 2);
                         } else { read = print ;
                             print = read + if - while * assign / call ;}
                         x = 11 + ((((12)))) % 13;
