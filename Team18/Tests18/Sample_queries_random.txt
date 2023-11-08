@@ -176,17 +176,17 @@ Select s2 such that Affects(s1, s2)
 36 affects syn syn - diff
 assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
 Select s1 such that Affects(s1, s2)
-2,3,4,6,8,10,16,17,21,23,28,30,31,34,38,43,49,50,52,53
+2,3,4,6,8,10,16,17,21,23,28,30,38,43,49,50,53
 5000
 37 affects syn syn - assigns
 assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
 Select s1 such that Affects(s1, a2)
-2,3,4,6,8,10,16,17,21,23,28,30,31,34,38,43,49,50,52,53
+2,3,4,6,8,10,16,17,21,23,28,30,38,43,49,50,53
 5000
 38 affects syn syn - assigns
 assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
 Select a1 such that Affects(a1, a2)
-2,3,4,6,8,10,16,17,21,23,28,30,31,34,38,43,49,50,52,53
+2,3,4,6,8,10,16,17,21,23,28,30,38,43,49,50,53
 5000
 39 affects syn syn - non assign
 assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
@@ -216,7 +216,7 @@ Select a1 such that Affects(r1, 31)
 44 affects syn wildcard
 assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
 Select a2 such that Affects(a2, _)
-2,3,4,6,8,10,16,17,21,23,28,30,31,34,38,43,49,50,52,53
+2,3,4,6,8,10,16,17,21,23,28,30,38,43,49,50,53
 5000
 45 affects - assigns that dont affect anyth
 assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
@@ -236,17 +236,17 @@ a, b, x
 48 affects - var that appears in stmts that dont affects anything also appear in stmts that affects s2
 assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con; variable v;
 Select s2 such that not Affects(a1, _) such that Modifies(a1, v) and Modifies(s2, v) such that Affects(s2, _)
-2, 3, 6, 14, 16, 21, 23, 28, 30, 31, 34, 38, 43, 49, 52
+2, 3, 6, 16, 21, 23, 28, 30, 38, 43, 49
 5000
 49 affects - affects(s1, _)
 assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con; variable v;
 Select s1 such that Affects(s1, _) 
-2,3,4,6,8,10,16,17,21,23,28,30,31,34,38,43,49,50,52,53
+2,3,4,6,8,10,16,17,21,23,28,30,38,43,49,50,53
 5000
 50 affects - s1 - affects(s1, _)
 assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con; variable v;
 Select s1 such that not Affects(s1, _) 
-1,5,7,9,11,12,13,14,15,18,19,20,22,24,25,26,27,29,31,32,33,34,35,36,37,39,40,41,42,44,45,46,47,48,51,54,55,56,57,58,59,60,61,62,63
+1,5,7,9,11,12,13,14,15,18,19,20,22,24,25,26,27,29,31,32,33,34,35,36,37,39,40,41,42,44,45,46,47,48,51,52,54,55,56,57,58,59,60,61,62,63
 5000
 51 affects - poor man's affectsStar
 assign a1, a2, a3, a4, a5, a6;
