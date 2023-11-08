@@ -221,7 +221,7 @@ Select a2 such that Affects(a2, _)
 45 affects - assigns that dont affect anyth
 assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
 Select a1 such that not Affects(a1, _)
-14,20,31,34,44,46,51,55,57
+14,20,31,34,44,46,51,52,55,57
 5000
 46 affects - variable of assigns that dont affect anyth
 assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con; variable v;
