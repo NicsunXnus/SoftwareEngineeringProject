@@ -22,15 +22,18 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
         //sort(columns.begin(), columns.end());
     }*/
 
-    QueryResultsTable(vector<string> _rows) : rows(_rows), isSignificant(getNumberOfCols() > 0 && getNumberOfRows() > 0) {
+    QueryResultsTable(vector<string> _rows) {
         //sort(columns.begin(), columns.end());
         if (_rows.size() == 0) {
-            numRows = 0; numCols = 0;
+            numRows = 0; numCols = 0; isSignificant = false;
         }
         else {
+            
+            rows = _rows;
             vectorizedRows = vectorizeRows(rows);
             numRows = rows.size();
             numCols = numRows > 0 ? vectorizedRows[0].size() : 0;
+            isSignificant = getNumberOfCols() > 0 && getNumberOfRows() > 1;
             headersUnorderedSet = getHeadersAsUnorderedSet();
             headersSet = getHeadersAsSet();
         }
@@ -41,6 +44,12 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
 
     void condenseTable(unordered_set<string> headers);
 
+    void removeDuplicateRows(vector<string>& _rows) {
+        unordered_set<string> store;
+        store.insert(_rows.begin(), _rows.end());
+        _rows.clear();
+        _rows.insert(_rows.end(), store.begin(), store.end());
+    }
 
     // get number of rows in table
     int getNumberOfRows() {
@@ -260,12 +269,8 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
             res.emplace_back(s.substr(start, end - start));
         } while (end != -1);
         return res;
-    bool QueryResultsTable::hasAttributeHeader(string header);
-
-    //Getter method for columns
-    vector<map<string, vector<string>>> getColumns() {
-        return this->columns;
     }
+    bool QueryResultsTable::hasAttributeHeader(string header);
 
     vector<vector<string>> vectorizeRows(vector<string> rows) {
         vector<vector<string>> res;
@@ -274,12 +279,6 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
         }
         return res;
     }
-
-    //Getter method for headers of columns
-    string getHeaders() {
-        return numRows > 0  ? rows[0] : "";
-    }
-
 
     vector<string> getRows() {
         return rows;
@@ -290,7 +289,7 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
     }
 
     unordered_set<string> getHeadersAsUnorderedSet() {
-        vector<string> temp = splitString(getHeaders(), ",");
+        vector<string> temp = vectorizedRows[0];
         unordered_set<string> res;
         res.insert(temp.begin(), temp.end());
         return res;

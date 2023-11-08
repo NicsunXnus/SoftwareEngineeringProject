@@ -99,7 +99,11 @@ Logger::WriteMessage(output.str().c_str());
             vector<string> map3 = { "s3", "6", "5","7" };
             shared_ptr<QueryResultsTable> tab2 = make_shared<QueryResultsTable>(map3);
 
- 
+            shared_ptr<QueryResultsTable> immediate1 = tab2->crossProduct(tab1);
+            shared_ptr<QueryResultsTable> immediate2 = tab1->crossProduct(tab2);
+
+            std::stringstream output;
+            std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
 
             immediate1->printTable();
             cout << endl;
@@ -154,18 +158,9 @@ Logger::WriteMessage(output.str().c_str());
 
 
         TEST_METHOD(TestRemoveDuplicates) {
-            map<string, vector<string>> map1;
-            map1.insert({ "m", {"1", "2", "1", "2", "3", "2"} });
-
-            map<string, vector<string>> map2;
-            map2.insert({ "s", {"a", "a", "a", "b", "c", "d"} });
-
-            map<string, vector<string>> map3;
-            map3.insert({ "v", {"a", "a", "a", "d", "c", "b"} });
-
-            vector<map<string, vector<string>>> columns = { map1, map2, map3 };
+            vector<string> tab1 = { "m,s,v", "1,a,a", "2,a,a", "1,a,a", "2,b,d", "3,c,c", "2,d,b"};
             shared_ptr<QueryResultsTable> table =
-                make_shared<QueryResultsTable>(columns);
+                make_shared<QueryResultsTable>(tab1);
 
             shared_ptr<QueryResultsTable> new_table = table->removeDuplicates();
             vector<string> new_col_1 = new_table->getColumnData("m");
@@ -177,19 +172,16 @@ Logger::WriteMessage(output.str().c_str());
         }
 
         TEST_METHOD(TestDifferenceOneColumn) {
-            map<string, vector<string>> map1;
-            map1.insert({ "s", {"x", "z", "y", "w"} });
+            vector<string> map1 = { "s", "x", "z", "y", "w"};
 
-            map<string, vector<string>> map2;
-            map2.insert({ "s", {"a", "x", "b", "y", "w", "z", "c"} });
+            vector<string> map2 = { "s", "a", "x", "b", "y", "w", "z", "c"};
 
-            vector<map<string, vector<string>>> columns1 = { map1 };
             shared_ptr<QueryResultsTable> table1 =
-                make_shared<QueryResultsTable>(columns1);
+                make_shared<QueryResultsTable>(map1);
 
-            vector<map<string, vector<string>>> columns2 = { map2 };
+
             shared_ptr<QueryResultsTable> table2 =
-                make_shared<QueryResultsTable>(columns2);
+                make_shared<QueryResultsTable>(map2);
 
             shared_ptr<QueryResultsTable> diff_table = table1->difference(table2);
             vector<string> diff_col = diff_table->getColumnData("s");
@@ -197,27 +189,38 @@ Logger::WriteMessage(output.str().c_str());
         }
 
         TEST_METHOD(TestDifferenceTwoColumns) {
-            map<string, vector<string>> map1;
-            map1.insert({ "s", {"1", "3", "5"} });
+            vector<string> map1 ={ "s", "1", "3", "5"};
 
-            map<string, vector<string>> map2;
-            map2.insert({ "v", {"x", "z", "y"} });
+            vector<string> map2 = { "v", "x", "z", "y"};
 
-            map<string, vector<string>> map3;
-            map3.insert({ "s", {"1", "2", "3", "4", "5"} });
+            vector<string> map3 = { "s", "1", "2", "3", "4", "5"};
 
-            map<string, vector<string>> map4;
-            map4.insert({ "v", {"x", "a", "z", "b", "y"} });
+            vector<string> map4 = { "v", "x", "a", "z", "b", "y"};
 
-            vector<map<string, vector<string>>> columns1 = { map1 };
             shared_ptr<QueryResultsTable> table1 =
-                make_shared<QueryResultsTable>(columns1);
+                make_shared<QueryResultsTable>(map1);
 
-            vector<map<string, vector<string>>> columns4 = { map2 };
             shared_ptr<QueryResultsTable> table4 =
-                make_shared<QueryResultsTable>(columns4);
+                make_shared<QueryResultsTable>(map2);
 
             shared_ptr<QueryResultsTable> table5 = table1->crossProduct(table4);
+
+            shared_ptr<QueryResultsTable> table2 =
+                make_shared<QueryResultsTable>(map3);
+
+            shared_ptr<QueryResultsTable> table3 =
+                make_shared<QueryResultsTable>(map4);
+
+            shared_ptr<QueryResultsTable> diff_table = table5->difference(table2, table3);
+            vector<string> diff_col_1 = diff_table->getColumnData("s");
+            vector<string> diff_col_2 = diff_table->getColumnData("v");
+            Assert::IsTrue(
+                compare_vectors(diff_col_1, { "1", "1", "2", "2", "2", "2", "2", "3", "3",
+                                             "4", "4", "4", "4", "4", "5", "5" }));
+            Assert::IsTrue(
+                compare_vectors(diff_col_2, { "a", "b", "x", "a", "z", "b", "y", "a", "b",
+                                             "x", "a", "z", "b", "y", "a", "b" }));
+        }
 
 	};
 }

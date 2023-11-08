@@ -15,13 +15,28 @@ list<string> ResultHandler::processTables(vector<shared_ptr<QueryResultsTable>> 
 	return empty;
 }
 
+vector<string> ResultHandler::tableToVectorForTuples(shared_ptr<QueryResultsTable> table) {
+	vector<vector<string>> values = table->getVectorizedRows();
+	vector<string> result;
+	for (int i = 1; i < values.size(); i++) {
+		string temp = "";
+		for (string s : values[i]) {
+			temp += s + " ";
+		}
+		temp.erase(temp.end() - 1);
+		result.emplace_back(temp);
+	}
+	return result;
+}
+
 // tables must be non-empty
 shared_ptr<QueryResultsTable> ResultHandler::joinIntermediateTables(vector<shared_ptr<QueryResultsTable>> tables) {
+	if (tables.size() == 1) return tables[0];
 	shared_ptr<QueryResultsTable> intermediateTable = tables[0];
-	tables.erase(tables.begin());
+	//tables.erase(tables.begin());
 	shared_ptr<QueryResultsTable> currTable;
-	for (shared_ptr<QueryResultsTable> table : tables) {
-		currTable = table;
+	for (int i = 1; i < tables.size(); i++) {
+		currTable = tables[i];
 		// for empty but significant tables
 		if (currTable->isEmpty()) {
 			if (currTable->getSignificant()) {
@@ -47,10 +62,8 @@ shared_ptr<QueryResultsTable> ResultHandler::joinIntermediateTables(vector<share
 unordered_set<string> ResultHandler::getSetOfSelectClauseHeaders(vector<shared_ptr<QueryResultsTable>> selectClauseTables) {
 	unordered_set<string> headers;
 	for (shared_ptr<QueryResultsTable> table : selectClauseTables) {
-		vector<string> tableHeaders = table->getHeaders();
-		for (string tableHeader : tableHeaders) {
-			headers.insert(tableHeader);
-		}
+		unordered_set<string> tableHeaders = table->getHeadersAsUnorderedSet();
+		headers.insert(tableHeaders.begin(), tableHeaders.end());
 	}
 	return headers;
 }
@@ -73,49 +86,32 @@ vector<string> ResultHandler::getVectorOfSelectClausePkey(vector<shared_ptr<Quer
 	return primaryKeys;
 }
 
-vector<string> ResultHandler::tableToVectorForTuples(shared_ptr<QueryResultsTable> table) {
-	vector<string> result;
-	vector<string> headers = table->getHeaders();
-	int totalRow = table->getNumberOfRows();
-	int totalHeaders = headers.size();
-
-	for (int i = 0; i < totalRow; i++) {
-		string curr = "";
-		for (int j = 0; j < totalHeaders; j++) {
-			vector<map<string, vector<string>>> cols = table->getColumns();
-			vector<string> column = cols[j].begin()->second;
-			if (j == totalHeaders - 1) { // last element
-				curr += column[i];
-				break;
-			}
-			curr += column[i] + " ";
-		}
-		result.push_back(curr);
-	}
-	return result;
-}
-
 tuple<vector<shared_ptr<QueryResultsTable>>, 
 	shared_ptr<QueryResultsTable>> ResultHandler::
 	processIntermediateTable(vector<shared_ptr<QueryResultsTable>> selectClauseTables, shared_ptr<QueryResultsTable> intermediateTable) {
 	unordered_set<string> selectClauseHeaders = getSetOfSelectClauseHeaders(selectClauseTables);
 	intermediateTable->condenseTable(selectClauseHeaders); // keep important columns only
 	vector<shared_ptr<QueryResultsTable>> selectClausesNotInIntermediateTable;
-	vector<map<string, vector<string>>> cols;
+	//vector<map<string, vector<string>>> cols;
+	//shared_ptr<QueryResultsTable> importantCols = make_shared<QueryResultsTable>(intermediateTable->getRows());
+	vector<vector<string>> cols;
 	for (shared_ptr<QueryResultsTable> selectClauseTable : selectClauseTables) {
 		string primaryKey = selectClauseTable->getPrimaryKey();
 		if (intermediateTable->hasHeader(primaryKey)) {
-			map<string, vector<string>> col = { {primaryKey, intermediateTable->getColumnData(primaryKey)} };
-			cols.push_back(col);
+			//map<string, vector<string>> col = { {primaryKey, intermediateTable->getColumnData(primaryKey)} };
+			vector<string> colData = intermediateTable->getColumnData(primaryKey);
+			colData.insert(colData.begin(), primaryKey);
+			cols.emplace_back(colData);
 		}
 		else if (intermediateTable->hasAttributeHeader(primaryKey)) {
-			vector<string> col = intermediateTable->getColumnData(getAttributeSynonym(primaryKey));
+			vector<string> colData = intermediateTable->getColumnData(getAttributeSynonym(primaryKey));
 			// convert col to attribute
 			StringMap attr = selectClauseTable->getAttr();
-			for (int i = 0; i < col.size(); i++) {
-				col[i] = *attr[col[i]].begin(); // replace p with p.procname
+			for (int i = 0; i < colData.size(); i++) {
+				colData[i] = *attr[colData[i]].begin(); // replace p with p.procname
 			}
-			cols.push_back({ {primaryKey, col} });
+			colData.insert(colData.begin(), primaryKey);
+			cols.emplace_back(colData);
 		}
 		else {
 			selectClauseTable->getPrimaryKeyOnlyTable();
@@ -123,8 +119,17 @@ tuple<vector<shared_ptr<QueryResultsTable>>,
 		}
 
 	}
-
-	return { selectClausesNotInIntermediateTable, make_shared<QueryResultsTable>(cols) };
+	vector<string> res; 
+	if (cols.size() == 0) return { selectClausesNotInIntermediateTable, make_shared<QueryResultsTable>(res) };
+	for (int i = 0; i < cols[0].size(); i++) {
+		string temp = "";
+		for (int j = 0; j < cols.size(); j++) {
+			temp += cols[j][i] + ",";
+		}
+		temp.erase(temp.end() - 1);
+		res.emplace_back(temp);
+	}
+	return { selectClausesNotInIntermediateTable, make_shared<QueryResultsTable>(res) };
 }
 
 /*
@@ -148,7 +153,8 @@ list<string> ResultHandler::handleSingleSynonym(vector<shared_ptr<QueryResultsTa
 		return vectorToUniqueList(columns);
 	}
 	
-	shared_ptr<QueryResultsTable> intermediateTable = joinIntermediateTables(nonSelectClauseTables);
+	//shared_ptr<QueryResultsTable> intermediateTable = joinIntermediateTables(nonSelectClauseTables);
+	shared_ptr<QueryResultsTable> intermediateTable = merge(nonSelectClauseTables.begin(), nonSelectClauseTables.end());
 
 	string selectVar = selectClauseTables[0]->getPrimaryKey();
 	if (intermediateTable->isEmpty()) { // case 2.1
@@ -203,8 +209,8 @@ list<string> ResultHandler::handleTuples(vector<shared_ptr<QueryResultsTable>> s
 		return returnTuples(selectClauseTables);
 	}
 
-	shared_ptr<QueryResultsTable> intermediateTable = joinIntermediateTables(nonSelectClauseTables);
-
+	//shared_ptr<QueryResultsTable> intermediateTable = joinIntermediateTables(nonSelectClauseTables);
+	shared_ptr<QueryResultsTable> intermediateTable = merge(nonSelectClauseTables.begin(), nonSelectClauseTables.end());
 	if (intermediateTable->isEmpty()) { // case 2.1
 		if (intermediateTable->getSignificant()) { // case 2.1.1
 			return returnTuples(selectClauseTables);
@@ -236,11 +242,29 @@ list<string> ResultHandler::handleTuples(vector<shared_ptr<QueryResultsTable>> s
 			finalTable = finalTable->crossProduct(table);
 		}
 	}
-	vector<map<string, vector<string>>> resultCols;
+	vector<vector<string>> resultCols;
 	for (string target : targetSyns) {
-		resultCols.push_back({ {target,  finalTable->getColumnData(target)} });
+		vector<string> temp = finalTable->getColumnData(target);
+		temp.insert(temp.begin() ,target);
+		resultCols.emplace_back(temp);
 	}
-	shared_ptr<QueryResultsTable> resultTable = make_shared<QueryResultsTable>(resultCols);
+	
+	vector<string> res;
+	
+	if (resultCols.size() == 0) { 
+		shared_ptr<QueryResultsTable> resultTable = make_shared<QueryResultsTable>(res);
+		vector<string> result = tableToVectorForTuples(resultTable);
+		return vectorToUniqueList(result);
+	}
+	for (int i = 0; i < resultCols[0].size(); i++) {
+		string temp = "";
+		for (int j = 0; j < resultCols.size(); j++) {
+			temp += resultCols[j][i] + ",";
+		}
+		temp.erase(temp.end() - 1);
+		res.emplace_back(temp);
+	}
+	shared_ptr<QueryResultsTable> resultTable = make_shared<QueryResultsTable>(res);
 	vector<string> result = tableToVectorForTuples(resultTable);
 	return vectorToUniqueList(result);
 }
@@ -253,7 +277,8 @@ list<string> ResultHandler::handleBoolean(vector<shared_ptr<QueryResultsTable>> 
 		return result;
 	}
 
-	shared_ptr<QueryResultsTable> intermediateTable = joinIntermediateTables(nonSelectClauseTables);
+	//shared_ptr<QueryResultsTable> intermediateTable = joinIntermediateTables(nonSelectClauseTables);
+	shared_ptr<QueryResultsTable> intermediateTable = merge(nonSelectClauseTables.begin(), nonSelectClauseTables.end());
 
 	if (intermediateTable->isEmpty()) { // case 2.1
 		if (intermediateTable->getSignificant()) { // case 2.1.1

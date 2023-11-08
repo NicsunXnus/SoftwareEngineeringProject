@@ -52,19 +52,6 @@ private:
 	*/
 	vector<string> tableToVectorForTuples(shared_ptr<QueryResultsTable> table);
 
-	
-		vector<vector<string>> values = table->getVectorizedRows();
-		vector<string> result;
-		for (int i = 1; i < values.size(); i++) {
-			string temp = "";
-			for (string s : values[i]) {
-				temp += s + " ";
-			}
-			temp.erase(temp.end() - 1);
-			result.emplace_back(temp);
-		}
-		return result;
-	}
 	/*
 	* This function joins all the QRTs, by cross or inner joins
 	*/
@@ -101,6 +88,15 @@ public:
 	 */
 	~ResultHandler() {};
 	
+	shared_ptr<QueryResultsTable> merge(vector<shared_ptr<QueryResultsTable>>::iterator left, vector<shared_ptr<QueryResultsTable>>::iterator right)
+	{
+		if (left == right) return QueryResultsTable::createEmptyTable();
+		if (left + 1 == right) return *left;
+		int midPosition = (right - left) / 2;
+		vector<shared_ptr<QueryResultsTable>>::iterator mid = left + midPosition;
+		return joinIntermediateTables({ merge(left, mid), merge(mid, right) });
+	}
+
 	// The QueryResultTables of the clauses are processed, and through a series of cross-products and/or inner joins, the final result
 	// of the PQL is obtained.
 	list<string> processTables(vector<shared_ptr<QueryResultsTable>> selectClause, vector<shared_ptr<QueryResultsTable>> nonSelectClause);
