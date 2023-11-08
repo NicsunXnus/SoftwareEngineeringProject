@@ -98,26 +98,18 @@ struct CustomVectorHash {
 };
 
 shared_ptr<QueryResultsTable> QueryResultsTable::removeDuplicates() {
-  vector<map<string, vector<string>>> thisMap = QueryResultsTable::getColumns(),
-                                      result;
+  vector<map<string, vector<string>>> thisMap = QueryResultsTable::getColumns();
 
-  // add headers of thisMap
   int numCols = QueryResultsTable::getNumberOfCols();
   int numRows = QueryResultsTable::getNumberOfRows();
-  cout << "numRows" << numRows << endl;
 
   if (numRows == 0) {
     return QueryResultsTable::createEmptyTableWithHeaders(getHeaders());
   }
 
-  for (int thisCol = 0; thisCol < numCols; thisCol++) {
-    map<string, vector<string>> map = {{thisMap[thisCol].begin()->first, {}}};
-    result.emplace_back(map);
-  }
-
   // store all existing rows in a set
   unordered_set<vector<string>, CustomVectorHash> existingRows;
-  // int numRows = columns[0].begin()->second.size();
+
   for (int i = 0; i < numRows; i++) {
     vector<string> row;
     for (const auto& m : columns) {
@@ -128,6 +120,7 @@ shared_ptr<QueryResultsTable> QueryResultsTable::removeDuplicates() {
     existingRows.insert(row);
     row.clear();
   }
+
   vector<vector<string>> outputCols(numCols, vector<string>());
   for (vector<string> v : existingRows) {
     for (size_t index = 0; index < numCols; index++) {
@@ -135,18 +128,6 @@ shared_ptr<QueryResultsTable> QueryResultsTable::removeDuplicates() {
     }
   }
   return create2DTable(getHeaders(), outputCols);
-  
-  //cout << "existing rows size" << existingRows.size() << endl;
- // // print each row in existingRows
- // for (const auto& row : existingRows) {
- //   for (int i = 0; i < numCols; i++) {
-	//  result[i].begin()->second.emplace_back(row[i]);
-	//}
- // }
-
-  // TODO: add rows from existingRows to result
-
-  //return make_shared<QueryResultsTable>(result);
 }
 
 shared_ptr<QueryResultsTable> QueryResultsTable::innerJoin(
