@@ -62,6 +62,20 @@ private:
       inserter(rightSet, rightSet.begin()));
     return leftSet == rightSet;
   }
+
+  // check what is in actual but not in expected
+  static unordered_set<string> checkExtra(list<string> expected, list<string> actual) {
+    unordered_set<string> expectedSet;
+    copy(expected.begin(), expected.end(),
+      inserter(expectedSet, expectedSet.begin()));
+    unordered_set<string> extras;
+    for (string s : actual) {
+      if (!containerHasKey(expectedSet, s)) {
+        extras.insert(s);
+      }
+    }
+    return extras;
+  }
   template<typename T>
   static string numToFixedLenStr(T number, int strLen) {
     std::stringstream ss;
@@ -104,6 +118,21 @@ public:
         string time = "Time Taken: " + numToFixedLenStr(timeTaken, 5) +
           " / " + numToFixedLenStr(timeLimit, 4) + " | ";
         Logger::WriteMessage(time.c_str());
+        if (!passed) {
+          string extras = "Extra results: ";
+          string missing = "Missing results: ";
+          for (auto s : checkExtra(expected, results)) {
+            extras += s + " ";
+          }
+          for (auto s : checkExtra(results, expected)) {
+            missing += s + " ";
+          }
+          Logger::WriteMessage(string("\n").c_str());
+          Logger::WriteMessage(extras.c_str());
+          Logger::WriteMessage("| ");
+          Logger::WriteMessage(missing.c_str());
+          Logger::WriteMessage(string("\n").c_str());
+        }
         string tempActl = "Actual: ";
         string tempExp = "Expected: ";
         for (auto r : results) {
@@ -116,6 +145,7 @@ public:
         Logger::WriteMessage("| ");
         Logger::WriteMessage(tempActl.c_str());
         Logger::WriteMessage(string("\n").c_str());
+        if (!passed) Logger::WriteMessage(string("\n").c_str());
       }
       queryResults.push_back(passed);
       if (!passed) {

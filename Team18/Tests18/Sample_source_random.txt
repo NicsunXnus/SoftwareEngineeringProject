@@ -1,4 +1,6 @@
-procedure double {  x = a + b;
+procedure double {  while (a > 1) {
+                        a = a + 1;}
+                    x = a + b;
                     z = x + y;
                     while ((p > 1) && (q > 2) ) {
                         x = p + q;
@@ -39,12 +41,12 @@ procedure double {  x = a + b;
                         call child;}
                     if (p == q) then {
                         a = a + 41;
-                        var = var + (x + y) + a - (z / 2 - (z * 2));
+                        var = var + ( x + y ) + a - ( z  / 2 - ( z * 2));
                         print var;
                     } else { b = 54321 * 99 % c;
                         read b;
                         if (a == b) then {
-                            b = b + 47 - (z * 2);
+                            b = b + 47 - ( z * 2);
                         } else { read = print;
                             print = read + if - while * assign / call;}
                         x = 11 + ((((12)))) % 13;

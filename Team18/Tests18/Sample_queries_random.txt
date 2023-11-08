@@ -1,185 +1,70 @@
-1 - Multi-clauses(No Pattern such that No With): Uses, Modifies, Follows*, Parent*
-assign a; stmt s, s1; variable v;
-Select a such that Uses(a, v) such that Modifies(a, v) such that Follows*(s, s1) such that Parent*(s, a)
-19, 29, 36, 41, 42, 47
-50000
-2 - Multi-clauses(No Pattern such that No With): Uses, Modifies, Follows*, Parent*
-assign a; stmt s, s1; variable v;
-Select a such that Uses(a, v) such that Modifies(a, v) such that Follows*(s, a) such that Parent*(s, s1)
-none
-50000
-3 - Multi-clauses(No Pattern such that No With): Uses, Modifies, Follows*, Parent*
-assign a; stmt s, s1; variable v, v1;
-Select a such that Uses("single", v) such that Modifies(a, v1) such that Follows*(a, s1) such that Parent*(s1, s)
-1, 2, 4, 6, 12, 14, 15, 28, 29, 44, 55
-50000
-4 - Multi-clauses(No Pattern such that No With): Uses, Modifies
-variable v;
-Select v.varName such that Modifies("double", v) such that Uses("single", v)
-c, p, x, y, z
-50000
-5 - Multi-clauses(No Pattern such that No With): Uses, Modifies, Follows
-stmt s, s1; variable v;
-Select <s, v, s1> such that Modifies(s, "var") such that Uses(s1, v) such that Follows(s, s1)
-40 c 52, 40 p 52, 40 q 52, 40 x 52, 40 y 52, 40 z 52, 42 var 43
-50000
-6 - Multi-clauses(No Pattern such that No With): Uses, Next, Follows, Follows*, Modifies
-stmt s, s1; variable v; while w; read r;
-Select <s, v, r> such that Next(s1, w) such that Uses(w, v) such that Follows(s, s1) such that Modifies(r, v) such that Follows*(w, r)
-11 x 25, 14 a 22, 20 a 22, 22 x 25
-50000
-7 - Multi-clauses(No Pattern such that No With): Calls, Uses, Modifies
-variable v; procedure proc, proc1;
-Select <proc, proc1, v> such that Calls(proc, proc1) such that Uses(proc1, v) such that Modifies(proc, v)
-double child2 y, double single c, double single p, double single x, double single y, double single z
-50000
-8 - Multi-clauses(No Pattern such that No With): Calls, Calls*, Modifies
-procedure p, p1, p2; variable v; read r;
-Select <p, p2, r> such that Calls(p, p1) such that Calls*(p1, p2) such that Modifies(p2, v) such that Modifies(r, v)
-double child 25,double child 54,double child 60
-50000
-9 - Multi-clauses(No Pattern such that No With): Next*, Parent*, Modifies, Follows
-if ifs; while w; call c; stmt s, s1; read r;
-Select s such that Next*(s, w) such that Next(w, s1) such that Next(s1, ifs) such that Parent*(ifs, c) such that Modifies(c, "x") such that Follows(s, r)
-5, 16, 17, 24, 33
-50000
-10 - Multi-clauses(No Pattern such that With): Uses, Modifies
-variable v; call c, c1;
-Select <c.procName, c, v> such that Modifies(c, v) such that Uses(c1, v) with c1.procName = "single"
-child 39 x, child 57 x, single 10 x, single 24 x, single 52 x
-50000
-11 - Multi-clauses(No Pattern such that With): Parent, Calls
-procedure proc; call c; while w;
-Select proc such that Calls("double", proc) such that Parent(w, c) with c.procName = proc.procName
-child
-50000
-12 - Multi-clauses(No Pattern such that With): Calls, Calls*, Next*
-procedure p, p1, p2; stmt s; call c;
-Select s such that Calls(p, p1) such that Calls*(p1, p2) such that Next*(s, c) with c.procName = p.procName
-none
-50000
-13 - Multi-clauses(No Pattern such that With): Uses, Modifies, Parent
-read r; print p; stmt s; variable v;
-Select <p, r, v> such that Parent(s, p) such that Parent(s, r) such that Uses(p, v) such that Modifies(r, v) with r.varName = p.varName
-11 25 x
-50000
-14 - Multi-clauses(No Pattern such that With): Calls, Calls*, Parent*
-procedure proc, p, p1, p2; stmt s; call c;
-Select c such that Parent*(s, c) with s.stmt# = 3 such that Calls(p, p1) such that Calls*(p1, p2) with c.procName = p1.procName
-10, 24
-50000
-15 - Multi-clauses(No Pattern such that With): Follows, Next, Uses
-assign a; stmt s; while w; variable v; if ifs;
-Select s such that Follows(s, w) such that Next(w, a) such that Follows(a, ifs) such that Uses(ifs, v) with v.varName = "p"
-2
-50000
-16 - Multi-clauses(No Pattern such that With): Follows, Parent*,, Uses, Modifies
-stmt s; if ifs; call c, c1; variable v;
-Select s such that Follows(s, ifs) such that Parent*(ifs, c) such that Uses(c, v) such that Modifies(c1, v) with c.procName = c1.procName
-4, 6
-50000
-17 - Multi-clauses(No Pattern such that With): Next*, Uses, Modifies
-while w; variable v, v1; if ifs;
-Select v such that Uses(ifs, v) such that Modifies(w, v1) such that Next*(ifs, w) with v.varName = v1.varName
-a, b, c, p, x, y, z
-50000
-18 - Multi-clauses(No Pattern such that With): Calls, Next*, Modifies
-while w; variable v; procedure proc, proc1; call c;
-Select w such that Next*(w, c) with c.procName = proc1.procName such that Calls(proc, proc1) such that Modifies(proc1, v) with v.varName = "x"
-3, 13, 16, 27
-50000
-19 - Multi-clauses(No Pattern such that With): Calls*, Uses, Modifies, Affects
-assign a, a1; procedure p, p1; variable v;
-Select p1.procName such that Calls*(p, p1) such that Uses(p, v) such that Modifies(a, v) such that Affects(a, a1) with p.procName = "double"
-child, child2, single
-50000
-20 - Multi-clauses(Pattern such that No With): Affects, Parent, Parent*
-assign a1, a2; while w1, w2;
-Select a2 pattern a1("x", _) pattern a2(_, _"x"_) such that Affects(a1, a2) such that Parent*(w2, a2) such that Parent*(w1, w2)
-14, 29
-50000
-21 - Multi-clauses(Pattern such that No With): Uses, Modifies, Parent
-assign a; variable v; if ifs;
-Select a such that Uses(a, v) such that Modifies(a, v) such that Parent(ifs, a) pattern a(v, _)
-19, 36, 41, 42, 47
-50000
-22 - Multi-clauses(Pattern such that No With): Next, Next*, Follows
-assign a; variable v; while w; stmt s, s1; print p;
-Select s such that Next(s, w) such that Next*(w, a) such that Follows(a, p) pattern a(v, _"x + y"_)
-2, 5, 12, 15, 21, 23, 32, 36, 39
-50000
-23 - Multi-clauses(Pattern such that No With): Uses, Modifies, Parent*, Follows*
-assign a; read r; print p; variable v; stmt s, s1;
-Select a such that Uses(p, v) such that Modifies(r, v) such that Follows*(s, a) such that Parent*(s1, a) pattern a(v, "x + y + (a + b * c) * 29 * 29")
-29
-50000
-24 - Multi-clauses(Pattern such that No With): Calls*, Modifies, Uses
-procedure p, p1; variable v; assign a;
-Select v.varName such that Calls*(p, p1) such that Modifies(p1, v) such that Uses(a, v) pattern a(v, _)
-x
-50000
-25 - Multi-clauses(Pattern such that No With): Parent, Modifies, Follows*
-stmt s, s1; variable v; assign a, a1;
-Select s such that Parent(s, s1) such that Modifies(s1, v) pattern a(v, _) such that Follows*(s1, a1) pattern a1("a", _)
-5, 16, 30
-50000
-26 - Multi-clauses(Pattern such that No With): Parent, Modifies, Follows*
-stmt s, s1; variable v; assign a, a1;
-Select s such that Parent(s, s1) such that Modifies(s1, v) pattern a(v, "invalid") such that Follows*(s1, a1) pattern a1("a", _)
-none
-50000
-27 - Multi-clauses(Pattern such that No With): Parent*, Modifies, Follows*, Uses
-stmt s, s1; variable v, v1; assign a, a1; read r;
-Select s such that Parent*(s, r) such that Modifies(r, v) pattern a(v, _) such that Follows*(r, a1) such that Uses(a1, v1) pattern a1("a", _)
-3, 5, 27, 30
-50000
-28 - Multi-clauses(Pattern such that With): Parent*, Next*
-assign a; while w; stmt s;
-Select a such that Parent*(w, a) such that Next*(4, s) pattern a("x", _) with a.stmt# = s.stmt#
-4, 28, 29, 32
-50000
-29 - Multi-clauses(Pattern such that With): Calls, Modifies
-procedure p; variable v; assign a;
-Select <a, v> such that Calls(_, p) such that Modifies(p, v) pattern a(v, _"p + q"_) with p.procName = "single"
-4 x
-50000
-30 - Multi-clauses(Pattern such that With): Follows*, Parent, Uses, Modifies
-print p; variable v, v1; assign a; read r; stmt s, s1;
-Select v such that Follows*(s, p) such that Follows*(s, r) such that Parent(s1, a) such that Uses(p, v) such that Modifies(r, v1) pattern a(v, _"a"_) with v.varName = v1.varName
-x
-50000
-31 - Multi-clauses(Pattern such that With): Calls*, Follows, Next, Uses
-procedure proc, proc1; assign a; while w; stmt s; call c; variable v;
-Select <c.procName, a.stmt#, v> such that Calls*(proc, proc1) such that Follows(s, c) with c.procName = proc1.procName such that Next(s, a) such that Uses(a, v) pattern a(v, _)
-single 41 a
-50000
-32 - Multi-clauses(Pattern such that With): Parent*, Next*
-assign a; while w; stmt s; call c; variable v;
-Select a such that Parent*(w, a) such that Next*(w, c) such that Uses(c, v) pattern a("x", "p + q") with v.varName = "a"
-none
-50000
-33 - Multi-clauses(Pattern such that With): Follows*, Uses, Modifies
-assign a, a1; call c, c1; variable v, v1; stmt s;
-Select a pattern a(v, _) pattern a1(v1, _) such that Follows*(s, a1) with a.stmt# = s.stmt# such that Uses(c, v) with v.varName = "x" such that Modifies(c1, v1)
-28
-50000
-34 - Multi-clauses(Pattern such that With): Calls, Calls*, Parent*
-procedure proc, p, p1, p2; stmt s; call c; assign a;
-Select s such that Parent*(s, c) such that Parent*(s, a) such that Calls(p, p1) such that Calls*(p1, p2) with c.procName = p1.procName pattern a("x", _)
-3, 5
-50000
-35 - Multi-clauses(Pattern such that With): Uses, Modifies, Parent
-assign a; variable v; if ifs;
-Select a such that Uses(a, v) such that Modifies(a, v) such that Parent(ifs, a) with ifs.stmt# = 17 pattern a(v, _)
-19
-50000
-36 - Multi-clauses(Pattern such that With): Next*, Uses, Modifies
-while w; variable v, v1; if ifs; assign a;
-Select a such that Uses(ifs, v) such that Modifies(w, v1) such that Next*(ifs, w) with v.varName = v1.varName pattern a(v, _"(1 * 2 * 3)"_)
-21, 28, 36
-50000
-37 - Multi-clauses(Pattern such that With): Affects
-stmt s; assign a; variable v; procedure p;
-Select <s, v> such that Affects(s, a) such that Modifies(s, v) such that Uses(p, v) such that Uses(a, v) with p.procName = "double" pattern a(v, _)
-19 b, 26 a, 28 x, 36 a
-50000
+1 int int
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select BOOLEAN such that Next*(8, 5)
+TRUE
+5000
+2 int int
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select BOOLEAN such that Next*(14, 42)
+TRUE
+5000
+3 int syn
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select s1 such that Next*(56, s1)
+57, 58, 59, 60, 61
+5000
+4 int wild
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select BOOLEAN such that Next*(56, _)
+TRUE
+5000
+5 wild wild
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select BOOLEAN such that Next*(_, _)
+TRUE
+5000
+6 wild int
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select BOOLEAN such that Next*(_, 56)
+FALSE
+5000
+7 wild int
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select BOOLEAN such that Next*(_, 1)
+TRUE
+5000
+8 wild syn
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select r1 such that Next*(_, r1)
+11, 22, 24, 27, 36, 39, 47
+5000
+9 wild syn
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select s1 such that Next*(_, s1)
+1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,57,58,59,60,61
+5000
+10 syn wild
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select s2 such that Next*(s2, _)
+1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,56,57,58,59
+5000
+11 syn syn
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select s1 such that Next*(s1, s2)
+1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,56,57,58,59
+5000
+12 syn syn
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select c1 such that Next*(s1, c1)
+12, 26, 37, 41, 54, 59, 60
+5000
+13 syn syn
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select r1 such that Next*(r1, c1)
+11, 22, 24, 27, 36, 39, 47, 56
+5000
+14 affects int int
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select BOOLEAN such that Affects(8, 5)
+TRUE
+5000
