@@ -1,5 +1,16 @@
 #include "NextExtractor.h"
 
+void NextExtractor::extractAbstractions(shared_ptr<ProcessedProgram> processedProgram) {
+    extract(processedProgram);
+}
+
+void NextExtractor::extract(shared_ptr<ProcessedProgram> processedProgram) {
+	vector<shared_ptr<ProcessedProcedure>> procedures = processedProgram->getAllProcedures();
+	for (auto& procedure : procedures) {
+		procedure->accept(shared_from_this());
+	}
+}
+
 void NextExtractor::extract(shared_ptr<ProcessedStmtList> processedStmtList) {
 	unordered_set<string> prevStatementNumbers;
 	this->extract(processedStmtList, prevStatementNumbers);
