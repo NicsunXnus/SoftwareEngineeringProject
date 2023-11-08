@@ -14,6 +14,7 @@
 
 #include "ExceptionMessages.h"
 #include "Constants/SPConstants.h"
+#include "Constants/DesignEnums.h"
 #include "QPS/Errors/SemanticError.h"
 
 using namespace std;

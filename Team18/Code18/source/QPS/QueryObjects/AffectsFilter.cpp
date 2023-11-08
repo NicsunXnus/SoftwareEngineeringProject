@@ -73,7 +73,7 @@ shared_ptr<QueryResultsTable> AffectsSynWildcard::evaluate(shared_ptr<DataAccess
 	shared_ptr<ExtendedCFG> cfg = dataAccessLayer->getCFG();
 	StringMap cfgResults = cfg->affectsSynSyn();
 	StringMap results = filterMapKeyReturnMap(arg1, dataAccessLayer, cfgResults);
-	unordered_set<string> filteredResults = removeMapValuesReturnSet(arg1, dataAccessLayer, results);
+	unordered_set<string> filteredResults = removeMapValuesReturnSet(arg1, results);
 	shared_ptr<QueryResultsTable> qrt = QueryResultsTable::createTable(svToString(arg1->getArgValue()), filteredResults);
 	return qrt;
 }

@@ -39,6 +39,9 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
     //Constructor for empty table creation
     QueryResultsTable() : isSignificant(false), numRows(0), numCols(0) {}
 
+    void condenseTable(unordered_set<string> headers);
+
+
     // get number of rows in table
     int getNumberOfRows() {
         return numRows;
@@ -64,7 +67,15 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
      * @param other A shared pointer to a QueryResultsTable object that represents the other tables.
      * @return A shared pointer to a newly created QueryResultsTable object.
      */
-    shared_ptr<QueryResultsTable> crossProduct(shared_ptr<QueryResultsTable> other);
+    shared_ptr<QueryResultsTable> crossProduct(
+        shared_ptr<QueryResultsTable> other);
+
+    /**
+    * Creates a new QueryResultsTable object that has duplicate rows removed.
+    *
+    * @return A shared pointer to a newly created QueryResultsTable object.
+    */
+    shared_ptr<QueryResultsTable> removeDuplicates();
 
     /**
   * Creates a shared pointer to a QueryResultsTable object representing the intersection between this table and the other table.
@@ -249,6 +260,11 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
             res.emplace_back(s.substr(start, end - start));
         } while (end != -1);
         return res;
+    bool QueryResultsTable::hasAttributeHeader(string header);
+
+    //Getter method for columns
+    vector<map<string, vector<string>>> getColumns() {
+        return this->columns;
     }
 
     vector<vector<string>> vectorizeRows(vector<string> rows) {
@@ -344,11 +360,20 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
         return id;
     }
 
+    void setAttr(StringMap attribute) {
+        attr = attribute;
+    }
+
+    StringMap getAttr() {
+        return attr;
+    }
+
     shared_ptr<QueryResultsTable> getShared() { return shared_from_this(); }
 
 private:
     int numRows;
     int numCols;
+    StringMap attr;
     bool isSignificant; 
     // denotes whether a table is significant or not. 
     // A significant table represents the boolean "true", regardless if the table is empty or not

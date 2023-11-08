@@ -1,6 +1,17 @@
 #include "QueryResultsTable.h"
 #include<cassert>
 shared_ptr<QueryResultsTable> QueryResultsTable::crossProduct(shared_ptr<QueryResultsTable> other) {
+    if (other->isEmpty() || this->isEmpty()) {
+        if (other->getSignificant() && other->isEmpty() && this->getSignificant() &&
+            !this->isEmpty()) {  // TRUE EMPTY X TABLE
+            return make_shared<QueryResultsTable>(thisColumns);
+        }
+        if (this->getSignificant() && this->isEmpty() && other->getSignificant() &&
+            !other->isEmpty()) {  // TABLE X TRUE EMPTY
+            return other;
+        }
+        return QueryResultsTable::createEmptyTable(other->getSignificant() && this->getSignificant());
+    }
     vector<string> thisRows = getRows();
     vector<string> otherRows = other->getRows();
     vector<string> xprod(thisRows);
@@ -13,9 +24,8 @@ shared_ptr<QueryResultsTable> QueryResultsTable::crossProduct(shared_ptr<QueryRe
         }
         xprod.erase(xprod.begin() + 1);
     }
-    shared_ptr<QueryResultsTable> res = make_shared<QueryResultsTable>(xprod);
-    return res;
-}
+    return make_shared<QueryResultsTable>();
+  }
 
 template <typename T, typename Iter>
 void removeIndicesFromVector(std::vector<T>& v, Iter begin, Iter end)
@@ -56,35 +66,37 @@ void removeIndicesFromVector(std::vector<T>& v, const S& rm)
     return removeIndicesFromVector(v, begin(rm), end(rm));
 }
 
-shared_ptr<QueryResultsTable> QueryResultsTable::innerJoin(shared_ptr<QueryResultsTable> other) {
-    vector<int> thisCommon;
-    vector<int> thatCommon;
-    vector<string> thisRows = getRows();
-    vector<string> thatRows = other->getRows();
-    vector<vector<string>> thisRowsVec = getVectorizedRows();
-    vector<vector<string>> otherRowsVec = other->getVectorizedRows();
-    int thisCols = getNumberOfCols();
-    int otherCols = other->getNumberOfCols();
-    int thisRowSize = getNumberOfRows();
-    int thatRowSize = other->getNumberOfRows();
-    vector<string> thisHeaders = splitString(getHeaders(), ",");
-    vector<string> otherHeaders = splitString(other->getHeaders(), ",");
-    vector<string> innerJoined;
-    for (int s1 = 0; s1 < thisCols; s1++) {
-        for (int s2 = 0; s2 < otherCols; s2++) {
-            if (thisHeaders[s1] == otherHeaders[s2]) {
-                thisCommon.emplace_back(s1);
-                thatCommon.emplace_back(s2);
-            }
-        }
+shared_ptr<QueryResultsTable> QueryResultsTable::innerJoin(
+    shared_ptr<QueryResultsTable> other) {
+  vector<map<string, vector<string>>> thisMap = QueryResultsTable::getColumns(),
+                                      otherMap = other->getColumns(),
+                                      innerJoined;
+  vector<string> thisHeaders = QueryResultsTable::getHeaders();
+  // Get the number of columns and rows in both tables
+  int thisColNums = QueryResultsTable::getNumberOfCols(),
+      thisRowNums = QueryResultsTable::getNumberOfRows(),
+      otherColNums = other->getNumberOfCols(),
+      otherRowNums = other->getNumberOfRows();
+  // Find the columns with the headers in both tables
+  vector<tuple<int, int>> sameCols;
+  for (int thisCol = 0; thisCol < thisColNums; thisCol++) {
+    // add headers of thisMap
+    map<string, vector<string>> map = {{thisMap[thisCol].begin()->first, {}}};
+    innerJoined.emplace_back(map);
+    // at the same time, check for similar headers and record down the pairs of
+    // column numbers from both tables
+    for (int otherCol = 0; otherCol < otherColNums; otherCol++) {
+      if (thisMap[thisCol].begin()->first ==
+          otherMap[otherCol].begin()->first) {
+        sameCols.emplace_back((tuple<int, int>({thisCol, otherCol})));
+      }
     }
-
-    vector<string> newHeaders(thisHeaders);
-    removeIndicesFromVector(newHeaders, thisCommon);
-    newHeaders.insert(newHeaders.end(), otherHeaders.begin(), otherHeaders.end());
-    string joinedHeader = "";
-    for (string s : newHeaders) {
-        joinedHeader += s + ",";
+  }
+  for (int otherCol = 0; otherCol < otherColNums; otherCol++) {
+    string key = otherMap[otherCol].begin()->first;
+    if (find(thisHeaders.begin(), thisHeaders.end(), key) !=
+        thisHeaders.end()) {
+      continue;
     }
     joinedHeader.erase(joinedHeader.end() - 1);
     innerJoined.emplace_back(joinedHeader);
@@ -124,6 +136,69 @@ shared_ptr<QueryResultsTable> QueryResultsTable::innerJoin(shared_ptr<QueryResul
 
     return make_shared<QueryResultsTable>(innerJoined);
 }
+
+  struct CustomVectorHash {
+      size_t operator()(const std::vector<std::string>& vec) const {
+          size_t hash = 0;
+          for (size_t i = 0; i < vec.size(); ++i) {
+              hash ^= std::hash<std::string>{}(vec[i]) + (i << 1);
+          }
+          return hash;
+      }
+  };
+
+  shared_ptr<QueryResultsTable> QueryResultsTable::removeDuplicates() {
+      vector<map<string, vector<string>>> thisMap = QueryResultsTable::getColumns(),
+          result;
+
+      // add headers of thisMap
+      int numCols = QueryResultsTable::getNumberOfCols();
+      int numRows = QueryResultsTable::getNumberOfRows();
+      cout << "numRows" << numRows << endl;
+
+      if (numRows == 0) {
+          return QueryResultsTable::createEmptyTableWithHeaders(getHeaders());
+      }
+
+      for (int thisCol = 0; thisCol < numCols; thisCol++) {
+          map<string, vector<string>> map = { {thisMap[thisCol].begin()->first, {}} };
+          result.emplace_back(map);
+      }
+
+      // store all existing rows in a set
+      unordered_set<vector<string>, CustomVectorHash> existingRows;
+      // int numRows = columns[0].begin()->second.size();
+      for (int i = 0; i < numRows; i++) {
+          vector<string> row;
+          for (const auto& m : columns) {
+              for (const auto& p : m) {
+                  row.push_back(p.second[i]);
+              }
+          }
+          existingRows.insert(row);
+          row.clear();
+      }
+      vector<vector<string>> outputCols(numCols, vector<string>());
+      for (vector<string> v : existingRows) {
+          for (size_t index = 0; index < numCols; index++) {
+              outputCols[index].push_back(v[index]);
+          }
+      }
+      return create2DTable(getHeaders(), outputCols);
+
+      //cout << "existing rows size" << existingRows.size() << endl;
+     // // print each row in existingRows
+     // for (const auto& row : existingRows) {
+     //   for (int i = 0; i < numCols; i++) {
+        //  result[i].begin()->second.emplace_back(row[i]);
+        //}
+     // }
+
+      // TODO: add rows from existingRows to result
+
+      //return make_shared<QueryResultsTable>(result);
+  }
+
 
 shared_ptr<QueryResultsTable> QueryResultsTable::difference(
     shared_ptr<QueryResultsTable> other) {
@@ -188,6 +263,24 @@ shared_ptr<QueryResultsTable> QueryResultsTable::difference(
     for (int i = 0; i < cache_size; i++) {
         cached_rows.insert(make_pair(this_left_col[i], this_right_col[i]));
     }
+
+    // loop through rows of crossed table, only include if not in cached_rows
+    vector<string> new_left_col;
+    vector<string> new_right_col;
+
+    vector<string> crossed_left_col = crossed->getColumnData(crossed_headers[0]);
+    vector<string> crossed_right_col = crossed->getColumnData(crossed_headers[1]);
+    int crossed_size = crossed_left_col.size();
+    for (int i = 0; i < crossed_size; i++) {
+        string left_elem = crossed_left_col[i];
+        string right_elem = crossed_right_col[i];
+        if (!cached_rows.count(make_pair(left_elem, right_elem))) {
+            new_left_col.push_back(left_elem);
+            new_right_col.push_back(right_elem);
+        }
+    }
+    vector<vector<string>> columnValues = { new_left_col, new_right_col };
+    return create2DTable(crossed_headers, columnValues);
 }
 
 
@@ -321,6 +414,21 @@ void QueryResultsTable::deleteColumn(string deleteHeader) {
     }
 }
 
+
+void QueryResultsTable::condenseTable(unordered_set<string> targetHeaders) {
+    vector<string> headers = getHeaders();
+    vector<string> colsToDelete;
+    for (string header : headers) {
+        if (targetHeaders.find(header) == targetHeaders.end()) { //exact match
+            colsToDelete.push_back(header);
+        }
+    }
+
+    for (string col : colsToDelete) {
+        deleteColumn(col);
+    }
+}
+
 void QueryResultsTable::renameColumn(string newName, string oldName) {
     unordered_set<string> headers = getHeadersAsUnorderedSet();
     auto it = find(headers.begin(), headers.end(), oldName);
@@ -403,8 +511,25 @@ bool QueryResultsTable::hasHeader(string header) {
   set<string> headers = QueryResultsTable::getHeadersAsSet();
 
   auto it = find(headers.begin(), headers.end(), header);
+  bool hasHeader = it != headers.end();
+   
+  return hasHeader;
 
-  return it != headers.end();
+}
+
+bool QueryResultsTable::hasAttributeHeader(string header) {
+    set<string> headers = QueryResultsTable::getHeadersAsSet();
+    size_t pos = header.find('.');
+    if (pos == string::npos) {
+        return false;
+    }
+    header = header.substr(0, pos);
+
+    auto it = find(headers.begin(), headers.end(), header);
+    bool hasHeader = it != headers.end();
+
+    return hasHeader;
+
 }
 
 void QueryResultsTable::duplicateColumns(string columnName) {

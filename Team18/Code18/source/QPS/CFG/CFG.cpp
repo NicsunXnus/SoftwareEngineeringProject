@@ -211,6 +211,10 @@ void ExtendedCFG::unrollAffectsHelper(deque<string>& descendants, shared_ptr<DFS
     if (!isReadAssignCall) {
       continue;
     }
+    bool lineNumberModifiesSomething = containerHasKey(modifies, descLineNumber) && !modifies.at(descLineNumber).empty();
+    if (!lineNumberModifiesSomething) {
+      continue;
+    }
     unordered_set<string> descVarModified = modifies.at(descLineNumber);
     bool varExistsInModified = descVarModified.find(currVarModified) != descVarModified.end();
     if (varExistsInModified) {
@@ -267,19 +271,10 @@ ExtendedCFG::ExtendedCFG(shared_ptr<DataAccessLayer> dataAccessLayer) {
 string INVALID_PROCEDURE = "-1";
 // Helper functions to the query functions
 bool ExtendedCFG::isValidLineNumber(string lineNumber) {
-  int low = stoi(stmtNumBoundaries.begin()->second.first);
-  int high = stoi(stmtNumBoundaries.rbegin()->second.second);
-  int lineNumInt = stoi(lineNumber);
-  if (lineNumInt >= low && lineNumInt <= high) {
-    return true;
-  }
-  return false;
+  return procedureNameContainingThis(lineNumber) != INVALID_PROCEDURE;
 }
 
 string ExtendedCFG::procedureNameContainingThis(string lineNumber) {
-  if (!isValidLineNumber(lineNumber)) {
-    return INVALID_PROCEDURE;
-  }
   for (const auto& p : stmtNumBoundaries) {
     string procName = p.first;
     pair<string, string> boundaries = p.second;
@@ -290,6 +285,7 @@ string ExtendedCFG::procedureNameContainingThis(string lineNumber) {
       return procName;
     }
   }
+  return INVALID_PROCEDURE;
 }
 
 bool ExtendedCFG::isInSameProcedure(string lineNumber1, string lineNumber2) {

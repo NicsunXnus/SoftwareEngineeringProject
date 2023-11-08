@@ -23,7 +23,7 @@ shared_ptr<QueryResultsTable> AttrRefAttrRefComparisonQueryObject::callAndProces
 	// call 2D table for attrRef2, e.g. q, q.procName similar to withclause Table
 	shared_ptr<QueryResultsTable> attRef2Table = attrRef2->callAndProcess(dataAccessLayer);
 
-	if (attrRef1->getQueryObjectName() == attrRef2->getQueryObjectName()) {
+	if (attRef1Table->getPrimaryKey() == attRef2Table->getPrimaryKey()) {
 		return attRef1Table; // same table, return 1 or 2 doesnt matter
 	}
 

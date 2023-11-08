@@ -253,7 +253,7 @@ public:
 			auto l_front = finalResult.begin();
 			advance(l_front, 0);
 			Assert::IsTrue(finalResult.size() == 1);
-			Assert::IsTrue(*l_front == FALSE_STRING);
+			Assert::IsTrue(*l_front == TRUE_STRING);
 		}
 
 		TEST_METHOD(TestBooleanEmptySuchThat) {
