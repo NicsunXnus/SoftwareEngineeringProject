@@ -15,6 +15,7 @@
 #include "../SimpleProcessor/ProcessedPrintStmt.h"
 #include "../AST/Node.h"
 #include "../AST/TerminalNode.h"
+#include "../../Constants/DesignEnums.h"
 
 using namespace std;
 
