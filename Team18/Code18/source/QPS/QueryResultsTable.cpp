@@ -489,7 +489,7 @@ void QueryResultsTable::renameColumn(string newName, string oldName) {
 
 shared_ptr<QueryResultsTable> QueryResultsTable::filter(
     string key,
-    vector<string>
+    unordered_set<string>
         targets) {  // assuming there is no spacing/wrong capitalisation in key
                     // & there is no duplicates in targets
   if (isEmpty()) {
