@@ -162,8 +162,8 @@ TEST_CLASS(Milestone2) {
 
         TEST_METHOD(RandomCase)
         {
-            string srcFilePath = defaultPath + "1_s.txt";
-            string queryFilePath = defaultPath + "1_q.txt";
+            string srcFilePath = defaultPath + "Sample_source8nov.txt";
+            string queryFilePath = defaultPath + "Sample_queries8nov_extract.txt";
             assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
         }
 
