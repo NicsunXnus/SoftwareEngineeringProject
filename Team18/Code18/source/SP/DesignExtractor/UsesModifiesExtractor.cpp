@@ -3,7 +3,7 @@
 void UsesModifiesExtractor::extractAbstractions(shared_ptr<ProcessedProgram> processedProgram) {
     this->callsExtractor->extractAbstractions(processedProgram);
     createCallsProcedureParentProcedureMap(this->callsExtractor->getStorageStarMap());
-    this->extract(processedProgram);
+    AbstractionExtractor::extract(processedProgram);
     processIndirectProcedureCalls();
     processNestedIfWhileStatements();
 }
