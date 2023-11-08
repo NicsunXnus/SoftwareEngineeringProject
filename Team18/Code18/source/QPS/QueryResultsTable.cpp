@@ -306,7 +306,6 @@ void QueryResultsTable::deleteColumn(string deleteHeader) {
         if (getNumberOfCols() < 1) {
             setSignificant(isSignificant);
         }
-        //columns.erase(columns.begin() + index);
         for (vector<string> vs : vectorizedRows) {
             vs.erase(vs.begin() + index);
         }
