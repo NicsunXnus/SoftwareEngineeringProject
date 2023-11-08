@@ -160,6 +160,9 @@ private:
   // Cuts short if the given statement is not an assignment statement.
   void unrollAffectsHelper(deque<string>& descendants, shared_ptr<DFSPathNode>& curr, string currLineNumber);
 
+  // Unrolls one path
+  void unrollOnePath(shared_ptr<DFSPathNode> currPath, bool calculateAffects);
+
   /// <summary>
   /// Unrolls the paths given by DFS. 
   /// Not unlike how to find the path from a source to target using regular DFS, an unrolling is performed.

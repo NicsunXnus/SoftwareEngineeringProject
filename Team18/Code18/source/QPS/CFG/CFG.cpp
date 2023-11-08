@@ -1,5 +1,7 @@
 #include "CFG.h"
 
+#include "../../ThreadPool.h"
+
 using namespace std;
 
 bool ExtendedCFG::isStmtType(string stmtNumber, ENTITY entity) {
@@ -236,33 +238,60 @@ void ExtendedCFG::unrollAffectsHelper(deque<string>& descendants, shared_ptr<DFS
   return;
 
 }
+void ExtendedCFG::unrollOnePath(shared_ptr<DFSPathNode> currPath, bool calculateAffects) {
+  bool terminalNode = true;
+  deque<string> descendants;
+  shared_ptr<DFSPathNode> curr = currPath;
+  while (curr != nullptr) {
+    string currLineNumber = curr->getLineNumber();
+    if (terminalNode) {
+      terminalNode = false;
+      if (calculateAffects) {
+        restoreDescendants(descendants, curr);
+      }
+      unrollPathsIteratorHelper(currLineNumber, descendants, curr);
+      nextStarCompleted.insert(currLineNumber);
+      affectsCompleted.insert(currLineNumber);
+      continue;
+    }
+    // Not terminal Node
+    unrollNextStarHelper(currLineNumber, descendants); // for Next*
+    if (calculateAffects) {
+      unrollAffectsHelper(descendants, curr, currLineNumber); // for affects
+    }
+    unrollPathsIteratorHelper(currLineNumber, descendants, curr); // to iterate
+  }
+}
 
 void ExtendedCFG::unrollPaths(unordered_set<shared_ptr<DFSPathNode>>& finishedPaths, bool calculateAffects) {
+  ThreadPool tp;
   for (shared_ptr<DFSPathNode> currPath : finishedPaths) {
-    bool terminalNode = true;
-    deque<string> descendants;
-    shared_ptr<DFSPathNode> curr = currPath;
-    while (curr != nullptr) {
-      string currLineNumber = curr->getLineNumber();
-      if (terminalNode) {
-        terminalNode = false;
-        if (calculateAffects) {
-          restoreDescendants(descendants, curr);
-        }
-        unrollPathsIteratorHelper(currLineNumber, descendants, curr);
-        nextStarCompleted.insert(currLineNumber);
-        affectsCompleted.insert(currLineNumber);
-        continue;
-      }
-      // Not terminal Node
-      unrollNextStarHelper(currLineNumber, descendants); // for Next*
-      if (calculateAffects) {
-        unrollAffectsHelper(descendants, curr, currLineNumber); // for affects
-      }
-      unrollPathsIteratorHelper(currLineNumber, descendants, curr); // to iterate
-    }
-
+    tp.addTask([this, currPath, calculateAffects]() {unrollOnePath(currPath, calculateAffects); });
+    //unrollOnePath(currPath, calculateAffects);
+    //bool terminalNode = true;
+    //deque<string> descendants;
+    //shared_ptr<DFSPathNode> curr = currPath;
+    //while (curr != nullptr) {
+    //  string currLineNumber = curr->getLineNumber();
+    //  if (terminalNode) {
+    //    terminalNode = false;
+    //    if (calculateAffects) {
+    //      restoreDescendants(descendants, curr);
+    //    }
+    //    unrollPathsIteratorHelper(currLineNumber, descendants, curr);
+    //    nextStarCompleted.insert(currLineNumber);
+    //    affectsCompleted.insert(currLineNumber);
+    //    continue;
+    //  }
+    //  // Not terminal Node
+    //  unrollNextStarHelper(currLineNumber, descendants); // for Next*
+    //  if (calculateAffects) {
+    //    unrollAffectsHelper(descendants, curr, currLineNumber); // for affects
+    //  }
+    //  unrollPathsIteratorHelper(currLineNumber, descendants, curr); // to iterate
+    //}
   }
+  tp.wait();
 }
 
 // Constructor
@@ -411,9 +440,12 @@ unordered_set<string> ExtendedCFG::nextStarIntSyn(string from) {
 }
 
 StringMap ExtendedCFG::nextStarSynSyn() {
+  ThreadPool tp;
   for (string procName : procNames) {
-    ensureProcCompleted(procName, false);
+    tp.addTask([this, procName]() {ensureProcCompleted(procName, false); });
+    //ensureProcCompleted(procName, false);
   }
+  tp.wait();
   return nextStar;
 }
 
@@ -455,8 +487,11 @@ unordered_set<string> ExtendedCFG::affectsIntSyn(string from) {
 }
 
 StringMap ExtendedCFG::affectsSynSyn() {
+  ThreadPool tp;
   for (string procName : procNames) {
-    ensureProcCompleted(procName, true);
+    tp.addTask([this, procName]() {ensureProcCompleted(procName, true); });
+    //ensureProcCompleted(procName, true);
   }
+  tp.wait();
   return affects;
 }
