@@ -44,6 +44,13 @@ unordered_set<string> AffectsFilter::filterAssignmentsInProcedure(unordered_set<
 	return filteredAssignments;
 }
 
+bool AffectsFilter::isContainerStmt(shared_ptr<DataAccessLayer> dataAccessLayer, string node) {
+	unordered_set<string> ifStmts = dataAccessLayer->getEntity(IF);
+	unordered_set<string> whileStmts = dataAccessLayer->getEntity(WHILE);
+
+	return containerHasKey(ifStmts, node) || containerHasKey(whileStmts, node);
+}
+
 /*
 * Strictly assume PKB data is correct
 * In general, affects logic is as follows:
@@ -55,16 +62,18 @@ unordered_set<string> AffectsFilter::filterAssignmentsInProcedure(unordered_set<
 */
 shared_ptr<QueryResultsTable> AffectsSynSyn::evaluate(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
 	StringMap cfg = dataAccessLayer->getClause(clause); // next table (CFG)
+	StringMap usesMap = dataAccessLayer->getClause(USES);
+	StringMap modifiesMap = dataAccessLayer->getClause(MODIFIES);
+	StringMap usesInverseMap = dataAccessLayer->getClauseInverse(USES);
 	unordered_set<string> assignments = dataAccessLayer->getEntity(ASSIGN);
 	StringMap results;
 
 	for (string assignment : assignments) {
 		string startingLine = assignment;
 		unordered_set<string> childrenOfStartNode = filterMapKeyReturnSetValues(startingLine, cfg);
-		StringMap usesMap = dataAccessLayer->getClause(USES);
-		StringMap modifiesMap = dataAccessLayer->getClause(MODIFIES);
+		
 		string modifiedVar = returnSingleElementFromSet(modifiesMap[startingLine]); // get variable modified
-		StringMap usesInverseMap = dataAccessLayer->getClauseInverse(USES);
+	
 
 		// if no cfg, variable is not used in prog
 		if (childrenOfStartNode.empty()
@@ -85,8 +94,8 @@ shared_ptr<QueryResultsTable> AffectsSynSyn::evaluate(shared_ptr<DataAccessLayer
 			visited.insert(parent);
 
 			// modified before reaching target, do not traverse further down that branch
-			if (parent != startingLine
-				&& containerHasKey(assignments, parent) && containerHasKey(modifiesMap[parent], modifiedVar)) {
+			if (parent != startingLine && !isContainerStmt(dataAccessLayer, parent)
+				&& containerHasKey(modifiesMap[parent], modifiedVar)) {
 				continue; // cannot break, as there may exist another path that does not modifies
 			}
 			for (string child : children) {
@@ -123,15 +132,16 @@ shared_ptr<QueryResultsTable> AffectsSynSyn::evaluate(shared_ptr<DataAccessLayer
 shared_ptr<QueryResultsTable> AffectsSynWildcard::evaluate(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
 	StringMap cfg = dataAccessLayer->getClause(clause); // next table (CFG)
 	unordered_set<string> assignments = dataAccessLayer->getEntity(ASSIGN);
+	StringMap usesMap = dataAccessLayer->getClause(USES);
+	StringMap modifiesMap = dataAccessLayer->getClause(MODIFIES);
+	StringMap usesInverseMap = dataAccessLayer->getClauseInverse(USES);
 	unordered_set<string> results;
 
 	for (string assignment : assignments) {
 		string startingLine = assignment;
 		unordered_set<string> childrenOfStartNode = filterMapKeyReturnSetValues(startingLine, cfg);
-		StringMap usesMap = dataAccessLayer->getClause(USES);
-		StringMap modifiesMap = dataAccessLayer->getClause(MODIFIES);
+		
 		string modifiedVar = returnSingleElementFromSet(modifiesMap[startingLine]); // get variable modified
-		StringMap usesInverseMap = dataAccessLayer->getClauseInverse(USES);
 
 		// if no cfg, variable is not used in prog
 		if (childrenOfStartNode.empty()
@@ -152,8 +162,8 @@ shared_ptr<QueryResultsTable> AffectsSynWildcard::evaluate(shared_ptr<DataAccess
 			visited.insert(parent);
 
 			// modified before reaching target, do not traverse further down that branch
-			if (parent != startingLine
-				&& containerHasKey(assignments, parent) && containerHasKey(modifiesMap[parent], modifiedVar)) {
+			if (parent != startingLine && !isContainerStmt(dataAccessLayer, parent)
+				&& containerHasKey(modifiesMap[parent], modifiedVar)) {
 				continue; // cannot break, as there may exist another path that does not modifies
 			}
 			for (string child : children) {
@@ -179,16 +189,18 @@ shared_ptr<QueryResultsTable> AffectsSynWildcard::evaluate(shared_ptr<DataAccess
 shared_ptr<QueryResultsTable> AffectsSynInt::evaluate(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
 	StringMap cfg = dataAccessLayer->getClause(clause); // next table (CFG)
 	unordered_set<string> unfilteredassignments = dataAccessLayer->getEntity(ASSIGN);
+	StringMap usesMap = dataAccessLayer->getClause(USES);
+	StringMap modifiesMap = dataAccessLayer->getClause(MODIFIES);
+	StringMap usesInverseMap = dataAccessLayer->getClauseInverse(USES);
 	unordered_set<string> results;
 	unordered_set<string> assignments = filterAssignmentsInProcedure(unfilteredassignments,
 		stoi(svToString(arg2->getArgValue())), dataAccessLayer);
 	for (string assignment : assignments) {
 		string startingLine = assignment;
 		unordered_set<string> childrenOfStartNode = filterMapKeyReturnSetValues(startingLine, cfg);
-		StringMap usesMap = dataAccessLayer->getClause(USES);
-		StringMap modifiesMap = dataAccessLayer->getClause(MODIFIES);
+	
 		string modifiedVar = returnSingleElementFromSet(modifiesMap[startingLine]); // get variable modified
-		StringMap usesInverseMap = dataAccessLayer->getClauseInverse(USES);
+		
 
 		// if no cfg, variable is not used in prog
 		if (childrenOfStartNode.empty()
@@ -209,8 +221,8 @@ shared_ptr<QueryResultsTable> AffectsSynInt::evaluate(shared_ptr<DataAccessLayer
 			visited.insert(parent);
 
 			// modified before reaching target, do not traverse further down that branch
-			if (parent != startingLine
-				&& containerHasKey(assignments, parent) && containerHasKey(modifiesMap[parent], modifiedVar)) {
+			if (parent != startingLine && !isContainerStmt(dataAccessLayer, parent)
+				&& containerHasKey(modifiesMap[parent], modifiedVar)) {
 				continue; // cannot break, as there may exist another path that does not modifies
 			}
 			for (string child : children) {
@@ -237,13 +249,15 @@ shared_ptr<QueryResultsTable> AffectsSynInt::evaluate(shared_ptr<DataAccessLayer
 shared_ptr<QueryResultsTable> AffectsIntSyn::evaluate(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
 	StringMap cfg = dataAccessLayer->getClause(clause); // next table (CFG)
 	unordered_set<string> assignments = dataAccessLayer->getEntity(ASSIGN);
+	StringMap usesMap = dataAccessLayer->getClause(USES);
+	StringMap modifiesMap = dataAccessLayer->getClause(MODIFIES);
+	StringMap usesInverseMap = dataAccessLayer->getClauseInverse(USES);
 
 	unordered_set<string> childrenOfStartNode = filterMapKeyReturnSetValues(arg1, cfg);
 	string startingLine = svToString(arg1->getArgValue());
-	StringMap usesMap = dataAccessLayer->getClause(USES);
-	StringMap modifiesMap = dataAccessLayer->getClause(MODIFIES);
+	
 	string modifiedVar = returnSingleElementFromSet(modifiesMap[startingLine]); // get variable modified
-	StringMap usesInverseMap = dataAccessLayer->getClauseInverse(USES);
+	
 
 	// if no cfg, start node is not assignment, variable is not used in program
 	if (childrenOfStartNode.empty() || !containerHasKey(assignments, startingLine)
@@ -264,8 +278,8 @@ shared_ptr<QueryResultsTable> AffectsIntSyn::evaluate(shared_ptr<DataAccessLayer
 		visited.insert(parent);
 
 		// modified before reaching target, do not traverse further down that branch
-		if (parent != startingLine
-			&& containerHasKey(assignments, parent) && containerHasKey(modifiesMap[parent], modifiedVar)) {
+		if (parent != startingLine && !isContainerStmt(dataAccessLayer, parent)
+			&& containerHasKey(modifiesMap[parent], modifiedVar)) {
 			continue; // cannot break, as there may exist another path that does not modifies
 		}
 		for (string child : children) {
@@ -314,8 +328,8 @@ shared_ptr<QueryResultsTable> AffectsIntWildcard::evaluate(shared_ptr<DataAccess
 		visited.insert(parent);
 
 		// modified before reaching target, do not traverse further down that branch
-		if (parent != startingLine
-			&& containerHasKey(assignments, parent) && containerHasKey(modifiesMap[parent], modifiedVar)) {
+		if (parent != startingLine && !isContainerStmt(dataAccessLayer, parent)
+			&& containerHasKey(modifiesMap[parent], modifiedVar)) {
 			continue; // cannot break, as there may exist another path that does not modifies
 		}
 		for (string child : children) {
@@ -365,8 +379,8 @@ shared_ptr<QueryResultsTable> AffectsIntInt::evaluate(shared_ptr<DataAccessLayer
 		visited.insert(parent);
 
 		// modified before reaching target, do not traverse further down that branch
-		if (parent != finishLine && parent != startingLine
-			&& containerHasKey(assignments, parent) && containerHasKey(modifiesMap[parent], modifiedVar)) {
+		if (parent != finishLine && parent != startingLine && !isContainerStmt(dataAccessLayer, parent)
+			&& containerHasKey(modifiesMap[parent], modifiedVar)) {
 			continue; // cannot break, as there may exist another path that does not modifies
 		}
 		for (string child : children) {
@@ -388,15 +402,17 @@ shared_ptr<QueryResultsTable> AffectsIntInt::evaluate(shared_ptr<DataAccessLayer
 shared_ptr<QueryResultsTable> AffectsWildcardSyn::evaluate(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
 	StringMap cfg = dataAccessLayer->getClause(clause); // next table (CFG)
 	unordered_set<string> assignments = dataAccessLayer->getEntity(ASSIGN);
+	StringMap usesMap = dataAccessLayer->getClause(USES);
+	StringMap modifiesMap = dataAccessLayer->getClause(MODIFIES);
+	StringMap usesInverseMap = dataAccessLayer->getClauseInverse(USES);
 	unordered_set<string> results;
 
 	for (string assignment : assignments) {
 		string startingLine = assignment;
 		unordered_set<string> childrenOfStartNode = filterMapKeyReturnSetValues(startingLine, cfg);
-		StringMap usesMap = dataAccessLayer->getClause(USES);
-		StringMap modifiesMap = dataAccessLayer->getClause(MODIFIES);
+		
 		string modifiedVar = returnSingleElementFromSet(modifiesMap[startingLine]); // get variable modified
-		StringMap usesInverseMap = dataAccessLayer->getClauseInverse(USES);
+		
 
 		// if no cfg, variable is not used in prog
 		if (childrenOfStartNode.empty()
@@ -417,8 +433,8 @@ shared_ptr<QueryResultsTable> AffectsWildcardSyn::evaluate(shared_ptr<DataAccess
 			visited.insert(parent);
 
 			// modified before reaching target, do not traverse further down that branch
-			if (parent != startingLine
-				&& containerHasKey(assignments, parent) && containerHasKey(modifiesMap[parent], modifiedVar)) {
+			if (parent != startingLine && !isContainerStmt(dataAccessLayer, parent)
+				&& containerHasKey(modifiesMap[parent], modifiedVar)) {
 				continue; // cannot break, as there may exist another path that does not modifies
 			}
 			for (string child : children) {
@@ -430,7 +446,6 @@ shared_ptr<QueryResultsTable> AffectsWildcardSyn::evaluate(shared_ptr<DataAccess
 				unordered_set<string> uses = usesMap[child]; // variables used at child node
 				if (containerHasKey(assignments, child) && containerHasKey(uses, modifiedVar)) { // is a valid affects
 					results.insert(child);
-					break; // i think its ok to not check further here
 				}
 			}
 
@@ -443,15 +458,15 @@ shared_ptr<QueryResultsTable> AffectsWildcardSyn::evaluate(shared_ptr<DataAccess
 shared_ptr<QueryResultsTable> AffectsWildcardWildcard::evaluate(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
 	StringMap cfg = dataAccessLayer->getClause(clause); // next table (CFG)
 	unordered_set<string> assignments = dataAccessLayer->getEntity(ASSIGN);
+	StringMap usesMap = dataAccessLayer->getClause(USES);
+	StringMap modifiesMap = dataAccessLayer->getClause(MODIFIES);
+	StringMap usesInverseMap = dataAccessLayer->getClauseInverse(USES);
 
 	for (string assignment : assignments) {
 		string startingLine = assignment;
 		unordered_set<string> childrenOfStartNode = filterMapKeyReturnSetValues(startingLine, cfg);
-		StringMap usesMap = dataAccessLayer->getClause(USES);
-		StringMap modifiesMap = dataAccessLayer->getClause(MODIFIES);
 		string modifiedVar = returnSingleElementFromSet(modifiesMap[startingLine]); // get variable modified
-		StringMap usesInverseMap = dataAccessLayer->getClauseInverse(USES);
-
+	
 		// if no cfg, variable is not used in prog
 		if (childrenOfStartNode.empty()
 			|| !containerHasKey(usesInverseMap, modifiedVar)) {
@@ -471,8 +486,8 @@ shared_ptr<QueryResultsTable> AffectsWildcardWildcard::evaluate(shared_ptr<DataA
 			visited.insert(parent);
 
 			// modified before reaching target, do not traverse further down that branch
-			if (parent != startingLine
-				&& containerHasKey(assignments, parent) && containerHasKey(modifiesMap[parent], modifiedVar)) {
+			if (parent != startingLine && !isContainerStmt(dataAccessLayer, parent)
+				&& containerHasKey(modifiesMap[parent], modifiedVar)) {
 				continue; // cannot break, as there may exist another path that does not modifies
 			}
 			for (string child : children) {
@@ -497,14 +512,14 @@ shared_ptr<QueryResultsTable> AffectsWildcardWildcard::evaluate(shared_ptr<DataA
 shared_ptr<QueryResultsTable> AffectsWildcardInt::evaluate(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
 	StringMap cfg = dataAccessLayer->getClause(clause); // next table (CFG)
 	unordered_set<string> assignments = dataAccessLayer->getEntity(ASSIGN);
+	StringMap usesMap = dataAccessLayer->getClause(USES);
+	StringMap modifiesMap = dataAccessLayer->getClause(MODIFIES);
+	StringMap usesInverseMap = dataAccessLayer->getClauseInverse(USES);
 
 	for (string assignment : assignments) {
 		string startingLine = assignment;
 		unordered_set<string> childrenOfStartNode = filterMapKeyReturnSetValues(startingLine, cfg);
-		StringMap usesMap = dataAccessLayer->getClause(USES);
-		StringMap modifiesMap = dataAccessLayer->getClause(MODIFIES);
 		string modifiedVar = returnSingleElementFromSet(modifiesMap[startingLine]); // get variable modified
-		StringMap usesInverseMap = dataAccessLayer->getClauseInverse(USES);
 
 		// if no cfg, variable is not used in prog
 		if (childrenOfStartNode.empty()
@@ -525,8 +540,8 @@ shared_ptr<QueryResultsTable> AffectsWildcardInt::evaluate(shared_ptr<DataAccess
 			visited.insert(parent);
 
 			// modified before reaching target, do not traverse further down that branch
-			if (parent != startingLine
-				&& containerHasKey(assignments, parent) && containerHasKey(modifiesMap[parent], modifiedVar)) {
+			if (parent != startingLine && !isContainerStmt(dataAccessLayer, parent)
+				&& containerHasKey(modifiesMap[parent], modifiedVar)) {
 				continue; // cannot break, as there may exist another path that does not modifies
 			}
 			for (string child : children) {
