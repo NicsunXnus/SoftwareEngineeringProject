@@ -15,7 +15,7 @@ void DesignExtractor::extractAbstractions(shared_ptr<ProcessedProgram> processed
         ThreadPool threadPool;
 
         // Define tasks and add them to the thread pool
-        threadPool.addTask(&ParentsExtractor::extractAbstractions, this->parentsExtractor, processedProgram);
+        threadPool.addTask(&ParentExtractor::extractAbstractions, this->parentsExtractor, processedProgram);
         threadPool.addTask(&FollowsExtractor::extractAbstractions, this->followsExtractor, processedProgram);
         threadPool.addTask(&CallsExtractor::extractAbstractions, this->callsExtractor, processedProgram);
         threadPool.addTask(&UsesExtractor::extractAbstractions, this->usesExtractor, processedProgram);

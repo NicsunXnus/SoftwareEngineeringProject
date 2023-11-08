@@ -1,4 +1,4 @@
-#include "ParentsExtractor.h"
+#include "ParentExtractor.h"
 
 void ParentsExtractor::extract(shared_ptr<ProcessedStmtList> processedStmtList, string parentStatementNumber) {
     for (auto& stmt : processedStmtList->getStmts()) {

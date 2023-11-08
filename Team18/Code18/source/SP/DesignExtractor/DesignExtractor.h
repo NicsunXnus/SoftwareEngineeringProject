@@ -7,7 +7,7 @@
 using namespace std;
 
 #include "EntityExtractor.h"
-#include "ParentsExtractor.h"
+#include "ParentExtractor.h"
 #include "FollowsExtractor.h"
 #include "UsesExtractor.h"
 #include "ModifiesExtractor.h"
@@ -27,7 +27,7 @@ public:
     // Constructor
     DesignExtractor()
     : entityExtractor(make_shared<EntityExtractor>()),
-      parentsExtractor(make_shared<ParentsExtractor>()),
+      parentsExtractor(make_shared<ParentExtractor>()),
       followsExtractor(make_shared<FollowsExtractor>()),
       usesExtractor(make_shared<UsesExtractor>()),
       modifiesExtractor(make_shared<ModifiesExtractor>()),
@@ -77,7 +77,7 @@ public:
     
 private:
     shared_ptr<EntityExtractor> entityExtractor;
-    shared_ptr<ParentsExtractor> parentsExtractor;
+    shared_ptr<ParentExtractor> parentsExtractor;
     shared_ptr<FollowsExtractor> followsExtractor;
     shared_ptr<UsesExtractor> usesExtractor;
     shared_ptr<ModifiesExtractor> modifiesExtractor;
