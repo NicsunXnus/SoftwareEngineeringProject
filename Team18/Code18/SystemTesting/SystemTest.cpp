@@ -174,5 +174,12 @@ TEST_CLASS(Milestone2) {
             assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
         }
 
+        TEST_METHOD(AffectsTests)
+        {
+            string srcFilePath = defaultPath + "affects_source.txt";
+            string queryFilePath = defaultPath + "affects_queries.txt";
+            assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+        }
+
 	};
 }
