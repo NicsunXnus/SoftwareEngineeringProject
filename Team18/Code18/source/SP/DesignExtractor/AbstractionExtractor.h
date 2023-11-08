@@ -35,7 +35,6 @@ public:
     void insertToAbstractionMap(string key, string value);
     void insertIntoMap(string key, string statementNumber, shared_ptr<StringMap> map);
 
-
 protected:
     shared_ptr<StringMap> AbstractionStorageMap;  
     
