@@ -27,6 +27,7 @@ class DataAccessLayer;
 /// </summary>
 class ExtendedCFG {
 private:
+  size_t maxStmtNum;
   map<string, pair<string, string>> stmtNumBoundaries; // boundaries of each procedure in terms of statement numbers
   unordered_set<string> procNames;
   StringMap next; // children nodes
@@ -138,7 +139,14 @@ private:
   /// the usage of DFSPathNodes, and are passed to unrollPaths when the DFS has no more paths to explore.
   /// </summary>
   /// <param name="start">The start statement number</param>
-  void DFS(string start, bool calculateAffects);
+  void DFS(string start, bool calculateAffects, bool calcInverse);
+
+  /// <summary>
+  /// Inverse DFS Traversal Method.
+  /// 
+  /// Traverses from a given end node until the end node.
+  /// </summary>
+  void InverseDFS(string end, bool calculateAffects);
 
   // GROUP: Unroll functions
 
@@ -159,6 +167,9 @@ private:
   // Should be called within each iteration of a path unrolling.
   // Cuts short if the given statement is not an assignment statement.
   void unrollAffectsHelper(deque<string>& descendants, shared_ptr<DFSPathNode>& curr, string currLineNumber);
+
+  // Unrolls one path
+  void unrollOnePath(shared_ptr<DFSPathNode> currPath, bool calculateAffects);
 
   /// <summary>
   /// Unrolls the paths given by DFS. 
