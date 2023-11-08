@@ -29,4 +29,7 @@ public:
     void extract(shared_ptr<ProcessedIfStmt> processedIf, unordered_set<string>& prevStatementNumbers) override;
 
     void insertKeyToAbstractionMap(string key);
+
+    // This method is used to assist with the extraction of the abstraction
+    void traverse(vector<shared_ptr<ProcessedStmt>> Statements);
 };

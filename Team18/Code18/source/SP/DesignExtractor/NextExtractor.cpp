@@ -1,8 +1,7 @@
 #include "NextExtractor.h"
 
 void NextExtractor::extract(shared_ptr<ProcessedStmtList> processedStmtList) {
-	unordered_set<string> prevStatementNumbers;
-	this->extract(processedStmtList, prevStatementNumbers);
+	this->traverse(processedStmtList->getStmts());
 }
 
 unordered_set<string> NextExtractor::extract(shared_ptr<ProcessedStmtList> processedStmtList, unordered_set<string>& prevStatementNumbers) {
@@ -66,4 +65,23 @@ void NextExtractor::insertKeyToAbstractionMap(string key) {
     if (getStorageMap()->find(key) == getStorageMap()->end()) {
 		getStorageMap()->insert({ key, {}});
     }
+}
+
+void NextExtractor::traverse(vector<shared_ptr<ProcessedStmt>> processedStatements) {
+	unordered_set<string> prevStatementNumbers;
+	for (auto& stmt : processedStatements) {
+		string statementNumber = stmt->getStatementNumberInString();
+		if (!prevStatementNumbers.empty()) {
+			for (const auto& prevStatementNumber : prevStatementNumbers) {
+				insertToAbstractionMap(prevStatementNumber, statementNumber);
+			}
+			prevStatementNumbers.clear();
+		}
+		stmt->accept(shared_from_this(), prevStatementNumbers);
+
+		if (stmt == processedStatements.back()) {
+			insertKeyToAbstractionMap(statementNumber);
+			prevStatementNumbers.insert(statementNumber);
+		}
+	}
 }
