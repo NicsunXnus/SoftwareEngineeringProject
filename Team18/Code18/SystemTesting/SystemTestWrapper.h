@@ -1,6 +1,8 @@
 #pragma once
 
+#include <chrono>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -14,7 +16,7 @@
 using Microsoft::VisualStudio::CppUnitTestFramework::Logger;
 
 class SystemTestWrapper {
- private:
+private:
   // Splits into individual queries
   // 1 - assign
   // assign a;
@@ -22,34 +24,28 @@ class SystemTestWrapper {
   // 3, 4
   // 5000
   // Returns: vector(query, expected_results_list)
-  static vector<pair<string, list<string>>>
-  unpackQueryFile(string queryFilePath) {
+  static vector<tuple<string, list<string>, long long>>
+    unpackQueryFile(string queryFilePath) {
     ifstream infile(queryFilePath);
     string tempQuery = "";
     string line;
-    vector<pair<string, list<string>>> out;
+    vector<tuple<string, list<string>, long long>> out;
     while (getline(infile, line)) {  // first line is useless, only for comments
-      for (int _ = 0; _ < 2;
-           _++) {  // next 2 lines are for declaration and query
+      tempQuery = "";
+      for (int _ = 0; _ < 2; _++) {
+        // next 2 lines are for declaration and query
         getline(infile, line);
         tempQuery += line;
       }
       getline(infile, line);  // this line is for results
       list<string> results;
-      if (line == "semantic error") {
-        results.push_back("semantic error");
-        out.push_back(
-            pair<string, list<string>>(tempQuery, results));
-      } else {
-        vector<string> split = splitString(line, ",");
-        for (string s : split) {
-          results.push_back(trimWhitespaces(s));
-        }
-        out.push_back(
-            pair<string, list<string>>(tempQuery, results));
+      vector<string> split = splitString(line, ",");
+      for (string s : split) {
+        results.push_back(trimWhitespaces(s));
       }
-      tempQuery = "";
       getline(infile, line);  // this line is for time limit
+      out.push_back(
+        tuple<string, list<string>, long long>(tempQuery, results, stoi(line)));
     }
     return out;
   }
@@ -57,49 +53,67 @@ class SystemTestWrapper {
   // checks if two lists are equal by converting them to a set and then
   // performing equality checks
   static bool checkListEquality(list<string> left,
-                                list<string> right) {
+    list<string> right) {
     unordered_set<string> leftSet;
     unordered_set<string> rightSet;
     copy(left.begin(), left.end(),
-              inserter(leftSet, leftSet.begin()));
+      inserter(leftSet, leftSet.begin()));
     copy(right.begin(), right.end(),
-              inserter(rightSet, rightSet.begin()));
+      inserter(rightSet, rightSet.begin()));
     return leftSet == rightSet;
   }
+  template<typename T>
+  static string numToFixedLenStr(T number, int strLen) {
+    std::stringstream ss;
+    ss << std::setw(strLen) << std::setfill(' ') << number;
+    return ss.str();
+  }
 
- public:
+public:
   static bool run(string srcFilePath, string queryFilePath,
-                  bool debugMode = true) {
+    bool debugMode = true) {
     ApplicationWrapper applicationWrapper;
     applicationWrapper.parse(srcFilePath);
     bool isAllOk = true;
     vector<bool> queryResults;
-    vector<pair<string, list<string>>> unpacked =
-        unpackQueryFile(queryFilePath);
+    vector<tuple<string, list<string>, long long>> unpacked =
+      unpackQueryFile(queryFilePath);
     for (int i = 1; i < unpacked.size() + 1; i++) {
-      pair<string, list<string>> curr = unpacked[i - 1];
-      string query = curr.first;
-      list<string> expected = curr.second;
+      tuple<string, list<string>, long long> curr = unpacked[i - 1];
+      string query = get<0>(curr);
+      list<string> expected = get<1>(curr);
+      long long timeLimit = get<2>(curr);
 
       list<string> results = {};
+      auto start = chrono::high_resolution_clock::now();
       applicationWrapper.evaluate(query, results);
+      auto stop = chrono::high_resolution_clock::now();
+      auto duration = chrono::duration_cast<chrono::milliseconds>(stop - start);
+      long long timeTaken = duration.count();
+
+      bool TLE = timeTaken > timeLimit;
       bool passed = checkListEquality(expected, results);
       if (debugMode) {
-        string passedStr = passed ? " passed" : " failed";
+        string passedStr = passed
+          ? TLE
+          ? " TLE   "
+          : " passed"
+          : " failed";
         Logger::WriteMessage(
-            ("! Query Number " + to_string(i) + passedStr + " !").c_str());
-        // cout << "Query Number " << to_string(i) << endl;
+          ("Query  " + numToFixedLenStr(i, 3) + passedStr + " | ").c_str());
+        string time = "Time Taken: " + numToFixedLenStr(timeTaken, 5) +
+          " / " + numToFixedLenStr(timeLimit, 4) + " | ";
+        Logger::WriteMessage(time.c_str());
         string tempActl = "Actual: ";
         string tempExp = "Expected: ";
         for (auto r : results) {
           tempActl += r + " ";
-          // cout << r << " " << endl;
         }
         for (auto r : expected) {
           tempExp += r + " ";
-          // cout << r << " " << endl;
         }
         Logger::WriteMessage(tempExp.c_str());
+        Logger::WriteMessage("| ");
         Logger::WriteMessage(tempActl.c_str());
         Logger::WriteMessage(string("\n").c_str());
       }
