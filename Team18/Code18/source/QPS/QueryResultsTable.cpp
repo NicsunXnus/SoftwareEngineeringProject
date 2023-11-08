@@ -103,8 +103,10 @@ shared_ptr<QueryResultsTable> QueryResultsTable::removeDuplicates() {
   int numCols = QueryResultsTable::getNumberOfCols();
   int numRows = QueryResultsTable::getNumberOfRows();
 
-  if (numRows == 0) {
-    return QueryResultsTable::createEmptyTableWithHeaders(getHeaders());
+  if (numRows == 0 || numCols == 0) {
+      shared_ptr<QueryResultsTable> returnTable = QueryResultsTable::createEmptyTableWithHeaders(getHeaders());
+      returnTable->setSignificant(isSignificant);
+      return returnTable;
   }
 
   // store all existing rows in a set

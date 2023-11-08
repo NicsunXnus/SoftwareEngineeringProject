@@ -1,29 +1,29 @@
-7 - syn, syn - test attr, swap back later
+1 - syn, syn - test attr, swap back later
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
 Select <r.value, r.stmt#> such that Modifies(r, "x")
 SemanticError
 5000
-7 - syn, syn - test attr, swap back later
+2 - syn, syn - test attr, swap back later
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
 Select <r.varName, r.stmt#> such that Modifies(r, "x")
 1 x
 5000
-7 - syn, syn - test cache
+3 - syn, syn - test cache
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
 Select <p, r> such that Modifies(r, "x")
 First 1, Second 1, Third 1
 5000
-7 - syn, syn - test cache
+4 - syn, syn - test cache
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
 Select <r, r> such that Modifies(r, "x")
 1 1
 5000
-7 - syn, syn - test cache
+5 - syn, syn - test cache
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
 Select <r, r> such that Modifies(r, "x")
 1 1
 5000
-7 - syn, syn - test cache
+6 - syn, syn - test cache
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
 Select <r, r>
 1 1, 2 2, 19 19
@@ -33,67 +33,67 @@ stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v;
 Select BOOLEAN such that Affects(a,a1) such that Affects(a,a1)
 TRUE
 5000
-7 - syn, syn - loop
+8 - syn, syn - loop
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
 Select BOOLEAN such that Affects(a,s1)
 TRUE
 5000
-7 - syn, syn - loop
+9 - syn, syn - loop
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
 Select a1 such that Affects(a,a1)
 7, 9, 11, 13, 14, 15,17
 5000
-7 - syn, syn - loop
+10 - syn, syn - loop
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
 Select a such that Affects(a,a1)
 4,5,7,9,11, 12,13,14,16
 5000
-7 - syn, syn - loop
+11 - syn, syn - loop
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
 Select a such that Affects(a,a)
 7, 9
 5000
-7 - syn, syn - loop
+12 - syn, syn - loop
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
 Select BOOLEAN such that Affects(_,7)
 TRUE
 5000
-7 - syn, syn - loop
+13 - syn, syn - loop
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
 Select BOOLEAN such that Affects(_,6)
 FALSE
 5000
-7 - syn, syn - loop
+14 - syn, syn - loop
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
 Select BOOLEAN such that Affects(_,3)
 FALSE
 5000
-7 - syn, syn - loop
+15 - syn, syn - loop
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
 Select BOOLEAN such that Affects(_,_)
 TRUE
 5000
-7 - syn, syn - loop
+16 - syn, syn - loop
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
 Select a1 such that Affects(_,a1)
 7, 9, 11, 13, 14, 15,17
 5000
-7 - syn, syn - loop
+17 - syn, syn - loop
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
 Select BOOLEAN such that Affects(19,_)
 FALSE
 5000
-7 - syn, syn - loop
+18 - syn, syn - loop
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
 Select BOOLEAN such that Affects(9,_)
 TRUE
 5000
-7 - syn, syn - loop
+19 - syn, syn - loop
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
 Select BOOLEAN such that Affects(4,_)
 TRUE
 5000
-7 - syn, syn - loop
+20 - syn, syn - loop
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
 Select BOOLEAN such that Affects(3,_)
 FALSE
