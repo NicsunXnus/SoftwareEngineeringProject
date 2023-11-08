@@ -58,6 +58,7 @@ void GroupClause::reduceToOne() {
             //do cross product
             intermediateTable = intermediateTable->crossProduct(currTable);
         }
+        intermediateTable = intermediateTable->removeDuplicates();
     }
     members = { intermediateTable };
 }

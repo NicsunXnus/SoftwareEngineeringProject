@@ -23,6 +23,7 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
 			continue; // cache hit
 		}
 		shared_ptr<QueryResultsTable> table = obj->callAndProcess(dataAccessLayer);
+		table = table->removeDuplicates();
 		queryResultsTables.push_back(table);
 		if (obj->shouldCache()) {
 			cache->insert(obj->getCacheName(), table);
