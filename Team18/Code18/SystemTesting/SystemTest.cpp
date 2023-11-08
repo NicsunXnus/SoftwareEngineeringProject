@@ -160,7 +160,7 @@ TEST_CLASS(Milestone2) {
             assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
         }
 
-        TEST_METHOD(RandomCase)
+        TEST_METHOD(Random_HY)
         {
             string srcFilePath = defaultPath + "Sample_source8nov.txt";
             string queryFilePath = defaultPath + "Sample_queries8nov_extract.txt";
