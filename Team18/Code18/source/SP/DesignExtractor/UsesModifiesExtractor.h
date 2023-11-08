@@ -26,7 +26,6 @@ public:
         callsExtractor(make_shared<CallsExtractor>()) {}
 
     void extractAbstractions(shared_ptr<ProcessedProgram> processedProgram) override;
-    void extract(shared_ptr<ProcessedProgram> processedProgram) override;
     void extract(shared_ptr<ProcessedStmtList> processedStmtList, string parentConditionalStatementNumber);
     void extract(shared_ptr<ProcessedCallStmt> processedCallStmt) override;
 

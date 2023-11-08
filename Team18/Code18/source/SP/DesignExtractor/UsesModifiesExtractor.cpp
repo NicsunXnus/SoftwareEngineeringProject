@@ -3,20 +3,13 @@
 void UsesModifiesExtractor::extractAbstractions(shared_ptr<ProcessedProgram> processedProgram) {
     this->callsExtractor->extractAbstractions(processedProgram);
     createCallsProcedureParentProcedureMap(this->callsExtractor->getStorageStarMap());
-    extract(processedProgram);
+    this->extract(processedProgram);
     processIndirectProcedureCalls();
     processNestedIfWhileStatements();
 }
 
 string UsesModifiesExtractor::getProcedureNameFromStatementNumber(string lineNumber) {
     return this->callsExtractor->getProcedureNameFromStatementNumber(lineNumber);
-}
-
-void UsesModifiesExtractor::extract(shared_ptr<ProcessedProgram> processedProgram) {
-    vector<shared_ptr<ProcessedProcedure>> procedures = processedProgram->getAllProcedures();
-    for (shared_ptr<ProcessedProcedure> procedure : procedures) {
-        procedure->accept(shared_from_this());
-    }
 }
 
 void UsesModifiesExtractor::extract(shared_ptr<ProcessedStmtList> processedStmtList, string parentConditionalStatementNumber) {

@@ -23,7 +23,6 @@ public:
         this->procedureLineNumberExtractor = make_shared<ProcedureLineNumberExtractor>();
     }
     
-    void extract(shared_ptr<ProcessedProgram> processedProgram) override;
     void extract(shared_ptr<ProcessedCallStmt> processedCall) override;
 
     string getProcedureNameFromStatementNumber(string lineNumber);
