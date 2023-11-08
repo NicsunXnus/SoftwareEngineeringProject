@@ -24,10 +24,17 @@ unordered_set<string> ExtendedCFG::getUsedVariables(string stmtNumber) {
 }
 
 // DFS FUNCTIONS
+void ExtendedCFG::DFSIncompletePathsHelper(stack<shared_ptr<DFSPathNode>>& incompletePaths, 
+  shared_ptr<DFSPathNode> toAdd, string currLineNum) {
+  string nextLineNumber = toAdd->getLineNumber();
+  addNextStarInv(currLineNum, nextLineNumber);
+  incompletePaths.push(toAdd);
+}
+
 void ExtendedCFG::DFSIfHelper(stack<shared_ptr<DFSPathNode>>& incompletePaths, shared_ptr<DFSPathNode>& curr, unordered_set<string>& nextNodes) {
   unordered_set<shared_ptr<DFSPathNode>> newPaths = DFSPathNode::diverge(curr, nextNodes);
   for (shared_ptr<DFSPathNode> path : newPaths) {
-    incompletePaths.push(path);
+    DFSIncompletePathsHelper(incompletePaths, path, curr->getLineNumber());
   }
 }
 
@@ -38,7 +45,7 @@ void ExtendedCFG::DFSWhileHelper(stack<shared_ptr<DFSPathNode>>& incompletePaths
     // First time visiting. Diverge paths one towards while block, one towards next stmt in same stmtList if applicable.
     unordered_set<shared_ptr<DFSPathNode>> newPaths = DFSPathNode::diverge(curr, nextNodes);
     for (shared_ptr<DFSPathNode> path : newPaths) {
-      incompletePaths.push(path);
+      DFSIncompletePathsHelper(incompletePaths, path, currLineNumber);
     }
   }
   else if (thisWhileVisitCount == 2) {
@@ -49,7 +56,7 @@ void ExtendedCFG::DFSWhileHelper(stack<shared_ptr<DFSPathNode>>& incompletePaths
     for (string nextNodeStr : nextNodes) {
       minimum = std::min(stoul(nextNodeStr), minimum);
     }
-    incompletePaths.push(DFSPathNode::traverse(curr, to_string(minimum)));
+    DFSIncompletePathsHelper(incompletePaths, DFSPathNode::traverse(curr, to_string(minimum)), currLineNumber);
   }
   else if (thisWhileVisitCount == 3) {
     // Third time visiting. This is only possible for the path that went into the loop, and had went into the loop again once.
@@ -67,7 +74,7 @@ void ExtendedCFG::DFSWhileHelper(stack<shared_ptr<DFSPathNode>>& incompletePaths
       maximum = std::max(stoul(nextNodeStr), maximum);
     }
     string nextLineNumber = to_string(maximum);
-    incompletePaths.push(DFSPathNode::traverse(curr, nextLineNumber));
+    DFSIncompletePathsHelper(incompletePaths, DFSPathNode::traverse(curr, nextLineNumber), currLineNumber);
   }
 
 }
@@ -79,7 +86,7 @@ void ExtendedCFG::DFSEncounteredCacheHelper(unordered_set<shared_ptr<DFSPathNode
   finishedPaths.insert(restoredPaths.begin(), restoredPaths.end());
 }
 
-void ExtendedCFG::DFS(string start) {
+void ExtendedCFG::DFS(string start, bool calculateAffects) {
   stack<shared_ptr<DFSPathNode>> incompletePaths;
   unordered_set<shared_ptr<DFSPathNode>> finishedPaths;
   shared_ptr<DFSPathNode> startNode = make_shared<DFSPathNode>(start); // holds on to the start node
@@ -89,7 +96,9 @@ void ExtendedCFG::DFS(string start) {
   while (!incompletePaths.empty()) {
     curr = incompletePaths.top(); incompletePaths.pop();
     string currLineNumber = curr->getLineNumber();
-    if (isCompleted(currLineNumber)) {
+    bool affectsCompletedCheck = !calculateAffects || isAffectsCompleted(currLineNumber);
+    bool nextStarCompletedCheck = isNextStarCompleted(currLineNumber);
+    if (nextStarCompletedCheck && affectsCompletedCheck) {
       // skip traversing, allow unrolling from completed node upwards
       DFSEncounteredCacheHelper(finishedPaths, curr);
       continue;
@@ -114,10 +123,10 @@ void ExtendedCFG::DFS(string start) {
       continue;
     }
     // regular statements should only have 1 next node
-    incompletePaths.push(DFSPathNode::traverse(curr, *(nextNodes.begin())));
-
+    
+    DFSIncompletePathsHelper(incompletePaths, DFSPathNode::traverse(curr, *(nextNodes.begin())), currLineNumber);
   }
-  unrollPaths(finishedPaths);
+  unrollPaths(finishedPaths, calculateAffects);
 }
 
 // UNROLL FUNCTIONS
@@ -144,7 +153,6 @@ void ExtendedCFG::restoreDescendants(deque<string>& descendants, shared_ptr<DFSP
 }
 
 void ExtendedCFG::unrollPathsIteratorHelper(string currLineNumber, deque<string>& descendants, shared_ptr<DFSPathNode>& curr) {
-  completed.insert(currLineNumber);
   storePath(currLineNumber, curr);
   descendants.push_front(currLineNumber); // closely related descendants are at the front of the queue
   curr = curr->getParent();
@@ -157,7 +165,8 @@ void ExtendedCFG::addNextStar(string lineNumber, string toAdd) {
   else {
     nextStar.at(lineNumber).insert(toAdd);
   }
-
+}
+void ExtendedCFG::addNextStarInv(string lineNumber, string toAdd) {
   if (nextStarInverse.find(toAdd) == nextStarInverse.end()) {
     nextStarInverse.emplace(toAdd, unordered_set<string>{lineNumber});
   }
@@ -183,13 +192,16 @@ void ExtendedCFG::addAffects(string lineNumber, string toAdd) {
 }
 
 void ExtendedCFG::unrollNextStarHelper(string currLineNumber, deque<string>& descendants) {
-  for (string descendant : descendants) {
-    addNextStar(currLineNumber, descendant);
-  }
+  nextStarCompleted.insert(currLineNumber);
+  addNextStar(currLineNumber, descendants[0]);
+  //for (string descendant : descendants) {
+  //  addNextStar(currLineNumber, descendant);
+  //}
 }
 
 // returns true if the loop iteration should be skipped.
 void ExtendedCFG::unrollAffectsHelper(deque<string>& descendants, shared_ptr<DFSPathNode>& curr, string currLineNumber) {
+  affectsCompleted.insert(currLineNumber);
   if (!isStmtType(currLineNumber, ASSIGN)) {
     return;
   }
@@ -225,7 +237,7 @@ void ExtendedCFG::unrollAffectsHelper(deque<string>& descendants, shared_ptr<DFS
 
 }
 
-void ExtendedCFG::unrollPaths(unordered_set<shared_ptr<DFSPathNode>>& finishedPaths) {
+void ExtendedCFG::unrollPaths(unordered_set<shared_ptr<DFSPathNode>>& finishedPaths, bool calculateAffects) {
   for (shared_ptr<DFSPathNode> currPath : finishedPaths) {
     bool terminalNode = true;
     deque<string> descendants;
@@ -234,14 +246,19 @@ void ExtendedCFG::unrollPaths(unordered_set<shared_ptr<DFSPathNode>>& finishedPa
       string currLineNumber = curr->getLineNumber();
       if (terminalNode) {
         terminalNode = false;
-        restoreDescendants(descendants, curr);
+        if (calculateAffects) {
+          restoreDescendants(descendants, curr);
+        }
         unrollPathsIteratorHelper(currLineNumber, descendants, curr);
+        nextStarCompleted.insert(currLineNumber);
+        affectsCompleted.insert(currLineNumber);
         continue;
       }
       // Not terminal Node
       unrollNextStarHelper(currLineNumber, descendants); // for Next*
-      //addNextStar(currLineNumber, descendants[0]); // for Next*
-      unrollAffectsHelper(descendants, curr, currLineNumber); // for affects
+      if (calculateAffects) {
+        unrollAffectsHelper(descendants, curr, currLineNumber); // for affects
+      }
       unrollPathsIteratorHelper(currLineNumber, descendants, curr); // to iterate
     }
 
@@ -301,21 +318,29 @@ string ExtendedCFG::getFirstLineNumberOfProc(string procName) {
   return stmtNumBoundaries.at(procName).first;
 }
 
-bool ExtendedCFG::isCompleted(string stmtNumber) {
-  return completed.find(stmtNumber) != completed.end();
+bool ExtendedCFG::isNextStarCompleted(string stmtNumber) {
+  return nextStarCompleted.find(stmtNumber) != nextStarCompleted.end();
 }
 
-bool ExtendedCFG::ensureCompleted(string lineNumber) {
+bool ExtendedCFG::isAffectsCompleted(string stmtNumber) {
+  return affectsCompleted.find(stmtNumber) != affectsCompleted.end();
+}
+
+bool ExtendedCFG::isCompleted(string stmtNumber) {
+  return isNextStarCompleted(stmtNumber) && isAffectsCompleted(stmtNumber);
+}
+
+bool ExtendedCFG::ensureCompleted(string lineNumber, bool calculateAffects) {
   if (!isValidLineNumber(lineNumber)) return false;
   if (!isCompleted(lineNumber)) {
-    DFS(lineNumber);
+    DFS(lineNumber, calculateAffects);
   }
   return true;
 }
 
-void ExtendedCFG::ensureProcCompleted(string procName) {
+void ExtendedCFG::ensureProcCompleted(string procName, bool calculateAffects) {
   string firstLine = getFirstLineNumberOfProc(procName);
-  ensureCompleted(firstLine);
+  ensureCompleted(firstLine, calculateAffects);
 }
 
 
@@ -331,26 +356,26 @@ bool ExtendedCFG::hasNextStarInv(string to) {
   return nextStarInverse.find(to) != nextStarInverse.end();
 }
 
-bool ExtendedCFG::intIntHelper(string from, string to) {
+bool ExtendedCFG::intIntHelper(string from, string to, bool calculateAffects) {
   if (!isInSameProcedure(from, to)) {
     return false;
   }
-  ensureCompleted(from);
+  ensureCompleted(from, calculateAffects);
   return true;
 }
 
-bool ExtendedCFG::synIntHelper(string lineNumber) {
+bool ExtendedCFG::synIntHelper(string lineNumber, bool calculateAffects) {
   string procName = procedureNameContainingThis(lineNumber);
   if (procName == INVALID_PROCEDURE) {
     return false;
   }
-  ensureProcCompleted(procName);
+  ensureProcCompleted(procName, calculateAffects);
   return true;
 }
 
 // NEXT STAR
 bool ExtendedCFG::nextStarIntInt(string from, string to) {
-  if (!intIntHelper(from, to)) return false;
+  if (!intIntHelper(from, to, false)) return false;
   bool resultsExist = hasNext(from);
   if (!resultsExist) {
     return false;
@@ -360,7 +385,7 @@ bool ExtendedCFG::nextStarIntInt(string from, string to) {
 }
 
 unordered_set<string> ExtendedCFG::nextStarSynInt(string to) {
-  bool isValid = synIntHelper(to);
+  bool isValid = synIntHelper(to, false);
   if (!isValid) {
     return {};
   }
@@ -373,7 +398,7 @@ unordered_set<string> ExtendedCFG::nextStarSynInt(string to) {
 }
 
 unordered_set<string> ExtendedCFG::nextStarIntSyn(string from) {
-  bool isValid = ensureCompleted(from);
+  bool isValid = ensureCompleted(from, false);
   if (!isValid) {
     return {};
   }
@@ -387,14 +412,14 @@ unordered_set<string> ExtendedCFG::nextStarIntSyn(string from) {
 
 StringMap ExtendedCFG::nextStarSynSyn() {
   for (string procName : procNames) {
-    ensureProcCompleted(procName);
+    ensureProcCompleted(procName, false);
   }
   return nextStar;
 }
 
 // AFFECTS
 bool ExtendedCFG::affectsIntInt(string from, string to) {
-  if (!intIntHelper(from, to)) return false;
+  if (!intIntHelper(from, to, true)) return false;
   bool resultsExist = hasAffects(from);
   if (!resultsExist) {
     return {};
@@ -404,7 +429,7 @@ bool ExtendedCFG::affectsIntInt(string from, string to) {
 }
 
 unordered_set<string> ExtendedCFG::affectsSynInt(string to) {
-  bool isValid = synIntHelper(to);
+  bool isValid = synIntHelper(to, true);
   if (!isValid) {
     return {};
   }
@@ -417,7 +442,7 @@ unordered_set<string> ExtendedCFG::affectsSynInt(string to) {
 }
 
 unordered_set<string> ExtendedCFG::affectsIntSyn(string from) {
-  bool isValid = ensureCompleted(from);
+  bool isValid = ensureCompleted(from, true);
   if (!isValid) {
     return {};
   }
@@ -431,7 +456,7 @@ unordered_set<string> ExtendedCFG::affectsIntSyn(string from) {
 
 StringMap ExtendedCFG::affectsSynSyn() {
   for (string procName : procNames) {
-    ensureProcCompleted(procName);
+    ensureProcCompleted(procName, true);
   }
   return affects;
 }
