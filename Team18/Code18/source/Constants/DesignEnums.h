@@ -55,6 +55,8 @@ enum ABSTRACTION {
     CALLS,
     CALLSSTAR,
     NEXT,
+    NEXTSTAR,
+    AFFECTS,
 };
 
 const map<string, ABSTRACTION> abstractionMap = {
@@ -67,6 +69,8 @@ const map<string, ABSTRACTION> abstractionMap = {
     {"calls", CALLS},
 	{"callsstar", CALLSSTAR},
 	{"next", NEXT},
+    {"nextstar", NEXTSTAR},
+	{"affects", AFFECTS}
 };
 
 static ABSTRACTION AbstractionStringToEnum(string abstraction) {

@@ -267,6 +267,9 @@
     <ClCompile Include="..\source\QPS\QueryObjects\ComparisonQueryObjectFactory.cpp">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryOptimiser.cpp">
+      <Filter>Source Files\QPS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\source\ApplicationWrapper.h">
@@ -549,7 +552,6 @@
     <ClInclude Include="..\source\Constants\QPSConstants.h">
       <Filter>Source Files\Constants</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\DesignExtractor\DesignExtractor.h" />
     <ClInclude Include="..\source\PKB.h" />
     <ClInclude Include="..\source\QPS\CFG\CFG.h">
       <Filter>Source Files\QPS\CFG</Filter>
@@ -559,6 +561,9 @@
     </ClInclude>
     <ClInclude Include="..\source\QPS\CFG\CFGCache.h">
       <Filter>Source Files\QPS\CFG</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryOptimiser.h">
+      <Filter>Source Files\QPS</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
