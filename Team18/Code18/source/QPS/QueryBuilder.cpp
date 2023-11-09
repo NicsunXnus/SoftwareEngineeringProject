@@ -23,10 +23,16 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
   queryOptimiser->groupQueryObjects();
   queryOptimiser->sortGroups();
   vector<shared_ptr<QueryGroup>> groups = queryOptimiser->getQueryGroups();
-  cout << "groups size: " << groups.size() << endl;
+  cout << "number of distinct groups: " << groups.size() << endl;
 
   // evaluate each group (sequentially), in the order 0, 1, 2,..
   for (shared_ptr<QueryGroup> group : groups) {
+    // print group
+    cout << "groups (after sorting): " << endl;
+    for (shared_ptr<QueryObject> obj : group->getClauses()) {
+	  cout << obj->getQueryObjectName() << " ";
+	}
+
     shared_ptr<QueryResultsTable> groupTable = buildGroupQuery(group);
     // if finalTable is empty, just set it to groupTable
     if (finalTable->isEmpty()) {
@@ -60,9 +66,8 @@ shared_ptr<QueryResultsTable> QueryBuilder::buildGroupQuery(
   // for loop. this will terminate this group's evaluation, which also
   // terminates future group's evaluation
 
-  // TODO
-  // augmentation: after every group, remove all columns of synonyms not in the
-  // select clause. dropColumns() then removeDuplicates().
+  // TODO: augmentation: after every group, remove all columns of synonyms not
+  // in the select clause. dropColumns() then removeDuplicates().
 
   vector<bool> usedQueryObjects(clauses.size(), false);
   unordered_set<string> usedSynonyms;
@@ -134,8 +139,6 @@ shared_ptr<QueryResultsTable> QueryBuilder::buildGroupQuery(
 int QueryBuilder::findNextQueryObjectIndex(
     vector<shared_ptr<QueryObject>> clauses, vector<bool> usedQueryObjects,
     unordered_set<string> usedSynonyms) {
-  // TODO: remove this
-  return 0;
 
   int noSynNext;
   for (int i = 0; i < clauses.size(); i++) {
@@ -145,7 +148,9 @@ int QueryBuilder::findNextQueryObjectIndex(
     noSynNext = i;
     // check if there are common synonyms with usedSynonyms
     shared_ptr<QueryObject> object = clauses[i];
-    unordered_set<string> obj_synonyms = object->getSynonyms();
+    // TODO: uncomment this!
+    // unordered_set<string> obj_synonyms = object->getSynonyms();
+    unordered_set<string> obj_synonyms = {};
     for (string synonym : obj_synonyms) {
       if (usedSynonyms.count(synonym)) {  // found common synonym
         return i;                         // optimalNext

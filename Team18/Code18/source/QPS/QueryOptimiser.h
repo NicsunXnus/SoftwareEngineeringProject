@@ -6,6 +6,7 @@
 #include "../Constants/DesignEnums.h"
 #include "../Constants/QPSConstants.h"
 #include "QueryObjects/QueryObject.h"
+#include "UnionFind.h"
 
 /**
  * This class groups and sorts queries based on different criteria.
@@ -61,7 +62,7 @@ class QueryOptimiser {
    * This is done by an adaptation of union-find algorithm.
    *
    * Sorting of groups will be done outside of this method.
-   * Updates numGroups field too.
+   * Updates queryGroups and numGroups too.
    */
   void groupQueryObjects();
 
@@ -89,6 +90,22 @@ class QueryOptimiser {
    * Calculates the heuristic score for a clause.
    */
   static int calculateHeuristic(shared_ptr<QueryObject> clause);
+
+  /**
+   * Creates and populates the queryGroups field, given groupings provided from
+   * Union-Find algorithm.
+   */
+  void createQueryGroups(vector<vector<shared_ptr<QueryObject>>> groups) {
+    numGroups = groups.size();
+
+    for (vector<shared_ptr<QueryObject>> group : groups) {
+      int groupScore = 0;
+      for (shared_ptr<QueryObject> obj : group) {
+        groupScore += QueryOptimiser::calculateHeuristic(obj);
+      }
+      queryGroups.push_back(make_shared<QueryGroup>(groupScore, group));
+    }
+  }
 };
 
 #endif

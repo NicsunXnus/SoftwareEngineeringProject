@@ -1,20 +1,42 @@
 #include "QueryOptimiser.h"
 
-// nonSelectClauseQueryObjects {0a, 0b, 1a, 1b, 1c, 1d, 2a, 2b, 2c }
-
-// group nonSelectClauseQueryObjects into groups. group 0 first (no syns), then
-// the distinct groups which share syns
-// within group 0, put most expensive clauses last (based on abstraction_weights
-// map) within each group (not group 0), sort by a heuristic that factors in:
-// 1. number of syns in the group 2. type of abstraction (abstraction_weights
-// map)
+// group 0 first (no syns), then the distinct groups which share syns
+// within groups, sort by abstraction_weights_map
 
 void QueryOptimiser::groupQueryObjects() {
   cout << "QueryObjects" << endl;
   for (shared_ptr<QueryObject> obj : unsortedQueryObjects) {
     cout << "obj: " << obj->getQueryObjectName() << endl;
   }
-  // TODO: union-find algorithm
+
+  UnionFind unionFind;
+  // Make a set for each shared_ptr<QueryObject>
+  for (const auto& obj : unsortedQueryObjects) {
+    unionFind.makeSet(obj);
+  }
+
+  // Union objects based on common synonyms
+  for (const auto& obj1 : unsortedQueryObjects) {
+    for (const auto& obj2 : unsortedQueryObjects) {
+      // TODO: uncomment this!
+      // if (obj1->getSynonyms().count(*obj2->getSynonyms().begin()) > 0) {
+      // unionFind.unite(obj1, obj2);
+      // }
+    }
+  }
+
+  vector<vector<shared_ptr<QueryObject>>> new_groups = unionFind.getGroups();
+
+  // update queryGroups and numGroups
+  createQueryGroups(new_groups);
+
+  for (const auto& group : new_groups) {
+    cout << "Group:";
+    for (const auto& obj : group) {
+      cout << " " << obj->getQueryObjectName();
+    }
+    cout << endl;
+  }
 }
 
 void QueryOptimiser::sortGroups() {
@@ -24,7 +46,15 @@ void QueryOptimiser::sortGroups() {
   // for each group, sort by heuristic
   auto groups_comparator = [](const shared_ptr<QueryGroup>& group1,
                               const shared_ptr<QueryGroup>& group2) {
+    // this check ensures that group 0 (with no syns) is always first
+    // TODO: uncomment this!
+    // if (group1->getClauses()[0]->getSynonyms().size() == 0) {
+    // return true;
+    // } else if (group2->getClauses()[0]->getSynonyms().size() == 0) {
+    // return false;
+    // } else {
     return group1->getGroupScore() < group2->getGroupScore();
+    // }
   };
   sort(queryGroups.begin(), queryGroups.end(), groups_comparator);
 }
@@ -50,7 +80,10 @@ void QueryOptimiser::sortWithinGroups() {
 }
 
 int QueryOptimiser::calculateHeuristic(shared_ptr<QueryObject> clause) {
-    // TODO: waiting for Jan to augment QueryObject info
+  // within each group (not group 0), sort by a heuristic that factors in:
+  // 1. number of syns in group 2. type of abstraction (abstraction_weights_map)
+
+  // TODO: waiting for Jan to augment QueryObject info
   /*return abstraction_weights_map[AbstractionStringToEnum(
              clause->getAbstraction())] *
              abstraction_criterion_weight +

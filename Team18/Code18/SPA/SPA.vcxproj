@@ -101,6 +101,7 @@
     <ClInclude Include="..\source\QPS\CFG\CFGCache.h" />
     <ClInclude Include="..\source\QPS\QRTCache.h" />
     <ClInclude Include="..\source\QPS\QueryOptimiser.h" />
+    <ClInclude Include="..\source\QPS\UnionFind.h" />
     <ClInclude Include="..\source\ThreadPool.h" />
     <ClInclude Include="..\source\PKB.h" />
     <ClInclude Include="..\source\PKB\Insertor.h" />
