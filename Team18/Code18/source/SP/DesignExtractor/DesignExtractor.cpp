@@ -15,7 +15,7 @@ void DesignExtractor::extractAbstractions(shared_ptr<ProcessedProgram> processed
         ThreadPool threadPool;
 
         // Define tasks and add them to the thread pool
-        threadPool.addTask(&ParentsExtractor::extractAbstractions, this->parentsExtractor, processedProgram);
+        threadPool.addTask(&ParentExtractor::extractAbstractions, this->parentsExtractor, processedProgram);
         threadPool.addTask(&FollowsExtractor::extractAbstractions, this->followsExtractor, processedProgram);
         threadPool.addTask(&CallsExtractor::extractAbstractions, this->callsExtractor, processedProgram);
         threadPool.addTask(&UsesExtractor::extractAbstractions, this->usesExtractor, processedProgram);
@@ -60,55 +60,55 @@ void DesignExtractor::extractNext(shared_ptr<ProcessedProgram> processedProgram)
     this->nextExtractor->extractAbstractions(processedProgram);
 }
 
-shared_ptr<map<string, unordered_set<string>>> DesignExtractor::getProcedureSetMap() {
+shared_ptr<StringMap> DesignExtractor::getProcedureSetMap() {
     return this->entityExtractor->getProcedureMap();
 }
-shared_ptr<map<string, unordered_set<string>>> DesignExtractor::getStatementSetMap() {
+shared_ptr<StringMap> DesignExtractor::getStatementSetMap() {
     return this->entityExtractor->getStatementMap();
 }
-shared_ptr<map<string, unordered_set<string>>> DesignExtractor::getVariableSetMap() {
+shared_ptr<StringMap> DesignExtractor::getVariableSetMap() {
     return this->entityExtractor->getVariableMap();
 }
-shared_ptr<map<string, unordered_set<string>>> DesignExtractor::getConstantSetMap() {
+shared_ptr<StringMap> DesignExtractor::getConstantSetMap() {
     return this->entityExtractor->getConstantMap();
 }
-shared_ptr<map<string, unordered_set<string>>> DesignExtractor::getCallProcNameMap() {
+shared_ptr<StringMap> DesignExtractor::getCallProcNameMap() {
     return this->entityExtractor->getCallProcNameMap();
 }
-shared_ptr<map<string, unordered_set<string>>> DesignExtractor::getReadVarNameMap() {
+shared_ptr<StringMap> DesignExtractor::getReadVarNameMap() {
     return this->entityExtractor->getReadVarNameMap();
 }
-shared_ptr<map<string, unordered_set<string>>> DesignExtractor::getPrintVarNameMap() {
+shared_ptr<StringMap> DesignExtractor::getPrintVarNameMap() {
     return this->entityExtractor->getPrintVarNameMap();
 }
 shared_ptr<map<string, shared_ptr<Node>>> DesignExtractor::getPatternMap() {
     return this->entityExtractor->getPatternMap();
 }
-shared_ptr<map<string, unordered_set<string>>> DesignExtractor::getParentMap() {
+shared_ptr<StringMap> DesignExtractor::getParentMap() {
     return this->parentsExtractor->getStorageMap();
 }
-shared_ptr<map<string, unordered_set<string>>> DesignExtractor::getParentStarMap() {
+shared_ptr<StringMap> DesignExtractor::getParentStarMap() {
     return this->parentsExtractor->getStorageStarMap();
 }
-shared_ptr<map<string, unordered_set<string>>> DesignExtractor::getFollowsMap() {
+shared_ptr<StringMap> DesignExtractor::getFollowsMap() {
     return this->followsExtractor->getStorageMap();
 }
-shared_ptr<map<string, unordered_set<string>>> DesignExtractor::getFollowsStarMap() {
+shared_ptr<StringMap> DesignExtractor::getFollowsStarMap() {
     return this->followsExtractor->getStorageStarMap();
 }
-shared_ptr<map<string, unordered_set<string>>> DesignExtractor::getUsesMap() {
+shared_ptr<StringMap> DesignExtractor::getUsesMap() {
     return this->usesExtractor->getStorageMap();
 }
-shared_ptr<map<string, unordered_set<string>>> DesignExtractor::getModifiesMap() {
+shared_ptr<StringMap> DesignExtractor::getModifiesMap() {
     return this->modifiesExtractor->getStorageMap();
 }
-shared_ptr<map<string, unordered_set<string>>> DesignExtractor::getCallsMap() {
+shared_ptr<StringMap> DesignExtractor::getCallsMap() {
     return this->callsExtractor->getStorageMap();
 }
-shared_ptr<map<string, unordered_set<string>>> DesignExtractor::getCallsStarMap() {
+shared_ptr<StringMap> DesignExtractor::getCallsStarMap() {
     return this->callsExtractor->getStorageStarMap();
 }
-shared_ptr<map<string, unordered_set<string>>> DesignExtractor::getNextMap() {
+shared_ptr<StringMap> DesignExtractor::getNextMap() {
     return this->nextExtractor->getStorageMap();
 }
 shared_ptr<map<string, pair<string, string>>> DesignExtractor::getProcedureStatementStorageMap() {
@@ -117,13 +117,13 @@ shared_ptr<map<string, pair<string, string>>> DesignExtractor::getProcedureState
 
 void DesignExtractor::insertEntities() {
     // Get the entity maps
-    static shared_ptr<map<string, unordered_set<string>>> procedureSet = this->entityExtractor->getProcedureMap();
-    static shared_ptr<map<string, unordered_set<string>>> variableSet = this->entityExtractor->getVariableMap();
-    static shared_ptr<map<string, unordered_set<string>>> constantSet = this->entityExtractor->getConstantMap();
-    static shared_ptr<map<string, unordered_set<string>>> statementSet = this->entityExtractor->getStatementMap();
-    static shared_ptr<map<string, unordered_set<string>>> callProcNameMap = this->entityExtractor->getCallProcNameMap();
-    static shared_ptr<map<string, unordered_set<string>>> readVarNameMap = this->entityExtractor->getReadVarNameMap();
-    static shared_ptr<map<string, unordered_set<string>>> printVarNameMap = this->entityExtractor->getPrintVarNameMap();
+    static shared_ptr<StringMap> procedureSet = this->entityExtractor->getProcedureMap();
+    static shared_ptr<StringMap> variableSet = this->entityExtractor->getVariableMap();
+    static shared_ptr<StringMap> constantSet = this->entityExtractor->getConstantMap();
+    static shared_ptr<StringMap> statementSet = this->entityExtractor->getStatementMap();
+    static shared_ptr<StringMap> callProcNameMap = this->entityExtractor->getCallProcNameMap();
+    static shared_ptr<StringMap> readVarNameMap = this->entityExtractor->getReadVarNameMap();
+    static shared_ptr<StringMap> printVarNameMap = this->entityExtractor->getPrintVarNameMap();
     static shared_ptr<map<string, shared_ptr<Node>>> patternMap = this->entityExtractor->getPatternMap();
     static shared_ptr<map<string, pair<string, string>>> procedureStatementStorageMap = this->procedureLineNumberExtractor->getProcedureStatementStorageMap();
 
@@ -141,15 +141,15 @@ void DesignExtractor::insertEntities() {
 
 void DesignExtractor::insertAbstractions() {
     // Get the Abstraction maps
-    static shared_ptr<map<string, unordered_set<string>>>  parentsSet = this->parentsExtractor->getStorageMap();
-    static shared_ptr<map<string, unordered_set<string>>>  followsSet = this->followsExtractor->getStorageMap();
-    static shared_ptr<map<string, unordered_set<string>>>  parentsStarSet = this->parentsExtractor->getStorageStarMap();
-    static shared_ptr<map<string, unordered_set<string>>>  followsStarSet = this->followsExtractor->getStorageStarMap();
-    static shared_ptr<map<string, unordered_set<string>>>  callSet = this->callsExtractor->getStorageMap();
-    static shared_ptr<map<string, unordered_set<string>>>  callStarSet = this->callsExtractor->getStorageStarMap();
-    static shared_ptr<map<string, unordered_set<string>>> modifiesSet = this->modifiesExtractor->getStorageMap();
-    static shared_ptr<map<string, unordered_set<string>>> usesSet = this->usesExtractor->getStorageMap();
-    static shared_ptr<map<string, unordered_set<string>>> nextSet = this->nextExtractor->getStorageMap();
+    static shared_ptr<StringMap>  parentsSet = this->parentsExtractor->getStorageMap();
+    static shared_ptr<StringMap>  followsSet = this->followsExtractor->getStorageMap();
+    static shared_ptr<StringMap>  parentsStarSet = this->parentsExtractor->getStorageStarMap();
+    static shared_ptr<StringMap>  followsStarSet = this->followsExtractor->getStorageStarMap();
+    static shared_ptr<StringMap>  callSet = this->callsExtractor->getStorageMap();
+    static shared_ptr<StringMap>  callStarSet = this->callsExtractor->getStorageStarMap();
+    static shared_ptr<StringMap> modifiesSet = this->modifiesExtractor->getStorageMap();
+    static shared_ptr<StringMap> usesSet = this->usesExtractor->getStorageMap();
+    static shared_ptr<StringMap> nextSet = this->nextExtractor->getStorageMap();
 
     // // Insert the abstractions into the PKB
     
