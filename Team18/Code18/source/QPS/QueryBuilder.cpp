@@ -3,7 +3,6 @@
 #include "QueryBuilder.h"
 
 #include "../ThreadPool.h"
-#include "OptimisedSortingClauses.h"
 #include "QRTCache.h"
 #include "QueryObjects/ClauseObject.h"
 #include "QueryObjects/DesignObjects.h"
@@ -13,46 +12,6 @@
 // Takes in a vector of Query objects and then returns a vector of
 // QueryResultsTable. This vector will be passed to ResultHandler to process
 // (inner join etc) the various tables of the clauses
-
-// tables must be non-empty
-shared_ptr<QueryResultsTable> joinIntermediateTables(vector<shared_ptr<QueryResultsTable>> tables) {
-	shared_ptr<QueryResultsTable> intermediateTable = tables[0];
-	tables.erase(tables.begin());
-	shared_ptr<QueryResultsTable> currTable;
-	for (shared_ptr<QueryResultsTable> table : tables) {
-		currTable = table;
-		// for empty but significant tables
-		if (currTable->isEmpty()) {
-			if (currTable->getSignificant()) {
-				continue; // just keep current table
-			}
-			else { // no need to evaluate the rest of the query
-				return QueryResultsTable::createEmptyTable();
-			}
-
-		}
-		if (intermediateTable->haveSimilarHeaders(currTable)) {
-			//do inner join
-			intermediateTable = intermediateTable->innerJoinSet(currTable);
-		}
-		else {
-			//do cross product
-			intermediateTable = intermediateTable->crossProductSet(currTable);
-		}
-	}
-	return intermediateTable;
-}
-
-shared_ptr<QueryResultsTable> merge(vector<shared_ptr<QueryResultsTable>>::iterator left, vector<shared_ptr<QueryResultsTable>>::iterator right)
-{
-	if (left == right) return 0;
-	if (left + 1 == right) return *left;
-	int midPosition = (right - left) / 2;
-	vector<shared_ptr<QueryResultsTable>>::iterator mid = left + midPosition;
-	shared_ptr<QueryResultsTable> tab1 = merge(left, mid);
-	shared_ptr<QueryResultsTable> tab2 = merge(mid, right);
-	return joinIntermediateTables({ tab1, tab2 });
-}
 
 vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
   shared_ptr<QueryResultsTable> finalTable =
@@ -84,14 +43,10 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
     // if finalTable is empty, just set it to groupTable
     if (finalTable->isEmpty()) {
       finalTable = groupTable;
-      // cout << "finalTable: " << endl;
-      // finalTable->printTable();
       continue;
     }
     // no common synonyms. must cross product
     finalTable->crossProductSet(groupTable);
-    // cout << "finalTable: " << endl;
-    // finalTable->printTable();
     if (finalTable->isEmpty() && !finalTable->getSignificant()) {
       return {QueryResultsTable::createEmptyTable()};
     }
@@ -143,9 +98,6 @@ shared_ptr<QueryResultsTable> QueryBuilder::buildGroupQuery(
       cache->insert(nextObj->getCacheName(), table);
     }
 
-    // cout << "table: " << endl;
-    // table->printTable();
-
     // break out of loop if table is empty. lazy evaluation
     if (table->isEmpty() && !table->getSignificant()) {
       return QueryResultsTable::createEmptyTable();
@@ -154,22 +106,10 @@ shared_ptr<QueryResultsTable> QueryBuilder::buildGroupQuery(
     // if groupTable is empty, just set it to table
     if (groupTable->isEmpty()) {
       groupTable = table;
-      // cout << "groupTable: " << endl;
-      // groupTable->printTable();
       continue;
     }
-    // TODO: this should be innerJoin only! allow crossproduct now just for
-    // sanity testing
-    // if (groupTable->haveSimilarHeaders(table)) {
-    // inner join, given the guarantee of common synonyms
-    groupTable = groupTable->innerJoinSet(table);
-    //} else {
-    //  // inner join, given the guarantee of common synonyms
-    //  groupTable = groupTable->crossProduct(table);
-    //}
 
-    //cout << "groupTable: " << endl;
-    //groupTable->printTable();
+    groupTable = groupTable->innerJoinSet(table);
 
     // break out of loop if groupTable is empty. lazy evaluation
     if (groupTable->isEmpty() && !groupTable->getSignificant()) {
