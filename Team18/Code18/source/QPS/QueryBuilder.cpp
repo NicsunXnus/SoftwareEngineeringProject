@@ -18,33 +18,40 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
   shared_ptr<QueryResultsTable> finalTable =
       QueryResultsTable::createEmptyTable();
 
+  if (nonSelectClauseQueryObjects.empty()) return {};
+
   shared_ptr<QueryOptimiser> queryOptimiser =
       make_shared<QueryOptimiser>(nonSelectClauseQueryObjects);
   queryOptimiser->groupQueryObjects();
   queryOptimiser->sortGroups();
   vector<shared_ptr<QueryGroup>> groups = queryOptimiser->getQueryGroups();
   cout << "number of distinct groups: " << groups.size() << endl;
-
+  cout << "groups: " << endl;
   // evaluate each group (sequentially), in the order 0, 1, 2,..
   for (shared_ptr<QueryGroup> group : groups) {
     // print group
-    cout << "groups (after sorting): " << endl;
+    cout << "group (after sorting): " << endl;
     for (shared_ptr<QueryObject> obj : group->getClauses()) {
-	  cout << obj->getQueryObjectName() << " ";
-	}
+      cout << obj->getQueryObjectName() << " ";
+    }
+    cout << endl;
 
     shared_ptr<QueryResultsTable> groupTable = buildGroupQuery(group);
+    if (groupTable->isEmpty() && !groupTable->getSignificant()) {
+      return {QueryResultsTable::createEmptyTable()};
+    }
+
     // if finalTable is empty, just set it to groupTable
     if (finalTable->isEmpty()) {
       finalTable = groupTable;
-      cout << "finalTable: " << endl;
-      finalTable->printTable();
+      // cout << "finalTable: " << endl;
+      // finalTable->printTable();
       continue;
     }
     // no common synonyms. must cross product
     finalTable->crossProduct(groupTable);
-    cout << "finalTable: " << endl;
-    finalTable->printTable();
+    // cout << "finalTable: " << endl;
+    // finalTable->printTable();
     if (finalTable->isEmpty() && !finalTable->getSignificant()) {
       return {QueryResultsTable::createEmptyTable()};
     }
@@ -79,9 +86,8 @@ shared_ptr<QueryResultsTable> QueryBuilder::buildGroupQuery(
     shared_ptr<QueryObject> nextObj = clauses[nextObjIndex];
 
     usedQueryObjects[nextObjIndex] = true;
-    // TODO: uncomment this!
-    // usedSynonyms.insert(nextObj->getSynonyms().begin(),
-    // nextObj->getSynonyms().end());
+    shared_ptr<unordered_set<string>> thisSynonyms = nextObj->getSynonyms();
+    usedSynonyms.insert(thisSynonyms->begin(), thisSynonyms->end());
 
     cout << "query object chosen: " << nextObj->getQueryObjectName() << endl;
 
@@ -97,8 +103,8 @@ shared_ptr<QueryResultsTable> QueryBuilder::buildGroupQuery(
       cache->insert(nextObj->getCacheName(), table);
     }
 
-    cout << "table: " << endl;
-    table->printTable();
+    // cout << "table: " << endl;
+    // table->printTable();
 
     // break out of loop if table is empty. lazy evaluation
     if (table->isEmpty() && !table->getSignificant()) {
@@ -108,22 +114,22 @@ shared_ptr<QueryResultsTable> QueryBuilder::buildGroupQuery(
     // if groupTable is empty, just set it to table
     if (groupTable->isEmpty()) {
       groupTable = table;
-      cout << "groupTable: " << endl;
-      groupTable->printTable();
+      // cout << "groupTable: " << endl;
+      // groupTable->printTable();
       continue;
     }
     // TODO: this should be innerJoin only! allow crossproduct now just for
     // sanity testing
-    if (groupTable->haveSimilarHeaders(table)) {
-      // inner join, given the guarantee of common synonyms
-      groupTable = groupTable->innerJoin(table);
-    } else {
-      // inner join, given the guarantee of common synonyms
-      groupTable = groupTable->crossProduct(table);
-    }
+    // if (groupTable->haveSimilarHeaders(table)) {
+    // inner join, given the guarantee of common synonyms
+    groupTable = groupTable->innerJoin(table);
+    //} else {
+    //  // inner join, given the guarantee of common synonyms
+    //  groupTable = groupTable->crossProduct(table);
+    //}
 
-    cout << "groupTable: " << endl;
-    groupTable->printTable();
+    //cout << "groupTable: " << endl;
+    //groupTable->printTable();
 
     // break out of loop if groupTable is empty. lazy evaluation
     if (groupTable->isEmpty() && !groupTable->getSignificant()) {
@@ -139,19 +145,16 @@ shared_ptr<QueryResultsTable> QueryBuilder::buildGroupQuery(
 int QueryBuilder::findNextQueryObjectIndex(
     vector<shared_ptr<QueryObject>> clauses, vector<bool> usedQueryObjects,
     unordered_set<string> usedSynonyms) {
-
-  int noSynNext;
+  int noSynNext = -1;
   for (int i = 0; i < clauses.size(); i++) {
     if (usedQueryObjects[i]) {
       continue;
     }
-    noSynNext = i;
+    if (noSynNext == -1) noSynNext = i;
     // check if there are common synonyms with usedSynonyms
     shared_ptr<QueryObject> object = clauses[i];
-    // TODO: uncomment this!
-    // unordered_set<string> obj_synonyms = object->getSynonyms();
-    unordered_set<string> obj_synonyms = {};
-    for (string synonym : obj_synonyms) {
+    shared_ptr<unordered_set<string>> obj_synonyms = object->getSynonyms();
+    for (string synonym : *obj_synonyms) {
       if (usedSynonyms.count(synonym)) {  // found common synonym
         return i;                         // optimalNext
       }

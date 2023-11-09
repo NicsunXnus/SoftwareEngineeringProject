@@ -18,17 +18,17 @@ void QueryOptimiser::groupQueryObjects() {
   // Union objects based on common synonyms
   for (const auto& obj1 : unsortedQueryObjects) {
     for (const auto& obj2 : unsortedQueryObjects) {
-      // TODO: uncomment this!
-      // if (obj1->getSynonyms().count(*obj2->getSynonyms().begin()) > 0) {
-      // unionFind.unite(obj1, obj2);
-      // }
+      if (obj1 == obj2) continue;
+      if (obj1->getSynCount() == 0 || obj2->getSynCount() == 0) continue;
+      shared_ptr<unordered_set<string>> obj1Syns = obj1->getSynonyms();
+      shared_ptr<unordered_set<string>> obj2Syns = obj2->getSynonyms();
+      if (obj1Syns->count(*obj2Syns->begin()) > 0) {
+        unionFind.unite(obj1, obj2);
+      }
     }
   }
 
   vector<vector<shared_ptr<QueryObject>>> new_groups = unionFind.getGroups();
-
-  // update queryGroups and numGroups
-  createQueryGroups(new_groups);
 
   for (const auto& group : new_groups) {
     cout << "Group:";
@@ -37,6 +37,9 @@ void QueryOptimiser::groupQueryObjects() {
     }
     cout << endl;
   }
+
+  // update queryGroups and numGroups
+  createQueryGroups(new_groups);
 }
 
 void QueryOptimiser::sortGroups() {
@@ -47,14 +50,13 @@ void QueryOptimiser::sortGroups() {
   auto groups_comparator = [](const shared_ptr<QueryGroup>& group1,
                               const shared_ptr<QueryGroup>& group2) {
     // this check ensures that group 0 (with no syns) is always first
-    // TODO: uncomment this!
-    // if (group1->getClauses()[0]->getSynonyms().size() == 0) {
-    // return true;
-    // } else if (group2->getClauses()[0]->getSynonyms().size() == 0) {
-    // return false;
-    // } else {
-    return group1->getGroupScore() < group2->getGroupScore();
-    // }
+    if (group1->getClauses()[0]->getSynCount() == 0) {
+      return true;
+    } else if (group1->getClauses()[0]->getSynCount() == 0) {
+      return false;
+    } else {
+      return group1->getGroupScore() < group2->getGroupScore();
+    }
   };
   sort(queryGroups.begin(), queryGroups.end(), groups_comparator);
 }
@@ -83,10 +85,17 @@ int QueryOptimiser::calculateHeuristic(shared_ptr<QueryObject> clause) {
   // within each group (not group 0), sort by a heuristic that factors in:
   // 1. number of syns in group 2. type of abstraction (abstraction_weights_map)
 
-  // TODO: waiting for Jan to augment QueryObject info
-  /*return abstraction_weights_map[AbstractionStringToEnum(
-             clause->getAbstraction())] *
-             abstraction_criterion_weight +
-         clause->getSynCount() * synonym_count_weight;*/
-  return true;
+  int clauseScore;
+
+  string query_obj_string = svToString(clause->getQueryObjectName());
+  cout << "query_obj_string " << query_obj_string << endl;
+  if (query_obj_string == "Static=AttrRef") {
+    clauseScore = WITH_CLAUSE_SCORE;
+  } else {
+    ABSTRACTION abstraction = QueryObjStringToEnum(query_obj_string);
+    clauseScore =
+        abstraction_weights_map.at(abstraction) * ABSTRACTION_CRITERION_WEIGHT;
+  }
+  int synCountScore = clause->getSynCount() * SYNONYM_COUNT_WEIGHT;
+  return clauseScore + synCountScore;
 }
