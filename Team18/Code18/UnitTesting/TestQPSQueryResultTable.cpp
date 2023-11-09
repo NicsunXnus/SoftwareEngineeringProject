@@ -15,7 +15,7 @@ namespace UnitTesting
 	public:
         //PURELY FOR VISUALISATION
 		TEST_METHOD(TestMajorTableOperationsLeftToRight) {
-            unordered_set < unordered_map<string, string>> map1;
+            unordered_set < unordered_map<string, string>,QueryResultsTable::HashFunc, QueryResultsTable::EqualFunc> map1;
             unordered_map<string, string> m1;
             m1.insert({ "s3","5" }); m1.insert({ "v1","y" });
             map1.insert(m1);
@@ -33,7 +33,7 @@ namespace UnitTesting
             map1.insert(m5);
             shared_ptr<QueryResultsTable> tab1 = make_shared<QueryResultsTable>(map1);
 
-            unordered_set < unordered_map<string, string>> map3;
+            unordered_set < unordered_map<string, string>,QueryResultsTable::HashFunc, QueryResultsTable::EqualFunc> map3;
             unordered_map<string, string> m6;
             m6.insert({ "s3","6" });
             map3.insert(m6);
@@ -45,7 +45,7 @@ namespace UnitTesting
             map3.insert(m8);
             shared_ptr<QueryResultsTable> tab2 = make_shared<QueryResultsTable>(map3);
 
-            unordered_set < unordered_map<string, string>> map4;
+            unordered_set < unordered_map<string, string>, QueryResultsTable::HashFunc, QueryResultsTable::EqualFunc> map4;
             unordered_map<string, string> m11;
             m11.insert({ "s1","6" }); m11.insert({ "s2","20" });
             map4.insert(m11);
@@ -60,9 +60,9 @@ namespace UnitTesting
             map4.insert(m41);
             shared_ptr<QueryResultsTable> tab3 = make_shared<QueryResultsTable>(map4);
 
-            unordered_set < unordered_map<string, string>> map6;
+            unordered_set < unordered_map<string, string>, QueryResultsTable::HashFunc, QueryResultsTable::EqualFunc> map6;
             unordered_map<string, string> m12;
-            m12.insert({ "s3","5" }); m12.insert({ "s3","6" });
+            m12.insert({ "s3","5" }); m12.insert({ "s1","6" });
             map6.insert(m12);
             unordered_map<string, string> m22;
             m22.insert({ "s3","5" }); m22.insert({ "s1","8" });
@@ -78,7 +78,7 @@ namespace UnitTesting
             map6.insert(m52);
             shared_ptr<QueryResultsTable> tab4 = make_shared<QueryResultsTable>(map6);
 
-            unordered_set < unordered_map<string, string>> map8;
+            unordered_set < unordered_map<string, string>, QueryResultsTable::HashFunc, QueryResultsTable::EqualFunc> map8;
             unordered_map<string, string> m13;
             m13.insert({ "s2","11" }); m13.insert({ "v1","y" });
             map8.insert(m13);
@@ -122,7 +122,7 @@ namespace UnitTesting
             }  // namespace UnitTesting
 
         TEST_METHOD(TestMajorTableOperationsRightToLeft) {
-            unordered_set < unordered_map<string, string>> map1;
+            unordered_set < unordered_map<string, string>, QueryResultsTable::HashFunc, QueryResultsTable::EqualFunc> map1;
             unordered_map<string, string> m1;
             m1.insert({ "s3","5" }); m1.insert({ "v1","y" });
             map1.insert(m1);
@@ -140,7 +140,7 @@ namespace UnitTesting
             map1.insert(m5);
             shared_ptr<QueryResultsTable> tab1 = make_shared<QueryResultsTable>(map1);
 
-            unordered_set < unordered_map<string, string>> map3;
+            unordered_set < unordered_map<string, string>, QueryResultsTable::HashFunc, QueryResultsTable::EqualFunc> map3;
             unordered_map<string, string> m6;
             m6.insert({ "s3","6" });
             map3.insert(m6);
@@ -152,7 +152,7 @@ namespace UnitTesting
             map3.insert(m8);
             shared_ptr<QueryResultsTable> tab2 = make_shared<QueryResultsTable>(map3);
 
-            unordered_set < unordered_map<string, string>> map4;
+            unordered_set < unordered_map<string, string>, QueryResultsTable::HashFunc, QueryResultsTable::EqualFunc> map4;
             unordered_map<string, string> m11;
             m11.insert({ "s1","6" }); m11.insert({ "s2","20" });
             map4.insert(m11);
@@ -167,9 +167,9 @@ namespace UnitTesting
             map4.insert(m41);
             shared_ptr<QueryResultsTable> tab3 = make_shared<QueryResultsTable>(map4);
 
-            unordered_set < unordered_map<string, string>> map6;
+            unordered_set < unordered_map<string, string>, QueryResultsTable::HashFunc, QueryResultsTable::EqualFunc> map6;
             unordered_map<string, string> m12;
-            m12.insert({ "s3","5" }); m12.insert({ "s3","6" });
+            m12.insert({ "s3","5" }); m12.insert({ "s1","6" });
             map6.insert(m12);
             unordered_map<string, string> m22;
             m22.insert({ "s3","5" }); m22.insert({ "s1","8" });
@@ -185,7 +185,7 @@ namespace UnitTesting
             map6.insert(m52);
             shared_ptr<QueryResultsTable> tab4 = make_shared<QueryResultsTable>(map6);
 
-            unordered_set < unordered_map<string, string>> map8;
+            unordered_set < unordered_map<string, string>, QueryResultsTable::HashFunc, QueryResultsTable::EqualFunc> map8;
             unordered_map<string, string> m13;
             m13.insert({ "s2","11" }); m13.insert({ "v1","y" });
             map8.insert(m13);
@@ -274,7 +274,7 @@ namespace UnitTesting
         }*/
 
         TEST_METHOD(TestFilterCol1Col2) {
-            unordered_set < unordered_map<string, string>> map8;
+            unordered_set < unordered_map<string, string>, QueryResultsTable::HashFunc, QueryResultsTable::EqualFunc> map8;
             unordered_map<string, string> m13;
             m13.insert({ "s3","5" }); m13.insert({ "v1","y" }); m13.insert({ "s4","5" }); m13.insert({ "v2","y" });
             map8.insert(m13);
@@ -308,7 +308,7 @@ namespace UnitTesting
         }
 
         TEST_METHOD(TestDifferenceOneColumn) {
-            unordered_set < unordered_map<string, string>> map8;
+            unordered_set < unordered_map<string, string>, QueryResultsTable::HashFunc, QueryResultsTable::EqualFunc> map8;
             unordered_map<string, string> m1;
             m1.insert({ "s","x" });
             map8.insert(m1);
@@ -322,7 +322,7 @@ namespace UnitTesting
             m4.insert({ "s","w" });
             map8.insert(m4);
 
-            unordered_set < unordered_map<string, string>> map81;
+            unordered_set < unordered_map<string, string>, QueryResultsTable::HashFunc, QueryResultsTable::EqualFunc> map81;
             unordered_map<string, string> m13;
             m13.insert({ "s","a" });
             map81.insert(m13);
@@ -358,7 +358,7 @@ namespace UnitTesting
         }
 
         TEST_METHOD(TestDifferenceTwoColumns) {
-            unordered_set < unordered_map<string, string>> map1;
+            unordered_set < unordered_map<string, string>, QueryResultsTable::HashFunc, QueryResultsTable::EqualFunc> map1;
             unordered_map<string, string> m1;
             m1.insert({ "s","1" });
             map1.insert(m1);
@@ -369,7 +369,7 @@ namespace UnitTesting
             m3.insert({ "s","5" });
             map1.insert(m3);
            
-            unordered_set < unordered_map<string, string>> map2;
+            unordered_set < unordered_map<string, string>, QueryResultsTable::HashFunc, QueryResultsTable::EqualFunc> map2;
             unordered_map<string, string> m12;
             m12.insert({ "v","x" });
             map2.insert(m12);
@@ -380,7 +380,7 @@ namespace UnitTesting
             m32.insert({ "v","y" });
             map2.insert(m32);
 
-            unordered_set < unordered_map<string, string>> map3;
+            unordered_set < unordered_map<string, string>, QueryResultsTable::HashFunc, QueryResultsTable::EqualFunc> map3;
             unordered_map<string, string> m13;
             m13.insert({ "s","1" });
             map3.insert(m13);
@@ -397,7 +397,7 @@ namespace UnitTesting
             m53.insert({ "s","5" });
             map3.insert(m53);
 
-            unordered_set < unordered_map<string, string>> map4;
+            unordered_set < unordered_map<string, string>, QueryResultsTable::HashFunc, QueryResultsTable::EqualFunc> map4;
             unordered_map<string, string> m14;
             m14.insert({ "v","x" });
             map4.insert(m14);

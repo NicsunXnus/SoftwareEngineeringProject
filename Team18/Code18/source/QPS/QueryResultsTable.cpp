@@ -248,6 +248,7 @@ shared_ptr<QueryResultsTable> QueryResultsTable::createTable(string header, unor
     for (string s : columnValues) {
         unordered_map<string, string> map;
         map.insert({ header, s });
+        res.insert(map);
     }
     return make_shared<QueryResultsTable>(res);
 }
