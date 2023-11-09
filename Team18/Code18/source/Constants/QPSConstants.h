@@ -33,8 +33,10 @@ static inline const map<ABSTRACTION, int> abstraction_weights_map = {
 	{AFFECTS, 10},
 };
 
-static inline const int abstraction_criterion_weight = 3;
+static inline const int ABSTRACTION_CRITERION_WEIGHT = 3;
 
-static inline const int synonym_count_weight = 2;
+static inline const int SYNONYM_COUNT_WEIGHT = 2;
+
+static inline const int WITH_CLAUSE_SCORE = 4;
 
 #endif
