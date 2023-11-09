@@ -539,7 +539,9 @@
     <ClInclude Include="..\source\Constants\QPSConstants.h">
       <Filter>Source Files\Constants</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\PKB.h" />
+    <ClInclude Include="..\source\PKB.h">
+	<Filter>Source Files\PKB</Filter>
+    </ClInclude>
     <ClInclude Include="..\source\QPS\CFG\CFG.h">
       <Filter>Source Files\QPS\CFG</Filter>
     </ClInclude>
