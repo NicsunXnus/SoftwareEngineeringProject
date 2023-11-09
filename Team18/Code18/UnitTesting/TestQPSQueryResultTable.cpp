@@ -228,6 +228,35 @@ namespace UnitTesting
             Logger::WriteMessage(output.str().c_str());
         }
 
+        TEST_METHOD(Visualise_Duplicate_removal) {
+            unordered_set < unordered_map<string, string>, QueryResultsTable::HashFunc, QueryResultsTable::EqualFunc> map1;
+            unordered_map<string, string> m1;
+            m1.insert({ "s3","5" }); m1.insert({ "v1","y" });  m1.insert({ "v1","y" });
+            map1.insert(m1);
+            unordered_map<string, string> m2;
+            m2.insert({ "s3","5" }); m2.insert({ "v1","y" });  m1.insert({ "v1","y" });
+            map1.insert(m2);
+            unordered_map<string, string> m3;
+            m3.insert({ "s3","7" }); m3.insert({ "v1","x" }); m3.insert({ "v1","x" });
+            map1.insert(m3);
+            unordered_map<string, string> m4;
+            m4.insert({ "s3","8" }); m4.insert({ "v1","y" }); m4.insert({ "v1","y" });
+            map1.insert(m4);
+            unordered_map<string, string> m5;
+            m5.insert({ "s3","8" }); m5.insert({ "v1","y" }); m5.insert({ "v1","y" });
+            map1.insert(m5);
+            shared_ptr<QueryResultsTable> tab1 = make_shared<QueryResultsTable>(map1);
+            std::stringstream output;
+            std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
+
+            tab1->printTable();
+
+            cout.rdbuf(oldCoutBuffer);
+
+            Logger::WriteMessage("Output of table operations:\n");
+            Logger::WriteMessage(output.str().c_str());
+        }
+
         /*TEST_METHOD(TestCrossProduct) {
             vector<string> map1 = { "s2,v1", "5,y", "5,z", "7,x", "8,y", "2,y"};
             shared_ptr<QueryResultsTable> tab1 = make_shared<QueryResultsTable>(map1);

@@ -35,7 +35,6 @@ vector<string> ResultHandler::tableToVectorForTuples(shared_ptr<QueryResultsTabl
 shared_ptr<QueryResultsTable> ResultHandler::joinIntermediateTables(vector<shared_ptr<QueryResultsTable>> tables) {
 	if (tables.size() == 1) return tables[0];
 	shared_ptr<QueryResultsTable> intermediateTable = tables[0];
-	//tables.erase(tables.begin());
 	shared_ptr<QueryResultsTable> currTable;
 	for (int i = 1; i < tables.size(); i++) {
 		currTable = tables[i];
@@ -99,7 +98,6 @@ tuple<vector<shared_ptr<QueryResultsTable>>,
 	for (shared_ptr<QueryResultsTable> selectClauseTable : selectClauseTables) {
 		string primaryKey = selectClauseTable->getPrimaryKey();
 		if (intermediateTable->hasHeader(primaryKey)) {
-			//map<string, vector<string>> col = { {primaryKey, intermediateTable->getColumnData(primaryKey)} };
 			vector<string> colData = intermediateTable->getColumnData(primaryKey);
 			colData.emplace(colData.begin(), primaryKey);
 			cols.emplace_back(colData);
@@ -206,6 +204,8 @@ list<string> ResultHandler::returnTuples(vector<shared_ptr<QueryResultsTable>> s
 }
 
 list<string> ResultHandler::handleTuples(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
+	setSelectClauseCount(selectClauseTables);
+
 	if (nonSelectClauseTables.empty()) { // case 1
 		return returnTuples(selectClauseTables);
 	}
@@ -253,7 +253,7 @@ list<string> ResultHandler::handleTuples(vector<shared_ptr<QueryResultsTable>> s
 		return vectorToUniqueList(result);
 	}
 	
-	for (int i = 0; i < resultCols[0].size(); i++) {
+	for (int i = 1; i < resultCols[0].size(); i++) {
 		unordered_map<string, string> map;
 		for (int j = 0; j < resultCols.size(); j++) {
 			map.insert({resultCols[j][0], resultCols[j][i]});

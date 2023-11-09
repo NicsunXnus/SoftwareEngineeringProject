@@ -82,9 +82,7 @@ class SystemTestWrapper {
       list<string> expected = curr.second;
 
       list<string> results = {};
-      if (i == 2) {
-          cout << endl;
-      }
+
       applicationWrapper.evaluate(query, results);
       
       bool passed = checkListEquality(expected, results);
