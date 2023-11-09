@@ -27,7 +27,7 @@ shared_ptr<QueryResultsTable> AttrRefAttrRefComparisonQueryObject::callAndProces
 		return attRef1Table; // same table, return 1 or 2 doesnt matter
 	}
 
-	shared_ptr<QueryResultsTable> crossProductTables = attRef1Table->crossProduct(attRef2Table);
+	shared_ptr<QueryResultsTable> crossProductTables = attRef1Table->crossProductSet(attRef2Table);
 
 	shared_ptr<QueryResultsTable> filteredTable = crossProductTables->innerJoinOnTwoColumns(attRef1Table->getPrimaryKey(), attRef2Table->getPrimaryKey());
 	

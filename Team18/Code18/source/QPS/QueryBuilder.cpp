@@ -30,11 +30,11 @@ shared_ptr<QueryResultsTable> joinIntermediateTables(vector<shared_ptr<QueryResu
 		}
 		if (intermediateTable->haveSimilarHeaders(currTable)) {
 			//do inner join
-			intermediateTable = intermediateTable->innerJoin(currTable);
+			intermediateTable = intermediateTable->innerJoinSet(currTable);
 		}
 		else {
 			//do cross product
-			intermediateTable = intermediateTable->crossProduct(currTable);
+			intermediateTable = intermediateTable->crossProductSet(currTable);
 		}
 	}
 	return intermediateTable;
@@ -76,10 +76,10 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
 	// Activate Optimisation
 	//QueryBuilder::setOptimisedSwitch();
 	if (QueryBuilder::getOptimisedSwitch()) { // Trigger sorting of clauses
-		moveEmptyTablesToFront(queryResultsTables);
-		vector<shared_ptr<GroupClause>> groups = groupSimilarTables(queryResultsTables);
-		mergeSimilarGroups(groups);
-		optimiseTablePositions(groups);
+		//moveEmptyTablesToFront(queryResultsTables);
+		//vector<shared_ptr<GroupClause>> groups = groupSimilarTables(queryResultsTables);
+		//mergeSimilarGroups(groups);
+		//optimiseTablePositions(groups);
 		/*ThreadPool pool;
 		for (shared_ptr<GroupClause> group : groups) {
 			pool.addTask(&GroupClause::reduceToOne, group);

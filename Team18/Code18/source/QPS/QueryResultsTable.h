@@ -9,127 +9,65 @@
 #include <memory>
 #include "../HelperFunctions.h"
 #include <unordered_set>
+#include <unordered_map>
 using namespace std;
-
+// Represents the results of an evaluated clause. The data structure used is an unordered set of map<string,string>.
+// Each map represents a row, with the key being a synonym and the value being the column value of the row.
+// An unordered set will naturally remove duplicate rows while a map will remove duplicate columns.
+// A map will also allow faster retrieval of column value.
 class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
  public:
-    //A table can be represented by an array of ordered columns.
-    //Each column is represented by a map, key being header and value being its contents
-    //It is assumed that there are no duplicate headers in the table.
-    //A table is always sorted by headers.
+    
+     struct HashFunc {
+         size_t operator()(const std::unordered_map<std::string, std::string>& map) const {
+             size_t hash = 0;
+             for (const auto& pair : map) {
+                 hash ^= std::hash<std::string>()(pair.first) + std::hash<std::string>()(pair.second);
+             }
+             return hash;
+         }
+     };
 
-    /*QueryResultsTable(vector<map<string, vector<string>>> _columns) : columns(_columns), isSignificant(getNumberOfCols() > 0 && getNumberOfRows() > 0) {
-        //sort(columns.begin(), columns.end());
-    }*/
+     struct EqualFunc {
+         bool operator()(const std::unordered_map<std::string, std::string>& map1, const std::unordered_map<std::string, std::string>& map2) const {
+             return map1 == map2;
+         }
+     };
 
-    QueryResultsTable(vector<string> _rows) {
-        //sort(columns.begin(), columns.end());
-        if (_rows.size() == 0) {
+    // overloaded constructor to create set qrt
+    QueryResultsTable(unordered_set<unordered_map<string, string>,HashFunc,EqualFunc> rows) {
+        if (rows.size() == 0) {
             numRows = 0; numCols = 0; isSignificant = false;
         }
         else {
-            rows = _rows;
-            vectorizedRows = vectorizeRows(rows);
-            numRows = rows.size();
-            numCols = numRows > 0 ? vectorizedRows[0].size() : 0;
-            isSignificant = getNumberOfCols() > 0 && getNumberOfRows() > 1;
-            headersUnorderedSet = getHeadersAsUnorderedSet();
-            headersSet = getHeadersAsSet();
-
             // code for new table
-            //headers = extractHeaders(_rows);
-            //tableRows = constructQRT(_rows);
-            
+            tableRows.insert(rows.begin(), rows.end());
+            numRows = rows.size();
+            auto map = rows.begin();
+            numCols = (*map).size();
+            isSignificant = numRows > 0;
+            setHeaders();
         }
     }
-
-    //// overloaded constructor to create set qrt
-    //QueryResultsTable(vector<string> headers, unordered_set<unordered_map<string, string>> rows) {
-    //    if (rows.size() == 0) {
-    //        numRows = 0; numCols = 0; isSignificant = false;
-    //    }
-    //    else {
-    //        vector<string> _rows;
-
-    //        this->rows = _rows;
-    //        vectorizedRows = vectorizeRows(this->rows);
-    //        numRows = rows.size();
-    //        numCols = numRows > 0 ? vectorizedRows[0].size() : 0;
-    //        isSignificant = getNumberOfCols() > 0 && getNumberOfRows() > 1;
-    //        headersUnorderedSet = getHeadersAsUnorderedSet();
-    //        headersSet = getHeadersAsSet();
-
-    //        // code for new table
-    //        headers = headers;
-    //        tableRows = rows;
-    //    }
-    //}
 
     //Constructor for empty table creation
     QueryResultsTable() : isSignificant(false), numRows(0), numCols(0) {}
 
     void condenseTable(unordered_set<string> headers);
 
-    void removeDuplicateRows(vector<string>& _rows) {
-        unordered_set<string> store;
-        store.insert(_rows.begin(), _rows.end());
-        _rows.clear();
-        _rows.insert(_rows.end(), store.begin(), store.end());
-    }
-
     // get number of rows in table
     int getNumberOfRows() {
-        return numRows;
-    }
-
-    void updateNumberOfRows() {
-        numRows = rows.size();
+        return tableRows.size();
     }
 
     // get number of cols in table
     int getNumberOfCols() {
-        return numCols;
+        return headers.size();
     }
 
-    void updateNumberOfCols() {
-        numCols = numRows > 0 ? vectorizedRows[0].size() : 0;
+    unordered_set<unordered_map<string, string>, HashFunc, EqualFunc> getRowsSet() {
+        return tableRows;
     }
-
-    //Constructs a QRT as an unordered_set of rows (unordered_map of strings)
-    unordered_set<unordered_map<string, string>> constructQRT(vector<string> rows) {
-       unordered_set<unordered_map<string, string>> qrt;
-
-       for (int i = 1; i < static_cast<int>(rows.size()); ++i) {
-            vector<string> splitRow{ splitString(rows[i], ",") };
-            unordered_map<string, string> row;
-
-            // adds mapping of header to column values to row map
-            for (int j = 0; j < static_cast<int>(splitRow.size()); ++j) {
-                string h{ headers[j] };
-                string v{ splitRow[j] };
-                //row.insert({ h, v });
-            }
-
-            //qrt.insert(row);
-        }
-        return qrt;
-    }
-
-    vector<string> extractHeaders(vector<string> rows) {
-        return splitString(rows[0], ",");
-    }
-
-    vector<string> getHeaders() {
-        return headers;
-    }
-
-    //int getNumberOfRowsSet() {
-    //    return static_cast<int>(tableRows.size());
-    //}
-
-    //unordered_set<unordered_map<string, string>> getRowsSet() {
-    //    return tableRows;
-    //}
 
     /**
      * Creates a new QueryResultsTable object that is the result of a cartesian product between the row of elements of this table
@@ -138,29 +76,16 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
      * @param other A shared pointer to a QueryResultsTable object that represents the other tables.
      * @return A shared pointer to a newly created QueryResultsTable object.
      */
-    shared_ptr<QueryResultsTable> crossProduct(
-        shared_ptr<QueryResultsTable> other);
-
-    // new QRT version of crossProduct that crosses on the set of maps data structure
-    //shared_ptr<QueryResultsTable> crossProductSet(shared_ptr<QueryResultsTable> other);
+    shared_ptr<QueryResultsTable> crossProductSet(shared_ptr<QueryResultsTable> other);
 
     /**
-    * Creates a new QueryResultsTable object that has duplicate rows removed.
-    *
-    * @return A shared pointer to a newly created QueryResultsTable object.
+      * Creates a shared pointer to a QueryResultsTable object representing the intersection between this table and the other table.
+      *
+      * @param other A shared pointer to a QueryResultsTable object representing the other table
+      * @return A sharer pointer to a newly created QueryResultsTable object
     */
-    shared_ptr<QueryResultsTable> removeDuplicates();
+    shared_ptr<QueryResultsTable> innerJoinSet(shared_ptr<QueryResultsTable> other);
 
-    /**
-  * Creates a shared pointer to a QueryResultsTable object representing the intersection between this table and the other table.
-  *
-  * @param other A shared pointer to a QueryResultsTable object representing the other table
-  * @return A sharer pointer to a newly created QueryResultsTable object
-  */
-    shared_ptr<QueryResultsTable> innerJoin(
-        shared_ptr<QueryResultsTable> other);
-
-    //shared_ptr<QueryResultsTable> innerJoinSet(shared_ptr<QueryResultsTable> other);
     /**
      * Creates a shared pointer to a QueryResultsTable object representing the
      * difference between this table and one other table.
@@ -197,6 +122,7 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
         shared_ptr<QueryResultsTable> other1,
         shared_ptr<QueryResultsTable> other2);
 
+    // Sets the current table to only the column values of the primary key
     void getPrimaryKeyOnlyTable();
 
     /**
@@ -254,7 +180,7 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
      * @param columnValues A vector of a vector of strings representing the column values.
      * @return A shared pointer to the newly created QueryResultsTable object.
     */
-    static shared_ptr<QueryResultsTable> create2DTable(vector<string> headers, vector<vector<string>> columnValues);
+    static shared_ptr<QueryResultsTable> create2DTable(unordered_set<string> headers, vector<vector<string>> columnValues);
 
     /**
      * A static method that creates a new QueryResultsTable object with the provided headers
@@ -272,12 +198,12 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
     void deleteColumn(string deleteHeader);
 
     /**
-     * Renames a column indicated by the header given with the new header provided.
+     * Adds a column indicated by the header given with the new header provided.
      *
      * @param newName The new header to be changed to, represented as a string.
      * @param oldName The old header to be renamed, represented as a string.
     */
-    void renameColumn(string newName, string oldName);
+    void addAttrColumn(string newName, string oldName);
 
     /**
      * Creates a new QueryResultsTable object that represents the filtered table.
@@ -325,70 +251,44 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
    */
     int differenceInHeaders(shared_ptr<QueryResultsTable> _table);
 
-    vector<string> splitString(string s, string del = " ")
-    {
-        vector<string> res;
-        int start, end = -1 * del.size();
-        do {
-            start = end + del.size();
-            end = s.find(del, start);
-            res.emplace_back(s.substr(start, end - start));
-        } while (end != -1);
-        return res;
-    }
     bool QueryResultsTable::hasAttributeHeader(string header);
 
-    vector<vector<string>> vectorizeRows(vector<string> rows) {
-        vector<vector<string>> res;
-        for (string s : rows) {
-            res.emplace_back(splitString(s, ","));
+    void setHeaders() {
+        if (numRows == 0) return;
+        auto map = tableRows.begin();
+        for (const auto& pair : *map) {
+            headers.insert(pair.first);
         }
-        return res;
     }
 
-    vector<string> getRows() {
-        return rows;
+    unordered_set<string> getHeaders() {
+        return headers;
     }
 
-    vector<vector<string>> getVectorizedRows() {
-        return vectorizedRows;
-    }
-
-    unordered_set<string> getHeadersAsUnorderedSet() {
-        vector<string> temp = vectorizedRows[0];
-        unordered_set<string> res;
-        res.insert(temp.begin(), temp.end());
-        return res;
-    }
-
-    set<string> getHeadersAsSet() {
-        set<string> res;
-        res.insert(headersUnorderedSet.begin(), headersUnorderedSet.end());
-        return res;
-    }
-
-    //Setter method for columns
-    void setRows(vector<string> newRows) {
-        rows = newRows;
+    void setHeaders(vector<string> _headers) {
+        headers.insert(_headers.begin(), _headers.end());
     }
 
     //Getter method for data in a column
-    vector<string> getColumnData(string header) {
+    vector<string> getColumnData(string synonym) {
         vector<string> res;
-        if (numRows == 0) return res;
-        auto it = find(vectorizedRows[0].begin(), vectorizedRows[0].end(), header);
-        int index = it - vectorizedRows[0].begin();
-        for (vector<string> row : vectorizedRows) {
-            res.emplace_back(row[index]);
+        for (const auto& map : tableRows) {
+            res.emplace_back(map.at(synonym));
         }
-        res.erase(res.begin());
         return res;
     }
 
     //DEBUGGING: Prints out the table for visualisation
     void printTable() {
-        for (string s : rows) {
-            cout << s << endl;
+        for (string s : headers) {
+            cout << s << " ";
+        }
+        cout << endl;
+        for (const auto& map : tableRows) {
+            for (string s : headers) {
+                cout << map.at(s) << " ";
+            }
+            cout << endl;
         }
     }
 
@@ -405,7 +305,7 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
     }
 
     bool isEmpty() {
-        return getNumberOfCols() == 0 || getNumberOfRows() <= 1;
+        return getNumberOfRows() == 0;
     }
 
     void setPrimaryKey(string key) {
@@ -414,15 +314,6 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
 
     string getPrimaryKey() {
         return primaryKey;
-    }
-
-    //BELOW TWO FUNCTIONS USED FOR DEBUGGING
-    void setId(int _id) {
-        id = _id;
-    }
-
-    int getId() {
-        return id;
     }
 
     void setAttr(StringMap attribute) {
@@ -445,16 +336,9 @@ private:
     // This is especially important for queries that involve booleans, such as with clause: "this" = "this"
     string primaryKey = ""; // primary key of the table, especially important for selecting attributes 
     // e.g. Select constant.value, primary key will be constant.value, other key will be constant
-    set<string> headersSet;
-    unordered_set<string> headersUnorderedSet;
-    vector<string> rows;
-    vector<vector<string>> vectorizedRows;
 
-    // QRT restructure code
-    //unordered_set<unordered_map<string,string>> tableRows;
-    vector<string> headers;
+    unordered_set<unordered_map<string,string>, HashFunc, EqualFunc> tableRows;
+    unordered_set<string> headers;
 
-    //FOR DEBUGGING
-    int id;
 };
 #endif

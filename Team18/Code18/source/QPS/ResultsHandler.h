@@ -88,6 +88,8 @@ public:
 	 */
 	~ResultHandler() {};
 	
+	map<string, int> selectClauseCounts;
+
 	shared_ptr<QueryResultsTable> merge(vector<shared_ptr<QueryResultsTable>>::iterator left, vector<shared_ptr<QueryResultsTable>>::iterator right)
 	{
 		if (left == right) return QueryResultsTable::createEmptyTable();
@@ -95,6 +97,12 @@ public:
 		int midPosition = (right - left) / 2;
 		vector<shared_ptr<QueryResultsTable>>::iterator mid = left + midPosition;
 		return joinIntermediateTables({ merge(left, mid), merge(mid, right) });
+	}
+
+	void setSelectClauseCount(vector<shared_ptr<QueryResultsTable>> selectClause) {
+		for (shared_ptr<QueryResultsTable> clause : selectClause) {
+			selectClauseCounts[*(clause->getHeaders().begin())]++;
+		}
 	}
 
 	// The QueryResultTables of the clauses are processed, and through a series of cross-products and/or inner joins, the final result

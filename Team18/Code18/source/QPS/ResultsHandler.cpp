@@ -16,15 +16,17 @@ list<string> ResultHandler::processTables(vector<shared_ptr<QueryResultsTable>> 
 }
 
 vector<string> ResultHandler::tableToVectorForTuples(shared_ptr<QueryResultsTable> table) {
-	vector<vector<string>> values = table->getVectorizedRows();
+	unordered_set<unordered_map<string,string>, QueryResultsTable::HashFunc, QueryResultsTable::EqualFunc> values = table->getRowsSet();
 	vector<string> result;
-	for (int i = 1; i < values.size(); i++) {
+	for (unordered_map<string,string> map : values) {
 		string temp = "";
-		for (string s : values[i]) {
-			temp += s + " ";
-		}
-		temp.erase(temp.end() - 1);
-		result.emplace_back(temp);
+			for (const auto& pair : map) {
+				for (int i = 0; i < selectClauseCounts[pair.first]; i++) {
+					temp += pair.second + " ";
+				}
+			}
+			temp.erase(temp.end() - 1);
+			result.emplace_back(temp);
 	}
 	return result;
 }
@@ -49,11 +51,11 @@ shared_ptr<QueryResultsTable> ResultHandler::joinIntermediateTables(vector<share
 		}
 		if (intermediateTable->haveSimilarHeaders(currTable)) {
 			//do inner join
-			intermediateTable = intermediateTable->innerJoin(currTable);
+			intermediateTable = intermediateTable->innerJoinSet(currTable);
 		}
 		else {
 			//do cross product
-			intermediateTable = intermediateTable->crossProduct(currTable);
+			intermediateTable = intermediateTable->crossProductSet(currTable);
 		}
 	}
 	return intermediateTable;
@@ -62,7 +64,7 @@ shared_ptr<QueryResultsTable> ResultHandler::joinIntermediateTables(vector<share
 unordered_set<string> ResultHandler::getSetOfSelectClauseHeaders(vector<shared_ptr<QueryResultsTable>> selectClauseTables) {
 	unordered_set<string> headers;
 	for (shared_ptr<QueryResultsTable> table : selectClauseTables) {
-		unordered_set<string> tableHeaders = table->getHeadersAsUnorderedSet();
+		unordered_set<string> tableHeaders = table->getHeaders();
 		headers.insert(tableHeaders.begin(), tableHeaders.end());
 	}
 	return headers;
@@ -92,8 +94,6 @@ tuple<vector<shared_ptr<QueryResultsTable>>,
 	unordered_set<string> selectClauseHeaders = getSetOfSelectClauseHeaders(selectClauseTables);
 	intermediateTable->condenseTable(selectClauseHeaders); // keep important columns only
 	vector<shared_ptr<QueryResultsTable>> selectClausesNotInIntermediateTable;
-	//vector<map<string, vector<string>>> cols;
-	//shared_ptr<QueryResultsTable> importantCols = make_shared<QueryResultsTable>(intermediateTable->getRows());
 	vector<vector<string>> cols;
 	for (shared_ptr<QueryResultsTable> selectClauseTable : selectClauseTables) {
 		string primaryKey = selectClauseTable->getPrimaryKey();
@@ -119,15 +119,14 @@ tuple<vector<shared_ptr<QueryResultsTable>>,
 		}
 
 	}
-	vector<string> res; 
+	unordered_set<unordered_map<string,string>, QueryResultsTable::HashFunc, QueryResultsTable::EqualFunc> res;
 	if (cols.size() == 0) return { selectClausesNotInIntermediateTable, make_shared<QueryResultsTable>(res) };
 	for (int i = 0; i < cols[0].size(); i++) {
-		string temp = "";
+		unordered_map<string, string> map;
 		for (int j = 0; j < cols.size(); j++) {
-			temp += cols[j][i] + ",";
+			map.insert({ cols[j][0], cols[j][i] });
 		}
-		temp.erase(temp.end() - 1);
-		res.emplace_back(temp);
+		res.insert(map);
 	}
 	return { selectClausesNotInIntermediateTable, make_shared<QueryResultsTable>(res) };
 }
@@ -178,10 +177,10 @@ list<string> ResultHandler::handleSingleSynonym(vector<shared_ptr<QueryResultsTa
 	shared_ptr<QueryResultsTable> finalTable = QueryResultsTable::createEmptyTable(true);
 	if (processedIntermediateTable->getNumberOfCols() > 0) { // synonyms required exist in the intermediate table
 		shared_ptr<QueryResultsTable> synsInIntermediateTable = processedIntermediateTable;
-		finalTable = finalTable->crossProduct(synsInIntermediateTable);
+		finalTable = finalTable->crossProductSet(synsInIntermediateTable);
 	}
 	for (shared_ptr<QueryResultsTable> table : selectClausesNotInIntermediateTable) {
-		finalTable = finalTable->crossProduct(table);
+		finalTable = finalTable->crossProductSet(table);
 	}
 	vector<string> colContents = finalTable->getColumnData(selectVar);
 	return vectorToUniqueList(colContents);
@@ -194,10 +193,10 @@ list<string> ResultHandler::returnTuples(vector<shared_ptr<QueryResultsTable>> s
 	for (shared_ptr<QueryResultsTable> table : selectClauseTables) {
 		table->getPrimaryKeyOnlyTable();
 		if (intermediateTable->haveSimilarHeaders(table)) { // for cases like select<s, s>, duplicate the column (do not cross product)
-			intermediateTable->duplicateColumns(table->getPrimaryKey());
+			//intermediateTable->duplicateColumns(table->getPrimaryKey());
 		}
 		else {
-			intermediateTable = intermediateTable->crossProduct(table);
+			intermediateTable = intermediateTable->crossProductSet(table);
 		}
 	}
 	vector<string> result = tableToVectorForTuples(intermediateTable);
@@ -219,10 +218,7 @@ list<string> ResultHandler::handleTuples(vector<shared_ptr<QueryResultsTable>> s
 			list<string> empty;
 			return empty;
 		}
-
 	}
-	
-	
 	// case 2.2
 	tuple<vector<shared_ptr<QueryResultsTable>>,
 		shared_ptr<QueryResultsTable>> processTables = processIntermediateTable(selectClauseTables, intermediateTable);
@@ -232,14 +228,14 @@ list<string> ResultHandler::handleTuples(vector<shared_ptr<QueryResultsTable>> s
 	shared_ptr<QueryResultsTable> finalTable = QueryResultsTable::createEmptyTable(true);
 	if (processedIntermediateTable->getNumberOfCols() > 0) { // synonyms required exists in the intermediate table
 		shared_ptr<QueryResultsTable> synsInIntermediateTable = processedIntermediateTable;
-		finalTable = finalTable->crossProduct(synsInIntermediateTable);
+		finalTable = finalTable->crossProductSet(synsInIntermediateTable);
 	}
 	for (shared_ptr<QueryResultsTable> table : selectClausesNotInIntermediateTable) {
 		if (finalTable->haveSimilarHeaders(table)) {
-			finalTable->duplicateColumns(table->getPrimaryKey());
+			//finalTable->duplicateColumns(table->getPrimaryKey());
 		}
 		else {
-			finalTable = finalTable->crossProduct(table);
+			finalTable = finalTable->crossProductSet(table);
 		}
 	}
 	vector<vector<string>> resultCols;
@@ -248,21 +244,19 @@ list<string> ResultHandler::handleTuples(vector<shared_ptr<QueryResultsTable>> s
 		temp.insert(temp.begin() ,target);
 		resultCols.emplace_back(temp);
 	}
-	
-	vector<string> res;
-	
+	unordered_set<unordered_map<string, string>,QueryResultsTable::HashFunc,QueryResultsTable::EqualFunc> res;
 	if (resultCols.size() == 0) { 
 		shared_ptr<QueryResultsTable> resultTable = make_shared<QueryResultsTable>(res);
 		vector<string> result = tableToVectorForTuples(resultTable);
 		return vectorToUniqueList(result);
 	}
+	
 	for (int i = 0; i < resultCols[0].size(); i++) {
-		string temp = "";
+		unordered_map<string, string> map;
 		for (int j = 0; j < resultCols.size(); j++) {
-			temp += resultCols[j][i] + ",";
+			map.insert({resultCols[j][0], resultCols[j][i]});
 		}
-		temp.erase(temp.end() - 1);
-		res.emplace_back(temp);
+		res.insert(map);
 	}
 	shared_ptr<QueryResultsTable> resultTable = make_shared<QueryResultsTable>(res);
 	vector<string> result = tableToVectorForTuples(resultTable);
