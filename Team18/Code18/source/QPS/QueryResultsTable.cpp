@@ -28,44 +28,7 @@ shared_ptr<QueryResultsTable> QueryResultsTable::crossProductSet(shared_ptr<Quer
     return make_shared<QueryResultsTable>(newRows);
 }
 
-template <typename T, typename Iter>
-void removeIndicesFromVector(std::vector<T>& v, Iter begin, Iter end)
-// requires std::is_convertible_v<std::iterator_traits<Iter>::value_type, std::size_t>
-{
-    std::size_t current_index = 0;
 
-    if (std::is_sorted(begin, end)) {
-
-        // sorted version - advance through begin..end
-        auto rm_iter = begin;
-        const auto pred = [&](const T&) {
-            // any more to remove?
-            if (rm_iter != end && *rm_iter == current_index++) {
-                return ++rm_iter, true;
-            }
-            return false;
-            };
-        v.erase(std::remove_if(v.begin(), v.end(), pred), v.end());
-
-    }
-    else {
-
-        // unsorted version - search for each index in begin..end
-        const auto pred = [&](const T&) {
-            return std::find(begin, end, current_index++) != end;
-            };
-        v.erase(std::remove_if(v.begin(), v.end(), pred), v.end());
-    }
-}
-
-template <typename T, typename S>
-// requires std::is_convertible_v<S::value_type, std::size_t>
-void removeIndicesFromVector(std::vector<T>& v, const S& rm)
-{
-    using std::begin;
-    using std::end;
-    return removeIndicesFromVector(v, begin(rm), end(rm));
-}
 
 shared_ptr<QueryResultsTable> QueryResultsTable::innerJoinSet(shared_ptr<QueryResultsTable> other) {
     unordered_set<string> thisHeaders = getHeaders();

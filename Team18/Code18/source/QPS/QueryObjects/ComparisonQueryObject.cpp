@@ -11,8 +11,8 @@ shared_ptr<QueryResultsTable> StaticAttrRefComparisonQueryObject::callAndProcess
 	// call 2D table for attrRef, e.g. p.procName, p, similar to withclause Table
 	shared_ptr<QueryResultsTable> attRefTable = attrRef->callAndProcess(dataAccessLayer);
 	// filter out rows with attRef == static e.g. p.procName == 'Third'
-	vector<string> targets;
-	targets.push_back(svToString(ref->getArgValue()));
+	unordered_set<string> targets;
+	targets.insert(svToString(ref->getArgValue()));
 	shared_ptr<QueryResultsTable> filteredTable = attRefTable->filter(attRefTable->getPrimaryKey(), targets);
 	return filteredTable;
 }
@@ -27,9 +27,16 @@ shared_ptr<QueryResultsTable> AttrRefAttrRefComparisonQueryObject::callAndProces
 		return attRef1Table; // same table, return 1 or 2 doesnt matter
 	}
 
-	shared_ptr<QueryResultsTable> crossProductTables = attRef1Table->crossProductSet(attRef2Table);
+	// inner join on attr. columns (rename one of them first)
+	// copy .attr column and name it the old name
 
-	shared_ptr<QueryResultsTable> filteredTable = crossProductTables->innerJoinOnTwoColumns(attRef1Table->getPrimaryKey(), attRef2Table->getPrimaryKey());
-	
-	return filteredTable;
+	string oldName = attRef2Table->getPrimaryKey();
+	attRef2Table->addAttrColumn(attRef1Table->getPrimaryKey(), oldName);
+
+	shared_ptr<QueryResultsTable> innerJoinedTables = attRef1Table->innerJoin(attRef2Table);
+
+	innerJoinedTables->duplicateColumns(attRef1Table->getPrimaryKey());
+	innerJoinedTables->renameColumn(oldName, attRef1Table->getPrimaryKey());
+
+	return innerJoinedTables;
 }

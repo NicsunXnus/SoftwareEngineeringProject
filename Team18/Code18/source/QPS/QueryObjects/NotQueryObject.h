@@ -32,6 +32,10 @@ class NotQueryObject : public QueryObject {
 
   bool isPattern() { return getQueryObjectName().substr(0, 7) == "pattern"; }
 
+  shared_ptr<unordered_set<string>> getSynonyms() {
+      return originalQueryObject->getSynonyms();
+  }
+
   shared_ptr<QueryObject> getFirstSynonym() { return synonyms[0]; }
 
   shared_ptr<QueryObject> getSecondSynonym() { return synonyms[1]; }

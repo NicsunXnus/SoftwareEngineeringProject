@@ -25,6 +25,7 @@
     <ClCompile Include="..\source\QPS\QueryObjects\ComparisonQueryObjectFactory.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\QueryObject.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\WithClauseObject.cpp" />
+    <ClCompile Include="..\source\QPS\QueryOptimiser.cpp" />
     <ClCompile Include="..\source\ThreadPool.cpp" />
     <ClCompile Include="..\source\QPS\DataAccessLayer.cpp" />
     <ClCompile Include="..\source\QPS\DataAccessLayerAffectsStub.cpp" />
@@ -99,6 +100,8 @@
     <ClInclude Include="..\source\QPS\CFG\DFSPathNode.h" />
     <ClInclude Include="..\source\QPS\CFG\CFGCache.h" />
     <ClInclude Include="..\source\QPS\QRTCache.h" />
+    <ClInclude Include="..\source\QPS\QueryOptimiser.h" />
+    <ClInclude Include="..\source\QPS\UnionFind.h" />
     <ClInclude Include="..\source\ThreadPool.h" />
     <ClInclude Include="..\source\PKB.h" />
     <ClInclude Include="..\source\PKB\Insertor.h" />

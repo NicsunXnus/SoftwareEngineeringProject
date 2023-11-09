@@ -27,6 +27,7 @@ class DataAccessLayer;
 /// </summary>
 class ExtendedCFG {
 private:
+  size_t maxStmtNum;
   map<string, pair<string, string>> stmtNumBoundaries; // boundaries of each procedure in terms of statement numbers
   unordered_set<string> procNames;
   StringMap next; // children nodes
@@ -39,7 +40,8 @@ private:
   StringMap affects; // Affects(s, collection<other_s>) is True
   StringMap affectsInverse; // AffectedBy(s, other_s) is True; 
 
-  unordered_set<string> completed; // Stores line numbers of statements that have been evaluated completely
+  unordered_set<string> nextStarCompleted; // Stores line numbers of statements that have been evaluated completely for next*
+  unordered_set<string> affectsCompleted; // Stores line numbers of statements that have been evaluated completely for affects
   unordered_map<string, unordered_set<shared_ptr<DFSPathNode>>> frozenPaths; // line number : set<frozen paths>
 
   /// GROUP: MISC HELPER FUNCTIONS FOR QUERY METHODS
@@ -57,17 +59,23 @@ private:
   // Gets the first line number of a procedure. Guaranteed to exist from SPA grammar rules
   string getFirstLineNumberOfProc(string procName);
 
+  // Checks if a certain line number has been evaluated for next*
+  bool isNextStarCompleted(string stmtNumber);
+
+  // Checks if a certain line number has been evaluated for affects
+  bool isAffectsCompleted(string stmtNumber);
+
   // Checks if a certain statement number has been evaluated
   bool isCompleted(string stmtNumber);
 
   // Ensures that a certain statement number has been evaluated, by performing DFS
   // from that line number if it has not been evaluated.
   // Returns whether the line number is valid or not.
-  bool ensureCompleted(string lineNumber);
+  bool ensureCompleted(string lineNumber, bool calculateAffects);
 
   // Ensures that the given procedure has been evaluated, by performing DFS
   // on the first line number of the procedure.
-  void ensureProcCompleted(string procName);
+  void ensureProcCompleted(string procName, bool calculateAffects);
 
   // Checks if a given statement has affects
   bool hasAffects(string from);
@@ -80,11 +88,11 @@ private:
 
   // Next*(int, int) and Affects(int, int) helper
   // Returns false if either from/to are invalid line numbers
-  bool intIntHelper(string from, string to);
+  bool intIntHelper(string from, string to, bool calculateAffects);
 
   // Next*(syn, int) and Affects(syn, int) helper
   // Returns whether the line number is a valid line number or not
-  bool synIntHelper(string lineNumber);
+  bool synIntHelper(string lineNumber, bool calculateAffects);
 
   // Checks if a given statement number is of a given statement type
   bool isStmtType(string stmtNumber, ENTITY entity);
@@ -98,14 +106,20 @@ private:
   /// GROUP: Add to abstraction methods
 
   // Adds Next* relations for a given line number and one other line number
-  // Also adds the Inverse Next* relations
+  // Next*(lineNumber, toAdd)
   void addNextStar(string lineNumber, string toAdd);
+
+  // Adds Next* inverse relations for a given line number and one other line number
+  // Next*(lineNumber, toAdd)
+  void addNextStarInv(string lineNumber, string toAdd);
 
   // Adds Affects relations for a given line number and one other line number
   // Also adds the Inverse Affects relations
   void addAffects(string lineNumber, string toAdd);
 
   // GROUP: DFS Functions
+  // Helper function to add to incomplete paths, while adding to next* inverse too
+  void DFSIncompletePathsHelper(stack<shared_ptr<DFSPathNode>>&incompletePaths, shared_ptr<DFSPathNode> toAdd, string currLineNum);
 
   // Helper function to consider the case when encountering an IF statement
   void DFSIfHelper(stack<shared_ptr<DFSPathNode>>& incompletePaths, shared_ptr<DFSPathNode>& curr, unordered_set<string>& nextNodes);
@@ -125,7 +139,14 @@ private:
   /// the usage of DFSPathNodes, and are passed to unrollPaths when the DFS has no more paths to explore.
   /// </summary>
   /// <param name="start">The start statement number</param>
-  void DFS(string start);
+  void DFS(string start, bool calculateAffects, bool calcInverse);
+
+  /// <summary>
+  /// Inverse DFS Traversal Method.
+  /// 
+  /// Traverses from a given end node until the end node.
+  /// </summary>
+  void InverseDFS(string end, bool calculateAffects);
 
   // GROUP: Unroll functions
 
@@ -147,6 +168,9 @@ private:
   // Cuts short if the given statement is not an assignment statement.
   void unrollAffectsHelper(deque<string>& descendants, shared_ptr<DFSPathNode>& curr, string currLineNumber);
 
+  // Unrolls one path
+  void unrollOnePath(shared_ptr<DFSPathNode> currPath, bool calculateAffects);
+
   /// <summary>
   /// Unrolls the paths given by DFS. 
   /// Not unlike how to find the path from a source to target using regular DFS, an unrolling is performed.
@@ -154,7 +178,8 @@ private:
   /// During the unrolling, Next* and Affects relations are calculated and cached.
   /// </summary>
   /// <param name="finishedPaths">The Paths taken by the DFS to reach terminal nodes or cached nodes</param>
-  void unrollPaths(unordered_set<shared_ptr<DFSPathNode>>& finishedPaths);
+  void unrollPaths(unordered_set<shared_ptr<DFSPathNode>>& finishedPaths, bool calculateAffects);
+
 public:
   /// <summary>
   /// Constructor to take in the data access layer to extract out information required for

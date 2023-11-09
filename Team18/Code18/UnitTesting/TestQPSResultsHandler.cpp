@@ -3,7 +3,7 @@
 
 #include "../source/QPS/QueryResultsTable.h"
 #include "../source/QPS/ResultsHandler.h"
-#include "Constants/QPSConstants.h"
+#include "../source/Constants/QPSConstants.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;

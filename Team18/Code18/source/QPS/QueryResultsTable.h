@@ -213,7 +213,7 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
      * @return A shared pointer to the newly created QueryResultsTable object
      * representing the old table but only containing rows having only values of the "targets" of the column with header "key"
     */
-    shared_ptr<QueryResultsTable> filter(string key, vector<string> targets);//assuming there is no spacing/wrong capitalisation in key & there is no duplicates in targets
+    shared_ptr<QueryResultsTable> filter(string key, unordered_set<string> targets);//assuming there is no spacing/wrong capitalisation in key & there is no duplicates in targets
 
     /**
      * Creates a new QueryResultsTable object that represents the filtered table.

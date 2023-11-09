@@ -1,0 +1,20 @@
+16 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select a1 such that Affects(a,a1)
+7, 9, 11, 13, 14, 15,17
+5000
+16 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select a such that Affects(a,a1)
+4, 5, 7, 9, 11, 12 ,13, 14, 16
+5000
+16 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select BOOLEAN such that Affects(7,11)
+TRUE
+5000
+16 - syn, syn - loop
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select a1 such that Affects(_,a1)
+7, 9, 11, 13, 14, 15,17
+5000

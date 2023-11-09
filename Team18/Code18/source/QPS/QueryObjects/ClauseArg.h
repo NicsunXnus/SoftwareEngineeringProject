@@ -97,6 +97,26 @@ public:
 	bool isPartialMatchingExprSpec() {
 		return isExpr() && isPartialMatch;
 	}
+
+	//struct Hash {
+	//	size_t operator()(const ClauseArg& obj) const {
+	//		return hash<int>()(this->arg);
+	//	}
+	//};
+
+	//bool operator==(const ClauseArg& other) const {
+	//	if (this->getArg() != other.getArg()) {
+	//		return false;
+	//	}
+
+	//	bool areSynonyms{ this->isSynonym() && other.isSynonym() };
+	//	bool arePartialMatches{ this->isPartialMatchingExprSpec() && other.isPartialMatchingExprSpec() };
+	//	bool areIdents{ this->isIdentifier() && other.isIdentifier() };
+	//	bool areIntegers{ this->isInteger() && other.isInteger() };
+	//	bool areWildcards{ this->isWildcard() && other.isWildcard() };
+	//
+	//	return (areSynonyms || arePartialMatches || areIdents || areIntegers || areWildcards);
+	//}
 };
 
 

@@ -13,10 +13,17 @@ using namespace std;
 * This class represents a Query object, for design entities
 */
 class DesignObject : public QueryObject {
+private:
+	string synonym;
 public:
 	DesignObject(string_view data)
 		: QueryObject{ data } {
+	}
 
+	shared_ptr<unordered_set<string>> getSynonyms() {
+		unordered_set<string> synonyms;
+		synonyms.insert(synonym);
+		return make_shared<unordered_set<string>>(synonyms);
 	}
 };
 
@@ -34,9 +41,6 @@ public:
 		table->setPrimaryKey(svToString(getQueryObjectName()));
 		return table;
 	}
-
-
-
 };
 
 /*

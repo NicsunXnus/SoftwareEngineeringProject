@@ -22,6 +22,7 @@
     <ClCompile Include="TestQPSErrorQueries.cpp" />
     <ClCompile Include="TestQPSQueryEval.cpp" />
     <ClCompile Include="TestThreadPool.cpp" />
+    <ClCompile Include="TestQueryObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
