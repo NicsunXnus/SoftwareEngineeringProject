@@ -7,6 +7,7 @@
 
 #include "DataAccessLayer.h"
 #include "QueryObjects/QueryObject.h"
+#include "QueryOptimiser.h"
 #include "QueryResultsTable.h"
 
 /**
@@ -54,7 +55,7 @@ class QueryBuilder {
    * Finds the next queryObject to evaluate, given a partially evaluated QRT and
    * choices of remaining QueryObjects.
    */
-  int findNextQueryObjectIndex(vector<shared_ptr<QueryObject>> clauses,
+  static int findNextQueryObjectIndex(vector<shared_ptr<QueryObject>> clauses,
                                vector<bool> usedQueryObjects,
                                unordered_set<string> usedSynonyms);
 

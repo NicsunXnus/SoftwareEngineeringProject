@@ -565,5 +565,8 @@
     <ClInclude Include="..\source\QPS\QueryOptimiser.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
+    <ClInclude Include="..\source\QPS\UnionFind.h">
+      <Filter>Source Files\QPS</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
