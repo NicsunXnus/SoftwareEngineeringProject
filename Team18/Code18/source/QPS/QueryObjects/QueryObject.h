@@ -19,11 +19,19 @@ using namespace std;
 class QueryObject {
 private:
 	string_view data; // stores information about the queryObject, such as its name, or arguments for clauses
+
 public:
 	QueryObject(string_view data)
 		: data{ data } {};
 
 	string_view getQueryObjectName();
+
+	int getSynCount();
+
+	/*
+	* Returns the synonyms in a query object
+	*/
+	virtual shared_ptr<unordered_set<string>> getSynonyms() = 0;
 
 	/*
 	* Returns The name of the object stored in cache
