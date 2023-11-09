@@ -200,7 +200,7 @@ shared_ptr<QueryResultsTable> QueryResultsTable::difference(
 
 
 void QueryResultsTable::getPrimaryKeyOnlyTable() {
-    if (getHeaders().find(primaryKey) != headers.end()) {
+    if (headers.find(primaryKey) != headers.end()) {
         for (unordered_map<string,string> map : tableRows) {
             string pKeyValue = map.at(primaryKey);
             map.clear();
@@ -366,12 +366,14 @@ shared_ptr<QueryResultsTable> QueryResultsTable::innerJoinOnTwoColumns(string he
 
 bool QueryResultsTable::haveSimilarHeaders(
     shared_ptr<QueryResultsTable> other) {
-  unordered_set<string> thisHeaders = getHeaders();
+  unordered_set<string> thisHeaders = headers;
   unordered_set<string> otherHeaders = other->getHeaders();
-  set<string> intersect;
-  set_intersection(thisHeaders.begin(), thisHeaders.end(), otherHeaders.begin(),
-                   otherHeaders.end(), inserter(intersect, intersect.begin()));
-  return intersect.size() > 0;
+  for (auto it = headers.begin(); it != headers.end();it++) {
+      if (otherHeaders.find(*it) != otherHeaders.end()) {
+          return true;
+      }
+  }
+  return false;
 }
 
 bool QueryResultsTable::hasHeader(string header) {

@@ -240,17 +240,7 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
     * @return A boolean value, with a true value representing same headers for both, and a false value for otherwise.
    */
     bool hasHeader(string header);
-
-    void duplicateColumns(string columnName);
     
-    /**
-    * Returns the number of headers in the argument not found within this table.
-    *
-    * @param shared_ptr<QueryResultsTable> _table
-    * @return See description
-   */
-    int differenceInHeaders(shared_ptr<QueryResultsTable> _table);
-
     bool QueryResultsTable::hasAttributeHeader(string header);
 
     void setHeaders() {

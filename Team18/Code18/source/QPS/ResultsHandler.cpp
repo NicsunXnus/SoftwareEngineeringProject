@@ -95,12 +95,13 @@ tuple<vector<shared_ptr<QueryResultsTable>>,
 	intermediateTable->condenseTable(selectClauseHeaders); // keep important columns only
 	vector<shared_ptr<QueryResultsTable>> selectClausesNotInIntermediateTable;
 	vector<vector<string>> cols;
+	
 	for (shared_ptr<QueryResultsTable> selectClauseTable : selectClauseTables) {
 		string primaryKey = selectClauseTable->getPrimaryKey();
 		if (intermediateTable->hasHeader(primaryKey)) {
 			//map<string, vector<string>> col = { {primaryKey, intermediateTable->getColumnData(primaryKey)} };
 			vector<string> colData = intermediateTable->getColumnData(primaryKey);
-			colData.insert(colData.begin(), primaryKey);
+			colData.emplace(colData.begin(), primaryKey);
 			cols.emplace_back(colData);
 		}
 		else if (intermediateTable->hasAttributeHeader(primaryKey)) {
@@ -108,9 +109,10 @@ tuple<vector<shared_ptr<QueryResultsTable>>,
 			// convert col to attribute
 			StringMap attr = selectClauseTable->getAttr();
 			for (int i = 0; i < colData.size(); i++) {
+
 				colData[i] = *attr[colData[i]].begin(); // replace p with p.procname
 			}
-			colData.insert(colData.begin(), primaryKey);
+			colData.emplace(colData.begin(), primaryKey);
 			cols.emplace_back(colData);
 		}
 		else {
@@ -121,7 +123,7 @@ tuple<vector<shared_ptr<QueryResultsTable>>,
 	}
 	unordered_set<unordered_map<string,string>, QueryResultsTable::HashFunc, QueryResultsTable::EqualFunc> res;
 	if (cols.size() == 0) return { selectClausesNotInIntermediateTable, make_shared<QueryResultsTable>(res) };
-	for (int i = 0; i < cols[0].size(); i++) {
+	for (int i = 1; i < cols[0].size(); i++) {
 		unordered_map<string, string> map;
 		for (int j = 0; j < cols.size(); j++) {
 			map.insert({ cols[j][0], cols[j][i] });
