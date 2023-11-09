@@ -14,6 +14,7 @@ shared_ptr<QueryResultsTable> StaticAttrRefComparisonQueryObject::callAndProcess
 	unordered_set<string> targets;
 	targets.insert(svToString(ref->getArgValue()));
 	shared_ptr<QueryResultsTable> filteredTable = attRefTable->filter(attRefTable->getPrimaryKey(), targets);
+	filteredTable->deleteColumn(attRefTable->getPrimaryKey()); // remove attr col
 	return filteredTable;
 }
 
@@ -35,8 +36,8 @@ shared_ptr<QueryResultsTable> AttrRefAttrRefComparisonQueryObject::callAndProces
 
 	shared_ptr<QueryResultsTable> innerJoinedTables = attRef1Table->innerJoin(attRef2Table);
 
-	innerJoinedTables->duplicateColumns(attRef1Table->getPrimaryKey());
-	innerJoinedTables->renameColumn(oldName, attRef1Table->getPrimaryKey());
+	// returns p, q, where each p, q will have p.procName = q.procName
+	innerJoinedTables->deleteColumn(attRef1Table->getPrimaryKey()); 
 
 	return innerJoinedTables;
 }
