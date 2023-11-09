@@ -110,6 +110,7 @@ shared_ptr<QueryResultsTable> AffectsSynSyn::evaluate(shared_ptr<DataAccessLayer
 					if (arg1->getArgValue() == arg2->getArgValue()) {
 						if (assignment == child) {
 							results[assignment].insert(child);
+							break;
 						}
 					}
 					else {
