@@ -22,8 +22,11 @@ void QueryOptimiser::groupQueryObjects() {
       if (obj1->getSynCount() == 0 || obj2->getSynCount() == 0) continue;
       shared_ptr<unordered_set<string>> obj1Syns = obj1->getSynonyms();
       shared_ptr<unordered_set<string>> obj2Syns = obj2->getSynonyms();
-      if (obj1Syns->count(*obj2Syns->begin()) > 0) {
-        unionFind.unite(obj1, obj2);
+
+      for (const auto& syn : *obj2Syns) {
+        if (obj1Syns->count(syn)) {
+          unionFind.unite(obj1, obj2);
+        }
       }
     }
   }
@@ -85,16 +88,21 @@ int QueryOptimiser::calculateHeuristic(shared_ptr<QueryObject> clause) {
   // within each group (not group 0), sort by a heuristic that factors in:
   // 1. number of syns in group 2. type of abstraction (abstraction_weights_map)
 
-  int clauseScore;
+  int clauseScore = 0;
 
   string query_obj_string = svToString(clause->getQueryObjectName());
-  cout << "query_obj_string " << query_obj_string << endl;
-  if (query_obj_string == "Static=AttrRef") {
-    clauseScore = WITH_CLAUSE_SCORE;
+  if (query_obj_string.substr(0, 3) == "not") {
+    clauseScore += NOT_CLAUSE_SCORE;
+    query_obj_string = query_obj_string.substr(3);
+  }
+
+  if (query_obj_string == "Compare") {
+    clauseScore += WITH_CLAUSE_SCORE;
+  } else if (query_obj_string.substr(0, 7) == "pattern") {
+    clauseScore += PATTERN_CLAUSE_SCORE;
   } else {
     ABSTRACTION abstraction = QueryObjStringToEnum(query_obj_string);
-    clauseScore =
-        abstraction_weights_map.at(abstraction) * ABSTRACTION_CRITERION_WEIGHT;
+    clauseScore += abstraction_weights_map.at(abstraction);
   }
   int synCountScore = clause->getSynCount() * SYNONYM_COUNT_WEIGHT;
   return clauseScore + synCountScore;
