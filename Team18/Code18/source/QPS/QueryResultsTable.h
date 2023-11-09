@@ -28,7 +28,6 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
             numRows = 0; numCols = 0; isSignificant = false;
         }
         else {
-            
             rows = _rows;
             vectorizedRows = vectorizeRows(rows);
             numRows = rows.size();
@@ -36,8 +35,35 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
             isSignificant = getNumberOfCols() > 0 && getNumberOfRows() > 1;
             headersUnorderedSet = getHeadersAsUnorderedSet();
             headersSet = getHeadersAsSet();
+
+            // code for new table
+            //headers = extractHeaders(_rows);
+            //tableRows = constructQRT(_rows);
+            
         }
     }
+
+    //// overloaded constructor to create set qrt
+    //QueryResultsTable(vector<string> headers, unordered_set<unordered_map<string, string>> rows) {
+    //    if (rows.size() == 0) {
+    //        numRows = 0; numCols = 0; isSignificant = false;
+    //    }
+    //    else {
+    //        vector<string> _rows;
+
+    //        this->rows = _rows;
+    //        vectorizedRows = vectorizeRows(this->rows);
+    //        numRows = rows.size();
+    //        numCols = numRows > 0 ? vectorizedRows[0].size() : 0;
+    //        isSignificant = getNumberOfCols() > 0 && getNumberOfRows() > 1;
+    //        headersUnorderedSet = getHeadersAsUnorderedSet();
+    //        headersSet = getHeadersAsSet();
+
+    //        // code for new table
+    //        headers = headers;
+    //        tableRows = rows;
+    //    }
+    //}
 
     //Constructor for empty table creation
     QueryResultsTable() : isSignificant(false), numRows(0), numCols(0) {}
@@ -69,6 +95,42 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
         numCols = numRows > 0 ? vectorizedRows[0].size() : 0;
     }
 
+    //Constructs a QRT as an unordered_set of rows (unordered_map of strings)
+    unordered_set<unordered_map<string, string>> constructQRT(vector<string> rows) {
+       unordered_set<unordered_map<string, string>> qrt;
+
+       for (int i = 1; i < static_cast<int>(rows.size()); ++i) {
+            vector<string> splitRow{ splitString(rows[i], ",") };
+            unordered_map<string, string> row;
+
+            // adds mapping of header to column values to row map
+            for (int j = 0; j < static_cast<int>(splitRow.size()); ++j) {
+                string h{ headers[j] };
+                string v{ splitRow[j] };
+                //row.insert({ h, v });
+            }
+
+            //qrt.insert(row);
+        }
+        return qrt;
+    }
+
+    vector<string> extractHeaders(vector<string> rows) {
+        return splitString(rows[0], ",");
+    }
+
+    vector<string> getHeaders() {
+        return headers;
+    }
+
+    //int getNumberOfRowsSet() {
+    //    return static_cast<int>(tableRows.size());
+    //}
+
+    //unordered_set<unordered_map<string, string>> getRowsSet() {
+    //    return tableRows;
+    //}
+
     /**
      * Creates a new QueryResultsTable object that is the result of a cartesian product between the row of elements of this table
      * and the other table.
@@ -78,6 +140,9 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
      */
     shared_ptr<QueryResultsTable> crossProduct(
         shared_ptr<QueryResultsTable> other);
+
+    // new QRT version of crossProduct that crosses on the set of maps data structure
+    //shared_ptr<QueryResultsTable> crossProductSet(shared_ptr<QueryResultsTable> other);
 
     /**
     * Creates a new QueryResultsTable object that has duplicate rows removed.
@@ -95,6 +160,7 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
     shared_ptr<QueryResultsTable> innerJoin(
         shared_ptr<QueryResultsTable> other);
 
+    //shared_ptr<QueryResultsTable> innerJoinSet(shared_ptr<QueryResultsTable> other);
     /**
      * Creates a shared pointer to a QueryResultsTable object representing the
      * difference between this table and one other table.
@@ -383,6 +449,11 @@ private:
     unordered_set<string> headersUnorderedSet;
     vector<string> rows;
     vector<vector<string>> vectorizedRows;
+
+    // QRT restructure code
+    //unordered_set<unordered_map<string,string>> tableRows;
+    vector<string> headers;
+
     //FOR DEBUGGING
     int id;
 };

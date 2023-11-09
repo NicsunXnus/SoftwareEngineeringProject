@@ -28,6 +28,37 @@ shared_ptr<QueryResultsTable> QueryResultsTable::crossProduct(shared_ptr<QueryRe
     return make_shared<QueryResultsTable>(xprod);
   }
 
+//shared_ptr<QueryResultsTable> QueryResultsTable::crossProductSet(shared_ptr<QueryResultsTable> other) {
+//    if (other->isEmpty() || this->isEmpty()) {
+//        if (other->getSignificant() && other->isEmpty() && this->getSignificant() &&
+//            !this->isEmpty()) {  // TRUE EMPTY X TABLE
+//            return make_shared<QueryResultsTable>(rows);
+//        }
+//        if (this->getSignificant() && this->isEmpty() && other->getSignificant() &&
+//            !other->isEmpty()) {  // TABLE X TRUE EMPTY
+//            return other;
+//        }
+//        return QueryResultsTable::createEmptyTable(other->getSignificant() && this->getSignificant());
+//    } 
+//    unordered_set<unordered_map<string,string>> thisRows = getRowsSet();
+//    unordered_set<unordered_map<string, string>> otherRows = other->getRowsSet();
+//    vector<string> newHeaders = getHeaders();
+//    vector<string> otherHeaders = other->getHeaders();
+//    newHeaders.insert(newHeaders.end(), otherHeaders.begin(), otherHeaders.end());
+//
+//    unordered_set<unordered_map<string, string>> newRows;
+//    for (unordered_map<string,string> thisRow : thisRows) {
+//        for (unordered_map<string, string> otherRow : otherRows) {
+//            unordered_map<string, string> newRow = thisRow;
+//            for (const auto& pair : otherRow) {
+//                newRow.insert({pair.first, pair.second});
+//            }
+//            newRows.insert(newRow);
+//        }
+//    }
+//    return make_shared<QueryResultsTable>(newHeaders, newRows);
+//}
+
 template <typename T, typename Iter>
 void removeIndicesFromVector(std::vector<T>& v, Iter begin, Iter end)
 // requires std::is_convertible_v<std::iterator_traits<Iter>::value_type, std::size_t>
@@ -135,6 +166,63 @@ shared_ptr<QueryResultsTable> QueryResultsTable::innerJoin(shared_ptr<QueryResul
     }
     return make_shared<QueryResultsTable>(innerJoined);
 }
+
+//shared_ptr<QueryResultsTable> QueryResultsTable::innerJoinSet(shared_ptr<QueryResultsTable> other) {
+//    vector<string> thisHeaders = getHeaders();
+//    vector<string> otherHeaders = other->getHeaders();
+//    vector<string> commonHeaders;
+//    vector<string> newHeaders(thisHeaders);
+//
+//    for (string thisHeader : thisHeaders) {
+//        for (string otherHeader : otherHeaders) {
+//            if (thisHeader == otherHeader) {
+//                commonHeaders.emplace_back(thisHeader);
+//            }
+//        }
+//    }
+//
+//    set<string> commonHeaderSet(commonHeaders.begin(), commonHeaders.end());
+//
+//    // add remaining headers from other table that is not in the new headers vector
+//    for (string otherHeader : otherHeaders) {
+//        if (commonHeaderSet.find(otherHeader) == commonHeaderSet.end()) {
+//            newHeaders.emplace_back(otherHeader);
+//        }
+//    }
+//
+//    unordered_set<unordered_map<string, string>> thisRows = getRowsSet();
+//    unordered_set<unordered_map<string, string>> otherRows = other->getRowsSet();
+//
+//    unordered_set<unordered_map<string, string>> newRows;
+//
+//    for (unordered_map<string, string> thisRow : thisRows) {
+//        for (unordered_map<string, string> otherRow : otherRows) {
+//            bool isMatchingRow{ true };
+//            for (string commonHeader : commonHeaders) {
+//                if (thisRow[commonHeader] != otherRow[commonHeader]) {
+//                    isMatchingRow = false;
+//                }
+//            }
+//
+//            if (!isMatchingRow) {
+//                continue;
+//            }
+//
+//            unordered_map<string, string> newRow = thisRow;
+//            for (const auto& pair : otherRow) {
+//                string header{ pair.first };
+//                string value{ pair.second };
+//
+//                if (commonHeaderSet.find(header) == commonHeaderSet.end()) {
+//                    // not a common header, add to the newly joined row
+//                    newRow.insert({header, value});
+//                }
+//            }
+//            newRows.insert(newRow);
+//        }
+//    }
+//    return make_shared<QueryResultsTable>(newHeaders, newRows);
+//}
 
   /*struct CustomVectorHash {
       size_t operator()(const std::vector<std::string>& vec) const {
