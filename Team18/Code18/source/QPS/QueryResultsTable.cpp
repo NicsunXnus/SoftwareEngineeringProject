@@ -280,7 +280,7 @@ void QueryResultsTable::addAttrColumn(string attr, string oldName) {
     }
 }
 
-shared_ptr<QueryResultsTable> QueryResultsTable::filter(string key, vector<string> targets) { //assuming there is no spacing/wrong capitalisation in key & there is no duplicates in targets
+shared_ptr<QueryResultsTable> QueryResultsTable::filter(string key, unordered_set<string> targets) { //assuming there is no spacing/wrong capitalisation in key & there is no duplicates in targets
     if (isEmpty()) {
         shared_ptr<QueryResultsTable> table = QueryResultsTable::createEmptyTable();
         table->setSignificant(getSignificant());
@@ -294,7 +294,7 @@ shared_ptr<QueryResultsTable> QueryResultsTable::filter(string key, vector<strin
         for (int i = 0; i < tableRows.size(); i++) {
             unordered_map<string, string> map = *(next(tableRows.begin(), i));
             string val = map.at(key);
-            if (find(targets.begin(), targets.end(), val) != targets.end()) {
+            if (targets.find(val) != targets.end()) {
                 res.insert(map);
             }
         }
