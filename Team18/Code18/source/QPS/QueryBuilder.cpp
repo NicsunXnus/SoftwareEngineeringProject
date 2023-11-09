@@ -89,7 +89,7 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
       continue;
     }
     // no common synonyms. must cross product
-    finalTable->crossProduct(groupTable);
+    finalTable->crossProductSet(groupTable);
     // cout << "finalTable: " << endl;
     // finalTable->printTable();
     if (finalTable->isEmpty() && !finalTable->getSignificant()) {
@@ -162,7 +162,7 @@ shared_ptr<QueryResultsTable> QueryBuilder::buildGroupQuery(
     // sanity testing
     // if (groupTable->haveSimilarHeaders(table)) {
     // inner join, given the guarantee of common synonyms
-    groupTable = groupTable->innerJoin(table);
+    groupTable = groupTable->innerJoinSet(table);
     //} else {
     //  // inner join, given the guarantee of common synonyms
     //  groupTable = groupTable->crossProduct(table);

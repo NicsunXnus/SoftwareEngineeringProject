@@ -198,12 +198,14 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
     void deleteColumn(string deleteHeader);
 
     /**
-     * Adds a column indicated by the header given with the new header provided.
+     * Renames a column indicated by the header given with the new header provided.
      *
      * @param newName The new header to be changed to, represented as a string.
      * @param oldName The old header to be renamed, represented as a string.
     */
-    void addAttrColumn(string newName, string oldName);
+    void renameColumn(string newName, string oldName);
+
+    void duplicateAndAddColumn(string newName, string oldName);
 
     /**
      * Creates a new QueryResultsTable object that represents the filtered table.

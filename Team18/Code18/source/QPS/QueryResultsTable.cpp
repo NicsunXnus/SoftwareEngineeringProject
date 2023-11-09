@@ -269,13 +269,24 @@ void QueryResultsTable::condenseTable(unordered_set<string> targetHeaders) {
     }
 }
 
-void QueryResultsTable::addAttrColumn(string attr, string oldName) {
+void QueryResultsTable::renameColumn(string newName, string oldName) {
     unordered_set<string> headers = getHeaders();
     if (headers.find(oldName) != headers.end()) {
         for (unordered_map<string, string> map : tableRows) {
             string val = map[oldName];
             map.erase(oldName);
-            map.insert({attr, val});
+            map.insert({ newName, val});
+        }
+    }
+}
+
+
+void QueryResultsTable::duplicateAndAddColumn(string newName, string oldName) {
+    unordered_set<string> headers = getHeaders();
+    if (headers.find(oldName) != headers.end()) {
+        for (unordered_map<string, string> map : tableRows) {
+            string val = map[oldName];
+            map.insert({ newName, val });
         }
     }
 }
