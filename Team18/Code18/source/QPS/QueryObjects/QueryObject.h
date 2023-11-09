@@ -18,11 +18,12 @@ using namespace std;
 
 class QueryObject {
 private:
-	string_view data; // stores information about the queryObject, such as its name, or arguments for clauses
+	string data; // stores information about the queryObject, such as its name, or arguments for clauses
 
 public:
-	QueryObject(string_view data)
-		: data{ data } {};
+	QueryObject(string_view data) {
+		this->data = string(data);
+	};
 
 	string_view getQueryObjectName();
 

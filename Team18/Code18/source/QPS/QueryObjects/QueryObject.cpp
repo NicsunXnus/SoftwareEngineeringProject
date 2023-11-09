@@ -1,7 +1,8 @@
 #include "QueryObject.h"
 
 string_view QueryObject::getQueryObjectName() {
-	return data;
+	string_view sv(data.data(), data.size());
+	return sv;
 }
 
 string QueryObject::getCacheName() {

@@ -638,7 +638,7 @@ vector<shared_ptr<QueryObject>> QueryParser::processComparisonClause(vector<stri
 		index += tokenCount;
 
 		try {
-			queryObjects.push_back(staticStaticFactory->create("Static=Static"sv, argVector));
+			queryObjects.push_back(staticStaticFactory->create("Compare"sv, argVector));
 
 			return queryObjects;
 		}
@@ -693,7 +693,7 @@ vector<shared_ptr<QueryObject>> QueryParser::processComparisonClause(vector<stri
 		argVector.emplace_back(make_shared<ClauseArg>(staticArg));
 
 		try {
-			queryObjects.push_back(staticAttrRefFactory->create("Static=AttrRef"sv, argVector));
+			queryObjects.push_back(staticAttrRefFactory->create("Compare"sv, argVector));
 			queryObjects.insert(queryObjects.end(), synonymQueryObjects.begin(), synonymQueryObjects.end());
 
 			return queryObjects;
@@ -761,7 +761,7 @@ vector<shared_ptr<QueryObject>> QueryParser::processComparisonClause(vector<stri
 		argVector.emplace_back(make_shared<ClauseArg>(attrName2));
 
 		try {
-			queryObjects.push_back(attrRefAttrRefFactory->create("AttrRef=AttrRef"sv, argVector));
+			queryObjects.push_back(attrRefAttrRefFactory->create("Compare"sv, argVector));
 			queryObjects.insert(queryObjects.end(), synonymQueryObjects.begin(), synonymQueryObjects.end());
 			return queryObjects;
 		}
