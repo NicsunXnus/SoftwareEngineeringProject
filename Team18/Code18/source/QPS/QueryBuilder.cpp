@@ -118,15 +118,8 @@ shared_ptr<QueryResultsTable> QueryBuilder::buildGroupQuery(
       // groupTable->printTable();
       continue;
     }
-    // TODO: this should be innerJoin only! allow crossproduct now just for
-    // sanity testing
-    // if (groupTable->haveSimilarHeaders(table)) {
-    // inner join, given the guarantee of common synonyms
+
     groupTable = groupTable->innerJoin(table);
-    //} else {
-    //  // inner join, given the guarantee of common synonyms
-    //  groupTable = groupTable->crossProduct(table);
-    //}
 
     //cout << "groupTable: " << endl;
     //groupTable->printTable();

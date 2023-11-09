@@ -20,23 +20,17 @@ static inline const string CFG_CACHE_STRING = "CFG";
 
 // Query Optimisation
 static inline const map<ABSTRACTION, int> abstraction_weights_map = {
-	{USES, 2},
-	{MODIFIES, 2},
-	{PARENT, 2},
-	{PARENTSTAR, 2},
-	{FOLLOWS, 2},
-	{FOLLOWSSTAR, 2},
-	{CALLS, 1},
-	{CALLSSTAR, 1},
-	{NEXT, 2},
-	{NEXTSTAR, 8},
-	{AFFECTS, 10},
+    {USES, 6},    {MODIFIES, 6},    {PARENT, 6},   {PARENTSTAR, 6},
+    {FOLLOWS, 6}, {FOLLOWSSTAR, 6}, {CALLS, 3},    {CALLSSTAR, 3},
+    {NEXT, 6},    {NEXTSTAR, 24},   {AFFECTS, 27},
 };
 
-static inline const int ABSTRACTION_CRITERION_WEIGHT = 3;
+static inline const int WITH_CLAUSE_SCORE = 8;
+
+static inline const int NOT_CLAUSE_SCORE = 4;  // additional
+
+static inline const int PATTERN_CLAUSE_SCORE = 8;
 
 static inline const int SYNONYM_COUNT_WEIGHT = 2;
-
-static inline const int WITH_CLAUSE_SCORE = 4;
 
 #endif
