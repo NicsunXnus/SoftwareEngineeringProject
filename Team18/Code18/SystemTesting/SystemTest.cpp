@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "SystemTestWrapper.h"
 
-
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace SystemTesting {
@@ -67,119 +66,110 @@ TEST_CLASS(Milestone2) {
   static inline const string defaultPath = "../../Tests18/Milestone2/";
 
  public:
-      TEST_METHOD(single_calls_clause) {
-        string srcFilePath = defaultPath + "single_calls_source.txt";
-        string queryFilePath = defaultPath + "single_calls_queries.txt";
-        assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
-      }
+  TEST_METHOD(single_calls_clause) {
+    string srcFilePath = defaultPath + "single_calls_source.txt";
+    string queryFilePath = defaultPath + "single_calls_queries.txt";
+    assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+  }
 
-	TEST_METHOD(single_callsStar_clause)
-	{
-		string srcFilePath = defaultPath + "single_callsStar_source.txt";
-		string queryFilePath = defaultPath + "single_callsStar_queries.txt";
-		assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
-	}
+  TEST_METHOD(single_callsStar_clause) {
+    string srcFilePath = defaultPath + "single_callsStar_source.txt";
+    string queryFilePath = defaultPath + "single_callsStar_queries.txt";
+    assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+  }
 
-		//TEST_METHOD(sprint3_test)
-		//{
-		//	string srcFilePath = defaultPath + "sprint3_source.txt";
-		//	string queryFilePath = defaultPath + "sprint3_queries.txt";
-		//	assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
-		//}
+  // TEST_METHOD(sprint3_test)
+  //{
+  //	string srcFilePath = defaultPath + "sprint3_source.txt";
+  //	string queryFilePath = defaultPath + "sprint3_queries.txt";
+  //	assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+  // }
 
-		TEST_METHOD(single_next_clause)
-		{
-			string srcFilePath = defaultPath + "single_next_source.txt";
-			string queryFilePath = defaultPath + "single_next_queries.txt";
-			assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
-		}
-    TEST_METHOD(no_clauses) {
-      string srcFilePath = defaultPath + "no_clause_source.txt";
-      string queryFilePath = defaultPath + "no_clause_queries.txt";
-      assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
-    }
-    TEST_METHOD(single_follows_clause) {
-      string srcFilePath = defaultPath + "single_follows_source.txt";
-      string queryFilePath = defaultPath + "single_follows_queries.txt";
-      assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
-    }
-    TEST_METHOD(single_followsT_clause) {
-      string srcFilePath = defaultPath + "single_followsT_source.txt";
-      string queryFilePath = defaultPath + "single_followsT_queries.txt";
-      assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
-    }
-    TEST_METHOD(single_parent_clause) {
-      string srcFilePath = defaultPath + "single_parent_source.txt";
-      string queryFilePath = defaultPath + "single_parent_queries.txt";
-      assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
-    }
-    TEST_METHOD(single_parentT_clause) {
-      string srcFilePath = defaultPath + "single_parentT_source.txt";
-      string queryFilePath = defaultPath + "single_parentT_queries.txt";
-      assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
-    }
-    TEST_METHOD(single_usesP_clause) {
-      string srcFilePath = defaultPath + "single_UsesP_source.txt";
-      string queryFilePath = defaultPath + "single_UsesP_queries.txt";
-      assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
-    }
-    TEST_METHOD(single_pattern_clause) {
-      string srcFilePath = defaultPath + "single_pattern_source.txt";
-      string queryFilePath = defaultPath + "single_pattern_queries.txt";
-      assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
-    }
-		TEST_METHOD(single_modifies_clause)
-		{
-			string srcFilePath = defaultPath + "single_modifies_source.txt";
-			string queryFilePath = defaultPath + "single_modifies_queries.txt";
-			assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
-		}
-		TEST_METHOD(debugM2)
-		{
-			string srcFilePath = defaultPath + "debug_source.txt";
-			string queryFilePath = defaultPath + "debug_queries.txt";
-			assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
-		}
+  TEST_METHOD(single_next_clause) {
+    string srcFilePath = defaultPath + "single_next_source.txt";
+    string queryFilePath = defaultPath + "single_next_queries.txt";
+    assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+  }
+  TEST_METHOD(no_clauses) {
+    string srcFilePath = defaultPath + "no_clause_source.txt";
+    string queryFilePath = defaultPath + "no_clause_queries.txt";
+    assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+  }
+  TEST_METHOD(single_follows_clause) {
+    string srcFilePath = defaultPath + "single_follows_source.txt";
+    string queryFilePath = defaultPath + "single_follows_queries.txt";
+    assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+  }
+  TEST_METHOD(single_followsT_clause) {
+    string srcFilePath = defaultPath + "single_followsT_source.txt";
+    string queryFilePath = defaultPath + "single_followsT_queries.txt";
+    assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+  }
+  TEST_METHOD(single_parent_clause) {
+    string srcFilePath = defaultPath + "single_parent_source.txt";
+    string queryFilePath = defaultPath + "single_parent_queries.txt";
+    assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+  }
+  TEST_METHOD(single_parentT_clause) {
+    string srcFilePath = defaultPath + "single_parentT_source.txt";
+    string queryFilePath = defaultPath + "single_parentT_queries.txt";
+    assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+  }
+  TEST_METHOD(single_usesP_clause) {
+    string srcFilePath = defaultPath + "single_UsesP_source.txt";
+    string queryFilePath = defaultPath + "single_UsesP_queries.txt";
+    assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+  }
+  TEST_METHOD(single_pattern_clause) {
+    string srcFilePath = defaultPath + "single_pattern_source.txt";
+    string queryFilePath = defaultPath + "single_pattern_queries.txt";
+    assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+  }
+  TEST_METHOD(single_modifies_clause) {
+    string srcFilePath = defaultPath + "single_modifies_source.txt";
+    string queryFilePath = defaultPath + "single_modifies_queries.txt";
+    assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+  }
+  /*TEST_METHOD(debugM2) {
+    string srcFilePath = defaultPath + "debug_source.txt";
+    string queryFilePath = defaultPath + "debug_queries.txt";
+    assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+  }*/
 };
 
-	TEST_CLASS(Misc) {
-	private:
-		static inline const string defaultPath = "../../Tests18/";
-	public:
-		TEST_METHOD(StressTest)
-		{
-			string srcFilePath = defaultPath + "Stress_source.txt";
-			string queryFilePath = defaultPath + "Stress_queries.txt";
-			assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
-		}
+TEST_CLASS(Misc) {
+ private:
+  static inline const string defaultPath = "../../Tests18/";
 
-        TEST_METHOD(RandomCases)
-        {
-            string srcFilePath = defaultPath + "debug_source.txt";
-            string queryFilePath = defaultPath + "debug_queries.txt";
-            assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
-        }
+ public:
+  TEST_METHOD(StressTest) {
+    string srcFilePath = defaultPath + "Stress_source.txt";
+    string queryFilePath = defaultPath + "Stress_queries.txt";
+    assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+  }
 
-        TEST_METHOD(Random_HY)
-        {
-            string srcFilePath = defaultPath + "Sample_source_random.txt";
-            string queryFilePath = defaultPath + "Sample_queries_random.txt";
-            assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
-        }
+  TEST_METHOD(RandomCases) {
+    string srcFilePath = defaultPath + "debug_source.txt";
+    string queryFilePath = defaultPath + "debug_queries.txt";
+    assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+  }
 
-        TEST_METHOD(WithNotTests)
-        {
-            string srcFilePath = defaultPath + "with_source.txt";
-            string queryFilePath = defaultPath + "with_queries.txt";
-            assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
-        }
+  TEST_METHOD(Random_HY) {
+    string srcFilePath = defaultPath + "Sample_source_random.txt";
+    string queryFilePath = defaultPath + "Sample_queries_random.txt";
+    assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+  }
 
-        TEST_METHOD(AffectsTests)
-        {
-            string srcFilePath = defaultPath + "affects_source.txt";
-            string queryFilePath = defaultPath + "affects_queries.txt";
-            assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
-        }
+  TEST_METHOD(WithNotTests) {
+    string srcFilePath = defaultPath + "with_source.txt";
+    string queryFilePath = defaultPath + "with_queries.txt";
+    assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+  }
 
-	};
-}
+  TEST_METHOD(AffectsTests) {
+    string srcFilePath = defaultPath + "affects_source.txt";
+    string queryFilePath = defaultPath + "affects_queries.txt";
+    assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+  }
+};
+}  // namespace SystemTesting

@@ -11,10 +11,10 @@ Select c with not 5 = 10
 1 - syn, syn - test attr, swap back later
 read r1, r;
 Select r.varName with not r.varName = r.stmt#
-that, this
+SemanticError
 5000
 1 - syn, syn - test attr, swap back later
 read r1, r;
 Select r.varName with r1.stmt# = r.varName
-
+SemanticError
 5000
