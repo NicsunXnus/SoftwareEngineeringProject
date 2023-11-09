@@ -178,6 +178,25 @@ StringMap DataAccessLayerAffectsStub::getClauseInverse(ABSTRACTION abstraction) 
         { "z", {"13","Second","14","15","First","17","Third","3","8","6"} } };
         return uses;
     }
+    if (abstraction == NEXT) {
+      StringMap next = { {"2", {"1"}},
+          {"3", {"2"}},
+          {"5", {"4"}},
+          {"6", {"5", "9"}},
+          {"7", {"6"}},
+          {"8", {"7"}},
+          {"9", {"8"}},
+          {"10", {"6"}},
+          {"11", {"10"}},
+          {"12", {"10"}},
+          {"13", {"11, 12"}},
+          {"14", {"13"}},
+          {"15", {"14"}},
+          {"17", {"16"}},
+          {"18", {"17"}},
+          {"19", {"18"}}, };
+      return next;
+    }
     StringMap test;
     return test;
 }
