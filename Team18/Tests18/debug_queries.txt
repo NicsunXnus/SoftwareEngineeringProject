@@ -1,5 +1,10 @@
 1 - syn, syn - test attr, swap back later
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select <a, v>
+Third
+5000
+1 - syn, syn - test attr, swap back later
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
 Select r.varName such that Modifies(r, "Third")
 Third
 5000

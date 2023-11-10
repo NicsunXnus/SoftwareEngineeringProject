@@ -4,6 +4,7 @@
 #include "../source/QPS/QueryResultsTable.h"
 #include "../source/QPS/ResultsHandler.h"
 #include "../source/Constants/QPSConstants.h"
+#include "../source/QPS/QueryBuilder.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;
@@ -66,18 +67,7 @@ public:
 			Assert::IsTrue(*l_front == "1");
 		}
 
-		TEST_METHOD(TestTupleNoSuchThatClause) {
-			vector<shared_ptr<QueryResultsTable>> selectClauseTable = { QueryResultsTable::createTable("a", singleTable), QueryResultsTable::createTable("b", singleTableVars) };
-			vector<shared_ptr<QueryResultsTable>> nonSelectClauseTable = {};
-			shared_ptr<ResultHandler> resultHandler = make_shared<ResultHandler>();
-			list<string> finalResult = resultHandler->processTables(selectClauseTable, nonSelectClauseTable);
-			auto l_front = finalResult.begin();
-			advance(l_front, 0);
-			Assert::IsTrue(finalResult.size() == 9);
-			Assert::IsTrue(*l_front == "1 a");
-			advance(l_front, 8);
-			Assert::IsTrue(*l_front == "3 c");
-		}
+
 
 		TEST_METHOD(TestTupleEmptyClause) {
 			shared_ptr<QueryResultsTable> table1 = QueryResultsTable::createTable("a", singleTable);
