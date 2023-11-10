@@ -2064,7 +2064,7 @@ TEST_METHOD(TestValidWithClauseStaticAttr) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[1]["s.varName"][0] == "a");
+  Assert::IsTrue(table->getColumns()[0]["s"][0] == "a");
 }
 
 TEST_METHOD(TestValidWithClauseAttrStatic) {
@@ -2081,7 +2081,7 @@ TEST_METHOD(TestValidWithClauseAttrStatic) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[1]["s.varName"][0] == "a");
+  Assert::IsTrue(table->getColumns()[0]["s"][0] == "a");
 }
 
 TEST_METHOD(TestValidWithClauseAttrAttr) {

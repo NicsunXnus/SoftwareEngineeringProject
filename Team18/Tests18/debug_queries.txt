@@ -1,6 +1,36 @@
 1 - syn, syn - test attr, swap back later
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select r.varName such that Modifies(r, "Third")
+Third
+5000
+1 - syn, syn - test attr, swap back later
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select r.varName
+x, z, Third
+5000
+1 - syn, syn - test attr, swap back later
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select c with not c.value = w.stmt#
+0, 1, 2, 5
+5000
+1 - syn, syn - test attr, swap back later
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select p.procName with not r.varName = p.procName
+Second, First, Third
+5000
+1 - syn, syn - test attr, swap back later
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select p.procName with r.varName = p.procName
+Third
+5000
+1 - syn, syn - test attr, swap back later
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
 Select r.varName with not r.varName = p.procName
+x, z, Third
+5000
+1 - syn, syn - test attr, swap back later
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select r.varName with r.varName = p.procName
 Third
 5000
 1 - syn, syn - test attr, swap back later
