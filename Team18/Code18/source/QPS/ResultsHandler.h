@@ -88,7 +88,7 @@ public:
 	 */
 	~ResultHandler() {};
 	
-	map<string, int> selectClauseCounts;
+	vector<string> selectClauseHeaders;
 
 	shared_ptr<QueryResultsTable> merge(vector<shared_ptr<QueryResultsTable>>::iterator left, vector<shared_ptr<QueryResultsTable>>::iterator right)
 	{
@@ -99,10 +99,8 @@ public:
 		return joinIntermediateTables({ merge(left, mid), merge(mid, right) });
 	}
 
-	void setSelectClauseCount(vector<shared_ptr<QueryResultsTable>> selectClause) {
-		for (shared_ptr<QueryResultsTable> clause : selectClause) {
-			selectClauseCounts[*(clause->getHeaders().begin())]++;
-		}
+	void storeSelectClauseHeaders(vector<shared_ptr<QueryResultsTable>> selectClauses) {
+		for (shared_ptr<QueryResultsTable > clause : selectClauses) selectClauseHeaders.emplace_back(*(clause->getHeaders().begin()));
 	}
 
 	// The QueryResultTables of the clauses are processed, and through a series of cross-products and/or inner joins, the final result

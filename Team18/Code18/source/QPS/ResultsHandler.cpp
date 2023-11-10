@@ -1,5 +1,5 @@
 #include "ResultsHandler.h"
-
+#include <sstream>
 list<string> ResultHandler::processTables(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
 	if (isSingleSynonym(selectClauseTables)) {
 		return handleSingleSynonym(selectClauseTables, nonSelectClauseTables);
@@ -16,20 +16,21 @@ list<string> ResultHandler::processTables(vector<shared_ptr<QueryResultsTable>> 
 }
 
 vector<string> ResultHandler::tableToVectorForTuples(shared_ptr<QueryResultsTable> table) {
-	unordered_set<unordered_map<string,string>, QueryResultsTable::HashFunc, QueryResultsTable::EqualFunc> values = table->getRowsSet();
+	unordered_set<unordered_map<string, string>, QueryResultsTable::HashFunc, QueryResultsTable::EqualFunc> values = table->getRowsSet();
 	vector<string> result;
-	for (unordered_map<string,string> map : values) {
-		string temp = "";
-			for (const auto& pair : map) {
-				for (int i = 0; i < selectClauseCounts[pair.first]; i++) {
-					temp += pair.second + " ";
-				}
-			}
-			temp.erase(temp.end() - 1);
-			result.emplace_back(temp);
+
+	for (unordered_map<string, string> map : values) {
+		stringstream ss;
+		transform(selectClauseHeaders.begin(), selectClauseHeaders.end(), ostream_iterator<string>(ss, " "), [&](const string& s) {
+			return map[s];
+			});
+		string temp = ss.str();
+		temp.pop_back();
+		result.emplace_back(temp);
 	}
 	return result;
 }
+
 
 // tables must be non-empty
 shared_ptr<QueryResultsTable> ResultHandler::joinIntermediateTables(vector<shared_ptr<QueryResultsTable>> tables) {
@@ -190,8 +191,10 @@ list<string> ResultHandler::returnTuples(vector<shared_ptr<QueryResultsTable>> s
 	shared_ptr<QueryResultsTable> intermediateTable = selectClauseTables[0];
 	intermediateTable->getPrimaryKeyOnlyTable();
 	selectClauseTables.erase(selectClauseTables.begin());
+
 	for (shared_ptr<QueryResultsTable> table : selectClauseTables) {
 		table->getPrimaryKeyOnlyTable();
+		string header = table->getPrimaryKey();
 		if (intermediateTable->haveSimilarHeaders(table)) { // for cases like select<s, s>, duplicate the column (do not cross product)
 			//intermediateTable->duplicateColumns(table->getPrimaryKey());
 		}
@@ -204,8 +207,7 @@ list<string> ResultHandler::returnTuples(vector<shared_ptr<QueryResultsTable>> s
 }
 
 list<string> ResultHandler::handleTuples(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
-	setSelectClauseCount(selectClauseTables);
-
+	storeSelectClauseHeaders(selectClauseTables);
 	if (nonSelectClauseTables.empty()) { // case 1
 		return returnTuples(selectClauseTables);
 	}
@@ -232,7 +234,9 @@ list<string> ResultHandler::handleTuples(vector<shared_ptr<QueryResultsTable>> s
 		shared_ptr<QueryResultsTable> synsInIntermediateTable = processedIntermediateTable;
 		finalTable = finalTable->crossProductSet(synsInIntermediateTable);
 	}
+
 	for (shared_ptr<QueryResultsTable> table : selectClausesNotInIntermediateTable) {
+		string header = table->getPrimaryKey();
 		if (finalTable->haveSimilarHeaders(table)) {
 			//finalTable->duplicateColumns(table->getPrimaryKey());
 		}
