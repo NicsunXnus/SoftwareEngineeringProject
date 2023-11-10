@@ -75,7 +75,7 @@ TEST_METHOD(TestInvalidFollowsSynInt2) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(!table->getSignificant());
-  Assert::IsTrue(table->getNumberOfCols() == 0);
+  Assert::IsTrue(table->getNumberOfCols() == 1);
 }
 
 TEST_METHOD(TestValidFollowsIntSyn) {
@@ -1786,7 +1786,7 @@ TEST_METHOD(TestInvalidNextStarSynInt) {
       make_shared<DataAccessLayerAffectsStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(!table->getSignificant());
-  Assert::IsTrue(table->getNumberOfCols() == 0);
+  Assert::IsTrue(table->getNumberOfCols() == 1);
 }
 
 TEST_METHOD(TestValidNextStarSynSyn) {

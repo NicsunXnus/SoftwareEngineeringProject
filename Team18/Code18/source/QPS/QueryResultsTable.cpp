@@ -157,7 +157,11 @@ shared_ptr<QueryResultsTable> QueryResultsTable::createTable(string header, vect
         map.insert({ header, s});
         res.insert(map);
     }
-    return make_shared<QueryResultsTable>(res);
+    shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>(res);
+    vector<string> headers = { header };
+    table->setHeaders(headers);
+    return table;
+
 }
 
 shared_ptr<QueryResultsTable> QueryResultsTable::createTable(vector<string> headers, map<string, vector<string>> columnValues) {
@@ -171,7 +175,9 @@ shared_ptr<QueryResultsTable> QueryResultsTable::createTable(vector<string> head
             res.insert(map);
         }
     }
-    return make_shared<QueryResultsTable>(res);
+    shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>(res);
+    table->setHeaders(headers);
+    return table;
 }
 
 shared_ptr<QueryResultsTable> QueryResultsTable::createTable(string header, unordered_set<string> columnValues) {
@@ -181,7 +187,10 @@ shared_ptr<QueryResultsTable> QueryResultsTable::createTable(string header, unor
         map.insert({ header, s });
         res.insert(map);
     }
-    return make_shared<QueryResultsTable>(res);
+    shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>(res);
+    vector<string> headers = { header };
+    table->setHeaders(headers);
+    return table;
 }
 
 shared_ptr<QueryResultsTable> QueryResultsTable::createTable(vector<string> headers, map<string, unordered_set<string>> columnValues) {
@@ -195,7 +204,9 @@ shared_ptr<QueryResultsTable> QueryResultsTable::createTable(vector<string> head
             res.insert(map);
         }
     }
-    return make_shared<QueryResultsTable>(res);
+    shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>(res);
+    table->setHeaders(headers);
+    return table;
 }   
 
 shared_ptr<QueryResultsTable> QueryResultsTable::create2DTable(unordered_set<string> headers, vector<vector<string>> columnValues) {
