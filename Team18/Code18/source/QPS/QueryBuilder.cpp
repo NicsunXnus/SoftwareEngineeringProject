@@ -36,20 +36,30 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
     cout << endl;
 
     shared_ptr<QueryResultsTable> groupTable = buildGroupQuery(group);
+
+    // cout << "isempty: " << groupTable->isEmpty() << endl;
+    // cout << "issignificant: " << groupTable->getSignificant() << endl;
+    // groupTable->printTable();
+
     if (groupTable->isEmpty() && !groupTable->getSignificant()) {
       return {QueryResultsTable::createEmptyTable()};
     }
 
-    unordered_set<string> currHeadersToCheck = groupTable->getHeaders();
-    // check whether the group is relevant, if not, then ignore it
-    bool isNotQueried = true;
-    for (string s : currHeadersToCheck) {
-        if (synonymsQueried.find(s) != synonymsQueried.end()) {
-            isNotQueried = !isNotQueried;
-            break;
-        }
-    }
-    if (isNotQueried) continue;
+    //unordered_set<string> currHeadersToCheck = groupTable->getHeaders();
+    //// check whether the group is relevant, if not, then ignore it
+    //bool isNotQueried = true;
+    //for (string s : currHeadersToCheck) {
+    //  if (synonymsQueried.find(s) != synonymsQueried.end()) {
+    //    isNotQueried = !isNotQueried;
+    //    break;
+    //  }
+    //}
+    //if (isNotQueried) continue;
+
+    cout << "group table: " << endl;
+    cout << "isempty: " << groupTable->isEmpty() << endl;
+    cout << "issignificant: " << groupTable->getSignificant() << endl;
+    groupTable->printTable();
 
     // if finalTable is empty, just set it to groupTable
     if (finalTable->isEmpty()) {
@@ -63,6 +73,11 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
       return {QueryResultsTable::createEmptyTable()};
     }
   }
+
+  cout << "final table: " << endl;
+  cout << "isempty: " << finalTable->isEmpty() << endl;
+  cout << "issignificant: " << finalTable->getSignificant() << endl;
+  finalTable->printTable();
 
   return {finalTable};
 }
@@ -109,6 +124,10 @@ shared_ptr<QueryResultsTable> QueryBuilder::buildGroupQuery(
     if (nextObj->shouldCache()) {
       cache->insert(nextObj->getCacheName(), table);
     }
+
+    // cout << "isempty: " << table->isEmpty() << endl;
+    // cout << "issignificant: " << table->getSignificant() << endl;
+    // table->printTable();
 
     // break out of loop if table is empty. lazy evaluation
     if (table->isEmpty() && !table->getSignificant()) {
@@ -162,7 +181,7 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuerySelectClause() {
     shared_ptr<QueryResultsTable> table = obj->callAndProcess(dataAccessLayer);
     queryResultsTables.push_back(table);
     unordered_set<string> headers = table->getHeaders();
-    synonymsQueried.insert(headers.begin(), headers.end());
+    //synonymsQueried.insert(headers.begin(), headers.end());
   }
   return queryResultsTables;
 }
