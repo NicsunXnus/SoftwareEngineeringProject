@@ -21,7 +21,7 @@ class QueryBuilder {
   vector<shared_ptr<QueryObject>> selectClauseQueryObjects;
   vector<shared_ptr<QueryObject>> nonSelectClauseQueryObjects;
   shared_ptr<DataAccessLayer> dataAccessLayer;
-  bool isOptimisedSwitch = false;
+  unordered_set<string> synonymsQueried;
 
  public:
   /**
@@ -66,8 +66,5 @@ class QueryBuilder {
 
   vector<shared_ptr<QueryResultsTable>> buildQuerySelectClause();
 
-  bool getOptimisedSwitch() { return isOptimisedSwitch; }
-
-  void setOptimisedSwitch() { isOptimisedSwitch = !isOptimisedSwitch; }
 };
 #endif

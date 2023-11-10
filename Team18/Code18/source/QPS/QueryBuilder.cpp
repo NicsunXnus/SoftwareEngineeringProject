@@ -45,6 +45,17 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
       finalTable = groupTable;
       continue;
     }
+
+    unordered_set<string> currHeadersToCheck = groupTable->getHeaders();
+    // check whether the group is relevant, if not, then ignore it
+    bool isNotQueried = true;
+    for (string s : currHeadersToCheck) {
+        if (synonymsQueried.find(s) != synonymsQueried.end()) {
+            isNotQueried = !isNotQueried;
+            break;
+        }
+    }
+    if (isNotQueried) return {finalTable};
     // no common synonyms. must cross product
     finalTable->crossProductSet(groupTable);
     if (finalTable->isEmpty() && !finalTable->getSignificant()) {
@@ -52,7 +63,7 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
     }
   }
 
-  return {finalTable};  // TODO: change to just return finalTable
+  return {finalTable};
 }
 
 shared_ptr<QueryResultsTable> QueryBuilder::buildGroupQuery(
@@ -149,6 +160,8 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuerySelectClause() {
   for (shared_ptr<QueryObject> obj : selectClauseQueryObjects) {
     shared_ptr<QueryResultsTable> table = obj->callAndProcess(dataAccessLayer);
     queryResultsTables.push_back(table);
+    unordered_set<string> headers = table->getHeaders();
+    synonymsQueried.insert(headers.begin(), headers.end());
   }
   return queryResultsTables;
 }
