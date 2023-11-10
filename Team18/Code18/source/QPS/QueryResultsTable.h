@@ -218,16 +218,6 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
     shared_ptr<QueryResultsTable> filter(string key, unordered_set<string> targets);//assuming there is no spacing/wrong capitalisation in key & there is no duplicates in targets
 
     /**
-     * Creates a new QueryResultsTable object that represents the filtered table.
-     *
-     * @param header1 The header of a column represented by a string
-     * @param header2 The header of another column represented by a string
-     * @return A shared pointer to the newly created QueryResultsTable object
-     * representing the old table but only containing rows having only values where col1 = col2
-    */
-    shared_ptr<QueryResultsTable> innerJoinOnTwoColumns(string header1, string header2);
-
-    /**
      * Checks whether this table and other table contains at least one same header.
      *
      * @param other A shared pointer to a QueryResultsTable object representing the other table

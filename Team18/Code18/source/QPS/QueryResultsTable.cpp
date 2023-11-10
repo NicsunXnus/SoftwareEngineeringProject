@@ -307,33 +307,14 @@ shared_ptr<QueryResultsTable> QueryResultsTable::filter(string key, unordered_se
                 res.insert(map);
             }
         }
-        return make_shared<QueryResultsTable>(res);
+        shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>(res);
+        table->setHeaders(headers);
+        return table;
     }
     else {
         //return empty table if target not in headers
-        return createEmptyTable();
+        return createEmptyTableWithHeadersSet(headers);
     }
-}
-
-shared_ptr<QueryResultsTable> QueryResultsTable::innerJoinOnTwoColumns(string header1, string header2) {
-    if (isEmpty()) {
-        shared_ptr<QueryResultsTable> table = QueryResultsTable::createEmptyTable();
-        table->setSignificant(getSignificant());
-        return table;
-    }
-    shared_ptr<QueryResultsTable> filteredTable;
-    unordered_set<string> headers = getHeaders();
-
-    unordered_set<unordered_map<string,string>, HashFunc, EqualFunc> res;
-    for (int i = 0; i < tableRows.size(); i++) {
-        unordered_map<string, string> map = *(next(tableRows.begin(), i));
-        if (map.at(header1) == map.at(header2)) {
-            res.insert(map);
-        }
-    }
-  
-    return make_shared<QueryResultsTable>(res);
-
 }
 
 bool QueryResultsTable::haveSimilarHeaders(
