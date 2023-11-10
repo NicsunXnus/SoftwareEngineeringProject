@@ -386,6 +386,41 @@ namespace UnitTesting
             Assert::IsTrue(compare_vectors(diff_col, { "a", "b", "c" }));
         }
 
+        TEST_METHOD(TestRenameDelete) {
+            unordered_set < unordered_map<string, string>, QueryResultsTable::HashFunc, QueryResultsTable::EqualFunc> map8;
+            unordered_map<string, string> m13;
+            m13.insert({ "s3","5" }); m13.insert({ "v1","y" }); m13.insert({ "s4","5" }); m13.insert({ "v2","y" });
+            map8.insert(m13);
+            unordered_map<string, string> m23;
+            m23.insert({ "s3","5" }); m23.insert({ "v1","z" }); m23.insert({ "s4","5" }); m23.insert({ "v2","z" });
+            map8.insert(m23);
+            unordered_map<string, string> m33;
+            m33.insert({ "s3","7" }); m33.insert({ "v1","x" }); m33.insert({ "s4","7" }); m33.insert({ "v2","x1" });
+            map8.insert(m33);
+            unordered_map<string, string> m43;
+            m43.insert({ "s3","8" }); m43.insert({ "v1","y" }); m43.insert({ "s4","8" }); m43.insert({ "v2","y1" });
+            map8.insert(m43);
+            unordered_map<string, string> m53;
+            m53.insert({ "s3","2" }); m53.insert({ "v1","y" }); m53.insert({ "s4","2" }); m53.insert({ "v2","y1" });
+            map8.insert(m53);
+            shared_ptr<QueryResultsTable> tab1 = make_shared<QueryResultsTable>(map8);
+
+            std::stringstream output;
+            std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
+
+            tab1->printTable();
+            cout << endl;
+            tab1->renameColumn("BRANDNEW","s3");
+            tab1->printTable();
+            cout << endl;
+            tab1->deleteColumn("s4");
+            tab1->printTable();
+            cout << endl;
+            std::cout.rdbuf(oldCoutBuffer);
+            Logger::WriteMessage("Output of table operations:\n");
+            Logger::WriteMessage(output.str().c_str());
+        }
+
         TEST_METHOD(TestDifferenceTwoColumns) {
             unordered_set < unordered_map<string, string>, QueryResultsTable::HashFunc, QueryResultsTable::EqualFunc> map1;
             unordered_map<string, string> m1;

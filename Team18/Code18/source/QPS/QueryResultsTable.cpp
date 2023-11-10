@@ -227,9 +227,14 @@ shared_ptr<QueryResultsTable> QueryResultsTable::createEmptyTableWithHeadersSet(
 }
 
 void QueryResultsTable::deleteColumn(string deleteHeader) {
-    for (unordered_map<string,string> map : tableRows) {
+    unordered_set<unordered_map<string, string>, HashFunc, EqualFunc> newTableRows;
+    for (unordered_map<string, string> map : tableRows) {
+        string val = map.at(deleteHeader);
         map.erase(deleteHeader);
+        headers.erase(deleteHeader);
+        newTableRows.insert(map);
     }
+    tableRows = newTableRows;
 }
 
 void QueryResultsTable::condenseTable(unordered_set<string> targetHeaders) {
@@ -247,13 +252,18 @@ void QueryResultsTable::condenseTable(unordered_set<string> targetHeaders) {
 }
 
 void QueryResultsTable::renameColumn(string newName, string oldName) {
-    unordered_set<string> headers = getHeaders();
     if (headers.find(oldName) != headers.end()) {
+        unordered_set<unordered_map<string, string>, HashFunc, EqualFunc> newTableRows;
         for (unordered_map<string, string> map : tableRows) {
-            string val = map[oldName];
+            string val = map.at(oldName);
             map.erase(oldName);
-            map.insert({ newName, val});
+            headers.erase(oldName);
+            map.insert({ newName, val });
+            headers.insert(newName);
+            newTableRows.insert(map);
         }
+        tableRows = newTableRows;
+
     }
 }
 
