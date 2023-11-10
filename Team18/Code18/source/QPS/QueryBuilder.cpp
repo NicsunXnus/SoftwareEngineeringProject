@@ -40,12 +40,6 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
       return {QueryResultsTable::createEmptyTable()};
     }
 
-    // if finalTable is empty, just set it to groupTable
-    if (finalTable->isEmpty()) {
-      finalTable = groupTable;
-      continue;
-    }
-
     unordered_set<string> currHeadersToCheck = groupTable->getHeaders();
     // check whether the group is relevant, if not, then ignore it
     bool isNotQueried = true;
@@ -55,9 +49,16 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
             break;
         }
     }
-    if (isNotQueried) return {finalTable};
+    if (isNotQueried) continue;
+
+    // if finalTable is empty, just set it to groupTable
+    if (finalTable->isEmpty()) {
+      finalTable = groupTable;
+      continue;
+    }
+
     // no common synonyms. must cross product
-    finalTable->crossProductSet(groupTable);
+    finalTable = finalTable->crossProductSet(groupTable);
     if (finalTable->isEmpty() && !finalTable->getSignificant()) {
       return {QueryResultsTable::createEmptyTable()};
     }
