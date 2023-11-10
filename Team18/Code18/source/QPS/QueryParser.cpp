@@ -9,7 +9,6 @@
 #include "Errors/SemanticError.h"
 #include "QueryObjects/ClauseArg.h"
 #include "QueryObjects/ClauseObject.h"
-#include "QueryObjects/InvalidQueryObject.h"
 #include "QueryObjects/QueryObjectModifier.h"
 
 

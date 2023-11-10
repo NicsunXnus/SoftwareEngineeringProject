@@ -440,9 +440,6 @@
     <ClInclude Include="..\source\QPS\QueryObjects\DesignObjectsFactory.h">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\QPS\QueryObjects\InvalidQueryObject.h">
-      <Filter>Source Files\QPS\QueryObjects</Filter>
-    </ClInclude>
     <ClInclude Include="..\source\QPS\QueryObjects\PatternClauseObject.h">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClInclude>

@@ -121,7 +121,6 @@
     <ClInclude Include="..\source\QPS\QueryObjects\ComparisonQueryObjectFactory.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\DesignObjects.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\DesignObjectsFactory.h" />
-    <ClInclude Include="..\source\QPS\QueryObjects\InvalidQueryObject.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\NextStarFilter.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\NotQueryObject.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\PatternClauseObject.h" />
