@@ -10,10 +10,11 @@
 #include <set>
 #include <stack>
 #include <unordered_set>
-#include <map>
+#include <unordered_map>
 
 #include "ExceptionMessages.h"
 #include "Constants/SPConstants.h"
+#include "Constants/DesignEnums.h"
 #include "QPS/Errors/SemanticError.h"
 
 using namespace std;
@@ -217,7 +218,7 @@ static bool containerHasKey(const Container& myContainer, const KeyType& keyToCh
 
 
 // convert map to set, by taking all the keys in the map
-static unordered_set<string> getMapKeys(map<string, unordered_set<string>> stringMap) {
+static unordered_set<string> getMapKeys(StringMap stringMap) {
     unordered_set<string> keySet;
     for (const auto& pair : stringMap) {
         keySet.insert(pair.first);
@@ -272,7 +273,7 @@ static void printVectorString(vector<string> v) {
 }
 
 // debugging
-static void printMap(map<string, vector<string>> m) {
+static void printMap(unordered_map<string, vector<string>> m) {
   for (const auto& pair : m) {
     string result;
     for (const string& num : pair.second) {

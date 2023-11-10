@@ -13,9 +13,6 @@
   <ItemGroup>
     <ClCompile Include="..\source\ApplicationWrapper.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\ClauseObjectFactory.cpp" />
-    <ClCompile Include="..\source\QPS\CFG\CFG.cpp" />
-    <ClCompile Include="..\source\QPS\CFG\CFGCache.cpp" />
-    <ClCompile Include="..\source\QPS\CFG\DFSPathNode.cpp" />
     <ClCompile Include="..\source\PKB\Insertor.cpp" />
     <ClCompile Include="..\source\PKB\Responder.cpp" />
     <ClCompile Include="..\source\PKB\StorageClasses\AbstractionStorage.cpp" />
@@ -25,11 +22,11 @@
     <ClCompile Include="..\source\QPS\QueryObjects\ComparisonQueryObjectFactory.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\QueryObject.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\WithClauseObject.cpp" />
+    <ClCompile Include="..\source\QPS\QueryOptimiser.cpp" />
     <ClCompile Include="..\source\ThreadPool.cpp" />
     <ClCompile Include="..\source\QPS\DataAccessLayer.cpp" />
     <ClCompile Include="..\source\QPS\DataAccessLayerAffectsStub.cpp" />
     <ClCompile Include="..\source\QPS\DataAccessLayerStub.cpp" />
-    <ClCompile Include="..\source\QPS\GroupClause.cpp" />
     <ClCompile Include="..\source\QPS\QueryBuilder.cpp" />
     <ClCompile Include="..\source\QPS\QueryDriver.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\AffectsFilter.cpp" />
@@ -50,7 +47,6 @@
     <ClCompile Include="..\source\QPS\QueryResultsTable.cpp" />
     <ClCompile Include="..\source\QPS\QueryValidator.cpp" />
     <ClCompile Include="..\source\QPS\ResultsHandler.cpp" />
-    <ClCompile Include="..\source\QPS\OptimisedFunctionsStub.cpp" />
     <ClCompile Include="..\source\SP\AST\BinaryOpNode.cpp" />
     <ClCompile Include="..\source\SP\AST\Node.cpp" />
     <ClCompile Include="..\source\SP\AST\TerminalNode.cpp" />
@@ -95,10 +91,9 @@
     <ClInclude Include="..\source\Constants\QPSConstants.h" />
     <ClInclude Include="..\source\ExceptionMessages.h" />
     <ClInclude Include="..\source\HelperFunctions.h" />
-    <ClInclude Include="..\source\QPS\CFG\CFG.h" />
-    <ClInclude Include="..\source\QPS\CFG\DFSPathNode.h" />
-    <ClInclude Include="..\source\QPS\CFG\CFGCache.h" />
     <ClInclude Include="..\source\QPS\QRTCache.h" />
+    <ClInclude Include="..\source\QPS\QueryOptimiser.h" />
+    <ClInclude Include="..\source\QPS\UnionFind.h" />
     <ClInclude Include="..\source\ThreadPool.h" />
     <ClInclude Include="..\source\PKB.h" />
     <ClInclude Include="..\source\PKB\Insertor.h" />
@@ -114,8 +109,6 @@
     <ClInclude Include="..\source\QPS\Errors\SyntaxError.h" />
     <ClInclude Include="..\source\QPS\PQLTokenizer.h" />
     <ClInclude Include="..\source\QPS\QueryBuilder.h" />
-    <ClInclude Include="..\source\QPS\OptimisedSortingClauses.h" />
-    <ClInclude Include="..\source\QPS\GroupClause.h" />
     <ClInclude Include="..\source\QPS\QueryDriver.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\AffectsFilter.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\BooleanObjectFactory.h" />
@@ -128,7 +121,6 @@
     <ClInclude Include="..\source\QPS\QueryObjects\ComparisonQueryObjectFactory.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\DesignObjects.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\DesignObjectsFactory.h" />
-    <ClInclude Include="..\source\QPS\QueryObjects\InvalidQueryObject.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\NextStarFilter.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\NotQueryObject.h" />
     <ClInclude Include="..\source\QPS\QueryObjects\PatternClauseObject.h" />
@@ -144,7 +136,6 @@
     <ClInclude Include="..\source\QPS\QueryResultsTable.h" />
     <ClInclude Include="..\source\QPS\QueryValidator.h" />
     <ClInclude Include="..\source\QPS\ResultsHandler.h" />
-    <ClInclude Include="..\source\QPS\OptimisedFunctionsStub.h" />
     <ClInclude Include="..\source\SP\AST\BinaryOpNode.h" />
     <ClInclude Include="..\source\SP\AST\Node.h" />
     <ClInclude Include="..\source\SP\AST\TerminalNode.h" />

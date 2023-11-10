@@ -62,10 +62,10 @@ class Responder {
    * This function gets the map of all if/while/assign statement numbers to root
    * of pattern subtrees
    *
-   * @return map<string, shared_ptr<Node>> the map of all if/while/assign
+   * @return unordered_map<string, shared_ptr<Node>> the map of all if/while/assign
    * statement numbers to root of pattern subtrees
    */
-  map<string, shared_ptr<Node>> Responder::getAllPatterns();
+  unordered_map<string, shared_ptr<Node>> Responder::getAllPatterns();
 
   /*
    * This function gets the shared pointer to root of pattern subtree

@@ -56,17 +56,17 @@ a, f, read, x, y, e
 12
 procedure p, p1; assign a; read r; print pn; while w; if i; stmt s; call cl; variable v; constant c;
 Select v such that Modifies(c, v)
-
+SemanticError
 5000
 13
 procedure p, p1; assign a; read r; print pn; while w; if i; stmt s; call cl; variable v; constant c;
 Select v such that Modifies(v, v)
-
+SemanticError
 5000
 14
 procedure p, p1; assign a; read r; print pn; while w; if i; stmt s; call cl; variable v; constant c;
 Select p such that Modifies(c, v)
-
+SemanticError
 5000
 15
 procedure p, p1; assign a; read r; print pn; while w; if i; stmt s; call cl; variable v; constant c;

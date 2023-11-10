@@ -81,7 +81,7 @@ shared_ptr<StringMap> DesignExtractor::getReadVarNameMap() {
 shared_ptr<StringMap> DesignExtractor::getPrintVarNameMap() {
     return this->entityExtractor->getPrintVarNameMap();
 }
-shared_ptr<map<string, shared_ptr<Node>>> DesignExtractor::getPatternMap() {
+shared_ptr<unordered_map<string, shared_ptr<Node>>> DesignExtractor::getPatternMap() {
     return this->entityExtractor->getPatternMap();
 }
 shared_ptr<StringMap> DesignExtractor::getParentMap() {
@@ -111,7 +111,7 @@ shared_ptr<StringMap> DesignExtractor::getCallsStarMap() {
 shared_ptr<StringMap> DesignExtractor::getNextMap() {
     return this->nextExtractor->getStorageMap();
 }
-shared_ptr<map<string, pair<string, string>>> DesignExtractor::getProcedureStatementStorageMap() {
+shared_ptr<unordered_map<string, pair<string, string>>> DesignExtractor::getProcedureStatementStorageMap() {
     return this->procedureLineNumberExtractor->getProcedureStatementStorageMap();
 }
 
@@ -124,8 +124,11 @@ void DesignExtractor::insertEntities() {
     static shared_ptr<StringMap> callProcNameMap = this->entityExtractor->getCallProcNameMap();
     static shared_ptr<StringMap> readVarNameMap = this->entityExtractor->getReadVarNameMap();
     static shared_ptr<StringMap> printVarNameMap = this->entityExtractor->getPrintVarNameMap();
-    static shared_ptr<map<string, shared_ptr<Node>>> patternMap = this->entityExtractor->getPatternMap();
-    static shared_ptr<map<string, pair<string, string>>> procedureStatementStorageMap = this->procedureLineNumberExtractor->getProcedureStatementStorageMap();
+    static shared_ptr<unordered_map<string, shared_ptr<Node>>> patternMap =
+        this->entityExtractor->getPatternMap();
+    static shared_ptr<unordered_map<string, pair<string, string>>>
+        procedureStatementStorageMap = this->procedureLineNumberExtractor
+                                           ->getProcedureStatementStorageMap();
 
     // Insert the entities into the PKB
     PKB::insertor.addEntity(statementSet);

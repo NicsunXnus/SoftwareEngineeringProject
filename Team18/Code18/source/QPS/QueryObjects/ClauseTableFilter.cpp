@@ -15,7 +15,7 @@ shared_ptr<QueryResultsTable> ClauseSynSyn::evaluate(shared_ptr<DataAccessLayer>
 
 shared_ptr<QueryResultsTable> ClauseSynIntOrIdent::evaluate(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
 	StringMap PKBClauseData = dataAccessLayer->getClauseInverse(clause);
-	unordered_set<string> filteredPKBClauseDataArg2 = filterMapKeyReturnSetValues(arg2, dataAccessLayer, PKBClauseData);
+	unordered_set<string> filteredPKBClauseDataArg2 = filterMapKeyReturnSetValues(arg2, PKBClauseData);
 	unordered_set<string> filteredPKBClauseDataArg1 = filterSetReturnSet(arg1, dataAccessLayer, filteredPKBClauseDataArg2);
 	return QueryResultsTable::createTable(svToString(arg1->getArgValue()), filteredPKBClauseDataArg1);
 }
@@ -23,13 +23,13 @@ shared_ptr<QueryResultsTable> ClauseSynIntOrIdent::evaluate(shared_ptr<DataAcces
 shared_ptr<QueryResultsTable> ClauseSynWildcard::evaluate(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
 	StringMap PKBClauseData = dataAccessLayer->getClause(clause);
 	StringMap filteredPKBClauseDataArg1 = filterMapKeyReturnMap(arg1, dataAccessLayer, PKBClauseData);
-	unordered_set<string> filteredPKBClauseDataArg2 = removeMapValuesReturnSet(arg2, dataAccessLayer, filteredPKBClauseDataArg1);
+	unordered_set<string> filteredPKBClauseDataArg2 = removeMapValuesReturnSet(arg2, filteredPKBClauseDataArg1);
 	return QueryResultsTable::createTable(svToString(arg1->getArgValue()), filteredPKBClauseDataArg2);
 }
 
 shared_ptr<QueryResultsTable> ClauseIntOrIdentSyn::evaluate(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
 	StringMap PKBClauseData = dataAccessLayer->getClause(clause);
-	unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, dataAccessLayer, PKBClauseData);
+	unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, PKBClauseData);
 	unordered_set<string> filteredPKBClauseDataArg2 = filterSetReturnSet(arg2, dataAccessLayer, filteredPKBClauseDataArg1);
 	return QueryResultsTable::createTable(svToString(arg2->getArgValue()), filteredPKBClauseDataArg2);
 }
@@ -37,8 +37,8 @@ shared_ptr<QueryResultsTable> ClauseIntOrIdentSyn::evaluate(shared_ptr<DataAcces
 shared_ptr<QueryResultsTable> ClauseIntOrIdentIntOrIdent::evaluate(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
 	StringMap PKBClauseData = dataAccessLayer->getClause(clause);
 
-	unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, dataAccessLayer, PKBClauseData);
-	bool filteredPKBClauseDataArg2 = filterSetReturnBool(arg2, dataAccessLayer, filteredPKBClauseDataArg1);
+	unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, PKBClauseData);
+	bool filteredPKBClauseDataArg2 = filterSetReturnBool(arg2, filteredPKBClauseDataArg1);
 	shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>();
 	table->setSignificant(filteredPKBClauseDataArg2);
 	return table;
@@ -47,7 +47,7 @@ shared_ptr<QueryResultsTable> ClauseIntOrIdentIntOrIdent::evaluate(shared_ptr<Da
 shared_ptr<QueryResultsTable> ClauseIntOrIdentWildcard::evaluate(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
 	StringMap PKBClauseData = dataAccessLayer->getClause(clause);
 
-	unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, dataAccessLayer, PKBClauseData);
+	unordered_set<string> filteredPKBClauseDataArg1 = filterMapKeyReturnSetValues(arg1, PKBClauseData);
 	shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>();
 	table->setSignificant(filteredPKBClauseDataArg1.size() > 0);
 	return table;
@@ -56,13 +56,13 @@ shared_ptr<QueryResultsTable> ClauseIntOrIdentWildcard::evaluate(shared_ptr<Data
 shared_ptr<QueryResultsTable> ClauseWildcardSyn::evaluate(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
 	StringMap PKBClauseData = dataAccessLayer->getClauseInverse(clause);
 	StringMap filteredPKBClauseDataArg2 = filterMapKeyReturnMap(arg2, dataAccessLayer, PKBClauseData);
-	unordered_set<string> filteredPKBClauseDataArg1 = removeMapValuesReturnSet(arg1, dataAccessLayer, filteredPKBClauseDataArg2);
+	unordered_set<string> filteredPKBClauseDataArg1 = removeMapValuesReturnSet(arg1, filteredPKBClauseDataArg2);
 	return QueryResultsTable::createTable(svToString(arg2->getArgValue()), filteredPKBClauseDataArg1);
 }
 
 shared_ptr<QueryResultsTable> ClauseWildcardIntOrIdent::evaluate(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
 	StringMap PKBClauseData = dataAccessLayer->getClauseInverse(clause);
-	unordered_set<string> filteredPKBClauseDataArg2 = filterMapKeyReturnSetValues(arg2, dataAccessLayer, PKBClauseData);
+	unordered_set<string> filteredPKBClauseDataArg2 = filterMapKeyReturnSetValues(arg2, PKBClauseData);
 	shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>();
 	table->setSignificant(filteredPKBClauseDataArg2.size() > 0);
 	return table;

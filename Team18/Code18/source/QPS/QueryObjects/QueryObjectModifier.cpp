@@ -12,5 +12,7 @@ shared_ptr<QueryObjectModifier> QueryObjectModifier::createModifier(string_view 
 
 
 shared_ptr<QueryObject> NotModifier::modify(shared_ptr<QueryObject> queryObject, vector<shared_ptr<QueryObject>> synonymDesignObjects) {
-	return make_shared<NotQueryObject>("not"sv, queryObject, synonymDesignObjects);
+	string query(queryObject->getQueryObjectName());
+	string notName = "not" + query;
+	return make_shared<NotQueryObject>(notName, queryObject, synonymDesignObjects);
 }

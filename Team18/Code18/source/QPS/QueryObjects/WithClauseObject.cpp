@@ -4,6 +4,7 @@ shared_ptr<QueryResultsTable> WithObject::returnWithTable(string_view argName, s
 	vector<string> headers({ svToString(argName), svToString(argName) + attrName }); // p, p.procName
 	shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(headers, attrMap);
 	table->setPrimaryKey(svToString(argName) + attrName);
+	table->setAttr(attrMap);
 	return table;
 }
 

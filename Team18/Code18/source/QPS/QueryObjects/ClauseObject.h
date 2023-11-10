@@ -27,6 +27,21 @@ public:
 	shared_ptr<ClauseArg> getArg2() {
 		return argument2;
 	}
+
+	shared_ptr<unordered_set<string>> getSynonyms() {
+		unordered_set<string> synonyms;
+
+		if (argument1->isSynonym()) {
+			string s1(argument1->getArg());
+			synonyms.insert(s1);
+		}
+		if (argument2->isSynonym()) {
+			string s2(argument2->getArg());
+			synonyms.insert(s2);
+		}
+
+		return make_shared<unordered_set<string>>(synonyms);
+	}
 protected:
 	bool isValidSynonymType(unordered_set<ENTITY> validEntitiesArg1, unordered_set<ENTITY> validEntitiesArg2) {
 		if (argument1->isSynonym() && validEntitiesArg1.find(argument1->getSynonym()->getEntityType()) == validEntitiesArg1.end()) {

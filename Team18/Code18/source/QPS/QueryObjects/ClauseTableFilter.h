@@ -120,85 +120,110 @@ public:
 };
 
 /* HELPER FUNCTIONS */
-inline StringMap filterMapKeyReturnMap(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
-	ENTITY typeArg1 = arg->getSynonym()->getEntityType();
-	unordered_set<string> PKBArg1EntityData = dataAccessLayer->getEntity(typeArg1);
-	StringMap filteredPKBClauseData;
-	for (const auto& entry : PKBClauseData) {
+/*
+* This function takes in the PKB map, and filters the map key based on the supplied arg (a design entity) and its type
+* The same Map is returned, after being filtered
+*/
+inline StringMap filterMapKeyReturnMap(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBMap) {
+	ENTITY argType = arg->getSynonym()->getEntityType();
+	unordered_set<string> argEntitySet = dataAccessLayer->getEntity(argType);
+	StringMap filteredMapKey;
+	for (const auto& entry : PKBMap) {
 		string leftTuple = entry.first;
-		auto it = PKBArg1EntityData.find(leftTuple);
-		if (it != PKBArg1EntityData.end()) {
+		auto it = argEntitySet.find(leftTuple);
+		if (it != argEntitySet.end()) {
 			if (entry.second.size() > 0) {
-				filteredPKBClauseData[entry.first] = entry.second;
+				filteredMapKey[entry.first] = entry.second;
 			}
 		}
 	}
-	return filteredPKBClauseData;
+	return filteredMapKey;
 }
 
-inline StringMap filterMapValueReturnMap(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
-	ENTITY typeArg2 = arg->getSynonym()->getEntityType();
-	unordered_set<string> PKBArg2EntityData = dataAccessLayer->getEntity(typeArg2);
-	StringMap filteredPKBClauseData;
-	for (const auto& entry : PKBClauseData) {
+/*
+* This function takes in the PKB map, and filters the map values based on the supplied arg(a design entity) and its type
+* The same Map is returned, after being filtered
+*/
+inline StringMap filterMapValueReturnMap(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBMap) {
+	ENTITY argType = arg->getSynonym()->getEntityType();
+	unordered_set<string> argEntitySet = dataAccessLayer->getEntity(argType);
+	StringMap filteredMapValue;
+	for (const auto& entry : PKBMap) {
 		unordered_set<string> intersection;
 		unordered_set<string> rightTuple = entry.second;
 		for (const string& element : rightTuple) {
-			if (PKBArg2EntityData.find(element) != PKBArg2EntityData.end()) {
+			if (argEntitySet.find(element) != argEntitySet.end()) {
 				intersection.insert(element);
 			}
 		}
-		filteredPKBClauseData[entry.first] = intersection;
+		filteredMapValue[entry.first] = intersection;
 	}
-	return filteredPKBClauseData;
+	return filteredMapValue;
 }
 
-
-inline unordered_set<string> filterSetReturnSet(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, unordered_set<string> PKBClauseData) {
-	ENTITY typeArg2 = arg->getSynonym()->getEntityType();
-	unordered_set<string> PKBArg2EntityData = dataAccessLayer->getEntity(typeArg2);
-	unordered_set<string> filteredPKBClauseData;
-	for (const string& element : PKBClauseData) {
-		if (PKBArg2EntityData.find(element) != PKBArg2EntityData.end()) {
-			filteredPKBClauseData.insert(element);
+/*
+* This function takes in the PKB set, and filters the set values based on the supplied arg (a design entity) and its type
+* The same set is returned, after being filtered
+*/
+inline unordered_set<string> filterSetReturnSet(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, unordered_set<string> PKBSet) {
+	ENTITY argType = arg->getSynonym()->getEntityType();
+	unordered_set<string> argEntitySet = dataAccessLayer->getEntity(argType);
+	unordered_set<string> filteredSet;
+	for (const string& element : PKBSet) {
+		if (argEntitySet.find(element) != argEntitySet.end()) {
+			filteredSet.insert(element);
 		}
 	}
-	return filteredPKBClauseData;
+	return filteredSet;
 }
 
-inline unordered_set<string> filterMapKeyReturnSetValues(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
-	unordered_set<string> filteredPKBClauseData;
-	auto it = PKBClauseData.find(svToString(arg->getArgValue()));
-	if (it != PKBClauseData.end()) {
-		return PKBClauseData[svToString(arg->getArgValue())];
+/*
+* This function takes in the PKB Map, and filters the map values based on the supplied arg (which is an ident or syn)
+* The specific row is returned if found
+*/
+inline unordered_set<string> filterMapKeyReturnSetValues(shared_ptr<ClauseArg> arg, StringMap PKBMap) {
+	auto it = PKBMap.find(svToString(arg->getArgValue()));
+	if (it != PKBMap.end()) {
+		return PKBMap[svToString(arg->getArgValue())];
 	}
-	return filteredPKBClauseData;
+	return {};
 }
 
-inline unordered_set<string> filterMapKeyReturnSetValues(string arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
-	unordered_set<string> filteredPKBClauseData;
-	auto it = PKBClauseData.find(arg);
-	if (it != PKBClauseData.end()) {
-		return PKBClauseData[arg];
+/*
+* This function takes in the PKB Map, and filters the map values based on the supplied arg (which is an ident or syn)
+* The specific row is returned if found
+* This function is an overriden version
+*/
+inline unordered_set<string> filterMapKeyReturnSetValues(string arg, StringMap PKBMap) {
+	unordered_set<string> filteredSet;
+	auto it = PKBMap.find(arg);
+	if (it != PKBMap.end()) {
+		return PKBMap[arg];
 	}
-	return filteredPKBClauseData;
+	return filteredSet;
 }
 
-
-inline bool filterSetReturnBool(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, unordered_set<string> PKBClauseData) {
-	auto it = PKBClauseData.find(svToString(arg->getArgValue()));
-	if (it != PKBClauseData.end()) {
+/*
+* This function takes in the PKB set, and filters the set values based on the supplied arg
+* if the arg is found, return true, else return false
+*/
+inline bool filterSetReturnBool(shared_ptr<ClauseArg> arg, unordered_set<string> PKBSet) {
+	auto it = PKBSet.find(svToString(arg->getArgValue()));
+	if (it != PKBSet.end()) {
 		return true;
 	}
 
 	return false;
 }
 
-inline unordered_set<string> removeMapValuesReturnSet(shared_ptr<ClauseArg> arg, shared_ptr<DataAccessLayer> dataAccessLayer, StringMap PKBClauseData) {
+/*
+* This function takes in the PKB Map, and simply drops all the values and returns the set of keys
+*/
+inline unordered_set<string> removeMapValuesReturnSet(shared_ptr<ClauseArg> arg, StringMap PKBMap) {
 	unordered_set<string> keySet;
 
 	// Extract keys from the map and insert them into the set
-	for (const auto& pair : PKBClauseData) {
+	for (const auto& pair : PKBMap) {
 		keySet.insert(pair.first);
 	}
 	return keySet;

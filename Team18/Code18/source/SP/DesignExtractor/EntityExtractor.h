@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 #include <unordered_set>
-#include <map>
+#include <unordered_map>
 
 #include "Extractor.h"
 
@@ -22,7 +22,7 @@ public:
         callProcNameMap(make_shared<StringMap>()),
         readVarNameMap(make_shared<StringMap>()),
         printVarNameMap(make_shared<StringMap>()),
-        patternMap(make_shared<map<string, shared_ptr<Node>>>()) {
+        patternMap(make_shared<unordered_map<string, shared_ptr<Node>>>()) {
     }
 
     void insertToProcedureMap(string key);
@@ -41,7 +41,7 @@ public:
     shared_ptr<StringMap> getCallProcNameMap();
     shared_ptr<StringMap> getReadVarNameMap();
     shared_ptr<StringMap> getPrintVarNameMap();
-    shared_ptr<map<string, shared_ptr<Node>>> getPatternMap();
+    shared_ptr<unordered_map<string, shared_ptr<Node>>> getPatternMap();
 
     void extract(shared_ptr<ProcessedProgram> processedProgram) override;
     void extract(shared_ptr<ProcessedProcedure> processedProcedure) override;
@@ -65,7 +65,7 @@ private:
     shared_ptr<StringMap> callProcNameMap;
     shared_ptr<StringMap> readVarNameMap;
     shared_ptr<StringMap> printVarNameMap;
-    shared_ptr<map<string, shared_ptr<Node>>> patternMap;
+    shared_ptr<unordered_map<string, shared_ptr<Node>>> patternMap;
 
     void insertToMap(shared_ptr<StringMap> map, string key, string value);
     void insertToMap(shared_ptr<StringMap> map, string key);

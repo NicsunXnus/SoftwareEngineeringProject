@@ -81,12 +81,12 @@ SemanticError
 17 - syn, syn, arg1: syn, arg2: syn, select proc (invalid syn type, but valid entref)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
 Select p such that Calls(c, p)
-
+SemanticError
 5000
 18 - syn, syn, arg1: syn, arg2: syn, select proc (invalid syn type, but valid entref)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;
 Select p such that Calls(v, p)
-
+SemanticError
 5000
 19 - ident, ident, arg1: ident, arg2: ident, select proc (invalid relationship)
 stmt s; read r; print pn; call cl; while w; if i; assign a; variable v; constant c; procedure p, p1;

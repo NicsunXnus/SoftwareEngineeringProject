@@ -1388,7 +1388,7 @@ namespace UnitTesting
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
 
 			Assert::IsTrue(typeid(*qo[1]) == typeid(StaticStaticComparisonQueryObject));
-			Assert::IsTrue(qo[1]->getQueryObjectName() == "Static=Static"sv);
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "Compare"sv);
 		}
 
 		TEST_METHOD(TestWithAttrRefEqualIdent)
@@ -1399,7 +1399,7 @@ namespace UnitTesting
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
 
 			Assert::IsTrue(typeid(*qo[1]) == typeid(StaticAttrRefComparisonQueryObject));
-			Assert::IsTrue(qo[1]->getQueryObjectName() == "Static=AttrRef"sv);
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "Compare"sv);
 		}
 
 		TEST_METHOD(TestWithIdentEqualAttrRef)
@@ -1410,7 +1410,7 @@ namespace UnitTesting
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
 
 			Assert::IsTrue(typeid(*qo[1]) == typeid(StaticAttrRefComparisonQueryObject));
-			Assert::IsTrue(qo[1]->getQueryObjectName() == "Static=AttrRef"sv);
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "Compare"sv);
 		}
 
 		TEST_METHOD(TestWithAttrRefEqualAttrRef)
@@ -1421,7 +1421,7 @@ namespace UnitTesting
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
 
 			Assert::IsTrue(typeid(*qo[1]) == typeid(AttrRefAttrRefComparisonQueryObject));
-			Assert::IsTrue(qo[1]->getQueryObjectName() == "AttrRef=AttrRef"sv);
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "Compare"sv);
 		}
 
 		TEST_METHOD(TestSelectTupWithAttrRefEqualAttrRef)
@@ -1432,7 +1432,7 @@ namespace UnitTesting
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
 
 			Assert::IsTrue(typeid(*qo[1]) == typeid(AttrRefAttrRefComparisonQueryObject));
-			Assert::IsTrue(qo[1]->getQueryObjectName() == "AttrRef=AttrRef"sv);
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "Compare"sv);
 		}
 
 		TEST_METHOD(TestSelectAttrRefWithAttrRefEqualAttrRef)
@@ -1443,7 +1443,7 @@ namespace UnitTesting
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
 
 			Assert::IsTrue(typeid(*qo[1]) == typeid(AttrRefAttrRefComparisonQueryObject));
-			Assert::IsTrue(qo[1]->getQueryObjectName() == "AttrRef=AttrRef"sv);
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "Compare"sv);
 		}
 
 		TEST_METHOD(TestWithNoEquals)
@@ -1735,7 +1735,7 @@ namespace UnitTesting
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
 
 			Assert::IsTrue(typeid(*qo[1]) == typeid(StaticAttrRefComparisonQueryObject));
-			Assert::IsTrue(qo[1]->getQueryObjectName() == "Static=AttrRef"sv);
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "Compare"sv);
 			Assert::IsTrue(typeid(*qo[2]) == typeid(FollowsObject));
 			Assert::IsTrue(qo[2]->getQueryObjectName() == "Follows"sv);
 		}
@@ -1750,7 +1750,7 @@ namespace UnitTesting
 			Assert::IsTrue(typeid(*qo[1]) == typeid(FollowsObject));
 			Assert::IsTrue(qo[1]->getQueryObjectName() == "Follows"sv);
 			Assert::IsTrue(typeid(*qo[2]) == typeid(StaticStaticComparisonQueryObject));
-			Assert::IsTrue(qo[2]->getQueryObjectName() == "Static=Static"sv);
+			Assert::IsTrue(qo[2]->getQueryObjectName() == "Compare"sv);
 		}
 
 		TEST_METHOD(TestInvalidWithSTQuery)
@@ -1821,7 +1821,7 @@ namespace UnitTesting
 			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
 
 			Assert::IsTrue(typeid(*qo[1]) == typeid(StaticAttrRefComparisonQueryObject));
-			Assert::IsTrue(qo[1]->getQueryObjectName() == "Static=AttrRef"sv);
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "Compare"sv);
 			Assert::IsTrue(typeid(*qo[2]) == typeid(ModifiesEntityObject));
 			Assert::IsTrue(qo[2]->getQueryObjectName() == "Modifies"sv);
 		}
@@ -1952,7 +1952,7 @@ namespace UnitTesting
 			Assert::IsTrue(typeid(*qo[0]) == typeid(ProcNameObject));
 			Assert::IsTrue(qo[0]->getQueryObjectName() == "procName"sv);
 			Assert::IsTrue(typeid(*qo[1]) == typeid(StaticAttrRefComparisonQueryObject));
-			Assert::IsTrue(qo[1]->getQueryObjectName() == "Static=AttrRef"sv);
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "Compare"sv);
 			Assert::IsTrue(typeid(*qo[2]) == typeid(AffectsObject));
 			Assert::IsTrue(qo[2]->getQueryObjectName() == "Affects"sv);
 		}
@@ -2055,7 +2055,7 @@ namespace UnitTesting
 			Assert::IsTrue(typeid(*qo[0]) == typeid(StmtObject));
 			Assert::IsTrue(qo[0]->getQueryObjectName() == "s"sv);
 			Assert::IsTrue(typeid(*qo[1]) == typeid(NotQueryObject));
-			Assert::IsTrue(qo[1]->getQueryObjectName() == "not"sv);
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "notFollows"sv);
 			shared_ptr<NotQueryObject> nqo{ dynamic_pointer_cast<NotQueryObject>(qo[1]) };
 			Assert::IsTrue(nqo->getSynonymCount() == 1);
 		}
@@ -2070,7 +2070,7 @@ namespace UnitTesting
 			Assert::IsTrue(typeid(*qo[0]) == typeid(AssignObject));
 			Assert::IsTrue(qo[0]->getQueryObjectName() == "a"sv);
 			Assert::IsTrue(typeid(*qo[1]) == typeid(NotQueryObject));
-			Assert::IsTrue(qo[1]->getQueryObjectName() == "not"sv);
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "notpattern"sv);
 			shared_ptr<NotQueryObject> nqo{ dynamic_pointer_cast<NotQueryObject>(qo[1]) };
 			Assert::IsTrue(nqo->getSynonymCount() == 2);
 			
@@ -2086,7 +2086,7 @@ namespace UnitTesting
 			Assert::IsTrue(typeid(*qo[0]) == typeid(AssignObject));
 			Assert::IsTrue(qo[0]->getQueryObjectName() == "a"sv);
 			Assert::IsTrue(typeid(*qo[1]) == typeid(NotQueryObject));
-			Assert::IsTrue(qo[1]->getQueryObjectName() == "not"sv);
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "notCompare"sv);
 			shared_ptr<NotQueryObject> nqo{ dynamic_pointer_cast<NotQueryObject>(qo[1]) };
 			Assert::IsTrue(nqo->getSynonymCount() == 2);
 		}
@@ -2101,7 +2101,7 @@ namespace UnitTesting
 			Assert::IsTrue(typeid(*qo[0]) == typeid(AssignObject));
 			Assert::IsTrue(qo[0]->getQueryObjectName() == "a"sv);
 			Assert::IsTrue(typeid(*qo[1]) == typeid(NotQueryObject));
-			Assert::IsTrue(qo[1]->getQueryObjectName() == "not"sv);
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "notCompare"sv);
 			shared_ptr<NotQueryObject> nqo{ dynamic_pointer_cast<NotQueryObject>(qo[1]) };
 			Assert::IsTrue(nqo->getSynonymCount() == 1);
 		}
@@ -2116,11 +2116,11 @@ namespace UnitTesting
 			Assert::IsTrue(typeid(*qo[0]) == typeid(StmtObject));
 			Assert::IsTrue(qo[0]->getQueryObjectName() == "s"sv);
 			Assert::IsTrue(typeid(*qo[1]) == typeid(NotQueryObject));
-			Assert::IsTrue(qo[1]->getQueryObjectName() == "not"sv);
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "notFollows"sv);
 			shared_ptr<NotQueryObject> nqo{ dynamic_pointer_cast<NotQueryObject>(qo[1]) };
 			Assert::IsTrue(nqo->getSynonymCount() == 0);
 			Assert::IsTrue(typeid(*qo[2]) == typeid(NotQueryObject));
-			Assert::IsTrue(qo[2]->getQueryObjectName() == "not"sv);
+			Assert::IsTrue(qo[2]->getQueryObjectName() == "notpatternIf"sv);
 			shared_ptr<NotQueryObject> nqo2{ dynamic_pointer_cast<NotQueryObject>(qo[2]) };
 			Assert::IsTrue(nqo2->getSynonymCount() == 1);
 		}
@@ -2135,7 +2135,7 @@ namespace UnitTesting
 			Assert::IsTrue(typeid(*qo[0]) == typeid(StmtObject));
 			Assert::IsTrue(qo[0]->getQueryObjectName() == "s"sv);
 			Assert::IsTrue(typeid(*qo[1]) == typeid(NotQueryObject));
-			Assert::IsTrue(qo[1]->getQueryObjectName() == "not"sv);
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "notFollows"sv);
 			shared_ptr<NotQueryObject> nqo{ dynamic_pointer_cast<NotQueryObject>(qo[1]) };
 			Assert::IsTrue(nqo->getSynonymCount() == 1);
 			Assert::IsTrue(typeid(*qo[2]) == typeid(AffectsObject));
@@ -2154,7 +2154,7 @@ namespace UnitTesting
 			Assert::IsTrue(typeid(*qo[1]) == typeid(WhilePatternObject));
 			Assert::IsTrue(qo[1]->getQueryObjectName() == "patternWhile"sv);
 			Assert::IsTrue(typeid(*qo[2]) == typeid(NotQueryObject));
-			Assert::IsTrue(qo[2]->getQueryObjectName() == "not"sv);
+			Assert::IsTrue(qo[2]->getQueryObjectName() == "notpatternWhile"sv);
 			shared_ptr<NotQueryObject> nqo{ dynamic_pointer_cast<NotQueryObject>(qo[2]) };
 			Assert::IsTrue(nqo->getSynonymCount() == 1);
 		}
@@ -2171,7 +2171,7 @@ namespace UnitTesting
 			Assert::IsTrue(typeid(*qo[1]) == typeid(WhilePatternObject));
 			Assert::IsTrue(qo[1]->getQueryObjectName() == "patternWhile"sv);
 			Assert::IsTrue(typeid(*qo[2]) == typeid(NotQueryObject));
-			Assert::IsTrue(qo[2]->getQueryObjectName() == "not"sv);
+			Assert::IsTrue(qo[2]->getQueryObjectName() == "notCompare"sv);
 			shared_ptr<NotQueryObject> nqo{ dynamic_pointer_cast<NotQueryObject>(qo[2]) };
 			Assert::IsTrue(nqo->getSynonymCount() == 0);
 		}
@@ -2186,7 +2186,7 @@ namespace UnitTesting
 			Assert::IsTrue(typeid(*qo[0]) == typeid(WhileObject));
 			Assert::IsTrue(qo[0]->getQueryObjectName() == "w"sv);
 			Assert::IsTrue(typeid(*qo[1]) == typeid(NotQueryObject));
-			Assert::IsTrue(qo[1]->getQueryObjectName() == "not"sv);
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "notCompare"sv);
 			shared_ptr<NotQueryObject> nqo{ dynamic_pointer_cast<NotQueryObject>(qo[1]) };
 			Assert::IsTrue(nqo->getSynonymCount() == 1);
 			Assert::IsTrue(typeid(*qo[2]) == typeid(NextStarObject));
@@ -2243,7 +2243,7 @@ namespace UnitTesting
 			Assert::IsTrue(typeid(*qo[0]) == typeid(StmtObject));
 			Assert::IsTrue(qo[0]->getQueryObjectName() == "s"sv);
 			Assert::IsTrue(typeid(*qo[1]) == typeid(NotQueryObject));
-			Assert::IsTrue(qo[1]->getQueryObjectName() == "not"sv);
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "notFollows"sv);
 			Assert::IsTrue(typeid(*qo[2]) == typeid(ParentObject));
 			Assert::IsTrue(qo[2]->getQueryObjectName() == "Parent"sv);
 		}
@@ -2273,9 +2273,9 @@ namespace UnitTesting
 			Assert::IsTrue(typeid(*qo[0]) == typeid(StmtObject));
 			Assert::IsTrue(qo[0]->getQueryObjectName() == "s"sv);
 			Assert::IsTrue(typeid(*qo[1]) == typeid(StaticAttrRefComparisonQueryObject));
-			Assert::IsTrue(qo[1]->getQueryObjectName() == "Static=AttrRef"sv);
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "Compare"sv);
 			Assert::IsTrue(typeid(*qo[2]) == typeid(AttrRefAttrRefComparisonQueryObject));
-			Assert::IsTrue(qo[2]->getQueryObjectName() == "AttrRef=AttrRef"sv);
+			Assert::IsTrue(qo[2]->getQueryObjectName() == "Compare"sv);
 		}
 
 		TEST_METHOD(TestSuchThatAndAnd)
@@ -2288,7 +2288,7 @@ namespace UnitTesting
 			Assert::IsTrue(typeid(*qo[0]) == typeid(StmtObject));
 			Assert::IsTrue(qo[0]->getQueryObjectName() == "s"sv);
 			Assert::IsTrue(typeid(*qo[1]) == typeid(NotQueryObject));
-			Assert::IsTrue(qo[1]->getQueryObjectName() == "not"sv);
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "notFollows"sv);
 			Assert::IsTrue(typeid(*qo[2]) == typeid(ParentObject));
 			Assert::IsTrue(qo[2]->getQueryObjectName() == "Parent"sv);
 			Assert::IsTrue(typeid(*qo[3]) == typeid(NextStarObject));
@@ -2306,7 +2306,7 @@ namespace UnitTesting
 			Assert::IsTrue(typeid(*qo[0]) == typeid(StmtObject));
 			Assert::IsTrue(qo[0]->getQueryObjectName() == "s"sv);
 			Assert::IsTrue(typeid(*qo[1]) == typeid(NotQueryObject));
-			Assert::IsTrue(qo[1]->getQueryObjectName() == "not"sv);
+			Assert::IsTrue(qo[1]->getQueryObjectName() == "notFollows"sv);
 			Assert::IsTrue(typeid(*qo[2]) == typeid(AssignPatternObject));
 			Assert::IsTrue(qo[2]->getQueryObjectName() == "pattern"sv);
 			Assert::IsTrue(typeid(*qo[3]) == typeid(WhilePatternObject));
@@ -2444,7 +2444,7 @@ namespace UnitTesting
 			Assert::IsTrue(typeid(*qo[4]) == typeid(UsesObject));
 			Assert::IsTrue(qo[4]->getQueryObjectName() == "Uses"sv);
 			Assert::IsTrue(typeid(*qo[5]) == typeid(StaticAttrRefComparisonQueryObject));
-			Assert::IsTrue(qo[5]->getQueryObjectName() == "Static=AttrRef"sv);
+			Assert::IsTrue(qo[5]->getQueryObjectName() == "Compare"sv);
 		}
 
 	};

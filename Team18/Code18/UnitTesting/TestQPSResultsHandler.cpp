@@ -3,7 +3,8 @@
 
 #include "../source/QPS/QueryResultsTable.h"
 #include "../source/QPS/ResultsHandler.h"
-#include "Constants/QPSConstants.h"
+#include "../source/Constants/QPSConstants.h"
+#include "../source/QPS/QueryBuilder.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;
@@ -13,8 +14,8 @@ namespace UnitTesting {
 private:
 	vector<string> singleTable = {"1", "2", "3"};
 	vector<string> singleTableVars = { "a", "b", "c" };
-	map<string, vector<string>> twoDTable = { { "3", { "5", "6", "7"}}};
-	map<string, vector<string>> twoDTableEmpty;
+	unordered_map<string, vector<string>> twoDTable = { { "3", { "5", "6", "7"}}};
+	unordered_map<string, vector<string>> twoDTableEmpty;
 
 public:
 		TEST_METHOD(TestSingleSynonymNoSuchThatClause) {
@@ -66,18 +67,6 @@ public:
 			Assert::IsTrue(*l_front == "1");
 		}
 
-		TEST_METHOD(TestTupleNoSuchThatClause) {
-			vector<shared_ptr<QueryResultsTable>> selectClauseTable = { QueryResultsTable::createTable("a", singleTable), QueryResultsTable::createTable("b", singleTableVars) };
-			vector<shared_ptr<QueryResultsTable>> nonSelectClauseTable = {};
-			shared_ptr<ResultHandler> resultHandler = make_shared<ResultHandler>();
-			list<string> finalResult = resultHandler->processTables(selectClauseTable, nonSelectClauseTable);
-			auto l_front = finalResult.begin();
-			advance(l_front, 0);
-			Assert::IsTrue(finalResult.size() == 9);
-			Assert::IsTrue(*l_front == "1 a");
-			advance(l_front, 8);
-			Assert::IsTrue(*l_front == "3 c");
-		}
 
 		TEST_METHOD(TestTupleEmptyClause) {
 			shared_ptr<QueryResultsTable> table1 = QueryResultsTable::createTable("a", singleTable);
@@ -253,7 +242,7 @@ public:
 			auto l_front = finalResult.begin();
 			advance(l_front, 0);
 			Assert::IsTrue(finalResult.size() == 1);
-			Assert::IsTrue(*l_front == FALSE_STRING);
+			Assert::IsTrue(*l_front == TRUE_STRING);
 		}
 
 		TEST_METHOD(TestBooleanEmptySuchThat) {

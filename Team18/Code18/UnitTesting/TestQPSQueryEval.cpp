@@ -25,20 +25,17 @@ TEST_METHOD(TestValidFollowsSynSyn) {
   tuple<vector<string_view>, vector<string_view>> testObj =
       p->splitDeclarationQuery(test);
   vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
+  vector<shared_ptr<QueryObject>> qo = p->parseQuery(std::get<1>(testObj));
 
   unordered_map<string_view, shared_ptr<QueryObject>> synonyms =
       p->getSynonyms();
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
+
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["s"][0] == "1");
-  Assert::IsTrue(table->getColumns()[0]["s"][1] == "2");
-  Assert::IsTrue(table->getColumns()[0]["s"][2] == "3");
-  Assert::IsTrue(table->getColumns()[1]["s1"][0] == "2");
-  Assert::IsTrue(table->getColumns()[1]["s1"][1] == "3");
-  Assert::IsTrue(table->getColumns()[1]["s1"][2] == "4");
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {"1", "2", "3"}));
+  Assert::IsTrue(compare_vectors(table->getColumnData("s1"), {"2", "3", "4"}));
   Assert::IsTrue(qo[0]->callAndProcess(dataAccessLayer)->getPrimaryKey() ==
                  "s");
 }
@@ -62,7 +59,7 @@ TEST_METHOD(TestValidFollowsSynSynSameSyn) {
       !table->getSignificant());  // empty table, since s == s is not possible
 }
 
-TEST_METHOD(TestInalidFollowsSynInt) {
+TEST_METHOD(TestInvalidFollowsSynInt2) {
   vector<string> testS = PQLTokenizer::tokenize(
       "assign s, s1; Select s such that Follows(s, 3123)");
   vector<string_view> test{sToSvVector(testS)};
@@ -97,8 +94,7 @@ TEST_METHOD(TestValidFollowsIntSyn) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["s"][0] == "3");
-  Assert::IsTrue(table->getColumns()[0]["s"].size() == 1);
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {"3"}));
 }
 
 TEST_METHOD(TestInvalidFollowsIntSyn) {
@@ -117,7 +113,7 @@ TEST_METHOD(TestInvalidFollowsIntSyn) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(!table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["s"].size() == 0);
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {}));
 }
 
 TEST_METHOD(TestValidFollowsSynInt) {
@@ -136,8 +132,7 @@ TEST_METHOD(TestValidFollowsSynInt) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["s"][0] == "2");
-  Assert::IsTrue(table->getColumns()[0]["s"].size() == 1);
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {"2"}));
 }
 
 TEST_METHOD(TestInvalidFollowsSynInt) {
@@ -156,7 +151,7 @@ TEST_METHOD(TestInvalidFollowsSynInt) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(!table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["s"].size() == 0);
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {}));
 }
 
 TEST_METHOD(TestValidFollowsSynWildcard) {
@@ -175,9 +170,7 @@ TEST_METHOD(TestValidFollowsSynWildcard) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["s"][0] == "1");
-  Assert::IsTrue(table->getColumns()[0]["s"][1] == "2");
-  Assert::IsTrue(table->getColumns()[0]["s"][2] == "3");
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {"1", "2", "3"}));
 }
 
 TEST_METHOD(TestValidFollowsWildCardSyn) {
@@ -196,9 +189,7 @@ TEST_METHOD(TestValidFollowsWildCardSyn) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["s"][0] == "2");
-  Assert::IsTrue(table->getColumns()[0]["s"][1] == "3");
-  Assert::IsTrue(table->getColumns()[0]["s"][2] == "4");
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {"2", "3", "4"}));
 }
 
 TEST_METHOD(TestValidFollowsIntWildcard) {
@@ -343,16 +334,10 @@ TEST_METHOD(TestValidParentStarSynSyn) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["s"][0] == "1" &&
-                 table->getColumns()[1]["s1"][0] == "2");
-  Assert::IsTrue(table->getColumns()[0]["s"][1] == "1" &&
-                 table->getColumns()[1]["s1"][1] == "3");
-  Assert::IsTrue(table->getColumns()[0]["s"][2] == "2" &&
-                 table->getColumns()[1]["s1"][2] == "3");
-  Assert::IsTrue(table->getColumns()[0]["s"][3] == "2" &&
-                 table->getColumns()[1]["s1"][3] == "4");
-  Assert::IsTrue(table->getColumns()[0]["s"][4] == "3" &&
-                 table->getColumns()[1]["s1"][4] == "4");
+  Assert::IsTrue(
+      compare_vectors(table->getColumnData("s"), {"1", "1", "2", "2", "3"}));
+  Assert::IsTrue(
+      compare_vectors(table->getColumnData("s1"), {"2", "3", "3", "4", "4"}));
 }
 
 TEST_METHOD(TestValidParentStarSynSynSameSyn) {
@@ -389,8 +374,7 @@ TEST_METHOD(TestValidParentStarSynInt) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["s"][0] == "2");
-  Assert::IsTrue(table->getColumns()[0]["s"][1] == "1");
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {"2", "1"}));
 }
 
 TEST_METHOD(TestInvalidParentStarSynInt) {
@@ -427,8 +411,7 @@ TEST_METHOD(TestValidParentStarIntSyn) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["s"][0] == "2");
-  Assert::IsTrue(table->getColumns()[0]["s"][1] == "3");
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {"2", "3"}));
 }
 
 TEST_METHOD(TestInvalidParentStarIntSyn) {
@@ -465,9 +448,7 @@ TEST_METHOD(TestValidParentStarSynWildcard) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["s"][0] == "1");
-  Assert::IsTrue(table->getColumns()[0]["s"][1] == "2");
-  Assert::IsTrue(table->getColumns()[0]["s"][2] == "3");
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {"1", "2", "3"}));
 }
 
 TEST_METHOD(TestValidParentStarWildcardSyn) {
@@ -486,9 +467,7 @@ TEST_METHOD(TestValidParentStarWildcardSyn) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["s"][0] == "2");
-  Assert::IsTrue(table->getColumns()[0]["s"][1] == "3");
-  Assert::IsTrue(table->getColumns()[0]["s"][2] == "4");
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {"2", "3", "4"}));
 }
 
 TEST_METHOD(TestValidParentStarIntWildcard) {
@@ -633,14 +612,10 @@ TEST_METHOD(TestValidUsesSynSyn) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["s"][0] == "1" &&
-                 table->getColumns()[1]["v"][0] == "a");
-  Assert::IsTrue(table->getColumns()[0]["s"][1] == "2" &&
-                 table->getColumns()[1]["v"][1] == "b");
-  Assert::IsTrue(table->getColumns()[0]["s"][2] == "3" &&
-                 table->getColumns()[1]["v"][2] == "c");
-  Assert::IsTrue(table->getColumns()[0]["s"][3] == "3" &&
-                 table->getColumns()[1]["v"][3] == "b");
+  Assert::IsTrue(
+      compare_vectors(table->getColumnData("s"), {"1", "2", "3", "3"}));
+  Assert::IsTrue(
+      compare_vectors(table->getColumnData("v"), {"a", "b", "c", "b"}));
 }
 
 TEST_METHOD(TestValidUsesSynWildCard) {
@@ -659,9 +634,7 @@ TEST_METHOD(TestValidUsesSynWildCard) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["s"][0] == "1");
-  Assert::IsTrue(table->getColumns()[0]["s"][1] == "2");
-  Assert::IsTrue(table->getColumns()[0]["s"][2] == "3");
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {"1", "2", "3"}));
 }
 
 TEST_METHOD(TestValidUsesSynIdent) {
@@ -680,8 +653,7 @@ TEST_METHOD(TestValidUsesSynIdent) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["s"][0] == "2");
-  Assert::IsTrue(table->getColumns()[0]["s"][1] == "3");
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {"2", "3"}));
 }
 
 TEST_METHOD(TestValidUsesIntSyn) {
@@ -700,7 +672,7 @@ TEST_METHOD(TestValidUsesIntSyn) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["v"][0] == "b");
+  Assert::IsTrue(compare_vectors(table->getColumnData("v"), {"b"}));
 }
 
 TEST_METHOD(TestValidUsesIntWildCard) {
@@ -754,13 +726,11 @@ TEST_METHOD(TestValidPatternWildcardWildcard) {
       p->getSynonyms();
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
       make_shared<DataAccessLayerStub>();
-  shared_ptr<QueryResultsTable> tables = qo[1]->callAndProcess(dataAccessLayer);
+  shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
 
-  Assert::IsTrue(tables->getSignificant());
-  Assert::IsTrue(tables->getColumns()[0]["s"][0] == "1");
-  Assert::IsTrue(tables->getColumns()[0]["s"][1] == "2");
-  Assert::IsTrue(tables->getColumns()[0]["s"][2] == "3");
-  Assert::IsTrue(tables->getColumns()[0]["s"][3] == "4");
+  Assert::IsTrue(table->getSignificant());
+  Assert::IsTrue(
+      compare_vectors(table->getColumnData("s"), {"1", "2", "3", "4"}));
 }
 
 TEST_METHOD(TestValidAssignPatternWildcardPartialMatch) {
@@ -781,8 +751,7 @@ TEST_METHOD(TestValidAssignPatternWildcardPartialMatch) {
   shared_ptr<QueryResultsTable> tables = qo[1]->callAndProcess(dataAccessLayer);
 
   Assert::IsTrue(tables->getSignificant());
-  Assert::IsTrue(tables->getColumns()[0]["s"][0] == "3");
-  Assert::IsTrue(tables->getColumns()[0]["s"][1] == "4");
+  Assert::IsTrue(compare_vectors(tables->getColumnData("s"), {"3", "4"}));
 }
 
 TEST_METHOD(TestValidAssignPatternWildcardExactMatch) {
@@ -803,7 +772,7 @@ TEST_METHOD(TestValidAssignPatternWildcardExactMatch) {
   shared_ptr<QueryResultsTable> tables = qo[1]->callAndProcess(dataAccessLayer);
 
   Assert::IsTrue(tables->getSignificant());
-  Assert::IsTrue(tables->getColumns()[0]["s"][0] == "3");
+  Assert::IsTrue(compare_vectors(tables->getColumnData("s"), {"3"}));
 }
 
 TEST_METHOD(TestValidAssignPatternCharStringWildcard) {
@@ -824,8 +793,7 @@ TEST_METHOD(TestValidAssignPatternCharStringWildcard) {
   shared_ptr<QueryResultsTable> tables = qo[1]->callAndProcess(dataAccessLayer);
 
   Assert::IsTrue(tables->getSignificant());
-  Assert::IsTrue(tables->getColumns()[0]["s"][0] == "2");
-  Assert::IsTrue(tables->getColumns()[0]["s"][1] == "3");
+  Assert::IsTrue(compare_vectors(tables->getColumnData("s"), {"2", "3"}));
 }
 
 TEST_METHOD(TestInvalidAssignPatternCharStringWildcard) {
@@ -846,7 +814,7 @@ TEST_METHOD(TestInvalidAssignPatternCharStringWildcard) {
   shared_ptr<QueryResultsTable> tables = qo[1]->callAndProcess(dataAccessLayer);
 
   Assert::IsFalse(tables->getSignificant());
-  Assert::IsTrue(tables->getColumns()[0]["s"].empty());
+  Assert::IsTrue(compare_vectors(tables->getColumnData("s"), {}));
 }
 
 TEST_METHOD(TestValidAssignPatternCharStringPartialMatch) {
@@ -867,7 +835,7 @@ TEST_METHOD(TestValidAssignPatternCharStringPartialMatch) {
   shared_ptr<QueryResultsTable> tables = qo[1]->callAndProcess(dataAccessLayer);
 
   Assert::IsTrue(tables->getSignificant());
-  Assert::IsTrue(tables->getColumns()[0]["s"][0] == "3");
+  Assert::IsTrue(compare_vectors(tables->getColumnData("s"), {"3"}));
 }
 
 TEST_METHOD(TestValidAssignPatternCharStringExactMatch) {
@@ -888,7 +856,7 @@ TEST_METHOD(TestValidAssignPatternCharStringExactMatch) {
   shared_ptr<QueryResultsTable> tables = qo[1]->callAndProcess(dataAccessLayer);
 
   Assert::IsTrue(tables->getSignificant());
-  Assert::IsTrue(tables->getColumns()[0]["s"][0] == "3");
+  Assert::IsTrue(compare_vectors(tables->getColumnData("s"), {"3"}));
 }
 
 TEST_METHOD(TestValidPatternVarSynWildcard) {
@@ -909,15 +877,10 @@ TEST_METHOD(TestValidPatternVarSynWildcard) {
   shared_ptr<QueryResultsTable> tables = qo[1]->callAndProcess(dataAccessLayer);
 
   Assert::IsTrue(tables->getSignificant());
-  Assert::IsTrue(tables->getColumns()[0]["s"][0] == "1");
-  Assert::IsTrue(tables->getColumns()[0]["s"][1] == "2");
-  Assert::IsTrue(tables->getColumns()[0]["s"][2] == "3");
-  Assert::IsTrue(tables->getColumns()[0]["s"][3] == "3");
-
-  Assert::IsTrue(tables->getColumns()[1]["v"][0] == "a");
-  Assert::IsTrue(tables->getColumns()[1]["v"][1] == "b");
-  Assert::IsTrue(tables->getColumns()[1]["v"][2] == "b");
-  Assert::IsTrue(tables->getColumns()[1]["v"][3] == "c");
+  Assert::IsTrue(
+      compare_vectors(tables->getColumnData("s"), {"1", "2", "3", "3"}));
+  Assert::IsTrue(
+      compare_vectors(tables->getColumnData("v"), {"a", "b", "b", "c"}));
 }
 
 TEST_METHOD(TestValidAssignPatternVarSynPartialMatch) {
@@ -938,10 +901,8 @@ TEST_METHOD(TestValidAssignPatternVarSynPartialMatch) {
   shared_ptr<QueryResultsTable> tables = qo[1]->callAndProcess(dataAccessLayer);
 
   Assert::IsTrue(tables->getSignificant());
-  Assert::IsTrue(tables->getColumns()[0]["s"][0] == "3");
-  Assert::IsTrue(tables->getColumns()[0]["s"][1] == "3");
-  Assert::IsTrue(tables->getColumns()[1]["v"][0] == "b");
-  Assert::IsTrue(tables->getColumns()[1]["v"][1] == "c");
+  Assert::IsTrue(compare_vectors(tables->getColumnData("s"), {"3", "3"}));
+  Assert::IsTrue(compare_vectors(tables->getColumnData("v"), {"b", "c"}));
 }
 
 TEST_METHOD(TestValidAssignPatternVarSynExactMatch) {
@@ -962,10 +923,8 @@ TEST_METHOD(TestValidAssignPatternVarSynExactMatch) {
   shared_ptr<QueryResultsTable> tables = qo[1]->callAndProcess(dataAccessLayer);
 
   Assert::IsTrue(tables->getSignificant());
-  Assert::IsTrue(tables->getColumns()[0]["s"][0] == "3");
-  Assert::IsTrue(tables->getColumns()[0]["s"][1] == "3");
-  Assert::IsTrue(tables->getColumns()[1]["v"][0] == "b");
-  Assert::IsTrue(tables->getColumns()[1]["v"][1] == "c");
+  Assert::IsTrue(compare_vectors(tables->getColumnData("s"), {"3", "3"}));
+  Assert::IsTrue(compare_vectors(tables->getColumnData("v"), {"b", "c"}));
 }
 
 TEST_METHOD(TestValidIfPatternWildcard) {
@@ -986,10 +945,8 @@ TEST_METHOD(TestValidIfPatternWildcard) {
   shared_ptr<QueryResultsTable> tables = qo[1]->callAndProcess(dataAccessLayer);
 
   Assert::IsTrue(tables->getSignificant());
-  Assert::IsTrue(tables->getColumns()[0]["ifs"][0] == "1");
-  Assert::IsTrue(tables->getColumns()[0]["ifs"][1] == "2");
-  Assert::IsTrue(tables->getColumns()[0]["ifs"][2] == "3");
-  Assert::IsTrue(tables->getColumns()[0]["ifs"][3] == "4");
+  Assert::IsTrue(
+      compare_vectors(tables->getColumnData("ifs"), {"1", "2", "3", "4"}));
 }
 
 TEST_METHOD(TestValidIfPatternVarSyn) {
@@ -1010,18 +967,10 @@ TEST_METHOD(TestValidIfPatternVarSyn) {
   shared_ptr<QueryResultsTable> tables = qo[1]->callAndProcess(dataAccessLayer);
 
   Assert::IsTrue(tables->getSignificant());
-  Assert::IsTrue(tables->getColumns()[0]["ifs"][0] == "1");
-  Assert::IsTrue(tables->getColumns()[0]["ifs"][1] == "1");
-  Assert::IsTrue(tables->getColumns()[0]["ifs"][2] == "2");
-  Assert::IsTrue(tables->getColumns()[0]["ifs"][3] == "2");
-  Assert::IsTrue(tables->getColumns()[0]["ifs"][4] == "4");
-  Assert::IsTrue(tables->getColumns()[0]["ifs"][5] == "4");
-  Assert::IsTrue(tables->getColumns()[1]["v"][0] == "a");
-  Assert::IsTrue(tables->getColumns()[1]["v"][1] == "b");
-  Assert::IsTrue(tables->getColumns()[1]["v"][2] == "d");
-  Assert::IsTrue(tables->getColumns()[1]["v"][3] == "c");
-  Assert::IsTrue(tables->getColumns()[1]["v"][4] == "b");
-  Assert::IsTrue(tables->getColumns()[1]["v"][5] == "c");
+  Assert::IsTrue(compare_vectors(tables->getColumnData("ifs"),
+                                 {"1", "1", "2", "2", "4", "4"}));
+  Assert::IsTrue(compare_vectors(tables->getColumnData("v"),
+                                 {"a", "b", "d", "c", "b", "c"}));
 }
 
 TEST_METHOD(TestValidIfPatternVarString) {
@@ -1042,8 +991,7 @@ TEST_METHOD(TestValidIfPatternVarString) {
   shared_ptr<QueryResultsTable> tables = qo[1]->callAndProcess(dataAccessLayer);
 
   Assert::IsTrue(tables->getSignificant());
-  Assert::IsTrue(tables->getColumns()[0]["ifs"][0] == "1");
-  Assert::IsTrue(tables->getColumns()[0]["ifs"][1] == "4");
+  Assert::IsTrue(compare_vectors(tables->getColumnData("ifs"), {"1", "4"}));
 }
 
 TEST_METHOD(TestInvalidIfPatternVarString) {
@@ -1064,7 +1012,7 @@ TEST_METHOD(TestInvalidIfPatternVarString) {
   shared_ptr<QueryResultsTable> tables = qo[1]->callAndProcess(dataAccessLayer);
 
   Assert::IsFalse(tables->getSignificant());
-  Assert::IsTrue(tables->getColumns()[0]["ifs"].empty());
+  Assert::IsTrue(compare_vectors(tables->getColumnData("ifs"), {}));
 }
 
 TEST_METHOD(TestValidWhilePatternWildcard) {
@@ -1085,10 +1033,8 @@ TEST_METHOD(TestValidWhilePatternWildcard) {
   shared_ptr<QueryResultsTable> tables = qo[1]->callAndProcess(dataAccessLayer);
 
   Assert::IsTrue(tables->getSignificant());
-  Assert::IsTrue(tables->getColumns()[0]["w"][0] == "1");
-  Assert::IsTrue(tables->getColumns()[0]["w"][1] == "2");
-  Assert::IsTrue(tables->getColumns()[0]["w"][2] == "3");
-  Assert::IsTrue(tables->getColumns()[0]["w"][3] == "4");
+  Assert::IsTrue(
+      compare_vectors(tables->getColumnData("w"), {"1", "2", "3", "4"}));
 }
 
 TEST_METHOD(TestValidWhilePatternVarSyn) {
@@ -1109,18 +1055,10 @@ TEST_METHOD(TestValidWhilePatternVarSyn) {
   shared_ptr<QueryResultsTable> tables = qo[1]->callAndProcess(dataAccessLayer);
 
   Assert::IsTrue(tables->getSignificant());
-  Assert::IsTrue(tables->getColumns()[1]["w"][0] == "1");
-  Assert::IsTrue(tables->getColumns()[1]["w"][1] == "1");
-  Assert::IsTrue(tables->getColumns()[1]["w"][2] == "2");
-  Assert::IsTrue(tables->getColumns()[1]["w"][3] == "2");
-  Assert::IsTrue(tables->getColumns()[1]["w"][4] == "4");
-  Assert::IsTrue(tables->getColumns()[1]["w"][5] == "4");
-  Assert::IsTrue(tables->getColumns()[0]["v"][0] == "a");
-  Assert::IsTrue(tables->getColumns()[0]["v"][1] == "b");
-  Assert::IsTrue(tables->getColumns()[0]["v"][2] == "d");
-  Assert::IsTrue(tables->getColumns()[0]["v"][3] == "c");
-  Assert::IsTrue(tables->getColumns()[0]["v"][4] == "b");
-  Assert::IsTrue(tables->getColumns()[0]["v"][5] == "c");
+  Assert::IsTrue(compare_vectors(tables->getColumnData("w"),
+                                 {"1", "1", "2", "2", "4", "4"}));
+  Assert::IsTrue(compare_vectors(tables->getColumnData("v"),
+                                 {"a", "b", "d", "c", "b", "c"}));
 }
 
 TEST_METHOD(TestValidWhilePatternVarString) {
@@ -1141,8 +1079,7 @@ TEST_METHOD(TestValidWhilePatternVarString) {
   shared_ptr<QueryResultsTable> tables = qo[1]->callAndProcess(dataAccessLayer);
 
   Assert::IsTrue(tables->getSignificant());
-  Assert::IsTrue(tables->getColumns()[0]["w"][0] == "1");
-  Assert::IsTrue(tables->getColumns()[0]["w"][1] == "4");
+  Assert::IsTrue(compare_vectors(tables->getColumnData("w"), {"1", "4"}));
 }
 
 TEST_METHOD(TestInvalidWhilePatternVarString) {
@@ -1163,7 +1100,7 @@ TEST_METHOD(TestInvalidWhilePatternVarString) {
   shared_ptr<QueryResultsTable> tables = qo[1]->callAndProcess(dataAccessLayer);
 
   Assert::IsFalse(tables->getSignificant());
-  Assert::IsTrue(tables->getColumns()[0]["w"].empty());
+  Assert::IsTrue(compare_vectors(tables->getColumnData("w"), {}));
 }
 
 TEST_METHOD(
@@ -1186,8 +1123,8 @@ TEST_METHOD(
   shared_ptr<QueryResultsTable> tables = qo[1]->callAndProcess(dataAccessLayer);
 
   Assert::IsTrue(tables->getSignificant());
-  Assert::IsTrue(tables->getColumns()[0]["s"][0] == "1");
-  Assert::IsTrue(tables->getColumns()[1]["v"][0] == "a");
+  Assert::IsTrue(compare_vectors(tables->getColumnData("s"), {"1"}));
+  Assert::IsTrue(compare_vectors(tables->getColumnData("v"), {"a"}));
 }
 
 TEST_METHOD(
@@ -1212,12 +1149,10 @@ TEST_METHOD(
       qo[2]->callAndProcess(dataAccessLayer);
 
   Assert::IsTrue(usesTable->getSignificant());
-  Assert::IsTrue(usesTable->getColumns()[0]["s"][0] == "2");
-  Assert::IsTrue(usesTable->getColumns()[0]["s"][1] == "3");
+  Assert::IsTrue(compare_vectors(usesTable->getColumnData("s"), {"2", "3"}));
 
   Assert::IsTrue(patternTable->getSignificant());
-  Assert::IsTrue(patternTable->getColumns()[0]["s"][0] == "3");
-  Assert::IsTrue(patternTable->getColumns()[0]["s"][1] == "4");
+  Assert::IsTrue(compare_vectors(patternTable->getColumnData("s"), {"3", "4"}));
 }
 
 TEST_METHOD(TestValidCallsSynWildCard) {
@@ -1236,9 +1171,7 @@ TEST_METHOD(TestValidCallsSynWildCard) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["s"][0] == "a");
-  Assert::IsTrue(table->getColumns()[0]["s"][1] == "b");
-  Assert::IsTrue(table->getColumns()[0]["s"][2] == "c");
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {"a", "b", "c"}));
 }
 
 TEST_METHOD(TestValidCallsSynIdent) {
@@ -1257,7 +1190,7 @@ TEST_METHOD(TestValidCallsSynIdent) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["s"][0] == "b");
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {"b"}));
 }
 
 TEST_METHOD(TestValidCallsWildcardSyn) {
@@ -1276,10 +1209,8 @@ TEST_METHOD(TestValidCallsWildcardSyn) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["s"][0] == "b");
-  Assert::IsTrue(table->getColumns()[0]["s"][1] == "c");
-  Assert::IsTrue(table->getColumns()[0]["s"][2] == "d");
-  Assert::IsTrue(table->getColumns()[0]["s"][3] == "e");
+  Assert::IsTrue(
+      compare_vectors(table->getColumnData("s"), {"b", "c", "d", "e"}));
 }
 
 TEST_METHOD(TestValidCallsWildcardWildcard) {
@@ -1334,8 +1265,7 @@ TEST_METHOD(TestValidCallsIdentSyn) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["s"][0] == "d");
-  Assert::IsTrue(table->getColumns()[0]["s"][1] == "e");
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {"d", "e"}));
 }
 
 TEST_METHOD(TestValidCallsIdentWildCard) {
@@ -1426,12 +1356,10 @@ TEST_METHOD(TestValidNextSynSyn) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["s"][0] == "1");
-  Assert::IsTrue(table->getColumns()[0]["s"][1] == "2");
-  Assert::IsTrue(table->getColumns()[0]["s"][2] == "3");
-  Assert::IsTrue(table->getColumns()[1]["s1"][0] == "2");
-  Assert::IsTrue(table->getColumns()[1]["s1"][1] == "3");
-  Assert::IsTrue(table->getColumns()[1]["s1"][2] == "4");
+  Assert::IsTrue(
+      compare_vectors(table->getColumnData("s"), {"3", "1", "2", "4"}));
+  Assert::IsTrue(
+      compare_vectors(table->getColumnData("s1"), {"4", "2", "3", "2"}));
 }
 
 TEST_METHOD(TestValidNextSynSynSameSyn) {
@@ -1469,8 +1397,7 @@ TEST_METHOD(TestValidNextIntSyn) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["s"][0] == "3");
-  Assert::IsTrue(table->getColumns()[0]["s"].size() == 1);
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {"3"}));
 }
 
 TEST_METHOD(TestInvalidNextIntSyn) {
@@ -1489,7 +1416,7 @@ TEST_METHOD(TestInvalidNextIntSyn) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(!table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["s"].size() == 0);
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {}));
 }
 
 TEST_METHOD(TestValidNextSynInt) {
@@ -1508,8 +1435,7 @@ TEST_METHOD(TestValidNextSynInt) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["s"][0] == "2");
-  Assert::IsTrue(table->getColumns()[0]["s"].size() == 1);
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {"2"}));
 }
 
 TEST_METHOD(TestInvalidNextSynInt) {
@@ -1528,7 +1454,7 @@ TEST_METHOD(TestInvalidNextSynInt) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(!table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["s"].size() == 0);
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {}));
 }
 
 TEST_METHOD(TestValidNextSynWildcard) {
@@ -1547,9 +1473,8 @@ TEST_METHOD(TestValidNextSynWildcard) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["s"][0] == "1");
-  Assert::IsTrue(table->getColumns()[0]["s"][1] == "2");
-  Assert::IsTrue(table->getColumns()[0]["s"][2] == "3");
+  Assert::IsTrue(
+      compare_vectors(table->getColumnData("s"), {"1", "2", "3", "4"}));
 }
 
 TEST_METHOD(TestValidNextWildCardSyn) {
@@ -1568,9 +1493,7 @@ TEST_METHOD(TestValidNextWildCardSyn) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["s"][0] == "2");
-  Assert::IsTrue(table->getColumns()[0]["s"][1] == "3");
-  Assert::IsTrue(table->getColumns()[0]["s"][2] == "4");
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {"2", "3", "4"}));
 }
 
 TEST_METHOD(TestValidNextIntWildcard) {
@@ -1805,9 +1728,7 @@ TEST_METHOD(TestValidNextStarIntSyn) {
       make_shared<DataAccessLayerAffectsStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  unordered_set<string> expected = {
-      "15"};
-  Assert::IsTrue(vectorToSet(table->getColumns()[0]["s"]) == expected);
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {"15"}));
 }
 
 TEST_METHOD(TestInvalidNextStarIntSynBigInt) {
@@ -1826,8 +1747,7 @@ TEST_METHOD(TestInvalidNextStarIntSynBigInt) {
       make_shared<DataAccessLayerAffectsStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(!table->getSignificant());
-  unordered_set<string> expected = {};
-  Assert::IsTrue(vectorToSet(table->getColumns()[0]["s"]) == expected);
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {}));
 }
 
 TEST_METHOD(TestValidNextStarSynInt) {
@@ -1846,8 +1766,8 @@ TEST_METHOD(TestValidNextStarSynInt) {
       make_shared<DataAccessLayerAffectsStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  unordered_set<string> expected = {"4", "5", "7", "9"};
-  Assert::IsTrue(vectorToSet(table->getColumns()[0]["s"]) == expected);
+  Assert::IsTrue(
+      compare_vectors(table->getColumnData("s"), {"4", "5", "7", "9"}));
 }
 
 TEST_METHOD(TestInvalidNextStarSynInt) {
@@ -1866,7 +1786,7 @@ TEST_METHOD(TestInvalidNextStarSynInt) {
       make_shared<DataAccessLayerAffectsStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(!table->getSignificant());
-  Assert::IsTrue(table->getColumns().size() == 1);
+  Assert::IsTrue(table->getNumberOfCols() == 1);
 }
 
 TEST_METHOD(TestValidNextStarSynSyn) {
@@ -1885,9 +1805,7 @@ TEST_METHOD(TestValidNextStarSynSyn) {
       make_shared<DataAccessLayerAffectsStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  unordered_set<string> expected = { "4", "5", "7", "9", "11",
-    "12", "13", "14", "16"};
-  Assert::IsTrue(vectorToSet(table->getColumns()[0]["s"]) == expected);
+  Assert::IsTrue(table->getNumberOfRows() == 40);
 }
 
 TEST_METHOD(TestValidNextStarSynSynSameSyn) {
@@ -1906,9 +1824,8 @@ TEST_METHOD(TestValidNextStarSynSynSameSyn) {
       make_shared<DataAccessLayerAffectsStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  unordered_set<string> expected = {"7", "9"};
-  Assert::IsTrue(vectorToSet(table->getColumns()[0]["s"]) == expected);
-  Assert::IsTrue(table->getColumns().size() == 1);
+  vector<string> expected = {"7", "9"};
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), expected));
 }
 
 TEST_METHOD(TestValidSelectProcProcName) {
@@ -1927,7 +1844,10 @@ TEST_METHOD(TestValidSelectProcProcName) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[1]["s.procName"][0] == "a");
+  Assert::IsTrue(
+      compare_vectors(table->getColumnData("s"), {"e", "c", "a", "b", "d"}));
+  Assert::IsTrue(compare_vectors(table->getColumnData("s.procName"),
+                                 {"e", "c", "a", "b", "d"}));
   Assert::IsTrue(table->getPrimaryKey() == "s.procName");
 }
 
@@ -1947,7 +1867,9 @@ TEST_METHOD(TestValidSelectCallProcName) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[1]["s.procName"][0] == "a");
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {"1", "2"}));
+  Assert::IsTrue(
+      compare_vectors(table->getColumnData("s.procName"), {"a", "b"}));
   Assert::IsTrue(table->getPrimaryKey() == "s.procName");
 }
 
@@ -1967,7 +1889,9 @@ TEST_METHOD(TestValidSelectVarVarName) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[1]["s.varName"][0] == "a");
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {"c", "b", "a"}));
+  Assert::IsTrue(
+      compare_vectors(table->getColumnData("s.varName"), {"c", "b", "a"}));
   Assert::IsTrue(table->getPrimaryKey() == "s.varName");
 }
 
@@ -1986,7 +1910,9 @@ TEST_METHOD(TestValidSelectReadVarName) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[1]["s.varName"][0] == "c");
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {"4", "3"}));
+  Assert::IsTrue(
+      compare_vectors(table->getColumnData("s.varName"), {"d", "c"}));
   Assert::IsTrue(table->getPrimaryKey() == "s.varName");
 }
 
@@ -2006,7 +1932,8 @@ TEST_METHOD(TestValidSelectPrintVarName) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[1]["s.varName"][0] == "e");
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {"1"}));
+  Assert::IsTrue(compare_vectors(table->getColumnData("s.varName"), {"e"}));
   Assert::IsTrue(table->getPrimaryKey() == "s.varName");
 }
 
@@ -2026,7 +1953,9 @@ TEST_METHOD(TestValidSelectConstantValue) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[1]["s.value"][0] == "100");
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {"100", "300"}));
+  Assert::IsTrue(
+      compare_vectors(table->getColumnData("s.value"), {"100", "300"}));
   Assert::IsTrue(table->getPrimaryKey() == "s.value");
 }
 
@@ -2045,7 +1974,10 @@ TEST_METHOD(TestValidSelectStmtStmtNo) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[1]["s.stmt#"][0] == "1");
+  Assert::IsTrue(
+      compare_vectors(table->getColumnData("s"), {"3", "1", "2", "4"}));
+  Assert::IsTrue(
+      compare_vectors(table->getColumnData("s.stmt#"), {"3", "1", "2", "4"}));
   Assert::IsTrue(table->getPrimaryKey() == "s.stmt#");
 }
 
@@ -2063,7 +1995,7 @@ TEST_METHOD(TestValidWithClauseStaticAttr) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[1]["s.varName"][0] == "a");
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {"a"}));
 }
 
 TEST_METHOD(TestValidWithClauseAttrStatic) {
@@ -2080,7 +2012,7 @@ TEST_METHOD(TestValidWithClauseAttrStatic) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[1]["s.varName"][0] == "a");
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {"a"}));
 }
 
 TEST_METHOD(TestValidWithClauseAttrAttr) {
@@ -2097,8 +2029,9 @@ TEST_METHOD(TestValidWithClauseAttrAttr) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  unordered_set<string> expected = {"a", "b", "c"};
-  Assert::IsTrue(vectorToSet(table->getColumns()[0]["s"]) == expected);
+  vector<string> expected = {"a", "b", "c"};
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), expected));
+  Assert::IsTrue(compare_vectors(table->getColumnData("s1"), expected));
 }
 
 TEST_METHOD(TestValidWithClauseAttrAttrSameAttr) {
@@ -2115,27 +2048,8 @@ TEST_METHOD(TestValidWithClauseAttrAttrSameAttr) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  unordered_set<string> expected = {"a", "b", "c"};
-  Assert::IsTrue(vectorToSet(table->getColumns()[0]["s"]) == expected);
-}
-
-TEST_METHOD(TestValidSelectAttrVarName) {
-  vector<string> testS = PQLTokenizer::tokenize(
-      "variable s, s1; Select s.varName with s.varName = s.varName");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
-
-  shared_ptr<DataAccessLayerStub> dataAccessLayer =
-      make_shared<DataAccessLayerStub>();
-  shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
-  Assert::IsTrue(table->getSignificant());
-  unordered_set<string> expected = {"a", "b", "c"};
-  Assert::IsTrue(vectorToSet(table->getColumns()[0]["s"]) == expected);
-  Assert::IsTrue(vectorToSet(table->getColumns()[1]["s.varName"]) == expected);
+  vector<string> expected = {"a", "b", "c"};
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), expected));
 }
 
 TEST_METHOD(TestValidSelectAttrCallProcName) {
@@ -2152,11 +2066,9 @@ TEST_METHOD(TestValidSelectAttrCallProcName) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  unordered_set<string> expectedS = {"1", "2"};
-  Assert::IsTrue(vectorToSet(table->getColumns()[0]["s"]) == expectedS);
-  unordered_set<string> expectedProcName = {"a", "b"};
-  Assert::IsTrue(vectorToSet(table->getColumns()[1]["s.procName"]) ==
-                 expectedProcName);
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {"1", "2"}));
+  Assert::IsTrue(
+      compare_vectors(table->getColumnData("s.procName"), {"a", "b"}));
 }
 
 TEST_METHOD(TestValidSelectAttrReadVarName) {
@@ -2172,11 +2084,9 @@ TEST_METHOD(TestValidSelectAttrReadVarName) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  unordered_set<string> expectedS = {"3", "4"};
-  Assert::IsTrue(vectorToSet(table->getColumns()[0]["s"]) == expectedS);
-  unordered_set<string> expectedProcName = {"c", "d"};
-  Assert::IsTrue(vectorToSet(table->getColumns()[1]["s.varName"]) ==
-                 expectedProcName);
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {"3", "4"}));
+  Assert::IsTrue(
+      compare_vectors(table->getColumnData("s.varName"), {"c", "d"}));
 }
 
 TEST_METHOD(TestValidSelectAttrPrintVarName) {
@@ -2193,11 +2103,8 @@ TEST_METHOD(TestValidSelectAttrPrintVarName) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  unordered_set<string> expectedS = {"1"};
-  Assert::IsTrue(vectorToSet(table->getColumns()[0]["s"]) == expectedS);
-  unordered_set<string> expectedProcName = {"e"};
-  Assert::IsTrue(vectorToSet(table->getColumns()[1]["s.varName"]) ==
-                 expectedProcName);
+  Assert::IsTrue(compare_vectors(table->getColumnData("s"), {"1"}));
+  Assert::IsTrue(compare_vectors(table->getColumnData("s.varName"), {"e"}));
 }
 
 TEST_METHOD(TestValidAffectsSynSyn) {
@@ -2215,16 +2122,7 @@ TEST_METHOD(TestValidAffectsSynSyn) {
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
 
-  unordered_set<string> expected = {"4",  "5",  "7",  "9", "11",
-                                    "12", "13", "14", "16"};
-  vector<string> col1 = table->getColumns()[0]["a"];
-  unordered_set<string> colSet1 = vectorToSet(col1);
-  Assert::IsTrue(expected == colSet1);
-
-  unordered_set<string> expectedCol1 = {"7", "9", "11", "13", "14", "15", "17"};
-  vector<string> col2 = table->getColumns()[1]["a1"];
-  unordered_set<string> colSet2 = vectorToSet(col2);
-  Assert::IsTrue(expectedCol1 == colSet2);
+  Assert::IsTrue(table->getNumberOfRows() == 19);
 }
 
 TEST_METHOD(TestValidAffectsSynSynSame) {
@@ -2242,11 +2140,8 @@ TEST_METHOD(TestValidAffectsSynSynSame) {
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
 
-  unordered_set<string> expected = {"7", "9"};
-  vector<string> col1 = table->getColumns()[0]["a"];
-  unordered_set<string> colSet1 = vectorToSet(col1);
-  Assert::IsTrue(expected == colSet1);
-  Assert::IsTrue(table->getNumberOfCols() == 1);
+  vector<string> expected = {"7", "9"};
+  Assert::IsTrue(compare_vectors(table->getColumnData("a"), expected));
 }
 
 TEST_METHOD(TestValidAffectsSynInt) {
@@ -2264,10 +2159,8 @@ TEST_METHOD(TestValidAffectsSynInt) {
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
 
-  unordered_set<string> expected = {"4", "5", "7", "9", "11", "12"};
-  vector<string> col1 = table->getColumns()[0]["a"];
-  unordered_set<string> colSet1 = vectorToSet(col1);
-  Assert::IsTrue(expected == colSet1);
+  vector<string> expected = {"4", "5", "7", "9", "11", "12"};
+  Assert::IsTrue(compare_vectors(table->getColumnData("a"), expected));
 }
 
 TEST_METHOD(TestInvalidAffectsSynInt) {
@@ -2284,7 +2177,6 @@ TEST_METHOD(TestInvalidAffectsSynInt) {
       make_shared<DataAccessLayerAffectsStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(!table->getSignificant());
-  Assert::IsTrue(table->getColumns().size() == 1);
 }
 
 TEST_METHOD(TestValidAffectsSynWildcard) {
@@ -2302,11 +2194,8 @@ TEST_METHOD(TestValidAffectsSynWildcard) {
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
 
-  unordered_set<string> expected = {"4",  "5",  "7",  "9", "11",
-                                    "12", "13", "14", "16"};
-  vector<string> col1 = table->getColumns()[0]["a"];
-  unordered_set<string> colSet1 = vectorToSet(col1);
-  Assert::IsTrue(expected == colSet1);
+  vector<string> expected = {"4", "5", "7", "9", "11", "12", "13", "14", "16"};
+  Assert::IsTrue(compare_vectors(table->getColumnData("a"), expected));
 }
 
 TEST_METHOD(TestInvalidAffectsSynWildcard) {
@@ -2340,10 +2229,8 @@ TEST_METHOD(TestValidAffectsIntSyn) {
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
 
-  unordered_set<string> expected = {"9", "13"};
-  vector<string> col1 = table->getColumns()[0]["a"];
-  unordered_set<string> colSet1 = vectorToSet(col1);
-  Assert::IsTrue(expected == colSet1);
+  vector<string> expected = {"9", "13"};
+  Assert::IsTrue(compare_vectors(table->getColumnData("a"), expected));
 }
 
 TEST_METHOD(TestInvalidAffectsIntSyn) {
@@ -2441,10 +2328,8 @@ TEST_METHOD(TestValidAffectsWildcardSyn) {
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
 
-  unordered_set<string> expected = {"7", "9", "11", "13", "14", "15", "17"};
-  vector<string> col1 = table->getColumns()[0]["a"];
-  unordered_set<string> colSet1 = vectorToSet(col1);
-  Assert::IsTrue(expected == colSet1);
+  vector<string> expected = {"7", "9", "11", "13", "14", "15", "17"};
+  Assert::IsTrue(compare_vectors(table->getColumnData("a"), expected));
 }
 
 TEST_METHOD(TestInvalidAffectsWildcardSyn) {
@@ -2541,8 +2426,7 @@ TEST_METHOD(TestValidNotZeroSynonymWith) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["c"][0] == "100");
-  Assert::IsTrue(table->getColumns()[0]["c"][1] == "300");
+  Assert::IsTrue(compare_vectors(table->getColumnData("c"), {"100", "300"}));
 }
 
 TEST_METHOD(TestValidNotOneSynonymAbstraction) {
@@ -2559,10 +2443,8 @@ TEST_METHOD(TestValidNotOneSynonymAbstraction) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["p"][0] == "a");
-  Assert::IsTrue(table->getColumns()[0]["p"][1] == "b");
-  Assert::IsTrue(table->getColumns()[0]["p"][2] == "d");
-  Assert::IsTrue(table->getColumns()[0]["p"][3] == "e");
+  Assert::IsTrue(
+      compare_vectors(table->getColumnData("p"), {"a", "b", "d", "e"}));
 }
 
 TEST_METHOD(TestValidNotOneSynonymPattern) {
@@ -2579,9 +2461,7 @@ TEST_METHOD(TestValidNotOneSynonymPattern) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["w"][0] == "2");
-  Assert::IsTrue(table->getColumns()[0]["w"][1] == "3");
-  Assert::IsTrue(table->getColumns()[0]["w"][2] == "4");
+  Assert::IsTrue(compare_vectors(table->getColumnData("w"), {"2", "3", "4"}));
 }
 
 TEST_METHOD(TestValidNotOneSynonymWith) {
@@ -2598,9 +2478,7 @@ TEST_METHOD(TestValidNotOneSynonymWith) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["a"][0] == "1");
-  Assert::IsTrue(table->getColumns()[0]["a"][1] == "2");
-  Assert::IsTrue(table->getColumns()[0]["a"][2] == "4");
+  Assert::IsTrue(compare_vectors(table->getColumnData("a"), {"1", "2", "4"}));
 }
 
 TEST_METHOD(TestValidNotTwoSynonymsAbstraction) {
@@ -2617,10 +2495,7 @@ TEST_METHOD(TestValidNotTwoSynonymsAbstraction) {
       make_shared<DataAccessLayerStub>();
   shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  int size = (int)table->getColumns()[0]["p"].size();
-  Assert::IsTrue(size == 21);
-  Assert::IsTrue(table->getColumns()[0]["p"][14] == "d");
-  Assert::IsTrue(table->getColumns()[1]["q"][14] == "d");
+  Assert::IsTrue(table->getNumberOfRows() == 21);
 }
 
 TEST_METHOD(TestValidNotTwoSynonymsPattern) {
@@ -2635,55 +2510,10 @@ TEST_METHOD(TestValidNotTwoSynonymsPattern) {
 
   shared_ptr<DataAccessLayerStub> dataAccessLayer =
       make_shared<DataAccessLayerStub>();
-  shared_ptr<QueryResultsTable> table =
-      qo[2]->callAndProcess(dataAccessLayer);  // tuple is one qo
+  shared_ptr<QueryResultsTable> table = qo[0]->callAndProcess(dataAccessLayer);
   Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["v"][0] == "c");
-  Assert::IsTrue(table->getColumns()[0]["v"][1] == "a");
-  Assert::IsTrue(table->getColumns()[0]["v"][2] == "b");
-  Assert::IsTrue(table->getColumns()[0]["v"][3] == "a");
-  Assert::IsTrue(table->getColumns()[0]["v"][4] == "b");
-  Assert::IsTrue(table->getColumns()[0]["v"][5] == "c");
-  Assert::IsTrue(table->getColumns()[0]["v"][6] == "a");
-  Assert::IsTrue(table->getColumns()[1]["w"][0] == "1");
-  Assert::IsTrue(table->getColumns()[1]["w"][1] == "2");
-  Assert::IsTrue(table->getColumns()[1]["w"][2] == "2");
-  Assert::IsTrue(table->getColumns()[1]["w"][3] == "3");
-  Assert::IsTrue(table->getColumns()[1]["w"][4] == "3");
-  Assert::IsTrue(table->getColumns()[1]["w"][5] == "3");
-  Assert::IsTrue(table->getColumns()[1]["w"][6] == "4");
-}
-
-TEST_METHOD(TestValidNotTwoSynonymsWith) {
-  vector<string> testS = PQLTokenizer::tokenize(
-      "while w; constant c; Select c with not c.value = w.stmt#");
-  vector<string_view> test{sToSvVector(testS)};
-  shared_ptr<QueryParser> p = make_shared<QueryParser>();
-  tuple<vector<string_view>, vector<string_view>> testObj =
-      p->splitDeclarationQuery(test);
-  vector<shared_ptr<QueryObject>> curr = p->parseDeclaration(get<0>(testObj));
-  vector<shared_ptr<QueryObject>> qo = p->parseQuery(get<1>(testObj));
-
-  shared_ptr<DataAccessLayerStub> dataAccessLayer =
-      make_shared<DataAccessLayerStub>();
-  shared_ptr<QueryResultsTable> table = qo[1]->callAndProcess(dataAccessLayer);
-  Assert::IsTrue(table->getSignificant());
-  Assert::IsTrue(table->getColumns()[0]["c"][0] == "100");
-  Assert::IsTrue(table->getColumns()[0]["c"][1] == "100");
-  Assert::IsTrue(table->getColumns()[0]["c"][2] == "100");
-  Assert::IsTrue(table->getColumns()[0]["c"][3] == "100");
-  Assert::IsTrue(table->getColumns()[0]["c"][4] == "300");
-  Assert::IsTrue(table->getColumns()[0]["c"][5] == "300");
-  Assert::IsTrue(table->getColumns()[0]["c"][6] == "300");
-  Assert::IsTrue(table->getColumns()[0]["c"][7] == "300");
-  Assert::IsTrue(table->getColumns()[1]["w"][0] == "1");
-  Assert::IsTrue(table->getColumns()[1]["w"][1] == "2");
-  Assert::IsTrue(table->getColumns()[1]["w"][2] == "3");
-  Assert::IsTrue(table->getColumns()[1]["w"][3] == "4");
-  Assert::IsTrue(table->getColumns()[1]["w"][4] == "1");
-  Assert::IsTrue(table->getColumns()[1]["w"][5] == "2");
-  Assert::IsTrue(table->getColumns()[1]["w"][6] == "3");
-  Assert::IsTrue(table->getColumns()[1]["w"][7] == "4");
+  Assert::IsTrue(
+      compare_vectors(table->getColumnData("w"), {"1", "2", "3", "4"}));
 }
 }
 ;

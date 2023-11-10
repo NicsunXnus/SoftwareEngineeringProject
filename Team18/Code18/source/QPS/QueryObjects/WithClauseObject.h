@@ -17,6 +17,12 @@ public:
 	WithObject(string_view clauseName, shared_ptr<ClauseArg> synonym)
 		: QueryObject{ clauseName }, synonym{ synonym } {};
 	shared_ptr<ClauseArg> getSynonymObject();
+	shared_ptr<unordered_set<string>> getSynonyms() {
+		unordered_set<string> synonyms;
+		string syn(synonym->getArg());
+		synonyms.insert(syn);
+		return make_shared<unordered_set<string>>(synonyms);
+	}
 protected:
 	shared_ptr<QueryResultsTable> returnWithTable(string_view argName, string attrName, StringMap attrMap);
 	shared_ptr<QueryResultsTable> processTrivialTable(shared_ptr<DataAccessLayer> dataAccessLayer, string attrName, ENTITY entity);

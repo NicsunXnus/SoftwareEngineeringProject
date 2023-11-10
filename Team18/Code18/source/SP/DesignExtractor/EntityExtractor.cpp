@@ -228,6 +228,6 @@ shared_ptr<StringMap> EntityExtractor::getPrintVarNameMap() {
     return printVarNameMap;
 }
 
-shared_ptr<map<string, shared_ptr<Node>>> EntityExtractor::getPatternMap() {
+shared_ptr<unordered_map<string, shared_ptr<Node>>> EntityExtractor::getPatternMap() {
     return patternMap;
 }

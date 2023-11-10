@@ -17,6 +17,7 @@ public:
 	}
 protected:
 	unordered_set<string> filterAssignmentsInProcedure(unordered_set<string> assignments, int target, shared_ptr<DataAccessLayer> dataAccessLayer);
+	bool isContainerStmt(shared_ptr<DataAccessLayer> dataAccessLayer, string node);
 };
 
 class AffectsSynSyn : public AffectsFilter {

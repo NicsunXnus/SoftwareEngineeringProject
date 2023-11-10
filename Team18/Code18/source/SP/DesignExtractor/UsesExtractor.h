@@ -4,7 +4,7 @@
 #include <string>
 #include <unordered_set>
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 #include "AbstractionExtractor.h"
 #include "UsesModifiesExtractor.h"

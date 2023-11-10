@@ -1,0 +1,67 @@
+single, child - modifies x
+line 12, 26, 41, 54 modifies x
+line 2: a
+2,2
+2,3
+2,30
+2,38
+2,43
+line 3: x
+3,4
+3,44
+3,55
+line 4: z
+4,44
+line 6: x
+6,8
+6,10
+6,14
+6,16
+line 8: z
+8,44
+line 10: z
+10,44
+line 14: a
+line 16: a
+16,21
+line 17: p
+17,6
+17,21
+line 20: a
+line 21: b
+21,16
+21,20
+21,21
+21,28
+21,30
+21,31
+21,55
+line 23: a
+23,21
+line 28: a
+28,30
+28,38
+28,43
+line 30: x
+30,31
+line 31: x
+line 34: x
+line 38: a
+38,30
+38,38
+38,43
+line 43: a
+43,44
+line 44: var
+line 46: b
+line 49: b
+49,55
+line 50: read
+50,51
+line 51: print
+line 52: x
+52,55
+line 53: y
+52,55
+line 55: a
+line 57: x

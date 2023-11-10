@@ -60,7 +60,7 @@ public:
     shared_ptr<StringMap> getCallProcNameMap();
     shared_ptr<StringMap> getReadVarNameMap();
     shared_ptr<StringMap> getPrintVarNameMap();
-    shared_ptr<map<string, shared_ptr<Node>>> getPatternMap();
+    shared_ptr<unordered_map<string, shared_ptr<Node>>> getPatternMap();
     shared_ptr<StringMap> getParentMap();
     shared_ptr<StringMap> getParentStarMap();
     shared_ptr<StringMap> getFollowsMap();
@@ -70,7 +70,8 @@ public:
     shared_ptr<StringMap> getCallsMap();
     shared_ptr<StringMap> getCallsStarMap();
     shared_ptr<StringMap> getNextMap();
-    shared_ptr<map<string, pair<string, string>>> getProcedureStatementStorageMap();
+    shared_ptr<unordered_map<string, pair<string, string>>>
+    getProcedureStatementStorageMap();
 
     void extractEntities(shared_ptr<ProcessedProgram> processedProgram);
     void extractAbstractions(shared_ptr<ProcessedProgram> processedProgram, bool useMultithread = false);

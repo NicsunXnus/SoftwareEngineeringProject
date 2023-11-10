@@ -1,0 +1,260 @@
+1 int int
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select BOOLEAN such that Next*(8, 5)
+TRUE
+5000
+2 int int
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select BOOLEAN such that Next*(14, 42)
+TRUE
+5000
+3 int syn
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select s1 such that Next*(56, s1)
+57, 58, 59, 60, 61
+5000
+4 int wild
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select BOOLEAN such that Next*(56, _)
+TRUE
+5000
+5 wild wild
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select BOOLEAN such that Next*(_, _)
+TRUE
+5000
+6 wild int
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select BOOLEAN such that Next*(_, 56)
+FALSE
+5000
+7 wild int
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select BOOLEAN such that Next*(_, 1)
+TRUE
+5000
+8 wild syn
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select r1 such that Next*(_, r1)
+11, 22, 24, 27, 36, 39, 47
+5000
+9 wild syn
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select s1 such that Next*(_, s1)
+1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,57,58,59,60,61
+5000
+10 syn wild
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select s2 such that Next*(s2, _)
+1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,56,57,58,59
+5000
+11 syn syn
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select s1 such that Next*(s1, s2)
+1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,56,57,58,59
+5000
+12 syn syn
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select c1 such that Next*(s1, c1)
+12, 26, 37, 41, 54, 59, 60
+5000
+13 syn syn
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select r1 such that Next*(r1, c1)
+11, 22, 24, 27, 36, 39, 47, 56
+5000
+14 affects int int - valid
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select BOOLEAN such that Affects(38, 30)
+TRUE
+5000
+15 affects int int - invalid doesnt affect
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select BOOLEAN such that Affects(30, 34)
+FALSE
+5000
+16 affects int int - invalid diff procedure
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select BOOLEAN such that Affects(52, 57)
+FALSE
+5000
+17 affects int int - left is not assign
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select BOOLEAN such that Affects(5, 6)
+FALSE
+5000
+18 affects int int - right is not assign
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select BOOLEAN such that Affects(6, 7)
+FALSE
+5000
+19 affects int syn - stmt syn
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select s1 such that Affects(31, s1)
+
+5000
+20 affects int syn - assign syn
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select a1 such that Affects(31, a1)
+
+5000
+21 affects int syn - read syn
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2;
+Select r1 such that Affects(31, r1)
+
+5000
+22 affects int syn - entRef syn
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
+Select con such that Affects(31, con)
+SemanticError
+5000
+23 affects int syn - while syn
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
+Select con such that Affects(31, w1)
+
+5000
+24 affects int wildcard - doesnt affect anyth
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
+Select BOOLEAN such that Affects(14, _)
+FALSE
+5000
+25 affects int wildcard - affects smth
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
+Select BOOLEAN such that Affects(16, _)
+TRUE
+5000
+26 affects int wildcard - not assign
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
+Select BOOLEAN such that Affects(15, _)
+FALSE
+5000
+27 affects wildcard wildcard
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
+Select BOOLEAN such that Affects(_, _)
+TRUE
+5000
+28 affects wildcard int - valid
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
+Select BOOLEAN such that Affects(_, 8)
+TRUE
+5000
+29 affects wildcard int - not assign
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
+Select BOOLEAN such that Affects(_, 35)
+FALSE
+5000
+30 affects wildcard int - nothing
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
+Select BOOLEAN such that Affects(_, 23)
+FALSE
+5000
+31 affects wildcard syn - not assign
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
+Select BOOLEAN such that Affects(_, r1)
+FALSE
+5000
+32 affects wildcard syn - entRef
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
+Select BOOLEAN such that Affects(_, con)
+SemanticError
+5000
+33 affects wildcard syn
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
+Select s1 such that Affects(_, s1)
+2,3,4,6,8,10,14,16,20,21,28,30,31,38,43,44,51,55
+5000
+34 affects syn syn - same
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
+Select s1 such that Affects(s1, s1)
+2, 21, 38
+5000
+35 affects syn syn - diff
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
+Select s2 such that Affects(s1, s2)
+2,3,4,6,8,10,14,16,20,21,28,30,31,38,43,44,51,55
+5000
+36 affects syn syn - diff
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
+Select s1 such that Affects(s1, s2)
+2,3,4,6,8,10,16,17,21,23,28,30,38,43,49,50,53
+5000
+37 affects syn syn - assigns
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
+Select s1 such that Affects(s1, a2)
+2,3,4,6,8,10,16,17,21,23,28,30,38,43,49,50,53
+5000
+38 affects syn syn - assigns
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
+Select a1 such that Affects(a1, a2)
+2,3,4,6,8,10,16,17,21,23,28,30,38,43,49,50,53
+5000
+39 affects syn syn - non assign
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
+Select a1 such that Affects(a1, r1)
+
+5000
+40 affects syn syn - entref
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
+Select a1 such that Affects(a1, con)
+SemanticError
+5000
+41 affects syn int
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
+Select a1 such that Affects(a1, 30)
+2,21,28,38
+5000
+42 affects syn int - non assign int
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
+Select a1 such that Affects(a1, 32)
+
+5000
+43 affects syn int - non assign syn
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
+Select a1 such that Affects(r1, 31)
+
+5000
+44 affects syn wildcard
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
+Select a2 such that Affects(a2, _)
+2,3,4,6,8,10,16,17,21,23,28,30,38,43,49,50,53
+5000
+45 affects - assigns that dont affect anyth
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con;
+Select a1 such that not Affects(a1, _)
+14,20,31,34,44,46,51,52,55,57
+5000
+46 affects - variable of assigns that dont affect anyth
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con; variable v;
+Select v such that not Affects(a1, _) such that Modifies(a1, v)
+a, var, b, print, x
+5000
+47 affects - var that appears in assigns that dont affects anything also appear in assigns that affects smth
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con; variable v;
+Select v such that not Affects(a1, _) such that Modifies(a1, v) and Modifies(s2, v) such that Affects(s2, _)
+a, b, x
+5000
+48 affects - var that appears in stmts that dont affects anything also appear in stmts that affects s2
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con; variable v;
+Select s2 such that not Affects(a1, _) such that Modifies(a1, v) and Modifies(s2, v) such that Affects(s2, _)
+2, 3, 6, 16, 21, 23, 28, 30, 38, 43, 49
+5000
+49 affects - affects(s1, _)
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con; variable v;
+Select s1 such that Affects(s1, _) 
+2,3,4,6,8,10,16,17,21,23,28,30,38,43,49,50,53
+5000
+50 affects - s1 - affects(s1, _)
+assign a1, a2; stmt s1, s2; read r1, r2; call c1, c2; print p1, p2; if i1, i2; while w1, w2; constant con; variable v;
+Select s1 such that not Affects(s1, _) 
+1,5,7,9,11,12,13,14,15,18,19,20,22,24,25,26,27,29,31,32,33,34,35,36,37,39,40,41,42,44,45,46,47,48,51,52,54,55,56,57,58,59,60,61,62,63
+5000
+51 affects - poor man's affectsStar
+assign a1, a2, a3, a4, a5, a6;
+Select a1 such that Affects(a1, a2) and Affects(a2, a3) and Affects(a3, a4) and Affects(a4, a5) and Affects(a5, a6)
+2, 6, 16, 17, 21, 23, 28, 38
+5000
+52 affects - poor man's affectsStar
+assign a1, a2, a3, a4, a5, a6;
+Select a6 such that Affects(a1, a2) and Affects(a2, a3) and Affects(a3, a4) and Affects(a4, a5) and Affects(a5, a6)
+2, 3, 4, 16, 20, 21, 28, 30, 31, 38, 43, 44, 55 
+5000

@@ -24,32 +24,57 @@ private:
 		return selectClause.size() < 1;
 	}
 
-	vector<string> tableToVectorForTuples(shared_ptr<QueryResultsTable> table) {
-		vector<string> result;
-		vector<string> headers = table->getHeaders();
-		int totalRow = table->getNumberOfRows();
-		int totalHeaders = headers.size();
+	/*
+	* This function returns the select clause headers, including non primary keys
+	*/
+	unordered_set<string> getSetOfSelectClauseHeaders(vector<shared_ptr<QueryResultsTable>> selectClauseTables);
 
-		for (int i = 0; i < totalRow; i++) {
-			string curr = "";
-			for (int j = 0; j < totalHeaders; j++) {
-				vector<map<string, vector<string>>> cols = table->getColumns();
-				vector<string> column = cols[j].begin()->second;
-				if (j == totalHeaders - 1) { // last element
-					curr += column[i];
-					break;
-				}
-				curr += column[i] + " ";
-			}
-			result.push_back(curr);
-		}
-		return result;
-	}
+	/*
+	* This function returns the attribute synonym. e.g. p.procname will return "p"
+	*/
+	string getAttributeSynonym(string attribute);
+
+	/*
+	* This function returns all primary keys in the select clause (i.e. synoynms part of the final result)
+	*/
+	vector<string> getVectorOfSelectClausePkey(vector<shared_ptr<QueryResultsTable>> selectClauseTables);
+
+	/*
+	* This function drops irrelavant columns in the QRT, not needed in results
+	* It returns the tables that are not in the QRT, and a QRT with columns in the select clause
+	*/
+	tuple<vector<shared_ptr<QueryResultsTable>>,
+		shared_ptr<QueryResultsTable>> processIntermediateTable(vector<shared_ptr<QueryResultsTable>> selectClauseTables,
+			shared_ptr<QueryResultsTable> intermediateTable);
+
+	/*
+	* This function converts a QRT to a vector of string, before conversion to list<string>
+	*/
+	vector<string> tableToVectorForTuples(shared_ptr<QueryResultsTable> table);
+
+	/*
+	* This function joins all the QRTs, by cross or inner joins
+	*/
 	shared_ptr<QueryResultsTable> joinIntermediateTables(vector<shared_ptr<QueryResultsTable>> tables);
+
+	/*
+	* This function handles the returning of tuple values, by cross join or duplication of columns
+	*/
 	list<string> returnTuples(vector<shared_ptr<QueryResultsTable>> selectClauseTables);
 
+	/*
+	* This function handles results with a single synonym
+	*/
 	list<string> handleSingleSynonym(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables);
+
+	/*
+	* This function handles results for tuples
+	*/
 	list<string> handleTuples(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables);
+
+	/*
+	* This function handles results for booleans
+	*/
 	list<string> handleBoolean(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables);
 
 public:
@@ -63,6 +88,12 @@ public:
 	 */
 	~ResultHandler() {};
 	
+	vector<string> selectClauseHeaders;
+
+	void storeSelectClauseHeaders(vector<shared_ptr<QueryResultsTable>> selectClauses) {
+		for (shared_ptr<QueryResultsTable > clause : selectClauses) selectClauseHeaders.emplace_back(clause->getPrimaryKey());
+	}
+
 	// The QueryResultTables of the clauses are processed, and through a series of cross-products and/or inner joins, the final result
 	// of the PQL is obtained.
 	list<string> processTables(vector<shared_ptr<QueryResultsTable>> selectClause, vector<shared_ptr<QueryResultsTable>> nonSelectClause);

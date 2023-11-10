@@ -37,9 +37,6 @@
     <Filter Include="Source Files\PKB\StorageClasses">
       <UniqueIdentifier>{6fc53631-e77e-420a-b73c-5c0156b11b3c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\QPS\CFG">
-      <UniqueIdentifier>{7c3effb7-a592-4814-829f-78a2c9534196}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\ApplicationWrapper.cpp">
@@ -156,9 +153,6 @@
     <ClCompile Include="..\source\QPS\DataAccessLayerStub.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\QPS\GroupClause.cpp">
-      <Filter>Source Files\QPS</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\QPS\QueryBuilder.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
@@ -175,9 +169,6 @@
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
     <ClCompile Include="..\source\QPS\ResultsHandler.cpp">
-      <Filter>Source Files\QPS</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\QPS\OptimisedFunctionsStub.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
     <ClCompile Include="..\source\QPS\QueryObjects\CallsObject.cpp">
@@ -240,15 +231,6 @@
     <ClCompile Include="..\source\QPS\QRTCache.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\QPS\CFG\CFG.cpp">
-      <Filter>Source Files\QPS\CFG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\QPS\CFG\CFGCache.cpp">
-      <Filter>Source Files\QPS\CFG</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\QPS\CFG\DFSPathNode.cpp">
-      <Filter>Source Files\QPS\CFG</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\PKB\Insertor.cpp">
       <Filter>Source Files\PKB</Filter>
     </ClCompile>
@@ -266,6 +248,9 @@
     </ClCompile>
     <ClCompile Include="..\source\QPS\QueryObjects\ComparisonQueryObjectFactory.cpp">
       <Filter>Source Files\QPS\QueryObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryOptimiser.cpp">
+      <Filter>Source Files\QPS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -404,16 +389,10 @@
     <ClInclude Include="..\source\QPS\DataAccessLayerStub.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\QPS\GroupClause.h">
-      <Filter>Source Files\QPS</Filter>
-    </ClInclude>
     <ClInclude Include="..\source\QPS\PQLTokenizer.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\QueryBuilder.h">
-      <Filter>Source Files\QPS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\QPS\OptimisedSortingClauses.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\QueryDriver.h">
@@ -429,9 +408,6 @@
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\ResultsHandler.h">
-      <Filter>Source Files\QPS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\QPS\OptimisedFunctionsStub.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\Errors\QPSError.h">
@@ -462,9 +438,6 @@
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\QueryObjects\DesignObjectsFactory.h">
-      <Filter>Source Files\QPS\QueryObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\QPS\QueryObjects\InvalidQueryObject.h">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\QueryObjects\PatternClauseObject.h">
@@ -536,7 +509,9 @@
     <ClInclude Include="..\source\QPS\QueryObjects\QueryObjectModifier.h">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\ThreadPool.h" />
+    <ClInclude Include="..\source\ThreadPool.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\source\Cache.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -549,16 +524,14 @@
     <ClInclude Include="..\source\Constants\QPSConstants.h">
       <Filter>Source Files\Constants</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\DesignExtractor\DesignExtractor.h" />
-    <ClInclude Include="..\source\PKB.h" />
-    <ClInclude Include="..\source\QPS\CFG\CFG.h">
-      <Filter>Source Files\QPS\CFG</Filter>
+    <ClInclude Include="..\source\PKB.h">
+      <Filter>Source Files\PKB</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\QPS\CFG\DFSPathNode.h">
-      <Filter>Source Files\QPS\CFG</Filter>
+    <ClInclude Include="..\source\QPS\QueryOptimiser.h">
+      <Filter>Source Files\QPS</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\QPS\CFG\CFGCache.h">
-      <Filter>Source Files\QPS\CFG</Filter>
+    <ClInclude Include="..\source\QPS\UnionFind.h">
+      <Filter>Source Files\QPS</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

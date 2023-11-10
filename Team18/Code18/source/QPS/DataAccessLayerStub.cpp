@@ -65,7 +65,7 @@ StringMap DataAccessLayerStub::getConstantMap() { return constantMap; }
 shared_ptr<Node> DataAccessLayerStub::getPatternTree(string statement_number) {
   ExpressionProcessor ep = ExpressionProcessor();
 
-  map<string, shared_ptr<Node>> patternTree = {
+  unordered_map<string, shared_ptr<Node>> patternTree = {
       {"1", ep.nodifyArithmeticExpression("a + 100 - b")},
       {"2", ep.nodifyArithmeticExpression("d / c")},
       {"3", ep.nodifyArithmeticExpression("300")},
