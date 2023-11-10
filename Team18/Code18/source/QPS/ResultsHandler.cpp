@@ -153,8 +153,7 @@ list<string> ResultHandler::handleSingleSynonym(vector<shared_ptr<QueryResultsTa
 		return vectorToUniqueList(columns);
 	}
 	
-	//shared_ptr<QueryResultsTable> intermediateTable = joinIntermediateTables(nonSelectClauseTables);
-	shared_ptr<QueryResultsTable> intermediateTable = merge(nonSelectClauseTables.begin(), nonSelectClauseTables.end());
+	shared_ptr<QueryResultsTable> intermediateTable = joinIntermediateTables(nonSelectClauseTables);
 
 	string selectVar = selectClauseTables[0]->getPrimaryKey();
 	if (intermediateTable->isEmpty()) { // case 2.1
@@ -209,8 +208,7 @@ list<string> ResultHandler::handleTuples(vector<shared_ptr<QueryResultsTable>> s
 		return returnTuples(selectClauseTables);
 	}
 
-	//shared_ptr<QueryResultsTable> intermediateTable = joinIntermediateTables(nonSelectClauseTables);
-	shared_ptr<QueryResultsTable> intermediateTable = merge(nonSelectClauseTables.begin(), nonSelectClauseTables.end());
+	shared_ptr<QueryResultsTable> intermediateTable = joinIntermediateTables(nonSelectClauseTables);
 	if (intermediateTable->isEmpty()) { // case 2.1
 		if (intermediateTable->getSignificant()) { // case 2.1.1
 			return returnTuples(selectClauseTables);
@@ -271,8 +269,7 @@ list<string> ResultHandler::handleBoolean(vector<shared_ptr<QueryResultsTable>> 
 		return result;
 	}
 
-	//shared_ptr<QueryResultsTable> intermediateTable = joinIntermediateTables(nonSelectClauseTables);
-	shared_ptr<QueryResultsTable> intermediateTable = merge(nonSelectClauseTables.begin(), nonSelectClauseTables.end());
+	shared_ptr<QueryResultsTable> intermediateTable = joinIntermediateTables(nonSelectClauseTables);
 
 	if (intermediateTable->isEmpty()) { // case 2.1
 		if (intermediateTable->getSignificant()) { // case 2.1.1
