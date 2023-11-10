@@ -4,10 +4,6 @@
 // within groups, sort by abstraction_weights_map
 
 void QueryOptimiser::groupQueryObjects() {
-  //cout << "QueryObjects" << endl;
-  //for (shared_ptr<QueryObject> obj : unsortedQueryObjects) {
-  //  cout << "obj: " << obj->getQueryObjectName() << endl;
-  //}
 
   UnionFind unionFind;
   // Make a set for each shared_ptr<QueryObject>
@@ -32,14 +28,6 @@ void QueryOptimiser::groupQueryObjects() {
   }
 
   vector<vector<shared_ptr<QueryObject>>> new_groups = unionFind.getGroups();
-
-  //for (const auto& group : new_groups) {
-  //  cout << "Group:";
-  //  for (const auto& obj : group) {
-  //    cout << " " << obj->getQueryObjectName();
-  //  }
-  //  cout << endl;
-  //}
 
   // update queryGroups and numGroups
   createQueryGroups(new_groups);

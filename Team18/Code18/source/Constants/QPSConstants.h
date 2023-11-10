@@ -27,7 +27,8 @@ static inline const map<ABSTRACTION, int> abstraction_weights_map = {
 
 static inline const int WITH_CLAUSE_SCORE = 8;
 
-static inline const int NOT_CLAUSE_SCORE = 4;  // additional
+// additional score on top of original clause
+static inline const int NOT_CLAUSE_SCORE = 4;
 
 static inline const int PATTERN_CLAUSE_SCORE = 8;
 
