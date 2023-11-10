@@ -87,7 +87,7 @@
     <ClCompile Include="..\source\SP\DesignExtractor\NextExtractor.cpp">
       <Filter>Source Files\SP\DesignExtractor</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\SP\DesignExtractor\ParentsExtractor.cpp">
+    <ClCompile Include="..\source\SP\DesignExtractor\ParentExtractor.cpp">
       <Filter>Source Files\SP\DesignExtractor</Filter>
     </ClCompile>
     <ClCompile Include="..\source\SP\DesignExtractor\ProcedureLineNumberExtractor.cpp">
@@ -311,7 +311,7 @@
     <ClInclude Include="..\source\SP\DesignExtractor\NextExtractor.h">
       <Filter>Source Files\SP\DesignExtractor</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\SP\DesignExtractor\ParentsExtractor.h">
+    <ClInclude Include="..\source\SP\DesignExtractor\ParentExtractor.h">
       <Filter>Source Files\SP\DesignExtractor</Filter>
     </ClInclude>
     <ClInclude Include="..\source\SP\DesignExtractor\ProcedureLineNumberExtractor.h">

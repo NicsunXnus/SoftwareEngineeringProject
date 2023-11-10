@@ -61,7 +61,7 @@ void UsesModifiesExtractor::addStatementNumberAndProcedureName(string variableNa
     insertToAbstractionMap(variableName, parentProcedure);
 }
 
-void UsesModifiesExtractor::createCallsProcedureParentProcedureMap(shared_ptr<unordered_map<string, unordered_set<string>>> callsMap) {
+void UsesModifiesExtractor::createCallsProcedureParentProcedureMap(shared_ptr<StringMap> callsMap) {
     for (const auto& [key, values] : *callsMap) {
         for (const auto& value : values) {
             insertIntoMap(value, key, callsProcedureParentProcedureMap);

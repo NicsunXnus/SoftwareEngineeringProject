@@ -183,7 +183,7 @@ void EntityExtractor::insertToPatternMap(string key, shared_ptr<Node> node) {
     }
 }
 
-void EntityExtractor::insertToMap(shared_ptr<unordered_map<string, unordered_set<string>>> map, string key, string value) {
+void EntityExtractor::insertToMap(shared_ptr<StringMap> map, string key, string value) {
     if (map->find(key) == map->end()) {
         unordered_set<string> valueSet;
         valueSet.insert(value);
@@ -193,38 +193,38 @@ void EntityExtractor::insertToMap(shared_ptr<unordered_map<string, unordered_set
     }
 }
 
-void EntityExtractor::insertToMap(shared_ptr<unordered_map<string, unordered_set<string>>> map, string key) {
+void EntityExtractor::insertToMap(shared_ptr<StringMap> map, string key) {
     if (map->find(key) == map->end()) {
         unordered_set<string> valueSet;
         map->insert({key, valueSet});
     } 
 }
 
-shared_ptr<unordered_map<string, unordered_set<string>>> EntityExtractor::getProcedureMap() {
+shared_ptr<StringMap> EntityExtractor::getProcedureMap() {
     return procedureMap;
 }
 
-shared_ptr<unordered_map<string, unordered_set<string>>> EntityExtractor::getVariableMap() {
+shared_ptr<StringMap> EntityExtractor::getVariableMap() {
     return variableMap;
 }
 
-shared_ptr<unordered_map<string, unordered_set<string>>> EntityExtractor::getStatementMap() {
+shared_ptr<StringMap> EntityExtractor::getStatementMap() {
     return statementMap;
 }
 
-shared_ptr<unordered_map<string, unordered_set<string>>> EntityExtractor::getConstantMap() {
+shared_ptr<StringMap> EntityExtractor::getConstantMap() {
     return constantMap;
 }
 
-shared_ptr<unordered_map<string, unordered_set<string>>> EntityExtractor::getCallProcNameMap() {
+shared_ptr<StringMap> EntityExtractor::getCallProcNameMap() {
     return callProcNameMap;
 }
 
-shared_ptr<unordered_map<string, unordered_set<string>>> EntityExtractor::getReadVarNameMap() {
+shared_ptr<StringMap> EntityExtractor::getReadVarNameMap() {
     return readVarNameMap;
 }
 
-shared_ptr<unordered_map<string, unordered_set<string>>> EntityExtractor::getPrintVarNameMap() {
+shared_ptr<StringMap> EntityExtractor::getPrintVarNameMap() {
     return printVarNameMap;
 }
 

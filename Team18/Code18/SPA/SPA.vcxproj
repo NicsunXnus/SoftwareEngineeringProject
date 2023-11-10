@@ -62,7 +62,7 @@
     <ClCompile Include="..\source\SP\DesignExtractor\FollowsExtractor.cpp" />
     <ClCompile Include="..\source\SP\DesignExtractor\ModifiesExtractor.cpp" />
     <ClCompile Include="..\source\SP\DesignExtractor\NextExtractor.cpp" />
-    <ClCompile Include="..\source\SP\DesignExtractor\ParentsExtractor.cpp" />
+    <ClCompile Include="..\source\SP\DesignExtractor\ParentExtractor.cpp" />
     <ClCompile Include="..\source\SP\DesignExtractor\ProcedureLineNumberExtractor.cpp" />
     <ClCompile Include="..\source\SP\DesignExtractor\UsesExtractor.cpp" />
     <ClCompile Include="..\source\SP\DesignExtractor\UsesModifiesExtractor.cpp" />
@@ -151,7 +151,7 @@
     <ClInclude Include="..\source\SP\DesignExtractor\FollowsExtractor.h" />
     <ClInclude Include="..\source\SP\DesignExtractor\ModifiesExtractor.h" />
     <ClInclude Include="..\source\SP\DesignExtractor\NextExtractor.h" />
-    <ClInclude Include="..\source\SP\DesignExtractor\ParentsExtractor.h" />
+    <ClInclude Include="..\source\SP\DesignExtractor\ParentExtractor.h" />
     <ClInclude Include="..\source\SP\DesignExtractor\ProcedureLineNumberExtractor.h" />
     <ClInclude Include="..\source\SP\DesignExtractor\UsesExtractor.h" />
     <ClInclude Include="..\source\SP\DesignExtractor\UsesModifiesExtractor.h" />

@@ -15,13 +15,13 @@ using namespace std;
 class EntityExtractor : public Extractor {
 public:
     // Constructor
-    EntityExtractor() : procedureMap(make_shared<unordered_map<string, unordered_set<string>>>()),
-        variableMap(make_shared<unordered_map<string, unordered_set<string>>>()),
-        statementMap(make_shared<unordered_map<string, unordered_set<string>>>()),
-        constantMap(make_shared<unordered_map<string, unordered_set<string>>>()),
-        callProcNameMap(make_shared<unordered_map<string, unordered_set<string>>>()),
-        readVarNameMap(make_shared<unordered_map<string, unordered_set<string>>>()),
-        printVarNameMap(make_shared<unordered_map<string, unordered_set<string>>>()),
+    EntityExtractor() : procedureMap(make_shared<StringMap>()),
+        variableMap(make_shared<StringMap>()),
+        statementMap(make_shared<StringMap>()),
+        constantMap(make_shared<StringMap>()),
+        callProcNameMap(make_shared<StringMap>()),
+        readVarNameMap(make_shared<StringMap>()),
+        printVarNameMap(make_shared<StringMap>()),
         patternMap(make_shared<unordered_map<string, shared_ptr<Node>>>()) {
     }
 
@@ -34,13 +34,13 @@ public:
     void insertToPrintVarNameMap(string key, string value);
     void insertToPatternMap(string key, shared_ptr<Node> node);
 
-    shared_ptr<unordered_map<string, unordered_set<string>>> getProcedureMap();
-    shared_ptr<unordered_map<string, unordered_set<string>>> getVariableMap();
-    shared_ptr<unordered_map<string, unordered_set<string>>> getStatementMap();
-    shared_ptr<unordered_map<string, unordered_set<string>>> getConstantMap();
-    shared_ptr<unordered_map<string, unordered_set<string>>> getCallProcNameMap();
-    shared_ptr<unordered_map<string, unordered_set<string>>> getReadVarNameMap();
-    shared_ptr<unordered_map<string, unordered_set<string>>> getPrintVarNameMap();
+    shared_ptr<StringMap> getProcedureMap();
+    shared_ptr<StringMap> getVariableMap();
+    shared_ptr<StringMap> getStatementMap();
+    shared_ptr<StringMap> getConstantMap();
+    shared_ptr<StringMap> getCallProcNameMap();
+    shared_ptr<StringMap> getReadVarNameMap();
+    shared_ptr<StringMap> getPrintVarNameMap();
     shared_ptr<unordered_map<string, shared_ptr<Node>>> getPatternMap();
 
     void extract(shared_ptr<ProcessedProgram> processedProgram) override;
@@ -58,15 +58,15 @@ public:
     void extract(shared_ptr<ConstantNode> node) override;
 
 private:
-    shared_ptr<unordered_map<string, unordered_set<string>>> procedureMap;
-    shared_ptr<unordered_map<string, unordered_set<string>>> variableMap;
-    shared_ptr<unordered_map<string, unordered_set<string>>> statementMap;
-    shared_ptr<unordered_map<string, unordered_set<string>>> constantMap;
-    shared_ptr<unordered_map<string, unordered_set<string>>> callProcNameMap;
-    shared_ptr<unordered_map<string, unordered_set<string>>> readVarNameMap;
-    shared_ptr<unordered_map<string, unordered_set<string>>> printVarNameMap;
+    shared_ptr<StringMap> procedureMap;
+    shared_ptr<StringMap> variableMap;
+    shared_ptr<StringMap> statementMap;
+    shared_ptr<StringMap> constantMap;
+    shared_ptr<StringMap> callProcNameMap;
+    shared_ptr<StringMap> readVarNameMap;
+    shared_ptr<StringMap> printVarNameMap;
     shared_ptr<unordered_map<string, shared_ptr<Node>>> patternMap;
 
-    void insertToMap(shared_ptr<unordered_map<string, unordered_set<string>>> map, string key, string value);
-    void insertToMap(shared_ptr<unordered_map<string, unordered_set<string>>> map, string key);
+    void insertToMap(shared_ptr<StringMap> map, string key, string value);
+    void insertToMap(shared_ptr<StringMap> map, string key);
 };
