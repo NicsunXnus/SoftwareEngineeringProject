@@ -33,13 +33,15 @@ unordered_set<string> DataAccessLayer::getAllConstants() {
   return PKBResponse;
 }
 
-map<string, unordered_set<string>> DataAccessLayer::getVariableMap() {
-  StringMap PKBResponse = PKB::responder.getNonStatementEntityMap(VARIABLE);
+unordered_map<string, unordered_set<string>> DataAccessLayer::getVariableMap() {
+  StringMap PKBResponse =
+      PKB::responder.getNonStatementEntityMap(VARIABLE);
   return PKBResponse;
 }
 
-map<string, unordered_set<string>> DataAccessLayer::getConstantMap() {
-  StringMap PKBResponse = PKB::responder.getNonStatementEntityMap(CONSTANT);
+unordered_map<string, unordered_set<string>> DataAccessLayer::getConstantMap() {
+  StringMap PKBResponse =
+      PKB::responder.getNonStatementEntityMap(CONSTANT);
   return PKBResponse;
 }
 

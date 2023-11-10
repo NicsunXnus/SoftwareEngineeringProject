@@ -38,8 +38,8 @@ public:
 	virtual unordered_set<string> getAllConstants();
 
 	/* For Patterns */
-	virtual map<string, unordered_set<string>> getVariableMap();
-	virtual map<string, unordered_set<string>> getConstantMap();
+	virtual unordered_map<string, unordered_set<string>> getVariableMap();
+	virtual unordered_map<string, unordered_set<string>> getConstantMap();
     virtual shared_ptr<Node> getPatternTree(string statement_number);
 
 	/* For Design Abstractions / Clauses */

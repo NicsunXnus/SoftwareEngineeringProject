@@ -1,15 +1,15 @@
 #ifndef DESIGNENUMS_H
 #define DESIGNENUMS_H
 
-#include <map>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
+#include <map>
 
 using namespace std;
 
-typedef map<string, unordered_set<string>> StringMap;
+typedef unordered_map<string, unordered_set<string>> StringMap;
 
 enum ENTITY {
   STMT,
@@ -24,7 +24,7 @@ enum ENTITY {
   PROCEDURE
 };
 
-const map<string, ENTITY> entityMap = {
+const unordered_map<string, ENTITY> entityMap = {
     {"stmt", STMT},           {"read", READ},         {"print", PRINT},
     {"call", CALL},           {"while", WHILE},       {"if", IF},
     {"assign", ASSIGN},       {"variable", VARIABLE}, {"constant", CONSTANT},
@@ -52,7 +52,7 @@ enum ABSTRACTION {
   AFFECTS,
 };
 
-const map<string, ABSTRACTION> abstractionMap = {
+const unordered_map<string, ABSTRACTION> abstractionMap = {
     {"uses", USES},       {"modifies", MODIFIES},
     {"parent", PARENT},   {"parentstar", PARENTSTAR},
     {"follows", FOLLOWS}, {"followsstar", FOLLOWSSTAR},
@@ -67,7 +67,7 @@ static ABSTRACTION AbstractionStringToEnum(string abstraction) {
   throw runtime_error("abstraction is invalid!");
 }
 
-const map<string, ABSTRACTION> queryObjAbstractionMap = {
+const unordered_map<string, ABSTRACTION> queryObjAbstractionMap = {
     {"Uses", USES},       {"Modifies", MODIFIES},
     {"Parent", PARENT},   {"Parent*", PARENTSTAR},
     {"Follows", FOLLOWS}, {"Follows*", FOLLOWSSTAR},

@@ -2,7 +2,7 @@
 #include "CppUnitTest.h"
 
 #include "../source/HelperFunctions.h"
-#include <map>
+#include <unordered_map>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;

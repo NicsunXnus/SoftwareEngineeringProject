@@ -164,7 +164,9 @@ shared_ptr<QueryResultsTable> QueryResultsTable::createTable(string header, vect
 
 }
 
-shared_ptr<QueryResultsTable> QueryResultsTable::createTable(vector<string> headers, map<string, vector<string>> columnValues) {
+shared_ptr<QueryResultsTable> QueryResultsTable::createTable(
+    vector<string> headers,
+    unordered_map<string, vector<string>> columnValues) {
     unordered_set<unordered_map<string, string>,HashFunc,EqualFunc> res;
     for (const auto& entry : columnValues) {
         string left = entry.first;
@@ -193,7 +195,9 @@ shared_ptr<QueryResultsTable> QueryResultsTable::createTable(string header, unor
     return table;
 }
 
-shared_ptr<QueryResultsTable> QueryResultsTable::createTable(vector<string> headers, map<string, unordered_set<string>> columnValues) {
+shared_ptr<QueryResultsTable> QueryResultsTable::createTable(
+    vector<string> headers,
+    unordered_map<string, unordered_set<string>> columnValues) {
     unordered_set<unordered_map<string, string>, HashFunc, EqualFunc> res;
     for (const auto& entry : columnValues) {
         string left = entry.first;

@@ -2,6 +2,8 @@
 #ifndef STORAGEMANAGER_H
 #define STORAGEMANAGER_H
 
+#include <map>
+
 #include "StorageClasses/AbstractionStorage.h"
 #include "StorageClasses/EntityStorage.h"
 
@@ -97,10 +99,10 @@ class StorageManager {
       abstraction_storage_map;
 
   // map of non-statement entities for retrieval based on enums
-  static inline map<ENTITY, shared_ptr<NonStatementStorage>>
+  static inline unordered_map<ENTITY, shared_ptr<NonStatementStorage>>
       non_statement_entity_storage_map;
 
   // map of entity name storages for retrieval based on enums
-  static inline map<ENTITY, shared_ptr<NameStorage>> entity_name_storage_map;
+  static inline unordered_map<ENTITY, shared_ptr<NameStorage>> entity_name_storage_map;
 };
 #endif
