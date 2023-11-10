@@ -151,7 +151,7 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
      * @param columnValues A map of a string to a vector of strings representing the unflattened map.
      * @return A shared pointer to the newly created QueryResultsTable object.
     */
-    static shared_ptr<QueryResultsTable> createTable(vector<string> headers, map<string, vector<string>> columnValues);
+    static shared_ptr<QueryResultsTable> createTable(vector<string> headers, unordered_map<string, vector<string>> columnValues);
 
     /**
      * A static method that creates a new QueryResultsTable object with a single column.
@@ -170,7 +170,9 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
      * @param columnValues A map of a string to a vector of strings representing the unflattened map.
      * @return A shared pointer to the newly created QueryResultsTable object.
     */
-    static shared_ptr<QueryResultsTable> createTable(vector<string> headers, map<string, unordered_set<string>> columnValues);
+    static shared_ptr<QueryResultsTable> createTable(
+        vector<string> headers,
+        unordered_map<string, unordered_set<string>> columnValues);
 
     /**
      * A static method that creates a new QueryResultsTable object with the provided headers and column values.

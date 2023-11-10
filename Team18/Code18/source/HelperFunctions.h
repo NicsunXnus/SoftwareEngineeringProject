@@ -218,7 +218,7 @@ static bool containerHasKey(const Container& myContainer, const KeyType& keyToCh
 
 
 // convert map to set, by taking all the keys in the map
-static unordered_set<string> getMapKeys(map<string, unordered_set<string>> stringMap) {
+static unordered_set<string> getMapKeys(StringMap stringMap) {
     unordered_set<string> keySet;
     for (const auto& pair : stringMap) {
         keySet.insert(pair.first);
