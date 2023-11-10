@@ -23,9 +23,10 @@ StorageManager::StorageManager() {
   this->next_abstractions = make_shared<NextAbstractionStorage>();
 
   // store all non-statement entities in a map for easy retrieval
-  this->non_statement_entity_storage_map = {{PROCEDURE, procedure_entities},
-                                            {VARIABLE, variable_entities},
-                                            {CONSTANT, constant_entities}};
+  this->non_statement_entity_storage_map = {
+      {PROCEDURE, procedure_entities},
+      {VARIABLE, variable_entities},
+      {CONSTANT, constant_entities}};
 
   // store all entity name storages in a map for easy retrieval
   this->entity_name_storage_map = {{READ, read_varname_entities},
@@ -34,10 +35,14 @@ StorageManager::StorageManager() {
 
   // store all abstraction storages in a map for easy retrieval
   this->abstraction_storage_map = {
-      {USES, uses_abstractions},       {MODIFIES, modifies_abstractions},
-      {FOLLOWS, follows_abstractions}, {FOLLOWSSTAR, follows_star_abstractions},
-      {PARENT, parent_abstractions},   {PARENTSTAR, parent_star_abstractions},
-      {CALLS, calls_abstractions},     {CALLSSTAR, calls_star_abstractions},
+      {USES, uses_abstractions},
+      {MODIFIES, modifies_abstractions},
+      {FOLLOWS, follows_abstractions},
+      {FOLLOWSSTAR, follows_star_abstractions},
+      {PARENT, parent_abstractions},
+      {PARENTSTAR, parent_star_abstractions},
+      {CALLS, calls_abstractions},
+      {CALLSSTAR, calls_star_abstractions},
       {NEXT, next_abstractions}};
 }
 

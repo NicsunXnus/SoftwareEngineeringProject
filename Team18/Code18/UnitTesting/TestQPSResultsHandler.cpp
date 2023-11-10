@@ -14,8 +14,8 @@ namespace UnitTesting {
 private:
 	vector<string> singleTable = {"1", "2", "3"};
 	vector<string> singleTableVars = { "a", "b", "c" };
-	map<string, vector<string>> twoDTable = { { "3", { "5", "6", "7"}}};
-	map<string, vector<string>> twoDTableEmpty;
+	unordered_map<string, vector<string>> twoDTable = { { "3", { "5", "6", "7"}}};
+	unordered_map<string, vector<string>> twoDTableEmpty;
 
 public:
 		TEST_METHOD(TestSingleSynonymNoSuchThatClause) {

@@ -3,7 +3,7 @@
 unordered_set<string> Responder::getEntityStatement(ENTITY entity) {
   shared_ptr<StatementStorage> entity_storage =
       StorageManager::getStatementStorage();
-  shared_ptr<map<ENTITY, unordered_set<string>>> entity_database =
+  shared_ptr<unordered_map<ENTITY, unordered_set<string>>> entity_database =
       entity_storage->getDatabase();
   // check if entity exists
   if (entity_database->find(entity) == entity_database->end()) {
@@ -28,7 +28,7 @@ StringMap Responder::getNonStatementEntityMap(ENTITY entity) {
 pair<string, string> Responder::getProcLines(string procedure) {
   shared_ptr<ProcLinesStorage> entity_storage =
       StorageManager::getProcLinesStorage();
-  shared_ptr<map<string, pair<string, string>>> proclines_database =
+  shared_ptr<unordered_map<string, pair<string, string>>> proclines_database =
       entity_storage->getDatabase();
   // check if procedure exists
   if (proclines_database->find(procedure) == proclines_database->end()) {
@@ -43,7 +43,7 @@ StringMap Responder::getNameMap(ENTITY entity_type) {
   return *(name_storage->getDatabase());
 }
 
-map<string, shared_ptr<Node>> Responder::getAllPatterns() {
+unordered_map<string, shared_ptr<Node>> Responder::getAllPatterns() {
   shared_ptr<PatternStorage> entity_storage =
       StorageManager::getPatternStorage();
   return *(entity_storage->getDatabase());
@@ -52,7 +52,7 @@ map<string, shared_ptr<Node>> Responder::getAllPatterns() {
 shared_ptr<Node> Responder::getPattern(string statement_number) {
   shared_ptr<PatternStorage> entity_storage =
       StorageManager::getPatternStorage();
-  shared_ptr<map<string, shared_ptr<Node>>> pattern_database =
+  shared_ptr<unordered_map<string, shared_ptr<Node>>> pattern_database =
       entity_storage->getDatabase();
   // check if pattern exists
   if (pattern_database->find(statement_number) == pattern_database->end()) {

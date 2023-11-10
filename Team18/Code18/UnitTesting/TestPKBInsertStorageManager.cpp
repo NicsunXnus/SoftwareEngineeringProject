@@ -48,7 +48,7 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     // Create reference to EntityStorage to check database
     shared_ptr<StatementStorage> entity_storage =
         StorageManager::getStatementStorage();
-    shared_ptr<map<ENTITY, unordered_set<string>>> stmt_db =
+    shared_ptr<unordered_map<ENTITY, unordered_set<string>>> stmt_db =
         entity_storage->getDatabase();
 
     unordered_set<string> expected_vector = {"1"};
@@ -79,7 +79,7 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     // Create reference to EntityStorage to check database
     shared_ptr<StatementStorage> entity_storage =
         StorageManager::getStatementStorage();
-    shared_ptr<map<ENTITY, unordered_set<string>>> stmt_db =
+    shared_ptr<unordered_map<ENTITY, unordered_set<string>>> stmt_db =
         entity_storage->getDatabase();
 
     unordered_set<string> expected_vector1 = {"1", "2"};
@@ -104,7 +104,7 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     // Create reference to EntityStorage to check database
     shared_ptr<StatementStorage> entity_storage =
         StorageManager::getStatementStorage();
-    shared_ptr<map<ENTITY, unordered_set<string>>> stmt_db =
+    shared_ptr<unordered_map<ENTITY, unordered_set<string>>> stmt_db =
         entity_storage->getDatabase();
 
     // assert database is empty
@@ -321,7 +321,7 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     shared_ptr<StringMap> variable_db = variable_storage->getDatabase();
     shared_ptr<StatementStorage> stmt_storage =
         StorageManager::getStatementStorage();
-    shared_ptr<map<ENTITY, unordered_set<string>>> stmt_db =
+    shared_ptr<unordered_map<ENTITY, unordered_set<string>>> stmt_db =
         stmt_storage->getDatabase();
 
     // assert database has correct entries
@@ -334,10 +334,10 @@ TEST_CLASS(TestPKBInsertStorageManager) {
 
   TEST_METHOD(TestAddSingleProcLineSuccess) {
     // Create mock data to insert
-    map<string, pair<string, string>> procedureLineData = {
+    unordered_map<string, pair<string, string>> procedureLineData = {
         {"proc1", {"1", "20"}}};
-    shared_ptr<map<string, pair<string, string>>> toInsert =
-        make_shared<map<string, pair<string, string>>>(procedureLineData);
+    shared_ptr<unordered_map<string, pair<string, string>>> toInsert =
+        make_shared<unordered_map<string, pair<string, string>>>(procedureLineData);
 
     // Insertion
     PKB::insertor.addProcLines(toInsert);
@@ -345,7 +345,7 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     // Create reference to EntityStorage to check database
     shared_ptr<ProcLinesStorage> entity_storage =
         StorageManager::getProcLinesStorage();
-    shared_ptr<map<string, pair<string, string>>> proclines_db =
+    shared_ptr<unordered_map<string, pair<string, string>>> proclines_db =
         entity_storage->getDatabase();
 
     pair<string, string> expected_vector1 = {"1", "20"};
@@ -355,10 +355,10 @@ TEST_CLASS(TestPKBInsertStorageManager) {
 
   TEST_METHOD(TestAddMultipleProcLinesSuccess) {
     // Create mock data to insert
-    map<string, pair<string, string>> procedureLineData = {
+    unordered_map<string, pair<string, string>> procedureLineData = {
         {"proc1", {"1", "2"}}, {"proc2", {"5", "7"}}};
-    shared_ptr<map<string, pair<string, string>>> toInsert =
-        make_shared<map<string, pair<string, string>>>(procedureLineData);
+    shared_ptr<unordered_map<string, pair<string, string>>> toInsert =
+        make_shared<unordered_map<string, pair<string, string>>>(procedureLineData);
 
     // Insertion
     PKB::insertor.addProcLines(toInsert);
@@ -366,7 +366,7 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     // Create reference to EntityStorage to check database
     shared_ptr<ProcLinesStorage> entity_storage =
         StorageManager::getProcLinesStorage();
-    shared_ptr<map<string, pair<string, string>>> proclines_db =
+    shared_ptr<unordered_map<string, pair<string, string>>> proclines_db =
         entity_storage->getDatabase();
 
     pair<string, string> expected_vector1 = {"1", "2"};
@@ -382,9 +382,9 @@ TEST_CLASS(TestPKBInsertStorageManager) {
 
   TEST_METHOD(TestAddZeroProcLinesSuccess) {
     // Create mock data to insert
-    map<string, pair<string, string>> procedureLineData = {};
-    shared_ptr<map<string, pair<string, string>>> toInsert =
-        make_shared<map<string, pair<string, string>>>(procedureLineData);
+    unordered_map<string, pair<string, string>> procedureLineData = {};
+    shared_ptr<unordered_map<string, pair<string, string>>> toInsert =
+        make_shared<unordered_map<string, pair<string, string>>>(procedureLineData);
 
     // Insertion
     PKB::insertor.addProcLines(toInsert);
@@ -392,7 +392,7 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     // Create reference to EntityStorage to check database
     shared_ptr<ProcLinesStorage> entity_storage =
         StorageManager::getProcLinesStorage();
-    shared_ptr<map<string, pair<string, string>>> proclines_db =
+    shared_ptr<unordered_map<string, pair<string, string>>> proclines_db =
         entity_storage->getDatabase();
 
     // assert database is empty
@@ -458,9 +458,9 @@ TEST_CLASS(TestPKBInsertStorageManager) {
   }
 
   TEST_METHOD(TestAddSingleArithmeticPatternSuccess) {
-    map<string, shared_ptr<Node>> patternData = {{"5", arithmetic_node_ptr}};
-    shared_ptr<map<string, shared_ptr<Node>>> toInsert =
-        make_shared<map<string, shared_ptr<Node>>>(patternData);
+    unordered_map<string, shared_ptr<Node>> patternData = {{"5", arithmetic_node_ptr}};
+    shared_ptr<unordered_map<string, shared_ptr<Node>>> toInsert =
+        make_shared<unordered_map<string, shared_ptr<Node>>>(patternData);
 
     // Insertion
     PKB::insertor.addPatterns(toInsert);
@@ -468,7 +468,7 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     // Create reference to EntityStorage to check database
     shared_ptr<PatternStorage> entity_storage =
         StorageManager::getPatternStorage();
-    shared_ptr<map<string, shared_ptr<Node>>> pattern_db =
+    shared_ptr<unordered_map<string, shared_ptr<Node>>> pattern_db =
         entity_storage->getDatabase();
 
     Assert::IsTrue(
@@ -476,9 +476,9 @@ TEST_CLASS(TestPKBInsertStorageManager) {
   }
 
   TEST_METHOD(TestAddSingleConditionalPatternSuccess) {
-    map<string, shared_ptr<Node>> patternData = {{"1", conditional_node_ptr}};
-    shared_ptr<map<string, shared_ptr<Node>>> toInsert =
-        make_shared<map<string, shared_ptr<Node>>>(patternData);
+    unordered_map<string, shared_ptr<Node>> patternData = {{"1", conditional_node_ptr}};
+    shared_ptr<unordered_map<string, shared_ptr<Node>>> toInsert =
+        make_shared<unordered_map<string, shared_ptr<Node>>>(patternData);
 
     // Insertion
     PKB::insertor.addPatterns(toInsert);
@@ -486,7 +486,7 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     // Create reference to EntityStorage to check database
     shared_ptr<PatternStorage> entity_storage =
         StorageManager::getPatternStorage();
-    shared_ptr<map<string, shared_ptr<Node>>> pattern_db =
+    shared_ptr<unordered_map<string, shared_ptr<Node>>> pattern_db =
         entity_storage->getDatabase();
 
     Assert::IsTrue(
@@ -494,10 +494,10 @@ TEST_CLASS(TestPKBInsertStorageManager) {
   }
 
   TEST_METHOD(TestAddMultiplePatternsSuccess) {
-    map<string, shared_ptr<Node>> patternData = {{"5", arithmetic_node_ptr},
+    unordered_map<string, shared_ptr<Node>> patternData = {{"5", arithmetic_node_ptr},
                                                  {"1", conditional_node_ptr}};
-    shared_ptr<map<string, shared_ptr<Node>>> toInsert =
-        make_shared<map<string, shared_ptr<Node>>>(patternData);
+    shared_ptr<unordered_map<string, shared_ptr<Node>>> toInsert =
+        make_shared<unordered_map<string, shared_ptr<Node>>>(patternData);
 
     // Insertion
     PKB::insertor.addPatterns(toInsert);
@@ -505,7 +505,7 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     // Create reference to EntityStorage to check database
     shared_ptr<PatternStorage> entity_storage =
         StorageManager::getPatternStorage();
-    shared_ptr<map<string, shared_ptr<Node>>> pattern_db =
+    shared_ptr<unordered_map<string, shared_ptr<Node>>> pattern_db =
         entity_storage->getDatabase();
 
     Assert::IsTrue(
@@ -516,9 +516,9 @@ TEST_CLASS(TestPKBInsertStorageManager) {
 
   TEST_METHOD(TestAddZeroPatternSuccess) {
     // Create mock data to insert
-    map<string, shared_ptr<Node>> patternData = {};
-    shared_ptr<map<string, shared_ptr<Node>>> toInsert =
-        make_shared<map<string, shared_ptr<Node>>>(patternData);
+    unordered_map<string, shared_ptr<Node>> patternData = {};
+    shared_ptr<unordered_map<string, shared_ptr<Node>>> toInsert =
+        make_shared<unordered_map<string, shared_ptr<Node>>>(patternData);
 
     // Insertion
     PKB::insertor.addPatterns(toInsert);
@@ -526,7 +526,7 @@ TEST_CLASS(TestPKBInsertStorageManager) {
     // Create reference to EntityStorage to check database
     shared_ptr<PatternStorage> entity_storage =
         StorageManager::getPatternStorage();
-    shared_ptr<map<string, shared_ptr<Node>>> pattern_db =
+    shared_ptr<unordered_map<string, shared_ptr<Node>>> pattern_db =
         entity_storage->getDatabase();
 
     Assert::IsTrue(pattern_db->empty());

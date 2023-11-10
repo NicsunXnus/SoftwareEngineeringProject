@@ -10,8 +10,8 @@
 // Headers for CppUnitTest
 #include <algorithm>
 #include <cassert>
-#include <map>
 #include <string>
+#include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
@@ -46,8 +46,8 @@ inline bool compare_sets(unordered_set<string> s1, unordered_set<string> s2) {
   return true;
 }
 
-inline bool compare_vector_maps(map<string, vector<string>> m1,
-                                map<string, vector<string>> m2) {
+inline bool compare_vector_maps(unordered_map<string, vector<string>> m1,
+                                unordered_map<string, vector<string>> m2) {
   if (m1.size() != m2.size()) {
     return false;
   }
@@ -62,8 +62,8 @@ inline bool compare_vector_maps(map<string, vector<string>> m1,
   return true;
 }
 
-inline bool compare_maps(map<string, unordered_set<string>> m1,
-                         map<string, unordered_set<string>> m2) {
+inline bool compare_maps(unordered_map<string, unordered_set<string>> m1,
+                         unordered_map<string, unordered_set<string>> m2) {
   if (m1.size() != m2.size()) {
     return false;
   }
@@ -78,19 +78,46 @@ inline bool compare_maps(map<string, unordered_set<string>> m1,
   return true;
 }
 
-inline bool compare_vectors_of_maps(vector<map<string, vector<string>>> v1,
-                                    vector<map<string, vector<string>>> v2) {
+inline bool compare_vectors_of_maps(
+    vector<unordered_map<string, vector<string>>> v1,
+    vector<unordered_map<string, vector<string>>> v2) {
+  /* if (v1.size() != v2.size()) {
+     return false;
+   }
+   vector<unordered_map<string, vector<string>>> temp1 = v1;
+   vector<unordered_map<string, vector<string>>> temp2 = v2;
+   sort(temp1.begin(), temp1.end());
+   sort(temp2.begin(), temp2.end());
+   for (size_t i = 0; i < temp1.size(); ++i) {
+     if (!compare_vector_maps(temp1[i], temp2[i])) {
+       return false;
+     }
+   }
+   return true;*/
+
   if (v1.size() != v2.size()) {
     return false;
   }
-  vector<map<string, vector<string>>> temp1 = v1;
-  vector<map<string, vector<string>>> temp2 = v2;
-  sort(temp1.begin(), temp1.end());
-  sort(temp2.begin(), temp2.end());
-  for (size_t i = 0; i < temp1.size(); ++i) {
-    if (!compare_vector_maps(temp1[i], temp2[i])) {
+
+  for (std::size_t i = 0; i < v1.size(); ++i) {
+    const auto& map1 = v1[i];
+    const auto& map2 = v2[i];
+
+    if (map1.size() != map2.size()) {
       return false;
     }
+
+    for (const auto& entry : map1) {
+      const auto& key = entry.first;
+      const auto& value1 = entry.second;
+      auto it = map2.find(key);
+      if (it == map2.end()) {
+        return false;
+      }
+      const auto& value2 = it->second;
+      if (value1 != value2) {
+        return false;
+      }
+    }
   }
-  return true;
 }
