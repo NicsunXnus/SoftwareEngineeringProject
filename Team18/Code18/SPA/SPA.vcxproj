@@ -13,9 +13,6 @@
   <ItemGroup>
     <ClCompile Include="..\source\ApplicationWrapper.cpp" />
     <ClCompile Include="..\source\QPS\QueryObjects\ClauseObjectFactory.cpp" />
-    <ClCompile Include="..\source\QPS\CFG\CFG.cpp" />
-    <ClCompile Include="..\source\QPS\CFG\CFGCache.cpp" />
-    <ClCompile Include="..\source\QPS\CFG\DFSPathNode.cpp" />
     <ClCompile Include="..\source\PKB\Insertor.cpp" />
     <ClCompile Include="..\source\PKB\Responder.cpp" />
     <ClCompile Include="..\source\PKB\StorageClasses\AbstractionStorage.cpp" />
@@ -94,9 +91,6 @@
     <ClInclude Include="..\source\Constants\QPSConstants.h" />
     <ClInclude Include="..\source\ExceptionMessages.h" />
     <ClInclude Include="..\source\HelperFunctions.h" />
-    <ClInclude Include="..\source\QPS\CFG\CFG.h" />
-    <ClInclude Include="..\source\QPS\CFG\DFSPathNode.h" />
-    <ClInclude Include="..\source\QPS\CFG\CFGCache.h" />
     <ClInclude Include="..\source\QPS\QRTCache.h" />
     <ClInclude Include="..\source\QPS\QueryOptimiser.h" />
     <ClInclude Include="..\source\QPS\UnionFind.h" />
