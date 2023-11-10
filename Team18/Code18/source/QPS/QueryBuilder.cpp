@@ -24,16 +24,16 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
   queryOptimiser->groupQueryObjects();
   queryOptimiser->sortGroups();
   vector<shared_ptr<QueryGroup>> groups = queryOptimiser->getQueryGroups();
-  cout << "number of distinct groups: " << groups.size() << endl;
-  cout << "groups: " << endl;
-  // evaluate each group (sequentially), in the order 0, 1, 2,..
+  // cout << "number of distinct groups: " << groups.size() << endl;
+  // cout << "groups: " << endl;
+  //  evaluate each group (sequentially), in the order 0, 1, 2,..
   for (shared_ptr<QueryGroup> group : groups) {
     // print group
-    cout << "group (after sorting): " << endl;
-    for (shared_ptr<QueryObject> obj : group->getClauses()) {
-      cout << obj->getQueryObjectName() << " ";
-    }
-    cout << endl;
+    // cout << "group (after sorting): " << endl;
+    // for (shared_ptr<QueryObject> obj : group->getClauses()) {
+    //      cout << obj->getQueryObjectName() << " ";
+    //  }
+    // cout << endl;
 
     shared_ptr<QueryResultsTable> groupTable = buildGroupQuery(group);
 
@@ -45,21 +45,21 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
       return {QueryResultsTable::createEmptyTable()};
     }
 
-    //unordered_set<string> currHeadersToCheck = groupTable->getHeaders();
+    // unordered_set<string> currHeadersToCheck = groupTable->getHeaders();
     //// check whether the group is relevant, if not, then ignore it
-    //bool isNotQueried = true;
-    //for (string s : currHeadersToCheck) {
-    //  if (synonymsQueried.find(s) != synonymsQueried.end()) {
-    //    isNotQueried = !isNotQueried;
-    //    break;
-    //  }
-    //}
-    //if (isNotQueried) continue;
+    // bool isNotQueried = true;
+    // for (string s : currHeadersToCheck) {
+    //   if (synonymsQueried.find(s) != synonymsQueried.end()) {
+    //     isNotQueried = !isNotQueried;
+    //     break;
+    //   }
+    // }
+    // if (isNotQueried) continue;
 
-    //cout << "group table: " << endl;
-    //cout << "isempty: " << groupTable->isEmpty() << endl;
-    //cout << "issignificant: " << groupTable->getSignificant() << endl;
-    //groupTable->printTable();
+    // cout << "group table: " << endl;
+    // cout << "isempty: " << groupTable->isEmpty() << endl;
+    // cout << "issignificant: " << groupTable->getSignificant() << endl;
+    // groupTable->printTable();
 
     // if finalTable is empty, just set it to groupTable
     if (finalTable->isEmpty()) {
@@ -74,10 +74,10 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
     }
   }
 
-  //cout << "final table: " << endl;
-  //cout << "isempty: " << finalTable->isEmpty() << endl;
-  //cout << "issignificant: " << finalTable->getSignificant() << endl;
-  //finalTable->printTable();
+  // cout << "final table: " << endl;
+  // cout << "isempty: " << finalTable->isEmpty() << endl;
+  // cout << "issignificant: " << finalTable->getSignificant() << endl;
+  // finalTable->printTable();
 
   return {finalTable};
 }
@@ -111,7 +111,7 @@ shared_ptr<QueryResultsTable> QueryBuilder::buildGroupQuery(
     shared_ptr<unordered_set<string>> thisSynonyms = nextObj->getSynonyms();
     usedSynonyms.insert(thisSynonyms->begin(), thisSynonyms->end());
 
-    cout << "query object chosen: " << nextObj->getQueryObjectName() << endl;
+    // cout << "query object chosen: " << nextObj->getQueryObjectName() << endl;
 
     // evaluate/retrieved cached table
     shared_ptr<QueryResultsTable> table;
@@ -181,7 +181,7 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuerySelectClause() {
     shared_ptr<QueryResultsTable> table = obj->callAndProcess(dataAccessLayer);
     queryResultsTables.push_back(table);
     unordered_set<string> headers = table->getHeaders();
-    //synonymsQueried.insert(headers.begin(), headers.end());
+    // synonymsQueried.insert(headers.begin(), headers.end());
   }
   return queryResultsTables;
 }

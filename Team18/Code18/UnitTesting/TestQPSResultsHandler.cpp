@@ -68,7 +68,6 @@ public:
 		}
 
 
-
 		TEST_METHOD(TestTupleEmptyClause) {
 			shared_ptr<QueryResultsTable> table1 = QueryResultsTable::createTable("a", singleTable);
 			table1->setPrimaryKey("a");
