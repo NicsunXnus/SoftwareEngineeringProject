@@ -189,6 +189,7 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
      * @return A shared pointer to the newly created QueryResultsTable object, which is empty
     */
     static shared_ptr<QueryResultsTable> createEmptyTableWithHeaders(vector<string> headers);
+    static shared_ptr<QueryResultsTable> createEmptyTableWithHeadersSet(unordered_set<string> headers);
 
     /**
      * Deletes a column with the provided header.
@@ -261,10 +262,23 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
         headers.insert(_headers.begin(), _headers.end());
     }
 
+    void setHeaders(unordered_set<string> _headers) {
+        headers.insert(_headers.begin(), _headers.end());
+    }
+
     //Getter method for data in a column
     vector<string> getColumnData(string synonym) {
         vector<string> res;
         for (const auto& map : tableRows) {
+            res.emplace_back(map.at(synonym));
+        }
+        return res;
+    }
+
+    //Getter method for data in a column
+    vector<string> getColumnData(string synonym, unordered_set<unordered_map<string, string>, HashFunc, EqualFunc> sortedRows) {
+        vector<string> res;
+        for (const auto& map : sortedRows) {
             res.emplace_back(map.at(synonym));
         }
         return res;

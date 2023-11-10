@@ -1,5 +1,5 @@
 #include "QueryResultsTable.h"
-#include<cassert>
+
 shared_ptr<QueryResultsTable> QueryResultsTable::crossProductSet(shared_ptr<QueryResultsTable> other) {
     if (other->isEmpty() || this->isEmpty()) {
         if (other->getSignificant() && other->isEmpty() && this->getSignificant() &&
@@ -27,8 +27,6 @@ shared_ptr<QueryResultsTable> QueryResultsTable::crossProductSet(shared_ptr<Quer
     }
     return make_shared<QueryResultsTable>(newRows);
 }
-
-
 
 shared_ptr<QueryResultsTable> QueryResultsTable::innerJoinSet(shared_ptr<QueryResultsTable> other) {
     unordered_set<string> thisHeaders = getHeaders();
@@ -110,16 +108,7 @@ shared_ptr<QueryResultsTable> QueryResultsTable::difference(
 	return createTable(header, diff_column_values);
 }
 
-// Define a hash function for pair of strings
-struct PairHash {
-  template <class T1, class T2>
-  size_t operator()(const pair<T1, T2>& p) const {
-    auto h1 = hash<T1>{}(p.first);
-    auto h2 = hash<T2>{}(p.second);
-    return h1 ^ (h2 << 1);
-  }
-};
-
+//  Only for two single column tables
 shared_ptr<QueryResultsTable> QueryResultsTable::difference(
     shared_ptr<QueryResultsTable> other1,
     shared_ptr<QueryResultsTable> other2) {
@@ -127,40 +116,19 @@ shared_ptr<QueryResultsTable> QueryResultsTable::difference(
     shared_ptr<QueryResultsTable> crossed = other1->crossProductSet(other2);
     // early termination if crossed is empty
     if (crossed->isEmpty()) {
-        return this->getShared();
+        return getShared();
     }
     // this and crossed should have same headers
     unordered_set<string> crossed_headers = crossed->getHeaders();
-    assert(this->haveSimilarHeaders(crossed));
+    unordered_set<unordered_map<string, string>, HashFunc, EqualFunc> res;
 
-    // cache each row in smaller table (this)
-    unordered_set<pair<string, string>, PairHash> cached_rows;
-    vector<string> this_left_col = this->getColumnData(*(crossed_headers.begin()));
-    vector<string> this_right_col = this->getColumnData(*(next(crossed_headers.begin(), 1)));
-    int cache_size = this_left_col.size();
-    for (int i = 0; i < cache_size; i++) {
-        cached_rows.insert(make_pair(this_left_col[i], this_right_col[i]));
-    }
-
-    // loop through rows of crossed table, only include if not in cached_rows
-    vector<string> new_left_col;
-    vector<string> new_right_col;
-
-    vector<string> crossed_left_col = crossed->getColumnData(*(crossed_headers.begin()));
-    vector<string> crossed_right_col = crossed->getColumnData(*(next(crossed_headers.begin(), 1)));
-    int crossed_size = crossed_left_col.size();
-    for (int i = 0; i < crossed_size; i++) {
-        string left_elem = crossed_left_col[i];
-        string right_elem = crossed_right_col[i];
-        if (!cached_rows.count(make_pair(left_elem, right_elem))) {
-            new_left_col.push_back(left_elem);
-            new_right_col.push_back(right_elem);
+    for (const auto& map : crossed->getRowsSet()) {
+        if (map.begin()->first != next(map.begin(), 1)->first) {
+            res.insert(map);
         }
     }
-    vector<vector<string>> columnValues = { new_left_col, new_right_col };
-    return create2DTable(crossed_headers, columnValues);
+    return make_shared<QueryResultsTable>(res);
 }
-
 
 void QueryResultsTable::getPrimaryKeyOnlyTable() {
     if (headers.find(primaryKey) != headers.end()) {
@@ -232,7 +200,10 @@ shared_ptr<QueryResultsTable> QueryResultsTable::createTable(vector<string> head
 
 shared_ptr<QueryResultsTable> QueryResultsTable::create2DTable(unordered_set<string> headers, vector<vector<string>> columnValues) {
     unordered_set<unordered_map<string, string>, HashFunc, EqualFunc> res;
-    for (int i = 0; i < columnValues[0].size(); i++) {
+    if (columnValues.empty()) {
+        return createEmptyTableWithHeadersSet(headers);
+    }
+    for (int i = 0; i < columnValues[0].size(); i++) { 
         unordered_map<string, string> map;
         for (int j = 0; j < columnValues.size();j++) {
             map.insert({ *(next(headers.begin(),j)), columnValues[j][i]});
@@ -247,6 +218,12 @@ shared_ptr<QueryResultsTable> QueryResultsTable::createEmptyTableWithHeaders(
     shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>();
     table->setHeaders(_headers);
   return table;
+}
+
+shared_ptr<QueryResultsTable> QueryResultsTable::createEmptyTableWithHeadersSet(unordered_set<string> headers) {
+    shared_ptr<QueryResultsTable> table = make_shared<QueryResultsTable>();
+    table->setHeaders(headers);
+    return table;
 }
 
 void QueryResultsTable::deleteColumn(string deleteHeader) {
