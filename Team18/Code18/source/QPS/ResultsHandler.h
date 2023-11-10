@@ -90,15 +90,6 @@ public:
 	
 	vector<string> selectClauseHeaders;
 
-	shared_ptr<QueryResultsTable> merge(vector<shared_ptr<QueryResultsTable>>::iterator left, vector<shared_ptr<QueryResultsTable>>::iterator right)
-	{
-		if (left == right) return QueryResultsTable::createEmptyTable();
-		if (left + 1 == right) return *left;
-		int midPosition = (right - left) / 2;
-		vector<shared_ptr<QueryResultsTable>>::iterator mid = left + midPosition;
-		return joinIntermediateTables({ merge(left, mid), merge(mid, right) });
-	}
-
 	void storeSelectClauseHeaders(vector<shared_ptr<QueryResultsTable>> selectClauses) {
 		for (shared_ptr<QueryResultsTable > clause : selectClauses) selectClauseHeaders.emplace_back(*(clause->getHeaders().begin()));
 	}
