@@ -21,7 +21,6 @@ class QueryBuilder {
   vector<shared_ptr<QueryObject>> selectClauseQueryObjects;
   vector<shared_ptr<QueryObject>> nonSelectClauseQueryObjects;
   shared_ptr<DataAccessLayer> dataAccessLayer;
-  // unordered_set<string> synonymsQueried;
 
  public:
   /**
