@@ -14,6 +14,8 @@ private:
 public:
 	ComparisonQueryObject(string_view clauseName)
 		: QueryObject{ clauseName } {};
+
+	virtual shared_ptr<unordered_set<string>> getSynonyms() = 0;
 };
 
 // This class represents a comparison object between two static data types
@@ -25,6 +27,11 @@ private:
 public:
 	StaticStaticComparisonQueryObject(string_view clauseName, shared_ptr<ClauseArg> ref1, shared_ptr<ClauseArg> ref2) :
 		ComparisonQueryObject{ clauseName }, ref1{ ref1 }, ref2{ ref2 } {};
+
+	shared_ptr<unordered_set<string>> getSynonyms() {
+		unordered_set<string> synonyms;
+		return make_shared<unordered_set<string>>(synonyms);
+	}
 
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override;
 };
@@ -39,6 +46,10 @@ public:
 	StaticAttrRefComparisonQueryObject(string_view clauseName, shared_ptr<QueryObject> attrRef, shared_ptr<ClauseArg> ref2) :
 		ComparisonQueryObject{ clauseName }, attrRef{ attrRef }, ref{ ref2 } {};
 
+	shared_ptr<unordered_set<string>> getSynonyms() {
+		return attrRef->getSynonyms();
+	}
+
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override;
 };
 
@@ -51,6 +62,13 @@ private:
 public:
 	AttrRefAttrRefComparisonQueryObject(string_view clauseName, shared_ptr<QueryObject> attrRef1, shared_ptr<QueryObject> attrRef2) :
 		ComparisonQueryObject{ clauseName }, attrRef1{ attrRef1 }, attrRef2{ attrRef2 } {};
+	
+	shared_ptr<unordered_set<string>> getSynonyms() {
+		unordered_set<string> synonyms = *attrRef1->getSynonyms();
+		unordered_set<string> attrRef2Syn = *attrRef2->getSynonyms();
+		synonyms.insert(attrRef2Syn.begin(), attrRef2Syn.end());
+		return make_shared<unordered_set<string>>(synonyms);
+	}
 
 	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override;
 };

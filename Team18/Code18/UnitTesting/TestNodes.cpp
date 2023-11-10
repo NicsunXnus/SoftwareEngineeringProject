@@ -1,10 +1,9 @@
 #include "stdafx.h"
-#include <SP/AST/TerminalNode.h>
-
 #include <cassert>
 
 #include "../source/SP/AST/Node.h"
 #include "../source/SP/SimpleProcessor/SimpleProcessor.h"
+#include "../source/SP/AST/TerminalNode.h"
 #include "CppUnitTest.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;

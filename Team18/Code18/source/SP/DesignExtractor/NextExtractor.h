@@ -25,10 +25,10 @@ public:
     void extractAbstractions(shared_ptr<ProcessedProgram> processedProgram) override;
     void extract(shared_ptr<ProcessedProgram> processedProgram) override;
     void extract(shared_ptr<ProcessedStmtList> processedStmtList) override;
-    std::unordered_set<std::string> extract(shared_ptr<ProcessedStmtList> processedStmtList, std::unordered_set<std::string>& prevStatementNumbers) override;
-    void extract(shared_ptr<ProcessedStmt> processedStmt, std::unordered_set<std::string>& prevStatementNumbers) override;
-    void extract(shared_ptr<ProcessedWhileStmt> processedWhile, std::unordered_set<std::string>& prevStatementNumbers) override;
-    void extract(shared_ptr<ProcessedIfStmt> processedIf, std::unordered_set<std::string>& prevStatementNumbers) override;
+    unordered_set<string> extract(shared_ptr<ProcessedStmtList> processedStmtList, unordered_set<string>& prevStatementNumbers) override;
+    void extract(shared_ptr<ProcessedStmt> processedStmt, unordered_set<string>& prevStatementNumbers) override;
+    void extract(shared_ptr<ProcessedWhileStmt> processedWhile, unordered_set<string>& prevStatementNumbers) override;
+    void extract(shared_ptr<ProcessedIfStmt> processedIf, unordered_set<string>& prevStatementNumbers) override;
 
     void insertKeyToAbstractionMap(string key);
 

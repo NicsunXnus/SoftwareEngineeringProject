@@ -52,6 +52,6 @@ protected:
 
     void processIndirectProcedureCalls();
     void processNestedIfWhileStatements();
-    void nestedIfWhileHelper(string childStatementNumber, shared_ptr<unordered_set<std::string>> statementNumbersToBeAdded);
+    void nestedIfWhileHelper(string childStatementNumber, shared_ptr<unordered_set<string>> statementNumbersToBeAdded);
     void createCallsProcedureParentProcedureMap(shared_ptr<unordered_map<string, unordered_set<string>>> callsMap);
 };

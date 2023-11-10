@@ -28,6 +28,17 @@ class PatternObject : public QueryObject {
   shared_ptr<ClauseArg> getArg2() { return arguments[2]; }
   virtual shared_ptr<QueryResultsTable> callAndProcess(
       shared_ptr<DataAccessLayer> dataAccessLayer) = 0;
+    
+  shared_ptr<unordered_set<string>> getSynonyms() {
+    unordered_set<string> synonyms;
+    for (shared_ptr<ClauseArg> arg : arguments) {
+      if (arg->isSynonym()) {
+        string s(arg->getArg());
+        synonyms.insert(s);
+      }
+    }
+    return make_shared<unordered_set<string>>(synonyms);
+  }
 };
 
 /*

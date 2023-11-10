@@ -23,12 +23,12 @@ public:
 		res = get<unordered_map<string, vector<string>>>(result);
 	}
 
-	std::variant<vector<string>, unordered_map<string, vector<string>>> getResult() override {
+	variant<vector<string>, unordered_map<string, vector<string>>> getResult() override {
 		return res;
 	}*/
 
 	//shared_ptr<QueryResultsTable> call(shared_ptr<DataAccessLayer> dataAccessLayer) override {
-	//	std::vector<string> emptyVec;
+	//	vector<string> emptyVec;
 	//	variant<vector<string>, unordered_map<string, vector<string>>> var{ emptyVec };
 
 	//	//setResult(var);

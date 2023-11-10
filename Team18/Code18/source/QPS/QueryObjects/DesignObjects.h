@@ -12,24 +12,34 @@ using namespace std;
  * This class represents a Query object, for design entities
  */
 class DesignObject : public QueryObject {
- public:
-  DesignObject(string_view data) : QueryObject{data} {}
+private:
+	string synonym;
+public:
+	DesignObject(string_view data)
+		: QueryObject{ data } {
+	}
+
+	shared_ptr<unordered_set<string>> getSynonyms() {
+		unordered_set<string> synonyms;
+		synonyms.insert(synonym);
+		return make_shared<unordered_set<string>>(synonyms);
+	}
 };
 
 /*
  * This class represents a Query object, for design entity stmt
  */
 class StmtObject : public DesignObject {
- public:
-  StmtObject(string_view data) : DesignObject{data} {};
-  shared_ptr<QueryResultsTable> callAndProcess(
-      shared_ptr<DataAccessLayer> dataAccessLayer) override {
-    unordered_set<string> PKBdata = dataAccessLayer->getEntity(STMT);
-    shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(
-        svToString(getQueryObjectName()), PKBdata);
-    table->setPrimaryKey(svToString(getQueryObjectName()));
-    return table;
-  }
+public:
+	StmtObject(string_view data)
+		: DesignObject{ data } {
+	};
+	shared_ptr<QueryResultsTable> callAndProcess(shared_ptr<DataAccessLayer> dataAccessLayer) override {
+		unordered_set<string> PKBdata = dataAccessLayer->getEntity(STMT);
+		shared_ptr<QueryResultsTable> table = QueryResultsTable::createTable(svToString(getQueryObjectName()), PKBdata);
+		table->setPrimaryKey(svToString(getQueryObjectName()));
+		return table;
+	}
 };
 
 /*

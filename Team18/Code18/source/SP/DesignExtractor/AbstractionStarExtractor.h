@@ -26,7 +26,7 @@ public:
     shared_ptr<unordered_map<string, unordered_set<string>>> getStorageStarMap();
 
 private:
-    std::shared_ptr<unordered_map<string, unordered_set<string>>> AbstractionStarStorageMap;  
+    shared_ptr<unordered_map<string, unordered_set<string>>> AbstractionStarStorageMap;  
 
     // The following methods are used to extract the abstraction star from the abstraction map
     void processAbstractionStar();

@@ -1,7 +1,7 @@
 #ifndef DESIGNENUMS_H
 #define DESIGNENUMS_H
 
-#include <functional>
+#include <unordered_map>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
@@ -23,21 +23,6 @@ enum ENTITY {
   CONSTANT,
   PROCEDURE
 };
-
-//// Custom hash function specialization
-namespace std {
-template <>
-struct hash<ENTITY> {
-  size_t operator()(const ENTITY& e) const { return static_cast<size_t>(e); }
-};
-}  // namespace std
-//
-//struct EnumClassHash {
-//  template <typename T>
-//  std::size_t operator()(T t) const {
-//    return static_cast<std::size_t>(t);
-//  }
-//};
 
 const unordered_map<string, ENTITY> entityMap = {
     {"stmt", STMT},           {"read", READ},         {"print", PRINT},
@@ -63,19 +48,36 @@ enum ABSTRACTION {
   CALLS,
   CALLSSTAR,
   NEXT,
+  NEXTSTAR,
+  AFFECTS,
 };
 
-const unordered_map<string, ABSTRACTION> abstractionMap = {
+const map<string, ABSTRACTION> abstractionMap = {
     {"uses", USES},       {"modifies", MODIFIES},
     {"parent", PARENT},   {"parentstar", PARENTSTAR},
     {"follows", FOLLOWS}, {"followsstar", FOLLOWSSTAR},
     {"calls", CALLS},     {"callsstar", CALLSSTAR},
-    {"next", NEXT},
-};
+    {"next", NEXT},       {"nextstar", NEXTSTAR},
+    {"affects", AFFECTS}};
 
 static ABSTRACTION AbstractionStringToEnum(string abstraction) {
   if (abstractionMap.count(abstraction)) {
     return abstractionMap.at(abstraction);
+  }
+  throw runtime_error("abstraction is invalid!");
+}
+
+const map<string, ABSTRACTION> queryObjAbstractionMap = {
+    {"Uses", USES},       {"Modifies", MODIFIES},
+    {"Parent", PARENT},   {"Parent*", PARENTSTAR},
+    {"Follows", FOLLOWS}, {"Follows*", FOLLOWSSTAR},
+    {"Calls", CALLS},     {"Calls*", CALLSSTAR},
+    {"Next", NEXT},       {"Next*", NEXTSTAR},
+    {"Affects", AFFECTS}};
+
+static ABSTRACTION QueryObjStringToEnum(string abstraction) {
+  if (queryObjAbstractionMap.count(abstraction)) {
+    return queryObjAbstractionMap.at(abstraction);
   }
   throw runtime_error("abstraction is invalid!");
 }

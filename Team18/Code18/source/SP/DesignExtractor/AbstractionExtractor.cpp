@@ -15,20 +15,20 @@ void AbstractionExtractor::extractAbstractions(shared_ptr<ProcessedProgram> proc
 }
 
 void AbstractionExtractor::extract(shared_ptr<ProcessedProgram> processedProgram) {
-    std::vector<std::shared_ptr<ProcessedProcedure>> procedures = processedProgram->getAllProcedures();
-    for (std::shared_ptr<ProcessedProcedure> procedure : procedures) {
+    vector<shared_ptr<ProcessedProcedure>> procedures = processedProgram->getAllProcedures();
+    for (shared_ptr<ProcessedProcedure> procedure : procedures) {
         procedure->accept(shared_from_this());
     }
 }
 
 void AbstractionExtractor::extract(shared_ptr<ProcessedProcedure> processedProcedure) {
-    std::shared_ptr<ProcessedStmtList> statementList = processedProcedure->getStmts();
+    shared_ptr<ProcessedStmtList> statementList = processedProcedure->getStmts();
     statementList->accept(shared_from_this());
 }
 
 void AbstractionExtractor::extract(shared_ptr<ProcessedStmtList> processedStmtList) {
-    std::vector<std::shared_ptr<ProcessedStmt>> stmts = processedStmtList->getStmts();
-    for (std::shared_ptr<ProcessedStmt> stmt : stmts) {
+    vector<shared_ptr<ProcessedStmt>> stmts = processedStmtList->getStmts();
+    for (shared_ptr<ProcessedStmt> stmt : stmts) {
         stmt->accept(shared_from_this());
     }
 }

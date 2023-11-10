@@ -1,0 +1,5 @@
+1
+stmt s, s1;
+Select BOOLEAN such that Affects(2, 42)
+TRUE
+50000

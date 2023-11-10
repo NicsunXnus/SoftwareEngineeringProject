@@ -14,6 +14,8 @@
 
 #include "ExceptionMessages.h"
 #include "Constants/SPConstants.h"
+#include "Constants/DesignEnums.h"
+#include "QPS/Errors/SemanticError.h"
 
 using namespace std;
 
@@ -206,6 +208,22 @@ static string svToString(string_view sv) {
 static list<string> vectorToList(vector<string> vectorOfString) {
   list<string> listOfString(vectorOfString.begin(), vectorOfString.end());
   return listOfString;
+}
+
+
+template <typename Container, typename KeyType>
+static bool containerHasKey(const Container& myContainer, const KeyType& keyToCheck) {
+    return myContainer.find(keyToCheck) != myContainer.end();
+}
+
+
+// convert map to set, by taking all the keys in the map
+static unordered_set<string> getMapKeys(map<string, unordered_set<string>> stringMap) {
+    unordered_set<string> keySet;
+    for (const auto& pair : stringMap) {
+        keySet.insert(pair.first);
+    }
+    return keySet;
 }
 
 static list<string> vectorToUniqueList(

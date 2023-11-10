@@ -17,7 +17,7 @@ bool isBoolOp(string op);
 bool isArithOp(string op);
 
 // Precedence of operations
-static const inline std::unordered_map<std::string, int> precedence = {
+static const inline unordered_map<string, int> precedence = {
   {"(", 0},
   {"||", 1},
   {"&&", 2},

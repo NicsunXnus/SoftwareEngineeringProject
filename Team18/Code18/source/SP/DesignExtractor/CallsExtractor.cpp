@@ -9,9 +9,9 @@ void CallsExtractor::extract(shared_ptr<ProcessedProgram> processedProgram) {
 }
 
 void CallsExtractor::extract(shared_ptr<ProcessedCallStmt> processedCall) {
-    std::string statementNumber = std::to_string(processedCall->getStatementNumber());
-    std::string procedureName = this->getProcedureNameFromStatementNumber(statementNumber);
-    std::string calledProcedure = processedCall->getProcedureName()->getName();
+    string statementNumber = to_string(processedCall->getStatementNumber());
+    string procedureName = this->getProcedureNameFromStatementNumber(statementNumber);
+    string calledProcedure = processedCall->getProcedureName()->getName();
     this->insertToAbstractionMap(procedureName, calledProcedure);
 }
 
