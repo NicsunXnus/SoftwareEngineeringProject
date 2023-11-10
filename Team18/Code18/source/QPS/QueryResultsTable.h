@@ -258,11 +258,15 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
     }
 
     void setHeaders(vector<string> _headers) {
-        headers.insert(_headers.begin(), _headers.end());
+        unordered_set<string> finalheaders;
+        finalheaders.insert(_headers.begin(), _headers.end());
+        headers = finalheaders;
     }
 
     void setHeaders(unordered_set<string> _headers) {
-        headers.insert(_headers.begin(), _headers.end());
+         unordered_set<string> finalheaders;
+        finalheaders.insert(_headers.begin(), _headers.end());
+        headers = finalheaders;
     }
 
     //Getter method for data in a column
