@@ -107,6 +107,7 @@ public:
 
       bool TLE = timeTaken > timeLimit;
       bool passed = checkListEquality(expected, results);
+
       if (debugMode) {
         string passedStr = passed
           ? TLE

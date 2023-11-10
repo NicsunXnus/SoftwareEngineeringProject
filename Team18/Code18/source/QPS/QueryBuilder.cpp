@@ -3,7 +3,6 @@
 #include "QueryBuilder.h"
 
 #include "../ThreadPool.h"
-#include "OptimisedSortingClauses.h"
 #include "QRTCache.h"
 #include "QueryObjects/ClauseObject.h"
 #include "QueryObjects/DesignObjects.h"
@@ -44,14 +43,10 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
     // if finalTable is empty, just set it to groupTable
     if (finalTable->isEmpty()) {
       finalTable = groupTable;
-      // cout << "finalTable: " << endl;
-      // finalTable->printTable();
       continue;
     }
     // no common synonyms. must cross product
-    finalTable->crossProduct(groupTable);
-    // cout << "finalTable: " << endl;
-    // finalTable->printTable();
+    finalTable->crossProductSet(groupTable);
     if (finalTable->isEmpty() && !finalTable->getSignificant()) {
       return {QueryResultsTable::createEmptyTable()};
     }
@@ -103,9 +98,6 @@ shared_ptr<QueryResultsTable> QueryBuilder::buildGroupQuery(
       cache->insert(nextObj->getCacheName(), table);
     }
 
-    // cout << "table: " << endl;
-    // table->printTable();
-
     // break out of loop if table is empty. lazy evaluation
     if (table->isEmpty() && !table->getSignificant()) {
       return QueryResultsTable::createEmptyTable();
@@ -114,15 +106,10 @@ shared_ptr<QueryResultsTable> QueryBuilder::buildGroupQuery(
     // if groupTable is empty, just set it to table
     if (groupTable->isEmpty()) {
       groupTable = table;
-      // cout << "groupTable: " << endl;
-      // groupTable->printTable();
       continue;
     }
 
-    groupTable = groupTable->innerJoin(table);
-
-    //cout << "groupTable: " << endl;
-    //groupTable->printTable();
+    groupTable = groupTable->innerJoinSet(table);
 
     // break out of loop if groupTable is empty. lazy evaluation
     if (groupTable->isEmpty() && !groupTable->getSignificant()) {

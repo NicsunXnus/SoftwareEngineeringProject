@@ -156,9 +156,6 @@
     <ClCompile Include="..\source\QPS\DataAccessLayerStub.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\QPS\GroupClause.cpp">
-      <Filter>Source Files\QPS</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\QPS\QueryBuilder.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
@@ -175,9 +172,6 @@
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
     <ClCompile Include="..\source\QPS\ResultsHandler.cpp">
-      <Filter>Source Files\QPS</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\QPS\OptimisedFunctionsStub.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
     <ClCompile Include="..\source\QPS\QueryObjects\CallsObject.cpp">
@@ -407,16 +401,10 @@
     <ClInclude Include="..\source\QPS\DataAccessLayerStub.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\QPS\GroupClause.h">
-      <Filter>Source Files\QPS</Filter>
-    </ClInclude>
     <ClInclude Include="..\source\QPS\PQLTokenizer.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\QueryBuilder.h">
-      <Filter>Source Files\QPS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\QPS\OptimisedSortingClauses.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\QueryDriver.h">
@@ -432,9 +420,6 @@
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\ResultsHandler.h">
-      <Filter>Source Files\QPS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\QPS\OptimisedFunctionsStub.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\Errors\QPSError.h">
@@ -539,7 +524,9 @@
     <ClInclude Include="..\source\QPS\QueryObjects\QueryObjectModifier.h">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\ThreadPool.h" />
+    <ClInclude Include="..\source\ThreadPool.h" >
+	<Filter>Source Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\source\Cache.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -552,7 +539,9 @@
     <ClInclude Include="..\source\Constants\QPSConstants.h">
       <Filter>Source Files\Constants</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\PKB.h" />
+    <ClInclude Include="..\source\PKB.h">
+	<Filter>Source Files\PKB</Filter>
+    </ClInclude>
     <ClInclude Include="..\source\QPS\CFG\CFG.h">
       <Filter>Source Files\QPS\CFG</Filter>
     </ClInclude>

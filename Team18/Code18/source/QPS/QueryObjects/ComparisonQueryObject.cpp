@@ -33,10 +33,10 @@ shared_ptr<QueryResultsTable> AttrRefAttrRefComparisonQueryObject::callAndProces
 	string oldName = attRef2Table->getPrimaryKey();
 	attRef2Table->renameColumn(attRef1Table->getPrimaryKey(), oldName);
 
-	shared_ptr<QueryResultsTable> innerJoinedTables = attRef1Table->innerJoin(attRef2Table);
+	shared_ptr<QueryResultsTable> innerJoinedTables = attRef1Table->innerJoinSet(attRef2Table);
 
-	innerJoinedTables->duplicateColumns(attRef1Table->getPrimaryKey());
-	innerJoinedTables->renameColumn(oldName, attRef1Table->getPrimaryKey());
+	//innerJoinedTables->duplicateColumns(attRef1Table->getPrimaryKey());
+	innerJoinedTables->duplicateAndAddColumn(oldName, attRef1Table->getPrimaryKey());
 
 	return innerJoinedTables;
 }

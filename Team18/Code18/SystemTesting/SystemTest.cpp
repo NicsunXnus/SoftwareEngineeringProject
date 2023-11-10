@@ -148,11 +148,14 @@ TEST_CLASS(Misc) {
     assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
   }
 
-  TEST_METHOD(RandomCases) {
-    string srcFilePath = defaultPath + "debug_source.txt";
-    string queryFilePath = defaultPath + "debug_queries.txt";
-    assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
-  }
+        TEST_METHOD(RandomCases)
+        {
+            //string srcFilePath = defaultPath + "debug_source.txt";
+            //string queryFilePath = defaultPath + "debug_queries.txt";
+            string srcFilePath = defaultPath + "run_source.txt";
+            string queryFilePath = defaultPath + "run_query.txt";
+            assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
+        }
 
   TEST_METHOD(Random_HY) {
     string srcFilePath = defaultPath + "Sample_source_random.txt";
