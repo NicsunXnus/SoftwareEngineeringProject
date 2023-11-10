@@ -121,9 +121,9 @@ shared_ptr<QueryResultsTable> QueryResultsTable::difference(
     // this and crossed should have same headers
     unordered_set<string> crossed_headers = crossed->getHeaders();
     unordered_set<unordered_map<string, string>, HashFunc, EqualFunc> res;
-
-    for (const auto& map : crossed->getRowsSet()) {
-        if (map.begin()->first != next(map.begin(), 1)->first) {
+    unordered_set<unordered_map<string, string>, HashFunc, EqualFunc> otherRows = crossed->getRowsSet();
+    for (const auto& map : otherRows) {
+        if (tableRows.find(map) == tableRows.end()) { // include rows from this table not found inside the crossProduct of the 2 tables
             res.insert(map);
         }
     }
