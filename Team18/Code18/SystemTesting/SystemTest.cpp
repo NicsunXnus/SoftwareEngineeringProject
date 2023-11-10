@@ -150,10 +150,10 @@ TEST_CLASS(Misc) {
 
         TEST_METHOD(RandomCases)
         {
-            //string srcFilePath = defaultPath + "debug_source.txt";
-            //string queryFilePath = defaultPath + "debug_queries.txt";
-            string srcFilePath = defaultPath + "run_source.txt";
-            string queryFilePath = defaultPath + "run_query.txt";
+            string srcFilePath = defaultPath + "debug_source.txt";
+            string queryFilePath = defaultPath + "debug_queries.txt";
+        /*    string srcFilePath = defaultPath + "run_source.txt";
+            string queryFilePath = defaultPath + "run_query.txt";*/
             assert(SystemTestWrapper::run(srcFilePath, queryFilePath));
         }
 

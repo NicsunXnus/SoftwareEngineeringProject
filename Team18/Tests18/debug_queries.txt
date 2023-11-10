@@ -1,3 +1,18 @@
+2 - syn, syn - test attr, swap back later
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select <r, r> such that Modifies(r, "x")
+1 1
+5000
+2 - syn, syn - test attr, swap back later
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select <r.varName, r.stmt#> such that Modifies(r, "x")
+x 1
+5000
+1 - syn, syn - test attr, swap back later
+stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
+Select p.procName with r.varName = p.procName
+Third
+5000
 1 - syn, syn - test attr, swap back later
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
 Select r.varName such that Modifies(r, "Third")
@@ -17,11 +32,6 @@ Select c with not c.value = w.stmt#
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
 Select p.procName with not r.varName = p.procName
 Second, First, Third
-5000
-1 - syn, syn - test attr, swap back later
-stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
-Select p.procName with r.varName = p.procName
-Third
 5000
 1 - syn, syn - test attr, swap back later
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
@@ -47,11 +57,6 @@ Select s1 such that Next*(s1, 15)
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
 Select <r.value, r.stmt#> such that Modifies(r, "x")
 SemanticError
-5000
-2 - syn, syn - test attr, swap back later
-stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;
-Select <r.varName, r.stmt#> such that Modifies(r, "x")
-1 x
 5000
 3 - syn, syn - test cache
 stmt s1, s2; read r; print pn; call cl; while w; if i; assign a, a1; variable v; constant c; procedure p, p1;

@@ -195,10 +195,7 @@ list<string> ResultHandler::returnTuples(vector<shared_ptr<QueryResultsTable>> s
 	for (shared_ptr<QueryResultsTable> table : selectClauseTables) {
 		table->getPrimaryKeyOnlyTable();
 		string header = table->getPrimaryKey();
-		if (intermediateTable->haveSimilarHeaders(table)) { // for cases like select<s, s>, duplicate the column (do not cross product)
-			//intermediateTable->duplicateColumns(table->getPrimaryKey());
-		}
-		else {
+		if (!intermediateTable->haveSimilarHeaders(table)) { // for cases like select<s, s>, duplicate the column (do not cross product)
 			intermediateTable = intermediateTable->crossProductSet(table);
 		}
 	}
@@ -237,10 +234,7 @@ list<string> ResultHandler::handleTuples(vector<shared_ptr<QueryResultsTable>> s
 
 	for (shared_ptr<QueryResultsTable> table : selectClausesNotInIntermediateTable) {
 		string header = table->getPrimaryKey();
-		if (finalTable->haveSimilarHeaders(table)) {
-			//finalTable->duplicateColumns(table->getPrimaryKey());
-		}
-		else {
+		if (!finalTable->haveSimilarHeaders(table)) {
 			finalTable = finalTable->crossProductSet(table);
 		}
 	}

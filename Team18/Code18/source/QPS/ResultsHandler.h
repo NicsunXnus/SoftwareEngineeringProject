@@ -100,7 +100,7 @@ public:
 	}
 
 	void storeSelectClauseHeaders(vector<shared_ptr<QueryResultsTable>> selectClauses) {
-		for (shared_ptr<QueryResultsTable > clause : selectClauses) selectClauseHeaders.emplace_back(*(clause->getHeaders().begin()));
+		for (shared_ptr<QueryResultsTable > clause : selectClauses) selectClauseHeaders.emplace_back(clause->getPrimaryKey());
 	}
 
 	// The QueryResultTables of the clauses are processed, and through a series of cross-products and/or inner joins, the final result
