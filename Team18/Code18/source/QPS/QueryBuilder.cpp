@@ -56,10 +56,10 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
     //}
     //if (isNotQueried) continue;
 
-    cout << "group table: " << endl;
-    cout << "isempty: " << groupTable->isEmpty() << endl;
-    cout << "issignificant: " << groupTable->getSignificant() << endl;
-    groupTable->printTable();
+    //cout << "group table: " << endl;
+    //cout << "isempty: " << groupTable->isEmpty() << endl;
+    //cout << "issignificant: " << groupTable->getSignificant() << endl;
+    //groupTable->printTable();
 
     // if finalTable is empty, just set it to groupTable
     if (finalTable->isEmpty()) {
@@ -74,10 +74,10 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
     }
   }
 
-  cout << "final table: " << endl;
-  cout << "isempty: " << finalTable->isEmpty() << endl;
-  cout << "issignificant: " << finalTable->getSignificant() << endl;
-  finalTable->printTable();
+  //cout << "final table: " << endl;
+  //cout << "isempty: " << finalTable->isEmpty() << endl;
+  //cout << "issignificant: " << finalTable->getSignificant() << endl;
+  //finalTable->printTable();
 
   return {finalTable};
 }
