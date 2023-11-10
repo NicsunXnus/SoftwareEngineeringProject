@@ -52,7 +52,7 @@ enum ABSTRACTION {
   AFFECTS,
 };
 
-const map<string, ABSTRACTION> abstractionMap = {
+const unordered_map<string, ABSTRACTION> abstractionMap = {
     {"uses", USES},       {"modifies", MODIFIES},
     {"parent", PARENT},   {"parentstar", PARENTSTAR},
     {"follows", FOLLOWS}, {"followsstar", FOLLOWSSTAR},
@@ -67,7 +67,7 @@ static ABSTRACTION AbstractionStringToEnum(string abstraction) {
   throw runtime_error("abstraction is invalid!");
 }
 
-const map<string, ABSTRACTION> queryObjAbstractionMap = {
+const unordered_map<string, ABSTRACTION> queryObjAbstractionMap = {
     {"Uses", USES},       {"Modifies", MODIFIES},
     {"Parent", PARENT},   {"Parent*", PARENTSTAR},
     {"Follows", FOLLOWS}, {"Follows*", FOLLOWSSTAR},

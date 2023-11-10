@@ -720,7 +720,8 @@ namespace UnitTesting
             DesignExtractor designExtractor = DesignExtractor();
             designExtractor.extractNext(processedProgram);
 
-            map<string, unordered_set<string>> nextMap = *(designExtractor.getNextMap());
+            unordered_map<string, unordered_set<string>> nextMap =
+                *(designExtractor.getNextMap());
 
             // Check the values of nextMap
             Assert::AreEqual(static_cast<int>(nextMap["1"].size()), 1);
