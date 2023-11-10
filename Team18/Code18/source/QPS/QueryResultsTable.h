@@ -1,6 +1,5 @@
 #ifndef QUERYRESULTSTABLE_H
 #define QUERYRESULTSTABLE_H
-#pragma warning (disable :26495)
 #include <iostream>
 #include <vector>
 #include <string>
@@ -270,15 +269,6 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
     vector<string> getColumnData(string synonym) {
         vector<string> res;
         for (const auto& map : tableRows) {
-            res.emplace_back(map.at(synonym));
-        }
-        return res;
-    }
-
-    //Getter method for data in a column
-    vector<string> getColumnData(string synonym, unordered_set<unordered_map<string, string>, HashFunc, EqualFunc> sortedRows) {
-        vector<string> res;
-        for (const auto& map : sortedRows) {
             res.emplace_back(map.at(synonym));
         }
         return res;
