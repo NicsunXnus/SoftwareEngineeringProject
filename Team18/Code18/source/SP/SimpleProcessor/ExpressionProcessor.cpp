@@ -91,6 +91,7 @@ shared_ptr<Node> ExpressionProcessor::nodifyArithmeticExpression(string expressi
 	if (trimmed.empty()) {
 		throw invalid_argument(ExceptionMessages::invalidArithExp);
 	}
+	outermostSepDetector(trimmed, Separator::BRACKET); // checks for validity of brackets
 	TreeBuilder tb = TreeBuilder(statementNumber);
 	vector<shared_ptr<Token>> tokens = tokenizeArithmeticExpression(trimmed);
 	return tb.buildTree(tokens);
