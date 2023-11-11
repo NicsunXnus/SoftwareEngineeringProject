@@ -257,51 +257,6 @@ namespace UnitTesting
             Logger::WriteMessage(output.str().c_str());
         }
 
-        /*TEST_METHOD(TestCrossProduct) {
-            vector<string> map1 = { "s2,v1", "5,y", "5,z", "7,x", "8,y", "2,y"};
-            shared_ptr<QueryResultsTable> tab1 = make_shared<QueryResultsTable>(map1);
-
-            vector<string> map3 = { "s3", "6", "5","7" };
-            shared_ptr<QueryResultsTable> tab2 = make_shared<QueryResultsTable>(map3);
-
-            shared_ptr<QueryResultsTable> immediate1 = tab2->crossProduct(tab1);
-            shared_ptr<QueryResultsTable> immediate2 = tab1->crossProduct(tab2);
-
-            std::stringstream output;
-            std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
-
-            immediate1->printTable();
-            cout << endl;
-            immediate2->printTable();
-            cout << endl;
-
-            std::cout.rdbuf(oldCoutBuffer);
-
-            Logger::WriteMessage("Output of table operations:\n");
-            Logger::WriteMessage(output.str().c_str());
-        }
-
-        TEST_METHOD(TestInnerJoin) {
-            vector<string> map1 = { "s3,v1", "5,y", "5,z", "7,x", "8,y", "2,y" };
-            shared_ptr<QueryResultsTable> tab1 = make_shared<QueryResultsTable>(map1);
-
-            vector<string> map3 = { "s3", "6", "5","7" };
-            shared_ptr<QueryResultsTable> tab2 = make_shared<QueryResultsTable>(map3);
-
-            shared_ptr<QueryResultsTable> immediate1 = tab2->innerJoin(tab1);
-            shared_ptr<QueryResultsTable> immediate2 = tab1->innerJoin(tab2);
-            
-            std::stringstream output;
-            std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
-
-            immediate1->printTable();
-            cout << endl;
-            immediate2->printTable();
-            cout << endl;
-
-            std::cout.rdbuf(oldCoutBuffer);
-        }*/
-
         TEST_METHOD(TestDifferenceOneColumn) {
             unordered_set < unordered_map<string, string>, QueryResultsTable::HashFunc, QueryResultsTable::EqualFunc> map8;
             unordered_map<string, string> m1;
@@ -467,6 +422,24 @@ namespace UnitTesting
             Assert::IsTrue(
                 compare_vectors(diff_col_2, { "a", "b", "x", "a", "z", "b", "y", "a", "b",
                                              "x", "a", "z", "b", "y", "a", "b" }));
+        }
+
+        TEST_METHOD(FuncTest_GetPrimaryKeyOnlyTable_Visualise) {
+            unordered_set<string> headers = {"a","b","c"};
+            vector<vector<string>> values = { {"1","2"},{"3","4"},{"5","6"}};
+            shared_ptr<QueryResultsTable> tab1 = QueryResultsTable::create2DTable(headers, values);
+            tab1->setPrimaryKey("a");
+            std::stringstream output;
+            std::streambuf* oldCoutBuffer = std::cout.rdbuf(output.rdbuf());
+
+            tab1->printTable();
+            cout << endl;
+            tab1->getPrimaryKeyOnlyTable();
+            tab1->printTable();
+            cout << endl;
+            std::cout.rdbuf(oldCoutBuffer);
+            Logger::WriteMessage("Output of table operations:\n");
+            Logger::WriteMessage(output.str().c_str());
         }
 
 	};
