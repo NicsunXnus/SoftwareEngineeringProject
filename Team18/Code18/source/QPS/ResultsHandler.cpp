@@ -15,21 +15,6 @@ list<string> ResultHandler::processTables(vector<shared_ptr<QueryResultsTable>> 
 	return empty;
 }
 
-vector<string> ResultHandler::tableToVectorForTuples(shared_ptr<QueryResultsTable> table) {
-	unordered_set<unordered_map<string, string>, QueryResultsTable::HashFunc, QueryResultsTable::EqualFunc> values = table->getRowsSet();
-	vector<string> result;
-
-	for (unordered_map<string, string> map : values) {
-		stringstream ss;
-		transform(selectClauseHeaders.begin(), selectClauseHeaders.end(), ostream_iterator<string>(ss, " "), [&](const string& s) {
-			return map[s];
-			});
-		string temp = ss.str();
-		temp.pop_back();
-		result.emplace_back(temp);
-	}
-	return result;
-}
 
 
 // tables must be non-empty
@@ -91,19 +76,18 @@ vector<string> ResultHandler::getVectorOfSelectClausePkey(vector<shared_ptr<Quer
 tuple<vector<shared_ptr<QueryResultsTable>>, 
 	shared_ptr<QueryResultsTable>> ResultHandler::
 	processIntermediateTable(vector<shared_ptr<QueryResultsTable>> selectClauseTables, shared_ptr<QueryResultsTable> intermediateTable) {
-	unordered_set<string> selectClauseHeaders = getSetOfSelectClauseHeaders(selectClauseTables);
-	intermediateTable->condenseTable(selectClauseHeaders); // keep important columns only
+	intermediateTable->condenseTable(getSetOfSelectClauseHeaders(selectClauseTables)); // keep important columns only
 	vector<shared_ptr<QueryResultsTable>> selectClausesNotInIntermediateTable;
 	vector<vector<string>> cols;
 	
 	for (shared_ptr<QueryResultsTable> selectClauseTable : selectClauseTables) {
 		string primaryKey = selectClauseTable->getPrimaryKey();
-		if (intermediateTable->hasHeader(primaryKey)) {
+		if (intermediateTable->hasHeader(primaryKey)) { // intermediate table has select clause syn
 			vector<string> colData = intermediateTable->getColumnData(primaryKey);
 			colData.emplace(colData.begin(), primaryKey);
 			cols.emplace_back(colData);
 		}
-		else if (intermediateTable->hasAttributeHeader(primaryKey)) {
+		else if (intermediateTable->hasAttributeHeader(primaryKey)) { // intermediate table has select clause syn attribute
 			vector<string> colData = intermediateTable->getColumnData(getAttributeSynonym(primaryKey));
 			// convert col to attribute
 			StringMap attr = selectClauseTable->getAttr();
@@ -114,8 +98,7 @@ tuple<vector<shared_ptr<QueryResultsTable>>,
 			colData.emplace(colData.begin(), primaryKey);
 			cols.emplace_back(colData);
 		}
-		else {
-			selectClauseTable->getPrimaryKeyOnlyTable();
+		else { // intermediate table does not contain select clause syn
 			selectClausesNotInIntermediateTable.push_back(selectClauseTable);
 		}
 
@@ -146,6 +129,7 @@ tuple<vector<shared_ptr<QueryResultsTable>>,
 */
 
 list<string> ResultHandler::handleSingleSynonym(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
+	storeSelectClauseHeaders(selectClauseTables);
 	if (nonSelectClauseTables.empty()) { // case 1
 		shared_ptr<QueryResultsTable> selectTable = selectClauseTables[0]; // guaranteed to exist, by conditional check prior
 		vector<string> columns = selectTable->getColumnData(selectTable->getPrimaryKey());
@@ -176,8 +160,7 @@ list<string> ResultHandler::handleSingleSynonym(vector<shared_ptr<QueryResultsTa
 	shared_ptr<QueryResultsTable> processedIntermediateTable = get<1>(processTables);
 	shared_ptr<QueryResultsTable> finalTable = QueryResultsTable::createEmptyTable(true);
 	if (processedIntermediateTable->getNumberOfCols() > 0) { // synonyms required exist in the intermediate table
-		shared_ptr<QueryResultsTable> synsInIntermediateTable = processedIntermediateTable;
-		finalTable = finalTable->crossProductSet(synsInIntermediateTable);
+		finalTable = finalTable->crossProductSet(processedIntermediateTable);
 	}
 	for (shared_ptr<QueryResultsTable> table : selectClausesNotInIntermediateTable) {
 		finalTable = finalTable->crossProductSet(table);
@@ -186,20 +169,35 @@ list<string> ResultHandler::handleSingleSynonym(vector<shared_ptr<QueryResultsTa
 	return vectorToUniqueList(colContents);
 }
 
+list<string> ResultHandler::tableToResultForTuples(shared_ptr<QueryResultsTable> table) {
+	vector<string> results;
+	int totalHeaders = selectClauseHeaders.size();
+	int totalRows = table->getNumberOfRows();
+	string header = selectClauseHeaders[0];
+	vector<string> col = table->getColumnData(header);
+	for (int i = 0; i < totalRows; i++) {
+		results.push_back(col[i]);
+	}
+	for (int j = 1; j < totalHeaders; j++) { // already added first column
+		header = selectClauseHeaders[j];
+		col = table->getColumnData(header);
+		for (int i = 0; i < totalRows; i++) {
+			results[i] += " " + col[i];
+		}
+	}
+	return vectorToUniqueList(results);
+} 
+
 list<string> ResultHandler::returnTuples(vector<shared_ptr<QueryResultsTable>> selectClauseTables) {
 	shared_ptr<QueryResultsTable> intermediateTable = selectClauseTables[0];
-	intermediateTable->getPrimaryKeyOnlyTable();
 	selectClauseTables.erase(selectClauseTables.begin());
 
 	for (shared_ptr<QueryResultsTable> table : selectClauseTables) {
-		table->getPrimaryKeyOnlyTable();
-		string header = table->getPrimaryKey();
-		if (!intermediateTable->haveSimilarHeaders(table)) { // for cases like select<s, s>, duplicate the column (do not cross product)
+		if (!intermediateTable->haveSimilarHeaders(table)) { // for cases like select<s, s>, do not Xproduct
 			intermediateTable = intermediateTable->crossProductSet(table);
 		}
 	}
-	vector<string> result = tableToVectorForTuples(intermediateTable);
-	return vectorToUniqueList(result);
+	return tableToResultForTuples(intermediateTable);
 }
 
 list<string> ResultHandler::handleTuples(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
@@ -223,42 +221,19 @@ list<string> ResultHandler::handleTuples(vector<shared_ptr<QueryResultsTable>> s
 		shared_ptr<QueryResultsTable>> processTables = processIntermediateTable(selectClauseTables, intermediateTable);
 	vector<shared_ptr<QueryResultsTable>> selectClausesNotInIntermediateTable = get<0>(processTables);
 	shared_ptr<QueryResultsTable> processedIntermediateTable = get<1>(processTables);
-	vector<string> targetSyns = getVectorOfSelectClausePkey(selectClauseTables); // order matters
+	vector<string> targetSyns = selectClauseHeaders;
 	shared_ptr<QueryResultsTable> finalTable = QueryResultsTable::createEmptyTable(true);
 	if (processedIntermediateTable->getNumberOfCols() > 0) { // synonyms required exists in the intermediate table
-		shared_ptr<QueryResultsTable> synsInIntermediateTable = processedIntermediateTable;
-		finalTable = finalTable->crossProductSet(synsInIntermediateTable);
+		finalTable = finalTable->crossProductSet(processedIntermediateTable);
 	}
 
 	for (shared_ptr<QueryResultsTable> table : selectClausesNotInIntermediateTable) {
-		string header = table->getPrimaryKey();
-		if (!finalTable->haveSimilarHeaders(table)) {
+		if (!finalTable->haveSimilarHeaders(table)) { // for cases like select<s, s>, do not Xproduct
 			finalTable = finalTable->crossProductSet(table);
 		}
 	}
-	vector<vector<string>> resultCols;
-	for (string target : targetSyns) {
-		vector<string> temp = finalTable->getColumnData(target);
-		temp.insert(temp.begin() ,target);
-		resultCols.emplace_back(temp);
-	}
-	unordered_set<unordered_map<string, string>,QueryResultsTable::HashFunc,QueryResultsTable::EqualFunc> res;
-	if (resultCols.size() == 0) { 
-		shared_ptr<QueryResultsTable> resultTable = make_shared<QueryResultsTable>(res);
-		vector<string> result = tableToVectorForTuples(resultTable);
-		return vectorToUniqueList(result);
-	}
-	
-	for (int i = 1; i < resultCols[0].size(); i++) {
-		unordered_map<string, string> map;
-		for (int j = 0; j < resultCols.size(); j++) {
-			map.insert({resultCols[j][0], resultCols[j][i]});
-		}
-		res.insert(map);
-	}
-	shared_ptr<QueryResultsTable> resultTable = make_shared<QueryResultsTable>(res);
-	vector<string> result = tableToVectorForTuples(resultTable);
-	return vectorToUniqueList(result);
+
+	return tableToResultForTuples(finalTable);
 }
 
 list<string> ResultHandler::handleBoolean(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
