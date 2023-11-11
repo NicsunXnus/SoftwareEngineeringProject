@@ -25,24 +25,9 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
   queryOptimiser->sortGroups();
   vector<shared_ptr<QueryGroup>> groups = queryOptimiser->getQueryGroups();
 
-  cout << "Number of groups: " << groups.size() << endl;
-  cout << "groups: " << endl;
-  for (const auto& group : groups) {
-    cout << "group: " << endl;
-    for (const auto& clause : group->getClauses()) {
-      cout << clause->getQueryObjectName() << endl;
-    }
-  }
-
   unordered_set<string> selectSynonyms;
   for (const auto& queryObject : selectClauseQueryObjects) {
-    cout << "seelctqueryObject: " << queryObject->getQueryObjectName() << endl;
     auto synonyms = queryObject->getSynonyms();
-    cout << "synonyms: in this selectqueryobj" << endl;
-    cout << "num of syns: " << synonyms->size() << endl;
-    for (const auto& synonym : *synonyms) {
-      cout << synonym << endl;
-    }
     selectSynonyms.insert(synonyms->begin(), synonyms->end());
   }
 
@@ -55,20 +40,8 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
       groupSynonyms.insert(synonyms->begin(), synonyms->end());
     }
     bool hasRelevantSynonyms = has_intersection(selectSynonyms, groupSynonyms);
-    cout << "groupSynonyms: " << endl;
-    for (const auto& synonym : groupSynonyms) {
-      cout << synonym << endl;
-    }
-    cout << "selectSynonyms: " << endl;
-    for (const auto& synonym : selectSynonyms) {
-      cout << synonym << endl;
-    }
-    cout << "hasRelevantSynonyms: " << hasRelevantSynonyms << endl;
     shared_ptr<QueryResultsTable> groupTable =
         buildGroupQuery(group, hasRelevantSynonyms);
-
-    /*cout << "groupTable: " << endl;
-    groupTable->printTable();*/
 
     // if groupTable is empty and insignificant, break out of loop.
     // lazy evaluation
@@ -81,7 +54,6 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
       finalTable = groupTable;
       continue;
     }
-    cout << "starting cross product" << endl;
     // no common synonyms. must cross product
     finalTable = finalTable->crossProductSet(groupTable);
     if (finalTable->isEmpty() && !finalTable->getSignificant()) {
@@ -138,12 +110,10 @@ shared_ptr<QueryResultsTable> QueryBuilder::buildGroupQuery(
     // if this group is has no relevant synonyms, we keep checking if it
     // becomes empty at any point in time.
     if (!hasRelevantSynonyms) {
-      cout << "here!" << endl;
       if (table->isEmpty() && !table->getSignificant()) {
         // can early terminate. the whole query will be false
         return QueryResultsTable::createEmptyTable(false);
       } else {
-        cout << "here!" << endl;
         // significant. cannot early terminate.
         // need to complete evaluation of this group
         // before we can determine if the whole query is false
@@ -151,10 +121,6 @@ shared_ptr<QueryResultsTable> QueryBuilder::buildGroupQuery(
         table = QueryResultsTable::createEmptyTable(true);
       }
     }
-    cout << "groupTable: " << endl;
-    groupTable->printTable();
-    cout << "table: " << endl;
-    table->printTable();
     groupTable = groupTable->innerJoinSet(table);
 
     // if groupTable is empty, just set it to table. initialise
