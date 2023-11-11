@@ -1,7 +1,7 @@
 #include "AffectsFilter.h"
 #include "ClauseTableFilter.h"
 
-typedef tuple<string, unordered_set<string>> AffectsStackElement; // parent, set of childs
+typedef string AffectsStackElement; // parent, set of childs
 
 // returns element in an unordered set, use only if set has one element, else random element from set is returned
 static string returnSingleElementFromSet(unordered_set<string> stringSet) {
@@ -84,13 +84,13 @@ shared_ptr<QueryResultsTable> AffectsSynSyn::evaluate(shared_ptr<DataAccessLayer
 		stack<AffectsStackElement> DFSStack;
 		unordered_set<string> visited;
 
-		DFSStack.push(make_tuple(startingLine, childrenOfStartNode));
+		DFSStack.push(startingLine);
 
 		while (!DFSStack.empty()) {
 			AffectsStackElement curr = DFSStack.top();
 			DFSStack.pop();
-			string parent = get<0>(curr);
-			unordered_set<string> children = get<1>(curr);
+			string parent = curr;
+			unordered_set<string> children = filterMapKeyReturnSetValues(parent, cfg);
 			visited.insert(parent);
 
 			// modified before reaching target, do not traverse further down that branch
@@ -101,8 +101,7 @@ shared_ptr<QueryResultsTable> AffectsSynSyn::evaluate(shared_ptr<DataAccessLayer
 			for (string child : children) {
 				auto it = visited.find(child);
 				if (it == visited.end()) {
-					unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, cfg);
-					DFSStack.push(make_tuple(child, nextChildren));
+					DFSStack.push(child);
 				}
 				unordered_set<string> uses = usesMap[child]; // variables used at child node
 				if (containerHasKey(assignments, child) && containerHasKey(uses, modifiedVar)) { // is a valid affects
@@ -153,13 +152,13 @@ shared_ptr<QueryResultsTable> AffectsSynWildcard::evaluate(shared_ptr<DataAccess
 		stack<AffectsStackElement> DFSStack;
 		unordered_set<string> visited;
 
-		DFSStack.push(make_tuple(startingLine, childrenOfStartNode));
+		DFSStack.push(startingLine);
 
 		while (!DFSStack.empty()) {
 			AffectsStackElement curr = DFSStack.top();
 			DFSStack.pop();
-			string parent = get<0>(curr);
-			unordered_set<string> children = get<1>(curr);
+			string parent = curr;
+			unordered_set<string> children = filterMapKeyReturnSetValues(parent, cfg);
 			visited.insert(parent);
 
 			// modified before reaching target, do not traverse further down that branch
@@ -170,8 +169,7 @@ shared_ptr<QueryResultsTable> AffectsSynWildcard::evaluate(shared_ptr<DataAccess
 			for (string child : children) {
 				auto it = visited.find(child);
 				if (it == visited.end()) {
-					unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, cfg);
-					DFSStack.push(make_tuple(child, nextChildren));
+					DFSStack.push(child);
 				}
 				unordered_set<string> uses = usesMap[child]; // variables used at child node
 				if (containerHasKey(assignments, child) && containerHasKey(uses, modifiedVar)) { // is a valid affects
@@ -212,13 +210,13 @@ shared_ptr<QueryResultsTable> AffectsSynInt::evaluate(shared_ptr<DataAccessLayer
 		stack<AffectsStackElement> DFSStack;
 		unordered_set<string> visited;
 
-		DFSStack.push(make_tuple(startingLine, childrenOfStartNode));
+		DFSStack.push(startingLine);
 
 		while (!DFSStack.empty()) {
 			AffectsStackElement curr = DFSStack.top();
 			DFSStack.pop();
-			string parent = get<0>(curr);
-			unordered_set<string> children = get<1>(curr);
+			string parent = curr;
+			unordered_set<string> children = filterMapKeyReturnSetValues(parent, cfg);
 			visited.insert(parent);
 
 			// modified before reaching target, do not traverse further down that branch
@@ -229,8 +227,7 @@ shared_ptr<QueryResultsTable> AffectsSynInt::evaluate(shared_ptr<DataAccessLayer
 			for (string child : children) {
 				auto it = visited.find(child);
 				if (it == visited.end()) {
-					unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, cfg);
-					DFSStack.push(make_tuple(child, nextChildren));
+					DFSStack.push(child);
 				}
 				unordered_set<string> uses = usesMap[child]; // variables used at child node
 				if (containerHasKey(assignments, child) && containerHasKey(uses, modifiedVar)
@@ -269,13 +266,13 @@ shared_ptr<QueryResultsTable> AffectsIntSyn::evaluate(shared_ptr<DataAccessLayer
 	stack<AffectsStackElement> DFSStack;
 	unordered_set<string> visited;
 	unordered_set<string> results;
-	DFSStack.push(make_tuple(startingLine, childrenOfStartNode));
+	DFSStack.push(startingLine);
 
 	while (!DFSStack.empty()) {
 		AffectsStackElement curr = DFSStack.top();
 		DFSStack.pop();
-		string parent = get<0>(curr);
-		unordered_set<string> children = get<1>(curr);
+		string parent = curr;
+		unordered_set<string> children = filterMapKeyReturnSetValues(parent, cfg);
 		visited.insert(parent);
 
 		// modified before reaching target, do not traverse further down that branch
@@ -286,8 +283,7 @@ shared_ptr<QueryResultsTable> AffectsIntSyn::evaluate(shared_ptr<DataAccessLayer
 		for (string child : children) {
 			auto it = visited.find(child);
 			if (it == visited.end()) {
-				unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, cfg);
-				DFSStack.push(make_tuple(child, nextChildren));
+				DFSStack.push(child);
 			}
 			unordered_set<string> uses = usesMap[child]; // variables used at child node
 			if (containerHasKey(assignments, child) && containerHasKey(uses, modifiedVar)) { // is a valid affects
@@ -319,13 +315,13 @@ shared_ptr<QueryResultsTable> AffectsIntWildcard::evaluate(shared_ptr<DataAccess
 	stack<AffectsStackElement> DFSStack;
 	unordered_set<string> visited;
 	unordered_set<string> results;
-	DFSStack.push(make_tuple(startingLine, childrenOfStartNode));
+	DFSStack.push(startingLine);
 
 	while (!DFSStack.empty()) {
 		AffectsStackElement curr = DFSStack.top();
 		DFSStack.pop();
-		string parent = get<0>(curr);
-		unordered_set<string> children = get<1>(curr);
+		string parent = curr;
+		unordered_set<string> children = filterMapKeyReturnSetValues(parent, cfg);
 		visited.insert(parent);
 
 		// modified before reaching target, do not traverse further down that branch
@@ -336,8 +332,7 @@ shared_ptr<QueryResultsTable> AffectsIntWildcard::evaluate(shared_ptr<DataAccess
 		for (string child : children) {
 			auto it = visited.find(child);
 			if (it == visited.end()) {
-				unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, cfg);
-				DFSStack.push(make_tuple(child, nextChildren));
+				DFSStack.push(child);
 			}
 			unordered_set<string> uses = usesMap[child]; // variables used at child node
 			if (containerHasKey(assignments, child) && containerHasKey(uses, modifiedVar)) { // is a valid affects
@@ -370,13 +365,13 @@ shared_ptr<QueryResultsTable> AffectsIntInt::evaluate(shared_ptr<DataAccessLayer
 
 	stack<AffectsStackElement> DFSStack;
 	unordered_set<string> visited;
-	DFSStack.push(make_tuple(startingLine, childrenOfStartNode));
+	DFSStack.push(startingLine);
 
 	while (!DFSStack.empty()) {
 		AffectsStackElement curr = DFSStack.top();
 		DFSStack.pop();
-		string parent = get<0>(curr);
-		unordered_set<string> children = get<1>(curr);
+		string parent = curr;
+		unordered_set<string> children = filterMapKeyReturnSetValues(parent, cfg);
 		visited.insert(parent);
 
 		// modified before reaching target, do not traverse further down that branch
@@ -387,8 +382,7 @@ shared_ptr<QueryResultsTable> AffectsIntInt::evaluate(shared_ptr<DataAccessLayer
 		for (string child : children) {
 			auto it = visited.find(child);
 			if (it == visited.end()) {
-				unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, cfg);
-				DFSStack.push(make_tuple(child, nextChildren));
+				DFSStack.push(child);
 			}
 			if (child == finishLine) { // at target node
 				shared_ptr<QueryResultsTable> table = QueryResultsTable::createEmptyTable(true);
@@ -424,13 +418,13 @@ shared_ptr<QueryResultsTable> AffectsWildcardSyn::evaluate(shared_ptr<DataAccess
 		stack<AffectsStackElement> DFSStack;
 		unordered_set<string> visited;
 
-		DFSStack.push(make_tuple(startingLine, childrenOfStartNode));
+		DFSStack.push(startingLine);
 
 		while (!DFSStack.empty()) {
 			AffectsStackElement curr = DFSStack.top();
 			DFSStack.pop();
-			string parent = get<0>(curr);
-			unordered_set<string> children = get<1>(curr);
+			string parent = curr;
+			unordered_set<string> children = filterMapKeyReturnSetValues(parent, cfg);
 			visited.insert(parent);
 
 			// modified before reaching target, do not traverse further down that branch
@@ -441,8 +435,7 @@ shared_ptr<QueryResultsTable> AffectsWildcardSyn::evaluate(shared_ptr<DataAccess
 			for (string child : children) {
 				auto it = visited.find(child);
 				if (it == visited.end()) {
-					unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, cfg);
-					DFSStack.push(make_tuple(child, nextChildren));
+					DFSStack.push(child);
 				}
 				unordered_set<string> uses = usesMap[child]; // variables used at child node
 				if (containerHasKey(assignments, child) && containerHasKey(uses, modifiedVar)) { // is a valid affects
@@ -477,13 +470,13 @@ shared_ptr<QueryResultsTable> AffectsWildcardWildcard::evaluate(shared_ptr<DataA
 		stack<AffectsStackElement> DFSStack;
 		unordered_set<string> visited;
 
-		DFSStack.push(make_tuple(startingLine, childrenOfStartNode));
+		DFSStack.push(startingLine);
 
 		while (!DFSStack.empty()) {
 			AffectsStackElement curr = DFSStack.top();
 			DFSStack.pop();
-			string parent = get<0>(curr);
-			unordered_set<string> children = get<1>(curr);
+			string parent = curr;
+			unordered_set<string> children = filterMapKeyReturnSetValues(parent, cfg);
 			visited.insert(parent);
 
 			// modified before reaching target, do not traverse further down that branch
@@ -494,8 +487,7 @@ shared_ptr<QueryResultsTable> AffectsWildcardWildcard::evaluate(shared_ptr<DataA
 			for (string child : children) {
 				auto it = visited.find(child);
 				if (it == visited.end()) {
-					unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, cfg);
-					DFSStack.push(make_tuple(child, nextChildren));
+					DFSStack.push(child);
 				}
 				unordered_set<string> uses = usesMap[child]; // variables used at child node
 				if (containerHasKey(assignments, child) && containerHasKey(uses, modifiedVar)) { // is a valid affects
@@ -531,13 +523,13 @@ shared_ptr<QueryResultsTable> AffectsWildcardInt::evaluate(shared_ptr<DataAccess
 		stack<AffectsStackElement> DFSStack;
 		unordered_set<string> visited;
 
-		DFSStack.push(make_tuple(startingLine, childrenOfStartNode));
+		DFSStack.push(startingLine);
 
 		while (!DFSStack.empty()) {
 			AffectsStackElement curr = DFSStack.top();
 			DFSStack.pop();
-			string parent = get<0>(curr);
-			unordered_set<string> children = get<1>(curr);
+			string parent = curr;
+			unordered_set<string> children = filterMapKeyReturnSetValues(parent, cfg);
 			visited.insert(parent);
 
 			// modified before reaching target, do not traverse further down that branch
@@ -548,8 +540,7 @@ shared_ptr<QueryResultsTable> AffectsWildcardInt::evaluate(shared_ptr<DataAccess
 			for (string child : children) {
 				auto it = visited.find(child);
 				if (it == visited.end()) {
-					unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, cfg);
-					DFSStack.push(make_tuple(child, nextChildren));
+					DFSStack.push(child);
 				}
 				unordered_set<string> uses = usesMap[child]; // variables used at child node
 				if (containerHasKey(assignments, child) && containerHasKey(uses, modifiedVar)

@@ -1,7 +1,7 @@
 #include "ClauseTableFilter.h"
 #include "NextStarFilter.h"
 
-typedef tuple<string, unordered_set<string>> NextStackElement; // parent, set of childs
+typedef string NextStackElement; // parent, set of childs
 
 // DFS from each node: large runtime
 shared_ptr<QueryResultsTable> NextStarSynSyn::evaluate(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause) {
@@ -26,22 +26,21 @@ shared_ptr<QueryResultsTable> NextStarSynSyn::evaluate(shared_ptr<DataAccessLaye
 	for (string parent : filteredPKBClauseDataKeepArg1) {
 		stack<NextStackElement> nextStack; // parent, set of childs
 		unordered_set<string> visited;
-		nextStack.push(make_tuple(parent, PKBClauseDataArg1[parent]));
+		nextStack.push(parent);
 
 		unordered_set<string> resultSet = {};
 		while (!nextStack.empty())
 		{
 			NextStackElement curr = nextStack.top();
 			nextStack.pop();
-			string parent = get<0>(curr);
-			unordered_set<string> children = get<1>(curr);
+			string parent = curr;
+			unordered_set<string> children = filterMapKeyReturnSetValues(parent, PKBClauseDataArg1);
 
 			for (string child : children) {
 				auto visitedIt = visited.find(child);
 				if (visitedIt == visited.end()) {
 					visited.insert(child); // add here to ensure that Next* does not add back intial node, unless it really can be reached via a loop
-					unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, PKBClauseDataArg1);
-					nextStack.push(make_tuple(child, nextChildren));
+					nextStack.push(child);
 				}
 				auto arg2It = filteredPKBClauseDataKeepArg2.find(child);
 				if (arg2It != filteredPKBClauseDataKeepArg2.end()) {  // current node is syn2, an answer we want
@@ -82,21 +81,20 @@ inline shared_ptr<QueryResultsTable> handleNextStarIntSynCombination(shared_ptr<
 	if (filteredPKBClauseDataArg1.empty()) {
 		return QueryResultsTable::createTable(svToString(arg2->getArgValue()), visited);
 	}
-	nextStack.push(make_tuple(svToString(arg1->getArgValue()), filteredPKBClauseDataArg1));
+	nextStack.push(svToString(arg1->getArgValue()));
 
 	while (!nextStack.empty())
 	{
 		NextStackElement curr = nextStack.top();
 		nextStack.pop();
-		string parent = get<0>(curr);
-		unordered_set<string> children = get<1>(curr);
+		string parent = curr;
+		unordered_set<string> children = filterMapKeyReturnSetValues(parent, PKBClauseData);
 
 		for (string child : children) {
 			auto it = visited.find(child);
 			if (it == visited.end()) {
 				visited.insert(child); // add here to ensure that Next* does not add back intial node, unless it really can be reached via a loop
-				unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, PKBClauseData);
-				nextStack.push(make_tuple(child, nextChildren));
+				nextStack.push(child);
 			}
 
 		}
@@ -129,21 +127,20 @@ shared_ptr<QueryResultsTable> NextStarIntInt::evaluate(shared_ptr<DataAccessLaye
 	if (filteredPKBClauseDataArg1.empty()) {
 		return QueryResultsTable::createEmptyTable();
 	}
-	nextStack.push(make_tuple(svToString(arg1->getArgValue()), filteredPKBClauseDataArg1));
+	nextStack.push(svToString(arg1->getArgValue()));
 	string target = svToString(arg2->getArgValue());
 	while (!nextStack.empty())
 	{
 		NextStackElement curr = nextStack.top();
 		nextStack.pop();
-		string parent = get<0>(curr);
+		string parent = curr;
 		visited.insert(parent);
-		unordered_set<string> children = get<1>(curr);
+		unordered_set<string> children = filterMapKeyReturnSetValues(parent, PKBClauseData);
 
 		for (string child : children) {
 			auto it = visited.find(child);
 			if (it == visited.end()) {
-				unordered_set<string> nextChildren = filterMapKeyReturnSetValues(child, PKBClauseData);
-				nextStack.push(make_tuple(child, nextChildren));
+				nextStack.push(child);
 			}
 			if (child == target) {
 				shared_ptr<QueryResultsTable> table = QueryResultsTable::createEmptyTable(true);

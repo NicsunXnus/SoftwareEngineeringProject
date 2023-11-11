@@ -189,15 +189,53 @@ list<string> ResultHandler::tableToResultForTuples(shared_ptr<QueryResultsTable>
 } 
 
 list<string> ResultHandler::returnTuples(vector<shared_ptr<QueryResultsTable>> selectClauseTables) {
-	shared_ptr<QueryResultsTable> intermediateTable = selectClauseTables[0];
-	selectClauseTables.erase(selectClauseTables.begin());
+
+	shared_ptr<QueryResultsTable> intermediateTable = QueryResultsTable::createEmptyTable(true);
 
 	for (shared_ptr<QueryResultsTable> table : selectClauseTables) {
 		if (!intermediateTable->haveSimilarHeaders(table)) { // for cases like select<s, s>, do not Xproduct
 			intermediateTable = intermediateTable->crossProductSet(table);
 		}
 	}
-	return tableToResultForTuples(intermediateTable);
+
+	vector<vector<string>> cols;
+
+	for (shared_ptr<QueryResultsTable> selectClauseTable : selectClauseTables) {
+		unordered_set<string> intermediateTableHeaders = intermediateTable->getHeaders();
+		string header = selectClauseTable->getPrimaryKey();
+		// check if all select clause columns are in intermediate table
+		// if not, its an attribute column
+		if (intermediateTable->hasHeader(header)) {
+			vector<string> colData = intermediateTable->getColumnData(header);
+			colData.emplace(colData.begin(), header);
+			cols.emplace_back(colData);
+		}
+		else {
+			vector<string> colData = intermediateTable->getColumnData(getAttributeSynonym(header));
+			// convert col to attribute
+			StringMap attr = selectClauseTable->getAttr();
+			for (int i = 0; i < colData.size(); i++) {
+
+				colData[i] = *attr[colData[i]].begin(); // replace p with p.procname
+			}
+			colData.emplace(colData.begin(), header);
+			cols.emplace_back(colData);
+		}
+
+			
+	}
+
+	unordered_set<unordered_map<string, string>, QueryResultsTable::HashFunc, QueryResultsTable::EqualFunc> res;
+
+	for (int i = 1; i < cols[0].size(); i++) {
+		unordered_map<string, string> map;
+		for (int j = 0; j < cols.size(); j++) {
+			map.insert({ cols[j][0], cols[j][i] });
+		}
+		res.insert(map);
+	}
+	
+	return tableToResultForTuples(make_shared<QueryResultsTable>(res));
 }
 
 list<string> ResultHandler::handleTuples(vector<shared_ptr<QueryResultsTable>> selectClauseTables, vector<shared_ptr<QueryResultsTable>> nonSelectClauseTables) {
