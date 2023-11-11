@@ -2572,6 +2572,48 @@ namespace UnitTesting
 			Assert::IsTrue(typeid(*qo[2]) == typeid(IfPatternObject));
 			Assert::IsTrue(typeid(*qo[3]) == typeid(AttrRefAttrRefComparisonQueryObject));
 		}
+
+		TEST_METHOD(TestInvalidPatternCloseBracketOnly)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("assign a; Select a pattern a(_, _\")\"_)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+			}
+			catch (const QPSError& ex) {
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestInvalid1stArgWhilePattern)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("while w; Select w pattern w (_\"lac\"_,_)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+			}
+			catch (const QPSError& ex) {
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestInvalid1stArgWhile2Pattern)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("while w; Select w pattern w(_""_, _)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+			}
+			catch (const QPSError& ex) {
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
 	};
 
 }
