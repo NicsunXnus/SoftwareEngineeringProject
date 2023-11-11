@@ -74,5 +74,14 @@ namespace UnitTesting
 			Assert::IsTrue(1 == static_cast<int>(stmtS.getSynonyms()->size()));
 		}
 
+		TEST_METHOD(TestAttrRefObject)
+		{	
+			shared_ptr<SynonymObject> synA = make_shared<SynonymObject>(SynonymObject("a", ASSIGN));
+			shared_ptr<ClauseArg> synArgA = make_shared<ClauseArg>(ClauseArg("a", synA));
+
+			StmtNoObject stmtS = StmtNoObject("a"sv, synArgA);
+
+			Assert::IsTrue(1 == static_cast<int>(stmtS.getSynonyms()->size()));
+		}
 	};
 }
