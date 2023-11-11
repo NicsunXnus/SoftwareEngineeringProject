@@ -15,21 +15,6 @@ list<string> ResultHandler::processTables(vector<shared_ptr<QueryResultsTable>> 
 	return empty;
 }
 
-vector<string> ResultHandler::tableToVectorForTuples(shared_ptr<QueryResultsTable> table) {
-	unordered_set<unordered_map<string, string>, QueryResultsTable::HashFunc, QueryResultsTable::EqualFunc> values = table->getRowsSet();
-	vector<string> result;
-
-	for (unordered_map<string, string> map : values) {
-		stringstream ss;
-		transform(selectClauseHeaders.begin(), selectClauseHeaders.end(), ostream_iterator<string>(ss, " "), [&](const string& s) {
-			return map[s];
-			});
-		string temp = ss.str();
-		temp.pop_back();
-		result.emplace_back(temp);
-	}
-	return result;
-}
 
 
 // tables must be non-empty
@@ -175,8 +160,7 @@ list<string> ResultHandler::handleSingleSynonym(vector<shared_ptr<QueryResultsTa
 	shared_ptr<QueryResultsTable> processedIntermediateTable = get<1>(processTables);
 	shared_ptr<QueryResultsTable> finalTable = QueryResultsTable::createEmptyTable(true);
 	if (processedIntermediateTable->getNumberOfCols() > 0) { // synonyms required exist in the intermediate table
-		shared_ptr<QueryResultsTable> synsInIntermediateTable = processedIntermediateTable;
-		finalTable = finalTable->crossProductSet(synsInIntermediateTable);
+		finalTable = finalTable->crossProductSet(processedIntermediateTable);
 	}
 	for (shared_ptr<QueryResultsTable> table : selectClausesNotInIntermediateTable) {
 		finalTable = finalTable->crossProductSet(table);

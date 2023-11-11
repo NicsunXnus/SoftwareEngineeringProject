@@ -34,6 +34,9 @@ private:
 	*/
 	string getAttributeSynonym(string attribute);
 
+	/*
+	* This function converts a QRT to a list of string
+	*/
 	list<string> tableToResultForTuples(shared_ptr<QueryResultsTable> table);
 
 	/*
@@ -48,11 +51,6 @@ private:
 	tuple<vector<shared_ptr<QueryResultsTable>>,
 		shared_ptr<QueryResultsTable>> processIntermediateTable(vector<shared_ptr<QueryResultsTable>> selectClauseTables,
 			shared_ptr<QueryResultsTable> intermediateTable);
-
-	/*
-	* This function converts a QRT to a vector of string, before conversion to list<string>
-	*/
-	vector<string> tableToVectorForTuples(shared_ptr<QueryResultsTable> table);
 
 	/*
 	* This function joins all the QRTs, by cross or inner joins
