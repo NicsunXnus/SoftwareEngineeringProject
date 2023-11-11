@@ -48,7 +48,7 @@ class QueryBuilder {
   /**
    * Builds the query results for a group of query objects.
    */
-  shared_ptr<QueryResultsTable> buildGroupQuery(shared_ptr<QueryGroup> group);
+  shared_ptr<QueryResultsTable> buildGroupQuery(shared_ptr<QueryGroup> group, bool hasRelevantSynonyms);
 
   /**
    * Finds the next queryObject to evaluate, given a partially evaluated QRT and

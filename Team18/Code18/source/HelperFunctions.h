@@ -1,20 +1,20 @@
 #ifndef HELPERFUNCTIONS_H
 #define HELPERFUNCTIONS_H
 
-#include <string>
-#include <string_view>
-#include <vector>
-#include <list>
 #include <iostream>
+#include <list>
 #include <regex>
 #include <set>
 #include <stack>
-#include <unordered_set>
+#include <string>
+#include <string_view>
 #include <unordered_map>
+#include <unordered_set>
+#include <vector>
 
-#include "ExceptionMessages.h"
-#include "Constants/SPConstants.h"
 #include "Constants/DesignEnums.h"
+#include "Constants/SPConstants.h"
+#include "ExceptionMessages.h"
 #include "QPS/Errors/SemanticError.h"
 
 using namespace std;
@@ -23,20 +23,21 @@ const string whitespaces = " \t\f\v\n\r\b";
 const string arithmeticOpsWithWhitespaceRegex = "([()+-/*%]|\\s+)";
 const string relationalOpsRegex = "([><]=?|==|!=)";
 
-enum Separator {
-  BRACKET,
-  CURLY
-};
+enum Separator { BRACKET, CURLY };
 
 // Detects outermost separators like "{}" and "()".
-// Throws an exception if there are any mismatching separators, including within inner scopes.
-// Returns a vector of pair<int, int> pointers. Each pair represents the indexes of a matching "{" and "}" respectively.
-static vector<shared_ptr<pair<int, int>>> outermostSepDetector(string input, Separator sepType) {
+// Throws an exception if there are any mismatching separators, including within
+// inner scopes. Returns a vector of pair<int, int> pointers. Each pair
+// represents the indexes of a matching "{" and "}" respectively.
+static vector<shared_ptr<pair<int, int>>> outermostSepDetector(
+    string input, Separator sepType) {
   // stack keeps track of the indexes of the open curly
   stack<int> scopeTracker;
   vector<shared_ptr<pair<int, int>>> output;
-  char open = sepType == Separator::BRACKET ? OPEN_BRACKET_CHAR : OPEN_CURLY_CHAR;
-  char close = sepType == Separator::BRACKET ? CLOSE_BRACKET_CHAR : CLOSE_CURLY_CHAR;
+  char open =
+      sepType == Separator::BRACKET ? OPEN_BRACKET_CHAR : OPEN_CURLY_CHAR;
+  char close =
+      sepType == Separator::BRACKET ? CLOSE_BRACKET_CHAR : CLOSE_CURLY_CHAR;
   for (size_t i = 0; i < input.size(); i++) {
     char thisChar = input[i];
     if (thisChar == open) {
@@ -48,7 +49,7 @@ static vector<shared_ptr<pair<int, int>>> outermostSepDetector(string input, Sep
     }
     // guaranteed to be close character here
     if (scopeTracker.empty()) {
-      throw invalid_argument(ExceptionMessages::extraCloseSep); 
+      throw invalid_argument(ExceptionMessages::extraCloseSep);
     }
     int lastSeen = scopeTracker.top();
     scopeTracker.pop();
@@ -66,7 +67,7 @@ static vector<shared_ptr<pair<int, int>>> outermostSepDetector(string input, Sep
 static bool isValidNumber(string input) {
   if (input.empty()) {
     return false;
-  } 
+  }
   if (input.length() == 1 && isdigit(input[0])) {
     return true;
   }
@@ -97,9 +98,8 @@ static bool isValidName(string input) {
 /// name="includeDelimiter">Whether the delimiters should appear in the output
 /// as well or not.</param> <returns>A vector of strings, containing the
 /// original input after being split by the delimiters.</returns>
-static vector<string> splitString(string input,
-                                            string delimiter,
-                                            bool includeDelimiter = false) {
+static vector<string> splitString(string input, string delimiter,
+                                  bool includeDelimiter = false) {
   //  THIS CODE WAS GENERATED WITH THE HELP OF CHATGPT.
   //
   //  PROMPT GIVEN:
@@ -115,8 +115,7 @@ static vector<string> splitString(string input,
   vector<string> result;
   regex regexPattern(delimiter);
 
-  auto words_begin =
-      sregex_iterator(input.begin(), input.end(), regexPattern);
+  auto words_begin = sregex_iterator(input.begin(), input.end(), regexPattern);
   auto words_end = sregex_iterator();
 
   size_t last_pos = 0;
@@ -125,7 +124,7 @@ static vector<string> splitString(string input,
     const smatch match = *it;
 
     // Add the text before the match
-    if (last_pos < (size_t) match.position()) {
+    if (last_pos < (size_t)match.position()) {
       result.push_back(input.substr(last_pos, match.position() - last_pos));
     }
 
@@ -172,9 +171,10 @@ static string trimWhitespaces(string str) {
 /// Returns a continuous substring based on indices provided.
 ///
 /// </summary>
-/// <param name="str">the original string</param> 
-/// <param name="startIndex">the start index. If negative indexes provided, defaults to 0</param> 
-/// <param name="endIndex">the end index. if index larger than string size provided, defaults to last index == string size - 1</param> 
+/// <param name="str">the original string</param>
+/// <param name="startIndex">the start index. If negative indexes provided,
+/// defaults to 0</param> <param name="endIndex">the end index. if index larger
+/// than string size provided, defaults to last index == string size - 1</param>
 /// <returns>The substring</returns>
 static string substring(string str, int startIndex, int endIndex) {
   if (endIndex < startIndex) {
@@ -192,7 +192,7 @@ static string substring(string str, int startIndex, int endIndex) {
 
 // prints to console, toggle here to turn on / off for development / production
 static void debug(string debugMessage) {
-  bool DEBUG_MODE = true; // toggle this
+  bool DEBUG_MODE = true;  // toggle this
   if (DEBUG_MODE) {
     cout << debugMessage + "\n" << endl;
   }
@@ -212,30 +212,27 @@ static list<string> vectorToList(vector<string> vectorOfString) {
 
 // Converts vectors of strings into set of strings
 static unordered_set<string> vectorToSet(vector<string> vectorOfString) {
-    unordered_set<string> stringSet(vectorOfString.begin(), vectorOfString.end());
-    return stringSet;
+  unordered_set<string> stringSet(vectorOfString.begin(), vectorOfString.end());
+  return stringSet;
 }
-
 
 template <typename Container, typename KeyType>
-static bool containerHasKey(const Container& myContainer, const KeyType& keyToCheck) {
-    return myContainer.find(keyToCheck) != myContainer.end();
+static bool containerHasKey(const Container& myContainer,
+                            const KeyType& keyToCheck) {
+  return myContainer.find(keyToCheck) != myContainer.end();
 }
-
 
 // convert map to set, by taking all the keys in the map
 static unordered_set<string> getMapKeys(StringMap stringMap) {
-    unordered_set<string> keySet;
-    for (const auto& pair : stringMap) {
-        keySet.insert(pair.first);
-    }
-    return keySet;
+  unordered_set<string> keySet;
+  for (const auto& pair : stringMap) {
+    keySet.insert(pair.first);
+  }
+  return keySet;
 }
 
-static list<string> vectorToUniqueList(
-    vector<string> vectorOfString) {
-  list<string> listOfString(vectorOfString.begin(),
-                                      vectorOfString.end());
+static list<string> vectorToUniqueList(vector<string> vectorOfString) {
+  list<string> listOfString(vectorOfString.begin(), vectorOfString.end());
   set<string> uniqueStrings;
   for (string str : listOfString) {
     uniqueStrings.insert(str);
@@ -249,18 +246,16 @@ static list<string> vectorToUniqueList(
 }
 
 // Converts a vector of strings to a vector of string_views
-static vector<string_view> sToSvVector(
-    vector<string>& svVector) {
+static vector<string_view> sToSvVector(vector<string>& svVector) {
   vector<string_view> v(svVector.size());
   transform(svVector.begin(), svVector.end(), v.begin(),
-                 [](const string& str) { return string_view(str); });
+            [](const string& str) { return string_view(str); });
   return v;
 }
 
 // Gets the intersect of two sets
-static unordered_set<string> get_intersection(
-    unordered_set<string>& strings1,
-    unordered_set<string>& strings2) {
+static unordered_set<string> get_intersection(unordered_set<string>& strings1,
+                                              unordered_set<string>& strings2) {
   unordered_set<string> m(strings1.begin(), strings1.end());
   unordered_set<string> res;
   for (auto a : strings2)
@@ -269,6 +264,19 @@ static unordered_set<string> get_intersection(
       m.erase(a);
     }
   return res;
+}
+
+// Checks if two sets intersect
+static bool has_intersection(unordered_set<string>& strings1,
+                             unordered_set<string>& strings2) {
+  bool hasIntersection = false;
+  for (const auto& element : strings1) {
+    if (strings2.count(element) > 0) {
+      hasIntersection = true;
+      break;
+    }
+  }
+  return hasIntersection;
 }
 
 // debugging

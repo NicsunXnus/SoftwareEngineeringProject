@@ -66,6 +66,14 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
     }
 
     /**
+     * Handles base cases when table operations involve at least one empty table.
+     * 
+     * @param other A shared pointer to a QueryResultsTable object that represents the other tables.
+     * @return A shared pointer to a newly created QueryResultsTable object.
+     */
+    shared_ptr<QueryResultsTable> handleEmptyTables(shared_ptr<QueryResultsTable> other);
+
+    /**
      * Creates a new QueryResultsTable object that is the result of a cartesian product between the row of elements of this table
      * and the other table.
      *
@@ -120,8 +128,6 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
 
     // Sets the current table to only the column values of the primary key
     void getPrimaryKeyOnlyTable();
-
-    void QueryResultsTable::duplicateAndAddColumn(string newName, string oldName);
 
     /**
      * A static method that creates an empty QueryResultsTable.
