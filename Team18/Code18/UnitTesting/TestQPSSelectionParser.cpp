@@ -2450,7 +2450,7 @@ namespace UnitTesting
 		TEST_METHOD(UndeclaredSynInSelectTuple)
 		{
 			vector<string> tokenizer = PQLTokenizer::tokenize("stmt s; while w; print p;"
-				"Select <s, a, p> such that Next(458, p) and Follows(s, 404) and Parents(w, 94)");
+				"Select <s, a, p> such that Next(458, p) and Follows(s, 404) and Parent(w, 94)");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
 			shared_ptr<QueryParser> p = make_shared<QueryParser>();
 
@@ -2516,7 +2516,7 @@ namespace UnitTesting
 		}
 
 
-		TEST_METHOD(TestSelectBoolAttr)
+		TEST_METHOD(TestSelectBoolTup)
 		{
 			vector<string> tokenizer = PQLTokenizer::tokenize("Select <BOOLEAN>");
 			vector<string_view> testSv{ sToSvVector(tokenizer) };
