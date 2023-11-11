@@ -210,6 +210,12 @@ static list<string> vectorToList(vector<string> vectorOfString) {
   return listOfString;
 }
 
+// Converts vectors of strings into set of strings
+static unordered_set<string> vectorToSet(vector<string> vectorOfString) {
+    unordered_set<string> stringSet(vectorOfString.begin(), vectorOfString.end());
+    return stringSet;
+}
+
 
 template <typename Container, typename KeyType>
 static bool containerHasKey(const Container& myContainer, const KeyType& keyToCheck) {

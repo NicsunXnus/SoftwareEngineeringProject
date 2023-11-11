@@ -25,7 +25,7 @@ private:
 	}
 
 	/*
-	* This function returns the select clause headers, including non primary keys
+	* This function returns the select clause headers, including non primary keys!!
 	*/
 	unordered_set<string> getSetOfSelectClauseHeaders(vector<shared_ptr<QueryResultsTable>> selectClauseTables);
 
@@ -33,6 +33,8 @@ private:
 	* This function returns the attribute synonym. e.g. p.procname will return "p"
 	*/
 	string getAttributeSynonym(string attribute);
+
+	list<string> tableToResultForTuples(shared_ptr<QueryResultsTable> table);
 
 	/*
 	* This function returns all primary keys in the select clause (i.e. synoynms part of the final result)

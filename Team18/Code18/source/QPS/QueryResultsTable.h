@@ -121,6 +121,8 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
     // Sets the current table to only the column values of the primary key
     void getPrimaryKeyOnlyTable();
 
+    void QueryResultsTable::duplicateAndAddColumn(string newName, string oldName);
+
     /**
      * A static method that creates an empty QueryResultsTable.
      *
