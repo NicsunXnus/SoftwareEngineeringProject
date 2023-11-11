@@ -6,7 +6,7 @@ skinparam ClassBorderColor #000000
 
 title QPS QueryObjects
 
-package <<QueryObjects>> {
+package <<QueryEval>> {
 
     abstract class QueryObject {
         -string_view data
@@ -59,7 +59,6 @@ package <<QueryObjects>> {
     }
 }
 
-PatternObject -[hidden]> ClauseObject
-DesignObject -[hidden]> PatternObject
+
 
 @end

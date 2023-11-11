@@ -1,0 +1,44 @@
+@startuml
+!include ../style.puml
+skinparam ClassFontColor #000000
+
+
+skinparam ClassBorderColor #000000
+box QPS LOGIC_COLOR_T1
+participant "o:QueryObject" as QueryObject LOGIC_COLOR
+participant "t:DataAccessLayer" as DataAccessLayer LOGIC_COLOR
+end box
+
+box PKB LOGIC_COLOR_T2
+participant ":Responder" as Responder LOGIC_COLOR
+end box
+
+
+QueryObject -> DataAccessLayer : getPatternTree(stmt)
+activate DataAccessLayer
+DataAccessLayer -> Responder : getPattern(stmt)
+activate Responder
+Responder -> DataAccessLayer : patternTree
+deactivate Responder
+DataAccessLayer -> QueryObject : patternTree
+deactivate DataAccessLayer
+
+QueryObject -> DataAccessLayer : getEntity(stmt)
+activate DataAccessLayer
+DataAccessLayer -> Responder : getEntityStatement(stmt)
+activate Responder
+Responder -> DataAccessLayer : statement_set
+deactivate Responder
+DataAccessLayer -> QueryObject : statements
+deactivate DataAccessLayer
+
+QueryObject -> DataAccessLayer : getClause(type)
+activate DataAccessLayer
+DataAccessLayer -> Responder : getAbstraction(type)
+activate Responder
+Responder -> DataAccessLayer : abstraction_db
+deactivate Responder
+DataAccessLayer -> QueryObject : abstractions
+deactivate DataAccessLayer
+
+@end

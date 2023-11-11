@@ -15,9 +15,13 @@ end box
 
 
 QueryObject -> DataAccessLayer : getEntity(type)
+activate DataAccessLayer
+DataAccessLayer -> Responder : getEntityStatement(type)
 activate Responder
-
-
+Responder -> DataAccessLayer : statement_set
+deactivate Responder
+DataAccessLayer -> QueryObject : entities
+deactivate DataAccessLayer
 
 
 

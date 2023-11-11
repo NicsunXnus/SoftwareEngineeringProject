@@ -14,10 +14,14 @@ participant ":Responder" as Responder LOGIC_COLOR
 end box
 
 
-QueryObject -> DataAccessLayer : getEntity(type)
+QueryObject -> DataAccessLayer : getClause(type)
+activate DataAccessLayer
+DataAccessLayer -> Responder : getAbstraction(type)
 activate Responder
-
-
+Responder -> DataAccessLayer : abstraction_db
+deactivate Responder
+DataAccessLayer -> QueryObject : abstractions
+deactivate DataAccessLayer
 
 
 

@@ -1,0 +1,38 @@
+@startuml
+left to right direction
+' !include ../style.puml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+
+title QPS QueryEval
+
+package <<QueryEval>> {
+
+    abstract class QueryEval {
+        +{abstract} virtual shared_ptr<QueryResultsTable> evaluate(shared_ptr<DataAccessLayer> dataAccessLayer, ABSTRACTION clause);
+    }
+
+
+    class ClauseTableFilter extends QueryEval {
+
+    }
+    class AffectsFilter extends QueryEval {
+
+    }
+    class NextStarFilter extends QueryEval, ClauseTableFilter {
+       
+    }
+    class WithClauseFilter extends QueryEval {
+       
+    }
+     class NotClauseFilter extends QueryEval {
+       
+    }
+
+
+
+}
+
+
+
+@end

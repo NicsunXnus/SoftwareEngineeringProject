@@ -1,0 +1,52 @@
+@startuml
+!include ../style.puml
+skinparam ClassFontColor #000000
+
+
+skinparam ClassBorderColor #000000
+box QPS LOGIC_COLOR_T1
+participant "o:QueryObject" as QueryObject LOGIC_COLOR
+participant "t:DataAccessLayer" as DataAccessLayer LOGIC_COLOR
+end box
+
+box PKB LOGIC_COLOR_T2
+participant ":Responder" as Responder LOGIC_COLOR
+end box
+
+QueryObject -> DataAccessLayer : getClause(NEXT)
+activate DataAccessLayer
+DataAccessLayer -> Responder : getAbstraction(NEXT)
+activate Responder
+Responder -> DataAccessLayer : abstraction_db
+deactivate Responder
+DataAccessLayer -> QueryObject : abstractions
+deactivate DataAccessLayer
+
+QueryObject -> DataAccessLayer : getClause(USES)
+activate DataAccessLayer
+DataAccessLayer -> Responder : getAbstraction(USES)
+activate Responder
+Responder -> DataAccessLayer : abstraction_db
+deactivate Responder
+DataAccessLayer -> QueryObject : abstractions
+deactivate DataAccessLayer
+
+QueryObject -> DataAccessLayer : getClause(MODIFIES)
+activate DataAccessLayer
+DataAccessLayer -> Responder : getAbstraction(MODIFIES)
+activate Responder
+Responder -> DataAccessLayer : abstraction_db
+deactivate Responder
+DataAccessLayer -> QueryObject : abstractions
+deactivate DataAccessLayer
+
+QueryObject -> DataAccessLayer : getEntity(ASSIGN)
+activate DataAccessLayer
+DataAccessLayer -> Responder : getEntityStatement(ASSIGN)
+activate Responder
+Responder -> DataAccessLayer : statement_set
+deactivate Responder
+DataAccessLayer -> QueryObject : statements
+deactivate DataAccessLayer
+
+@end
