@@ -132,11 +132,17 @@ shared_ptr<QueryResultsTable> QueryResultsTable::difference(
 
 void QueryResultsTable::getPrimaryKeyOnlyTable() {
     if (headers.find(primaryKey) != headers.end()) {
+        unordered_set<unordered_map<string, string>, HashFunc, EqualFunc> newTableRows;
         for (unordered_map<string,string> map : tableRows) {
             string pKeyValue = map.at(primaryKey);
-            map.clear();
-            map.insert({primaryKey,pKeyValue});
+            unordered_map<string, string> newMap = map;
+            newMap.clear();
+            newMap.insert({primaryKey,pKeyValue});
+            newTableRows.insert(newMap);
         }
+        headers.clear();
+        headers.insert(primaryKey);
+        tableRows = newTableRows;
     }
     else {
         cerr << "Error getting primary key only in table";
@@ -213,6 +219,7 @@ shared_ptr<QueryResultsTable> QueryResultsTable::createTable(
     return table;
 }   
 
+// Used solely in unit tests to aid in easy table creations
 shared_ptr<QueryResultsTable> QueryResultsTable::create2DTable(unordered_set<string> headers, vector<vector<string>> columnValues) {
     unordered_set<unordered_map<string, string>, HashFunc, EqualFunc> res;
     if (columnValues.empty()) {
@@ -279,17 +286,6 @@ void QueryResultsTable::renameColumn(string newName, string oldName) {
         }
         tableRows = newTableRows;
 
-    }
-}
-
-
-void QueryResultsTable::duplicateAndAddColumn(string newName, string oldName) {
-    unordered_set<string> headers = getHeaders();
-    if (headers.find(oldName) != headers.end()) {
-        for (unordered_map<string, string> map : tableRows) {
-            string val = map[oldName];
-            map.insert({ newName, val });
-        }
     }
 }
 

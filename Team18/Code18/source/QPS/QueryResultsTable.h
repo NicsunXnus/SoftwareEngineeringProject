@@ -18,17 +18,17 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
  public:
     
      struct HashFunc {
-         size_t operator()(const std::unordered_map<std::string, std::string>& map) const {
-             size_t hash = 0;
+         size_t operator()(const unordered_map<string, string>& map) const {
+             size_t hashRes = 0;
              for (const auto& pair : map) {
-                 hash ^= std::hash<std::string>()(pair.first) + std::hash<std::string>()(pair.second);
+                 hashRes ^= hash<string>()(pair.first) + hash<string>()(pair.second);
              }
-             return hash;
+             return hashRes;
          }
      };
 
      struct EqualFunc {
-         bool operator()(const std::unordered_map<std::string, std::string>& map1, const std::unordered_map<std::string, std::string>& map2) const {
+         bool operator()(const unordered_map<string, string>& map1, const unordered_map<string, string>& map2) const {
              return map1 == map2;
          }
      };
@@ -36,21 +36,18 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
     // overloaded constructor to create set qrt
     QueryResultsTable(unordered_set<unordered_map<string, string>,HashFunc,EqualFunc> rows) {
         if (rows.size() == 0) {
-            numRows = 0; numCols = 0; isSignificant = false;
+            isSignificant = false;
         }
         else {
             // code for new table
             tableRows.insert(rows.begin(), rows.end());
-            numRows = rows.size();
-            auto map = rows.begin();
-            numCols = (*map).size();
-            isSignificant = numRows > 0;
+            isSignificant = getNumberOfRows() > 0;
             setHeaders();
         }
     }
 
     //Constructor for empty table creation
-    QueryResultsTable() : isSignificant(false), numRows(0), numCols(0) {}
+    QueryResultsTable() : isSignificant(false) {}
 
     void condenseTable(unordered_set<string> headers);
 
@@ -207,8 +204,6 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
     */
     void renameColumn(string newName, string oldName);
 
-    void duplicateAndAddColumn(string newName, string oldName);
-
     /**
      * Creates a new QueryResultsTable object that represents the filtered table.
      *
@@ -238,7 +233,7 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
     bool QueryResultsTable::hasAttributeHeader(string header);
 
     void setHeaders() {
-        if (numRows == 0) return;
+        if (getNumberOfRows() == 0) return;
         auto map = tableRows.begin();
         for (const auto& pair : *map) {
             headers.insert(pair.first);
@@ -250,15 +245,12 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
     }
 
     void setHeaders(vector<string> _headers) {
-        unordered_set<string> finalheaders;
-        finalheaders.insert(_headers.begin(), _headers.end());
-        headers = finalheaders;
+        headers.clear();
+        headers.insert(_headers.begin(), _headers.end());
     }
 
     void setHeaders(unordered_set<string> _headers) {
-         unordered_set<string> finalheaders;
-        finalheaders.insert(_headers.begin(), _headers.end());
-        headers = finalheaders;
+        headers = _headers;
     }
 
     //Getter method for data in a column
@@ -319,8 +311,6 @@ class QueryResultsTable : public enable_shared_from_this<QueryResultsTable> {
     shared_ptr<QueryResultsTable> getShared() { return shared_from_this(); }
 
 private:
-    int numRows;
-    int numCols;
     StringMap attr;
     bool isSignificant; 
     // denotes whether a table is significant or not. 
