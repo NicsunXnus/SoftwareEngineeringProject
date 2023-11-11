@@ -67,5 +67,12 @@ namespace UnitTesting
 			Assert::IsTrue(2 == static_cast<int>(qo1.getSynonyms()->size()));
 		}
 
+		TEST_METHOD(TestDesignObject)
+		{
+			StmtObject stmtS = StmtObject("s"sv);
+
+			Assert::IsTrue(1 == static_cast<int>(stmtS.getSynonyms()->size()));
+		}
+
 	};
 }

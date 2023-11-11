@@ -17,6 +17,7 @@ private:
 public:
 	DesignObject(string_view data)
 		: QueryObject{ data } {
+        synonym = data;
 	}
 
 	shared_ptr<unordered_set<string>> getSynonyms() {
