@@ -46,7 +46,7 @@ bool PatternClauseObjectFactory::validateAssignPatternArgs(vector<shared_ptr<Cla
 		throw SyntaxErrorException("Invalid arguments in assign pattern clause");
 	}
 	else if (isArg0If) {
-		throw SyntaxErrorException("Expected If pattern syntax. Got while/assign syntax instead")
+		throw SyntaxErrorException("Expected If pattern syntax. Got while/assign syntax instead");
 	}
 	else if (patternSynonym->isSynonym() && !isArg0ValidSynonymAssign) {
 		throw SemanticErrorException("Semantic error: synonym for assign pattern clause is not valid");
@@ -88,7 +88,7 @@ bool PatternClauseObjectFactory::validateWhilePatternArgs(vector<shared_ptr<Clau
 		throw SyntaxErrorException("Invalid arguments in while pattern clause");
 	}
 	else if (isArg0If) {
-		throw SyntaxErrorException("Expected If pattern syntax. Got while/assign syntax instead")
+		throw SyntaxErrorException("Expected If pattern syntax. Got while/assign syntax instead");
 	}
 	else if (patternSynonym->isSynonym() && !isArg0ValidSynonymWhile) {
 		throw SemanticErrorException("Semantic error: synonym for while pattern clause is not valid");

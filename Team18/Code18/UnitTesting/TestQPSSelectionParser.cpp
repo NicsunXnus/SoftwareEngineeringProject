@@ -2530,6 +2530,21 @@ namespace UnitTesting
 			}
 		}
 
+
+		TEST_METHOD(TestSelectBoolAttrTup)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("Select <BOOLEAN.varName>");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+			}
+			catch (const QPSError& ex) {
+				Assert::AreEqual("SemanticError", ex.getType());
+			}
+		}
+
 		TEST_METHOD(TestSelectBoolAttr)
 		{
 			vector<string> tokenizer = PQLTokenizer::tokenize("Select BOOLEAN.varName");
@@ -2542,6 +2557,20 @@ namespace UnitTesting
 			catch (const QPSError& ex) {
 				Assert::AreEqual("SemanticError", ex.getType());
 			}
+		}
+
+		TEST_METHOD(TestValidSTPatternIfWith)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("stmt s, s1; procedure p; variable v, v1; if ifs; assign a, a1; "
+				"Select s such that Follows*(s, s1) pattern ifs(v1, _, _) with a.stmt#  = a1.stmt#");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[0]) == typeid(StmtObject));
+			Assert::IsTrue(typeid(*qo[1]) == typeid(FollowsStarObject));
+			Assert::IsTrue(typeid(*qo[2]) == typeid(IfPatternObject));
+			Assert::IsTrue(typeid(*qo[3]) == typeid(AttrRefAttrRefComparisonQueryObject));
 		}
 	};
 
