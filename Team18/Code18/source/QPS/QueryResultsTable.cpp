@@ -1,17 +1,22 @@
 #include "QueryResultsTable.h"
 
+shared_ptr<QueryResultsTable> QueryResultsTable::handleEmptyTables(shared_ptr<QueryResultsTable> other) {
+  if (other->getSignificant() && other->isEmpty() && this->getSignificant() &&
+      !this->isEmpty()) {  // TRUE EMPTY X TABLE
+    return make_shared<QueryResultsTable>(tableRows);
+  }
+  if (this->getSignificant() && this->isEmpty() && other->getSignificant() &&
+      !other->isEmpty()) {  // TABLE X TRUE EMPTY
+    return other;
+  }
+  return QueryResultsTable::createEmptyTable(other->getSignificant() &&
+                                             this->getSignificant());
+}
+
 shared_ptr<QueryResultsTable> QueryResultsTable::crossProductSet(shared_ptr<QueryResultsTable> other) {
     if (other->isEmpty() || this->isEmpty()) {
-        if (other->getSignificant() && other->isEmpty() && this->getSignificant() &&
-            !this->isEmpty()) {  // TRUE EMPTY X TABLE
-            return make_shared<QueryResultsTable>(tableRows);
-        }
-        if (this->getSignificant() && this->isEmpty() && other->getSignificant() &&
-            !other->isEmpty()) {  // TABLE X TRUE EMPTY
-            return other;
-        }
-        return QueryResultsTable::createEmptyTable(other->getSignificant() && this->getSignificant());
-    } 
+      return this->handleEmptyTables(other);
+    }
     unordered_set<unordered_map<string,string>, HashFunc, EqualFunc> thisRows = getRowsSet();
     unordered_set<unordered_map<string, string>, HashFunc, EqualFunc> otherRows = other->getRowsSet();
 

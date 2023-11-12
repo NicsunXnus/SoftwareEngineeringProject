@@ -15,7 +15,8 @@ private:
 
 public:
 	WithObject(string_view clauseName, shared_ptr<ClauseArg> synonym)
-		: QueryObject{ clauseName }, synonym{ synonym } {};
+		: QueryObject{ clauseName }, synonym{ synonym } {
+	};
 	shared_ptr<ClauseArg> getSynonymObject();
 	shared_ptr<unordered_set<string>> getSynonyms() {
 		unordered_set<string> synonyms;

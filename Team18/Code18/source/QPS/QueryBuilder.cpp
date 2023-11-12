@@ -15,7 +15,7 @@
 
 vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
   shared_ptr<QueryResultsTable> finalTable =
-      QueryResultsTable::createEmptyTable();
+      QueryResultsTable::createEmptyTable(false);
 
   if (nonSelectClauseQueryObjects.empty()) return {};
 
@@ -25,24 +25,48 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
   queryOptimiser->sortGroups();
   vector<shared_ptr<QueryGroup>> groups = queryOptimiser->getQueryGroups();
 
+  unordered_set<string> selectSynonyms;
+  for (const auto& queryObject : selectClauseQueryObjects) {
+    auto synonyms = queryObject->getSynonyms();
+    selectSynonyms.insert(synonyms->begin(), synonyms->end());
+  }
+
   //  evaluate each group (sequentially), in the order 0, 1, 2,..
   for (shared_ptr<QueryGroup> group : groups) {
-    shared_ptr<QueryResultsTable> groupTable = buildGroupQuery(group);
+    // check if a group has relevant synonyms
+    unordered_set<string> groupSynonyms;
+    for (const auto& queryObject : group->getClauses()) {
+      auto synonyms = queryObject->getSynonyms();
+      groupSynonyms.insert(synonyms->begin(), synonyms->end());
+    }
+    bool hasRelevantSynonyms = has_intersection(selectSynonyms, groupSynonyms);
+    shared_ptr<QueryResultsTable> groupTable =
+        buildGroupQuery(group, hasRelevantSynonyms);
 
+    // if groupTable is empty and insignificant, break out of loop.
+    // lazy evaluation
     if (groupTable->isEmpty() && !groupTable->getSignificant()) {
-      return {QueryResultsTable::createEmptyTable()};
+      return {QueryResultsTable::createEmptyTable(false)};
     }
 
-    // if finalTable is empty, just set it to groupTable
+    // if this group is has no relevant synonyms, just return empty table.
+    // significant if groupTable non-empty, vice-versa.
+    if (!hasRelevantSynonyms) {
+      if (groupTable->isEmpty() && !groupTable->getSignificant()) {
+        return {QueryResultsTable::createEmptyTable(false)};
+      } else if (groupTable->isEmpty() && groupTable->getSignificant()) {
+        groupTable = QueryResultsTable::createEmptyTable(true);
+      } else {
+        groupTable = QueryResultsTable::createEmptyTable(true);
+      }
+    }
+
+    // initialisation: if finalTable is empty, just set it to groupTable
     if (finalTable->isEmpty()) {
       finalTable = groupTable;
-      continue;
-    }
-
-    // no common synonyms. must cross product
-    finalTable = finalTable->crossProductSet(groupTable);
-    if (finalTable->isEmpty() && !finalTable->getSignificant()) {
-      return {QueryResultsTable::createEmptyTable()};
+    } else {
+      // no common synonyms. must cross product
+      finalTable = finalTable->crossProductSet(groupTable);
     }
   }
 
@@ -50,9 +74,10 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
 }
 
 shared_ptr<QueryResultsTable> QueryBuilder::buildGroupQuery(
-    shared_ptr<QueryGroup> group) {
+    shared_ptr<QueryGroup> group, bool hasRelevantSynonyms) {
   shared_ptr<QRTCache> cache = make_shared<QRTCache>();
-  shared_ptr<QueryResultsTable> groupTable = make_shared<QueryResultsTable>();
+  shared_ptr<QueryResultsTable> groupTable =
+      QueryResultsTable::createEmptyTable(false);
   vector<shared_ptr<QueryObject>> clauses = group->getClauses();
 
   // evaluation order: perform inner joins on the tables based on next
@@ -61,9 +86,6 @@ shared_ptr<QueryResultsTable> QueryBuilder::buildGroupQuery(
   // if inner join results in empty+insignificant groupTable, break out of the
   // for loop. this will terminate this group's evaluation, which also
   // terminates future group's evaluation
-
-  // possible augmentation: after every group, remove all columns of synonyms not
-  // in the select clause. dropColumns() then removeDuplicates().
 
   vector<bool> usedQueryObjects(clauses.size(), false);
   unordered_set<string> usedSynonyms;
@@ -82,30 +104,27 @@ shared_ptr<QueryResultsTable> QueryBuilder::buildGroupQuery(
     shared_ptr<QueryResultsTable> table;
     if (cache->contains(nextObj->getCacheName())) {
       table = cache->get(nextObj->getCacheName());
-      continue;  // cache hit
     } else {
       table = nextObj->callAndProcess(dataAccessLayer);
     }
     if (nextObj->shouldCache()) {
       cache->insert(nextObj->getCacheName(), table);
     }
-
     // break out of loop if table is empty. lazy evaluation
     if (table->isEmpty() && !table->getSignificant()) {
-      return QueryResultsTable::createEmptyTable();
+      return QueryResultsTable::createEmptyTable(false);
     }
 
-    // if groupTable is empty, just set it to table
+    // if groupTable is empty, just set it to table. initialise
     if (groupTable->isEmpty()) {
       groupTable = table;
-      continue;
+    } else {
+      groupTable = groupTable->innerJoinSet(table);
     }
-
-    groupTable = groupTable->innerJoinSet(table);
 
     // break out of loop if groupTable is empty. lazy evaluation
     if (groupTable->isEmpty() && !groupTable->getSignificant()) {
-      return QueryResultsTable::createEmptyTable();
+      return QueryResultsTable::createEmptyTable(false);
     }
   }
   return groupTable;
