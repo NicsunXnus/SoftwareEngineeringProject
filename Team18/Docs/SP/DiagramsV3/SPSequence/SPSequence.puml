@@ -1,0 +1,48 @@
+@startuml
+!include ../../style.puml
+skinparam ClassFontColor #000000
+
+
+skinparam ClassBorderColor #000000
+box SP LOGIC_COLOR_T1
+participant ":ApplicationWrapper" as ApplicationWrapper LOGIC_COLOR
+participant ":SimpleProcessor" as SimpleProcessor LOGIC_COLOR
+' participant ":ASTBuilder" as ASTBuilder LOGIC_COLOR
+participant ":DesignExtractor" as DesignExtractor LOGIC_COLOR
+participant ":PKB" as PKB LOGIC_COLOR
+end box
+
+
+[-> ApplicationWrapper : directParse(strv src, b MT)
+note right
+    Shorthand for types used:
+    @ - Shared Pointer, str - String, b - Bool,
+    strv - String View, PP - ProcesssedProgram, 
+    MT - MultiThread
+end note
+activate ApplicationWrapper
+
+ApplicationWrapper -> SimpleProcessor : <<static>>\n processProgram(str srcCode, b MT)
+activate SimpleProcessor
+SimpleProcessor -> ApplicationWrapper : PP processedProgram
+deactivate SimpleProcessor
+
+ApplicationWrapper --> DesignExtractor : extractAndInsertAll(PP processedProgram, b MT)
+activate DesignExtractor
+    DesignExtractor -> DesignExtractor : extractAbstractions(PP processedProgram, b MT)
+    DesignExtractor -> DesignExtractor : extractEntities(PP processedProgram)
+    DesignExtractor -> PKB : insertAbstractions()
+    activate PKB
+    PKB -> DesignExtractor : success
+    deactivate PKB
+    DesignExtractor -> PKB : insertEntities()
+    activate PKB
+    PKB -> DesignExtractor : success
+    deactivate PKB
+DesignExtractor -> ApplicationWrapper
+deactivate DesignExtractor
+
+[<--ApplicationWrapper : success
+deactivate ApplicationWrapper
+
+@end
