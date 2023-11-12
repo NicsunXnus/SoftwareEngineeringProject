@@ -34,9 +34,6 @@ shared_ptr<QueryResultsTable> QueryResultsTable::crossProductSet(shared_ptr<Quer
 }
 
 shared_ptr<QueryResultsTable> QueryResultsTable::innerJoinSet(shared_ptr<QueryResultsTable> other) {
-    if (other->isEmpty() || this->isEmpty()) {
-        return this->handleEmptyTables(other);
-    }
     unordered_set<string> thisHeaders = getHeaders();
     unordered_set<string> otherHeaders = other->getHeaders();
     unordered_set<string> commonHeaders;

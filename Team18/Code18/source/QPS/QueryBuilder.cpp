@@ -46,18 +46,27 @@ vector<shared_ptr<QueryResultsTable>> QueryBuilder::buildQuery() {
     // if groupTable is empty and insignificant, break out of loop.
     // lazy evaluation
     if (groupTable->isEmpty() && !groupTable->getSignificant()) {
-      return {QueryResultsTable::createEmptyTable()};
+      return {QueryResultsTable::createEmptyTable(false)};
+    }
+
+    // if this group is has no relevant synonyms, just return empty table.
+    // significant if groupTable non-empty, vice-versa.
+    if (!hasRelevantSynonyms) {
+      if (groupTable->isEmpty() && !groupTable->getSignificant()) {
+        return {QueryResultsTable::createEmptyTable(false)};
+      } else if (groupTable->isEmpty() && groupTable->getSignificant()) {
+        groupTable = QueryResultsTable::createEmptyTable(true);
+      } else {
+        groupTable = QueryResultsTable::createEmptyTable(true);
+      }
     }
 
     // initialisation: if finalTable is empty, just set it to groupTable
     if (finalTable->isEmpty()) {
       finalTable = groupTable;
-      continue;
-    }
-    // no common synonyms. must cross product
-    finalTable = finalTable->crossProductSet(groupTable);
-    if (finalTable->isEmpty() && !finalTable->getSignificant()) {
-      return {QueryResultsTable::createEmptyTable()};
+    } else {
+      // no common synonyms. must cross product
+      finalTable = finalTable->crossProductSet(groupTable);
     }
   }
 
@@ -101,32 +110,16 @@ shared_ptr<QueryResultsTable> QueryBuilder::buildGroupQuery(
     if (nextObj->shouldCache()) {
       cache->insert(nextObj->getCacheName(), table);
     }
-
     // break out of loop if table is empty. lazy evaluation
     if (table->isEmpty() && !table->getSignificant()) {
-      return QueryResultsTable::createEmptyTable();
+      return QueryResultsTable::createEmptyTable(false);
     }
-
-    // if this group is has no relevant synonyms, we keep checking if it
-    // becomes empty at any point in time.
-    if (!hasRelevantSynonyms) {
-      if (table->isEmpty() && !table->getSignificant()) {
-        // can early terminate. the whole query will be false
-        return QueryResultsTable::createEmptyTable(false);
-      } else {
-        // significant. cannot early terminate.
-        // need to complete evaluation of this group
-        // before we can determine if the whole query is false
-        // But, whether empty or not, rows are irrelevant. just set as empty
-        table = QueryResultsTable::createEmptyTable(true);
-      }
-    }
-    groupTable = groupTable->innerJoinSet(table);
 
     // if groupTable is empty, just set it to table. initialise
     if (groupTable->isEmpty()) {
       groupTable = table;
-      continue;
+    } else {
+      groupTable = groupTable->innerJoinSet(table);
     }
 
     // break out of loop if groupTable is empty. lazy evaluation
