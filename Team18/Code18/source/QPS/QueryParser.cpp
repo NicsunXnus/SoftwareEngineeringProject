@@ -164,11 +164,6 @@ vector<shared_ptr<QueryObject>> QueryParser::parseQuery(vector<string_view> quer
 	bool isBooleanToken{ isBoolean(query, currentWordIndex) };
 	
 	int selectTupleTokenCount{};
-	/*
-	if (wasBooleanObject) {
-		// skip this portion of parsing
-	}
-	*/
 
 	if (validator->isSelectTuple(query, currentWordIndex, selectTupleTokenCount)) { // check if is tuple
 		vector<shared_ptr<QueryObject>> selectQueryObjects{ createTupleObjects(query, currentWordIndex, selectTupleTokenCount) };
