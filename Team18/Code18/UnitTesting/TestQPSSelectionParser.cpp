@@ -2447,6 +2447,173 @@ namespace UnitTesting
 			Assert::IsTrue(qo[5]->getQueryObjectName() == "Compare"sv);
 		}
 
+		TEST_METHOD(UndeclaredSynInSelectTuple)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("stmt s; while w; print p;"
+				"Select <s, a, p> such that Next(458, p) and Follows(s, 404) and Parent(w, 94)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex) {
+				Assert::AreEqual("SemanticError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(WhilePatternInvalid)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("while if; Select BOOLEAN pattern if (\"w4t3r\",_,_)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex) {
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+
+		TEST_METHOD(CrashInvalidWith)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("read r1, r2; print p1, p2; call c1, c2; assign a1, a2; procedure proc1, proc2; variable v1, v2; constant con1, con2; stmt s1, s2;"
+				"Select <proc1, proc2, c1> such that not Calls(proc1, proc2) with c1.procName = proc1 and c2.procName = proc2");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+				Assert::Fail();
+			}
+			catch (const QPSError& ex) {
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+
+		}
+
+		TEST_METHOD(TestParseInvalidNotUses2UsesCompare)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("read r1, r2; print p1, p2; call c1, c2; assign a1, a2; procedure proc1, proc2; variable v1, v2; constant con1, con2; stmt s1, s2; while w; if if;"
+				"Select v1 such that not Uses(w, v1) and not Uses(if, v1) such that Uses(proc1, v1) and proc1.procName = \"First\"");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+			}
+			catch (const QPSError& ex) {
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+
+		}
+
+
+		TEST_METHOD(TestSelectBoolTup)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("Select <BOOLEAN>");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+			}
+			catch (const QPSError& ex) {
+				Assert::AreEqual("SemanticError", ex.getType());
+			}
+		}
+
+
+		TEST_METHOD(TestSelectBoolAttrTup)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("Select <BOOLEAN.varName>");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+			}
+			catch (const QPSError& ex) {
+				Assert::AreEqual("SemanticError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestSelectBoolAttr)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("Select BOOLEAN.varName");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+			}
+			catch (const QPSError& ex) {
+				Assert::AreEqual("SemanticError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestValidSTPatternIfWith)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("stmt s, s1; procedure p; variable v, v1; if ifs; assign a, a1; "
+				"Select s such that Follows*(s, s1) pattern ifs(v1, _, _) with a.stmt#  = a1.stmt#");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[0]) == typeid(StmtObject));
+			Assert::IsTrue(typeid(*qo[1]) == typeid(FollowsStarObject));
+			Assert::IsTrue(typeid(*qo[2]) == typeid(IfPatternObject));
+			Assert::IsTrue(typeid(*qo[3]) == typeid(AttrRefAttrRefComparisonQueryObject));
+		}
+
+		TEST_METHOD(TestInvalidPatternCloseBracketOnly)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("assign a; Select a pattern a(_, _\")\"_)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+			}
+			catch (const QPSError& ex) {
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestInvalid1stArgWhilePattern)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("while w; Select w pattern w (_\"lac\"_,_)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+			}
+			catch (const QPSError& ex) {
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
+
+		TEST_METHOD(TestInvalid1stArgWhile2Pattern)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("while w; Select w pattern w(_""_, _)");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+
+			try {
+				vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+			}
+			catch (const QPSError& ex) {
+				Assert::AreEqual("SyntaxError", ex.getType());
+			}
+		}
 	};
 
 }

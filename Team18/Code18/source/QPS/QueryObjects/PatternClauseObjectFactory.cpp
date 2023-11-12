@@ -11,6 +11,7 @@ bool PatternClauseObjectFactory::validateAssignPatternArgs(vector<shared_ptr<Cla
 	}
 
 	bool isArg0ValidSynonymAssign{ patternSynonym->isSynonym() && patternSynonym->getSynonym()->getEntityType() == ASSIGN };
+	bool isArg0If{ patternSynonym->isSynonym() && patternSynonym->getSynonym()->getEntityType() == IF };
 
 	bool isArg1Wildcard{ arg1->isWildcard() };
 	bool isArg1ValidSynonym{ arg1->isSynonym()
@@ -44,6 +45,9 @@ bool PatternClauseObjectFactory::validateAssignPatternArgs(vector<shared_ptr<Cla
 		// check if any of the arguments are invalid generically
 		throw SyntaxErrorException("Invalid arguments in assign pattern clause");
 	}
+	else if (isArg0If) {
+		throw SyntaxErrorException("Expected If pattern syntax. Got while/assign syntax instead");
+	}
 	else if (patternSynonym->isSynonym() && !isArg0ValidSynonymAssign) {
 		throw SemanticErrorException("Semantic error: synonym for assign pattern clause is not valid");
 	}
@@ -65,6 +69,7 @@ bool PatternClauseObjectFactory::validateWhilePatternArgs(vector<shared_ptr<Clau
 	}
 
 	bool isArg0ValidSynonymWhile{ patternSynonym->isSynonym() && patternSynonym->getSynonym()->getEntityType() == WHILE };
+	bool isArg0If{ patternSynonym->isSynonym() && patternSynonym->getSynonym()->getEntityType() == IF };
 
 	bool isArg1Wildcard{ arg1->isWildcard() };
 	bool isArg1ValidSynonym{ arg1->isSynonym()
@@ -81,6 +86,9 @@ bool PatternClauseObjectFactory::validateWhilePatternArgs(vector<shared_ptr<Clau
 	if (!patternSynonym->isSynonym() || !(arg1->isSynonym() || isArg1Ident || isArg1Wildcard) || !isArg2Wildcard) {
 		// check if any of the arguments are invalid generically
 		throw SyntaxErrorException("Invalid arguments in while pattern clause");
+	}
+	else if (isArg0If) {
+		throw SyntaxErrorException("Expected If pattern syntax. Got while/assign syntax instead");
 	}
 	else if (patternSynonym->isSynonym() && !isArg0ValidSynonymWhile) {
 		throw SemanticErrorException("Semantic error: synonym for while pattern clause is not valid");
@@ -104,6 +112,8 @@ bool PatternClauseObjectFactory::validateIfPatternArgs(vector<shared_ptr<ClauseA
 	std::shared_ptr<ClauseArg> arg3{ arguments[3] };
 
 	bool isArg0ValidSynonym{ ifSynonym->isSynonym() && ifSynonym->getSynonym()->getEntityType() == IF };
+	bool isArg0WhileAssign{ ifSynonym->isSynonym() &&
+		ifSynonym->getSynonym()->getEntityType() == ASSIGN || ifSynonym->getSynonym()->getEntityType() == WHILE };
 
 	bool isArg1Wildcard{ arg1->isWildcard() };
 	bool isArg1ValidSynonym{ arg1->isSynonym()
@@ -120,6 +130,10 @@ bool PatternClauseObjectFactory::validateIfPatternArgs(vector<shared_ptr<ClauseA
 
 	if (!ifSynonym->isSynonym() || !(arg1->isSynonym() || isArg1Ident || isArg1Wildcard) || !isArg2Wildcard || !isArg3Wildcard) {
 		throw SyntaxErrorException("Invalid arguments in if pattern clause");
+	}
+	else if (isArg0WhileAssign) {
+		// pattern syntax should be 3 args, but we got 4. Invalid syntax for while/assign pattern
+		throw SyntaxErrorException("Expected syntax for while/assign pattern. Got if syntax instead");
 	}
 	else if (ifSynonym->isSynonym() && !isArg0ValidSynonym) {
 		throw SemanticErrorException("Semantic error: synonym for if pattern clause is not valid");

@@ -160,23 +160,12 @@ vector<shared_ptr<QueryObject>> QueryParser::parseQuery(vector<string_view> quer
 		throw SyntaxErrorException("Result clause not present");
 	}
 
-	bool wasBooleanObject{ false };
-	if (isBoolean(query, currentWordIndex)) {
-		// returns a null ptr if a synonym with name BOOLEAN has been declared
-		shared_ptr<QueryObject> booleanObject{ createBooleanObject(query, currentWordIndex) };
-
-		// only push to result if there was a boolean object created
-		if (booleanObject.get()) {
-			wasBooleanObject = true;
-			result.push_back(booleanObject);
-		}
-	}
-
+	
+	bool isBooleanToken{ isBoolean(query, currentWordIndex) };
+	
 	int selectTupleTokenCount{};
-	if (wasBooleanObject) {
-		// skip this portion of parsing
-	}
-	else if (validator->isSelectTuple(query, currentWordIndex, selectTupleTokenCount)) { // check if is tuple
+
+	if (validator->isSelectTuple(query, currentWordIndex, selectTupleTokenCount)) { // check if is tuple
 		vector<shared_ptr<QueryObject>> selectQueryObjects{ createTupleObjects(query, currentWordIndex, selectTupleTokenCount) };
 
 		result.insert(result.end(), selectQueryObjects.begin(), selectQueryObjects.end());
@@ -185,25 +174,34 @@ vector<shared_ptr<QueryObject>> QueryParser::parseQuery(vector<string_view> quer
 		if (selectTupleTokenCount == 1 && !SynonymObject::isValid(query[currentWordIndex])) {
 			throw SyntaxErrorException("Invalid syntax for synonym");
 		}
+		else if (selectTupleTokenCount == 3) {
+			shared_ptr<QueryObject> attrRefQuery{ createAttrRefObject(query, currentWordIndex) };
+
+			result.push_back(attrRefQuery);
+		}
+		else if (selectTupleTokenCount == 1 && !isDeclared(query[currentWordIndex]) && isBooleanToken) {
+			// check if its boolean object
+			shared_ptr<QueryObject> booleanObject{ createBooleanObject(query, currentWordIndex) };
+
+			result.push_back(booleanObject);
+		}
 		else if (selectTupleTokenCount == 1 && !isDeclared(query[currentWordIndex])) {
 			storeSemanticError(make_shared<SemanticErrorException>("Synonym not present in select clause, or synonym not declared"));
 			result.push_back(make_shared<StmtObject>("Placeholder query object, synonym not declared"));
 
 			++currentWordIndex;
 		}
-		else if (selectTupleTokenCount == 1) {
+		else {
 			shared_ptr<QueryObject> selectQuery{ synonyms.find(query[currentWordIndex])->second };
 			result.push_back(selectQuery);
 
 			++currentWordIndex;
-		
-		} else { // tuple token count is 3, element is a attrRef
-			shared_ptr<QueryObject> attrRefQuery{ createAttrRefObject(query, currentWordIndex) };
-
-			result.push_back(attrRefQuery);
+			
 		}
 
-		synonyms_in_select++;
+		if (!isBooleanToken) {
+			++synonyms_in_select;
+		}
 	}
 	else {
 		throw SyntaxErrorException("Invalid syntax for result clause");
@@ -367,13 +365,6 @@ bool QueryParser::hasAnd(std::vector<string_view>& query, int index) {
 
 shared_ptr<QueryObject> QueryParser::createBooleanObject(std::vector<string_view>& query, int& index) {
 	string_view booleanStr = query[index];
-	if (isDeclared(booleanStr)) {
-		// boolean is a synonym, ignore and proceed as if "BOOLEAN" is just another synonym
-		shared_ptr<QueryObject> emptyPointer{ nullptr };
-		return emptyPointer;
-	}
-
-	// BOOLEAN has not been declared. Create a BOOLEAN object
 	++index;
 	shared_ptr<QueryObjectFactory> factory{ QueryObjectFactory::createFactory(booleanStr) };
 
