@@ -2614,6 +2614,17 @@ namespace UnitTesting
 				Assert::AreEqual("SyntaxError", ex.getType());
 			}
 		}
+
+		TEST_METHOD(TestBoolDefined)
+		{
+			vector<string> tokenizer = PQLTokenizer::tokenize("stmt BOOLEAN; Select BOOLEAN");
+			vector<string_view> testSv{ sToSvVector(tokenizer) };
+			shared_ptr<QueryParser> p = make_shared<QueryParser>();
+			vector<shared_ptr<QueryObject>> qo = p->parsePQL(testSv);
+
+			Assert::IsTrue(typeid(*qo[0]) == typeid(StmtObject));
+			Assert::IsTrue(1 == static_cast<int>(p->getSelectClauseQueryObject(qo).size()));
+		}
 	};
 
 }
