@@ -7,7 +7,7 @@
 using namespace std;
 
 #include "EntityExtractor.h"
-#include "ParentsExtractor.h"
+#include "ParentExtractor.h"
 #include "FollowsExtractor.h"
 #include "UsesExtractor.h"
 #include "ModifiesExtractor.h"
@@ -27,7 +27,7 @@ public:
     // Constructor
     DesignExtractor()
     : entityExtractor(make_shared<EntityExtractor>()),
-      parentsExtractor(make_shared<ParentsExtractor>()),
+      parentsExtractor(make_shared<ParentExtractor>()),
       followsExtractor(make_shared<FollowsExtractor>()),
       usesExtractor(make_shared<UsesExtractor>()),
       modifiesExtractor(make_shared<ModifiesExtractor>()),
@@ -53,31 +53,32 @@ public:
     void extractModifies(shared_ptr<ProcessedProgram> processedProgram);
     void extractCalls(shared_ptr<ProcessedProgram> processedProgram);
     void extractNext(shared_ptr<ProcessedProgram> processedProgram);
-    shared_ptr<map<string, unordered_set<string>>> getProcedureSetMap();
-    shared_ptr<map<string, unordered_set<string>>> getStatementSetMap();
-    shared_ptr<map<string, unordered_set<string>>> getVariableSetMap();
-    shared_ptr<map<string, unordered_set<string>>> getConstantSetMap();
-    shared_ptr<map<string, unordered_set<string>>> getCallProcNameMap();
-    shared_ptr<map<string, unordered_set<string>>> getReadVarNameMap();
-    shared_ptr<map<string, unordered_set<string>>> getPrintVarNameMap();
-    shared_ptr<map<string, shared_ptr<Node>>> getPatternMap();
-    shared_ptr<map<string, unordered_set<string>>> getParentMap();
-    shared_ptr<map<string, unordered_set<string>>> getParentStarMap();
-    shared_ptr<map<string, unordered_set<string>>> getFollowsMap();
-    shared_ptr<map<string, unordered_set<string>>> getFollowsStarMap();
-    shared_ptr<map<string, unordered_set<string>>> getUsesMap();
-    shared_ptr<map<string, unordered_set<string>>> getModifiesMap();
-    shared_ptr<map<string, unordered_set<string>>> getCallsMap();
-    shared_ptr<map<string, unordered_set<string>>> getCallsStarMap();
-    shared_ptr<map<string, unordered_set<string>>> getNextMap();
-    shared_ptr<map<string, pair<string, string>>> getProcedureStatementStorageMap();
+    shared_ptr<StringMap> getProcedureSetMap();
+    shared_ptr<StringMap> getStatementSetMap();
+    shared_ptr<StringMap> getVariableSetMap();
+    shared_ptr<StringMap> getConstantSetMap();
+    shared_ptr<StringMap> getCallProcNameMap();
+    shared_ptr<StringMap> getReadVarNameMap();
+    shared_ptr<StringMap> getPrintVarNameMap();
+    shared_ptr<unordered_map<string, shared_ptr<Node>>> getPatternMap();
+    shared_ptr<StringMap> getParentMap();
+    shared_ptr<StringMap> getParentStarMap();
+    shared_ptr<StringMap> getFollowsMap();
+    shared_ptr<StringMap> getFollowsStarMap();
+    shared_ptr<StringMap> getUsesMap();
+    shared_ptr<StringMap> getModifiesMap();
+    shared_ptr<StringMap> getCallsMap();
+    shared_ptr<StringMap> getCallsStarMap();
+    shared_ptr<StringMap> getNextMap();
+    shared_ptr<unordered_map<string, pair<string, string>>>
+    getProcedureStatementStorageMap();
 
     void extractEntities(shared_ptr<ProcessedProgram> processedProgram);
     void extractAbstractions(shared_ptr<ProcessedProgram> processedProgram, bool useMultithread = false);
     
 private:
     shared_ptr<EntityExtractor> entityExtractor;
-    shared_ptr<ParentsExtractor> parentsExtractor;
+    shared_ptr<ParentExtractor> parentsExtractor;
     shared_ptr<FollowsExtractor> followsExtractor;
     shared_ptr<UsesExtractor> usesExtractor;
     shared_ptr<ModifiesExtractor> modifiesExtractor;

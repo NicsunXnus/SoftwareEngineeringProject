@@ -6,7 +6,7 @@ void AbstractionExtractor::insertToAbstractionMap(string key, string value) {
 
 
 
-shared_ptr<map<string, unordered_set<string>>> AbstractionExtractor::getStorageMap() {
+shared_ptr<StringMap> AbstractionExtractor::getStorageMap() {
     return this->AbstractionStorageMap;
 }
 
@@ -15,20 +15,20 @@ void AbstractionExtractor::extractAbstractions(shared_ptr<ProcessedProgram> proc
 }
 
 void AbstractionExtractor::extract(shared_ptr<ProcessedProgram> processedProgram) {
-    std::vector<std::shared_ptr<ProcessedProcedure>> procedures = processedProgram->getAllProcedures();
-    for (std::shared_ptr<ProcessedProcedure> procedure : procedures) {
+    vector<shared_ptr<ProcessedProcedure>> procedures = processedProgram->getAllProcedures();
+    for (shared_ptr<ProcessedProcedure> procedure : procedures) {
         procedure->accept(shared_from_this());
     }
 }
 
 void AbstractionExtractor::extract(shared_ptr<ProcessedProcedure> processedProcedure) {
-    std::shared_ptr<ProcessedStmtList> statementList = processedProcedure->getStmts();
+    shared_ptr<ProcessedStmtList> statementList = processedProcedure->getStmts();
     statementList->accept(shared_from_this());
 }
 
 void AbstractionExtractor::extract(shared_ptr<ProcessedStmtList> processedStmtList) {
-    std::vector<std::shared_ptr<ProcessedStmt>> stmts = processedStmtList->getStmts();
-    for (std::shared_ptr<ProcessedStmt> stmt : stmts) {
+    vector<shared_ptr<ProcessedStmt>> stmts = processedStmtList->getStmts();
+    for (shared_ptr<ProcessedStmt> stmt : stmts) {
         stmt->accept(shared_from_this());
     }
 }
@@ -42,7 +42,7 @@ void AbstractionExtractor::extract(shared_ptr<ProcessedIfStmt> processedIf) {
     processedIf->getElseBlock()->accept(shared_from_this());
 }
 
-void AbstractionExtractor::insertIntoMap(string key, string statementNumber, shared_ptr<map<string, unordered_set<string>>> map) {
+void AbstractionExtractor::insertIntoMap(string key, string statementNumber, shared_ptr<StringMap> map) {
     // Insert to the map if the key is not found
     if (map->find(key) == map->end()) {
         map->insert({ key, unordered_set<string>() });

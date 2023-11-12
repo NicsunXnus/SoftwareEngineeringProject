@@ -13,29 +13,29 @@ string UsesModifiesExtractor::getProcedureNameFromStatementNumber(string lineNum
 }
 
 void UsesModifiesExtractor::extract(shared_ptr<ProcessedProgram> processedProgram) {
-    std::vector<std::shared_ptr<ProcessedProcedure>> procedures = processedProgram->getAllProcedures();
-    for (std::shared_ptr<ProcessedProcedure> procedure : procedures) {
+    vector<shared_ptr<ProcessedProcedure>> procedures = processedProgram->getAllProcedures();
+    for (shared_ptr<ProcessedProcedure> procedure : procedures) {
         procedure->accept(shared_from_this());
     }
 }
 
 void UsesModifiesExtractor::extract(shared_ptr<ProcessedStmtList> processedStmtList, string parentConditionalStatementNumber) {
     for (auto& stmt : processedStmtList->getStmts()) {
-        std::string currentStatementNumber = std::to_string(stmt->getStatementNumber());
+        string currentStatementNumber = to_string(stmt->getStatementNumber());
         this->insertToIfWhileNestedStatementsMap(currentStatementNumber, parentConditionalStatementNumber);
         stmt->accept(shared_from_this());
     }
 }
 
 void UsesModifiesExtractor::extract(shared_ptr<ProcessedCallStmt> processedCallStmt) {
-    string statementNumber = std::to_string(processedCallStmt->getStatementNumber());
+    string statementNumber = to_string(processedCallStmt->getStatementNumber());
     string procedureCalledName = processedCallStmt->getProcedureName()->getName();
     this->insertIntoProcedureCallLinesMap(procedureCalledName, statementNumber);
 }
 
 void UsesModifiesExtractor::processIndirectProcedureCalls() {
     for (const auto& [variable, values] : *this->AbstractionStorageMap) {
-        std::vector<std::string> procedureNamesToBeAdded = vector<string>();
+        vector<string> procedureNamesToBeAdded = vector<string>();
         for (const auto& value : values) {
             // If the value is a procedure name, add the vector of procedureNames from the callsProcedureParentProcedureMap
             if (this->callsProcedureParentProcedureMap->find(value) != this->callsProcedureParentProcedureMap->end()) {
@@ -61,7 +61,7 @@ void UsesModifiesExtractor::addStatementNumberAndProcedureName(string variableNa
     insertToAbstractionMap(variableName, parentProcedure);
 }
 
-void UsesModifiesExtractor::createCallsProcedureParentProcedureMap(shared_ptr<map<string, unordered_set<string>>> callsMap) {
+void UsesModifiesExtractor::createCallsProcedureParentProcedureMap(shared_ptr<StringMap> callsMap) {
     for (const auto& [key, values] : *callsMap) {
         for (const auto& value : values) {
             insertIntoMap(value, key, callsProcedureParentProcedureMap);
@@ -72,7 +72,7 @@ void UsesModifiesExtractor::createCallsProcedureParentProcedureMap(shared_ptr<ma
 void UsesModifiesExtractor::processNestedIfWhileStatements() {
     // for all values in AbstractionStorageMap
     for (const auto& [variable, values] : *this->AbstractionStorageMap) {
-        shared_ptr<unordered_set<std::string>> statementNumbersToBeAdded = make_shared<unordered_set<std::string>>();
+        shared_ptr<unordered_set<string>> statementNumbersToBeAdded = make_shared<unordered_set<string>>();
         for (const auto& value : values) {
             nestedIfWhileHelper(value, statementNumbersToBeAdded);
         }
@@ -83,10 +83,10 @@ void UsesModifiesExtractor::processNestedIfWhileStatements() {
     }
 }
 
-void UsesModifiesExtractor::nestedIfWhileHelper(string childStatementNumber, shared_ptr<unordered_set<std::string>> statementNumbersToBeAdded) {
+void UsesModifiesExtractor::nestedIfWhileHelper(string childStatementNumber, shared_ptr<unordered_set<string>> statementNumbersToBeAdded) {
         if (this->ifWhileNestedStatementsMap->find(childStatementNumber) != this->ifWhileNestedStatementsMap->end()) {
             // get the vector of values of the childStatementNumber
-            shared_ptr<unordered_set<std::string>> nestedStatementNumbers = make_shared<unordered_set<string>>(this->ifWhileNestedStatementsMap->at(childStatementNumber));
+            shared_ptr<unordered_set<string>> nestedStatementNumbers = make_shared<unordered_set<string>>(this->ifWhileNestedStatementsMap->at(childStatementNumber));
             for (const auto& nestedStatementNumber : *nestedStatementNumbers) {
                 // add the nestedStatementNumber to the vector of values in the AbstractionStorageMap
                 statementNumbersToBeAdded->insert(nestedStatementNumber);

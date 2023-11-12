@@ -18,11 +18,20 @@ class ProcNameObjectFactory : public WithClauseObjectFactory {
 public:
 	ProcNameObjectFactory() {};
 
-	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
+	const unordered_set<ENTITY> validSynonyms{ PROCEDURE, CALL };
+
+	shared_ptr<QueryObject> create(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> synonym{ arguments[0] };
 		
 		if (!synonym->isSynonym()) {
 			throw SyntaxErrorException("procName synonym clause arg does not contain a synonym");
+		}
+
+		ENTITY synonymEntity{ synonym->getSynonym()->getEntityType() };
+
+		// check if synonym type is valid
+		if (validSynonyms.find(synonymEntity) == validSynonyms.end()) {
+			throw SemanticErrorException("Invalid syn type for procName obj");
 		}
 
 		return make_shared<ProcNameObject>(clauseName, synonym);
@@ -34,11 +43,20 @@ class VarNameObjectFactory : public WithClauseObjectFactory {
 public:
 	VarNameObjectFactory() {};
 
-	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
+	const unordered_set<ENTITY> validSynonyms{ VARIABLE, READ, PRINT };
+
+	shared_ptr<QueryObject> create(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> synonym{ arguments[0] };
 
 		if (!synonym->isSynonym()) {
 			throw SyntaxErrorException("varName synonym clause arg does not contain a synonym");
+		}
+
+		ENTITY synonymEntity{ synonym->getSynonym()->getEntityType() };
+
+		// check if synonym type is valid
+		if (validSynonyms.find(synonymEntity) == validSynonyms.end()) {
+			throw SemanticErrorException("Invalid syn type for varName obj");
 		}
 
 		return make_shared<VarNameObject>(clauseName, synonym);
@@ -51,11 +69,20 @@ class ValueObjectFactory : public WithClauseObjectFactory {
 public:
 	ValueObjectFactory() {};
 
-	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
+	const unordered_set<ENTITY> validSynonyms{ CONSTANT };
+
+	shared_ptr<QueryObject> create(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> synonym{ arguments[0] };
 
 		if (!synonym->isSynonym()) {
 			throw SyntaxErrorException("value synonym clause arg does not contain a synonym");
+		}
+
+		ENTITY synonymEntity{ synonym->getSynonym()->getEntityType() };
+
+		// check if synonym type is valid
+		if (validSynonyms.find(synonymEntity) == validSynonyms.end()) {
+			throw SemanticErrorException("Invalid syn type for value obj");
 		}
 
 		return make_shared<ValueObject>(clauseName, synonym);
@@ -67,11 +94,20 @@ class StmtNoObjectFactory : public WithClauseObjectFactory {
 public:
 	StmtNoObjectFactory() {};
 
-	shared_ptr<QueryObject> create(string_view clauseName, vector<std::shared_ptr<ClauseArg>> arguments) override {
+	const unordered_set<ENTITY> validSynonyms{ STMT, READ, PRINT, CALL, WHILE, IF, ASSIGN };
+
+	shared_ptr<QueryObject> create(string_view clauseName, vector<shared_ptr<ClauseArg>> arguments) override {
 		shared_ptr<ClauseArg> synonym{ arguments[0] };
 
 		if (!synonym->isSynonym()) {
 			throw SyntaxErrorException("stmt# synonym clause arg does not contain a synonym");
+		}
+
+		ENTITY synonymEntity{ synonym->getSynonym()->getEntityType() };
+
+		// check if synonym type is valid
+		if (validSynonyms.find(synonymEntity) == validSynonyms.end()) {
+			throw SemanticErrorException("Invalid syn type for stmt# obj");
 		}
 
 		return make_shared<StmtNoObject>(clauseName, synonym);

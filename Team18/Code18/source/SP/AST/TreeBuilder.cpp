@@ -5,18 +5,18 @@
 #include "OperatorEvaluator.h"
 #include "../../HelperFunctions.h"
 
-shared_ptr<Node> TreeBuilder::makeArithmeticNode(std::string op, std::shared_ptr<Node> left, std::shared_ptr<Node> right) {
+shared_ptr<Node> TreeBuilder::makeArithmeticNode(string op, shared_ptr<Node> left, shared_ptr<Node> right) {
 	if (op == "+") return make_shared<PlusNode>(this->statementNumber, left, right);
 	if (op == "-") return make_shared<MinusNode>(this->statementNumber, left, right);
 	if (op == "/") return make_shared<DivideNode>(this->statementNumber, left, right);
 	if (op == "*") return make_shared<MultiplyNode>(this->statementNumber, left, right);
 	if (op == "%") return make_shared<ModuloNode>(this->statementNumber, left, right);
-	throw std::invalid_argument(ExceptionMessages::invalidOperation);
+	throw invalid_argument(ExceptionMessages::invalidOperation);
 }
 
-void TreeBuilder::applyArithmeticOperation(std::stack<std::string>& ops, std::stack<std::shared_ptr<Node>>& values) {
+void TreeBuilder::applyArithmeticOperation(stack<string>& ops, stack<shared_ptr<Node>>& values) {
 	if (values.size() < 2) { //at least 2 items in values to apply mathematical operation
-		throw std::invalid_argument(ExceptionMessages::missingOperatee);
+		throw invalid_argument(ExceptionMessages::missingOperatee);
 	}
 	shared_ptr<Node> right = values.top();
 	values.pop();
@@ -26,12 +26,12 @@ void TreeBuilder::applyArithmeticOperation(std::stack<std::string>& ops, std::st
 	ops.pop();
 }
 
-shared_ptr<Node> TreeBuilder::buildTree(std::vector<std::shared_ptr<Token>> tokens) {
+shared_ptr<Node> TreeBuilder::buildTree(vector<shared_ptr<Token>> tokens) {
 	stack<shared_ptr<Node>> values; stack<string> ops;
 	int lengthTokens = tokens.size();
 
 	for (int ind = 0; ind < lengthTokens; ind++) {
-		std::string tokenName = tokens[ind]->getName();
+		string tokenName = tokens[ind]->getName();
 
 		if (tokenName == "(") {
 			ops.push("(");

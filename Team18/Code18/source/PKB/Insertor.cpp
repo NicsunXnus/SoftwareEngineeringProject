@@ -21,13 +21,13 @@ void Insertor::addEntityNames(shared_ptr<StringMap> entity_name_map,
 }
 
 void Insertor::addProcLines(
-    shared_ptr<map<string, pair<string, string>>> proclines_map) {
+    shared_ptr<unordered_map<string, pair<string, string>>> proclines_map) {
   shared_ptr<ProcLinesStorage> entity_storage = StorageManager::getProcLinesStorage();
   (*entity_storage).setProcLines(proclines_map);
 }
 
 void Insertor::addPatterns(
-    shared_ptr<map<string, shared_ptr<Node>>> pattern_map) {
+    shared_ptr<unordered_map<string, shared_ptr<Node>>> pattern_map) {
   shared_ptr<PatternStorage> entity_storage = StorageManager::getPatternStorage();
   (*entity_storage).setPattern(pattern_map);
 }

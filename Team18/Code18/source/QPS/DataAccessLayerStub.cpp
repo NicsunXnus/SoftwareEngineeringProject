@@ -65,7 +65,7 @@ StringMap DataAccessLayerStub::getConstantMap() { return constantMap; }
 shared_ptr<Node> DataAccessLayerStub::getPatternTree(string statement_number) {
   ExpressionProcessor ep = ExpressionProcessor();
 
-  map<string, shared_ptr<Node>> patternTree = {
+  unordered_map<string, shared_ptr<Node>> patternTree = {
       {"1", ep.nodifyArithmeticExpression("a + 100 - b")},
       {"2", ep.nodifyArithmeticExpression("d / c")},
       {"3", ep.nodifyArithmeticExpression("300")},
@@ -109,3 +109,8 @@ StringMap DataAccessLayerStub::getClauseInverse(ABSTRACTION abstraction) {
 StringMap DataAccessLayerStub::getCallProcNames() { return callProcName; }
 StringMap DataAccessLayerStub::getReadVarNames() { return readVarName; }
 StringMap DataAccessLayerStub::getPrintVarNames() { return printVarName; }
+
+pair<string, string> DataAccessLayerStub::getProcLines(string procName) {
+    pair<string, string> empty;
+    return empty;
+}

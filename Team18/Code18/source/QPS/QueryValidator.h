@@ -6,7 +6,7 @@
 #include <string_view>
 #include <unordered_set>
 
-using namespace std::string_view_literals; // access the sv suffix
+using namespace std;
 
 /**
 * This class encapsulates an object that validates the structure of a query is valid for parsing
@@ -14,7 +14,7 @@ using namespace std::string_view_literals; // access the sv suffix
 class QueryValidator {
 private:
 	// Valid relational references
-	std::unordered_set<std::string_view> relationalReferences
+	unordered_set<string_view> relationalReferences
 	{ "Follows"sv, "Follows*"sv, "Parent"sv, "Parent*"sv, "Uses"sv, "Modifies"sv, "Calls"sv, "Calls*"sv, "Next"sv, "Next*"sv, "Affects"sv };
 
 	int SUCH_THAT_CLAUSE_TOKEN_COUNT{ 6 };
@@ -25,22 +25,22 @@ private:
 
 public:
 	// Checks if the query's result clause is a tuple
-	bool isSelectTuple(std::vector<std::string_view>& query, int index, int& tokenCount);
+	bool isSelectTuple(vector<string_view>& query, int index, int& tokenCount);
 
 	// Checks if the query's result clause is a select element
-	bool isSelectElem(std::vector<std::string_view>& query, int index, int& tokenCount);
+	bool isSelectElem(vector<string_view>& query, int index, int& tokenCount);
 
 	// Checks if a sequence of tokens is an attribute reference at the specified index
-	bool isAttrRef(std::vector<std::string_view>& query, int index, int& tokenCount);
+	bool isAttrRef(vector<string_view>& query, int index, int& tokenCount);
 
 	// Checks if the query has a relational reference starting at the specified index
-	bool hasRelationalReference(std::vector<std::string_view>& query, int index);
+	bool hasRelationalReference(vector<string_view>& query, int index);
 
 	// Checks if the query has a pattern clause starting at the specified index
-	bool hasPatternClause(std::vector<std::string_view>& query, int index, int& tokenCount, bool& isIfPattern);
+	bool hasPatternClause(vector<string_view>& query, int index, int& tokenCount, bool& isIfPattern);
 
 	// Checks if the query has a with clause starting at the specified index
-	bool hasWithClause(std::vector<std::string_view>& query, int index, int& tokenCount, bool& is1stRefAttrRef);
+	bool hasWithClause(vector<string_view>& query, int index, int& tokenCount, bool& is1stRefAttrRef);
 };
 
 #endif

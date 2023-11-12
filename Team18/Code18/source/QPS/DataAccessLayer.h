@@ -13,10 +13,12 @@
 using namespace std;
 
 class QueryObject;
+class DataAccessLayer;
+
 /**
 * This class represents an interface object that calls APIs from the PKB
 */
-class DataAccessLayer {
+class DataAccessLayer : public enable_shared_from_this<DataAccessLayer> {
 
 public:
 	/**
@@ -36,17 +38,20 @@ public:
 	virtual unordered_set<string> getAllConstants();
 
 	/* For Patterns */
-	virtual map<string, unordered_set<string>> getVariableMap();
-	virtual map<string, unordered_set<string>> getConstantMap();
+	virtual unordered_map<string, unordered_set<string>> getVariableMap();
+	virtual unordered_map<string, unordered_set<string>> getConstantMap();
     virtual shared_ptr<Node> getPatternTree(string statement_number);
 
 	/* For Design Abstractions / Clauses */
-	virtual StringMap DataAccessLayer::getClause(ABSTRACTION abstraction);
-	virtual StringMap DataAccessLayer::getClauseInverse(ABSTRACTION abstraction);
+	virtual StringMap getClause(ABSTRACTION abstraction);
+	virtual StringMap getClauseInverse(ABSTRACTION abstraction);
 
 	/* Attributes */
-	virtual StringMap DataAccessLayer::getCallProcNames();
-	virtual StringMap DataAccessLayer::getReadVarNames();
-	virtual StringMap DataAccessLayer::getPrintVarNames();
+	virtual StringMap getCallProcNames();
+	virtual StringMap getReadVarNames();
+	virtual StringMap getPrintVarNames();
+
+	/* Misc */
+	virtual pair<string, string> getProcLines(string procName);
 };
 #endif

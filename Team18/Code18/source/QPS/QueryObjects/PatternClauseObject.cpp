@@ -46,7 +46,8 @@ shared_ptr<QueryResultsTable> AssignPatternObject::callAndProcess(
   shared_ptr<QueryResultsTable> table;
 
   // Get PKB data
-  unordered_set<string> PKBAssignData = dataAccessLayer->getEntity(ASSIGN);
+  unordered_set<string> PKBAssignData =
+      dataAccessLayer->getEntity(ASSIGN);
   StringMap PKBModifiesData =
       dataAccessLayer->getClauseInverse(MODIFIES);  // inverse
   unordered_set<string> PKBVarData = dataAccessLayer->getAllVariables();

@@ -178,7 +178,6 @@
     <ClCompile Include="TestPKBInsertStorageManager.cpp" />
     <ClCompile Include="TestPKBRespondStorageManager.cpp" />
     <ClCompile Include="TestPQLTokenizer.cpp" />
-    <ClCompile Include="TestQPSOptimisation.cpp" />
     <ClCompile Include="TestQPSDeclarationParser.cpp" />
     <ClCompile Include="TestQPSDriver.cpp" />
     <ClCompile Include="TestQPSErrorQueries.cpp" />
@@ -186,6 +185,7 @@
     <ClCompile Include="TestQPSQueryResultTable.cpp" />
     <ClCompile Include="TestQPSResultsHandler.cpp" />
     <ClCompile Include="TestQPSSelectionParser.cpp" />
+    <ClCompile Include="TestQueryObject.cpp" />
     <ClCompile Include="TestSimpleProcessor.cpp" />
     <ClCompile Include="TestThreadPool.cpp" />
     <ClCompile Include="TestToken.cpp" />

@@ -4,13 +4,13 @@
 #include <string>
 #include <unordered_set>
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 #include "AbstractionStarExtractor.h"
 
-class ParentsExtractor : public AbstractionStarExtractor {
+class ParentExtractor : public AbstractionStarExtractor {
 public:
-    void extract(shared_ptr<ProcessedStmtList> processedStmtList, std::string parentStatementNumber);
+    void extract(shared_ptr<ProcessedStmtList> processedStmtList, string parentStatementNumber);
     void extract(shared_ptr<ProcessedWhileStmt> processedWhile) override;
     void extract(shared_ptr<ProcessedIfStmt> processedIf) override;
 };

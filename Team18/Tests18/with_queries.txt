@@ -1,0 +1,20 @@
+1 - syn, syn - test attr, swap back later
+while w; constant c;
+Select c with not c.value = w.stmt#
+0, 1, 2, 5
+5000
+1 - syn, syn - test attr, swap back later
+while w; constant c;
+Select c with not 5 = 10
+0, 1, 2, 5
+5000
+1 - syn, syn - test attr, swap back later
+read r1, r;
+Select r.varName with not r.varName = r.stmt#
+SemanticError
+5000
+1 - syn, syn - test attr, swap back later
+read r1, r;
+Select r.varName with r1.stmt# = r.varName
+SemanticError
+5000

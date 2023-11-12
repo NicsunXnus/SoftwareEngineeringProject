@@ -2,7 +2,7 @@
 #include "QueryObjects/SynonymObjects.h"
 
 // Checks if the query's result clause is a tuple
-bool QueryValidator::isSelectTuple(std::vector<std::string_view>& query, int index, int& tokenCount) {
+bool QueryValidator::isSelectTuple(vector<string_view>& query, int index, int& tokenCount) {
 	bool hasOpenBracket{ query[index] == "<"sv };
 	tokenCount = 0;
 
@@ -16,7 +16,7 @@ bool QueryValidator::isSelectTuple(std::vector<std::string_view>& query, int ind
 	bool isDotOrComma{ false };
 
 	while (index + tokenCount < static_cast<int>(query.size()) && query[index + tokenCount] != ">"sv) {
-		std::string_view token{ query[index + tokenCount] };
+		string_view token{ query[index + tokenCount] };
 
 		if (isSynonymOrAttrName) {
 			++tokenCount;
@@ -54,7 +54,7 @@ bool QueryValidator::isSelectTuple(std::vector<std::string_view>& query, int ind
 }
 
 // Checks if the query's result clause is a select element
-bool QueryValidator::isSelectElem(std::vector<std::string_view>& query, int index, int& tokenCount) {
+bool QueryValidator::isSelectElem(vector<string_view>& query, int index, int& tokenCount) {
 	// check if query has only 1 token left
 	if (static_cast<int>(query.size()) < index + ATTR_REF_TOKEN_COUNT) { // query not long enough to contain a attrRef, must be a synonym
 		tokenCount = 1;
@@ -71,7 +71,7 @@ bool QueryValidator::isSelectElem(std::vector<std::string_view>& query, int inde
 }
 
 // Checks if a sequence of tokens is an attribute reference at the specified index
-bool QueryValidator::isAttrRef(std::vector<std::string_view>& query, int index, int& tokenCount) {
+bool QueryValidator::isAttrRef(vector<string_view>& query, int index, int& tokenCount) {
 	if (query[index + 1] == "."sv) {
 		tokenCount = 3;
 		return true;
@@ -80,7 +80,7 @@ bool QueryValidator::isAttrRef(std::vector<std::string_view>& query, int index, 
 }
 
 // Checks if the query has a relational reference starting at the specified index
-bool QueryValidator::hasRelationalReference(std::vector<std::string_view>& query, int index) {
+bool QueryValidator::hasRelationalReference(vector<string_view>& query, int index) {
 	// Eg., "Uses" "(" "a" "," "b" ")"
 	if (index > static_cast<int>(query.size()) - SUCH_THAT_CLAUSE_TOKEN_COUNT) {
 		return false;
@@ -96,7 +96,7 @@ bool QueryValidator::hasRelationalReference(std::vector<std::string_view>& query
 }
 
 // Checks if the query has a pattern clause starting at the specified index
-bool QueryValidator::hasPatternClause(std::vector<string_view>& query, int index, int& tokenCount, bool& isIfPattern) {
+bool QueryValidator::hasPatternClause(vector<string_view>& query, int index, int& tokenCount, bool& isIfPattern) {
 	// pattern clause has a variable number of tokens
 	// E.g., "a", "(", "_", ",", "_", "x", "_", ")": a(_,_"x"_)has 8
 	// "a", "(", "_", ",", "_", ")": a(_,_) has 6
@@ -107,13 +107,18 @@ bool QueryValidator::hasPatternClause(std::vector<string_view>& query, int index
 	}
 
 	bool isSynonym{ SynonymObject::isValid(query[index]) };
+
+	if (!isSynonym) {
+		return false;
+	}
+
 	bool hasOpenBracket{ query[index + 1] == "("sv };
 	bool hasComma{ query[index + 3] == ","sv };
-	bool hasCloseBracket{ false };
-	if (query[index + 5] == ")"sv) { // pattern is looking for an exact match
+	bool hasCloseBracket{ query[index + 5] == ")"sv };
+	if (hasOpenBracket && hasComma && hasCloseBracket) { // pattern is looking for an exact match
 		tokenCount = MIN_PATTERN_CLAUSE_TOKEN_COUNT;
 		hasCloseBracket = true;
-		return true;
+ 		return true;
 	}
 
 	if (index > (static_cast<int>(query.size()) - MAX_PATTERN_CLAUSE_TOKEN_COUNT)) {
@@ -141,7 +146,7 @@ bool QueryValidator::hasPatternClause(std::vector<string_view>& query, int index
 }
 
 // Checks if the query has a with clause starting at the specified index
-bool QueryValidator::hasWithClause(std::vector<std::string_view>& query, int index, int& tokenCount, bool& is1stRefAttrRef) {
+bool QueryValidator::hasWithClause(vector<string_view>& query, int index, int& tokenCount, bool& is1stRefAttrRef) {
 	// with clause has a variable number of tokens. General structure: ref = ref
 	// a ref could have 1 or 3 tokens: "1" or "a", ".", "value"
 

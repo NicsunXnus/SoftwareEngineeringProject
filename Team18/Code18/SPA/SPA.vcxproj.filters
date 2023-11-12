@@ -54,7 +54,7 @@
     <ClCompile Include="..\source\SP\AST\TreeBuilder.cpp">
       <Filter>Source Files\SP\AST</Filter>
     </ClCompile>
-	<ClCompile Include="..\source\SP\AST\OperatorEvaluator.cpp">
+    <ClCompile Include="..\source\SP\AST\OperatorEvaluator.cpp">
       <Filter>Source Files\SP\AST</Filter>
     </ClCompile>
     <ClCompile Include="..\source\SP\AST\UnaryOpNode.cpp">
@@ -87,7 +87,7 @@
     <ClCompile Include="..\source\SP\DesignExtractor\NextExtractor.cpp">
       <Filter>Source Files\SP\DesignExtractor</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\SP\DesignExtractor\ParentsExtractor.cpp">
+    <ClCompile Include="..\source\SP\DesignExtractor\ParentExtractor.cpp">
       <Filter>Source Files\SP\DesignExtractor</Filter>
     </ClCompile>
     <ClCompile Include="..\source\SP\DesignExtractor\ProcedureLineNumberExtractor.cpp">
@@ -153,9 +153,6 @@
     <ClCompile Include="..\source\QPS\DataAccessLayerStub.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
-	<ClCompile Include="..\source\QPS\GroupClause.cpp">
-      <Filter>Source Files\QPS</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\QPS\QueryBuilder.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
@@ -172,9 +169,6 @@
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
     <ClCompile Include="..\source\QPS\ResultsHandler.cpp">
-      <Filter>Source Files\QPS</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\QPS\OptimisedFunctionsStub.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
     <ClCompile Include="..\source\QPS\QueryObjects\CallsObject.cpp">
@@ -210,13 +204,31 @@
     <ClCompile Include="..\source\QPS\QueryObjects\NextStarFilter.cpp">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\QPS\QueryObjects\PatternClauseObjectFactory.cpp">
+    <ClCompile Include="..\source\QPS\DataAccessLayerAffectsStub.cpp">
+      <Filter>Source Files\QPS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryObjects\QueryObjectModifier.cpp">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\QPS\QueryObjects\PatternClauseObject.cpp">
+    <ClCompile Include="..\source\QPS\QueryObjects\NotQueryObject.cpp">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\QPS\QueryValidator.cpp">
+    <ClCompile Include="..\source\QPS\QueryObjects\AffectsFilter.cpp">
+      <Filter>Source Files\QPS\QueryObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryObjects\AffectsObject.cpp">
+      <Filter>Source Files\QPS\QueryObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryObjects\WithClauseObject.cpp">
+      <Filter>Source Files\QPS\QueryObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryObjects\ClauseObjectFactory.cpp">
+      <Filter>Source Files\QPS\QueryObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\QPS\QueryObjects\QueryObject.cpp">
+      <Filter>Source Files\QPS\QueryObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\QPS\QRTCache.cpp">
       <Filter>Source Files\QPS</Filter>
     </ClCompile>
     <ClCompile Include="..\source\PKB\Insertor.cpp">
@@ -234,138 +246,11 @@
     <ClCompile Include="..\source\PKB\StorageClasses\EntityStorage.cpp">
       <Filter>Source Files\PKB\StorageClasses</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\AST\ASTBuilderHelperFunctions.h" />
-    <ClCompile Include="..\source\AST\ASTNode.h" />
-    <ClCompile Include="..\source\AST\ASTBuilderHelperFunctions.h" />
-    <ClCompile Include="..\source\AST\ASTNode.h" />
-    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
-    <ClCompile Include="..\source\DesignExtractor\EntityExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Extractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\FollowsAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\ModifiesAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\ParentsAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\ParentsFollowsAbstractionBaseExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\UsesAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\UsesModifiesAbstractionBaseExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
-    <ClCompile Include="..\source\DesignExtractor\EntityExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Extractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\FollowsAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\ModifiesAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\ParentsAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\ParentsFollowsAbstractionBaseExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\UsesAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\UsesModifiesAbstractionBaseExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
-    <ClCompile Include="..\source\DesignExtractor\EntityExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Extractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\FollowsAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\ModifiesAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\ParentsAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\ParentsFollowsAbstractionBaseExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\UsesAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\UsesModifiesAbstractionBaseExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
-    <ClCompile Include="..\source\DesignExtractor\EntityExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Extractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\FollowsAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\ModifiesAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\ParentsAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\ParentsFollowsAbstractionBaseExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\UsesAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\UsesModifiesAbstractionBaseExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
-    <ClCompile Include="..\source\DesignExtractor\EntityExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Extractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\FollowsAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\ModifiesAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\ParentsAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\ParentsFollowsAbstractionBaseExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\UsesAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\UsesModifiesAbstractionBaseExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
-    <ClCompile Include="..\source\DesignExtractor\EntityExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Extractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\FollowsAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\ModifiesAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\ParentsAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\ParentsFollowsAbstractionBaseExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\UsesAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\UsesModifiesAbstractionBaseExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
-    <ClCompile Include="..\source\DesignExtractor\EntityExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Extractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\FollowsAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\ModifiesAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\ParentsAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\ParentsFollowsAbstractionBaseExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\UsesAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\UsesModifiesAbstractionBaseExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
-    <ClCompile Include="..\source\DesignExtractor\EntityExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Extractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\FollowsAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\ModifiesAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\ParentsAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\ParentsFollowsAbstractionBaseExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\UsesAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\UsesModifiesAbstractionBaseExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Entity.h" />
-    <ClCompile Include="..\source\DesignExtractor\EntityExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\Extractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\FollowsAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\ModifiesAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\ParentsAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\ParentsFollowsAbstractionBaseExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\UsesAbstractionExtractor.h" />
-    <ClCompile Include="..\source\DesignExtractor\UsesModifiesAbstractionBaseExtractor.h" />
-    <ClCompile Include="..\source\AST\**\*.h">
-      <Filter>AST</Filter>
+    <ClCompile Include="..\source\QPS\QueryObjects\ComparisonQueryObjectFactory.cpp">
+      <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\AST\**\*.h">
-      <Filter>AST</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\AST\**\*.h">
-      <Filter>AST</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\DesignExtractor\*.h">
-      <Filter>DesignExtractor</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\DesignExtractor\*.h">
-      <Filter>DesignExtractor</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\DesignExtractor\*.h">
-      <Filter>DesignExtractor</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\DesignExtractor\*.h">
-      <Filter>DesignExtractor</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\DesignExtractor\*.h">
-      <Filter>DesignExtractor</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\DesignExtractor\*.h">
-      <Filter>DesignExtractor</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\DesignExtractor\*.h">
-      <Filter>DesignExtractor</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\DesignExtractor\*.h">
-      <Filter>DesignExtractor</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\DesignExtractor\*.h">
-      <Filter>DesignExtractor</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\QPS\ResultsHandler.cpp">
-      <Filter>QPS</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\QPS\ResultsHandler.h">
-      <Filter>QPS</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\QPS\QueryResultsTable.h">
-      <Filter>QPS</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\DesignExtractor\*.h">
-      <Filter>DesignExtractor</Filter>
+    <ClCompile Include="..\source\QPS\QueryOptimiser.cpp">
+      <Filter>Source Files\QPS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -393,7 +278,7 @@
     <ClInclude Include="..\source\SP\AST\TreeBuilder.h">
       <Filter>Source Files\SP\AST</Filter>
     </ClInclude>
-	 <ClInclude Include="..\source\SP\AST\OperatorEvaluator.h">
+    <ClInclude Include="..\source\SP\AST\OperatorEvaluator.h">
       <Filter>Source Files\SP\AST</Filter>
     </ClInclude>
     <ClInclude Include="..\source\SP\AST\UnaryOpNode.h">
@@ -426,7 +311,7 @@
     <ClInclude Include="..\source\SP\DesignExtractor\NextExtractor.h">
       <Filter>Source Files\SP\DesignExtractor</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\SP\DesignExtractor\ParentsExtractor.h">
+    <ClInclude Include="..\source\SP\DesignExtractor\ParentExtractor.h">
       <Filter>Source Files\SP\DesignExtractor</Filter>
     </ClInclude>
     <ClInclude Include="..\source\SP\DesignExtractor\ProcedureLineNumberExtractor.h">
@@ -504,16 +389,10 @@
     <ClInclude Include="..\source\QPS\DataAccessLayerStub.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
-	<ClInclude Include="..\source\QPS\GroupClause.h" >
-		<Filter>Source Files\QPS</Filter>
-    </ClInclude>
     <ClInclude Include="..\source\QPS\PQLTokenizer.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\QueryBuilder.h">
-      <Filter>Source Files\QPS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\QPS\OptimisedSortingClauses.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\QueryDriver.h">
@@ -529,9 +408,6 @@
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\ResultsHandler.h">
-      <Filter>Source Files\QPS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\QPS\OptimisedFunctionsStub.h">
       <Filter>Source Files\QPS</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\Errors\QPSError.h">
@@ -562,9 +438,6 @@
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\QueryObjects\DesignObjectsFactory.h">
-      <Filter>Source Files\QPS\QueryObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="..\source\QPS\QueryObjects\InvalidQueryObject.h">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\QueryObjects\PatternClauseObject.h">
@@ -603,8 +476,17 @@
     <ClInclude Include="..\source\PKB\StorageClasses\EntityStorage.h">
       <Filter>Source Files\PKB\StorageClasses</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\ThreadPool.h">
+    <ClInclude Include="..\source\HelperFunctions.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryValidator.h">
+      <Filter>Source Files\QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryObjects\BooleanObjectFactory.h">
+      <Filter>Source Files\QPS\QueryObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryObjects\BooleanQueryObject.h">
+      <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClInclude>
     <ClInclude Include="..\source\QPS\QueryObjects\QueryEval.h">
       <Filter>Source Files\QPS\QueryObjects</Filter>
@@ -615,14 +497,41 @@
     <ClInclude Include="..\source\QPS\QueryObjects\NextStarFilter.h">
       <Filter>Source Files\QPS\QueryObjects</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\QPS\QueryValidator.h">
+    <ClInclude Include="..\source\QPS\QueryObjects\AffectsFilter.h">
+      <Filter>Source Files\QPS\QueryObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\DataAccessLayerAffectsStub.h">
       <Filter>Source Files\QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryObjects\NotQueryObject.h">
+      <Filter>Source Files\QPS\QueryObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QueryObjects\QueryObjectModifier.h">
+      <Filter>Source Files\QPS\QueryObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\ThreadPool.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\Cache.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\QRTCache.h">
+      <Filter>Source Files\QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\Constants\SPConstants.h">
+      <Filter>Source Files\Constants</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\Constants\QPSConstants.h">
+      <Filter>Source Files\Constants</Filter>
     </ClInclude>
     <ClInclude Include="..\source\PKB.h">
       <Filter>Source Files\PKB</Filter>
     </ClInclude>
-    <ClInclude Include="..\source\Constants\SPConstants.h">
-      <Filter>Source Files\Constants</Filter>
+    <ClInclude Include="..\source\QPS\QueryOptimiser.h">
+      <Filter>Source Files\QPS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\QPS\UnionFind.h">
+      <Filter>Source Files\QPS</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
