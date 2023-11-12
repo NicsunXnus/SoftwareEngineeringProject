@@ -5,9 +5,16 @@ skinparam ClassBorderColor #000000
 
 title SPA Overview
 
-Program -down-> SP
-SP -down-> PKB : design abstractions
-PKB -right-> QPS : design abstractions
+cloud "Program" as Program #Yellow
+node "UI" as UI #MediumPurple
+rectangle "QPS" as QPS #SandyBrown
+rectangle "SP" as SP #LawnGreen
+
+database "PKB" as PKB #SkyBlue
+
+Program -down-> SP : raw source program
+SP -[#red]down-> PKB : <color:red>design abstractions
+PKB -[#red]right-> QPS : <color:red>design abstractions
 Program -right-> UI
 UI -down-> QPS : PQL query
 QPS -up-> UI : query result
