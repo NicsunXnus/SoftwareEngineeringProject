@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="562px" preserveAspectRatio="none" style="width:917px;height:562px;background:#FFFFFF;" version="1.1" viewBox="0 0 917 562" width="917px" zoomAndPan="magnify"><defs/><g><rect fill="none" height="26.4883" id="_title" style="stroke:none;stroke-width:1.0;" width="230" x="336.75" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="220" x="341.75" y="23.5352">ExpressionProcessor Overview</text><g id="elem_n1"><path d="M6,98.2283 L6,154.1599 L323,154.1599 L323,108.2283 L313,98.2283 L6,98.2283 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M313,98.2283 L313,108.2283 L323,108.2283 L313,98.2283 " fill="#FEFFDD" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="162" x="12" y="115.7966">Shorthand for types used:</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="258" x="12" y="131.1072">@ - Shared Pointer, str - String, b - Bool,</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="296" x="12" y="146.4177">strv - String View, v - vector, ∅ - void, p - pair</text></g><!--MD5=[b810f3a289faf82740cebcda05458ced]
+class ExpressionProcessor--><g id="elem_ExpressionProcessor"><rect codeLine="13" fill="#F1F1F1" height="163.418" id="ExpressionProcessor" rx="2.5" ry="2.5" style="stroke:#000000;stroke-width:0.5;" width="552" x="358.5" y="44.4883"/><ellipse cx="558.75" cy="60.4883" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M561.2231,66.6313 Q560.6421,66.9302 560.0029,67.0796 Q559.3638,67.229 558.6582,67.229 Q556.1514,67.229 554.8315,65.5771 Q553.5117,63.9253 553.5117,60.8042 Q553.5117,57.6748 554.8315,56.0229 Q556.1514,54.3711 558.6582,54.3711 Q559.3638,54.3711 560.0112,54.5205 Q560.6587,54.6699 561.2231,54.9688 L561.2231,57.6914 Q560.5923,57.1104 559.9988,56.8406 Q559.4053,56.5708 558.7744,56.5708 Q557.4297,56.5708 556.7449,57.6375 Q556.0601,58.7041 556.0601,60.8042 Q556.0601,62.896 556.7449,63.9626 Q557.4297,65.0293 558.7744,65.0293 Q559.4053,65.0293 559.9988,64.7595 Q560.5923,64.4897 561.2231,63.9087 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="143" x="579.25" y="65.7793">ExpressionProcessor</text><line style="stroke:#000000;stroke-width:0.5;" x1="359.5" x2="909.5" y1="76.4883" y2="76.4883"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="366.5" y="87.2324"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="145" x="378.5" y="94.0234">int statementNumber</text><line style="stroke:#000000;stroke-width:0.5;" x1="359.5" x2="909.5" y1="100.9766" y2="100.9766"/><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="366.5" y="111.7207"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="526" x="378.5" y="118.5117">@Node nodifyCondExprTwoPairHelper(str, v&lt;@&lt;p&lt;int, int&gt;&gt;&gt; bracketPairs)</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="366.5" y="128.209"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="517" x="378.5" y="135">@Node nodifyCondExprOnePairHelper(str, @&lt;p&lt;int, int&gt;&gt; bracketIndexes)</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="366.5" y="144.6973"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="267" x="378.5" y="151.4883">@Node nodifyRelationalExpression(str)</text><polygon fill="#FFFF44" points="369.5,159.1855,373.5,163.1855,369.5,167.1855,365.5,163.1855" style="stroke:#B38D22;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="322" x="378.5" y="167.9766">v&lt;@Token&gt; tokenizeArithmeticExpression(str)</text><ellipse cx="369.5" cy="180.6738" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="270" x="378.5" y="184.4648">@Node nodifyArithmeticExpression(str)</text><ellipse cx="369.5" cy="197.1621" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="279" x="378.5" y="200.9531">@Node nodifyConditionalExpression(str)</text></g><!--MD5=[4deb0de7df64012eb936b927187c1b0b]
+class TreeBuilder--><g id="elem_TreeBuilder"><rect codeLine="23" fill="#F1F1F1" height="113.9531" id="TreeBuilder" rx="2.5" ry="2.5" style="stroke:#000000;stroke-width:0.5;" width="434" x="417.5" y="267.8983"/><ellipse cx="590.75" cy="283.8983" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M593.2231,290.0413 Q592.6421,290.3402 592.0029,290.4896 Q591.3638,290.639 590.6582,290.639 Q588.1514,290.639 586.8315,288.9871 Q585.5117,287.3353 585.5117,284.2142 Q585.5117,281.0848 586.8315,279.4329 Q588.1514,277.7811 590.6582,277.7811 Q591.3638,277.7811 592.0112,277.9305 Q592.6587,278.0799 593.2231,278.3787 L593.2231,281.1014 Q592.5923,280.5204 591.9988,280.2506 Q591.4053,279.9808 590.7744,279.9808 Q589.4297,279.9808 588.7449,281.0475 Q588.0601,282.1141 588.0601,284.2142 Q588.0601,286.306 588.7449,287.3726 Q589.4297,288.4393 590.7744,288.4393 Q591.4053,288.4393 591.9988,288.1695 Q592.5923,287.8997 593.2231,287.3187 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="79" x="611.25" y="289.1893">TreeBuilder</text><line style="stroke:#000000;stroke-width:0.5;" x1="418.5" x2="850.5" y1="299.8983" y2="299.8983"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="425.5" y="310.6424"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="145" x="437.5" y="317.4334">int statementNumber</text><line style="stroke:#000000;stroke-width:0.5;" x1="418.5" x2="850.5" y1="324.3866" y2="324.3866"/><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="425.5" y="335.1307"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="399" x="437.5" y="341.9217">@Node makeArithmeticNode(str, @Node left, @Node right)</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="425.5" y="351.619"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="408" x="437.5" y="358.41">void applyArithmeticOperation(stack&lt;str&gt;, stack&lt;@Node&gt;)</text><ellipse cx="428.5" cy="371.1073" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="212" x="437.5" y="374.8983">@Node buildTree(v&lt;@Token&gt;)</text></g><!--MD5=[73782994df12c1d647de93b048452f70]
+class OperatorEvaluator--><g id="elem_OperatorEvaluator"><rect codeLine="30" fill="#F1F1F1" height="113.9531" id="OperatorEvaluator" rx="2.5" ry="2.5" style="stroke:#000000;stroke-width:0.5;" width="271" x="499" y="441.8583"/><ellipse cx="567.25" cy="457.8583" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M569.7231,464.0013 Q569.1421,464.3002 568.5029,464.4496 Q567.8638,464.599 567.1582,464.599 Q564.6514,464.599 563.3315,462.9471 Q562.0117,461.2953 562.0117,458.1742 Q562.0117,455.0448 563.3315,453.3929 Q564.6514,451.7411 567.1582,451.7411 Q567.8638,451.7411 568.5112,451.8905 Q569.1587,452.0399 569.7231,452.3388 L569.7231,455.0614 Q569.0923,454.4804 568.4988,454.2106 Q567.9053,453.9408 567.2744,453.9408 Q565.9297,453.9408 565.2449,455.0075 Q564.5601,456.0741 564.5601,458.1742 Q564.5601,460.266 565.2449,461.3326 Q565.9297,462.3993 567.2744,462.3993 Q567.9053,462.3993 568.4988,462.1295 Q569.0923,461.8597 569.7231,461.2787 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="126" x="587.75" y="463.1493">OperatorEvaluator</text><line style="stroke:#000000;stroke-width:0.5;" x1="500" x2="769" y1="473.8583" y2="473.8583"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="259" x="505" y="491.3934">unordered_map&lt;str, int&gt; precedence</text><line style="stroke:#000000;stroke-width:0.5;" x1="500" x2="769" y1="498.3466" y2="498.3466"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="156" x="505" y="515.8817">b isComparisonOp(str)</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="102" x="505" y="532.37">b isBoolOp(str)</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="106" x="505" y="548.8583">b isArithOp(str)</text></g><!--MD5=[6970ba45c4e5b07ba3e316d602a200aa]
+link ExpressionProcessor to TreeBuilder--><g id="link_ExpressionProcessor_TreeBuilder"><path codeLine="38" d="M634.5,208.3283 C634.5,226.1983 634.5,244.8583 634.5,261.8383 " fill="none" id="ExpressionProcessor-to-TreeBuilder" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="634.5,266.5283,638.5,257.5283,634.5,261.5283,630.5,257.5283,634.5,266.5283" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[9224aae9640c6363db5a796393e53d0b]
+link TreeBuilder to OperatorEvaluator--><g id="link_TreeBuilder_OperatorEvaluator"><path codeLine="39" d="M634.5,382.1783 C634.5,401.1883 634.5,422.3883 634.5,441.3983 " fill="none" id="TreeBuilder-OperatorEvaluator" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[adb3159faa23ba70c3578a09bbd6b9b8]
+@startuml
+' !include ../style.puml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+
+title ExpressionProcessor Overview
+
+note as n1
+    Shorthand for types used:
+    @ - Shared Pointer, str - String, b - Bool,
+    strv - String View, v - vector, ∅ - void, p - pair
+end note
+
+Class ExpressionProcessor {
+    - int statementNumber
+    - @Node nodifyCondExprTwoPairHelper(str, v<@<p<int, int>>> bracketPairs)
+    - @Node nodifyCondExprOnePairHelper(str, @<p<int, int>> bracketIndexes)
+    - @Node nodifyRelationalExpression(str)
+    # v<@Token> tokenizeArithmeticExpression(str)
+    + @Node nodifyArithmeticExpression(str)
+    + @Node nodifyConditionalExpression(str)
+}
+
+Class TreeBuilder {
+    - int statementNumber
+    - @Node makeArithmeticNode(str, @Node left, @Node right)
+    - void applyArithmeticOperation(stack<str>, stack<@Node>)
+    + @Node buildTree(v<@Token>)
+}
+
+Class OperatorEvaluator { 
+    {static} unordered_map<str, int> precedence
+    b isComparisonOp(str)
+    b isBoolOp(str)
+    b isArithOp(str)
+
+}
+
+ExpressionProcessor - -> TreeBuilder
+TreeBuilder - - OperatorEvaluator
+
+@end
+
+@startuml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+
+title ExpressionProcessor Overview
+
+note as n1
+    Shorthand for types used:
+    @ - Shared Pointer, str - String, b - Bool,
+    strv - String View, v - vector, ∅ - void, p - pair
+end note
+
+Class ExpressionProcessor {
+    - int statementNumber
+    - @Node nodifyCondExprTwoPairHelper(str, v<@<p<int, int>>> bracketPairs)
+    - @Node nodifyCondExprOnePairHelper(str, @<p<int, int>> bracketIndexes)
+    - @Node nodifyRelationalExpression(str)
+    # v<@Token> tokenizeArithmeticExpression(str)
+    + @Node nodifyArithmeticExpression(str)
+    + @Node nodifyConditionalExpression(str)
+}
+
+Class TreeBuilder {
+    - int statementNumber
+    - @Node makeArithmeticNode(str, @Node left, @Node right)
+    - void applyArithmeticOperation(stack<str>, stack<@Node>)
+    + @Node buildTree(v<@Token>)
+}
+
+Class OperatorEvaluator { 
+    {static} unordered_map<str, int> precedence
+    b isComparisonOp(str)
+    b isBoolOp(str)
+    b isArithOp(str)
+
+}
+
+ExpressionProcessor - -> TreeBuilder
+TreeBuilder - - OperatorEvaluator
+
+@end
+
+PlantUML version 1.2022.7(Tue Aug 23 01:01:30 SGT 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+--></g></svg>

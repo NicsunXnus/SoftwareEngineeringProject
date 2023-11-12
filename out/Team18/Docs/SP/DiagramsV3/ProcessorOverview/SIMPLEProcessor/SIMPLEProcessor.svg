@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="493px" preserveAspectRatio="none" style="width:908px;height:493px;background:#FFFFFF;" version="1.1" viewBox="0 0 908 493" width="908px" zoomAndPan="magnify"><defs/><g><rect fill="none" height="26.4883" id="_title" style="stroke:none;stroke-width:1.0;" width="136" x="379.25" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="126" x="384.25" y="23.5352">SIMPLE Processor</text><!--MD5=[1427efea17e596065dbebdde35b9d515]
+cluster SimpleProcessorResults--><g id="cluster_SimpleProcessorResults"><path d="M359,393.7183 L533,393.7183 A3.75,3.75 0 0 1 535.5,396.2183 L542.5,416.2066 L644,416.2066 A2.5,2.5 0 0 1 646.5,418.7066 L646.5,483.5283 A2.5,2.5 0 0 1 644,486.0283 L359,486.0283 A2.5,2.5 0 0 1 356.5,483.5283 L356.5,396.2183 A2.5,2.5 0 0 1 359,393.7183 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="356.5" x2="542.5" y1="416.2066" y2="416.2066"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="173" x="360.5" y="409.2534">SimpleProcessorResults</text></g><!--MD5=[a005b0d6263a7a7c102fcd08475e8acf]
+cluster ExpressionProcessor--><g id="cluster_ExpressionProcessor"><path d="M614,219.7683 L763,219.7683 A3.75,3.75 0 0 1 765.5,222.2683 L772.5,242.2566 L899,242.2566 A2.5,2.5 0 0 1 901.5,244.7566 L901.5,309.5783 A2.5,2.5 0 0 1 899,312.0783 L614,312.0783 A2.5,2.5 0 0 1 611.5,309.5783 L611.5,222.2683 A2.5,2.5 0 0 1 614,219.7683 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="611.5" x2="772.5" y1="242.2566" y2="242.2566"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="148" x="615.5" y="235.3034">ExpressionProcessor</text></g><g id="elem_n2"><path d="M400,436.7183 L400,462.0288 L623,462.0288 L623,446.7183 L613,436.7183 L400,436.7183 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M613,436.7183 L613,446.7183 L623,446.7183 L613,436.7183 " fill="#FEFFDD" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="202" x="406" y="454.2866">Further expanded in another file</text></g><g id="elem_n3"><path d="M655,262.7683 L655,288.0788 L878,288.0788 L878,272.7683 L868,262.7683 L655,262.7683 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M868,262.7683 L868,272.7683 L878,272.7683 L868,262.7683 " fill="#FEFFDD" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="202" x="661" y="280.3366">Further expanded in another file</text></g><!--MD5=[c5ce682cf540b8d15f959551ca1e3ccc]
+class ConditionalDeclaration--><g id="elem_ConditionalDeclaration"><rect codeLine="7" fill="#F1F1F1" height="80.9766" id="ConditionalDeclaration" rx="2.5" ry="2.5" style="stroke:#000000;stroke-width:0.5;" width="190" x="200.5" y="44.4883"/><ellipse cx="215.5" cy="60.4883" fill="#EB937F" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M219.1143,66.9883 L211.3945,66.9883 L211.3945,54.5952 L219.1143,54.5952 L219.1143,56.7534 L213.8433,56.7534 L213.8433,59.4263 L218.6162,59.4263 L218.6162,61.5845 L213.8433,61.5845 L213.8433,64.8301 L219.1143,64.8301 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="158" x="229.5" y="65.7793">ConditionalDeclaration</text><line style="stroke:#000000;stroke-width:0.5;" x1="201.5" x2="389.5" y1="76.4883" y2="76.4883"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="12" x="206.5" y="94.0234">IF</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="41" x="206.5" y="110.5117">WHILE</text><line style="stroke:#000000;stroke-width:0.5;" x1="201.5" x2="389.5" y1="117.4648" y2="117.4648"/></g><g id="elem_n1"><path d="M426,57.0083 L426,112.9399 L743,112.9399 L743,67.0083 L733,57.0083 L426,57.0083 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M733,57.0083 L733,67.0083 L743,67.0083 L733,57.0083 " fill="#FEFFDD" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="162" x="432" y="74.5766">Shorthand for types used:</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="258" x="432" y="89.8872">@ - Shared Pointer, str - String, b - Bool,</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="296" x="432" y="105.1977">strv - String View, v - vector, ∅ - void, p - pair</text></g><!--MD5=[138f332371e1ce9e3ff4e1d64c0714b4]
+class SimpleProcessor--><g id="elem_SimpleProcessor"><rect codeLine="18" fill="#F1F1F1" height="179.9063" id="SimpleProcessor" rx="2.5" ry="2.5" style="stroke:#000000;stroke-width:0.5;" width="577" x="7" y="185.4683"/><ellipse cx="234.75" cy="201.4683" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M237.2231,207.6113 Q236.6421,207.9102 236.0029,208.0596 Q235.3638,208.209 234.6582,208.209 Q232.1514,208.209 230.8315,206.5571 Q229.5117,204.9053 229.5117,201.7842 Q229.5117,198.6548 230.8315,197.0029 Q232.1514,195.3511 234.6582,195.3511 Q235.3638,195.3511 236.0112,195.5005 Q236.6587,195.6499 237.2231,195.9488 L237.2231,198.6714 Q236.5923,198.0904 235.9988,197.8206 Q235.4053,197.5508 234.7744,197.5508 Q233.4297,197.5508 232.7449,198.6175 Q232.0601,199.6841 232.0601,201.7842 Q232.0601,203.876 232.7449,204.9426 Q233.4297,206.0093 234.7744,206.0093 Q235.4053,206.0093 235.9988,205.7395 Q236.5923,205.4697 237.2231,204.8887 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="113" x="255.25" y="206.7593">SimpleProcessor</text><line style="stroke:#000000;stroke-width:0.5;" x1="8" x2="583" y1="217.4683" y2="217.4683"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="15" y="228.2124"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="145" x="27" y="235.0034">int statementNumber</text><line style="stroke:#000000;stroke-width:0.5;" x1="8" x2="583" y1="241.9566" y2="241.9566"/><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="15" y="252.7007"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="551" x="27" y="259.4917">p&lt;ConditionalDeclaration, @Node&gt; processConditionalExpression(str, bool, int)</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="15" y="269.189"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="514" x="27" y="275.98">p&lt;ConditionalDeclaration, @Node&gt; processConditionalDeclaration(str, int)</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="15" y="285.6773"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="274" x="27" y="292.4683">@ProcessedStmtList processStmtList(str)</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="15" y="302.1655"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="408" x="27" y="308.9566">@ProcessedSemicolonStmt processSemicolonStatement(str)</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="15" y="318.6538"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="364" x="27" y="325.4448">@ProcessedSemicolonStmt processTwoWordStmt(str)</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="15" y="335.1421"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="324" x="27" y="341.9331">@ProcessedAssignStmt processAssignment(str)</text><ellipse cx="18" cy="354.6304" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="291" x="27" y="358.4214">@ProcessedProgram processProgram(strv)</text></g><!--MD5=[d8c8cfd5ca149094f5b67f9f607a5ec7]
+class Token--><g id="elem_Token"><rect fill="#F1F1F1" height="48" id="Token" rx="2.5" ry="2.5" style="stroke:#000000;stroke-width:0.5;" width="75" x="152" y="425.3683"/><ellipse cx="167" cy="441.3683" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M169.4731,447.5113 Q168.8921,447.8102 168.2529,447.9596 Q167.6138,448.109 166.9082,448.109 Q164.4014,448.109 163.0815,446.4571 Q161.7617,444.8053 161.7617,441.6842 Q161.7617,438.5548 163.0815,436.9029 Q164.4014,435.2511 166.9082,435.2511 Q167.6138,435.2511 168.2612,435.4005 Q168.9087,435.5499 169.4731,435.8488 L169.4731,438.5714 Q168.8423,437.9904 168.2488,437.7206 Q167.6553,437.4508 167.0244,437.4508 Q165.6797,437.4508 164.9949,438.5175 Q164.3101,439.5841 164.3101,441.6842 Q164.3101,443.776 164.9949,444.8426 Q165.6797,445.9093 167.0244,445.9093 Q167.6553,445.9093 168.2488,445.6395 Q168.8423,445.3697 169.4731,444.7887 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="43" x="181" y="446.6593">Token</text><line style="stroke:#000000;stroke-width:0.5;" x1="153" x2="226" y1="457.3683" y2="457.3683"/><line style="stroke:#000000;stroke-width:0.5;" x1="153" x2="226" y1="465.3683" y2="465.3683"/></g><!--MD5=[3fee75583bb7a64f68d843a3c9534ab3]
+class Node--><g id="elem_Node"><rect fill="#F1F1F1" height="48" id="Node" rx="2.5" ry="2.5" style="stroke:#000000;stroke-width:0.5;" width="68" x="261.5" y="425.3683"/><ellipse cx="276.5" cy="441.3683" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M278.9731,447.5113 Q278.3921,447.8102 277.7529,447.9596 Q277.1138,448.109 276.4082,448.109 Q273.9014,448.109 272.5815,446.4571 Q271.2617,444.8053 271.2617,441.6842 Q271.2617,438.5548 272.5815,436.9029 Q273.9014,435.2511 276.4082,435.2511 Q277.1138,435.2511 277.7612,435.4005 Q278.4087,435.5499 278.9731,435.8488 L278.9731,438.5714 Q278.3423,437.9904 277.7488,437.7206 Q277.1553,437.4508 276.5244,437.4508 Q275.1797,437.4508 274.4949,438.5175 Q273.8101,439.5841 273.8101,441.6842 Q273.8101,443.776 274.4949,444.8426 Q275.1797,445.9093 276.5244,445.9093 Q277.1553,445.9093 277.7488,445.6395 Q278.3423,445.3697 278.9731,444.7887 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="36" x="290.5" y="446.6593">Node</text><line style="stroke:#000000;stroke-width:0.5;" x1="262.5" x2="328.5" y1="457.3683" y2="457.3683"/><line style="stroke:#000000;stroke-width:0.5;" x1="262.5" x2="328.5" y1="465.3683" y2="465.3683"/></g><!--MD5=[4331f9e58af39fde86efba6d4808f6d9]
+link SimpleProcessor to Token--><g id="link_SimpleProcessor_Token"><path codeLine="39" d="M240.48,365.6683 C228.25,385.5083 216.17,405.1083 206.84,420.2483 " fill="none" id="SimpleProcessor-to-Token" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="203.78,424.2083,211.8983,418.6321,206.3965,419.9475,205.0811,414.4457,203.78,424.2083" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[9750967b4829c332bc204c2d94f5e2a4]
+link SimpleProcessor to Node--><g id="link_SimpleProcessor_Node"><path codeLine="40" d="M295.5,365.6683 C295.5,385.1583 295.5,404.4283 295.5,419.4583 " fill="none" id="SimpleProcessor-to-Node" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="295.5,424.2083,299.5,415.2083,295.5,419.2083,291.5,415.2083,295.5,424.2083" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[159689d52871cc5097da3db240d8fe19]
+link SimpleProcessor to SimpleProcessorResults--><g id="link_SimpleProcessor_SimpleProcessorResults"><path codeLine="41" d="M341.75,365.7183 C343.42,369.7383 345.02,373.7483 346.5,377.7183 C349.25,385.0683 351.7238,393.0027 353.8937,400.8072 C354.4363,402.7583 354.9598,404.7013 355.4639,406.6251 C355.7159,407.587 355.9631,408.544 356.2054,409.4948 C356.266,409.7326 356.3262,409.9699 356.3862,410.2068 C356.4162,410.3252 356.4461,410.4436 356.4759,410.5618 " fill="none" id="SimpleProcessor-SimpleProcessorResults" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[46336d65347ed39ceeffbd013e461714]
+link SimpleProcessor to ExpressionProcessor--><g id="link_SimpleProcessor_ExpressionProcessor"><path codeLine="42" d="M584.38,275.4183 C590.095,275.4183 595.81,275.4183 601.5263,275.4183 C604.3844,275.4183 607.2428,275.4183 610.1017,275.4183 C610.4591,275.4183 610.8165,275.4183 611.1738,275.4183 C611.2632,275.4183 611.3525,275.4183 611.4419,275.4183 " fill="none" id="SimpleProcessor-ExpressionProcessor" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[2b45e80697188693d2acd9aefd2993e0]
+link ConditionalDeclaration to SimpleProcessor--><g id="link_ConditionalDeclaration_SimpleProcessor"><path codeLine="43" d="M295.5,125.9383 C295.5,143.3383 295.5,164.4683 295.5,185.2783 " fill="none" id="ConditionalDeclaration-SimpleProcessor" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[1d512d15d3182bd2db591b1439ad42a4]
+@startuml
+' !include ../style.puml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+
+title SIMPLE Processor
+
+enum ConditionalDeclaration {
+    IF 
+    WHILE
+}
+
+note as n1
+    Shorthand for types used:
+    @ - Shared Pointer, str - String, b - Bool,
+    strv - String View, v - vector, ∅ - void, p - pair
+end note
+
+Class SimpleProcessor {
+    {static} - int statementNumber
+    {static} - p<ConditionalDeclaration, @Node> processConditionalExpression(str, bool, int)
+    {static} - p<ConditionalDeclaration, @Node> processConditionalDeclaration(str, int)
+    {static} - @ProcessedStmtList processStmtList(str)
+    {static} - @ProcessedSemicolonStmt processSemicolonStatement(str)
+    {static} - @ProcessedSemicolonStmt processTwoWordStmt(str)
+    {static} - @ProcessedAssignStmt processAssignment(str)
+    {static} + @ProcessedProgram processProgram(strv)
+}
+package SimpleProcessorResults {
+    note as n2
+        Further expanded in another file
+    end note
+}
+package ExpressionProcessor {
+    note as n3
+        Further expanded in another file
+    end note
+}
+
+SimpleProcessor ..> Token
+SimpleProcessor ..> Node
+SimpleProcessor - - SimpleProcessorResults
+SimpleProcessor -right- ExpressionProcessor
+ConditionalDeclaration - - SimpleProcessor
+@enduml
+
+@startuml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+
+title SIMPLE Processor
+
+enum ConditionalDeclaration {
+    IF 
+    WHILE
+}
+
+note as n1
+    Shorthand for types used:
+    @ - Shared Pointer, str - String, b - Bool,
+    strv - String View, v - vector, ∅ - void, p - pair
+end note
+
+Class SimpleProcessor {
+    {static} - int statementNumber
+    {static} - p<ConditionalDeclaration, @Node> processConditionalExpression(str, bool, int)
+    {static} - p<ConditionalDeclaration, @Node> processConditionalDeclaration(str, int)
+    {static} - @ProcessedStmtList processStmtList(str)
+    {static} - @ProcessedSemicolonStmt processSemicolonStatement(str)
+    {static} - @ProcessedSemicolonStmt processTwoWordStmt(str)
+    {static} - @ProcessedAssignStmt processAssignment(str)
+    {static} + @ProcessedProgram processProgram(strv)
+}
+package SimpleProcessorResults {
+    note as n2
+        Further expanded in another file
+    end note
+}
+package ExpressionProcessor {
+    note as n3
+        Further expanded in another file
+    end note
+}
+
+SimpleProcessor ..> Token
+SimpleProcessor ..> Node
+SimpleProcessor - - SimpleProcessorResults
+SimpleProcessor -right- ExpressionProcessor
+ConditionalDeclaration - - SimpleProcessor
+@enduml
+
+PlantUML version 1.2022.7(Tue Aug 23 01:01:30 SGT 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+--></g></svg>

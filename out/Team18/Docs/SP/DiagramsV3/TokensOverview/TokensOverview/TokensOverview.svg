@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="579px" preserveAspectRatio="none" style="width:1527px;height:579px;background:#FFFFFF;" version="1.1" viewBox="0 0 1527 579" width="1527px" zoomAndPan="magnify"><defs/><g><rect fill="none" height="26.4883" id="_title" style="stroke:none;stroke-width:1.0;" width="127" x="693" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="117" x="698" y="23.5352">Token Overview</text><!--MD5=[d4f4b569efb82233d92636c7a3e2d5f4]
+cluster Tokens--><g id="cluster_Tokens"><rect fill="none" height="529.44" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.0;" width="789" x="732" y="44.4883"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="53" x="1100" y="60.0234">Tokens</text></g><!--MD5=[ee55f6b97cf88c26d3e7bda96e983222]
+cluster OperatorTokens--><g id="cluster_OperatorTokens"><rect fill="none" height="99" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.0;" width="352" x="756" y="450.9283"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="117" x="873.5" y="466.4634">OperatorTokens</text></g><!--MD5=[d8c8cfd5ca149094f5b67f9f607a5ec7]
+class Token--><g id="elem_Token"><rect codeLine="15" fill="#F1F1F1" height="97.4648" id="Token" rx="2.5" ry="2.5" style="stroke:#000000;stroke-width:0.5;" width="157" x="748.5" y="311.9783"/><ellipse cx="801.25" cy="327.9783" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M803.7231,334.1213 Q803.1421,334.4202 802.5029,334.5696 Q801.8638,334.719 801.1582,334.719 Q798.6514,334.719 797.3315,333.0671 Q796.0117,331.4153 796.0117,328.2942 Q796.0117,325.1648 797.3315,323.5129 Q798.6514,321.8611 801.1582,321.8611 Q801.8638,321.8611 802.5112,322.0105 Q803.1587,322.1599 803.7231,322.4588 L803.7231,325.1814 Q803.0923,324.6004 802.4988,324.3306 Q801.9053,324.0608 801.2744,324.0608 Q799.9297,324.0608 799.2449,325.1275 Q798.5601,326.1941 798.5601,328.2942 Q798.5601,330.386 799.2449,331.4526 Q799.9297,332.5193 801.2744,332.5193 Q801.9053,332.5193 802.4988,332.2495 Q803.0923,331.9797 803.7231,331.3987 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="43" x="821.75" y="333.2693">Token</text><line style="stroke:#000000;stroke-width:0.5;" x1="749.5" x2="904.5" y1="343.9783" y2="343.9783"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="756.5" y="354.7224"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="122" x="768.5" y="361.5134">string tokenName</text><line style="stroke:#000000;stroke-width:0.5;" x1="749.5" x2="904.5" y1="368.4666" y2="368.4666"/><ellipse cx="759.5" cy="382.2107" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="131" x="768.5" y="386.0017">Token(tokenName)</text><ellipse cx="759.5" cy="398.699" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="115" x="768.5" y="402.49">string getName()</text></g><!--MD5=[d7504a3dc4ae366aac4067ae47d41135]
+class IdentifierToken--><g id="elem_IdentifierToken"><rect codeLine="20" fill="#F1F1F1" height="48" id="IdentifierToken" rx="2.5" ry="2.5" style="stroke:#000000;stroke-width:0.5;" width="137" x="920.5" y="187.4883"/><ellipse cx="935.5" cy="203.4883" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M937.9731,209.6313 Q937.3921,209.9302 936.7529,210.0796 Q936.1138,210.229 935.4082,210.229 Q932.9014,210.229 931.5815,208.5771 Q930.2617,206.9253 930.2617,203.8042 Q930.2617,200.6748 931.5815,199.0229 Q932.9014,197.3711 935.4082,197.3711 Q936.1138,197.3711 936.7612,197.5205 Q937.4087,197.6699 937.9731,197.9688 L937.9731,200.6914 Q937.3423,200.1104 936.7488,199.8406 Q936.1553,199.5708 935.5244,199.5708 Q934.1797,199.5708 933.4949,200.6375 Q932.8101,201.7041 932.8101,203.8042 Q932.8101,205.896 933.4949,206.9626 Q934.1797,208.0293 935.5244,208.0293 Q936.1553,208.0293 936.7488,207.7595 Q937.3423,207.4897 937.9731,206.9087 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="105" x="949.5" y="208.7793">IdentifierToken</text><line style="stroke:#000000;stroke-width:0.5;" x1="921.5" x2="1056.5" y1="219.4883" y2="219.4883"/><line style="stroke:#000000;stroke-width:0.5;" x1="921.5" x2="1056.5" y1="227.4883" y2="227.4883"/></g><!--MD5=[94da4a9ebafd5a48a9ae7b734b338f93]
+class LiteralToken--><g id="elem_LiteralToken"><rect codeLine="21" fill="#F1F1F1" height="48" id="LiteralToken" rx="2.5" ry="2.5" style="stroke:#000000;stroke-width:0.5;" width="117" x="768.5" y="187.4883"/><ellipse cx="783.5" cy="203.4883" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M785.9731,209.6313 Q785.3921,209.9302 784.7529,210.0796 Q784.1138,210.229 783.4082,210.229 Q780.9014,210.229 779.5815,208.5771 Q778.2617,206.9253 778.2617,203.8042 Q778.2617,200.6748 779.5815,199.0229 Q780.9014,197.3711 783.4082,197.3711 Q784.1138,197.3711 784.7612,197.5205 Q785.4087,197.6699 785.9731,197.9688 L785.9731,200.6914 Q785.3423,200.1104 784.7488,199.8406 Q784.1553,199.5708 783.5244,199.5708 Q782.1797,199.5708 781.4949,200.6375 Q780.8101,201.7041 780.8101,203.8042 Q780.8101,205.896 781.4949,206.9626 Q782.1797,208.0293 783.5244,208.0293 Q784.1553,208.0293 784.7488,207.7595 Q785.3423,207.4897 785.9731,206.9087 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="85" x="797.5" y="208.7793">LiteralToken</text><line style="stroke:#000000;stroke-width:0.5;" x1="769.5" x2="884.5" y1="219.4883" y2="219.4883"/><line style="stroke:#000000;stroke-width:0.5;" x1="769.5" x2="884.5" y1="227.4883" y2="227.4883"/></g><!--MD5=[9595b785adf7e807eb0a51f06e9333b1]
+class IntegerLiteralToken--><g id="elem_IntegerLiteralToken"><rect codeLine="22" fill="#F1F1F1" height="48" id="IntegerLiteralToken" rx="2.5" ry="2.5" style="stroke:#000000;stroke-width:0.5;" width="166" x="748" y="79.4883"/><ellipse cx="763" cy="95.4883" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M765.4731,101.6313 Q764.8921,101.9302 764.2529,102.0796 Q763.6138,102.229 762.9082,102.229 Q760.4014,102.229 759.0815,100.5771 Q757.7617,98.9253 757.7617,95.8042 Q757.7617,92.6748 759.0815,91.0229 Q760.4014,89.3711 762.9082,89.3711 Q763.6138,89.3711 764.2612,89.5205 Q764.9087,89.6699 765.4731,89.9688 L765.4731,92.6914 Q764.8423,92.1104 764.2488,91.8406 Q763.6553,91.5708 763.0244,91.5708 Q761.6797,91.5708 760.9949,92.6375 Q760.3101,93.7041 760.3101,95.8042 Q760.3101,97.896 760.9949,98.9626 Q761.6797,100.0293 763.0244,100.0293 Q763.6553,100.0293 764.2488,99.7595 Q764.8423,99.4897 765.4731,98.9087 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="134" x="777" y="100.7793">IntegerLiteralToken</text><line style="stroke:#000000;stroke-width:0.5;" x1="749" x2="913" y1="111.4883" y2="111.4883"/><line style="stroke:#000000;stroke-width:0.5;" x1="749" x2="913" y1="119.4883" y2="119.4883"/></g><!--MD5=[3395123f3d8a1857e741a11c13fd280f]
+class SeparatorToken--><g id="elem_SeparatorToken"><rect codeLine="23" fill="#F1F1F1" height="48" id="SeparatorToken" rx="2.5" ry="2.5" style="stroke:#000000;stroke-width:0.5;" width="142" x="941" y="336.7083"/><ellipse cx="956" cy="352.7083" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M958.4731,358.8513 Q957.8921,359.1502 957.2529,359.2996 Q956.6138,359.449 955.9082,359.449 Q953.4014,359.449 952.0815,357.7971 Q950.7617,356.1453 950.7617,353.0242 Q950.7617,349.8948 952.0815,348.2429 Q953.4014,346.5911 955.9082,346.5911 Q956.6138,346.5911 957.2612,346.7405 Q957.9087,346.8899 958.4731,347.1888 L958.4731,349.9114 Q957.8423,349.3304 957.2488,349.0606 Q956.6553,348.7908 956.0244,348.7908 Q954.6797,348.7908 953.9949,349.8575 Q953.3101,350.9241 953.3101,353.0242 Q953.3101,355.116 953.9949,356.1826 Q954.6797,357.2493 956.0244,357.2493 Q956.6553,357.2493 957.2488,356.9795 Q957.8423,356.7097 958.4731,356.1287 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="110" x="970" y="357.9993">SeparatorToken</text><line style="stroke:#000000;stroke-width:0.5;" x1="942" x2="1082" y1="368.7083" y2="368.7083"/><line style="stroke:#000000;stroke-width:0.5;" x1="942" x2="1082" y1="376.7083" y2="376.7083"/></g><!--MD5=[cbd017057978fc77ffd8f203519d5853]
+class ParenCloseSepToken--><g id="elem_ParenCloseSepToken"><rect codeLine="24" fill="#F1F1F1" height="48" id="ParenCloseSepToken" rx="2.5" ry="2.5" style="stroke:#000000;stroke-width:0.5;" width="177" x="1328.5" y="336.7083"/><ellipse cx="1343.5" cy="352.7083" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M1345.9731,358.8513 Q1345.3921,359.1502 1344.7529,359.2996 Q1344.1138,359.449 1343.4082,359.449 Q1340.9014,359.449 1339.5815,357.7971 Q1338.2617,356.1453 1338.2617,353.0242 Q1338.2617,349.8948 1339.5815,348.2429 Q1340.9014,346.5911 1343.4082,346.5911 Q1344.1138,346.5911 1344.7612,346.7405 Q1345.4087,346.8899 1345.9731,347.1888 L1345.9731,349.9114 Q1345.3423,349.3304 1344.7488,349.0606 Q1344.1553,348.7908 1343.5244,348.7908 Q1342.1797,348.7908 1341.4949,349.8575 Q1340.8101,350.9241 1340.8101,353.0242 Q1340.8101,355.116 1341.4949,356.1826 Q1342.1797,357.2493 1343.5244,357.2493 Q1344.1553,357.2493 1344.7488,356.9795 Q1345.3423,356.7097 1345.9731,356.1287 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="145" x="1357.5" y="357.9993">ParenCloseSepToken</text><line style="stroke:#000000;stroke-width:0.5;" x1="1329.5" x2="1504.5" y1="368.7083" y2="368.7083"/><line style="stroke:#000000;stroke-width:0.5;" x1="1329.5" x2="1504.5" y1="376.7083" y2="376.7083"/></g><!--MD5=[4cdb3d7f684b7f29a5152035661444e3]
+class ParenOpenSepToken--><g id="elem_ParenOpenSepToken"><rect codeLine="25" fill="#F1F1F1" height="48" id="ParenOpenSepToken" rx="2.5" ry="2.5" style="stroke:#000000;stroke-width:0.5;" width="176" x="1118" y="336.7083"/><ellipse cx="1133" cy="352.7083" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M1135.4731,358.8513 Q1134.8921,359.1502 1134.2529,359.2996 Q1133.6138,359.449 1132.9082,359.449 Q1130.4014,359.449 1129.0815,357.7971 Q1127.7617,356.1453 1127.7617,353.0242 Q1127.7617,349.8948 1129.0815,348.2429 Q1130.4014,346.5911 1132.9082,346.5911 Q1133.6138,346.5911 1134.2612,346.7405 Q1134.9087,346.8899 1135.4731,347.1888 L1135.4731,349.9114 Q1134.8423,349.3304 1134.2488,349.0606 Q1133.6553,348.7908 1133.0244,348.7908 Q1131.6797,348.7908 1130.9949,349.8575 Q1130.3101,350.9241 1130.3101,353.0242 Q1130.3101,355.116 1130.9949,356.1826 Q1131.6797,357.2493 1133.0244,357.2493 Q1133.6553,357.2493 1134.2488,356.9795 Q1134.8423,356.7097 1135.4731,356.1287 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="144" x="1147" y="357.9993">ParenOpenSepToken</text><line style="stroke:#000000;stroke-width:0.5;" x1="1119" x2="1293" y1="368.7083" y2="368.7083"/><line style="stroke:#000000;stroke-width:0.5;" x1="1119" x2="1293" y1="376.7083" y2="376.7083"/></g><!--MD5=[5022ceec50617c0e742021acc50548cd]
+class OperatorToken--><g id="elem_OperatorToken"><rect codeLine="28" fill="#F1F1F1" height="48" id="OperatorToken" rx="2.5" ry="2.5" style="stroke:#000000;stroke-width:0.5;" width="137" x="772.5" y="485.9283"/><ellipse cx="787.5" cy="501.9283" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M789.9731,508.0713 Q789.3921,508.3702 788.7529,508.5196 Q788.1138,508.669 787.4082,508.669 Q784.9014,508.669 783.5815,507.0171 Q782.2617,505.3653 782.2617,502.2442 Q782.2617,499.1148 783.5815,497.4629 Q784.9014,495.8111 787.4082,495.8111 Q788.1138,495.8111 788.7612,495.9605 Q789.4087,496.1099 789.9731,496.4088 L789.9731,499.1314 Q789.3423,498.5504 788.7488,498.2806 Q788.1553,498.0108 787.5244,498.0108 Q786.1797,498.0108 785.4949,499.0775 Q784.8101,500.1441 784.8101,502.2442 Q784.8101,504.336 785.4949,505.4026 Q786.1797,506.4693 787.5244,506.4693 Q788.1553,506.4693 788.7488,506.1995 Q789.3423,505.9297 789.9731,505.3487 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="105" x="801.5" y="507.2193">OperatorToken</text><line style="stroke:#000000;stroke-width:0.5;" x1="773.5" x2="908.5" y1="517.9283" y2="517.9283"/><line style="stroke:#000000;stroke-width:0.5;" x1="773.5" x2="908.5" y1="525.9283" y2="525.9283"/></g><g id="elem_GMN13"><path d="M944.5,489.6183 L944.5,505.9283 L909.79,509.9283 L944.5,513.9283 L944.5,530.2394 A0,0 0 0 0 944.5,530.2394 L1091.5,530.2394 A0,0 0 0 0 1091.5,530.2394 L1091.5,499.6183 L1081.5,489.6183 L944.5,489.6183 A0,0 0 0 0 944.5,489.6183 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M1081.5,489.6183 L1081.5,499.6183 L1091.5,499.6183 L1081.5,489.6183 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="126" x="950.5" y="507.1866">Further expanded in</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="72" x="950.5" y="522.4972">another file</text></g><!--MD5=[5815eeb1688d22ff258afc00f9e07bf7]
+class TokenFactory--><g id="elem_TokenFactory"><rect codeLine="7" fill="#F1F1F1" height="130.4414" id="TokenFactory" rx="2.5" ry="2.5" style="stroke:#000000;stroke-width:0.5;" width="706" x="7" y="295.4883"/><ellipse cx="309.25" cy="311.4883" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M311.7231,317.6313 Q311.1421,317.9302 310.5029,318.0796 Q309.8638,318.229 309.1582,318.229 Q306.6514,318.229 305.3315,316.5771 Q304.0117,314.9253 304.0117,311.8042 Q304.0117,308.6748 305.3315,307.0229 Q306.6514,305.3711 309.1582,305.3711 Q309.8638,305.3711 310.5112,305.5205 Q311.1587,305.6699 311.7231,305.9688 L311.7231,308.6914 Q311.0923,308.1104 310.4988,307.8406 Q309.9053,307.5708 309.2744,307.5708 Q307.9297,307.5708 307.2449,308.6375 Q306.5601,309.7041 306.5601,311.8042 Q306.5601,313.896 307.2449,314.9626 Q307.9297,316.0293 309.2744,316.0293 Q309.9053,316.0293 310.4988,315.7595 Q311.0923,315.4897 311.7231,314.9087 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="93" x="329.75" y="316.7793">TokenFactory</text><line style="stroke:#000000;stroke-width:0.5;" x1="8" x2="712" y1="327.4883" y2="327.4883"/><line style="stroke:#000000;stroke-width:0.5;" x1="8" x2="712" y1="335.4883" y2="335.4883"/><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="15" y="346.2324"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="507" x="27" y="353.0234">shared_ptr&lt;Token&gt; generateArithmeticOpToken(string_view tokenName)</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="15" y="362.7207"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="435" x="27" y="369.5117">shared_ptr&lt;Token&gt; generateIdentifier(string_view tokenName)</text><rect fill="#F24D5C" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="15" y="379.209"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="409" x="27" y="386">shared_ptr&lt;Token&gt; generateIntLiteral(string_view number)</text><ellipse cx="18" cy="398.6973" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="639" x="27" y="402.4883">shared_ptr&lt;Token&gt; generateTokenForSimple(string tokenName, bool forceIdentifier = false)</text><ellipse cx="18" cy="415.1855" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" text-decoration="underline" textLength="680" x="27" y="418.9766">shared_ptr&lt;Token&gt; generateTokenForSimple(string_view tokenName, bool forceIdentifier = false);</text></g><!--MD5=[92d06aa8a33edbf8fdb63cc65a4a6597]
+link TokenFactory to Token--><g id="link_TokenFactory_Token"><path codeLine="37" d="M713.44,360.7083 C724.98,360.7083 736.51,360.7083 748.04,360.7083 " fill="none" id="TokenFactory-Token" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[d5fe271afac6000a84fd93e2b4751bbf]
+link Token to SeparatorToken--><g id="link_Token_SeparatorToken"><path codeLine="39" d="M905.77,360.7083 C910.4,360.7083 915.03,360.7083 919.66,360.7083 " fill="none" id="Token-to-SeparatorToken" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="919.63,353.7083,939.63,360.7083,919.63,367.7083,919.63,353.7083" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[5e22ca3454e05aac419c9f35327d900d]
+link SeparatorToken to ParenCloseSepToken--><g id="link_SeparatorToken_ParenCloseSepToken"><path codeLine="40" d="M1030.06,336.5483 C1049.09,313.2983 1081.43,279.6483 1118.5,265.4883 C1191.16,237.7383 1219.88,240.3983 1293.5,265.4883 C1326.49,276.7283 1357.54,300.7483 1380.25,321.8483 " fill="none" id="SeparatorToken-to-ParenCloseSepToken" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="1384.81,316.4883,1394.22,335.4783,1375.02,326.5083,1384.81,316.4883" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[831d199256a5b2a72aa529944d48fa9c]
+link SeparatorToken to ParenOpenSepToken--><g id="link_SeparatorToken_ParenOpenSepToken"><path codeLine="41" d="M1083.23,360.7083 C1087.82,360.7083 1092.41,360.7083 1096.99,360.7083 " fill="none" id="SeparatorToken-to-ParenOpenSepToken" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="1096.76,353.7083,1116.76,360.7083,1096.76,367.7083,1096.76,353.7083" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[0ba3b54bf66fdba46ef37cf4696b141e]
+link IdentifierToken to Token--><g id="link_IdentifierToken_Token"><path codeLine="43" d="M963.33,235.8183 C945.03,252.4383 919.52,275.6283 895.51,297.4483 " fill="none" id="IdentifierToken-to-Token" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="900.55,302.2383,881.04,310.5083,891.13,291.8783,900.55,302.2383" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[0233cfc9ccedda027534dea2f16549dc]
+link LiteralToken to Token--><g id="link_LiteralToken_Token"><path codeLine="45" d="M827,235.8183 C827,250.6983 827,270.8383 827,290.5483 " fill="none" id="LiteralToken-to-Token" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="834,290.5083,827,310.5083,820,290.5083,834,290.5083" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[97851f755c7431015aec5fdf629eca1b]
+link IntegerLiteralToken to LiteralToken--><g id="link_IntegerLiteralToken_LiteralToken"><path codeLine="46" d="M830.12,127.7483 C829.69,139.0683 829.17,153.0683 828.67,166.3083 " fill="none" id="IntegerLiteralToken-to-LiteralToken" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="835.63,166.5583,827.88,186.2783,821.64,166.0283,835.63,166.5583" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[186f926fc127f8c9d605585de521e08e]
+reverse link Token to OperatorToken--><g id="link_Token_OperatorToken"><path codeLine="48" d="M833.55,430.6183 C835.44,450.4983 837.38,470.8383 838.8,485.8083 " fill="none" id="Token-backto-OperatorToken" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="826.51,431.4883,831.58,410.9083,840.45,430.1583,826.51,431.4883" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[c290feda59520aab0cd2a03b513240f4]
+@startuml
+' !include ../style.puml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+
+title Token Overview
+
+Class TokenFactory {
+    {static} - shared_ptr<Token> generateArithmeticOpToken(string_view tokenName)
+    {static} - shared_ptr<Token> generateIdentifier(string_view tokenName)
+    {static} - shared_ptr<Token> generateIntLiteral(string_view number)
+    {static} + shared_ptr<Token> generateTokenForSimple(string tokenName, bool forceIdentifier = false)
+    {static} + shared_ptr<Token> generateTokenForSimple(string_view tokenName, bool forceIdentifier = false);
+}
+package Tokens <<rectangle>> {
+    Class Token {
+        - string tokenName
+        + Token(tokenName)
+        + string getName()
+    }
+    Class IdentifierToken {}
+    Class LiteralToken {}
+    Class IntegerLiteralToken {}
+    Class SeparatorToken {}
+    Class ParenCloseSepToken {}
+    Class ParenOpenSepToken {}
+
+    package OperatorTokens <<rectangle>> {
+        Class OperatorToken {}
+        note right of OperatorToken
+        Further expanded in
+        another file
+        end note
+    }
+
+}
+
+Token -left- TokenFactory
+
+Token -right-|> SeparatorToken
+SeparatorToken -right-|> ParenCloseSepToken
+SeparatorToken -right-|> ParenOpenSepToken
+
+IdentifierToken -down-|> Token
+
+LiteralToken -down-|> Token
+IntegerLiteralToken -down-|> LiteralToken
+
+OperatorToken -up-|> Token
+
+@end
+
+@startuml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+
+title Token Overview
+
+Class TokenFactory {
+    {static} - shared_ptr<Token> generateArithmeticOpToken(string_view tokenName)
+    {static} - shared_ptr<Token> generateIdentifier(string_view tokenName)
+    {static} - shared_ptr<Token> generateIntLiteral(string_view number)
+    {static} + shared_ptr<Token> generateTokenForSimple(string tokenName, bool forceIdentifier = false)
+    {static} + shared_ptr<Token> generateTokenForSimple(string_view tokenName, bool forceIdentifier = false);
+}
+package Tokens <<rectangle>> {
+    Class Token {
+        - string tokenName
+        + Token(tokenName)
+        + string getName()
+    }
+    Class IdentifierToken {}
+    Class LiteralToken {}
+    Class IntegerLiteralToken {}
+    Class SeparatorToken {}
+    Class ParenCloseSepToken {}
+    Class ParenOpenSepToken {}
+
+    package OperatorTokens <<rectangle>> {
+        Class OperatorToken {}
+        note right of OperatorToken
+        Further expanded in
+        another file
+        end note
+    }
+
+}
+
+Token -left- TokenFactory
+
+Token -right-|> SeparatorToken
+SeparatorToken -right-|> ParenCloseSepToken
+SeparatorToken -right-|> ParenOpenSepToken
+
+IdentifierToken -down-|> Token
+
+LiteralToken -down-|> Token
+IntegerLiteralToken -down-|> LiteralToken
+
+OperatorToken -up-|> Token
+
+@end
+
+PlantUML version 1.2022.7(Tue Aug 23 01:01:30 SGT 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+--></g></svg>

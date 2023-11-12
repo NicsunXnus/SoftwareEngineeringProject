@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="614px" preserveAspectRatio="none" style="width:545px;height:614px;background:#FFFFFF;" version="1.1" viewBox="0 0 545 614" width="545px" zoomAndPan="magnify"><defs/><g><rect fill="none" height="26.4883" id="_title" style="stroke:none;stroke-width:1.0;" width="147" x="192" y="5"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="137" x="197" y="23.5352">ASTNode Overview</text><!--MD5=[923da9f4faf03044f72f9a8e132490eb]
+cluster AST--><g id="cluster_AST"><rect fill="none" height="563.53" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1.0;" width="532" x="7" y="44.4883"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="28" x="259" y="60.0234">AST</text></g><!--MD5=[ef14abb59cb728f3cb28e32d9b64059b]
+cluster BinaryOpNodes--><g id="cluster_BinaryOpNodes"><path d="M33.5,401.0183 L145.5,401.0183 A3.75,3.75 0 0 1 148,403.5183 L155,423.5066 L373.5,423.5066 A2.5,2.5 0 0 1 376,426.0066 L376,497.5183 A2.5,2.5 0 0 1 373.5,500.0183 L33.5,500.0183 A2.5,2.5 0 0 1 31,497.5183 L31,403.5183 A2.5,2.5 0 0 1 33.5,401.0183 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="31" x2="155" y1="423.5066" y2="423.5066"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="111" x="35" y="416.5534">BinaryOpNodes</text></g><!--MD5=[3fee75583bb7a64f68d843a3c9534ab3]
+class Node--><g id="elem_Node"><rect codeLine="20" fill="#F1F1F1" height="155.5508" id="Node" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="321" x="22.5" y="79.4883"/><ellipse cx="160.75" cy="99.7988" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M163.2231,105.9419 Q162.6421,106.2407 162.0029,106.3901 Q161.3638,106.5396 160.6582,106.5396 Q158.1514,106.5396 156.8315,104.8877 Q155.5117,103.2358 155.5117,100.1147 Q155.5117,96.9854 156.8315,95.3335 Q158.1514,93.6816 160.6582,93.6816 Q161.3638,93.6816 162.0112,93.8311 Q162.6587,93.9805 163.2231,94.2793 L163.2231,97.002 Q162.5923,96.4209 161.9988,96.1511 Q161.4053,95.8813 160.7744,95.8813 Q159.4297,95.8813 158.7449,96.948 Q158.0601,98.0146 158.0601,100.1147 Q158.0601,102.2065 158.7449,103.2732 Q159.4297,104.3398 160.7744,104.3398 Q161.4053,104.3398 161.9988,104.0701 Q162.5923,103.8003 163.2231,103.2192 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="39" x="179.75" y="96.0898">«Base»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="36" x="181.25" y="112.1563">Node</text><line style="stroke:#181818;stroke-width:0.5;" x1="23.5" x2="342.5" y1="120.1094" y2="120.1094"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="30.5" y="130.8535"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="82" x="42.5" y="137.6445">string name</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="30.5" y="147.3418"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="145" x="42.5" y="154.1328">int statementNumber</text><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="30.5" y="163.8301"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="256" x="42.5" y="170.6211">vector&lt;shared_ptr&lt;Node&gt;&gt; children</text><line style="stroke:#181818;stroke-width:0.5;" x1="23.5" x2="342.5" y1="177.5742" y2="177.5742"/><ellipse cx="33.5" cy="191.3184" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="178" x="42.5" y="195.1094">int getStatementNumber()</text><ellipse cx="33.5" cy="207.8066" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="118" x="42.5" y="211.5977">string getValue();</text><ellipse cx="33.5" cy="224.2949" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="295" x="42.5" y="228.0859">vector&lt;shared_ptr&lt;Node&gt;&gt; getChildren();</text></g><!--MD5=[07ae55cb0cc6575cce8064493d1d1bcc]
+class OpNode--><g id="elem_OpNode"><rect codeLine="28" fill="#F1F1F1" height="80.9766" id="OpNode" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="126" x="73" y="295.0383"/><ellipse cx="105.1" cy="311.0383" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M107.5731,317.1813 Q106.9921,317.4802 106.3529,317.6296 Q105.7138,317.779 105.0082,317.779 Q102.5014,317.779 101.1815,316.1271 Q99.8617,314.4753 99.8617,311.3542 Q99.8617,308.2248 101.1815,306.5729 Q102.5014,304.9211 105.0082,304.9211 Q105.7138,304.9211 106.3612,305.0705 Q107.0087,305.2199 107.5731,305.5187 L107.5731,308.2414 Q106.9423,307.6604 106.3488,307.3906 Q105.7553,307.1208 105.1244,307.1208 Q103.7797,307.1208 103.0949,308.1875 Q102.4101,309.2541 102.4101,311.3542 Q102.4101,313.446 103.0949,314.5126 Q103.7797,315.5793 105.1244,315.5793 Q105.7553,315.5793 106.3488,315.3095 Q106.9423,315.0397 107.5731,314.4587 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="56" x="122.9" y="316.3293">OpNode</text><line style="stroke:#181818;stroke-width:0.5;" x1="74" x2="198" y1="327.0383" y2="327.0383"/><rect fill="none" height="6" style="stroke:#C82930;stroke-width:1.0;" width="6" x="81" y="337.7824"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="62" x="93" y="344.5734">string op</text><line style="stroke:#181818;stroke-width:0.5;" x1="74" x2="198" y1="351.5266" y2="351.5266"/><ellipse cx="84" cy="365.2707" fill="#84BE84" rx="3" ry="3" style="stroke:#038048;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="100" x="93" y="369.0617">string getOp();</text></g><!--MD5=[c5a250891fd2b9791fd7ae254d4a198e]
+class UnaryOpNode--><g id="elem_UnaryOpNode"><rect codeLine="39" fill="#F1F1F1" height="48" id="UnaryOpNode" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="128" x="395" y="436.0183"/><ellipse cx="410" cy="452.0183" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M412.4731,458.1613 Q411.8921,458.4602 411.2529,458.6096 Q410.6138,458.759 409.9082,458.759 Q407.4014,458.759 406.0815,457.1071 Q404.7617,455.4553 404.7617,452.3342 Q404.7617,449.2048 406.0815,447.5529 Q407.4014,445.9011 409.9082,445.9011 Q410.6138,445.9011 411.2612,446.0505 Q411.9087,446.1999 412.4731,446.4988 L412.4731,449.2214 Q411.8423,448.6404 411.2488,448.3706 Q410.6553,448.1008 410.0244,448.1008 Q408.6797,448.1008 407.9949,449.1675 Q407.3101,450.2341 407.3101,452.3342 Q407.3101,454.426 407.9949,455.4926 Q408.6797,456.5593 410.0244,456.5593 Q410.6553,456.5593 411.2488,456.2895 Q411.8423,456.0197 412.4731,455.4387 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="96" x="424" y="457.3093">UnaryOpNode</text><line style="stroke:#181818;stroke-width:0.5;" x1="396" x2="522" y1="468.0183" y2="468.0183"/><line style="stroke:#181818;stroke-width:0.5;" x1="396" x2="522" y1="476.0183" y2="476.0183"/></g><!--MD5=[c00b82b076fe5ea0f36281baaafd90b2]
+class NotOpNode--><g id="elem_NotOpNode"><rect codeLine="40" fill="#F1F1F1" height="48" id="NotOpNode" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="112" x="403" y="544.0183"/><ellipse cx="418" cy="560.0183" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M420.4731,566.1613 Q419.8921,566.4602 419.2529,566.6096 Q418.6138,566.759 417.9082,566.759 Q415.4014,566.759 414.0815,565.1071 Q412.7617,563.4553 412.7617,560.3342 Q412.7617,557.2048 414.0815,555.5529 Q415.4014,553.9011 417.9082,553.9011 Q418.6138,553.9011 419.2612,554.0505 Q419.9087,554.1999 420.4731,554.4988 L420.4731,557.2214 Q419.8423,556.6404 419.2488,556.3706 Q418.6553,556.1008 418.0244,556.1008 Q416.6797,556.1008 415.9949,557.1675 Q415.3101,558.2341 415.3101,560.3342 Q415.3101,562.426 415.9949,563.4926 Q416.6797,564.5593 418.0244,564.5593 Q418.6553,564.5593 419.2488,564.2895 Q419.8423,564.0197 420.4731,563.4387 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="80" x="432" y="565.3093">NotOpNode</text><line style="stroke:#181818;stroke-width:0.5;" x1="404" x2="514" y1="576.0183" y2="576.0183"/><line style="stroke:#181818;stroke-width:0.5;" x1="404" x2="514" y1="584.0183" y2="584.0183"/></g><!--MD5=[0a4fa3212bdc2ce08d00c7cf6a62ddbc]
+class TerminalNode--><g id="elem_TerminalNode"><rect codeLine="41" fill="#F1F1F1" height="48" id="TerminalNode" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="129" x="378.5" y="133.2683"/><ellipse cx="393.5" cy="149.2683" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M395.9731,155.4113 Q395.3921,155.7102 394.7529,155.8596 Q394.1138,156.009 393.4082,156.009 Q390.9014,156.009 389.5815,154.3571 Q388.2617,152.7053 388.2617,149.5842 Q388.2617,146.4548 389.5815,144.8029 Q390.9014,143.1511 393.4082,143.1511 Q394.1138,143.1511 394.7612,143.3005 Q395.4087,143.4499 395.9731,143.7487 L395.9731,146.4714 Q395.3423,145.8904 394.7488,145.6206 Q394.1553,145.3508 393.5244,145.3508 Q392.1797,145.3508 391.4949,146.4175 Q390.8101,147.4841 390.8101,149.5842 Q390.8101,151.676 391.4949,152.7426 Q392.1797,153.8093 393.5244,153.8093 Q394.1553,153.8093 394.7488,153.5395 Q395.3423,153.2697 395.9731,152.6887 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="97" x="407.5" y="154.5593">TerminalNode</text><line style="stroke:#181818;stroke-width:0.5;" x1="379.5" x2="506.5" y1="165.2683" y2="165.2683"/><line style="stroke:#181818;stroke-width:0.5;" x1="379.5" x2="506.5" y1="173.2683" y2="173.2683"/></g><!--MD5=[4a446204ae78793c6f9cf2f7b33641a5]
+class ConstantNode--><g id="elem_ConstantNode"><rect codeLine="42" fill="#F1F1F1" height="48" id="ConstantNode" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="130" x="393" y="311.5283"/><ellipse cx="408" cy="327.5283" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M410.4731,333.6713 Q409.8921,333.9702 409.2529,334.1196 Q408.6138,334.269 407.9082,334.269 Q405.4014,334.269 404.0815,332.6171 Q402.7617,330.9653 402.7617,327.8442 Q402.7617,324.7148 404.0815,323.0629 Q405.4014,321.4111 407.9082,321.4111 Q408.6138,321.4111 409.2612,321.5605 Q409.9087,321.7099 410.4731,322.0087 L410.4731,324.7314 Q409.8423,324.1504 409.2488,323.8806 Q408.6553,323.6108 408.0244,323.6108 Q406.6797,323.6108 405.9949,324.6775 Q405.3101,325.7441 405.3101,327.8442 Q405.3101,329.936 405.9949,331.0026 Q406.6797,332.0693 408.0244,332.0693 Q408.6553,332.0693 409.2488,331.7995 Q409.8423,331.5297 410.4731,330.9487 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="98" x="422" y="332.8193">ConstantNode</text><line style="stroke:#181818;stroke-width:0.5;" x1="394" x2="522" y1="343.5283" y2="343.5283"/><line style="stroke:#181818;stroke-width:0.5;" x1="394" x2="522" y1="351.5283" y2="351.5283"/></g><!--MD5=[7dabbced44a5369241d129f1da30755c]
+class VariableNode--><g id="elem_VariableNode"><rect codeLine="43" fill="#F1F1F1" height="48" id="VariableNode" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="124" x="234" y="311.5283"/><ellipse cx="249" cy="327.5283" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M251.4731,333.6713 Q250.8921,333.9702 250.2529,334.1196 Q249.6138,334.269 248.9082,334.269 Q246.4014,334.269 245.0815,332.6171 Q243.7617,330.9653 243.7617,327.8442 Q243.7617,324.7148 245.0815,323.0629 Q246.4014,321.4111 248.9082,321.4111 Q249.6138,321.4111 250.2612,321.5605 Q250.9087,321.7099 251.4731,322.0087 L251.4731,324.7314 Q250.8423,324.1504 250.2488,323.8806 Q249.6553,323.6108 249.0244,323.6108 Q247.6797,323.6108 246.9949,324.6775 Q246.3101,325.7441 246.3101,327.8442 Q246.3101,329.936 246.9949,331.0026 Q247.6797,332.0693 249.0244,332.0693 Q249.6553,332.0693 250.2488,331.7995 Q250.8423,331.5297 251.4731,330.9487 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="92" x="263" y="332.8193">VariableNode</text><line style="stroke:#181818;stroke-width:0.5;" x1="235" x2="357" y1="343.5283" y2="343.5283"/><line style="stroke:#181818;stroke-width:0.5;" x1="235" x2="357" y1="351.5283" y2="351.5283"/></g><!--MD5=[b5950dd3829489fffab5a79919f8e703]
+class BinaryOpNode--><g id="elem_BinaryOpNode"><rect codeLine="33" fill="#F1F1F1" height="48" id="BinaryOpNode" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="130" x="47" y="436.0183"/><ellipse cx="62" cy="452.0183" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M64.4731,458.1613 Q63.8921,458.4602 63.2529,458.6096 Q62.6138,458.759 61.9082,458.759 Q59.4014,458.759 58.0815,457.1071 Q56.7617,455.4553 56.7617,452.3342 Q56.7617,449.2048 58.0815,447.5529 Q59.4014,445.9011 61.9082,445.9011 Q62.6138,445.9011 63.2612,446.0505 Q63.9087,446.1999 64.4731,446.4988 L64.4731,449.2214 Q63.8423,448.6404 63.2488,448.3706 Q62.6553,448.1008 62.0244,448.1008 Q60.6797,448.1008 59.9949,449.1675 Q59.3101,450.2341 59.3101,452.3342 Q59.3101,454.426 59.9949,455.4926 Q60.6797,456.5593 62.0244,456.5593 Q62.6553,456.5593 63.2488,456.2895 Q63.8423,456.0197 64.4731,455.4387 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="98" x="76" y="457.3093">BinaryOpNode</text><line style="stroke:#181818;stroke-width:0.5;" x1="48" x2="176" y1="468.0183" y2="468.0183"/><line style="stroke:#181818;stroke-width:0.5;" x1="48" x2="176" y1="476.0183" y2="476.0183"/></g><g id="elem_GMN7"><path d="M212.5,439.7083 L212.5,456.0183 L177.25,460.0183 L212.5,464.0183 L212.5,480.3294 A0,0 0 0 0 212.5,480.3294 L359.5,480.3294 A0,0 0 0 0 359.5,480.3294 L359.5,449.7083 L349.5,439.7083 L212.5,439.7083 A0,0 0 0 0 212.5,439.7083 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M349.5,439.7083 L349.5,449.7083 L359.5,449.7083 L349.5,439.7083 " fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="126" x="218.5" y="457.2766">Further expanded in</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="72" x="218.5" y="472.5872">another file</text></g><!--MD5=[dfe5e3c82bc014289581f171b26a413c]
+reverse link Node to OpNode--><g id="link_Node_OpNode"><path codeLine="45" d="M157.16,255.1883 C153.42,269.1983 149.76,282.9183 146.57,294.8983 " fill="none" id="Node-backto-OpNode" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="150.54,253.8383,162.45,236.3183,164.06,257.4483,150.54,253.8383" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[6191771e21dbe20981897a582f293bba]
+reverse link OpNode to BinaryOpNode--><g id="link_OpNode_BinaryOpNode"><path codeLine="46" d="M124.26,396.4383 C121.51,410.4683 118.74,424.5983 116.54,435.8683 " fill="none" id="OpNode-backto-BinaryOpNode" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="117.49,395.5783,128.21,377.2983,131.23,398.2683,117.49,395.5783" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[a037714149c264e09774d30b1ad7e0b4]
+reverse link OpNode to UnaryOpNode--><g id="link_OpNode_UnaryOpNode"><path codeLine="47" d="M219.28,375.1983 C289.67,391.1883 315.64,368.2683 376,393.0183 C399.34,402.5883 421.47,420.8183 437,435.6983 " fill="none" id="OpNode-backto-UnaryOpNode" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="217.84,381.7883,200.29,369.9083,221.42,368.2583,217.84,381.7883" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[c077c79f7337296611d3527f19310ec3]
+reverse link UnaryOpNode to NotOpNode--><g id="link_UnaryOpNode_NotOpNode"><path codeLine="48" d="M459,505.2583 C459,518.4983 459,532.4983 459,543.8083 " fill="none" id="UnaryOpNode-backto-NotOpNode" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="452,505.2783,459,485.2783,466,505.2783,452,505.2783" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[f46415c2e0a999371e840667fa786677]
+reverse link Node to TerminalNode--><g id="link_Node_TerminalNode"><path codeLine="49" d="M364.72,157.2683 C369.15,157.2683 373.58,157.2683 378.02,157.2683 " fill="none" id="Node-backto-TerminalNode" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="364.98,164.2683,344.98,157.2683,364.98,150.2683,364.98,164.2683" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[1a9acd2e33d5c9ee90403255c695d4e0]
+reverse link TerminalNode to ConstantNode--><g id="link_TerminalNode_ConstantNode"><path codeLine="50" d="M446.75,202.3083 C449.69,236.8883 453.67,283.6583 456.02,311.3083 " fill="none" id="TerminalNode-backto-ConstantNode" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="439.71,203.1983,444.99,182.6683,453.66,202.0083,439.71,203.1983" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[58b2859e606ecbb692444ede1c295397]
+reverse link TerminalNode to VariableNode--><g id="link_TerminalNode_VariableNode"><path codeLine="51" d="M410.32,197.4583 C381.18,232.3883 339.52,282.3483 315.37,311.3083 " fill="none" id="TerminalNode-backto-VariableNode" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="405.29,193.5483,423.48,182.6683,416.05,202.5183,405.29,193.5483" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[2d77d1cb757849ca0d7f477a810f24c4]
+@startuml
+
+' !include ../style.puml
+'skinparam ClassFontColor #000000
+'skinparam ClassBorderColor #000000
+' skinparam class {
+' BackgroundColor<<ChildOfBase>> PaleGreen 
+' ArrowColor SeaGreen
+' BorderColor SpringGreen
+' BackgroundColor<<Base>> Wheat
+' BorderColor<<Base>> Salmon
+' BackgroundColor<<GrandChildOfBase>> LightSeaGreen
+' BorderColor<<GrandChildOfBase>> Salmon
+' BackgroundColor<<GrandGrandChildOfBase>> Lavender
+' BorderColor<<GrandGrandChildOfBase>> Salmon
+' }
+
+title ASTNode Overview
+
+package AST <<Rectangle>> {
+    Class Node <<Base>> {
+        - string name
+        - int statementNumber
+        - vector<shared_ptr<Node>> children
+        + int getStatementNumber()
+        + string getValue();
+        + vector<shared_ptr<Node>> getChildren();
+    }
+    Class OpNode {
+        - string op
+        + string getOp();
+    }
+    package BinaryOpNodes {
+        Class BinaryOpNode    
+        note right of BinaryOpNode
+        Further expanded in
+        another file
+        end note
+    }
+    Class UnaryOpNode
+    Class NotOpNode
+    Class TerminalNode
+    Class ConstantNode
+    Class VariableNode 
+
+    Node <|- - OpNode
+    OpNode <|- - BinaryOpNode
+    OpNode <|- - UnaryOpNode
+    UnaryOpNode <|- - NotOpNode
+    Node <|-right- TerminalNode
+    TerminalNode <|- - ConstantNode
+    TerminalNode <|- - VariableNode
+}
+@enduml
+
+@startuml
+
+
+title ASTNode Overview
+
+package AST <<Rectangle>> {
+    Class Node <<Base>> {
+        - string name
+        - int statementNumber
+        - vector<shared_ptr<Node>> children
+        + int getStatementNumber()
+        + string getValue();
+        + vector<shared_ptr<Node>> getChildren();
+    }
+    Class OpNode {
+        - string op
+        + string getOp();
+    }
+    package BinaryOpNodes {
+        Class BinaryOpNode    
+        note right of BinaryOpNode
+        Further expanded in
+        another file
+        end note
+    }
+    Class UnaryOpNode
+    Class NotOpNode
+    Class TerminalNode
+    Class ConstantNode
+    Class VariableNode 
+
+    Node <|- - OpNode
+    OpNode <|- - BinaryOpNode
+    OpNode <|- - UnaryOpNode
+    UnaryOpNode <|- - NotOpNode
+    Node <|-right- TerminalNode
+    TerminalNode <|- - ConstantNode
+    TerminalNode <|- - VariableNode
+}
+@enduml
+
+PlantUML version 1.2022.7(Tue Aug 23 01:01:30 SGT 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: GB
+--></g></svg>
