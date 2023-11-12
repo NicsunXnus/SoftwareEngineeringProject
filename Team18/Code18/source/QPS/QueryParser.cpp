@@ -181,11 +181,10 @@ vector<shared_ptr<QueryObject>> QueryParser::parseQuery(vector<string_view> quer
 		}
 		else if (selectTupleTokenCount == 3) {
 			shared_ptr<QueryObject> attrRefQuery{ createAttrRefObject(query, currentWordIndex) };
-
 			result.push_back(attrRefQuery);
+			++synonyms_in_select;
 		}
 		else if (selectTupleTokenCount == 1 && !isDeclared(query[currentWordIndex]) && isBooleanToken) {
-			// check if its boolean object
 			shared_ptr<QueryObject> booleanObject{ createBooleanObject(query, currentWordIndex) };
 
 			result.push_back(booleanObject);
@@ -197,14 +196,10 @@ vector<shared_ptr<QueryObject>> QueryParser::parseQuery(vector<string_view> quer
 			++currentWordIndex;
 		}
 		else {
+			// synonym object
 			shared_ptr<QueryObject> selectQuery{ synonyms.find(query[currentWordIndex])->second };
 			result.push_back(selectQuery);
-
 			++currentWordIndex;
-			
-		}
-
-		if (!isBooleanToken) {
 			++synonyms_in_select;
 		}
 	}
