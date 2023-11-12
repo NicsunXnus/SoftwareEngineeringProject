@@ -1,0 +1,56 @@
+@startuml
+!include ../../style.puml
+skinparam ClassFontColor #000000
+
+
+skinparam ClassBorderColor #000000
+box FollowsExtractor LOGIC_COLOR_T1
+participant ":FollowsExtractor" as FollowsExtractor LOGIC_COLOR
+end box
+
+box ProcessedTokens LOGIC_COLOR_T1
+participant ":ProcessedProgram" as ProcessedProgram LOGIC_COLOR
+participant ":ProcessedProcedure" as ProcessedProcedure LOGIC_COLOR
+participant ":ProcessedStmtList" as ProcessedStmtList LOGIC_COLOR
+
+end box
+
+[-> FollowsExtractor : extractAbstractions(processedProgram)
+
+activate FollowsExtractor
+    FollowsExtractor -> ProcessedProgram : accept(FollowsExtractor)
+deactivate FollowsExtractor
+
+activate ProcessedProgram
+    ProcessedProgram -> FollowsExtractor : extract(ProcessedProgram)
+deactivate ProcessedProgram
+
+activate FollowsExtractor
+    FollowsExtractor -> ProcessedProcedure : accept(FollowsExtractor)
+deactivate FollowsExtractor
+
+activate ProcessedProcedure
+    ProcessedProcedure -> FollowsExtractor : extract(ProcessedProcedure)
+deactivate ProcessedProcedure
+
+activate FollowsExtractor
+    FollowsExtractor -> ProcessedStmtList : accept(FollowsExtractor)
+deactivate FollowsExtractor
+
+activate ProcessedStmtList
+    ProcessedStmtList -> FollowsExtractor : extract(ProcessedStmtList)
+deactivate ProcessedStmtList
+
+activate FollowsExtractor
+    note left
+    The sequence continues 
+    for the different 
+    ProcessedTokens until 
+    the traversal is complete
+    end note    
+
+[<--FollowsExtractor : success
+
+
+
+@end
