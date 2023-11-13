@@ -4,33 +4,41 @@ skinparam ClassFontColor #000000
 
 
 skinparam ClassBorderColor #000000
-box SP LOGIC_COLOR_T1
+
+box ApplicationWrapper LOGIC_COLOR_T1
 participant ":ApplicationWrapper" as ApplicationWrapper LOGIC_COLOR
+end box
+
+
+box SP LOGIC_COLOR_T1
 participant ":SimpleProcessor" as SimpleProcessor LOGIC_COLOR
 ' participant ":ASTBuilder" as ASTBuilder LOGIC_COLOR
 participant ":DesignExtractor" as DesignExtractor LOGIC_COLOR
+end box
+
+box PKB LOGIC_COLOR_T1
 participant ":PKB" as PKB LOGIC_COLOR
 end box
+
 
 
 [-> ApplicationWrapper : directParse(strv src, b MT)
 note right
     Shorthand for types used:
     @ - Shared Pointer, str - String, b - Bool,
-    strv - String View, PP - ProcesssedProgram, 
-    MT - MultiThread
+    strv - String View, MT - MultiThread
 end note
 activate ApplicationWrapper
 
 ApplicationWrapper -> SimpleProcessor : <<static>>\n processProgram(str srcCode, b MT)
 activate SimpleProcessor
-SimpleProcessor -> ApplicationWrapper : PP processedProgram
+SimpleProcessor -> ApplicationWrapper : @processedProgram
 deactivate SimpleProcessor
 
-ApplicationWrapper --> DesignExtractor : extractAndInsertAll(PP processedProgram, b MT)
+ApplicationWrapper --> DesignExtractor : extractAndInsertAll(@processedProgram, b MT)
 activate DesignExtractor
-    DesignExtractor -> DesignExtractor : extractAbstractions(PP processedProgram, b MT)
-    DesignExtractor -> DesignExtractor : extractEntities(PP processedProgram)
+    DesignExtractor -> DesignExtractor : extractAbstractions(@processedProgram, b MT)
+    DesignExtractor -> DesignExtractor : extractEntities(@processedProgram)
     DesignExtractor -> PKB : insertAbstractions()
     activate PKB
     PKB -> DesignExtractor : success
